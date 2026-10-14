@@ -5856,7 +5856,7 @@ textarea.input { min-height: 90px; resize: vertical; }
   [data-card]:hover { transform: translateY(-6px); box-shadow: 0 0 0 1px rgba(154,114,255,.8), 0 22px 50px rgba(0,0,0,.6) !important; }
   [data-card] img { transition: transform .9s cubic-bezier(.2,.7,.2,1); }
   [data-card]:hover img { transform: scale(1.04); }
-  @media (max-width: 900px) { [data-hnav] { order: 3 !important; flex-basis: 100% !important; } }
+  @media (max-width: 990px) { [data-hnav] { order: 3 !important; flex-basis: 100% !important; } }
   /* Mobil: logga och knappar på en rad, alla menyval synliga, porträttet överst i hero. */
   @media (max-width: 600px) {
     [data-hbar] { padding: 4px 16px !important; column-gap: 8px !important; }
@@ -5933,6 +5933,11 @@ textarea.input { min-height: 90px; resize: vertical; }
   }
   /* Mellanbredd (surfplatta, litet fönster): menyn får plats utan att klippas. */
   @media (min-width: 601px) and (max-width: 1000px) { [data-hnav] { gap: 18px !important; } }
+  @media (min-width: 901px) and (max-width: 1180px) {
+    [data-hbar] { column-gap: 24px !important; }
+    [data-hnav] { gap: 14px !important; }
+    [data-hnav] a { font-size: 13.5px !important; }
+  }
   /* Mobil startsida: samma innehåll, mindre luft och fler saker per skärm. */
   @media (max-width: 600px) {
     [data-hero-spacer] { display: none !important; }
@@ -6012,6 +6017,33 @@ textarea.input { min-height: 90px; resize: vertical; }
   details > summary::after { content: '+'; flex: 0 0 auto; font: 400 24px/1 var(--font-heading); color: var(--color-accent-300); }
   details[open] > summary::after { content: '\2212'; }
   [data-faq-a] a { color: var(--color-accent-200); text-decoration: underline; text-underline-offset: 3px; }
+  /* Samarbeten: valt samarbete markerat; i smalt läge hamnar detaljerna överst och listan i två kolumner. */
+  [data-collab-item] { transition: box-shadow .2s ease, background .2s ease; }
+  @media (hover: hover) { [data-collab-item]:not([data-active="1"]):hover { box-shadow: 0 0 0 1px var(--color-neutral-600) !important; } }
+  [data-collab-item][data-active="1"] { background: color-mix(in srgb, #8657FF 14%, var(--color-surface)) !important; box-shadow: 0 0 0 1.5px #8657FF, 0 10px 30px -16px rgba(134,87,255,.9) !important; }
+  [data-collab-stats] > div { padding: 12px 14px; border-radius: 10px; background: rgba(255,255,255,.03); box-shadow: inset 0 0 0 1px var(--color-neutral-800); }
+  @media (max-width: 899px) {
+    [data-collab] { grid-template-columns: minmax(0, 1fr) !important; gap: 14px !important; }
+    [data-collab-detail] { position: static !important; order: -1; scroll-margin-top: 110px; }
+    [data-collab-list] { display: grid !important; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px !important; }
+    [data-collab-item], [data-collab-item] > span:last-child { min-width: 0; }
+  }
+  @media (max-width: 600px) {
+    [data-collab-summary] { margin-bottom: 14px !important; font-size: 10px !important; }
+    [data-collab-head] { padding: 12px 14px !important; gap: 12px !important; }
+    [data-collab-head] > span:first-child { flex-basis: 84px !important; height: 54px !important; }
+    [data-collab-head] h2 { font-size: 22px !important; }
+    [data-collab-head] p { font-size: 13px !important; }
+    [data-collab-body] { padding: 14px !important; gap: 12px !important; }
+    [data-collab-stats] { grid-template-columns: 1fr 1fr !important; gap: 8px !important; }
+    [data-collab-stats] > div { padding: 9px 10px; }
+    [data-collab-stats] > div > span:last-child { font-size: 15px !important; }
+    [data-collab-list] { grid-template-columns: minmax(0, 1fr) !important; gap: 6px !important; }
+    [data-collab-item] { gap: 12px !important; padding: 8px 10px !important; }
+    [data-collab-item] > span:first-child { flex-basis: 64px !important; height: 40px !important; }
+    [data-collab-item] > span:last-child > span:first-child { font-size: 15px !important; }
+    [data-hnav] a[href="samarbeten/"] { display: none !important; }
+  }
   [data-thumb] { transition: transform .8s cubic-bezier(.2,.7,.2,1), opacity .5s ease; }
   [data-lift]:hover [data-thumb] { transform: scale(1.06); }
   [data-adwrap]:has(ins[data-ad-status="unfilled"]) { display: none !important; }
@@ -6041,6 +6073,7 @@ textarea.input { min-height: 90px; resize: vertical; }
         <a href="nedladdningar/" sc-camel-on-click="{{ goDl }}" data-active="{{ atDl }}" data-en="Downloads" style="font-size: 14px; font-weight: 500; color: var(--color-neutral-400); white-space: nowrap; display: flex; align-items: center; min-height: 44px;" style-hover="color: #fff;">Nedladdningar</a>
         <a href="shop/" sc-camel-on-click="{{ goShop }}" data-active="{{ atShop }}" data-en="Shop" style="font-size: 14px; font-weight: 500; color: var(--color-neutral-400); white-space: nowrap; display: flex; align-items: center; min-height: 44px;" style-hover="color: #fff;">Shop</a>
         <a href="spel/" sc-camel-on-click="{{ goSpel }}" data-active="{{ atSpel }}" data-en="Games" style="font-size: 14px; font-weight: 500; color: var(--color-neutral-400); white-space: nowrap; display: flex; align-items: center; min-height: 44px;" style-hover="color: #fff;">Spel</a>
+        <a href="samarbeten/" sc-camel-on-click="{{ goCollab }}" data-active="{{ atCollab }}" data-en="Partners" style="font-size: 14px; font-weight: 500; color: var(--color-neutral-400); white-space: nowrap; display: flex; align-items: center; min-height: 44px;" style-hover="color: #fff;">Samarbeten</a>
       </nav>
       <div data-hactions="" style="order: 2; margin-left: auto; flex: 0 0 auto; display: flex; align-items: center; gap: 14px;">
         <button sc-camel-on-click="{{ toggleLang }}" style="font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: .12em; padding: 10px 14px; border-radius: 8px; border: 1px solid rgba(255,255,255,.16); background: transparent; color: var(--color-neutral-300); cursor: pointer;" style-hover="border-color: #8657FF; color: #fff;">{{ langLabel }}</button>
@@ -6182,6 +6215,7 @@ textarea.input { min-height: 90px; resize: vertical; }
       <div style="max-width: 1240px; margin: 0 auto 20px; padding: 0 24px; display: flex; align-items: baseline; gap: 14px;">
         <span data-en="Partners" style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .22em; text-transform: uppercase; color: var(--color-neutral-600);">Samarbeten</span>
         <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--color-neutral-700);">{{ sponsorCount }}</span>
+        <a href="samarbeten/" sc-camel-on-click="{{ goCollab }}" data-en="All partnerships →" style="margin-left: auto; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--color-neutral-500);">Alla samarbeten →</a>
       </div>
       <div style="max-width: 1240px; margin: 0 auto; padding: 0 24px;">
       <div data-marquee="" sc-camel-on-pointer-down="{{ dragStart }}" sc-camel-on-click="{{ clickGuard }}" sc-camel-on-drag-start="{{ noDrag }}" style="position: relative; overflow: hidden; cursor: grab; touch-action: pan-y; border-radius: 14px; padding: 30px 0; margin: -30px 0; mask-image: linear-gradient(90deg, transparent 0, #000 72px, #000 calc(100% - 72px), transparent 100%);">
@@ -6484,6 +6518,70 @@ textarea.input { min-height: 90px; resize: vertical; }
   </main>
   </sc-if>
 
+  <sc-if value="{{ atCollab }}">
+  <main style="max-width: 1240px; margin: 0 auto; padding: 72px 24px 0;">
+    <h1 data-en="Partnerships" style="font-family: var(--font-heading); font-weight: 500; font-size: clamp(38px, 6vw, 76px); letter-spacing: -.04em; margin: 0 0 14px;">Samarbeten</h1>
+    <p data-en="Brands I've made videos with. Pick one to see the video and the numbers." style="font-size: 17px; line-height: 1.6; color: var(--color-neutral-400); margin: 0 0 14px; max-width: 60ch; text-wrap: pretty;">Varumärken jag har gjort videor med. Välj ett samarbete för att se videon och siffrorna.</p>
+    <div data-collab-summary="" style="display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 22px; margin: 0 0 28px; font-family: 'JetBrains Mono', monospace; letter-spacing: .14em; text-transform: uppercase; font-size: 11px; color: var(--color-neutral-500);">
+      <span>{{ collabCount }} <span data-en="partnerships">samarbeten</span></span>
+      <sc-if value="{{ collabTotal }}"><span>{{ collabTotal }} <span data-en="views in total">visningar totalt</span></span></sc-if>
+      <a href="mailto:chris.whippit@gmail.com?subject=Samarbete" data-en="Work with me →" style="color: var(--color-accent-300);">Samarbeta med mig →</a>
+    </div>
+    <div data-collab="" style="display: grid; grid-template-columns: minmax(260px, 340px) minmax(0, 1fr); gap: 24px; align-items: start;">
+      <div data-collab-list="" style="display: flex; flex-direction: column; gap: 8px;">
+        <sc-for list="{{ collabItems }}" as="s" hint-placeholder-count="6">
+          <button data-collab-item="" data-active="{{ s.active }}" sc-camel-on-click="{{ s.onPick }}" style="display: flex; align-items: center; gap: 14px; width: 100%; text-align: left; cursor: pointer; padding: 10px 12px; border: 0; border-radius: 12px; background: var(--color-surface); box-shadow: 0 0 0 1px var(--color-neutral-800); color: var(--color-text); font: inherit;">
+            <span style="position: relative; flex: 0 0 76px; height: 48px; border-radius: 8px; overflow: hidden; background: rgba(255,255,255,.04);"><sc-if value="{{ s.hasLogo }}"><span style="position: absolute; inset: 0; display: grid; place-items: center; transform: {{ s.tf }};"><img src="{{ s.logo }}" alt="" style="max-width: 78%; max-height: 74%; object-fit: contain; display: block;"></span></sc-if></span>
+            <span style="min-width: 0; display: flex; flex-direction: column; gap: 3px;">
+              <span style="font-family: var(--font-heading); font-size: 16px; font-weight: 600; letter-spacing: -.01em;">{{ s.name }}</span>
+              <span style="font-size: 12.5px; color: var(--color-neutral-500); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ s.caption }}</span>
+            </span>
+          </button>
+        </sc-for>
+      </div>
+      <div data-collab-detail="" style="position: sticky; top: 90px; border-radius: 16px; overflow: hidden; background: var(--color-surface); box-shadow: 0 0 0 1px rgba(134,87,255,.45), 0 26px 60px -30px rgba(134,87,255,.6);">
+        <div data-collab-head="" style="display: flex; align-items: center; gap: 18px; padding: 20px 24px; border-bottom: 1px solid var(--color-neutral-800);">
+          <span style="position: relative; flex: 0 0 120px; height: 76px; border-radius: 10px; overflow: hidden; background: #0b0c20;"><sc-if value="{{ cHasLogo }}"><span style="position: absolute; inset: 0; display: grid; place-items: center; transform: {{ cTf }};"><img src="{{ cLogo }}" alt="" style="max-width: 78%; max-height: 74%; object-fit: contain; display: block;"></span></sc-if></span>
+          <div style="min-width: 0;">
+            <span data-en="Partnership" style="font-family: 'JetBrains Mono', monospace; letter-spacing: .14em; text-transform: uppercase; font-size: 10px; color: #b9a2ff;">Samarbete</span>
+            <h2 style="font-family: var(--font-heading); font-weight: 800; font-size: clamp(24px, 3vw, 36px); letter-spacing: -.03em; line-height: 1.05; margin: 4px 0;">{{ cName }}</h2>
+            <p style="margin: 0; font-size: 15px; line-height: 1.45; color: #cfcce0;">{{ cCaption }}</p>
+          </div>
+        </div>
+        <sc-if value="{{ cHasVideo }}">
+          <div style="position: relative; aspect-ratio: 16 / 9; background: #000;">
+            <sc-if value="{{ cNoPlay }}">
+              <button sc-camel-on-click="{{ playCollab }}" aria-label="Spela videon" style="position: absolute; inset: 0; border: 0; padding: 0; cursor: pointer; background: #000;">
+                <img src="{{ cThumb }}" alt="" style="width: 100%; height: 100%; object-fit: cover; display: block; opacity: .85;">
+                <span style="position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 68px; height: 48px; border-radius: 12px; background: #8657FF; display: grid; place-items: center; color: #fff; font-size: 22px; box-shadow: 0 10px 30px -8px rgba(134,87,255,.9);"><i class="ph-fill ph-play" aria-hidden="true"></i></span>
+              </button>
+            </sc-if>
+            <sc-if value="{{ cPlay }}">
+              <iframe src="{{ cEmbed }}" title="{{ cName }}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen="true" style="position: absolute; inset: 0; width: 100%; height: 100%; border: 0;"></iframe>
+            </sc-if>
+          </div>
+        </sc-if>
+        <div data-collab-body="" style="padding: 20px 24px 24px; display: flex; flex-direction: column; gap: 16px;">
+          <sc-if value="{{ cLoading }}"><span data-en="Fetching video details…" style="font-size: 13px; color: var(--color-neutral-500);">Hämtar videoinfo…</span></sc-if>
+          <sc-if value="{{ cHasStats }}">
+            <div style="font-family: var(--font-heading); font-size: 17px; font-weight: 600; line-height: 1.3; text-wrap: pretty;">{{ cTitle }}</div>
+            <div data-collab-stats="" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px;">
+              <div><span data-en="Views" style="font-family: 'JetBrains Mono', monospace; letter-spacing: .14em; text-transform: uppercase; display: block; font-size: 10px; color: var(--color-neutral-500); margin-bottom: 6px;">Visningar</span><span style="font-family: var(--font-heading); font-size: 19px; font-weight: 700; letter-spacing: -.01em;">{{ cViews }}</span></div>
+              <sc-if value="{{ cLikes }}"><div><span data-en="Likes" style="font-family: 'JetBrains Mono', monospace; letter-spacing: .14em; text-transform: uppercase; display: block; font-size: 10px; color: var(--color-neutral-500); margin-bottom: 6px;">Gillamarkeringar</span><span style="font-family: var(--font-heading); font-size: 19px; font-weight: 700; letter-spacing: -.01em;">{{ cLikes }}</span></div></sc-if>
+              <div><span data-en="Published" style="font-family: 'JetBrains Mono', monospace; letter-spacing: .14em; text-transform: uppercase; display: block; font-size: 10px; color: var(--color-neutral-500); margin-bottom: 6px;">Publicerad</span><span style="font-family: var(--font-heading); font-size: 19px; font-weight: 700; letter-spacing: -.01em;">{{ cDate }}</span></div>
+              <div><span data-en="Channel" style="font-family: 'JetBrains Mono', monospace; letter-spacing: .14em; text-transform: uppercase; display: block; font-size: 10px; color: var(--color-neutral-500); margin-bottom: 6px;">Kanal</span><span style="font-family: var(--font-heading); font-size: 19px; font-weight: 700; letter-spacing: -.01em;">{{ cChannel }}</span></div>
+            </div>
+          </sc-if>
+          <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+            <sc-if value="{{ cUrl }}"><a href="{{ cUrl }}" target="_blank" rel="noopener" data-btno="" data-en="Watch on YouTube ↗" style="display: inline-flex; align-items: center; font-size: 14px; font-weight: 600; padding: 10px 16px; border-radius: 9px; border: 1.5px solid #8657FF; color: #ece8ff;">Se på YouTube ↗</a></sc-if>
+            <a href="mailto:chris.whippit@gmail.com?subject=Samarbete" data-btnp="" data-en="Work with me" style="display: inline-flex; align-items: center; font-size: 14px; font-weight: 600; padding: 11px 16px; border-radius: 9px; background: #8657FF; color: #fff;">Samarbeta med mig</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  </sc-if>
+
   <sc-if value="{{ atShop }}">
   <main style="max-width: 1240px; margin: 0 auto; padding: 72px 24px 0;">
     <h1 data-en="Shop" style="font-family: var(--font-heading); font-weight: 500; font-size: clamp(38px, 6vw, 76px); letter-spacing: -.04em; margin: 0 0 14px;">Shop</h1>
@@ -6513,6 +6611,7 @@ textarea.input { min-height: 90px; resize: vertical; }
           <a href="nedladdningar/" sc-camel-on-click="{{ goDl }}" data-en="Downloads" style="color: var(--color-neutral-400);">Nedladdningar</a>
           <a href="shop/" sc-camel-on-click="{{ goShop }}" data-en="Shop" style="color: var(--color-neutral-400);">Shop</a>
           <a href="spel/" sc-camel-on-click="{{ goSpel }}" data-en="Games" style="color: var(--color-neutral-400);">Spel</a>
+          <a href="samarbeten/" sc-camel-on-click="{{ goCollab }}" data-en="Partnerships" style="color: var(--color-neutral-400);">Samarbeten</a>
         </div>
       </div>
       <div>
@@ -6614,10 +6713,12 @@ const hexA = (hex, a) => {
 };
 const isoDate = (d) => d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
 
-const ROOT_PATH = (() => { try { const b = document.querySelector('base'); if (b) return new URL(b.getAttribute('href'), location.href).pathname; let p = location.pathname.replace(/[^/]*$/, ''); for (const s of ['setup/', 'schema/', 'faq/', 'nedladdningar/', 'shop/', 'spel/']) if (p.endsWith('/' + s)) return p.slice(0, -s.length); return p; } catch (e) { return '/'; } })();
+const ROOT_PATH = (() => { try { const b = document.querySelector('base'); if (b) return new URL(b.getAttribute('href'), location.href).pathname; let p = location.pathname.replace(/[^/]*$/, ''); for (const s of ['setup/', 'schema/', 'faq/', 'nedladdningar/', 'shop/', 'spel/', 'samarbeten/']) if (p.endsWith('/' + s)) return p.slice(0, -s.length); return p; } catch (e) { return '/'; } })();
 const SITE_ROOT = (() => { try { return new URL(ROOT_PATH, location.href).href; } catch (e) { return ''; } })();
 const asset = (u) => (u && !/^(data:|blob:|https?:|\/)/i.test(u) ? SITE_ROOT + u : u);
-const ROUTE_PATHS = { hem: '', setup: 'setup/', schema: 'schema/', faq: 'faq/', dl: 'nedladdningar/', shop: 'shop/', spel: 'spel/' };
+const ytId = (u) => { const m = /(?:[?&]v=|youtu\.be\/|shorts\/|embed\/|live\/)([\w-]{11})/.exec(u || ''); return m ? m[1] : ''; };
+const collabSlug = (n) => String(n || '').trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+const ROUTE_PATHS = { hem: '', setup: 'setup/', schema: 'schema/', faq: 'faq/', dl: 'nedladdningar/', shop: 'shop/', spel: 'spel/', samarbeten: 'samarbeten/' };
 // Gör e-post, webbadresser och några ord i FAQ-svaren klickbara (texten kommer från admin).
 const FAQ_WORDS = {
   'setup-sidan': () => SITE_ROOT + 'setup/', 'schemat': () => SITE_ROOT + 'schema/', 'spelschemat': () => SITE_ROOT + 'schema/',
@@ -6713,7 +6814,7 @@ const CONTENT_DEFAULTS = {
 };
 
 class Component extends DCLogic {
-  state = { route: 'hem', lang: 'sv', videos: FALLBACK_VIDEOS, live: false, sponsors: FALLBACK_SPONSORS, social: [], content: CONTENT_DEFAULTS, ads: null, consent: (() => { try { return localStorage.getItem('cw-consent') || ''; } catch (e) { return ''; } })() };
+  state = { route: 'hem', collab: 0, collabStats: null, collabPlay: false, lang: 'sv', videos: FALLBACK_VIDEOS, live: false, sponsors: FALLBACK_SPONSORS, social: [], content: CONTENT_DEFAULTS, ads: null, consent: (() => { try { return localStorage.getItem('cw-consent') || ''; } catch (e) { return ''; } })() };
 
   setConsent(v) { try { localStorage.setItem('cw-consent', v); } catch (e) {} this.setState({ consent: v }); }
 
@@ -6758,6 +6859,36 @@ class Component extends DCLogic {
       } catch (err) {}
       window.scrollTo(0, 0);
     };
+  }
+
+  // Samarbetssidan: hämta titel, datum och siffror för samarbetsvideorna (ett anrop för alla).
+  loadCollabStats() {
+    const list = (this.state.sponsors && this.state.sponsors.length ? this.state.sponsors : FALLBACK_SPONSORS);
+    if (!this._collabHashListen) {
+      this._collabHashListen = true;
+      window.addEventListener('hashchange', () => { this._collabHash = false; if (this.state.route === 'samarbeten') this.loadCollabStats(); });
+    }
+    // #namn i adressen väljer samarbetet. Listan kan komma från content.json först en stund
+    // efter start, så leta igen tills namnet hittas.
+    if (!this._collabHash) {
+      const h = decodeURIComponent((location.hash || '').slice(1)).toLowerCase();
+      const i = h ? list.findIndex((s) => collabSlug(s.name) === h) : -1;
+      if (!h || i >= 0) this._collabHash = true;
+      if (i >= 0 && i !== this.state.collab) this.setState({ collab: i, collabPlay: false });
+    }
+    const ids = list.map((s) => ytId(s.url)).filter(Boolean);
+    const sig = ids.join(',');
+    if (!ids.length || this._collabSig === sig) return;
+    this._collabSig = sig;
+    const key = this.props.youtubeApiKey || 'AIzaSyB7s-AxfJegsFoyo8LEqlOFeXcWoyG59Kg';
+    fetch('https://www.googleapis.com/youtube/v3/videos?part=snippet,statistics&id=' + sig + '&key=' + key)
+      .then((r) => r.json())
+      .then((j) => {
+        const m = {};
+        (j.items || []).forEach((v) => { m[v.id] = { title: v.snippet.title, at: v.snippet.publishedAt, channel: v.snippet.channelTitle, views: +v.statistics.viewCount || 0, likes: +v.statistics.likeCount || 0 }; });
+        this.setState({ collabStats: m });
+      })
+      .catch(() => this.setState({ collabStats: {} }));
   }
 
   routeFromUrl() {
@@ -6972,7 +7103,7 @@ class Component extends DCLogic {
       this.setState({ ytError: (e && e.message) || 'network error' });
     }
   }
-  componentDidUpdate() { this.applyLang(); if (this.state.route === 'shop') this.loadShop(); this.fillAds(); }
+  componentDidUpdate() { this.applyLang(); if (this.state.route === 'shop') this.loadShop(); if (this.state.route === 'samarbeten') this.loadCollabStats(); this.fillAds(); }
 
   loadShop() {
     if (this._shopLoaded || !document.getElementById('myShop')) return;
@@ -7162,6 +7293,43 @@ class Component extends DCLogic {
       atShop: r === 'shop' ? '1' : '',
       shopOff: r === 'shop' ? '' : '1',
       atSpel: r === 'spel' ? '1' : '',
+      atCollab: r === 'samarbeten' ? '1' : '',
+      goCollab: this.go('samarbeten'),
+      ...(() => {
+        const st = this.state.collabStats;
+        const nf = (n) => Number(n).toLocaleString('sv-SE');
+        const sel = Math.max(0, Math.min(this.state.collab || 0, marked.length - 1));
+        const items = marked.map((s, i) => {
+          const id = ytId(s.url);
+          return {
+            ...s, id, v: st && st[id], name: String(s.name || '').trim(), active: i === sel ? '1' : '',
+            onPick: () => {
+              this.setState({ collab: i, collabPlay: false });
+              try { history.replaceState(history.state, '', '#' + collabSlug(s.name)); } catch (e) {}
+              if (window.innerWidth < 900) { const el = document.querySelector('[data-collab-detail]'); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+            }
+          };
+        });
+        const c = items[sel] || {};
+        const v = c.v;
+        const total = st ? items.reduce((n, it) => n + (it.v ? it.v.views : 0), 0) : 0;
+        const play = !!(this.state.collabPlay && c.id);
+        return {
+          collabItems: items,
+          collabCount: items.length,
+          collabTotal: total ? nf(total) : '',
+          cName: c.name || '', cCaption: c.caption || '', cUrl: c.url || '',
+          cLogo: c.logo || '', cHasLogo: c.hasLogo || '', cTf: c.tf || '',
+          cHasVideo: c.id ? '1' : '', cThumb: c.id ? 'https://i.ytimg.com/vi/' + c.id + '/hqdefault.jpg' : '',
+          cPlay: play ? '1' : '', cNoPlay: c.id && !play ? '1' : '',
+          cEmbed: c.id ? 'https://www.youtube-nocookie.com/embed/' + c.id + '?autoplay=1&rel=0' : '',
+          playCollab: () => this.setState({ collabPlay: true }),
+          cLoading: st ? '' : '1',
+          cHasStats: v ? '1' : '',
+          cTitle: v ? v.title : '', cViews: v ? nf(v.views) : '', cLikes: v && v.likes ? nf(v.likes) : '', cChannel: v ? v.channel : '',
+          cDate: v ? new Date(v.at).toLocaleDateString(this.state.lang === 'en' ? 'en-GB' : 'sv-SE', { year: 'numeric', month: 'long', day: 'numeric' }) : ''
+        };
+      })(),
       goSpel: this.go('spel'),
       games: GAMES.map((g, i) => ({ ...g, thumb: SITE_ROOT + 'spel/thumbs/' + g.slug + '-board.jpg', src: SITE_ROOT + 'spel/' + g.slug + '.html', num: String(i + 1).padStart(2, '0'), ring: this.state.game === g.slug ? '0 0 0 1px var(--color-accent)' : '0 0 0 1px var(--color-neutral-800)', onPlay: () => { document.body.style.overflow = 'hidden'; this.setState({ game: g.slug }); } })),
       hasGame: this.state.game ? true : '',
