@@ -1,0 +1,622 @@
+{
+  "stats": [
+    {
+      "platform": "@chriswhippit",
+      "value": "299K"
+    },
+    {
+      "platform": "@whippitsson",
+      "value": "154K"
+    },
+    {
+      "platform": "@figgwhipp",
+      "value": "144K"
+    },
+    {
+      "platform": "@whippitextra",
+      "value": "23.8K"
+    },
+    {
+      "platform": "Instagram",
+      "value": "101K"
+    },
+    {
+      "platform": "TikTok",
+      "value": "92.8K"
+    },
+    {
+      "platform": "Twitch",
+      "value": "34.5K"
+    },
+    {
+      "platform": "X",
+      "value": "20K"
+    }
+  ],
+  "setup": [
+    {
+      "group": "Dator",
+      "items": [
+        "Chassi — NZXT H710i Vit/Svart",
+        "Processor — Intel Core i9 11900K 3.5 GHz, 16MB",
+        "Grafikkort — ASUS GeForce RTX 4080 16GB TUF Gaming",
+        "RAM — Corsair 64GB (4x16GB) DDR4 3200MHz CL16 Vengean",
+        "Moderkort — NZXT N7 Z590",
+        "Hårddisk 1 — 1TB, M.2 Samsung 970 EVO Plus",
+        "Hårddisk 2 — 1TB, M.2 Samsung 970 EVO Plus",
+        "Hårddisk 3 — 1TB, Samsung 860 EVO",
+        "Hårddisk 4 — 1TB, Samsung 860 EVO",
+        "Kylare — NZXT Kraken Z73 360mm RGB Vit",
+        "Nätaggregat — NZXT C850 850W"
+      ]
+    },
+    {
+      "group": "Ljud och bild",
+      "items": [
+        {
+          "text": "Capture Card — Elgato 4K60 PRO",
+          "url": "https://link.amazon/B019Srabb"
+        },
+        {
+          "text": "Hörlurar — Logitech Pro X",
+          "url": "https://link.amazon/B0fVfXOyW"
+        },
+        {
+          "text": "Mikrofon — Shure Sm7b",
+          "url": "https://link.amazon/B04YQqyum"
+        },
+        "Ljudutrustning — TC-Helicon GO XLR",
+        "Webcam — Sony A6600 + Objektiv (18-135/3.5-5.6 OSS)",
+        "Skärmar — 3 x Asus 24\" ROG Strix 240 Hz"
+      ]
+    },
+    {
+      "group": "Skrivbord",
+      "items": [
+        "Tangentbord — Ducky ONE 3Series (Full Size)",
+        "Mus — Steelseries Rival 700",
+        "Stol — Vertagear - NZXT Special Edition"
+      ]
+    }
+  ],
+  "schema": [
+    {
+      "day": "Måndag",
+      "what": "Pokémon GO på YouTube",
+      "time": "19:00"
+    },
+    {
+      "day": "Tisdag",
+      "what": "Ledigt",
+      "time": "—"
+    },
+    {
+      "day": "Onsdag",
+      "what": "Live på Twitch",
+      "time": "20:00"
+    },
+    {
+      "day": "Torsdag",
+      "what": "Ny video",
+      "time": "17:00"
+    },
+    {
+      "day": "Fredag",
+      "what": "Discgolf",
+      "time": "15:00"
+    },
+    {
+      "day": "Helg",
+      "what": "Vad som händer",
+      "time": "—"
+    },
+    {
+      "date": "2026-09-21",
+      "what": "Waterpark Simulator med Ufosxm",
+      "channel": "chriswhippit",
+      "time": "06.30"
+    },
+    {
+      "date": "2026-09-21",
+      "what": "Lucky block Stairs med JNX",
+      "channel": "extra",
+      "time": "06.30"
+    },
+    {
+      "date": "2026-09-22",
+      "what": "How to fish med Ufosxm",
+      "channel": "chriswhippit",
+      "time": "06.30"
+    },
+    {
+      "date": "2026-09-23",
+      "what": "Mall - Tidy up med Ufosxm",
+      "channel": "chriswhippit",
+      "time": "06.30"
+    },
+    {
+      "date": "2026-09-23",
+      "what": "Lucky block TNT med JNX",
+      "channel": "extra",
+      "time": "06.30"
+    },
+    {
+      "date": "2026-09-14",
+      "what": "Mall - Tidy up med Ufosxm",
+      "channel": "chriswhippit",
+      "time": "06.30"
+    },
+    {
+      "date": "2026-09-15",
+      "what": "Waterpark Simulator med Ufosxm",
+      "channel": "chriswhippit",
+      "time": "06.30"
+    },
+    {
+      "date": "2026-09-16",
+      "what": "How to fish med Ufosxm",
+      "channel": "chriswhippit",
+      "time": "06.30"
+    },
+    {
+      "date": "2026-09-17",
+      "what": "Game of life 2 med Ufo",
+      "channel": "chriswhippit",
+      "time": "06.30"
+    },
+    {
+      "date": "2026-09-18",
+      "what": "Mall - Tidy up med Ufosxm",
+      "channel": "chriswhippit",
+      "time": "06.30"
+    },
+    {
+      "date": "2026-09-15",
+      "what": "Shiny Gibles - Pokemon Go",
+      "channel": "vloggar",
+      "time": "15.30"
+    },
+    {
+      "date": "2026-09-15",
+      "what": "Bygger klart Blaze farmen i Minecraft",
+      "channel": "extra",
+      "time": "06.30"
+    },
+    {
+      "date": "2026-09-17",
+      "what": "Möter draken i Minecraft",
+      "channel": "extra",
+      "time": "06.30"
+    },
+    {
+      "date": "2026-09-19",
+      "what": "Letar efter Elytra i Minecraft",
+      "channel": "extra",
+      "time": "06.30"
+    },
+    {
+      "date": "2026-09-20",
+      "what": "Tårt challenge i Minecraft",
+      "channel": "extra",
+      "time": "06.30"
+    },
+    {
+      "date": "2026-09-24",
+      "what": "Ore Factory Squad med Ufosxm",
+      "channel": "chriswhippit",
+      "time": "06.30"
+    },
+    {
+      "date": "2026-09-25",
+      "what": "Waterpark med Ufosxm",
+      "channel": "chriswhippit",
+      "time": "06.30"
+    },
+    {
+      "date": "2026-09-28",
+      "what": "RV There sommar med Ufosxm",
+      "channel": "chriswhippit",
+      "time": "06.30"
+    },
+    {
+      "date": "2026-09-29",
+      "what": "How To Fish med Ufosxm",
+      "channel": "chriswhippit",
+      "time": "06.30"
+    },
+    {
+      "date": "2026-10-01",
+      "what": "Ore Factory Squad med Ufosxm",
+      "channel": "chriswhippit",
+      "time": "06.30"
+    },
+    {
+      "date": "2026-09-26",
+      "what": "Inget - Kolla Ufos kanal!",
+      "channel": "chriswhippit",
+      "time": "06.30"
+    },
+    {
+      "date": "2026-09-27",
+      "what": "Inget - Kolla Ufos kanal!",
+      "channel": "chriswhippit",
+      "time": "06.30"
+    },
+    {
+      "date": "2026-10-02",
+      "what": "Waterpark",
+      "channel": "chriswhippit",
+      "time": "06.30",
+      "who": "chris"
+    },
+    {
+      "date": "2026-10-02",
+      "what": "RV There sommar",
+      "channel": "annat",
+      "time": "06.30",
+      "who": "ufo"
+    },
+    {
+      "date": "2026-10-03",
+      "what": "Paver: Tidy Up",
+      "channel": "annat",
+      "time": "06.30",
+      "who": "ufo"
+    },
+    {
+      "date": "2026-10-04",
+      "what": "Ore Factory Squad",
+      "channel": "annat",
+      "time": "06.30",
+      "who": "ufo"
+    },
+    {
+      "date": "2026-10-07",
+      "what": "Gamble with your friends",
+      "channel": "annat",
+      "time": "06.30",
+      "who": "ufo"
+    },
+    {
+      "date": "2026-10-08",
+      "what": "How To Fish",
+      "channel": "annat",
+      "time": "06.30",
+      "who": "ufo"
+    },
+    {
+      "date": "2026-10-09",
+      "what": "Lucky block",
+      "channel": "extra",
+      "time": "06.30",
+      "who": "chris"
+    },
+    {
+      "date": "2026-10-11",
+      "what": "Utmaning med mamma och pappa",
+      "channel": "extra",
+      "time": "06.30",
+      "who": "chris"
+    },
+    {
+      "date": "2026-10-12",
+      "what": "Skyblock #2",
+      "channel": "extra",
+      "time": "06.30",
+      "who": "chris"
+    },
+    {
+      "date": "2026-10-13",
+      "what": "Lucky block",
+      "channel": "extra",
+      "time": "06.30",
+      "who": "chris"
+    },
+    {
+      "date": "2026-10-16",
+      "what": "Utmaning med mamma och pappa",
+      "channel": "chriswhippit",
+      "time": "06.30",
+      "who": "chris"
+    },
+    {
+      "date": "2026-10-19",
+      "what": "Skyblock",
+      "channel": "chriswhippit",
+      "time": "06.30",
+      "who": "chris"
+    },
+    {
+      "date": "2026-10-21",
+      "what": "Utmaning med mamma och pappa",
+      "channel": "chriswhippit",
+      "time": "06.30",
+      "who": "chris"
+    },
+    {
+      "date": "2026-10-25",
+      "what": "Utmaning med mamma och pappa",
+      "channel": "chriswhippit",
+      "time": "06.30",
+      "who": "chris"
+    },
+    {
+      "date": "2026-10-26",
+      "what": "Skyblock",
+      "channel": "chriswhippit",
+      "time": "06.30",
+      "who": "chris"
+    },
+    {
+      "date": "2026-10-30",
+      "what": "Utmaning med mamma och pappa",
+      "channel": "chriswhippit",
+      "time": "06.30",
+      "who": "chris"
+    },
+    {
+      "date": "2026-11-02",
+      "what": "Skyblock",
+      "channel": "chriswhippit",
+      "time": "06.30",
+      "who": "chris"
+    },
+    {
+      "date": "2026-10-05",
+      "what": "RV There sommar",
+      "channel": "chriswhippit",
+      "time": "06.30",
+      "who": "chris"
+    },
+    {
+      "date": "2026-10-06",
+      "what": "Gamble with your friends",
+      "channel": "chriswhippit",
+      "time": "06.30",
+      "who": "chris"
+    },
+    {
+      "date": "2026-10-07",
+      "what": "How to fish",
+      "channel": "chriswhippit",
+      "time": "06.30",
+      "who": "chris"
+    },
+    {
+      "date": "2026-10-08",
+      "what": "Ore factory",
+      "channel": "chriswhippit",
+      "time": "06.30",
+      "who": "chris"
+    },
+    {
+      "date": "2026-10-05",
+      "what": "Skyblock #1",
+      "channel": "extra",
+      "time": "06.30",
+      "who": "chris"
+    },
+    {
+      "date": "2026-10-06",
+      "what": "Lucky block",
+      "channel": "extra",
+      "time": "06.30",
+      "who": "chris"
+    },
+    {
+      "date": "2026-10-07",
+      "what": "Utmaning med mamma och pappa",
+      "channel": "extra",
+      "time": "06.30",
+      "who": "chris"
+    },
+    {
+      "date": "2026-10-09",
+      "what": "Oar'some adventures",
+      "channel": "chriswhippit",
+      "time": "06.30",
+      "who": "chris"
+    },
+    {
+      "date": "2026-10-09",
+      "what": "Waterpark",
+      "channel": "annat",
+      "time": "06.30",
+      "who": "ufo"
+    },
+    {
+      "date": "2026-10-10",
+      "what": "RV There sommar",
+      "channel": "annat",
+      "time": "06.30",
+      "who": "ufo"
+    },
+    {
+      "date": "2026-10-11",
+      "what": "Oar'some adventures",
+      "channel": "annat",
+      "time": "06.30",
+      "who": "ufo"
+    },
+    {
+      "date": "2026-10-12",
+      "what": "Waterpark",
+      "channel": "chriswhippit",
+      "time": "06.30",
+      "who": "chris"
+    },
+    {
+      "date": "2026-10-13",
+      "what": "RV There Yet",
+      "channel": "chriswhippit",
+      "time": "06.30",
+      "who": "chris"
+    }
+  ],
+  "faq": [
+    {
+      "q": "Vilken dator har du?",
+      "a": "Hela speclistan finns på setup-sidan."
+    },
+    {
+      "q": "Hur ofta laddar du upp?",
+      "a": "Nästan varje dag på YouTube, plus streams på Twitch."
+    },
+    {
+      "q": "Kan vi samarbeta?",
+      "a": "Maila chris.whippit@gmail.com."
+    }
+  ],
+  "downloads": [
+    {
+      "title": "Minecraft Let's Play - Säsong 1",
+      "meta": "Här kan du ladda ner våran karta från Whippit och SoftisFFS första Minecraft säsong.  Whippits första avsnitt från denna säsongen Publicerades den 31 mars 2016.  Minecraft versionen på kartan är 1.12",
+      "url": "https://drive.google.com/file/d/1mTocHPXtGepRIM6IGmKtBzHKhpexxAqg/view?usp=sharing",
+      "image": "media/1791210310105-1.png",
+      "zoom": 1,
+      "ox": 0,
+      "oy": 0
+    },
+    {
+      "title": "Minecraft Let's Play - Säsong 2",
+      "meta": "Här kan ni ladda ner den andra säsongen av Whippit och Softis Let’s Play serie i Minecraft.  Första avsnittet från säsong 2 släpptes den 28 september 2017 på Whippits kanal.  Minecraft versionen på denna kartan är 1.13.1",
+      "url": "https://drive.google.com/file/d/1c2K3BlyNegWiNzybpN9kNyxm47r6cosf/view?usp=sharing",
+      "image": "media/1791210310105-2.png"
+    },
+    {
+      "title": "Minecraft Let's Play - Säsong 3",
+      "meta": "Här kan ni ladda ner den 3e säsongen av Whippit och Softis Let’s Play serie i Minecraft.  Denna säsongen påbörjade vi den 9 nov. 2018 och avslutade vi ganska så snabbt därefter. Vi gjorde bara ett fåtal avsnitt av denna säsongen innan vi började med säsong 4.  Minecraft versionen på denna kartan är 1.13.1",
+      "url": "https://drive.google.com/file/d/1VU5FEUKxOWaLmqtNUrDiD8Z68vJ__m4F/view?usp=sharing",
+      "image": "media/1791210310105-3.png"
+    },
+    {
+      "title": "Minecraft Let's Play - Säsong 4",
+      "meta": "Här kan ni ladda ner den 4e säsongen av Whippit och Softis Let’s Play serie i Minecraft.  Denna säsongen påbörjade vi den 7 maj 2019.  Minecraft versionen på denna kartan är 1.15.1",
+      "url": "https://drive.google.com/file/d/1uQ4lzeY0k3evwkiKQSQ0NC6bEdpFoBA3/view?usp=sharing",
+      "image": "media/1791210310105-4.png"
+    }
+  ],
+  "sponsors": [
+    {
+      "name": "OlliOlli World",
+      "caption": "Skateboard spel - Youtube",
+      "logo": "media/1789734777752-1.png",
+      "url": "https://www.youtube.com/watch?v=aP0Y-DZd6tQ&t=1s",
+      "zoom": 1.6,
+      "ox": 3.0303030303030307,
+      "oy": 5.793650793650791
+    },
+    {
+      "name": "Wargaming.net",
+      "caption": "World of warships - Youtube",
+      "logo": "media/1789735506829-1.png",
+      "url": "https://www.youtube.com/watch?v=NF8XQvDK-mo",
+      "zoom": 1.75
+    },
+    {
+      "name": "SodaStream",
+      "caption": "Sodastream släppte nya smak - Mountain Dew ",
+      "logo": "media/1789736082815-1.png",
+      "url": "https://www.youtube.com/watch?v=VUPbV8DkX6M&t=12s",
+      "zoom": 1.8,
+      "ox": 0.7575757575757576,
+      "oy": -20.71428571428571
+    },
+    {
+      "name": "NZXT",
+      "caption": "En av många NZXT-samarbeten",
+      "logo": "media/1790340957620-1.png",
+      "url": "https://www.youtube.com/watch?v=hRdHwM-Zhcw",
+      "ox": -0.3787878787878789,
+      "oy": -34.2857142857143,
+      "zoom": 1.85
+    },
+    {
+      "name": "Xbox",
+      "caption": "Forza Horizon 4",
+      "logo": "media/1790342171836-1.png",
+      "url": "https://www.youtube.com/watch?v=pUnOBKG3NQA&feature=youtu.be",
+      "zoom": 2.15,
+      "ox": -0.7575757575757576,
+      "oy": 5.714285714285714
+    },
+    {
+      "name": "Square Enix",
+      "caption": "Shadow of the Tomb Raider",
+      "logo": "media/1790342316662-1.png",
+      "url": "https://youtu.be/IKMvKT48tsI",
+      "zoom": 1.75,
+      "ox": 0.3787878787878787,
+      "oy": -30.000000000000007
+    },
+    {
+      "name": "ONEPLUS",
+      "caption": "OnePlus 6T",
+      "logo": "media/1790342393960-1.png",
+      "url": "https://youtu.be/F3yqZKYtp28",
+      "zoom": 1.8,
+      "ox": 0.7575757575757577,
+      "oy": -35.00000000000001
+    },
+    {
+      "name": "Ubisoft",
+      "caption": "The Crew 2",
+      "logo": "media/1790342486177-1.png",
+      "url": "https://youtu.be/Xzm6Uc5Hch0",
+      "zoom": 1.45,
+      "ox": -1.1102230246251565e-16,
+      "oy": 2.1428571428571415
+    },
+    {
+      "name": "Ducky ",
+      "caption": "Ducky One 3 Serien",
+      "logo": "media/1790342650343-1.png",
+      "url": "https://youtu.be/A99bN2yiJO0",
+      "zoom": 3,
+      "ox": -0.3787878787878788,
+      "oy": -2.857142857142857
+    }
+  ],
+  "social": [
+    {
+      "platform": "instagram",
+      "url": "",
+      "image": "",
+      "caption": ""
+    },
+    {
+      "platform": "tiktok",
+      "url": "",
+      "image": "",
+      "caption": ""
+    },
+    {
+      "platform": "instagram",
+      "url": "",
+      "image": "",
+      "caption": ""
+    }
+  ],
+  "shop": [
+    {
+      "title": "T-shirt",
+      "url": "https://whippit.myspreadshop.se/chriswhippit+tshirt+logo-A5d2ed51e5fd3e4608a6642a9?productType=812&sellable=qreoDRoeBptqrveoBA1p-812-7&appearance=2",
+      "image": "media/1789763523739-1.png"
+    },
+    {
+      "title": "Hoodie",
+      "url": "https://whippit.myspreadshop.se/chriswhippit+logo+vit-A5d2ed52122250975e8638208?productType=20&sellable=GBEVxONARVTodB7NmZQV-20-22&appearance=1278",
+      "image": "media/1789763523739-2.png"
+    },
+    {
+      "title": "Keps",
+      "url": "https://whippit.myspreadshop.se/chriswhippit+tshirt+logo-A5d2ed51e5fd3e4608a6642a9?productType=905&sellable=qreoDRoeBptqrveoBA1p-905-34&appearance=14&size=29",
+      "image": "media/1789763523739-3.png"
+    },
+    {
+      "title": "Mugg",
+      "url": "https://whippit.myspreadshop.se/chriswhippit+logo+svart-A5d2ed4785fd3e4608a6566cd?productType=31&sellable=bBeqk9VDlATrnMq0NvM9-31-32&appearance=1&size=29",
+      "image": "media/1789763523739-4.png"
+    }
+  ]
+}
