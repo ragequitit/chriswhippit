@@ -5939,6 +5939,12 @@ textarea.input { min-height: 90px; resize: vertical; }
     [data-footer-grid] { grid-template-columns: 1fr 1fr !important; gap: 20px 16px !important; padding: 28px 16px 20px !important; }
     [data-footer-grid] > div:first-child, [data-footer-grid] > div:last-child { grid-column: 1 / -1; }
   }
+  /* FAQ: plus/minus visar att frågan går att öppna; länkar i svaren. */
+  details > summary { display: flex; align-items: center; justify-content: space-between; gap: 14px; }
+  details > summary::-webkit-details-marker { display: none; }
+  details > summary::after { content: '+'; flex: 0 0 auto; font: 400 24px/1 var(--font-heading); color: var(--color-accent-300); }
+  details[open] > summary::after { content: '\2212'; }
+  [data-faq-a] a { color: var(--color-accent-200); text-decoration: underline; text-underline-offset: 3px; }
   [data-thumb] { transition: transform .8s cubic-bezier(.2,.7,.2,1), opacity .5s ease; }
   [data-lift]:hover [data-thumb] { transform: scale(1.06); }
   [data-adwrap]:has(ins[data-ad-status="unfilled"]) { display: none !important; }
@@ -6251,7 +6257,7 @@ textarea.input { min-height: 90px; resize: vertical; }
         <sc-for list="{{ faqTop }}" as="f" hint-placeholder-count="3">
           <details style="background: var(--color-surface); border-radius: 8px; box-shadow: 0 0 0 1px var(--color-neutral-800); padding: 18px 20px;">
             <summary style="cursor: pointer; font-family: var(--font-heading); font-size: 16px; font-weight: 500; list-style: none;">{{ f.q }}</summary>
-            <p style="margin: 14px 0 0; font-size: 15px; line-height: 1.6; color: var(--color-neutral-400);">{{ f.a }}</p>
+            <p data-faq-a="" style="margin: 14px 0 0; font-size: 15px; line-height: 1.6; color: var(--color-neutral-400);"><sc-for list="{{ f.parts }}" as="p" hint-placeholder-count="1"><sc-if value="{{ p.href }}"><a href="{{ p.href }}" target="{{ p.target }}" rel="noopener">{{ p.text }}</a></sc-if><sc-if value="{{ p.plain }}"><span>{{ p.text }}</span></sc-if></sc-for></p>
           </details>
         </sc-for>
       </div>
@@ -6351,7 +6357,7 @@ textarea.input { min-height: 90px; resize: vertical; }
       <sc-for list="{{ faqRows }}" as="f" hint-placeholder-count="5">
         <details style="background: var(--color-surface); border-radius: 8px; box-shadow: 0 0 0 1px var(--color-neutral-800); padding: 18px 20px;">
           <summary style="cursor: pointer; font-family: var(--font-heading); font-size: 16px; font-weight: 500; list-style: none;">{{ f.q }}</summary>
-          <p style="margin: 14px 0 0; font-size: 15px; line-height: 1.6; color: var(--color-neutral-400);">{{ f.a }}</p>
+          <p data-faq-a="" style="margin: 14px 0 0; font-size: 15px; line-height: 1.6; color: var(--color-neutral-400);"><sc-for list="{{ f.parts }}" as="p" hint-placeholder-count="1"><sc-if value="{{ p.href }}"><a href="{{ p.href }}" target="{{ p.target }}" rel="noopener">{{ p.text }}</a></sc-if><sc-if value="{{ p.plain }}"><span>{{ p.text }}</span></sc-if></sc-for></p>
         </details>
       </sc-for>
     </div>
@@ -6545,6 +6551,26 @@ const ROOT_PATH = (() => { try { const b = document.querySelector('base'); if (b
 const SITE_ROOT = (() => { try { return new URL(ROOT_PATH, location.href).href; } catch (e) { return ''; } })();
 const asset = (u) => (u && !/^(data:|blob:|https?:|\/)/i.test(u) ? SITE_ROOT + u : u);
 const ROUTE_PATHS = { hem: '', setup: 'setup/', schema: 'schema/', faq: 'faq/', dl: 'nedladdningar/', shop: 'shop/', spel: 'spel/' };
+// Gör e-post, webbadresser och några ord i FAQ-svaren klickbara (texten kommer från admin).
+const FAQ_WORDS = {
+  'setup-sidan': () => SITE_ROOT + 'setup/', 'schemat': () => SITE_ROOT + 'schema/', 'spelschemat': () => SITE_ROOT + 'schema/',
+  'nedladdningar': () => SITE_ROOT + 'nedladdningar/', 'shoppen': () => SITE_ROOT + 'shop/', 'spelsidan': () => SITE_ROOT + 'spel/',
+  'discord': () => 'https://discord.com/invite/uqhVKeCmGz', 'youtube': () => 'https://www.youtube.com/@chriswhippit', 'twitch': () => 'https://www.twitch.tv/chriswhippit'
+};
+const FAQ_LINK = /([\w.+-]+@[\w-]+(?:\.[\w-]+)*\.[a-z]{2,})|(https?:\/\/[^\s]+[^\s.,;:!?)])|\b(setup-sidan|spelschemat|schemat|nedladdningar|shoppen|spelsidan|discord|youtube|twitch)\b/gi;
+const faqParts = (text) => {
+  const s = String(text || ''), out = [];
+  let last = 0, m;
+  FAQ_LINK.lastIndex = 0;
+  while ((m = FAQ_LINK.exec(s))) {
+    if (m.index > last) out.push({ text: s.slice(last, m.index), plain: true, href: '' });
+    const href = m[1] ? 'mailto:' + m[1] : m[2] ? m[2] : FAQ_WORDS[m[3].toLowerCase()]();
+    out.push({ text: m[0], href, plain: '', target: /^https?:/.test(href) && !href.startsWith(SITE_ROOT) ? '_blank' : '_self' });
+    last = m.index + m[0].length;
+  }
+  if (last < s.length) out.push({ text: s.slice(last), plain: true, href: '' });
+  return out;
+};
 const GAMES = [
   { slug: 'break-shot', title: 'Break Shot' },
   { slug: 'peg-vault', title: 'Peg Vault' },
@@ -7027,8 +7053,8 @@ class Component extends DCLogic {
       acceptAds: () => this.setConsent('yes'),
       declineAds: () => this.setConsent('no'),
       reopenConsent: () => this.setState({ consent: '' }),
-      faqRows: c.faq || [],
-      faqTop: (c.faq || []).slice(0, 3),
+      faqRows: (c.faq || []).map((f) => ({ ...f, parts: faqParts(f.a) })),
+      faqTop: (c.faq || []).slice(0, 3).map((f) => ({ ...f, parts: faqParts(f.a) })),
       dlRows: (c.downloads || []).map((r) => ({ ...r, image: asset(r.image), link: r.url || '#', hasImage: r.image ? true : '', noImage: r.image ? '' : true, tf: 'translate(' + (r.ox || 0) + '%, ' + (r.oy || 0) + '%) scale(' + (r.zoom || 1) + ')' })),
       shopRows: (c.shop || []).map((p) => ({
         ...p,
