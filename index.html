@@ -6555,16 +6555,17 @@ const ROUTE_PATHS = { hem: '', setup: 'setup/', schema: 'schema/', faq: 'faq/', 
 const FAQ_WORDS = {
   'setup-sidan': () => SITE_ROOT + 'setup/', 'schemat': () => SITE_ROOT + 'schema/', 'spelschemat': () => SITE_ROOT + 'schema/',
   'nedladdningar': () => SITE_ROOT + 'nedladdningar/', 'shoppen': () => SITE_ROOT + 'shop/', 'spelsidan': () => SITE_ROOT + 'spel/',
-  'discord': () => 'https://discord.com/invite/uqhVKeCmGz', 'youtube': () => 'https://www.youtube.com/@chriswhippit', 'twitch': () => 'https://www.twitch.tv/chriswhippit'
+  'discord': () => 'https://discord.com/invite/uqhVKeCmGz', 'youtube': () => 'https://www.youtube.com/@chriswhippit', 'twitch': () => 'https://www.twitch.tv/chriswhippit',
+  'instagram': () => 'https://www.instagram.com/chriswhippit', 'tiktok': () => 'https://www.tiktok.com/@chris.whippit'
 };
-const FAQ_LINK = /([\w.+-]+@[\w-]+(?:\.[\w-]+)*\.[a-z]{2,})|(https?:\/\/[^\s]+[^\s.,;:!?)])|\b(setup-sidan|spelschemat|schemat|nedladdningar|shoppen|spelsidan|discord|youtube|twitch)\b/gi;
+const FAQ_LINK = /([\w.+-]+@[\w-]+(?:\.[\w-]+)*\.[a-z]{2,})|(https?:\/\/[^\s]+[^\s.,;:!?)])|\b(setup-sidan|spelschemat|schemat|nedladdningar|shoppen|spelsidan|discord|youtube|twitch|instagram|tiktok)\b|(@(?:chriswhippit|whippitsson|figgwhipp|whippitextra))\b/gi;
 const faqParts = (text) => {
   const s = String(text || ''), out = [];
   let last = 0, m;
   FAQ_LINK.lastIndex = 0;
   while ((m = FAQ_LINK.exec(s))) {
     if (m.index > last) out.push({ text: s.slice(last, m.index), plain: true, href: '' });
-    const href = m[1] ? 'mailto:' + m[1] : m[2] ? m[2] : FAQ_WORDS[m[3].toLowerCase()]();
+    const href = m[1] ? 'mailto:' + m[1] : m[2] ? m[2] : m[4] ? 'https://www.youtube.com/' + m[4] : FAQ_WORDS[m[3].toLowerCase()]();
     out.push({ text: m[0], href, plain: '', target: /^https?:/.test(href) && !href.startsWith(SITE_ROOT) ? '_blank' : '_self' });
     last = m.index + m[0].length;
   }

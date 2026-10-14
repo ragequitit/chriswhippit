@@ -536,16 +536,56 @@
   ],
   "faq": [
     {
-      "q": "Vilken dator har du?",
-      "a": "Hela speclistan finns på setup-sidan."
+      "q": "Hur ofta laddar du upp?",
+      "a": "Nästan varje dag på YouTube, plus streams på Twitch. Veckans planerade videor ser du i schemat."
     },
     {
-      "q": "Hur ofta laddar du upp?",
-      "a": "Nästan varje dag på YouTube, plus streams på Twitch."
+      "q": "Vilka YouTube-kanaler har du?",
+      "a": "Fyra stycken: @chriswhippit är huvudkanalen, och sen finns @whippitsson, @figgwhipp och @whippitextra."
     },
     {
       "q": "Kan vi samarbeta?",
-      "a": "Maila chris.whippit@gmail.com."
+      "a": "Absolut! Maila chris.whippit@gmail.com och berätta vad du har i tankarna. Jag har tidigare samarbetat med bland andra Xbox, Ubisoft, NZXT och SodaStream."
+    },
+    {
+      "q": "Vilken dator har du?",
+      "a": "En Intel Core i9 11900K och ett ASUS RTX 4080 i ett NZXT H710i-chassi. Hela speclistan finns på setup-sidan."
+    },
+    {
+      "q": "Vilken mikrofon och kamera använder du?",
+      "a": "Mikrofonen är en Shure SM7B och kameran en Sony A6600. Allt annat, med länkar till produkterna, finns på setup-sidan."
+    },
+    {
+      "q": "Finns det en Discord?",
+      "a": "Ja! Häng med i Discord – där ordnas raid-grupper, discgolfrundor och allt däremellan."
+    },
+    {
+      "q": "Var hittar jag dig på sociala medier?",
+      "a": "På YouTube, Twitch, Instagram, TikTok och X. Ändringar i schemat annonseras på X och Instagram, och alla länkar finns längst ner på sidan."
+    },
+    {
+      "q": "Var kan jag köpa merch?",
+      "a": "I shoppen finns t-shirts, hoodies och kepsar. Butiken drivs av Spreadshirt, som sköter betalning och frakt – har du frågor om en beställning går de till Spreadshirt."
+    },
+    {
+      "q": "Vad är Project Genesis?",
+      "a": "Mitt eget spel – ett cyberpunk-idle-RPG som du spelar direkt i webbläsaren tillsammans med andra spelare. Du hittar det på spelsidan."
+    },
+    {
+      "q": "Kostar spelen något?",
+      "a": "Nej, alla spel är gratis och spelas direkt i webbläsaren. I de mindre spelen sparas dina framsteg i den webbläsare du spelar i."
+    },
+    {
+      "q": "Kan jag ladda ner era Minecraft-kartor?",
+      "a": "Ja! Kartorna från alla fyra säsongerna av Let’s Play-serien med Softis finns under nedladdningar. Gratis att använda som du vill."
+    },
+    {
+      "q": "Hur länge har du hållit på?",
+      "a": "Sedan 2014 – och det har hunnit bli tusentals videor sedan dess."
+    },
+    {
+      "q": "Tjänar du pengar på länkarna på setup-sidan?",
+      "a": "Vissa är affiliatelänkar. Köper du via dem får jag en liten del, utan att det kostar dig något extra."
     }
   ],
   "downloads": [
