@@ -5588,24 +5588,45 @@ textarea.input { min-height: 90px; resize: vertical; }
       <img src="/assets/logo-white.png" alt="" style="width: 30px; height: 30px; display: block; margin-bottom: 26px;">
       <h1 style="font-family: var(--font-heading); font-weight: 500; font-size: 24px; letter-spacing: -.02em; margin: 0 0 6px;">Logga in</h1>
       <p style="font-size: 14px; color: var(--color-neutral-500); margin: 0 0 26px;">Redigera innehållet på chriswhippit.com</p>
+      <sc-if value="{{ modeLogin }}">
       <form sc-camel-on-submit="{{ submit }}" style="display: flex; flex-direction: column; gap: 14px;">
         <label style="display: block;">
-          <span style="display: block; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: var(--color-neutral-600); margin-bottom: 7px;">E-post</span>
-          <input data-in="" type="email" value="{{ email }}" sc-camel-on-change="{{ setEmail }}" placeholder="chris.whippit@gmail.com" sc-camel-auto-complete="username">
-        </label>
-        <label style="display: block;">
-          <span style="display: block; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: var(--color-neutral-600); margin-bottom: 7px;">Lösenord</span>
+          <span style="display: block; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: var(--color-neutral-600); margin-bottom: 7px;">Lösenfras</span>
           <input data-in="" type="password" value="{{ pw }}" sc-camel-on-change="{{ setPw }}" placeholder="••••••••" sc-camel-auto-complete="current-password">
         </label>
         <sc-if value="{{ error }}">
           <div style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: #f78fb6; background: rgba(244,114,166,.1); border-radius: 8px; padding: 10px 12px;">
             <i class="ph-fill ph-warning-circle" aria-hidden="true" style="font-size: 15px;"></i>
-            <span>Fel lösenord. Försök igen.</span>
+            <span>{{ errorMsg }}</span>
           </div>
         </sc-if>
-        <button data-btn="" type="submit" style="margin-top: 6px; padding: 13px 18px; border: 1px solid var(--color-accent); background: transparent; color: var(--color-accent-200); font-size: 15px;" style-hover="background: var(--color-accent-900);">Logga in</button>
+        <button data-btn="" type="submit" style="margin-top: 6px; padding: 13px 18px; border: 1px solid var(--color-accent); background: transparent; color: var(--color-accent-200); font-size: 15px;" style-hover="background: var(--color-accent-900);">{{ loginLabel }}</button>
       </form>
-      <div style="margin-top: 22px; padding-top: 16px; border-top: 1px solid var(--color-divider); font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .1em; color: var(--color-neutral-700);">DEMO · LÖSENORD: {{ hint }}</div>
+      <button data-btn="" type="button" sc-camel-on-click="{{ toSetup }}" style="margin-top: 18px; padding: 0; border: 0; background: transparent; color: var(--color-neutral-500); font-size: 13px; cursor: pointer; text-decoration: underline;">Ny token eller glömt lösenfrasen?</button>
+      </sc-if>
+      <sc-if value="{{ modeSetup }}">
+      <form sc-camel-on-submit="{{ submitSetup }}" style="display: flex; flex-direction: column; gap: 14px;">
+        <p style="font-size: 13px; color: var(--color-neutral-400); margin: 0;">Klistra in en GitHub-token som får skriva till {{ ghRepo }} och välj en lösenfras. Tokenen sparas krypterad i repot och låses upp med lösenfrasen.</p>
+        <label style="display: block;">
+          <span style="display: block; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: var(--color-neutral-600); margin-bottom: 7px;">GitHub-token</span>
+          <input data-in="" type="password" value="{{ newToken }}" sc-camel-on-change="{{ setNewToken }}" placeholder="github_pat_…" sc-camel-auto-complete="off">
+        </label>
+        <label style="display: block;">
+          <span style="display: block; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: var(--color-neutral-600); margin-bottom: 7px;">Ny lösenfras (minst 12 tecken)</span>
+          <input data-in="" type="password" value="{{ pw }}" sc-camel-on-change="{{ setPw }}" placeholder="t.ex. fyra slumpade ord" sc-camel-auto-complete="new-password">
+        </label>
+        <sc-if value="{{ error }}">
+          <div style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: #f78fb6; background: rgba(244,114,166,.1); border-radius: 8px; padding: 10px 12px;">
+            <i class="ph-fill ph-warning-circle" aria-hidden="true" style="font-size: 15px;"></i>
+            <span>{{ errorMsg }}</span>
+          </div>
+        </sc-if>
+        <button data-btn="" type="submit" style="margin-top: 6px; padding: 13px 18px; border: 1px solid var(--color-accent); background: transparent; color: var(--color-accent-200); font-size: 15px;" style-hover="background: var(--color-accent-900);">{{ setupLabel }}</button>
+      </form>
+      <sc-if value="{{ hasKey }}">
+        <button data-btn="" type="button" sc-camel-on-click="{{ toLogin }}" style="margin-top: 18px; padding: 0; border: 0; background: transparent; color: var(--color-neutral-500); font-size: 13px; cursor: pointer; text-decoration: underline;">Tillbaka till inloggning</button>
+      </sc-if>
+      </sc-if>
     </div>
   </div>
   </sc-if>
@@ -5900,20 +5921,11 @@ textarea.input { min-height: 90px; resize: vertical; }
               <span style="display: block; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: var(--color-neutral-600); margin-bottom: 7px;">GitHub-token</span>
               <input data-in="" type="password" value="{{ ghToken }}" sc-camel-on-change="{{ setGhToken }}" placeholder="github_pat_…">
             </label>
-            <sc-if value="{{ needUnlock }}">
-              <div style="display: flex; flex-direction: column; gap: 10px; padding: 14px; border-radius: 10px; background: var(--color-accent-900); box-shadow: 0 0 0 1px var(--color-accent-800);">
-                <span style="font-size: 14px; color: var(--color-accent-100);">En sparad token finns i repot. Skriv din lösenfras för att låsa upp den på den här datorn.</span>
-                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                  <input data-in="" type="password" value="{{ syncPhrase }}" sc-camel-on-change="{{ setSyncPhrase }}" sc-camel-on-key-down="{{ unlockKey }}" placeholder="Lösenfras" style="flex: 1 1 200px;">
-                  <button data-btn="" sc-camel-on-click="{{ unlockToken }}" style="padding: 10px 16px; border-radius: 8px; border: 1px solid var(--color-accent); background: transparent; color: var(--color-accent-200); font-size: 13px; cursor: pointer;" style-hover="background: var(--color-accent-800);">Lås upp</button>
-                </div>
-              </div>
-            </sc-if>
             <sc-if value="{{ canSync }}">
               <div style="display: flex; flex-direction: column; gap: 10px;">
-                <span style="display: block; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: var(--color-neutral-600);">Använd på andra datorer</span>
+                <span style="display: block; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: var(--color-neutral-600);">Byt lösenfras (sparar tokenen ovan krypterad i repot)</span>
                 <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                  <input data-in="" type="password" value="{{ syncPhrase }}" sc-camel-on-change="{{ setSyncPhrase }}" placeholder="Välj en lösenfras (minst 10 tecken)" style="flex: 1 1 200px;">
+                  <input data-in="" type="password" value="{{ syncPhrase }}" sc-camel-on-change="{{ setSyncPhrase }}" placeholder="Ny lösenfras (minst 12 tecken)" style="flex: 1 1 200px;">
                   <button data-btn="" sc-camel-on-click="{{ saveRemoteToken }}" style="padding: 10px 16px; border-radius: 8px; border: 1px solid var(--color-neutral-700); background: transparent; color: var(--color-neutral-300); font-size: 13px; cursor: pointer;" style-hover="border-color: var(--color-accent-600); color: var(--color-accent-200);">{{ syncBtnLabel }}</button>
                 </div>
               </div>
@@ -5942,7 +5954,7 @@ textarea.input { min-height: 90px; resize: vertical; }
             <div style="border-top: 1px solid var(--color-divider); padding-top: 16px; display: flex; flex-direction: column; gap: 10px; font-size: 14px; line-height: 1.6; color: var(--color-neutral-400);">
               <p style="margin: 0;">Publicering skriver <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--color-neutral-500);">content.json</span> och dina inlagda bilder direkt till repot. GitHub Pages bygger om, och efter ungefär en minut ser alla besökare ändringen.</p>
               <p style="margin: 0;">Skapa token på github.com under Settings → Developer settings → Personal access tokens → Fine-grained. Ge den tillgång till bara det här repot, med behörigheten <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--color-neutral-500);">Contents: Read and write</span>.</p>
-              <p style="margin: 0; color: var(--color-neutral-500);">Token sparas i den här webbläsaren. Vill du använda admin från andra datorer: välj en lösenfras och spara token i repot. Den krypteras med lösenfrasen innan den laddas upp, så på en ny dator skriver du bara lösenfrasen. Välj en lång fras som du inte använder någon annanstans, eftersom den krypterade filen är publik.</p>
+              <p style="margin: 0; color: var(--color-neutral-500);">Tokenen ligger krypterad i repot och låses upp med lösenfrasen när du loggar in. I webbläsaren finns den bara tills du stänger den eller loggar ut. Välj en lång fras som du inte använder någon annanstans, eftersom den krypterade filen är publik.</p>
             </div>
           </div>
         </sc-if>
@@ -6017,9 +6029,16 @@ textarea.input { min-height: 90px; resize: vertical; }
 </div>
 
 </x-dc>
-<script type="text/x-dc" data-dc-script="" data-props="{&quot;password&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;whippit&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Inloggning&quot;}}">
+<script type="text/x-dc" data-dc-script="" data-props="{}">
 const KEY = 'cw-admin-content';
-const AUTH = 'cw-admin-authed';
+// GitHub-tokenen hålls bara i sessionStorage: den försvinner när webbläsaren stängs
+// och låses upp igen med lösenfrasen (som dekrypterar admin/key.json).
+const TOKEN = 'cw-gh-token';
+const MIN_PHRASE = 12;
+const session = {
+  get: (k) => { try { return sessionStorage.getItem(k) || ''; } catch (e) { return ''; } },
+  set: (k, v) => { try { if (v) sessionStorage.setItem(k, v); else sessionStorage.removeItem(k); } catch (e) {} }
+};
 
 const CHANNELS = {
   chriswhippit: { label: 'ChrisWhippit', color: '#9184d9' },
@@ -6154,7 +6173,7 @@ const TITLES = {
 };
 
 class Component extends DCLogic {
-  state = { authed: false, email: '', pw: '', error: false, tab: 'stats', data: DEFAULTS, saved: '', ytKey: '', paste: '', pasteMsg: '',
+  state = { authed: false, mode: 'login', pw: '', newToken: '', busy: false, error: false, errorMsg: '', tab: 'stats', data: DEFAULTS, saved: '', ytKey: '', paste: '', pasteMsg: '',
     ghToken: '', ghRepo: 'ragequitit/chriswhippit', ghBranch: 'main', ghPath: '', pubStatus: '', syncPhrase: '', syncMsg: '', remoteKey: null, openSponsor: null, dragFrom: null, dragOver: null };
 
   onPaste = (e) => {
@@ -6174,7 +6193,11 @@ class Component extends DCLogic {
     document.addEventListener('paste', this.onPaste);
     try {
       const raw = localStorage.getItem(KEY);
-      const authed = localStorage.getItem(AUTH) === '1';
+      // Äldre versioner sparade inloggning och token permanent i localStorage.
+      localStorage.removeItem('cw-admin-authed');
+      localStorage.removeItem(TOKEN);
+      const token = session.get(TOKEN);
+      const authed = !!token;
       const stored = raw ? JSON.parse(raw) : {};
       // placeholder setup rows (nothing after the dash) get replaced by the real gear list
       if (stored && isPlaceholderSetup(stored.setup)) stored.setup = DEFAULTS.setup;
@@ -6182,13 +6205,14 @@ class Component extends DCLogic {
         data: fixStats({ ...DEFAULTS, ...stored }),
         authed,
         ytKey: localStorage.getItem('cw-yt-key') || '',
-        ghToken: localStorage.getItem('cw-gh-token') || '',
+        ghToken: token,
         ghRepo: [localStorage.getItem('cw-gh-repo')].filter((r) => r && r !== 'ragequitit/genesis')[0] || 'ragequitit/chriswhippit',
         ghBranch: localStorage.getItem('cw-gh-branch') || 'main',
         ghPath: [localStorage.getItem('cw-gh-path')].filter((p) => p && p !== 'chriswhippit')[0] || ''
       });
     } catch (e) { /* defaults */ }
-    this.loadRemoteKey();
+    // Ingen sparad token i repot ännu -> visa direkt formuläret för att lägga in en.
+    this.loadRemoteKey().then((k) => { if (!k && !this.state.authed) this.setState({ mode: 'setup' }); });
     // published content wins over an empty local draft
     fetch('../content.json', { cache: 'no-store' })
       .then((r) => (r.ok ? r.json() : null))
@@ -6201,21 +6225,73 @@ class Component extends DCLogic {
       .catch(() => {});
   }
 
-  submit = (e) => {
+  fail = (errorMsg) => this.setState({ busy: false, error: true, errorMsg });
+
+  // Inloggning = lösenfrasen låser upp tokenen i admin/key.json.
+  submit = async (e) => {
     e.preventDefault();
-    const pass = this.props.password ?? 'whippit';
-    if (this.state.pw === pass) {
-      try { localStorage.setItem(AUTH, '1'); } catch (e) {}
-      this.setState({ authed: true, error: false, pw: '' });
-    } else {
-      this.setState({ error: true });
+    if (this.state.busy) return;
+    this.setState({ busy: true, error: false });
+    const k = this.state.remoteKey || (await this.loadRemoteKey());
+    if (!k) return this.setState({ busy: false, mode: 'setup' });
+    let token;
+    try {
+      token = await this.decryptToken(k, this.state.pw);
+    } catch (err) {
+      return this.fail('Fel lösenfras.');
     }
+    const access = await this.checkAccess(token);
+    if (access !== 'ok') return this.fail(access + ' Lägg in en ny token via länken nedan.');
+    this.login(token);
   };
 
-  logout = () => {
-    try { localStorage.setItem(AUTH, '0'); } catch (e) {}
-    this.setState({ authed: false, pw: '' });
+  // Ny token (första gången, eller om lösenfrasen är glömd): kräver en token som får skriva till repot.
+  submitSetup = async (e) => {
+    e.preventDefault();
+    if (this.state.busy) return;
+    const token = this.state.newToken.trim();
+    const phrase = this.state.pw;
+    if (!token) return this.fail('Klistra in en GitHub-token.');
+    if (phrase.length < MIN_PHRASE) return this.fail('Lösenfrasen måste vara minst ' + MIN_PHRASE + ' tecken.');
+    this.setState({ busy: true, error: false });
+    const access = await this.checkAccess(token);
+    if (access !== 'ok') return this.fail(access);
+    try {
+      await this.storeToken(token, phrase);
+    } catch (err) {
+      return this.fail('Kunde inte spara: ' + err.message);
+    }
+    this.login(token);
   };
+
+  login(token) {
+    session.set(TOKEN, token);
+    this.setState({ authed: true, busy: false, error: false, pw: '', newToken: '', ghToken: token, pubStatus: '' });
+  }
+
+  logout = () => {
+    session.set(TOKEN, '');
+    this.setState({ authed: false, pw: '', ghToken: '', mode: this.state.remoteKey ? 'login' : 'setup' });
+  };
+
+  // 'ok' eller ett felmeddelande. Läser repot med tokenen och kräver skrivrätt.
+  async checkAccess(token) {
+    const repo = this.state.ghRepo || 'ragequitit/chriswhippit';
+    try {
+      const r = await fetch('https://api.github.com/repos/' + repo, {
+        headers: { Authorization: 'Bearer ' + token, Accept: 'application/vnd.github+json' },
+        cache: 'no-store'
+      });
+      if (r.status === 401) return 'Tokenen är ogiltig eller har gått ut.';
+      if (r.status === 404 || r.status === 403) return 'Tokenen har inte åtkomst till ' + repo + '.';
+      if (!r.ok) return 'GitHub svarade ' + r.status + '.';
+      const j = await r.json();
+      if (j.permissions && j.permissions.push === false) return 'Tokenen får inte skriva till ' + repo + '.';
+      return 'ok';
+    } catch (err) {
+      return 'Kunde inte nå GitHub.';
+    }
+  }
 
   exportJson = () => {
     const blob = new Blob([JSON.stringify(this.state.data, null, 2)], { type: 'application/json' });
@@ -6245,23 +6321,23 @@ class Component extends DCLogic {
     document.removeEventListener('paste', this.onPaste);
   }
 
-  gh(path, opts) {
+  gh(path, opts, token) {
     const repo = this.state.ghRepo || 'ragequitit/chriswhippit';
     return fetch('https://api.github.com/repos/' + repo + '/contents/' + path, {
       ...opts,
       headers: {
-        Authorization: 'Bearer ' + this.state.ghToken,
+        Authorization: 'Bearer ' + (token || this.state.ghToken),
         Accept: 'application/vnd.github+json',
         'X-GitHub-Api-Version': '2022-11-28'
       }
     });
   }
 
-  async ghPut(path, base64, message, attempt) {
+  async ghPut(path, base64, message, attempt, token) {
     const branch = this.state.ghBranch || 'main';
     let sha = null;
     let existing = null;
-    const probe = await this.gh(path + '?ref=' + encodeURIComponent(branch) + '&t=' + Date.now(), { method: 'GET', cache: 'no-store' });
+    const probe = await this.gh(path + '?ref=' + encodeURIComponent(branch) + '&t=' + Date.now(), { method: 'GET', cache: 'no-store' }, token);
     if (probe.status === 200) {
       const j = await probe.json();
       sha = j.sha;
@@ -6270,11 +6346,11 @@ class Component extends DCLogic {
     if (existing && existing === base64.replace(/\s/g, '')) return { unchanged: true };
     const body = { message, content: base64, branch };
     if (sha) body.sha = sha;
-    const r = await this.gh(path, { method: 'PUT', body: JSON.stringify(body) });
+    const r = await this.gh(path, { method: 'PUT', body: JSON.stringify(body) }, token);
     if (r.status === 409 && !attempt) {
       // someone (or a stale cache) moved the file under us — refetch the sha and try once more
       await new Promise((res) => setTimeout(res, 800));
-      return this.ghPut(path, base64, message, 1);
+      return this.ghPut(path, base64, message, 1, token);
     }
     if (!r.ok) {
       const t = await r.text();
@@ -6287,47 +6363,50 @@ class Component extends DCLogic {
   loadRemoteKey() {
     return fetch('key.json?t=' + Date.now(), { cache: 'no-store' })
       .then((r) => (r.ok ? r.json() : null))
-      .then((k) => { if (k && k.data) this.setState({ remoteKey: k }); return k; })
+      .then((k) => { if (k && k.data) { this.setState({ remoteKey: k }); return k; } return null; })
       .catch(() => null);
   }
 
-  async cryptoKey(phrase, salt) {
+  async cryptoKey(phrase, salt, iterations) {
     const base = await crypto.subtle.importKey('raw', new TextEncoder().encode(phrase), 'PBKDF2', false, ['deriveKey']);
-    return crypto.subtle.deriveKey({ name: 'PBKDF2', salt, iterations: 310000, hash: 'SHA-256' }, base, { name: 'AES-GCM', length: 256 }, false, ['encrypt', 'decrypt']);
+    return crypto.subtle.deriveKey({ name: 'PBKDF2', salt, iterations, hash: 'SHA-256' }, base, { name: 'AES-GCM', length: 256 }, false, ['encrypt', 'decrypt']);
+  }
+
+  // Kastar vid fel lösenfras (AES-GCM avslöjar det).
+  async decryptToken(k, phrase) {
+    const un = (s) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0));
+    const key = await this.cryptoKey(phrase, un(k.salt), k.iter || 310000);
+    const pt = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: un(k.iv) }, key, un(k.data));
+    return new TextDecoder().decode(pt);
+  }
+
+  // Krypterar tokenen med lösenfrasen och sparar den i admin/key.json.
+  async storeToken(token, phrase) {
+    const b64 = (u) => btoa(String.fromCharCode(...new Uint8Array(u)));
+    const iter = 600000;
+    const salt = crypto.getRandomValues(new Uint8Array(16));
+    const iv = crypto.getRandomValues(new Uint8Array(12));
+    const key = await this.cryptoKey(phrase, salt, iter);
+    const ct = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, new TextEncoder().encode(token));
+    const obj = { v: 2, iter, salt: b64(salt), iv: b64(iv), data: b64(ct) };
+    const base = (this.state.ghPath || '').replace(/^\/+|\/+$/g, '');
+    await this.ghPut((base ? base + '/' : '') + 'admin/key.json', btoa(JSON.stringify(obj)), 'Admin: krypterad token', 0, token);
+    this.setState({ remoteKey: obj });
   }
 
   saveRemoteToken = async () => {
     const phrase = this.state.syncPhrase;
     if (!this.state.ghToken) return this.setState({ syncMsg: 'Lägg in en token först.' });
-    if (phrase.length < 10) return this.setState({ syncMsg: 'Lösenfrasen måste vara minst 10 tecken.' });
+    if (phrase.length < MIN_PHRASE) return this.setState({ syncMsg: 'Lösenfrasen måste vara minst ' + MIN_PHRASE + ' tecken.' });
+    this.setState({ syncMsg: 'Kontrollerar tokenen…' });
+    const access = await this.checkAccess(this.state.ghToken);
+    if (access !== 'ok') return this.setState({ syncMsg: access });
     this.setState({ syncMsg: 'Krypterar och sparar…' });
     try {
-      const b64 = (u) => btoa(String.fromCharCode(...new Uint8Array(u)));
-      const salt = crypto.getRandomValues(new Uint8Array(16));
-      const iv = crypto.getRandomValues(new Uint8Array(12));
-      const key = await this.cryptoKey(phrase, salt);
-      const ct = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, new TextEncoder().encode(this.state.ghToken));
-      const obj = { v: 1, salt: b64(salt), iv: b64(iv), data: b64(ct) };
-      const base = (this.state.ghPath || '').replace(/^\/+|\/+$/g, '');
-      await this.ghPut((base ? base + '/' : '') + 'admin/key.json', btoa(JSON.stringify(obj)), 'Admin: krypterad token');
-      this.setState({ remoteKey: obj, syncPhrase: '', syncMsg: 'Sparat. På en annan dator: logga in, gå till Publicering och skriv lösenfrasen.' });
+      await this.storeToken(this.state.ghToken, phrase);
+      this.setState({ syncPhrase: '', syncMsg: 'Sparat. Logga in med den nya lösenfrasen nästa gång.' });
     } catch (e) {
       this.setState({ syncMsg: 'Kunde inte spara: ' + e.message });
-    }
-  };
-
-  unlockToken = async () => {
-    const k = this.state.remoteKey || (await this.loadRemoteKey());
-    if (!k) return this.setState({ syncMsg: 'Ingen sparad token hittades i repot.' });
-    try {
-      const un = (s) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0));
-      const key = await this.cryptoKey(this.state.syncPhrase, un(k.salt));
-      const pt = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: un(k.iv) }, key, un(k.data));
-      const token = new TextDecoder().decode(pt);
-      try { localStorage.setItem('cw-gh-token', token); } catch (x) {}
-      this.setState({ ghToken: token, syncPhrase: '', syncMsg: 'Token upplåst. Du kan publicera.', pubStatus: '' });
-    } catch (e) {
-      this.setState({ syncMsg: 'Fel lösenfras.' });
     }
   };
 
@@ -6479,12 +6558,20 @@ class Component extends DCLogic {
     return {
       locked: !this.state.authed,
       unlocked: this.state.authed,
-      email: this.state.email,
+      modeLogin: this.state.mode === 'login' ? '1' : '',
+      modeSetup: this.state.mode === 'setup' ? '1' : '',
+      hasKey: this.state.remoteKey ? '1' : '',
       pw: this.state.pw,
+      newToken: this.state.newToken,
       error: this.state.error,
-      hint: this.props.password ?? 'whippit',
-      setEmail: (e) => this.setState({ email: e.target.value }),
+      errorMsg: this.state.errorMsg,
+      loginLabel: this.state.busy ? 'Låser upp…' : 'Logga in',
+      setupLabel: this.state.busy ? 'Kontrollerar…' : 'Spara och logga in',
       setPw: (e) => this.setState({ pw: e.target.value, error: false }),
+      setNewToken: (e) => this.setState({ newToken: e.target.value, error: false }),
+      toSetup: () => this.setState({ mode: 'setup', error: false, pw: '' }),
+      toLogin: () => this.setState({ mode: 'login', error: false, pw: '' }),
+      submitSetup: this.submitSetup,
       submit: this.submit,
       logout: this.logout,
       save: this.save,
@@ -6518,19 +6605,16 @@ class Component extends DCLogic {
       publish: this.publish,
       pubStatus: this.state.pubStatus,
       ghToken: this.state.ghToken,
-      needUnlock: !this.state.ghToken && !!this.state.remoteKey,
       canSync: !!this.state.ghToken,
-      syncBtnLabel: this.state.remoteKey ? 'Uppdatera sparad token' : 'Spara token i repot',
+      syncBtnLabel: 'Spara',
       syncPhrase: this.state.syncPhrase,
       syncMsg: this.state.syncMsg,
       setSyncPhrase: (e) => this.setState({ syncPhrase: e.target.value, syncMsg: '' }),
-      unlockKey: (e) => { if (e.key === 'Enter') this.unlockToken(); },
       saveRemoteToken: this.saveRemoteToken,
-      unlockToken: this.unlockToken,
       ghRepo: this.state.ghRepo,
       ghBranch: this.state.ghBranch,
       ghPath: this.state.ghPath,
-      setGhToken: (e) => { const v = e.target.value.trim(); try { localStorage.setItem('cw-gh-token', v); } catch (x) {} this.setState({ ghToken: v }); },
+      setGhToken: (e) => { const v = e.target.value.trim(); session.set(TOKEN, v); this.setState({ ghToken: v }); },
       setGhRepo: (e) => { const v = e.target.value.trim(); try { localStorage.setItem('cw-gh-repo', v); } catch (x) {} this.setState({ ghRepo: v }); },
       setGhBranch: (e) => { const v = e.target.value.trim(); try { localStorage.setItem('cw-gh-branch', v); } catch (x) {} this.setState({ ghBranch: v }); },
       setGhPath: (e) => { const v = e.target.value.trim(); try { localStorage.setItem('cw-gh-path', v); } catch (x) {} this.setState({ ghPath: v }); },
