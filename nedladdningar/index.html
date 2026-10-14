@@ -5877,6 +5877,48 @@ textarea.input { min-height: 90px; resize: vertical; }
     [data-hnav] a { font-size: 12.5px !important; }
     [data-hbrand] span { font-size: 12px !important; }
   }
+  /* Mobil: undersidornas rubrik tar lite plats, innehållet syns direkt. */
+  @media (max-width: 600px) {
+    main[style*="padding: 72px 24px 0"] { padding-top: 18px !important; }
+    main[style*="padding: 72px 24px 0"] > h1 { font-size: 30px !important; margin: 0 0 2px !important; }
+    main[style*="padding: 72px 24px 0"] > p { font-size: 13.5px !important; line-height: 1.45 !important; margin: 0 0 14px !important; }
+    main[style*="padding: 72px 24px 0"] > p[style*="margin: -26px"] { font-size: 10px !important; margin: -8px 0 12px !important; }
+    [data-dl-grid] { grid-template-columns: 1fr 1fr !important; gap: 10px !important; }
+    [data-dl-text] { padding: 8px 10px 10px !important; }
+    [data-dl-text] > div:first-child { font-size: 13px !important; line-height: 1.25 !important; }
+    [data-dl-text] > div + div { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; white-space: normal !important; font-size: 10px !important; line-height: 1.4 !important; margin-top: 4px !important; }
+    [data-setup-grid] { gap: 10px !important; }
+    [data-setup-card] { padding: 14px 16px 16px !important; }
+    [data-setup-list] { margin-top: 8px !important; gap: 5px !important; font-size: 13px !important; line-height: 1.35 !important; }
+  }
+  /* Mobil: hela veckans schema på en skärm — en rad per dag, kanalerna sida vid sida. */
+  @media (max-width: 759px) {
+    div:has(> [data-sh-row]) { gap: 5px !important; }
+    [data-sh-head] { padding: 0 6px !important; flex-wrap: nowrap !important; }
+    [data-sh-spacer] { flex: 0 0 44px !important; }
+    [data-sh-cols] { flex: 1 1 0 !important; gap: 6px !important; }
+    [data-sh-cols] > div { flex: 1 1 0 !important; padding: 0 2px !important; gap: 6px !important; }
+    [data-sh-cols] > div > span:first-child { width: 7px !important; height: 7px !important; }
+    [data-sh-cols] > div > span:last-child { font-size: 10px !important; letter-spacing: .08em !important; }
+    [data-sh-row] { flex-wrap: nowrap !important; gap: 0 !important; padding: 6px !important; border-radius: 10px !important; }
+    [data-sh-day] { flex: 0 0 44px !important; padding: 2px 0 0 2px !important; gap: 1px !important; justify-content: flex-start !important; }
+    [data-sh-day] > span:first-child { font-size: 11.5px !important; }
+    [data-sh-day] > span:nth-child(2) { font-size: 10px !important; }
+    [data-sh-day] [data-en="Today"] { display: none !important; }
+    [data-sh-cols2] { flex: 1 1 0 !important; flex-wrap: nowrap !important; gap: 6px !important; }
+    [data-sh-col] { flex: 1 1 0 !important; gap: 4px !important; min-height: 0 !important; justify-content: flex-start !important; }
+    [data-sh-item] { position: relative; gap: 0 !important; padding: 6px 8px 6px 9px !important; border-radius: 8px !important; }
+    [data-sh-item] > div { gap: 3px !important; }
+    [data-sh-item] [data-en="Planned"] { display: none !important; }
+    [data-sh-item] > div > span:nth-child(2) { font-size: 12.5px !important; line-height: 1.2 !important; }
+    [data-sh-item] > div > span:nth-child(3) { font-size: 8.5px !important; letter-spacing: .04em !important; gap: 5px !important; padding-right: 30px; }
+    [data-sh-item] > div > span:nth-child(3) > span:first-child { flex-basis: 6px !important; width: 6px !important; height: 6px !important; }
+    [data-sh-item] > span { position: absolute; right: 7px; bottom: 6px; font-size: 9px !important; color: var(--color-neutral-400) !important; }
+    [data-sh-item] > span > i { display: none; }
+    [data-sh-empty] { padding: 6px 8px !important; gap: 0 !important; border-radius: 8px !important; }
+    [data-sh-empty] > i { display: none; }
+    [data-sh-empty] > span { font-size: 10px !important; }
+  }
   [data-thumb] { transition: transform .8s cubic-bezier(.2,.7,.2,1), opacity .5s ease; }
   [data-lift]:hover [data-thumb] { transform: scale(1.06); }
   [data-adwrap]:has(ins[data-ad-status="unfilled"]) { display: none !important; }
@@ -6206,11 +6248,11 @@ textarea.input { min-height: 90px; resize: vertical; }
     <sc-if value="{{ hasAff }}">
       <p data-en="Some links are affiliate links. If you buy through them I get a small cut, at no extra cost to you." style="font-family: 'JetBrains Mono', monospace; font-size: 11px; line-height: 1.6; letter-spacing: .04em; color: var(--color-neutral-500); margin: -26px 0 26px; max-width: 60ch;">Vissa länkar är affiliatelänkar. Köper du via dem får jag en liten del, utan att det kostar dig mer.</p>
     </sc-if>
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px;">
+    <div data-setup-grid="" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px;">
       <sc-for list="{{ setupGroups }}" as="g" hint-placeholder-count="3">
-        <div data-lift="" style="background: var(--color-surface); border-radius: 14px; box-shadow: 0 0 0 1px var(--color-neutral-800); padding: 26px 24px 30px;">
+        <div data-setup-card="" data-lift="" style="background: var(--color-surface); border-radius: 14px; box-shadow: 0 0 0 1px var(--color-neutral-800); padding: 26px 24px 30px;">
           <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: var(--color-accent-400);">{{ g.group }}</div>
-          <ul style="margin: 16px 0 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 10px; font-size: 15px; color: var(--color-neutral-300);">
+          <ul data-setup-list="" style="margin: 16px 0 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 10px; font-size: 15px; color: var(--color-neutral-300);">
             <sc-for list="{{ g.items }}" as="it" hint-placeholder-count="4">
               <li>
                 <sc-if value="{{ it.hasUrl }}">
@@ -6235,27 +6277,27 @@ textarea.input { min-height: 90px; resize: vertical; }
     <p data-en="A normal week. Changes are announced on X and Instagram." style="font-size: 17px; color: var(--color-neutral-400); margin: 0 0 36px; max-width: 52ch;">En vanlig vecka. Ändringar annonseras på X och Instagram.</p>
     <div style="display: flex; flex-direction: column; gap: 10px;">
       <sc-if value="{{ showSchemaHead }}">
-        <div style="display: flex; flex-wrap: wrap; padding: 0 12px;">
-          <div style="flex: 0 0 120px;"></div>
-          <div style="flex: 1 1 480px; display: flex; gap: 12px; min-width: 0;">
+        <div data-sh-head="" style="display: flex; flex-wrap: wrap; padding: 0 12px;">
+          <div data-sh-spacer="" style="flex: 0 0 120px;"></div>
+          <div data-sh-cols="" style="flex: 1 1 480px; display: flex; gap: 12px; min-width: 0;">
             <div style="flex: 1 1 240px; min-width: 0; padding: 4px 4px; display: flex; align-items: center; gap: 10px;"><span style="width: 10px; height: 10px; border-radius: 50%; background: #8657FF; box-shadow: 0 0 10px #8657FF;"></span><span style="font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 500; letter-spacing: .12em; text-transform: uppercase; color: var(--color-text);">ChrisWhippit</span></div>
             <div style="flex: 1 1 240px; min-width: 0; padding: 4px 4px; display: flex; align-items: center; gap: 10px;"><span style="width: 10px; height: 10px; border-radius: 50%; background: #b6f03c; box-shadow: 0 0 10px #b6f03c;"></span><span style="font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 500; letter-spacing: .12em; text-transform: uppercase; color: var(--color-text);">UfoSXM</span></div>
           </div>
         </div>
       </sc-if>
       <sc-for list="{{ schemaRows }}" as="r" hint-placeholder-count="7">
-        <div style="display: flex; flex-wrap: wrap; gap: 10px 0; padding: 12px; border-radius: 14px; background: {{ r.colBg }}; box-shadow: {{ r.colRing }};">
-          <div style="flex: 0 0 120px; padding: 6px 8px; display: flex; flex-direction: column; gap: 6px; justify-content: center;">
+        <div data-sh-row="" style="display: flex; flex-wrap: wrap; gap: 10px 0; padding: 12px; border-radius: 14px; background: {{ r.colBg }}; box-shadow: {{ r.colRing }};">
+          <div data-sh-day="" style="flex: 0 0 120px; padding: 6px 8px; display: flex; flex-direction: column; gap: 6px; justify-content: center;">
             <span style="font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: {{ r.dayColor }};">{{ r.dayShort }}</span>
             <span style="font-size: 13px; color: var(--color-neutral-500); white-space: nowrap;">{{ r.date }}</span>
             <sc-if value="{{ r.isToday }}"><span data-en="Today" style="align-self: flex-start; font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 500; letter-spacing: .1em; text-transform: uppercase; padding: 4px 8px; border-radius: 6px; background: #c3f53c; color: #18200a;">Idag</span></sc-if>
           </div>
-          <div style="flex: 1 1 480px; display: flex; flex-wrap: wrap; gap: 12px; min-width: 0;">
+          <div data-sh-cols2="" style="flex: 1 1 480px; display: flex; flex-wrap: wrap; gap: 12px; min-width: 0;">
             <sc-for list="{{ r.cols }}" as="col" hint-placeholder-count="2">
-              <div style="flex: 1 1 240px; min-width: 0; display: flex; flex-direction: column; gap: 8px; justify-content: center; min-height: 64px;">
+              <div data-sh-col="" style="flex: 1 1 240px; min-width: 0; display: flex; flex-direction: column; gap: 8px; justify-content: center; min-height: 64px;">
                 <sc-if value="{{ showCellWho }}"><span style="display: flex; align-items: center; gap: 7px; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--color-neutral-400);"><span style="width: 7px; height: 7px; border-radius: 50%; background: {{ col.dot }};"></span>{{ col.who }}</span></sc-if>
                 <sc-for list="{{ col.items }}" as="it" hint-placeholder-count="0">
-                  <a href="{{ it.cardUrl }}" target="_blank" rel="noopener" data-lift="" style="display: flex; align-items: center; gap: 14px; padding: 12px 14px 12px 16px; border-radius: 10px; background: {{ it.cardBg }}; box-shadow: {{ it.cardRing }}; color: var(--color-text); text-decoration: none;">
+                  <a data-sh-item="" href="{{ it.cardUrl }}" target="_blank" rel="noopener" data-lift="" style="display: flex; align-items: center; gap: 14px; padding: 12px 14px 12px 16px; border-radius: 10px; background: {{ it.cardBg }}; box-shadow: {{ it.cardRing }}; color: var(--color-text); text-decoration: none;">
                     <div style="flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 7px;">
                       <span data-en="Planned" style="align-self: flex-start; font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 500; letter-spacing: .12em; text-transform: uppercase; padding: 3px 7px; border-radius: 5px; background: {{ it.tagBg }}; color: {{ it.tagFg }};">Planerat</span>
                       <span style="font-family: var(--font-heading); font-size: 17px; font-weight: 700; line-height: 1.2; letter-spacing: -.01em; text-wrap: pretty;">{{ it.what }}</span>
@@ -6267,7 +6309,7 @@ textarea.input { min-height: 90px; resize: vertical; }
                   </a>
                 </sc-for>
                 <sc-if value="{{ col.empty }}">
-                  <div style="flex: 1 1 auto; display: flex; align-items: center; gap: 10px; padding: 14px 16px; border-radius: 10px; border: 1px dashed rgba(255,255,255,.12);">
+                  <div data-sh-empty="" style="flex: 1 1 auto; display: flex; align-items: center; gap: 10px; padding: 14px 16px; border-radius: 10px; border: 1px dashed rgba(255,255,255,.12);">
                     <i class="ph-fill ph-calendar-blank" aria-hidden="true" style="font-size: 18px; color: var(--color-neutral-600);"></i>
                     <span data-en="No video planned" style="font-size: 13px; color: var(--color-neutral-500);">Ingen video planerad</span>
                   </div>
@@ -6300,7 +6342,7 @@ textarea.input { min-height: 90px; resize: vertical; }
   <main style="max-width: 1240px; margin: 0 auto; padding: 72px 24px 0;">
     <h1 data-en="Downloads" style="font-family: var(--font-heading); font-weight: 500; font-size: clamp(38px, 6vw, 76px); letter-spacing: -.04em; margin: 0 0 14px;">Nedladdningar</h1>
     <p data-en="Free files. Use them however you like." style="font-size: 17px; color: var(--color-neutral-400); margin: 0 0 42px;">Gratis filer. Använd dem som du vill.</p>
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px;">
+    <div data-dl-grid="" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px;">
       <sc-for list="{{ dlRows }}" as="d" hint-placeholder-count="3">
         <a href="{{ d.link }}" data-lift="" style="background: var(--color-surface); border-radius: 14px; box-shadow: 0 0 0 1px var(--color-neutral-800); overflow: hidden; display: block; color: var(--color-text);">
           <sc-if value="{{ d.hasImage }}">
@@ -6309,7 +6351,7 @@ textarea.input { min-height: 90px; resize: vertical; }
           <sc-if value="{{ d.noImage }}" hint-placeholder-val="{{ true }}">
           <div style="aspect-ratio: 16 / 9; background: repeating-linear-gradient(135deg, rgba(145,132,217,.08) 0 8px, transparent 8px 16px), var(--color-neutral-900); display: grid; place-items: center;"><span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .12em; color: var(--color-neutral-600);">nedladdning</span></div>
           </sc-if>
-          <div style="padding: 18px 20px 22px;"><div style="font-family: var(--font-heading); font-size: 16px; font-weight: 500;">{{ d.title }}</div><div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--color-neutral-600); margin-top: 6px; white-space: pre-line; line-height: 1.6;">{{ d.meta }}</div></div>
+          <div data-dl-text="" style="padding: 18px 20px 22px;"><div style="font-family: var(--font-heading); font-size: 16px; font-weight: 500;">{{ d.title }}</div><div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--color-neutral-600); margin-top: 6px; white-space: pre-line; line-height: 1.6;">{{ d.meta }}</div></div>
         </a>
       </sc-for>
     </div>
@@ -7000,8 +7042,8 @@ class Component extends DCLogic {
       atHem: r === 'hem' ? '1' : '',
       atSetup: r === 'setup' ? '1' : '',
       atSchema: r === 'schema' ? '1' : '',
-      showCellWho: this.state.narrow ? true : '',
-      showSchemaHead: this.state.narrow ? '' : true,
+      showCellWho: '',  // kanalnamnen står en gång i rubrikraden, även i mobil
+      showSchemaHead: true,
       atFaq: r === 'faq' ? '1' : '',
       atDl: r === 'dl' ? '1' : '',
       atShop: r === 'shop' ? '1' : '',
