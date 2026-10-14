@@ -2,19 +2,23 @@
   "stats": [
     {
       "platform": "@chriswhippit",
-      "value": "299K"
+      "value": "299K",
+      "videos": ""
     },
     {
       "platform": "@whippitsson",
-      "value": "154K"
+      "value": "154K",
+      "videos": ""
     },
     {
       "platform": "@figgwhipp",
-      "value": "144K"
+      "value": "144K",
+      "videos": ""
     },
     {
       "platform": "@whippitextra",
-      "value": "23.8K"
+      "value": "23.8K",
+      "videos": ""
     },
     {
       "platform": "Instagram",
@@ -315,28 +319,28 @@
     {
       "date": "2026-10-16",
       "what": "Utmaning med mamma och pappa",
-      "channel": "chriswhippit",
+      "channel": "extra",
       "time": "06.30",
       "who": "chris"
     },
     {
       "date": "2026-10-19",
       "what": "Skyblock",
-      "channel": "chriswhippit",
+      "channel": "extra",
       "time": "06.30",
       "who": "chris"
     },
     {
       "date": "2026-10-21",
       "what": "Utmaning med mamma och pappa",
-      "channel": "chriswhippit",
+      "channel": "extra",
       "time": "06.30",
       "who": "chris"
     },
     {
       "date": "2026-10-25",
       "what": "Utmaning med mamma och pappa",
-      "channel": "chriswhippit",
+      "channel": "extra",
       "time": "06.30",
       "who": "chris"
     },
@@ -448,6 +452,83 @@
     {
       "date": "2026-10-13",
       "what": "RV There Yet",
+      "channel": "chriswhippit",
+      "time": "06.30",
+      "who": "chris"
+    },
+    {
+      "date": "2026-10-14",
+      "what": "Paver: Tidy Up",
+      "channel": "chriswhippit",
+      "time": "06.30",
+      "who": "chris"
+    },
+    {
+      "date": "2026-10-14",
+      "what": "Ore Factory Squad",
+      "channel": "annat",
+      "time": "06.30",
+      "who": "ufo"
+    },
+    {
+      "date": "2026-10-15",
+      "what": "Ore Factory Squad",
+      "channel": "chriswhippit",
+      "time": "06.30",
+      "who": "chris"
+    },
+    {
+      "date": "2026-10-15",
+      "what": "Paver: Tidy Up",
+      "channel": "annat",
+      "time": "06.30",
+      "who": "ufo"
+    },
+    {
+      "date": "2026-10-16",
+      "what": "Haystack 1",
+      "channel": "chriswhippit",
+      "time": "06.30",
+      "who": "chris"
+    },
+    {
+      "date": "2026-10-16",
+      "what": "Gamble with your friends",
+      "channel": "annat",
+      "time": "06.30",
+      "who": "ufo"
+    },
+    {
+      "date": "2026-10-17",
+      "what": "Haystack 2",
+      "channel": "annat",
+      "time": "06.30",
+      "who": "ufo"
+    },
+    {
+      "date": "2026-10-18",
+      "what": "Waterpark",
+      "channel": "annat",
+      "time": "06.30",
+      "who": "ufo"
+    },
+    {
+      "date": "2026-10-19",
+      "what": "Haystack 3",
+      "channel": "chriswhippit",
+      "time": "06.30",
+      "who": "chris"
+    },
+    {
+      "date": "2026-10-21",
+      "what": "Haystack 4",
+      "channel": "annat",
+      "time": "06.30",
+      "who": "ufo"
+    },
+    {
+      "date": "2026-10-22",
+      "what": "Haystack 5",
       "channel": "chriswhippit",
       "time": "06.30",
       "who": "chris"
