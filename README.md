@@ -17,7 +17,17 @@ GitHub Pages (main / root) på www.chriswhippit.com.
 - `content.json` — allt redigerbart innehåll. Skrivs av admin via GitHubs API
 - `media/` — bilder som lagts in via admin
 - `support.js`, `styles.css`, `assets/` — delas av alla sidor
+- `assets/bundle/` — typsnitt och bilder från Claude Design-exporten (hash-namn, delas av alla sidor)
+- `assets/vendor/` — React 18.3.1
 - `robots.txt`, `sitemap.xml`, `site.webmanifest`, `CNAME`
+
+## Utveckling
+
+- Starta lokalt: `node tools/serve.js . 8080` och öppna http://localhost:8080
+  (YouTube-API:t svarar 403 på localhost, sidan faller då tillbaka på sparade videor).
+- Ny export från Claude Design? Lägg in den inpackade HTML-filen och kör
+  `node tools/unbundle.js .` — den packar upp alla inpackade sidor till vanlig HTML
+  och lägger delade filer i `assets/bundle/`.
 
 ## Efter uppladdning
 
