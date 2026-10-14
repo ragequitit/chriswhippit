@@ -5573,6 +5573,9 @@ textarea.input { min-height: 90px; resize: vertical; }
   [data-row] { transition: box-shadow .25s ease; }
   [data-row]:hover { box-shadow: 0 0 0 1px var(--color-neutral-700); }
   [data-del] { opacity: 0; transition: opacity .25s ease, color .25s ease; }
+  [data-move] { width: 28px; height: 28px; border-radius: 7px; border: 1px solid var(--color-neutral-800); background: transparent; color: var(--color-neutral-400); font-size: 10px; line-height: 1; cursor: pointer; }
+  [data-move]:hover:not(:disabled) { border-color: var(--color-accent-600); color: var(--color-accent-200); }
+  [data-move]:disabled { opacity: .3; cursor: default; }
   [data-row]:hover [data-del], [data-del]:focus-visible { opacity: 1; }
 </style>
 </helmet>
@@ -5857,7 +5860,7 @@ textarea.input { min-height: 90px; resize: vertical; }
 
         <sc-if value="{{ onSponsors }}">
           <div style="display: flex; flex-direction: column; gap: 12px;">
-            <span style="font-size: 12px; color: var(--color-neutral-500);">Klicka på ett samarbete för att redigera. Dra i <i class="ph-fill ph-dots-six-vertical" aria-hidden="true"></i> för att ändra ordning, samma ordning som i snurren på sidan.</span>
+            <span style="font-size: 12px; color: var(--color-neutral-500);">Klicka på ett samarbete för att redigera. Ändra ordning med ▲ ▼ (eller dra i <i class="ph-fill ph-dots-six-vertical" aria-hidden="true"></i>). Samma ordning används i snurren och på samarbetssidan.</span>
             <div style="display: flex; flex-direction: column; gap: 6px;">
             <sc-for list="{{ sponsors }}" as="row" hint-placeholder-count="6">
               <div sc-camel-on-drag-over="{{ row.onRowOver }}" sc-camel-on-drop="{{ row.onRowDrop }}" style="background: var(--color-surface); border-radius: 10px; box-shadow: {{ row.ring }}; opacity: {{ row.fade }}; transition: box-shadow .15s ease, opacity .15s ease;">
@@ -5870,6 +5873,10 @@ textarea.input { min-height: 90px; resize: vertical; }
                     <span style="font-family: var(--font-heading); font-size: 14px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ row.nameLabel }}</span>
                     <span style="font-size: 12px; color: var(--color-neutral-500); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ row.caption }}</span>
                   </div>
+                  <span style="flex: 0 0 auto; display: flex; gap: 4px;">
+                    <button data-move="" sc-camel-on-click="{{ row.onUp }}" disabled="{{ row.isFirst }}" title="Flytta upp" aria-label="Flytta upp">▲</button>
+                    <button data-move="" sc-camel-on-click="{{ row.onDown }}" disabled="{{ row.isLast }}" title="Flytta ner" aria-label="Flytta ner">▼</button>
+                  </span>
                   <i class="ph-fill ph-caret-down" aria-hidden="true" style="font-size: 14px; color: var(--color-neutral-500); transform: rotate({{ row.caretDeg }}deg); transition: transform .2s ease;"></i>
                 </div>
                 <sc-if value="{{ row.open }}">
@@ -5891,6 +5898,7 @@ textarea.input { min-height: 90px; resize: vertical; }
                   <input data-in="" value="{{ row.caption }}" sc-camel-on-change="{{ row.onB }}" placeholder="Text under loggan">
                   <input data-in="" value="{{ row.logoField }}" sc-camel-on-change="{{ row.onC }}" placeholder="{{ row.logoPlaceholder }}">
                   <input data-in="" value="{{ row.url }}" sc-camel-on-change="{{ row.onD }}" placeholder="Länk — hemsida eller video">
+                  <textarea data-in="" rows="5" value="{{ row.desc }}" sc-camel-on-change="{{ row.onE }}" placeholder="Beskrivning (visas på samarbetssidan): vad samarbetet gällde, vad ni gjorde, hur det gick. Tom rad = nytt stycke." style="resize: vertical; line-height: 1.6;"></textarea>
                   <sc-if value="{{ row.hasLogo }}">
                     <div style="display: flex; gap: 14px; align-items: center; flex-wrap: wrap; padding-top: 4px;">
                       <div sc-camel-on-pointer-down="{{ row.fitDown }}" sc-camel-on-pointer-move="{{ row.fitMove }}" sc-camel-on-pointer-up="{{ row.fitUp }}" sc-camel-on-pointer-cancel="{{ row.fitUp }}" title="Dra för att flytta" style="position: relative; flex: 0 0 auto; width: 264px; height: 140px; border-radius: 8px; overflow: hidden; cursor: grab; touch-action: none; background: var(--color-neutral-900); box-shadow: 0 0 0 1px var(--color-neutral-800);">
@@ -6575,6 +6583,15 @@ class Component extends DCLogic {
     };
   }
 
+  // Flytta ett samarbete ett steg upp/ner (samma ordning som på sidan). Utfällt kort följer med.
+  moveSponsor(from, to) {
+    const n = (this.state.data.sponsors || []).length;
+    if (to < 0 || to >= n || from === to) return;
+    const op = this.state.openSponsor;
+    this.setState({ openSponsor: op === from ? to : op === to ? from : op });
+    this.mutate((x) => { const [m] = x.sponsors.splice(from, 1); x.sponsors.splice(to, 0, m); });
+  }
+
   field(section, i, key) {
     return (e) => { const v = e.target.value; this.mutate((d) => { d[section][i][key] = v; }); };
   }
@@ -6840,6 +6857,12 @@ class Component extends DCLogic {
         onB: this.field('sponsors', i, 'caption'),
         onC: this.field('sponsors', i, 'logo'),
         onD: this.field('sponsors', i, 'url'),
+        onE: this.field('sponsors', i, 'desc'),
+        desc: r.desc || '',
+        isFirst: i === 0 ? true : '',
+        isLast: i === (d.sponsors || []).length - 1 ? true : '',
+        onUp: (e) => { e.stopPropagation(); this.moveSponsor(i, i - 1); },
+        onDown: (e) => { e.stopPropagation(); this.moveSponsor(i, i + 1); },
         onDelete: () => { this.setState({ openSponsor: null }); this.mutate((x) => { x.sponsors.splice(i, 1); }); },
         open: this.state.openSponsor === i ? true : '',
         caretDeg: this.state.openSponsor === i ? 180 : 0,
