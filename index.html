@@ -5790,6 +5790,26 @@ textarea.input { min-height: 90px; resize: vertical; }
   [data-card] img { transition: transform .9s cubic-bezier(.2,.7,.2,1); }
   [data-card]:hover img { transform: scale(1.04); }
   @media (max-width: 900px) { [data-hnav] { order: 3 !important; flex-basis: 100% !important; } }
+  /* Mobil: logga och knappar på en rad, alla menyval synliga, porträttet överst i hero. */
+  @media (max-width: 600px) {
+    [data-hbar] { padding: 4px 16px !important; column-gap: 8px !important; }
+    [data-hbrand] { gap: 8px !important; }
+    [data-hbrand] img { width: 26px !important; height: 26px !important; }
+    [data-hbrand] span { font-size: 13.5px !important; letter-spacing: .02em !important; }
+    [data-hactions] { gap: 6px !important; }
+    [data-hactions] button { padding: 8px 7px !important; font-size: 11px !important; letter-spacing: .04em !important; }
+    [data-hactions] a { padding: 9px 11px !important; font-size: 13px !important; }
+    [data-hnav] { gap: 12px !important; justify-content: space-between; }
+    [data-hnav] a { font-size: 13.5px !important; min-height: 40px !important; }
+    [data-hero-img] { height: 380px !important; right: auto !important; left: 50% !important; transform: translateX(-66%); }
+    [data-hero-body] { padding-top: 270px !important; }
+  }
+  @media (max-width: 380px) { [data-hnav] { gap: 8px !important; } }
+  @media (max-width: 350px) {
+    [data-hnav] { gap: 6px !important; }
+    [data-hnav] a { font-size: 12.5px !important; }
+    [data-hbrand] span { font-size: 12px !important; }
+  }
   [data-thumb] { transition: transform .8s cubic-bezier(.2,.7,.2,1), opacity .5s ease; }
   [data-lift]:hover [data-thumb] { transform: scale(1.06); }
   [data-adwrap]:has(ins[data-ad-status="unfilled"]) { display: none !important; }
@@ -5807,8 +5827,8 @@ textarea.input { min-height: 90px; resize: vertical; }
      var(--color-bg); overflow-x: clip;">
 
   <header style="position: sticky; top: 0; z-index: 40; backdrop-filter: blur(18px) saturate(150%); -webkit-backdrop-filter: blur(18px) saturate(150%); background: color-mix(in srgb, var(--color-bg) 82%, transparent);">
-    <div style="max-width: 1240px; margin: 0 auto; padding: 10px 24px; display: flex; align-items: center; flex-wrap: wrap; column-gap: 40px; row-gap: 0;">
-      <a href="" sc-camel-on-click="{{ goHem }}" style="order: 0; display: flex; align-items: center; gap: 12px; color: #fff; min-height: 48px; flex: 0 0 auto;">
+    <div data-hbar="" style="max-width: 1240px; margin: 0 auto; padding: 10px 24px; display: flex; align-items: center; flex-wrap: wrap; column-gap: 40px; row-gap: 0;">
+      <a href="" data-hbrand="" sc-camel-on-click="{{ goHem }}" style="order: 0; display: flex; align-items: center; gap: 12px; color: #fff; min-height: 48px; flex: 0 0 auto;">
         <img src="/assets/logo-white.png" alt="ChrisWhippit" style="width: 30px; height: 30px; display: block;">
         <span style="font-family: var(--font-heading); font-weight: 800; font-size: 18px; letter-spacing: .04em;">CHRISWHIPPIT</span>
       </a>
@@ -5820,7 +5840,7 @@ textarea.input { min-height: 90px; resize: vertical; }
         <a href="shop/" sc-camel-on-click="{{ goShop }}" data-active="{{ atShop }}" data-en="Shop" style="font-size: 14px; font-weight: 500; color: var(--color-neutral-400); white-space: nowrap; display: flex; align-items: center; min-height: 44px;" style-hover="color: #fff;">Shop</a>
         <a href="spel/" sc-camel-on-click="{{ goSpel }}" data-active="{{ atSpel }}" data-en="Games" style="font-size: 14px; font-weight: 500; color: var(--color-neutral-400); white-space: nowrap; display: flex; align-items: center; min-height: 44px;" style-hover="color: #fff;">Spel</a>
       </nav>
-      <div style="order: 2; margin-left: auto; flex: 0 0 auto; display: flex; align-items: center; gap: 14px;">
+      <div data-hactions="" style="order: 2; margin-left: auto; flex: 0 0 auto; display: flex; align-items: center; gap: 14px;">
         <button sc-camel-on-click="{{ toggleLang }}" style="font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: .12em; padding: 10px 14px; border-radius: 8px; border: 1px solid rgba(255,255,255,.16); background: transparent; color: var(--color-neutral-300); cursor: pointer;" style-hover="border-color: #8657FF; color: #fff;">{{ langLabel }}</button>
         <a href="https://www.youtube.com/user/chriswhippit" target="_blank" data-btnp="" data-en="Subscribe" style="font-size: 14px; font-weight: 600; padding: 11px 20px; border-radius: 9px; background: #8657FF; color: #fff; white-space: nowrap; box-shadow: 0 8px 24px -10px rgba(134,87,255,.8);">Prenumerera</a>
       </div>
@@ -5831,10 +5851,10 @@ textarea.input { min-height: 90px; resize: vertical; }
   <main>
     <section style="position: relative; isolation: isolate;">
       <div aria-hidden="true" style="position: absolute; inset: 0; z-index: -1; pointer-events: none; overflow: hidden;">
-        <img src="/assets/hero.jpg" alt="" style="position: absolute; top: 0; right: clamp(24px, 5vw, 96px); height: 100%; width: auto; max-width: none; display: block; -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 16%, #000 74%, transparent 100%), linear-gradient(90deg, transparent 0%, #000 22%); -webkit-mask-composite: source-in; mask-image: linear-gradient(180deg, transparent 0%, #000 16%, #000 74%, transparent 100%), linear-gradient(90deg, transparent 0%, #000 22%); mask-composite: intersect;">
+        <img src="/assets/hero.jpg" alt="" data-hero-img="" style="position: absolute; top: 0; right: clamp(24px, 5vw, 96px); height: 100%; width: auto; max-width: none; display: block; -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 16%, #000 74%, transparent 100%), linear-gradient(90deg, transparent 0%, #000 22%); -webkit-mask-composite: source-in; mask-image: linear-gradient(180deg, transparent 0%, #000 16%, #000 74%, transparent 100%), linear-gradient(90deg, transparent 0%, #000 22%); mask-composite: intersect;">
 
       </div>
-      <div style="max-width: 1240px; margin: 0 auto; padding: 40px 24px 56px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 24px; align-items: center;">
+      <div data-hero-body="" style="max-width: 1240px; margin: 0 auto; padding: 40px 24px 56px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 24px; align-items: center;">
         <div style="min-width: 0; position: relative; z-index: 2;">
           <div data-en="Content creator · Sweden · since 2014" style="font-family: 'JetBrains Mono', monospace; font-size: 13px; letter-spacing: .2em; text-transform: uppercase; color: #a487ff; margin-bottom: 22px;">Innehållsskapare · Sverige · sedan 2014</div>
           <h1 style="font-family: var(--font-heading); font-weight: 900; font-size: clamp(64px, 9.6vw, 148px); line-height: .84; letter-spacing: -.05em; margin: 0;">
