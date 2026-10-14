@@ -21,6 +21,14 @@ GitHub Pages (main / root) på www.chriswhippit.com.
 - `assets/vendor/` — React 18.3.1
 - `robots.txt`, `sitemap.xml`, `site.webmanifest`, `CNAME`
 
+## Spel
+
+- `spel/*.html` är fristående spel. Byt ut filen men behåll namnet, så behåller
+  spelarna sina framsteg (localStorage).
+- Varje spel ska ha `<script src="/spel/back.js" defer></script>` före `</body>`
+  (knappen "← Spel" tillbaka till spelsidan). Lägg tillbaka raden när ett spel byts ut.
+- Bilderna på spelsidan är `spel/thumbs/<namn>-board.jpg`: själva spelplanen, 400×500.
+
 ## Utveckling
 
 - Starta lokalt: `node tools/serve.js . 8080` och öppna http://localhost:8080
