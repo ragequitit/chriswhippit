@@ -5919,6 +5919,20 @@ textarea.input { min-height: 90px; resize: vertical; }
     [data-sh-empty] > i { display: none; }
     [data-sh-empty] > span { font-size: 10px !important; }
   }
+  /* Spelsidan i mobil: Genesis-kortet tätare, småspelen tre i bredd. */
+  @media (max-width: 600px) {
+    [data-genesis] > div:first-child { aspect-ratio: 2 / 1 !important; }
+    [data-genesis-text] { padding: 12px 16px 14px !important; gap: 6px !important; }
+    [data-genesis-text] h2 { font-size: 24px !important; }
+    [data-genesis-text] p { display: none; }
+    [data-genesis-text] [data-btnp] { margin-top: 2px !important; padding: 9px 14px !important; }
+    [data-minigames] { grid-template-columns: repeat(3, 1fr) !important; gap: 8px !important; }
+    [data-minigames] a > div:last-child { padding: 6px 8px !important; }
+    [data-minigames] a > div:last-child span { font-size: 12px !important; }
+    [data-minigames] a > div:last-child i { display: none; }
+  }
+  /* Mellanbredd (surfplatta, litet fönster): menyn får plats utan att klippas. */
+  @media (min-width: 601px) and (max-width: 1000px) { [data-hnav] { gap: 18px !important; } }
   [data-thumb] { transition: transform .8s cubic-bezier(.2,.7,.2,1), opacity .5s ease; }
   [data-lift]:hover [data-thumb] { transform: scale(1.06); }
   [data-adwrap]:has(ins[data-ad-status="unfilled"]) { display: none !important; }
@@ -6217,7 +6231,7 @@ textarea.input { min-height: 90px; resize: vertical; }
           <div style="display: flex; flex-direction: column; height: 100%; max-width: 56%; padding: 24px 0 24px 24px;">
             <span data-en="Games" style="font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: .16em; text-transform: uppercase; color: #b9a2ff;">Spel</span>
             <h3 data-en="Play in the browser" style="font-family: var(--font-heading); font-weight: 800; font-size: clamp(20px, 2vw, 25px); line-height: 1.12; letter-spacing: -.025em; margin: 12px 0 10px; text-wrap: pretty;">Spela i webbläsaren</h3>
-            <p data-en="Five free games. Your progress is saved." style="font-size: 14px; line-height: 1.5; color: #cfcce0; margin: 0; text-wrap: pretty;">Fem gratisspel. Dina framsteg sparas.</p>
+            <p data-en="Project Genesis and more free games." style="font-size: 14px; line-height: 1.5; color: #cfcce0; margin: 0; text-wrap: pretty;">Project Genesis och fler gratisspel.</p>
             <span data-btnp="" data-en="Play now →" style="margin-top: auto; align-self: flex-start; display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; padding: 11px 18px; border-radius: 9px; background: #8657FF; color: #fff; white-space: nowrap; box-shadow: 0 10px 26px -12px rgba(134,87,255,.9);">Spela nu →</span>
           </div>
         </a>
@@ -6361,32 +6375,31 @@ textarea.input { min-height: 90px; resize: vertical; }
   <sc-if value="{{ atSpel }}">
   <main style="max-width: 1240px; margin: 0 auto; padding: 72px 24px 0;">
     <h1 data-en="Games" style="font-family: var(--font-heading); font-weight: 500; font-size: clamp(38px, 6vw, 76px); letter-spacing: -.04em; margin: 0 0 14px;">Spel</h1>
-    <p data-en="Small games we've built. Everything here is a test build and changes often." style="font-size: 17px; line-height: 1.6; color: var(--color-neutral-400); margin: 0; max-width: 560px; text-wrap: pretty;">Små spel vi har byggt. Allt här är testversioner och ändras ofta.</p>
-    <sc-if value="{{ hasGame }}">
-      <div style="position: fixed; inset: 0; z-index: 200; display: flex; flex-direction: column; background: var(--color-bg);">
-        <div style="flex: 0 0 auto; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; padding: 10px 18px; border-bottom: 1px solid var(--color-neutral-800); background: var(--color-surface);">
-          <span style="font-family: var(--font-heading); font-size: 18px; font-weight: 500; flex: 1 1 auto; min-width: 0;">{{ gameTitle }}</span>
-          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-            <button sc-camel-on-click="{{ gameFull }}" data-gear="" data-en="Fullscreen" style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; padding: 9px 14px; border-radius: 8px; border: 1px solid var(--color-neutral-700); background: transparent; color: var(--color-neutral-300); cursor: pointer;">Fullskärm</button>
-            <a href="{{ gameSrc }}" target="_blank" rel="noopener" data-gear="" data-en="New tab" style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; padding: 9px 14px; border-radius: 8px; border: 1px solid var(--color-neutral-700); color: var(--color-neutral-300);">Ny flik</a>
-            <button sc-camel-on-click="{{ gameClose }}" data-gear="" data-en="Close" style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; padding: 9px 14px; border-radius: 8px; border: 1px solid var(--color-accent); background: transparent; color: var(--color-accent-200); cursor: pointer;">Stäng</button>
-          </div>
-        </div>
-        <iframe id="cw-game-frame" src="{{ gameSrc }}" title="{{ gameTitle }}" allow="fullscreen; autoplay; gamepad" allowfullscreen="true" style="flex: 1 1 auto; min-height: 0; display: block; width: 100%; border: 0; background: var(--color-bg);"></iframe>
+    <p data-en="Play right in the browser. Nothing to download." style="font-size: 17px; line-height: 1.6; color: var(--color-neutral-400); margin: 0 0 32px; max-width: 560px; text-wrap: pretty;">Spela direkt i webbläsaren. Inget att ladda ner.</p>
+
+    <a href="https://games.chriswhippit.com/" data-genesis="" data-card="" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr)); border-radius: 16px; overflow: hidden; background: #0e0f26; box-shadow: 0 0 0 1px rgba(134,87,255,.55), 0 26px 60px -28px rgba(134,87,255,.7); color: #fff;">
+      <div style="aspect-ratio: 16 / 9; overflow: hidden; background: #0b0c20;"><img src="/spel/thumbs/genesis.webp" alt="Project Genesis" style="width: 100%; height: 100%; object-fit: cover; display: block;"></div>
+      <div data-genesis-text="" style="padding: 26px 28px; display: flex; flex-direction: column; justify-content: center; gap: 12px;">
+        <span data-en="Main game" style="font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: .16em; text-transform: uppercase; color: #b9a2ff;">Huvudspelet</span>
+        <h2 style="font-family: var(--font-heading); font-weight: 800; font-size: clamp(26px, 3vw, 40px); line-height: 1.05; letter-spacing: -.03em; margin: 0;">Project Genesis</h2>
+        <p data-en="A cyberpunk idle RPG in the browser. Build a character, work the professions and explore five regions with other players." style="font-size: 15px; line-height: 1.55; color: #cfcce0; margin: 0; max-width: 46ch; text-wrap: pretty;">Ett cyberpunk-idle-RPG i webbläsaren. Bygg en karaktär, jobba med yrkena och utforska fem regioner tillsammans med andra spelare.</p>
+        <span data-btnp="" data-en="Play Genesis →" style="margin-top: 6px; align-self: flex-start; display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; padding: 11px 18px; border-radius: 9px; background: #8657FF; color: #fff; white-space: nowrap; box-shadow: 0 10px 26px -12px rgba(134,87,255,.9);">Spela Genesis →</span>
       </div>
-    </sc-if>
-    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr)); gap: 18px; margin-top: 44px;">
+    </a>
+
+    <div style="display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 6px 16px; margin: 44px 0 14px;">
+      <h2 data-en="More games" style="font-family: var(--font-heading); font-weight: 500; font-size: 24px; letter-spacing: -.02em; margin: 0;">Fler spel</h2>
+      <span data-en="Small test games, they change often" style="font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: .16em; text-transform: uppercase; font-size: 10px; color: var(--color-neutral-500);">Små testspel, ändras ofta</span>
+    </div>
+    <div data-minigames="" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 14px;">
       <sc-for list="{{ games }}" as="g" hint-placeholder-count="5">
-        <button sc-camel-on-click="{{ g.onPlay }}" data-lift="" style="text-align: left; cursor: pointer; border: 0; padding: 0; font: inherit; color: var(--color-text); background: var(--color-surface); border-radius: 14px; overflow: hidden; box-shadow: {{ g.ring }}; display: flex; flex-direction: column;">
-          <div style="position: relative; aspect-ratio: 16 / 9; background: var(--color-neutral-900);">
-            <img src="{{ g.thumb }}" alt="{{ g.title }}" loading="lazy" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 72% 40%;">
-            <span data-en="Test build" style="position: absolute; top: 12px; right: 12px; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--color-accent-100); padding: 4px 8px; border-radius: 6px; background: color-mix(in srgb, var(--color-bg) 82%, transparent); box-shadow: inset 0 0 0 1px var(--color-accent-700);">Testversion</span>
+        <a href="{{ g.src }}" data-lift="" style="display: block; border-radius: 12px; overflow: hidden; background: var(--color-surface); box-shadow: 0 0 0 1px var(--color-neutral-800); color: var(--color-text);">
+          <div style="aspect-ratio: 4 / 5; overflow: hidden; background: var(--color-neutral-900);"><img data-thumb="" src="{{ g.thumb }}" alt="{{ g.title }}" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; display: block;"></div>
+          <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 10px 12px;">
+            <span style="font-family: var(--font-heading); font-size: 15px; font-weight: 600; letter-spacing: -.01em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ g.title }}</span>
+            <i class="ph-fill ph-play" aria-hidden="true" style="flex: 0 0 auto; font-size: 13px; color: var(--color-accent-300);"></i>
           </div>
-          <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 16px 18px 18px;">
-            <span style="font-family: var(--font-heading); font-size: 22px; font-weight: 500; letter-spacing: -.02em;">{{ g.title }}</span>
-            <span style="display: flex; align-items: center; gap: 8px; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--color-accent-300);"><i class="ph-fill ph-play"></i><span data-en="Play">Spela</span></span>
-          </div>
-        </button>
+        </a>
       </sc-for>
     </div>
   </main>
@@ -7050,7 +7063,7 @@ class Component extends DCLogic {
       shopOff: r === 'shop' ? '' : '1',
       atSpel: r === 'spel' ? '1' : '',
       goSpel: this.go('spel'),
-      games: GAMES.map((g, i) => ({ ...g, thumb: SITE_ROOT + 'spel/thumbs/' + g.slug + '.jpg', num: String(i + 1).padStart(2, '0'), ring: this.state.game === g.slug ? '0 0 0 1px var(--color-accent)' : '0 0 0 1px var(--color-neutral-800)', onPlay: () => { document.body.style.overflow = 'hidden'; this.setState({ game: g.slug }); } })),
+      games: GAMES.map((g, i) => ({ ...g, thumb: SITE_ROOT + 'spel/thumbs/' + g.slug + '-board.jpg', src: SITE_ROOT + 'spel/' + g.slug + '.html', num: String(i + 1).padStart(2, '0'), ring: this.state.game === g.slug ? '0 0 0 1px var(--color-accent)' : '0 0 0 1px var(--color-neutral-800)', onPlay: () => { document.body.style.overflow = 'hidden'; this.setState({ game: g.slug }); } })),
       hasGame: this.state.game ? true : '',
       gameSrc: this.state.game ? SITE_ROOT + 'spel/' + this.state.game + '.html' : '',
       gameTitle: (GAMES.find((g) => g.slug === this.state.game) || {}).title || '',
