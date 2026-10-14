@@ -5933,6 +5933,12 @@ textarea.input { min-height: 90px; resize: vertical; }
             <sc-if value="{{ syncMsg }}">
               <span style="font-size: 13px; color: var(--color-neutral-400);">{{ syncMsg }}</span>
             </sc-if>
+            <sc-if value="{{ conflict }}">
+              <div style="display: flex; flex-direction: column; gap: 10px; padding: 14px; border-radius: 10px; background: rgba(244,114,166,.08); box-shadow: 0 0 0 1px rgba(244,114,166,.35);">
+                <span style="font-size: 14px; color: #f7b6cf;">Innehållet på sajten har ändrats sedan ditt utkast (från en annan dator eller direkt i repot). Publicerar du nu skrivs de ändringarna över.</span>
+                <button data-btn="" sc-camel-on-click="{{ loadPublished }}" style="align-self: start; padding: 10px 16px; border-radius: 8px; border: 1px solid #f472a6; background: transparent; color: #f7b6cf; font-size: 13px; cursor: pointer;">Hämta det publicerade (släng mitt utkast)</button>
+              </div>
+            </sc-if>
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px;">
               <label style="display: block;">
                 <span style="display: block; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: var(--color-neutral-600); margin-bottom: 7px;">Repo</span>
@@ -6031,6 +6037,7 @@ textarea.input { min-height: 90px; resize: vertical; }
 </x-dc>
 <script type="text/x-dc" data-dc-script="" data-props="{}">
 const KEY = 'cw-admin-content';
+const BASE = 'cw-admin-base'; // publicerat innehåll som utkastet utgår från
 // GitHub-tokenen hålls bara i sessionStorage: den försvinner när webbläsaren stängs
 // och låses upp igen med lösenfrasen (som dekrypterar admin/key.json).
 const TOKEN = 'cw-gh-token';
@@ -6213,17 +6220,39 @@ class Component extends DCLogic {
     } catch (e) { /* defaults */ }
     // Ingen sparad token i repot ännu -> visa direkt formuläret för att lägga in en.
     this.loadRemoteKey().then((k) => { if (!k && !this.state.authed) this.setState({ mode: 'setup' }); });
-    // published content wins over an empty local draft
-    fetch('../content.json', { cache: 'no-store' })
+    // Välj mellan lokalt utkast och det som är publicerat. BASE = det publicerade innehåll
+    // som utkastet utgår från. Har utkastet inga egna ändringar tas det publicerade
+    // (kan ha ändrats från en annan dator eller direkt i repot). Har båda ändrats
+    // behålls utkastet men admin varnar innan det skriver över.
+    fetch('../content.json?t=' + Date.now(), { cache: 'no-store' })
       .then((r) => (r.ok ? r.json() : null))
       .then((pub) => {
         if (!pub) return;
-        let hasLocal = false;
-        try { hasLocal = !!localStorage.getItem(KEY); } catch (e) {}
-        if (!hasLocal) this.setState({ data: fixStats({ ...DEFAULTS, ...pub }) });
+        const norm = (x) => JSON.stringify(fixStats({ ...DEFAULTS, ...x }));
+        let local = null, base = null;
+        try { local = JSON.parse(localStorage.getItem(KEY) || 'null'); base = JSON.parse(localStorage.getItem(BASE) || 'null'); } catch (e) {}
+        const pubN = norm(pub);
+        const draftEdited = local && (base ? norm(local) !== norm(base) : norm(local) !== pubN);
+        const pubMoved = base ? norm(base) !== pubN : !!local && norm(local) !== pubN;
+        this._published = pub;
+        if (!draftEdited) {
+          try { localStorage.setItem(KEY, JSON.stringify(pub)); localStorage.setItem(BASE, JSON.stringify(pub)); } catch (e) {}
+          this.setState({ data: fixStats({ ...DEFAULTS, ...pub }) });
+        } else if (pubMoved) {
+          this.setState({ conflict: '1', pubStatus: 'Obs: innehållet på sajten har ändrats sedan ditt utkast. Publicerar du skrivs de ändringarna över. Under Publicering kan du hämta det publicerade i stället.' });
+        }
       })
       .catch(() => {});
   }
+
+  // Släng det lokala utkastet och ladda det som är publicerat.
+  loadPublished = async () => {
+    let pub = null;
+    try { pub = await fetch('../content.json?t=' + Date.now(), { cache: 'no-store' }).then((r) => (r.ok ? r.json() : null)); } catch (e) {}
+    if (!pub) return this.setState({ pubStatus: 'Kunde inte hämta det publicerade innehållet.' });
+    try { localStorage.setItem(KEY, JSON.stringify(pub)); localStorage.setItem(BASE, JSON.stringify(pub)); } catch (e) {}
+    this.setState({ data: fixStats({ ...DEFAULTS, ...pub }), conflict: '', pubStatus: 'Hämtade det publicerade innehållet.', saved: '' });
+  };
 
   fail = (errorMsg) => this.setState({ busy: false, error: true, errorMsg });
 
@@ -6448,7 +6477,8 @@ class Component extends DCLogic {
       const json = JSON.stringify(data, null, 2);
       const b64 = btoa(String.fromCharCode(...new TextEncoder().encode(json)));
       const res = await this.ghPut((base ? base + '/' : '') + 'content.json', b64, 'Admin: uppdaterat innehåll');
-      try { localStorage.setItem(KEY, json); } catch (e) {}
+      try { localStorage.setItem(KEY, json); localStorage.setItem(BASE, json); } catch (e) {}
+      this.setState({ conflict: '' });
       const t = new Date().toLocaleTimeString('sv-SE', { hour: '2-digit', minute: '2-digit' });
       if (res.unchanged) {
         this.setState({ data, pubStatus: 'Inget att publicera — innehållet i repot är redan identiskt. Redigerar du i en annan flik eller webbläsare än den här?' });
@@ -6611,6 +6641,8 @@ class Component extends DCLogic {
       syncMsg: this.state.syncMsg,
       setSyncPhrase: (e) => this.setState({ syncPhrase: e.target.value, syncMsg: '' }),
       saveRemoteToken: this.saveRemoteToken,
+      conflict: this.state.conflict || '',
+      loadPublished: this.loadPublished,
       ghRepo: this.state.ghRepo,
       ghBranch: this.state.ghBranch,
       ghPath: this.state.ghPath,
