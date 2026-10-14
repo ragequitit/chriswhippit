@@ -5866,6 +5866,79 @@ textarea.input { min-height: 90px; resize: vertical; }
   }
   /* Mellanbredd (surfplatta, litet fönster): menyn får plats utan att klippas. */
   @media (min-width: 601px) and (max-width: 1000px) { [data-hnav] { gap: 18px !important; } }
+  /* Mobil startsida: samma innehåll, mindre luft och fler saker per skärm. */
+  @media (max-width: 600px) {
+    [data-hero-spacer] { display: none !important; }
+    [data-hero-body] { padding-bottom: 24px !important; }
+    [data-hero-body] div[data-en^="Content creator"] { font-size: 11px !important; margin-bottom: 12px !important; }
+    [data-hero-body] h1 { font-size: 56px !important; }
+    [data-hero-body] p { font-size: 16px !important; margin-top: 16px !important; }
+    [data-hero-body] div[style*="margin-top: 32px"] { margin-top: 20px !important; gap: 10px !important; }
+    [data-hero-body] [data-btnp], [data-hero-body] [data-btno] { padding: 12px 16px !important; font-size: 15px !important; }
+
+    [data-home-stats] { flex-wrap: nowrap !important; gap: 0 !important; }
+    [data-home-stats] > div { flex: 1 1 0 !important; min-width: 0; padding: 4px !important; }
+    [data-home-stats] > div > div:first-child { font-size: 22px !important; }
+    [data-home-stats] > div > div + div { font-size: 8.5px !important; line-height: 1.3; letter-spacing: .06em !important; margin-top: 4px !important; }
+
+    [data-home-latest] { padding-top: 28px !important; }
+    [data-home-latest] > div:first-child { margin-bottom: 14px !important; }
+    [data-home-latest] h2, [data-home-up] h2 { font-size: 24px !important; }
+    [data-vfeat-text] { padding: 12px 14px 14px !important; gap: 6px !important; }
+    [data-vfeat-text] h3 { font-size: 18px !important; }
+    [data-vfeat-text] > span:last-child { font-size: 12px !important; }
+    [data-vrest] { grid-template-columns: 1fr !important; gap: 8px !important; margin-top: 8px !important; }
+    [data-vrest] > a { display: grid !important; grid-template-columns: 136px 1fr; align-items: center; border-radius: 10px !important; }
+    [data-vrest] > a > div:last-child { padding: 6px 10px !important; }
+    [data-vrest] h4 { font-size: 13px !important; line-height: 1.3 !important; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+    [data-vrest] h4 + div { font-size: 8.5px !important; margin-top: 4px !important; }
+
+    [data-home-up] { padding-top: 36px !important; }
+    [data-home-up] > div:first-child { margin-bottom: 12px !important; gap: 4px 12px !important; }
+    [data-home-up] > div:first-child p { font-size: 11.5px !important; margin: 2px 0 0 !important; }
+    [data-up-grid] { grid-template-columns: 1fr !important; gap: 5px !important; }
+    [data-up-day] { flex-direction: row !important; flex-wrap: wrap; gap: 6px !important; min-height: 0 !important; padding: 6px !important; border-radius: 10px !important; }
+    [data-up-head] { flex: 0 0 44px; flex-direction: column; align-items: flex-start !important; gap: 1px !important; padding: 2px !important; min-height: 0 !important; }
+    [data-up-head] > span:first-child { font-size: 11.5px !important; }
+    [data-up-head] > span:nth-child(2) { font-size: 10px !important; }
+    [data-up-head] [data-en="Today"] { display: none !important; }
+    [data-up-item] { flex: 1 1 120px; min-width: 0; position: relative; gap: 3px !important; padding: 6px 8px !important; border-radius: 8px !important; }
+    [data-up-item] [data-en="Planned"] { display: none !important; }
+    [data-up-item] > span[style*="font-size: 16px"] { font-size: 12.5px !important; }
+    [data-up-item] > span:has(> i.ph-clock) { position: absolute; right: 7px; bottom: 6px; font-size: 9px !important; color: var(--color-neutral-400) !important; }
+    [data-up-item] > span:has(> i.ph-clock) > i { display: none; }
+    [data-up-item] > span:last-child { font-size: 8.5px !important; letter-spacing: .04em !important; gap: 5px !important; padding-right: 30px; }
+    [data-up-item] > span:last-child > span:first-child { flex-basis: 6px !important; width: 6px !important; height: 6px !important; }
+    [data-up-empty] { flex: 1 1 120px !important; flex-direction: row !important; justify-content: flex-start !important; gap: 0 !important; padding: 6px 8px !important; border-radius: 8px !important; }
+    [data-up-empty] > i { display: none; }
+    [data-up-empty] > span { font-size: 10px !important; }
+
+    [data-home-partners] { margin-top: 36px !important; padding: 18px 0 22px !important; }
+    [data-sponsor] { width: 200px !important; padding: 10px 10px 12px !important; }
+    [data-sponsor] > div:first-child { height: 100px !important; }
+
+    [data-home-reach] { margin-top: 36px !important; padding: 28px 0 32px !important; }
+    [data-home-reach] div[data-en="Reach"] { font-size: 14px !important; margin-bottom: 16px !important; }
+    [data-reach-grid] { grid-template-columns: repeat(3, 1fr) !important; gap: 16px 12px !important; }
+    [data-reach-grid] [data-stat] { padding-top: 8px !important; min-width: 0; }
+    [data-reach-grid] [data-stat] > img { width: 34px !important; height: 34px !important; margin: 0 0 4px -2px !important; }
+    [data-reach-grid] [data-stat] > div:nth-of-type(1) { font-size: 22px !important; }
+    [data-reach-grid] [data-stat] > div:nth-of-type(2), [data-reach-grid] [data-stat] span[data-en] { font-size: 9px !important; letter-spacing: .08em !important; margin-top: 2px !important; }
+
+    [data-home-setup] { margin-top: 36px !important; }
+    [data-setup-spacer] { min-height: 200px !important; }
+    [data-home-setup] > div:last-child { padding: 16px 16px 20px !important; }
+    [data-home-setup] h2 { font-size: 24px !important; margin-bottom: 10px !important; }
+    [data-home-setup] p { font-size: 14px !important; margin-bottom: 14px !important; }
+
+    section[style*="padding: 96px 24px 0"] { padding-top: 40px !important; }
+    [data-card][style*="aspect-ratio: 3 / 2"] { aspect-ratio: auto !important; min-height: 176px !important; }
+    [data-card][style*="aspect-ratio: 3 / 2"] > div { padding: 16px 0 16px 16px !important; }
+
+    [data-footer] { margin-top: 48px !important; }
+    [data-footer-grid] { grid-template-columns: 1fr 1fr !important; gap: 20px 16px !important; padding: 28px 16px 20px !important; }
+    [data-footer-grid] > div:first-child, [data-footer-grid] > div:last-child { grid-column: 1 / -1; }
+  }
   [data-thumb] { transition: transform .8s cubic-bezier(.2,.7,.2,1), opacity .5s ease; }
   [data-lift]:hover [data-thumb] { transform: scale(1.06); }
   [data-adwrap]:has(ins[data-ad-status="unfilled"]) { display: none !important; }
@@ -5923,12 +5996,12 @@ textarea.input { min-height: 90px; resize: vertical; }
             <a href="https://discord.com/invite/uqhVKeCmGz" target="_blank" data-btno="" data-en="Join the Discord" style="display: inline-flex; align-items: center; gap: 12px; font-size: 16px; font-weight: 600; padding: 14px 22px; border-radius: 10px; border: 1.5px solid #8657FF; color: #ece8ff; white-space: nowrap;"><img src="/assets/bundle/2fad8dfbc900.webp" alt="" width="26" height="26" style="display: block; width: 26px; height: 26px; object-fit: contain;">Häng med i Discord</a>
           </div>
         </div>
-        <div aria-hidden="true" style="min-width: 0; min-height: clamp(230px, 29vw, 440px);"></div>
+        <div data-hero-spacer="" aria-hidden="true" style="min-width: 0; min-height: clamp(230px, 29vw, 440px);"></div>
       </div>
     </section>
 
     <section style="max-width: 1240px; margin: 0 auto; padding: 8px 24px 0;" data-reveal="">
-      <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 12px 0; margin-top: 0;">
+      <div data-home-stats="" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 12px 0; margin-top: 0;">
         <div style="flex: 1 1 180px; text-align: center; padding: 6px 18px;">
           <div style="font-family: var(--font-heading); font-size: clamp(28px, 3vw, 36px); font-weight: 800; letter-spacing: -.03em;">{{ statTotal }}</div>
           <div data-en="followers, all platforms" style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--color-neutral-500); margin-top: 8px;">följare, alla plattformar</div>
@@ -5946,7 +6019,7 @@ textarea.input { min-height: 90px; resize: vertical; }
       </div>
     </section>
 
-    <section style="max-width: 1240px; margin: 0 auto; padding: 40px 24px 20px;" data-reveal="">
+    <section data-home-latest="" style="max-width: 1240px; margin: 0 auto; padding: 40px 24px 20px;" data-reveal="">
       <div style="display: flex; align-items: baseline; gap: 18px; flex-wrap: wrap; margin-bottom: 26px;">
         <h2 data-en="Latest videos" style="font-family: var(--font-heading); font-weight: 500; font-size: 30px; letter-spacing: -.025em; margin: 0;">Senaste videorna</h2>
         <a href="https://www.youtube.com/user/chriswhippit" target="_blank" data-en="All videos →" style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--color-neutral-500); margin-left: auto;">Alla videor →</a>
@@ -5963,13 +6036,13 @@ textarea.input { min-height: 90px; resize: vertical; }
             <img src="{{ v0thumb }}" alt="" data-thumb="" style="width: 100%; height: 100%; object-fit: cover; display: block;">
           </sc-if>
         </div>
-        <div style="padding: 34px 34px; display: flex; flex-direction: column; justify-content: center; gap: 14px; min-width: 0;">
+        <div data-vfeat-text="" style="padding: 34px 34px; display: flex; flex-direction: column; justify-content: center; gap: 14px; min-width: 0;">
           <span data-en="Newest" style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: var(--color-accent-400);">Nyast</span>
           <h3 style="font-family: var(--font-heading); font-weight: 500; font-size: clamp(22px, 2.4vw, 32px); line-height: 1.16; letter-spacing: -.02em; margin: 0; text-wrap: pretty;">{{ v0title }}</h3>
           <span style="font-size: 14px; color: var(--color-neutral-500);">{{ v0meta }}</span>
         </div>
       </a>
-      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 18px; margin-top: 18px;">
+      <div data-vrest="" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 18px; margin-top: 18px;">
         <sc-for list="{{ rest }}" as="v" hint-placeholder-count="4">
           <a href="{{ v.url }}" target="_blank" data-lift="" style="border-radius: 14px; overflow: hidden; background: var(--color-surface); box-shadow: 0 0 0 1px var(--color-neutral-800); color: var(--color-text); display: block;">
             <div style="overflow: hidden; aspect-ratio: 16 / 9; background: var(--color-neutral-900);"><sc-if value="{{ v.thumb }}"><img src="{{ v.thumb }}" alt="" data-thumb="" style="width: 100%; height: 100%; object-fit: cover; display: block;"></sc-if></div>
@@ -5984,7 +6057,7 @@ textarea.input { min-height: 90px; resize: vertical; }
       </div>
     </section>
 
-    <section style="max-width: 1240px; margin: 0 auto; padding: 84px 24px 0;" data-reveal="">
+    <section data-home-up="" style="max-width: 1240px; margin: 0 auto; padding: 84px 24px 0;" data-reveal="">
       <div style="display: flex; align-items: flex-end; gap: 14px 24px; flex-wrap: wrap; margin-bottom: 26px;">
         <div>
           <h2 data-en="Upcoming videos" style="font-family: var(--font-heading); font-weight: 800; font-size: clamp(30px, 3.4vw, 40px); letter-spacing: -.035em; margin: 0;">Kommande videor</h2>
@@ -5992,10 +6065,10 @@ textarea.input { min-height: 90px; resize: vertical; }
         </div>
         <p data-en="Times are a rough guide — changes are announced on X and Instagram." style="margin: 0 0 4px auto; font-size: 13px; color: var(--color-neutral-500);">Tiderna är ungefärliga — ändringar annonseras på X och Instagram.</p>
       </div>
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px;">
+      <div data-up-grid="" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px;">
         <sc-for list="{{ schemaShort }}" as="r" hint-placeholder-count="7">
-          <div style="border-radius: 14px; padding: 12px 9px 10px; background: {{ r.colBg }}; box-shadow: {{ r.colRing }}; display: flex; flex-direction: column; gap: 9px; min-height: 280px;">
-            <div style="display: flex; align-items: center; gap: 8px; padding: 2px 5px; min-height: 28px;">
+          <div data-up-day="" style="border-radius: 14px; padding: 12px 9px 10px; background: {{ r.colBg }}; box-shadow: {{ r.colRing }}; display: flex; flex-direction: column; gap: 9px; min-height: 280px;">
+            <div data-up-head="" style="display: flex; align-items: center; gap: 8px; padding: 2px 5px; min-height: 28px;">
               <span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 500; letter-spacing: .06em; text-transform: uppercase; color: {{ r.dayColor }};">{{ r.dayShort }}</span>
               <span style="font-size: 12px; color: var(--color-neutral-500); white-space: nowrap;">{{ r.date }}</span>
               <sc-if value="{{ r.isToday }}">
@@ -6003,7 +6076,7 @@ textarea.input { min-height: 90px; resize: vertical; }
               </sc-if>
             </div>
             <sc-for list="{{ r.items }}" as="it" hint-placeholder-count="1">
-              <a href="{{ it.cardUrl }}" target="_blank" rel="noopener" style="display: flex; flex-direction: column; gap: 8px; border-radius: 10px; padding: 11px 11px 12px 14px; background: {{ it.cardBg }}; box-shadow: {{ it.cardRing }}; color: var(--color-text); text-decoration: none;">
+              <a data-up-item="" href="{{ it.cardUrl }}" target="_blank" rel="noopener" style="display: flex; flex-direction: column; gap: 8px; border-radius: 10px; padding: 11px 11px 12px 14px; background: {{ it.cardBg }}; box-shadow: {{ it.cardRing }}; color: var(--color-text); text-decoration: none;">
                 <span data-en="Planned" style="align-self: flex-start; font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 500; letter-spacing: .12em; text-transform: uppercase; padding: 3px 7px; border-radius: 5px; background: {{ it.tagBg }}; color: {{ it.tagFg }};">Planerat</span>
                 <span style="font-family: var(--font-heading); font-size: 16px; font-weight: 700; line-height: 1.2; letter-spacing: -.01em; text-wrap: pretty;">{{ it.what }}</span>
                 <sc-if value="{{ it.time }}">
@@ -6013,7 +6086,7 @@ textarea.input { min-height: 90px; resize: vertical; }
               </a>
             </sc-for>
             <sc-if value="{{ r.noItems }}">
-              <div style="flex: 1 1 auto; border-radius: 10px; border: 1px dashed rgba(255,255,255,.14); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 18px 10px; text-align: center;">
+              <div data-up-empty="" style="flex: 1 1 auto; border-radius: 10px; border: 1px dashed rgba(255,255,255,.14); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 18px 10px; text-align: center;">
                 <i class="ph-fill ph-calendar-blank" aria-hidden="true" style="font-size: 26px; color: var(--color-neutral-500);"></i>
                 <span data-en="No video planned" style="font-size: 13px; line-height: 1.4; color: var(--color-neutral-500);">Ingen video planerad</span>
               </div>
@@ -6032,7 +6105,7 @@ textarea.input { min-height: 90px; resize: vertical; }
       </section>
     </sc-if>
 
-    <section style="margin: 84px 0 0; padding: 30px 0 34px; border-top: 1px solid var(--color-divider); border-bottom: 1px solid var(--color-divider);" data-reveal="">
+    <section data-home-partners="" style="margin: 84px 0 0; padding: 30px 0 34px; border-top: 1px solid var(--color-divider); border-bottom: 1px solid var(--color-divider);" data-reveal="">
       <div style="max-width: 1240px; margin: 0 auto 20px; padding: 0 24px; display: flex; align-items: baseline; gap: 14px;">
         <span data-en="Partners" style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .22em; text-transform: uppercase; color: var(--color-neutral-600);">Samarbeten</span>
         <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--color-neutral-700);">{{ sponsorCount }}</span>
@@ -6065,10 +6138,10 @@ textarea.input { min-height: 90px; resize: vertical; }
       </div>
     </section>
 
-    <section style="position: relative; z-index: 6; margin: 96px 0 0; padding: 66px 0 72px; background: radial-gradient(60% 140% at 85% 100%, rgba(134,87,255,.30) 0%, rgba(134,87,255,0) 70%), linear-gradient(175deg, #1b1934 0%, #241e48 55%, #2e2360 100%); box-shadow: inset 0 1px 0 rgba(134,87,255,.25), inset 0 -1px 0 rgba(134,87,255,.25);" data-reveal="">
+    <section data-home-reach="" style="position: relative; z-index: 6; margin: 96px 0 0; padding: 66px 0 72px; background: radial-gradient(60% 140% at 85% 100%, rgba(134,87,255,.30) 0%, rgba(134,87,255,0) 70%), linear-gradient(175deg, #1b1934 0%, #241e48 55%, #2e2360 100%); box-shadow: inset 0 1px 0 rgba(134,87,255,.25), inset 0 -1px 0 rgba(134,87,255,.25);" data-reveal="">
       <div style="max-width: 1240px; margin: 0 auto; padding: 0 24px;">
         <div data-en="Reach" style="font-family: 'JetBrains Mono', monospace; font-size: 20px; font-weight: 500; letter-spacing: .24em; text-transform: uppercase; color: #fff; margin-bottom: 32px;">Räckvidd</div>
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 30px;">
+        <div data-reach-grid="" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 30px;">
           <div data-stat="" data-pop-host="" tabindex="0" style="position: relative; color: var(--color-neutral-100); border-top: 2px solid #ff4d4d; padding-top: 16px; cursor: pointer; z-index: 2;">
             <img src="/assets/bundle/278df6272a77.webp" alt="" width="64" height="64" style="display: block; width: 64px; height: 64px; object-fit: contain; margin: -5px 0 9px -5px;">
             <div style="font-family: var(--font-heading); font-size: clamp(32px, 3.6vw, 50px); font-weight: 700; letter-spacing: -.035em; color: #fff;">{{ statYouTube }}</div>
@@ -6119,12 +6192,12 @@ textarea.input { min-height: 90px; resize: vertical; }
       </div>
     </section>
 
-    <section style="position: relative; isolation: isolate; margin-top: 96px;" data-reveal="">
+    <section data-home-setup="" style="position: relative; isolation: isolate; margin-top: 96px;" data-reveal="">
       <div aria-hidden="true" style="position: absolute; inset: 0; z-index: -1; pointer-events: none; overflow: hidden;">
         <img src="/assets/bundle/4be514ff760f.jpg" alt="" style="position: absolute; top: 0; left: clamp(24px, 9vw, 180px); height: 100%; width: auto; max-width: none; display: block; -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 16%, #000 74%, transparent 100%), linear-gradient(90deg, transparent 0%, #000 12%, #000 72%, transparent 100%); -webkit-mask-composite: source-in; mask-image: linear-gradient(180deg, transparent 0%, #000 16%, #000 74%, transparent 100%), linear-gradient(90deg, transparent 0%, #000 12%, #000 72%, transparent 100%); mask-composite: intersect;">
       </div>
       <div style="max-width: 1240px; margin: 0 auto; padding: 56px 24px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 24px; align-items: center;">
-        <div aria-hidden="true" style="min-width: 0; min-height: clamp(285px, 34vw, 513px);"></div>
+        <div data-setup-spacer="" aria-hidden="true" style="min-width: 0; min-height: clamp(285px, 34vw, 513px);"></div>
         <div style="min-width: 0; padding-left: clamp(0px, 6vw, 110px);">
         <div data-en="The setup" style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .22em; text-transform: uppercase; color: var(--color-accent-400); margin-bottom: 18px;">Setupen</div>
         <h2 data-en="The gear I use" style="font-family: var(--font-heading); font-weight: 500; font-size: clamp(28px, 3.2vw, 42px); line-height: 1.1; letter-spacing: -.03em; margin: 0 0 20px;">Grejerna jag använder</h2>
@@ -6351,8 +6424,8 @@ textarea.input { min-height: 90px; resize: vertical; }
     <div style="margin-top: 14px; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .1em; color: var(--color-neutral-500);"><a href="https://whippit.myspreadshop.se/" target="_blank" data-en="Open the shop on Spreadshirt instead →" style="color: var(--color-neutral-500);">Öppna butiken på Spreadshirt istället →</a></div>
   </div>
 
-  <footer style="margin-top: 120px; background: linear-gradient(180deg, rgba(35,37,50,0) 0%, rgba(35,37,50,.7) 100%);">
-    <div style="max-width: 1240px; margin: 0 auto; padding: 56px 24px 30px; display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 36px;">
+  <footer data-footer="" style="margin-top: 120px; background: linear-gradient(180deg, rgba(35,37,50,0) 0%, rgba(35,37,50,.7) 100%);">
+    <div data-footer-grid="" style="max-width: 1240px; margin: 0 auto; padding: 56px 24px 30px; display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 36px;">
       <div>
         <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px; color: #fff;"><img src="/assets/logo-white.png" alt="" style="width: 30px; height: 30px; display: block;"><span style="font-family: var(--font-heading); font-weight: 800; font-size: 18px; letter-spacing: .04em;">CHRISWHIPPIT</span></div>
         <div data-en="Chris Whippit's digital home." style="font-size: 14px; color: var(--color-neutral-500); line-height: 1.6; max-width: 24ch;">Chris Whippits digitala hem.</div>
