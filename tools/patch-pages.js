@@ -3,7 +3,7 @@
 // patch.json: [{ "find": "...", "replace": "..." }, ...]  — varje "find" måste finnas exakt en gång per sida.
 const fs = require('fs'), path = require('path');
 const root = path.join(__dirname, '..');
-const PAGES = ['index.html', 'setup/index.html', 'schema/index.html', 'faq/index.html', 'nedladdningar/index.html', 'shop/index.html', 'spel/index.html', 'samarbeten/index.html'];
+const PAGES = ['index.html', 'setup/index.html', 'schema/index.html', 'faq/index.html', 'nedladdningar/index.html', 'shop/index.html', 'spel/index.html', 'samarbeten/index.html', 'om/index.html', 'integritetspolicy/index.html'];
 const patches = JSON.parse(fs.readFileSync(process.argv[2], 'utf8'));
 
 const updated = {};

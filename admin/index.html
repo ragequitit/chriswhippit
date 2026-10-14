@@ -5659,6 +5659,7 @@ textarea.input { min-height: 90px; resize: vertical; }
         <button data-tab="" data-on="{{ onSetup }}" sc-camel-on-click="{{ goSetup }}" style="text-align: left; padding: 11px 14px; border: none; border-radius: 8px; background: transparent; color: var(--color-neutral-400); font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 10px;"><i class="ph-fill ph-desktop-tower" aria-hidden="true" style="font-size: 15px;"></i>Setup</button>
         <button data-tab="" data-on="{{ onSchema }}" sc-camel-on-click="{{ goSchema }}" style="text-align: left; padding: 11px 14px; border: none; border-radius: 8px; background: transparent; color: var(--color-neutral-400); font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 10px;"><i class="ph-fill ph-calendar-blank" aria-hidden="true" style="font-size: 15px;"></i>Schema</button>
         <button data-tab="" data-on="{{ onFaq }}" sc-camel-on-click="{{ goFaq }}" style="text-align: left; padding: 11px 14px; border: none; border-radius: 8px; background: transparent; color: var(--color-neutral-400); font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 10px;"><i class="ph-fill ph-question" aria-hidden="true" style="font-size: 15px;"></i>FAQ</button>
+        <button data-tab="" data-on="{{ onAbout }}" sc-camel-on-click="{{ goAbout }}" style="text-align: left; padding: 11px 14px; border: none; border-radius: 8px; background: transparent; color: var(--color-neutral-400); font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 10px;"><i class="ph-fill ph-question" aria-hidden="true" style="font-size: 15px;"></i>Om mig</button>
         <button data-tab="" data-on="{{ onDl }}" sc-camel-on-click="{{ goDl }}" style="text-align: left; padding: 11px 14px; border: none; border-radius: 8px; background: transparent; color: var(--color-neutral-400); font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 10px;"><i class="ph-fill ph-download-simple" aria-hidden="true" style="font-size: 15px;"></i>Nedladdningar</button>
         <button data-tab="" data-on="{{ onShop }}" sc-camel-on-click="{{ goShop }}" style="text-align: left; padding: 11px 14px; border: none; border-radius: 8px; background: transparent; color: var(--color-neutral-400); font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 10px;"><i class="ph-fill ph-t-shirt" aria-hidden="true" style="font-size: 15px;"></i>Shop</button>
         <button data-tab="" data-on="{{ onSponsors }}" sc-camel-on-click="{{ goSponsors }}" style="text-align: left; padding: 11px 14px; border: none; border-radius: 8px; background: transparent; color: var(--color-neutral-400); font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 10px;"><i class="ph-fill ph-handshake" aria-hidden="true" style="font-size: 15px;"></i>Samarbeten</button>
@@ -5780,6 +5781,14 @@ textarea.input { min-height: 90px; resize: vertical; }
               </div>
             </sc-for>
             <button data-btn="" sc-camel-on-click="{{ addFaq }}" style="align-self: start; padding: 11px 16px; border: 1px dashed var(--color-neutral-700); background: transparent; color: var(--color-neutral-400); font-size: 13px;" style-hover="border-color: var(--color-accent-600); color: var(--color-accent-300);">+ Ny fråga</button>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ onAbout }}">
+          <div style="background: var(--color-surface); border-radius: 14px; box-shadow: 0 0 0 1px var(--color-neutral-800); padding: 16px; display: flex; flex-direction: column; gap: 10px;">
+            <input data-in="" value="{{ aboutLead }}" sc-camel-on-change="{{ setAboutLead }}" placeholder="Ingress, en mening överst på sidan" style="font-family: var(--font-heading); font-size: 15px;">
+            <textarea data-in="" rows="22" value="{{ aboutText }}" sc-camel-on-change="{{ setAboutText }}" placeholder="Din historia. Tom rad = nytt stycke. Börja en rad med ## för en rubrik." style="resize: vertical; line-height: 1.6;"></textarea>
+            <span style="font-size: 12px; color: var(--color-neutral-500);">Tom rad ger nytt stycke. En rad som börjar med <code>## </code> blir en rubrik. E-post, länkar och ord som setup-sidan, shoppen, Discord och YouTube blir klickbara.</span>
           </div>
         </sc-if>
 
@@ -6178,6 +6187,7 @@ const TITLES = {
   setup: ['Setup', 'Grupper och rader som visas på setup-sidan.'],
   schema: ['Schema', 'Riktiga datum, två veckor framåt.'],
   faq: ['FAQ', 'Frågor och svar, i ordningen de visas.'],
+  about: ['Om mig', 'Texten på sidan Om Chris Whippit (/om/).'],
   downloads: ['Nedladdningar', 'Filer besökare kan ladda ner.'],
   shop: ['Shop', 'Produkter och vart de länkar.'],
   sponsors: ['Samarbeten', 'Loggor, texten under dem och vart de länkar.'],
@@ -6630,6 +6640,12 @@ class Component extends DCLogic {
       onSetup: tab === 'setup' ? '1' : '',
       onSchema: tab === 'schema' ? '1' : '',
       onFaq: tab === 'faq' ? '1' : '',
+      onAbout: tab === 'about' ? '1' : '',
+      goAbout: go('about'),
+      aboutLead: (d.about && d.about.lead) || '',
+      aboutText: (d.about && d.about.text) || '',
+      setAboutLead: (e) => { const v = e.target.value; this.mutate((x) => { x.about = { ...(x.about || {}), lead: v }; }); },
+      setAboutText: (e) => { const v = e.target.value; this.mutate((x) => { x.about = { ...(x.about || {}), text: v }; }); },
       onDl: tab === 'downloads' ? '1' : '',
       onShop: tab === 'shop' ? '1' : '',
       onSponsors: tab === 'sponsors' ? '1' : '',

@@ -76,8 +76,6 @@
 <helmet>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="google-adsense-account" content="ca-pub-6818738289266823">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com">
 <style>/* cyrillic-ext */
 @font-face {
   font-family: 'Inter';
@@ -6045,6 +6043,19 @@ textarea.input { min-height: 90px; resize: vertical; }
     [data-collab-item] > span:last-child > span:first-child { font-size: 15px !important; }
     [data-hnav] a[href="samarbeten/"] { display: none !important; }
   }
+  /* Om- och integritetssidan: länkar i brödtext, porträttet först i smalt läge. */
+  [data-prose] a { color: var(--color-accent-200); text-decoration: underline; text-underline-offset: 3px; }
+  @media (max-width: 899px) {
+    [data-about] { grid-template-columns: minmax(0, 1fr) !important; gap: 20px !important; }
+    [data-about-side] { position: static !important; order: -1; display: grid !important; grid-template-columns: 120px minmax(0, 1fr); align-items: center; }
+    [data-about-side] > img { grid-row: span 2; }
+  }
+  @media (max-width: 600px) {
+    [data-prose] { font-size: 15px !important; line-height: 1.65 !important; }
+    [data-prose] h2 { font-size: 19px !important; margin-top: 24px !important; }
+    [data-about-side] { grid-template-columns: 96px minmax(0, 1fr); gap: 10px !important; }
+    [data-about-side] > div > div > div:first-child { font-size: 18px !important; white-space: nowrap; }
+  }
   [data-thumb] { transition: transform .8s cubic-bezier(.2,.7,.2,1), opacity .5s ease; }
   [data-lift]:hover [data-thumb] { transform: scale(1.06); }
   [data-adwrap]:has(ins[data-ad-status="unfilled"]) { display: none !important; }
@@ -6588,6 +6599,64 @@ textarea.input { min-height: 90px; resize: vertical; }
   </main>
   </sc-if>
 
+  <sc-if value="{{ atOm }}">
+  <main style="max-width: 1240px; margin: 0 auto; padding: 72px 24px 0;">
+    <h1 data-en="About Chris Whippit" style="font-family: var(--font-heading); font-weight: 500; font-size: clamp(38px, 6vw, 76px); letter-spacing: -.04em; margin: 0 0 14px;">Om Chris Whippit</h1>
+    <sc-if value="{{ aboutLead }}"><p style="font-size: 18px; line-height: 1.6; color: #dcd8ee; margin: 0 0 28px; max-width: 60ch; text-wrap: pretty;">{{ aboutLead }}</p></sc-if>
+    <div data-about="" style="display: grid; grid-template-columns: minmax(0, 1fr) minmax(240px, 380px); gap: 40px; align-items: start;">
+      <article data-prose="" style="min-width: 0; max-width: 68ch; font-size: 16.5px; line-height: 1.75; color: #d6d3e6;">
+        <sc-for list="{{ aboutBlocks }}" as="b" hint-placeholder-count="4">
+          <sc-if value="{{ b.h }}"><h2 style="font-family: var(--font-heading); font-weight: 600; font-size: 24px; letter-spacing: -.02em; color: #fff; margin: 34px 0 10px;">{{ b.h }}</h2></sc-if>
+          <sc-if value="{{ b.isP }}"><p style="margin: 0 0 16px; white-space: pre-line; text-wrap: pretty;"><sc-for list="{{ b.parts }}" as="p" hint-placeholder-count="1"><sc-if value="{{ p.href }}"><a href="{{ p.href }}" target="{{ p.target }}" rel="noopener">{{ p.text }}</a></sc-if><sc-if value="{{ p.plain }}"><span>{{ p.text }}</span></sc-if></sc-for></p></sc-if>
+        </sc-for>
+      </article>
+      <aside data-about-side="" style="position: sticky; top: 90px; display: flex; flex-direction: column; gap: 14px;">
+        <img src="/assets/portrait.jpg" alt="Chris Whippit" style="width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 16px; display: block; box-shadow: 0 0 0 1px rgba(134,87,255,.4), 0 26px 60px -30px rgba(134,87,255,.7);">
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; text-align: center;">
+          <div style="padding: 12px 6px; border-radius: 10px; background: var(--color-surface); box-shadow: 0 0 0 1px var(--color-neutral-800);"><div style="font-family: var(--font-heading); font-size: 22px; font-weight: 800;">{{ statTotal }}</div><div data-en="followers" style="font-family: 'JetBrains Mono', monospace; letter-spacing: .14em; text-transform: uppercase; font-size: 9px; color: var(--color-neutral-500); margin-top: 4px;">följare</div></div>
+          <div style="padding: 12px 6px; border-radius: 10px; background: var(--color-surface); box-shadow: 0 0 0 1px var(--color-neutral-800);"><div style="font-family: var(--font-heading); font-size: 22px; font-weight: 800;">{{ statVideos }}</div><div data-en="videos" style="font-family: 'JetBrains Mono', monospace; letter-spacing: .14em; text-transform: uppercase; font-size: 9px; color: var(--color-neutral-500); margin-top: 4px;">videor</div></div>
+          <div style="padding: 12px 6px; border-radius: 10px; background: var(--color-surface); box-shadow: 0 0 0 1px var(--color-neutral-800);"><div style="font-family: var(--font-heading); font-size: 22px; font-weight: 800;">2014</div><div data-en="since" style="font-family: 'JetBrains Mono', monospace; letter-spacing: .14em; text-transform: uppercase; font-size: 9px; color: var(--color-neutral-500); margin-top: 4px;">sedan</div></div>
+        </div>
+        <a href="mailto:chris.whippit@gmail.com" data-btnp="" data-en="Get in touch" style="text-align: center; font-size: 14px; font-weight: 600; padding: 12px 16px; border-radius: 9px; background: #8657FF; color: #fff;">Kontakta mig</a>
+      </aside>
+    </div>
+  </main>
+  </sc-if>
+
+  <sc-if value="{{ atPriv }}">
+  <main style="max-width: 900px; margin: 0 auto; padding: 72px 24px 0;">
+    <h1 data-en="Privacy policy" style="font-family: var(--font-heading); font-weight: 500; font-size: clamp(38px, 6vw, 76px); letter-spacing: -.04em; margin: 0 0 14px;">Integritetspolicy</h1>
+    <p style="font-family: 'JetBrains Mono', monospace; letter-spacing: .14em; text-transform: uppercase; font-size: 11px; color: var(--color-neutral-500); margin: 0 0 26px;">Senast uppdaterad 14 oktober 2026</p>
+    <article data-prose="" style="font-size: 16px; line-height: 1.75; color: #d6d3e6;">
+      <p style="margin: 0 0 14px;">Den här sidan beskriver vilka uppgifter som hanteras när du besöker chriswhippit.com, varför, och vad du kan göra åt det. Kort sagt: sajten har inga konton, ingen egen besöksstatistik och visar bara annonser om du har godkänt det.</p>
+      <h2 style="font-family: var(--font-heading); font-weight: 600; font-size: 22px; letter-spacing: -.02em; color: #fff; margin: 34px 0 10px;">Vem ansvarar?</h2>
+      <p style="margin: 0 0 14px;">Chris Whippit är ansvarig för sajten och för personuppgifterna som behandlas här. Frågor om din integritet skickar du till <a href="mailto:chris.whippit@gmail.com">chris.whippit@gmail.com</a>.</p>
+      <h2 style="font-family: var(--font-heading); font-weight: 600; font-size: 22px; letter-spacing: -.02em; color: #fff; margin: 34px 0 10px;">Annonser från Google AdSense</h2>
+      <p style="margin: 0 0 14px;">Sajten kan visa annonser från Google AdSense. Annonser laddas bara om du har tryckt <em>Godkänn</em> i cookie-rutan. Då använder Google cookies och liknande tekniker för att visa, mäta och eventuellt anpassa annonserna efter dina intressen. Trycker du <em>Neka</em> laddas inga annonser och inga annonscookies sätts &ndash; sajten fungerar precis likadant ändå.</p>
+      <p style="margin: 0 0 14px;">Läs mer om hur Google använder uppgifter i <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener">Googles policy för partnerwebbplatser</a>. Du kan styra annonsanpassning i <a href="https://adssettings.google.com" target="_blank" rel="noopener">Googles annonsinställningar</a>.</p>
+      <sc-if value="{{ adsOn }}"><p style="margin: 0 0 14px;"><button sc-camel-on-click="{{ reopenConsent }}" data-ck="" style="cursor: pointer; font: inherit; font-size: 14px; padding: 10px 16px; border-radius: 8px; border: 1px solid var(--color-accent); background: transparent; color: var(--color-accent-200);">Ändra ditt cookieval</button></p></sc-if>
+      <h2 style="font-family: var(--font-heading); font-weight: 600; font-size: 22px; letter-spacing: -.02em; color: #fff; margin: 34px 0 10px;">YouTube</h2>
+      <p style="margin: 0 0 14px;">Startsidan, schemat och samarbetssidan hämtar uppgifter om videor (titlar, bilder och antal visningar) direkt från YouTube, som drivs av Google. Din webbläsare kontaktar då Googles servrar, vilket innebär att Google får se din IP-adress. Videor på samarbetssidan bäddas in först när du trycker på play, och då via youtube-nocookie.com. Se <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Googles integritetspolicy</a>.</p>
+      <h2 style="font-family: var(--font-heading); font-weight: 600; font-size: 22px; letter-spacing: -.02em; color: #fff; margin: 34px 0 10px;">Shoppen</h2>
+      <p style="margin: 0 0 14px;">Butiken på shop-sidan drivs av Spreadshirt och laddas från deras servrar. Spreadshirt visar en egen cookie-ruta och hanterar varukorg, betalning och leverans. Det de gör regleras av <a href="https://www.spreadshirt.se/integritetspolicy-C3104" target="_blank" rel="noopener">Spreadshirts integritetspolicy</a>.</p>
+      <h2 style="font-family: var(--font-heading); font-weight: 600; font-size: 22px; letter-spacing: -.02em; color: #fff; margin: 34px 0 10px;">Spelen</h2>
+      <p style="margin: 0 0 14px;">De mindre spelen på spelsidan sparar dina framsteg, rekord och ljudinställningar i din egen webbläsare (localStorage). Uppgifterna skickas inte till oss och försvinner om du rensar webbplatsdata. Project Genesis på games.chriswhippit.com är en egen tjänst med egna konton.</p>
+      <h2 style="font-family: var(--font-heading); font-weight: 600; font-size: 22px; letter-spacing: -.02em; color: #fff; margin: 34px 0 10px;">Det som sparas i din webbläsare</h2>
+      <p style="margin: 0 0 14px;">Förutom spelens framsteg sparar sajten ditt svar i cookie-rutan och en kopia av de senaste videolistorna så att sidan laddar snabbare. Inget av detta skickas till oss.</p>
+      <h2 style="font-family: var(--font-heading); font-weight: 600; font-size: 22px; letter-spacing: -.02em; color: #fff; margin: 34px 0 10px;">Webbhotell</h2>
+      <p style="margin: 0 0 14px;">Sajten ligger på GitHub Pages (GitHub Inc.). Som alla webbservrar kan GitHub tillfälligt logga tekniska uppgifter som din IP-adress för drift och säkerhet. Se <a href="https://docs.github.com/site-policy/privacy-policies/github-general-privacy-statement" target="_blank" rel="noopener">GitHubs integritetspolicy</a>.</p>
+      <h2 style="font-family: var(--font-heading); font-weight: 600; font-size: 22px; letter-spacing: -.02em; color: #fff; margin: 34px 0 10px;">Uppgifter utanför EU</h2>
+      <p style="margin: 0 0 14px;">Google och GitHub är amerikanska företag, så uppgifter kan föras över till USA. Båda är anslutna till EU&ndash;US Data Privacy Framework, som EU-kommissionen har beslutat ger en adekvat skyddsnivå.</p>
+      <h2 style="font-family: var(--font-heading); font-weight: 600; font-size: 22px; letter-spacing: -.02em; color: #fff; margin: 34px 0 10px;">När du mejlar</h2>
+      <p style="margin: 0 0 14px;">Mejlar du oss, till exempel om ett samarbete, används din adress och det du skriver bara för att svara dig och sparas inte längre än nödvändigt.</p>
+      <h2 style="font-family: var(--font-heading); font-weight: 600; font-size: 22px; letter-spacing: -.02em; color: #fff; margin: 34px 0 10px;">Länkar till andra sajter</h2>
+      <p style="margin: 0 0 14px;">Länkar till YouTube, Twitch, Instagram, TikTok, X och Discord leder till tjänster med egna villkor och integritetspolicyer.</p>
+      <h2 style="font-family: var(--font-heading); font-weight: 600; font-size: 22px; letter-spacing: -.02em; color: #fff; margin: 34px 0 10px;">Dina rättigheter</h2>
+      <p style="margin: 0 0 14px;">Du har rätt att få veta vilka uppgifter om dig som behandlas, få fel rättade, få uppgifter raderade och invända mot behandling. Hör av dig till <a href="mailto:chris.whippit@gmail.com">chris.whippit@gmail.com</a>. Är du missnöjd kan du klaga hos <a href="https://www.imy.se" target="_blank" rel="noopener">Integritetsskyddsmyndigheten (IMY)</a>.</p>
+    </article>
+  </main>
+  </sc-if>
+
   <sc-if value="{{ atShop }}">
   <main style="max-width: 1240px; margin: 0 auto; padding: 72px 24px 0;">
     <h1 data-en="Shop" style="font-family: var(--font-heading); font-weight: 500; font-size: clamp(38px, 6vw, 76px); letter-spacing: -.04em; margin: 0 0 14px;">Shop</h1>
@@ -6618,6 +6687,7 @@ textarea.input { min-height: 90px; resize: vertical; }
           <a href="shop/" sc-camel-on-click="{{ goShop }}" data-en="Shop" style="color: var(--color-neutral-400);">Shop</a>
           <a href="spel/" sc-camel-on-click="{{ goSpel }}" data-en="Games" style="color: var(--color-neutral-400);">Spel</a>
           <a href="samarbeten/" sc-camel-on-click="{{ goCollab }}" data-en="Partnerships" style="color: var(--color-neutral-400);">Samarbeten</a>
+          <a href="om/" sc-camel-on-click="{{ goOm }}" data-en="About" style="color: var(--color-neutral-400);">Om Chris</a>
         </div>
       </div>
       <div>
@@ -6661,13 +6731,13 @@ textarea.input { min-height: 90px; resize: vertical; }
         </div>
       </div>
     </sc-if>
-    <div style="max-width: 1240px; margin: 0 auto; padding: 18px 24px 42px; border-top: 1px solid var(--color-divider); font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--color-neutral-700); display: flex; gap: 18px; flex-wrap: wrap;"><span>© 2026 ChrisWhippit</span><sc-if value="{{ adsOn }}"><button sc-camel-on-click="{{ reopenConsent }}" data-en="Cookies" style="all: unset; cursor: pointer; color: var(--color-neutral-700);" style-hover="color: var(--color-accent-300);">Cookies</button></sc-if><a href="admin/" style="color: var(--color-neutral-700);" style-hover="color: var(--color-accent-300);">Admin</a></div>
+    <div style="max-width: 1240px; margin: 0 auto; padding: 18px 24px 42px; border-top: 1px solid var(--color-divider); font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--color-neutral-700); display: flex; gap: 18px; flex-wrap: wrap;"><span>© 2026 ChrisWhippit</span><a href="integritetspolicy/" sc-camel-on-click="{{ goPriv }}" data-en="Privacy policy" style="color: inherit;">Integritetspolicy</a><sc-if value="{{ adsOn }}"><button sc-camel-on-click="{{ reopenConsent }}" data-en="Cookies" style="all: unset; cursor: pointer; color: var(--color-neutral-700);" style-hover="color: var(--color-accent-300);">Cookies</button></sc-if><a href="admin/" style="color: var(--color-neutral-700);" style-hover="color: var(--color-accent-300);">Admin</a></div>
   </footer>
 
   <sc-if value="{{ showConsent }}">
     <div role="dialog" aria-label="Cookies" style="position: fixed; left: 18px; bottom: 18px; z-index: 60; width: min(380px, calc(100vw - 36px)); box-sizing: border-box; padding: 20px 20px 18px; border-radius: 14px; background: color-mix(in srgb, #161826 92%, transparent); backdrop-filter: blur(16px) saturate(140%); box-shadow: 0 0 0 1px var(--color-neutral-800), 0 22px 50px rgba(0,0,0,.6); animation: ckin .5s cubic-bezier(.2,.7,.2,1) both;">
       <div data-en="Cookies" style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .18em; text-transform: uppercase; color: var(--color-accent-300); margin-bottom: 10px;">Cookies</div>
-      <p data-en="The site shows ads from Google, which use cookies to measure and tailor them. Accept to see ads, or decline and the site works just the same without them." style="margin: 0 0 16px; font-size: 14px; line-height: 1.55; color: var(--color-neutral-300); text-wrap: pretty;">Sajten visar annonser från Google, som använder cookies för att mäta och anpassa dem. Godkänn för att se annonser, eller neka så funkar sajten precis likadant utan.</p>
+      <p data-en="The site shows ads from Google, which use cookies to measure and tailor them. Accept to see ads, or decline and the site works just the same without them." style="margin: 0 0 16px; font-size: 14px; line-height: 1.55; color: var(--color-neutral-300); text-wrap: pretty;">Sajten visar annonser från Google, som använder cookies för att mäta och anpassa dem. Godkänn för att se annonser, eller neka så funkar sajten precis likadant utan. <a href="integritetspolicy/" sc-camel-on-click="{{ goPriv }}" style="color: var(--color-accent-200); text-decoration: underline;">Läs mer</a></p>
       <div style="display: flex; gap: 10px; flex-wrap: wrap;">
         <button data-ck="" sc-camel-on-click="{{ acceptAds }}" data-en="Accept" style="cursor: pointer; font: inherit; font-size: 13px; padding: 10px 18px; border-radius: 8px; border: 1px solid var(--color-accent); background: transparent; color: var(--color-accent-200);">Godkänn</button>
         <button data-ck="" sc-camel-on-click="{{ declineAds }}" data-en="Decline" style="cursor: pointer; font: inherit; font-size: 13px; padding: 10px 18px; border-radius: 8px; border: 1px solid var(--color-neutral-800); background: transparent; color: var(--color-neutral-400);">Neka</button>
@@ -6719,12 +6789,12 @@ const hexA = (hex, a) => {
 };
 const isoDate = (d) => d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
 
-const ROOT_PATH = (() => { try { const b = document.querySelector('base'); if (b) return new URL(b.getAttribute('href'), location.href).pathname; let p = location.pathname.replace(/[^/]*$/, ''); for (const s of ['setup/', 'schema/', 'faq/', 'nedladdningar/', 'shop/', 'spel/', 'samarbeten/']) if (p.endsWith('/' + s)) return p.slice(0, -s.length); return p; } catch (e) { return '/'; } })();
+const ROOT_PATH = (() => { try { const b = document.querySelector('base'); if (b) return new URL(b.getAttribute('href'), location.href).pathname; let p = location.pathname.replace(/[^/]*$/, ''); for (const s of ['setup/', 'schema/', 'faq/', 'nedladdningar/', 'shop/', 'spel/', 'samarbeten/', 'om/', 'integritetspolicy/']) if (p.endsWith('/' + s)) return p.slice(0, -s.length); return p; } catch (e) { return '/'; } })();
 const SITE_ROOT = (() => { try { return new URL(ROOT_PATH, location.href).href; } catch (e) { return ''; } })();
 const asset = (u) => (u && !/^(data:|blob:|https?:|\/)/i.test(u) ? SITE_ROOT + u : u);
 const ytId = (u) => { const m = /(?:[?&]v=|youtu\.be\/|shorts\/|embed\/|live\/)([\w-]{11})/.exec(u || ''); return m ? m[1] : ''; };
 const collabSlug = (n) => String(n || '').trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-const ROUTE_PATHS = { hem: '', setup: 'setup/', schema: 'schema/', faq: 'faq/', dl: 'nedladdningar/', shop: 'shop/', spel: 'spel/', samarbeten: 'samarbeten/' };
+const ROUTE_PATHS = { hem: '', setup: 'setup/', schema: 'schema/', faq: 'faq/', dl: 'nedladdningar/', shop: 'shop/', spel: 'spel/', samarbeten: 'samarbeten/', om: 'om/', integritet: 'integritetspolicy/' };
 // Gör e-post, webbadresser och några ord i FAQ-svaren klickbara (texten kommer från admin).
 const FAQ_WORDS = {
   'setup-sidan': () => SITE_ROOT + 'setup/', 'schemat': () => SITE_ROOT + 'schema/', 'spelschemat': () => SITE_ROOT + 'schema/',
@@ -7019,6 +7089,7 @@ class Component extends DCLogic {
     });
     if (isPlaceholderSetup(next.setup)) delete next.setup;
     if (Array.isArray(c.schema)) next.schema = c.schema;
+    if (c.about && typeof c.about === 'object') next.about = c.about;
     if (Object.keys(next).length) this.setState((s) => ({ content: { ...s.content, ...next } }));
     if (c.sponsors && c.sponsors.length) this.setState({ sponsors: c.sponsors });
     if (c.social) { this.setState({ social: c.social }); this.loadSocialThumbs(c.social); }
@@ -7299,6 +7370,14 @@ class Component extends DCLogic {
       atShop: r === 'shop' ? '1' : '',
       shopOff: r === 'shop' ? '' : '1',
       atSpel: r === 'spel' ? '1' : '',
+      atOm: r === 'om' ? '1' : '',
+      goOm: this.go('om'),
+      atPriv: r === 'integritet' ? '1' : '',
+      goPriv: this.go('integritet'),
+      aboutLead: (c.about && c.about.lead) || '',
+      // '## ' i början av ett stycke blir en rubrik, tom rad = nytt stycke.
+      aboutBlocks: String((c.about && c.about.text) || '').split(/\n\s*\n/).map((x) => x.trim()).filter(Boolean)
+        .map((x) => (/^##\s+/.test(x) ? { h: x.replace(/^##\s+/, ''), isP: '' } : { h: '', isP: '1', parts: faqParts(x) })),
       atCollab: r === 'samarbeten' ? '1' : '',
       goCollab: this.go('samarbeten'),
       ...(() => {
