@@ -639,9 +639,9 @@
     },
     {
       "q": "Vilka spelar Chris Whippit med?",
-      "a": "Genom åren mest med SoftisFFS, Ufosxm, Polski och figgehn. Läs mer på gängets sida.",
+      "a": "Genom åren mest med SoftisFFS, Ufosxm, JNX, Polski och figgehn. Läs mer på gängets sida.",
       "q_en": "Who does Chris Whippit play with?",
-      "a_en": "Over the years mostly SoftisFFS, Ufosxm, Polski and figgehn. Read more on the crew page."
+      "a_en": "Over the years mostly SoftisFFS, Ufosxm, JNX, Polski and figgehn. Read more on the crew page."
     },
     {
       "q": "Vem är Polski?",
@@ -1044,6 +1044,18 @@
         "VmEzCbsKnPg",
         "AFGNdxaDdO8",
         "DPJXqFD06mU"
+      ]
+    },
+    {
+      "name": "JNX",
+      "channelId": "UCNUzYcystxs_gx9mNc4xi-A",
+      "handle": "@jnxen",
+      "text": "JNX har varit med ända sedan 2014 – Titanfall, Hypixel-minigames, otaliga Lucky Block Race, GTA 5 och moddad Minecraft.",
+      "text_en": "JNX has been around since 2014 – Titanfall, Hypixel minigames, countless Lucky Block Races, GTA 5 and modded Minecraft.",
+      "videos": [
+        "0q9vqh_2plQ",
+        "XtgJTwzoVfQ",
+        "B6ZA7_uOS4Q"
       ]
     },
     {

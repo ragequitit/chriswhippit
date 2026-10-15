@@ -27,6 +27,6 @@ module.exports = [
     title: 'Chris Whippit Vloggar — Pokémon GO, discgolf och vardag',
     desc: 'Vlogg-kanalen med familjen, discgolf, teknik, mat och över 200 Pokémon GO-videor med raider, community days och shinies.' },
   { key: 'ganget', file: 'ganget/index.html', path: 'ganget/', crumb: 'Gänget', type: 'CollectionPage',
-    title: 'Gänget — SoftisFFS, Ufosxm, Polski och figgehn | Chris Whippit',
-    desc: 'Kanalerna Chris Whippit spelat mest med: SoftisFFS, Ufosxm, Polski och figgehn. Prenumerera och se videorna de gjort tillsammans.' },
+    title: 'Gänget — SoftisFFS, Ufosxm, JNX, Polski och figgehn | Chris Whippit',
+    desc: 'Kanalerna Chris Whippit spelat mest med: SoftisFFS, Ufosxm, JNX, Polski och figgehn. Prenumerera och se videorna de gjort tillsammans.' },
 ];

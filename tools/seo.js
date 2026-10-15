@@ -86,7 +86,7 @@ const GAMES = [`;
     const j = JSON.parse(json); const person = j['@graph'].find((n) => n['@type'] === 'Person'); if (!person) return m0;
     Object.assign(person, { givenName: 'Joakim', birthDate: '1984', alternateName: ['ChrisWhippit', 'Whippit', 'Chris Whippet', 'Kris Whippit'], homeLocation: { '@type': 'Place', name: 'Strömstad, Sverige' },
       description: 'Svensk YouTuber och streamare från Strömstad sedan 2014: Minecraft Let’s Play med SoftisFFS, GTA 5, Fortnite, vloggar och Pokémon GO.',
-      knows: [{ '@type': 'Person', name: 'SoftisFFS', url: 'https://www.youtube.com/@softisffs' }, { '@type': 'Person', name: 'Ufosxm', url: 'https://www.youtube.com/@ufosxm' }, { '@type': 'Person', name: 'Polski', url: 'https://www.youtube.com/@palackenmedadrian' }, { '@type': 'Person', name: 'figgehn', url: 'https://www.youtube.com/@figgehn_' }] });
+      knows: [{ '@type': 'Person', name: 'SoftisFFS', url: 'https://www.youtube.com/@softisffs' }, { '@type': 'Person', name: 'Ufosxm', url: 'https://www.youtube.com/@ufosxm' }, { '@type': 'Person', name: 'JNX', url: 'https://www.youtube.com/@jnxen' }, { '@type': 'Person', name: 'Polski', url: 'https://www.youtube.com/@palackenmedadrian' }, { '@type': 'Person', name: 'figgehn', url: 'https://www.youtube.com/@figgehn_' }] });
     return a + JSON.stringify(j, null, 2) + b;
   });
 
