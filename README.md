@@ -3,6 +3,8 @@
 Statisk sida, inga byggsteg. Repo: `ragequitit/chriswhippit`, publiceras med
 GitHub Pages (main / root) på www.chriswhippit.com.
 
+**SEO:** följ [SEO.md](SEO.md) (Google Search Console, rutin och regler för innehållet).
+
 ## DNS (one.com)
 
 - `www` → CNAME `ragequitit.github.io`
