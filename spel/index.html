@@ -1532,6 +1532,8 @@ textarea.input { min-height: 90px; resize: vertical; }
   [data-live-dot] { width: 9px; height: 9px; border-radius: 50%; background: #ff4d6d; box-shadow: 0 0 0 0 rgba(255,77,109,.7); animation: livepulse 1.6s infinite; flex: 0 0 auto; }
   @keyframes livepulse { 70% { box-shadow: 0 0 0 9px rgba(255,77,109,0); } 100% { box-shadow: 0 0 0 0 rgba(255,77,109,0); } }
   [data-live]:hover { filter: brightness(1.1); }
+  /* Startsidans knappar i mobil: Genom åren i full bredd, Om mig och Möt gänget bredvid varandra. */
+  @media (max-width: 600px) { [data-hero-btns] { gap: 10px !important; } [data-hero-btns] > a { flex: 1 1 0; justify-content: center; padding-left: 12px !important; padding-right: 12px !important; } [data-hero-btns] > a:first-child { flex-basis: 100%; } }
   /* Tidslinjen (/historia/) */
   [data-tl] { position: relative; border-left-color: rgba(134,87,255,.18) !important; }
   [data-tl]::before { content: ''; position: absolute; left: -2px; top: 0; width: 2px; height: calc(var(--tl-p, 0) * 100%); background: linear-gradient(#8657FF, #ff4d9d); box-shadow: 0 0 14px rgba(255,77,157,.7); }
@@ -1627,9 +1629,10 @@ textarea.input { min-height: 90px; resize: vertical; }
             <span style="display: block; color: #8657FF; text-shadow: 0 0 60px rgba(134,87,255,.45);">WHIPPIT</span>
           </h1>
           <p data-en="Gaming, Pokémon GO, disc golf and whatever else the day turns into. New video most days." style="max-width: 40ch; margin: 28px 0 0; font-size: 18px; line-height: 1.6; color: #dcd8ee; text-wrap: pretty;">Gaming, Pokémon GO, discgolf och vad dagen nu blir. Ny video nästan varje dag.</p>
-          <div style="display: flex; flex-wrap: wrap; gap: 14px; margin-top: 32px;">
+          <div data-hero-btns="" style="display: flex; flex-wrap: wrap; gap: 14px; margin-top: 32px;">
             <a href="/historia/" sc-camel-on-click="{{ goHistoria }}" data-btnp="" data-en="Through the years" style="display: inline-flex; align-items: center; gap: 12px; font-size: 16px; font-weight: 600; padding: 15px 24px; border-radius: 10px; background: #7a4af5; color: #fff; white-space: nowrap; box-shadow: 0 12px 30px -12px rgba(134,87,255,.9);">Genom åren <span aria-hidden="true">→</span></a>
             <a href="/om/" sc-camel-on-click="{{ goOm }}" data-btno="" data-en="About me" style="display: inline-flex; align-items: center; gap: 12px; font-size: 16px; font-weight: 600; padding: 14px 22px; border-radius: 10px; border: 1.5px solid #8657FF; color: #ece8ff; white-space: nowrap;">Om mig <span aria-hidden="true">→</span></a>
+            <a href="/ganget/" sc-camel-on-click="{{ goGanget }}" data-btno="" data-en="Meet the crew" style="display: inline-flex; align-items: center; gap: 12px; font-size: 16px; font-weight: 600; padding: 14px 22px; border-radius: 10px; border: 1.5px solid #8657FF; color: #ece8ff; white-space: nowrap;">Möt gänget <span aria-hidden="true">→</span></a>
           </div>
         </div>
         <div data-hero-spacer="" aria-hidden="true" style="min-width: 0; min-height: clamp(230px, 29vw, 440px);"></div>
@@ -1751,7 +1754,7 @@ textarea.input { min-height: 90px; resize: vertical; }
       <div data-marquee="" sc-camel-on-pointer-down="{{ dragStart }}" sc-camel-on-click="{{ clickGuard }}" sc-camel-on-drag-start="{{ noDrag }}" style="position: relative; overflow: hidden; cursor: grab; touch-action: pan-y; border-radius: 14px; padding: 30px 0; margin: -30px 0; mask-image: linear-gradient(90deg, transparent 0, #000 72px, #000 calc(100% - 72px), transparent 100%);">
         <div data-track="" ref="{{ trackRef }}" style="display: flex; gap: 16px; width: max-content; align-items: stretch; will-change: transform;">
           <sc-for list="{{ sponsorLoop }}" as="s" hint-placeholder-count="8">
-            <a href="{{ s.url }}" target="_blank" draggable="false" data-sponsor="" style="position: relative; flex: 0 0 auto; width: 282px; -webkit-user-drag: none; user-select: none; padding: 16px 16px 18px; border-radius: 14px; background: var(--color-surface); box-shadow: 0 0 0 1px var(--color-neutral-800); color: var(--color-text);">
+            <a href="{{ s.url }}" target="_blank" draggable="false" sc-camel-on-click="{{ s.onPlay }}" data-sponsor="" style="position: relative; flex: 0 0 auto; width: 282px; -webkit-user-drag: none; user-select: none; padding: 16px 16px 18px; border-radius: 14px; background: var(--color-surface); box-shadow: 0 0 0 1px var(--color-neutral-800); color: var(--color-text);">
               <sc-if value="{{ s.hasLogo }}">
                 <div style="position: relative; height: 150px; border-radius: 8px; overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 14px, #000 calc(100% - 14px), transparent 100%); mask-image: linear-gradient(90deg, transparent 0, #000 14px, #000 calc(100% - 14px), transparent 100%);">
                   <span style="position: absolute; inset: 0; display: grid; place-items: center; transform: {{ s.tf }};">
@@ -3128,7 +3131,7 @@ class Component extends DCLogic {
       hasLogo: s.logo ? true : '',
       noLogo: s.logo ? '' : true,
       tf: 'translate(' + (s.ox || 0) + '%, ' + (s.oy || 0) + '%) scale(' + (s.zoom || 1) + ')',
-      ...(() => { const m = /(?:[?&]v=|youtu\.be\/|shorts\/|embed\/|live\/)([\w-]{11})/.exec(s.url || ''); return m ? { hasThumb: true, thumb: 'https://i.ytimg.com/vi/' + m[1] + '/hqdefault.jpg' } : { hasThumb: '', thumb: '' }; })()
+      ...(() => { const m = /(?:[?&]v=|youtu\.be\/|shorts\/|embed\/|live\/)([\w-]{11})/.exec(s.url || ''); return m ? { hasThumb: true, thumb: 'https://i.ytimg.com/vi/' + m[1] + '/mqdefault.jpg', onPlay: (e) => { if (this.lastMoved > 8) return; this.play(m[1], s.name)(e); } } : { hasThumb: '', thumb: '', onPlay: undefined }; })()
     }));
     const loop = marked.concat(marked);
     return {
