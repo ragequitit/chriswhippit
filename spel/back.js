@@ -9,7 +9,7 @@
   a.setAttribute('aria-label', 'Tillbaka till spelsidan på chriswhippit.com');
   a.style.cssText = [
     'position:fixed', 'left:8px', 'bottom:8px', 'z-index:2147483000',
-    'padding:5px 10px', 'border-radius:999px', 'font:600 12px/1.2 system-ui,-apple-system,sans-serif',
+    'padding:5px 10px', 'border-radius:0', 'font:600 12px/1.2 system-ui,-apple-system,sans-serif',
     'color:#fff', 'background:rgba(20,18,40,.6)', 'border:1px solid rgba(255,255,255,.25)',
     'text-decoration:none', 'opacity:.85', '-webkit-backdrop-filter:blur(6px)', 'backdrop-filter:blur(6px)'
   ].join(';');
