@@ -94,7 +94,7 @@
         {
           "@type": "Person",
           "name": "Polski",
-          "url": "https://www.youtube.com/@palackenmedadrian"
+          "url": "https://www.youtube.com/@polskipies"
         },
         {
           "@type": "Person",
@@ -2270,6 +2270,7 @@ textarea.input { min-height: 90px; resize: vertical; }
             <div style="flex: 1 1 220px; min-width: 0;">
               <h2 style="font-family: var(--font-heading); font-weight: 700; font-size: 24px; letter-spacing: -.02em; margin: 0;">{{ m.name }} <sc-if value="{{ m.memorial }}"><span style="font-family: 'JetBrains Mono', monospace; letter-spacing: .14em; text-transform: uppercase; font-size: 11px; color: var(--color-neutral-400); vertical-align: 3px; margin-left: 6px;">{{ m.memorial }}</span></sc-if></h2>
               <span style="font-family: 'JetBrains Mono', monospace; letter-spacing: .14em; text-transform: uppercase; font-size: 10px; color: var(--color-neutral-400);">{{ m.channelName }}<sc-if value="{{ m.subs }}"> · {{ m.subs }}</sc-if></span>
+              <sc-if value="{{ m.hasAlso }}"><div data-crew-also="" style="margin-top: 6px; font-size: 13px; color: var(--color-neutral-400);"><span data-en="Also:">Även:</span> <sc-for list="{{ m.also }}" as="a" hint-placeholder-count="1"><a href="{{ a.url }}" target="_blank" rel="noopener" style="color: var(--color-accent-200); text-decoration: underline; text-underline-offset: 3px;">{{ a.name }}</a><sc-if value="{{ a.subs }}"> · {{ a.subs }}</sc-if> </sc-for></div></sc-if>
             </div>
             <div style="display: flex; gap: 8px; flex-wrap: wrap;">
               <a href="{{ m.channelUrl }}" target="_blank" rel="noopener" data-btno="" data-en="Channel ↗" style="font-size: 14px; font-weight: 600; padding: 9px 14px; border-radius: 9px; border: 1.5px solid #8657FF; color: #ece8ff;">Kanalen ↗</a>
@@ -2664,7 +2665,7 @@ class Component extends DCLogic {
     if (r === 'ganget' && !this._crew) {
       this._crew = true;
       const crew = c.crew || [];
-      yt('channels?part=snippet,statistics&id=' + crew.map((m) => m.channelId).join(',')).then((j) => {
+      yt('channels?part=snippet,statistics&id=' + crew.flatMap((m) => [m.channelId, ...(m.also || []).map((a) => a.channelId)]).join(',')).then((j) => {
         const m = {}; (j.items || []).forEach((ch) => { m[ch.id] = { avatar: ch.snippet.thumbnails && (ch.snippet.thumbnails.medium || ch.snippet.thumbnails.default).url, subs: +ch.statistics.subscriberCount || 0, title: ch.snippet.title }; });
         this.setState({ crewInfo: m });
       }).catch(() => {});
@@ -3135,6 +3136,8 @@ class Component extends DCLogic {
             name: m.name, channelName: m.channelName || info.title || m.name, memorial: m.memorial || '', text: pick(L, m, 'text'),
             avatar: info.avatar || '', noAvatar: info.avatar ? '' : '1', initial: (m.name || '?').slice(0, 1).toUpperCase(), subs: info.subs ? kfmt(info.subs) + (L === 'en' ? ' subscribers' : ' prenumeranter') : '',
             channelUrl: 'https://www.youtube.com/' + (m.handle || 'channel/' + m.channelId), subUrl: 'https://www.youtube.com/channel/' + m.channelId + '?sub_confirmation=1',
+            hasAlso: (m.also || []).length ? '1' : '',
+            also: (m.also || []).map((a) => { const ai = crewInfo[a.channelId] || {}; return { name: a.name, url: 'https://www.youtube.com/' + (a.handle || 'channel/' + a.channelId), subs: ai.subs ? kfmt(ai.subs) : '' }; }),
             videos: (m.videos || []).map((id) => ({ title: (crewVids[id] || {}).title || '', date: dfmt((crewVids[id] || {}).at), thumb: 'https://i.ytimg.com/vi/' + id + '/mqdefault.jpg', url: 'https://www.youtube.com/watch?v=' + id })),
           }; }),
         };

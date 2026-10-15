@@ -1076,15 +1076,21 @@
     },
     {
       "name": "Polski",
-      "channelId": "UCNwDhJB6Z0eHVTy23LlRsog",
-      "handle": "@palackenmedadrian",
-      "channelName": "På lacken med Adrian",
+      "channelId": "UCEwsH0YhM3TCaVn3ImJ4QNw",
+      "handle": "@polskipies",
       "text": "Polski filmade och redigerade mina videor förr i tiden och är med i bland annat GTA 5, Fortnite och Så klarar man Minecraft med Polski. Idag jobbar han med Matkoma och har en egen kanal om allt som har motor och hjul.",
       "text_en": "Polski used to film and edit my videos and appears in GTA 5, Fortnite and How to beat Minecraft with Polski, among others. Today he works with Matkoma and has his own channel about anything with an engine and wheels.",
       "videos": [
         "YFkYPsL4B30",
         "BKL5yvPXtRc",
         "4S8SPyytFpc"
+      ],
+      "also": [
+        {
+          "name": "På lacken med Adrian",
+          "channelId": "UCNwDhJB6Z0eHVTy23LlRsog",
+          "handle": "@palackenmedadrian"
+        }
       ]
     },
     {
