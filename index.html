@@ -1598,7 +1598,7 @@ textarea.input { min-height: 90px; resize: vertical; }
           </h1>
           <p data-en="Gaming, Pokémon GO, disc golf and whatever else the day turns into. New video most days." style="max-width: 40ch; margin: 28px 0 0; font-size: 18px; line-height: 1.6; color: #dcd8ee; text-wrap: pretty;">Gaming, Pokémon GO, discgolf och vad dagen nu blir. Ny video nästan varje dag.</p>
           <div style="display: flex; flex-wrap: wrap; gap: 14px; margin-top: 32px;">
-            <a href="{{ v0url }}" target="_blank" data-btnp="" data-en="Watch the latest video" style="display: inline-flex; align-items: center; gap: 12px; font-size: 16px; font-weight: 600; padding: 15px 24px; border-radius: 10px; background: #7a4af5; color: #fff; white-space: nowrap; box-shadow: 0 12px 30px -12px rgba(134,87,255,.9);">Se senaste videon <i data-ico="play" aria-hidden="true" style="font-size: 15px;"><svg viewBox="0 0 24 24" fill="currentColor" focusable="false"><path d="M7 4.5v15a1 1 0 0 0 1.5.86l12.5-7.5a1 1 0 0 0 0-1.72L8.5 3.64A1 1 0 0 0 7 4.5z"/></svg></i></a>
+            <a href="{{ v0url }}" target="_blank" sc-camel-on-click="{{ v0play }}" data-btnp="" data-en="Watch the latest video" style="display: inline-flex; align-items: center; gap: 12px; font-size: 16px; font-weight: 600; padding: 15px 24px; border-radius: 10px; background: #7a4af5; color: #fff; white-space: nowrap; box-shadow: 0 12px 30px -12px rgba(134,87,255,.9);">Se senaste videon <i data-ico="play" aria-hidden="true" style="font-size: 15px;"><svg viewBox="0 0 24 24" fill="currentColor" focusable="false"><path d="M7 4.5v15a1 1 0 0 0 1.5.86l12.5-7.5a1 1 0 0 0 0-1.72L8.5 3.64A1 1 0 0 0 7 4.5z"/></svg></i></a>
             <a href="https://discord.com/invite/uqhVKeCmGz" target="_blank" data-btno="" data-en="Join the Discord" style="display: inline-flex; align-items: center; gap: 12px; font-size: 16px; font-weight: 600; padding: 14px 22px; border-radius: 10px; border: 1.5px solid #8657FF; color: #ece8ff; white-space: nowrap;"><img loading="lazy" decoding="async" src="/assets/bundle/2fad8dfbc900.webp" alt="" width="26" height="26" style="display: block; width: 26px; height: 26px; object-fit: contain;">Häng med i Discord</a>
           </div>
         </div>
@@ -1636,7 +1636,7 @@ textarea.input { min-height: 90px; resize: vertical; }
           <span style="font-size: 12px; color: var(--color-neutral-500);">{{ ytOfflineNote }}</span>
         </div>
       </sc-if>
-      <a href="{{ v0url }}" target="_blank" data-lift="" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 0; border-radius: 14px; overflow: hidden; background: var(--color-surface); box-shadow: 0 0 0 1px var(--color-neutral-800); color: var(--color-text);">
+      <a href="{{ v0url }}" target="_blank" sc-camel-on-click="{{ v0play }}" data-lift="" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 0; border-radius: 14px; overflow: hidden; background: var(--color-surface); box-shadow: 0 0 0 1px var(--color-neutral-800); color: var(--color-text);">
         <div style="overflow: hidden; aspect-ratio: 16 / 9; background: var(--color-neutral-900);">
           <sc-if value="{{ v0thumb }}">
             <img loading="lazy" decoding="async" src="{{ v0thumb }}" alt="{{ v0title }}" data-thumb="" style="width: 100%; height: 100%; object-fit: cover; display: block;">
@@ -1650,7 +1650,7 @@ textarea.input { min-height: 90px; resize: vertical; }
       </a>
       <div data-vrest="" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 18px; margin-top: 18px;">
         <sc-for list="{{ rest }}" as="v" hint-placeholder-count="4">
-          <a href="{{ v.url }}" target="_blank" data-lift="" style="border-radius: 14px; overflow: hidden; background: var(--color-surface); box-shadow: 0 0 0 1px var(--color-neutral-800); color: var(--color-text); display: block;">
+          <a href="{{ v.url }}" target="_blank" sc-camel-on-click="{{ v.onPlay }}" data-lift="" style="border-radius: 14px; overflow: hidden; background: var(--color-surface); box-shadow: 0 0 0 1px var(--color-neutral-800); color: var(--color-text); display: block;">
             <div style="overflow: hidden; aspect-ratio: 16 / 9; background: var(--color-neutral-900);"><sc-if value="{{ v.thumb }}"><img loading="lazy" decoding="async" src="{{ v.thumb }}" alt="{{ v.title }}" data-thumb="" style="width: 100%; height: 100%; object-fit: cover; display: block;"></sc-if></div>
             <div style="padding: 16px 18px 20px;">
               <h4 style="font-family: var(--font-heading); font-weight: 500; font-size: 15px; line-height: 1.35; margin: 0; text-wrap: pretty;">{{ v.title }}</h4>
@@ -2125,7 +2125,7 @@ textarea.input { min-height: 90px; resize: vertical; }
       <p style="margin: 0 0 14px;">Läs mer om hur Google använder uppgifter i <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener">Googles policy för partnerwebbplatser</a>. Du kan styra annonsanpassning i <a href="https://adssettings.google.com" target="_blank" rel="noopener">Googles annonsinställningar</a>.</p>
       <sc-if value="{{ adsOn }}"><p style="margin: 0 0 14px;"><button sc-camel-on-click="{{ reopenConsent }}" data-ck="" style="cursor: pointer; font: inherit; font-size: 14px; padding: 10px 16px; border-radius: 8px; border: 1px solid var(--color-accent); background: transparent; color: var(--color-accent-200);">Ändra ditt cookieval</button></p></sc-if>
       <h2 style="font-family: var(--font-heading); font-weight: 600; font-size: 22px; letter-spacing: -.02em; color: #fff; margin: 34px 0 10px;">YouTube</h2>
-      <p style="margin: 0 0 14px;">Startsidan, schemat, videosidorna och samarbetssidan hämtar uppgifter om videor (titlar, bilder och antal visningar) direkt från YouTube, som drivs av Google. Din webbläsare kontaktar då Googles servrar, vilket innebär att Google får se din IP-adress. Videor på samarbetssidan och seriesidorna bäddas in först när du trycker på play eller klickar på en video, och då via youtube-nocookie.com. Se <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Googles integritetspolicy</a>.</p>
+      <p style="margin: 0 0 14px;">Startsidan, schemat, videosidorna och samarbetssidan hämtar uppgifter om videor (titlar, bilder och antal visningar) direkt från YouTube, som drivs av Google. Din webbläsare kontaktar då Googles servrar, vilket innebär att Google får se din IP-adress. Videor på startsidan, videosidorna, tidslinjen, gänget-sidan och samarbetssidan bäddas in först när du trycker på play eller klickar på en video, och då via youtube-nocookie.com. Se <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Googles integritetspolicy</a>.</p>
       <h2 style="font-family: var(--font-heading); font-weight: 600; font-size: 22px; letter-spacing: -.02em; color: #fff; margin: 34px 0 10px;">Shoppen</h2>
       <p style="margin: 0 0 14px;">Butiken på shop-sidan drivs av Spreadshirt och laddas från deras servrar. Spreadshirt visar en egen cookie-ruta och hanterar varukorg, betalning och leverans. Det de gör regleras av <a href="https://www.spreadshirt.se/integritetspolicy-C3104" target="_blank" rel="noopener">Spreadshirts integritetspolicy</a>.</p>
       <h2 style="font-family: var(--font-heading); font-weight: 600; font-size: 22px; letter-spacing: -.02em; color: #fff; margin: 34px 0 10px;">Spelen</h2>
@@ -2154,7 +2154,7 @@ textarea.input { min-height: 90px; resize: vertical; }
       <p style="margin: 0 0 14px;">Read more about how Google uses data in <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener">Google’s policy for partner sites</a>. You can control ad personalisation in <a href="https://adssettings.google.com" target="_blank" rel="noopener">Google’s ad settings</a>.</p>
       <sc-if value="{{ adsOn }}"><p style="margin: 0 0 14px;"><button sc-camel-on-click="{{ reopenConsent }}" data-ck="" style="cursor: pointer; font: inherit; font-size: 14px; padding: 10px 16px; border-radius: 8px; border: 1px solid var(--color-accent); background: transparent; color: var(--color-accent-200);">Change your cookie choice</button></p></sc-if>
       <h2 style="font-family: var(--font-heading); font-weight: 600; font-size: 22px; letter-spacing: -.02em; color: #fff; margin: 34px 0 10px;">YouTube</h2>
-      <p style="margin: 0 0 14px;">The home page, the schedule, the video pages and the partnerships page fetch video details (titles, images and view counts) directly from YouTube, which is run by Google. Your browser then contacts Google’s servers, which means Google sees your IP address. Videos on the partnerships page and the series pages are only embedded when you press play or click a video, and then via youtube-nocookie.com. See <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google’s privacy policy</a>.</p>
+      <p style="margin: 0 0 14px;">The home page, the schedule, the video pages and the partnerships page fetch video details (titles, images and view counts) directly from YouTube, which is run by Google. Your browser then contacts Google’s servers, which means Google sees your IP address. Videos on the home page, the video pages, the timeline, the crew page and the partnerships page are only embedded when you press play or click a video, and then via youtube-nocookie.com. See <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google’s privacy policy</a>.</p>
       <h2 style="font-family: var(--font-heading); font-weight: 600; font-size: 22px; letter-spacing: -.02em; color: #fff; margin: 34px 0 10px;">The shop</h2>
       <p style="margin: 0 0 14px;">The shop is run by Spreadshirt and loads from their servers. Spreadshirt shows its own cookie box and handles the cart, payment and delivery, as described in <a href="https://www.spreadshirt.se/integritetspolicy-C3104" target="_blank" rel="noopener">Spreadshirt’s privacy policy</a>.</p>
       <h2 style="font-family: var(--font-heading); font-weight: 600; font-size: 22px; letter-spacing: -.02em; color: #fff; margin: 34px 0 10px;">The games</h2>
@@ -2267,7 +2267,7 @@ textarea.input { min-height: 90px; resize: vertical; }
             <p style="margin: 0 0 16px; font-size: 16px; line-height: 1.7; color: #d6d3e6; max-width: 70ch; text-wrap: pretty;"><sc-for list="{{ y.parts }}" as="p" hint-placeholder-count="1"><sc-if value="{{ p.hi }}"><strong data-tl-hi="">{{ p.t }}</strong></sc-if><sc-if value="{{ p.plain }}"><span>{{ p.t }}</span></sc-if></sc-for></p>
             <div data-vgrid="" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px;">
               <sc-for list="{{ y.videos }}" as="v" hint-placeholder-count="3">
-                <a href="{{ v.url }}" target="_blank" rel="noopener" data-lift="" style="display: block; overflow: hidden; background: var(--color-surface); box-shadow: 0 0 0 1px var(--color-neutral-800); color: var(--color-text);">
+                <a href="{{ v.url }}" target="_blank" rel="noopener" sc-camel-on-click="{{ v.onPlay }}" data-lift="" style="display: block; overflow: hidden; background: var(--color-surface); box-shadow: 0 0 0 1px var(--color-neutral-800); color: var(--color-text);">
                   <div style="position: relative; aspect-ratio: 16 / 9; overflow: hidden; background: var(--color-neutral-900);"><img loading="lazy" decoding="async" src="{{ v.thumb }}" alt="{{ v.title }}" style="width: 100%; height: 100%; object-fit: cover; display: block;"><span data-tl-ch="{{ v.ch }}">{{ v.chName }}</span></div>
                   <div style="padding: 10px 12px 12px;"><div style="font-family: var(--font-heading); font-size: 14px; font-weight: 500; line-height: 1.35; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">{{ v.title }}</div><div style="font-family: 'JetBrains Mono', monospace; letter-spacing: .14em; text-transform: uppercase; font-size: 10px; color: var(--color-neutral-400); margin-top: 6px;">{{ v.meta }}</div></div>
                 </a>
@@ -2304,7 +2304,7 @@ textarea.input { min-height: 90px; resize: vertical; }
           <p style="margin: 14px 0 0; font-size: 15px; line-height: 1.6; color: #d6d3e6; max-width: 70ch;">{{ m.text }}</p>
           <div data-vgrid="" style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 14px;">
             <sc-for list="{{ m.videos }}" as="v" hint-placeholder-count="3">
-              <a href="{{ v.url }}" target="_blank" rel="noopener" data-lift="" style="display: block; overflow: hidden; border-radius: 14px; background: var(--color-surface); box-shadow: 0 0 0 1px var(--color-neutral-800); color: var(--color-text);">
+              <a href="{{ v.url }}" target="_blank" rel="noopener" sc-camel-on-click="{{ v.onPlay }}" data-lift="" style="display: block; overflow: hidden; border-radius: 14px; background: var(--color-surface); box-shadow: 0 0 0 1px var(--color-neutral-800); color: var(--color-text);">
             <div style="aspect-ratio: 16 / 9; overflow: hidden; background: var(--color-neutral-900);"><img loading="lazy" decoding="async" src="{{ v.thumb }}" alt="{{ v.title }}" style="width: 100%; height: 100%; object-fit: cover; display: block;"></div>
             <div style="padding: 10px 12px 12px;"><div style="font-family: var(--font-heading); font-size: 14px; font-weight: 500; line-height: 1.35; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">{{ v.title }}</div><sc-if value="{{ v.date }}"><div style="font-family: 'JetBrains Mono', monospace; letter-spacing: .14em; text-transform: uppercase; font-size: 10px; color: var(--color-neutral-400); margin-top: 6px;">{{ v.date }}</div></sc-if></div>
           </a>
@@ -3145,10 +3145,11 @@ class Component extends DCLogic {
             : 'Liveflödet från YouTube kunde inte hämtas (' + this.state.ytError + ') — visar sparade videor. Lägg till den här domänen i API-nyckelns referrer-lista i Google Cloud Console.')
         : '',
       v0url: first.url,
+      v0play: this.play(first.id, first.title),
       v0title: first.title,
       v0thumb: 'https://i.ytimg.com/vi/' + first.id + '/sddefault.jpg',
-      v0meta: [(this.state.lang === 'en' ? 'Watch on YouTube' : 'Se på YouTube'), first.channel, fmt(first.at)].filter(Boolean).join(' · '),
-      rest: vids.slice(1, 5),
+      v0meta: [(this.state.lang === 'en' ? '▶ Play' : '▶ Spela'), first.channel, fmt(first.at)].filter(Boolean).join(' · '),
+      rest: vids.slice(1, 5).map((v) => ({ ...v, onPlay: this.play(v.id, v.title) })),
       atHem: r === 'hem' ? '1' : '',
       atSetup: r === 'setup' ? '1' : '',
       atSchema: r === 'schema' ? '1' : '',
@@ -3175,7 +3176,7 @@ class Component extends DCLogic {
         parts: pick(L, y, 'text').split(/\*\*(.+?)\*\*/).map((t, i) => ({ t, hi: i % 2 ? '1' : '', plain: i % 2 ? '' : '1' })).filter((p) => p.t),
         videos: (y.videos || []).map((v) => ({
         ch: v.ch || 'chriswhippit', chName: ({ chriswhippit: 'ChrisWhippit', whippitsson: L === 'en' ? 'Vlog' : 'Vloggen', figgwhipp: 'Figgehn & Whippit', whippitextra: 'Whippit Extra' })[v.ch || 'chriswhippit'],
-        title: v.title, url: 'https://www.youtube.com/watch?v=' + v.id, thumb: 'https://i.ytimg.com/vi/' + v.id + '/mqdefault.jpg',
+        title: v.title, onPlay: this.play(v.id, v.title), url: 'https://www.youtube.com/watch?v=' + v.id, thumb: 'https://i.ytimg.com/vi/' + v.id + '/mqdefault.jpg',
         meta: [v.views >= 1e6 ? (v.views / 1e6).toFixed(1).replace('.0', '') + (L === 'en' ? 'M views' : ' milj. visningar') : v.views >= 1e3 ? Math.round(v.views / 1e3) + (L === 'en' ? 'K views' : ' 000 visningar') : '', new Date(v.at).toLocaleDateString(L === 'en' ? 'en-GB' : 'sv-SE', { year: 'numeric', month: 'short' })].filter(Boolean).join(' · '),
       })) })))(this.state.lang),
       atSerie: r === 'serie' ? '1' : '',
@@ -3208,7 +3209,7 @@ class Component extends DCLogic {
             channelUrl: 'https://www.youtube.com/' + (m.handle || 'channel/' + m.channelId), subUrl: 'https://www.youtube.com/channel/' + m.channelId + '?sub_confirmation=1',
             hasAlso: (m.also || []).length ? '1' : '',
             also: (m.also || []).map((a) => { const ai = crewInfo[a.channelId] || {}; return { name: a.name, url: 'https://www.youtube.com/' + (a.handle || 'channel/' + a.channelId), subs: ai.subs ? kfmt(ai.subs) : '' }; }),
-            videos: (m.videos || []).map((id) => ({ title: (crewVids[id] || {}).title || '', date: dfmt((crewVids[id] || {}).at), thumb: 'https://i.ytimg.com/vi/' + id + '/mqdefault.jpg', url: 'https://www.youtube.com/watch?v=' + id })),
+            videos: (m.videos || []).map((id) => ({ title: (crewVids[id] || {}).title || '', date: dfmt((crewVids[id] || {}).at), thumb: 'https://i.ytimg.com/vi/' + id + '/mqdefault.jpg', url: 'https://www.youtube.com/watch?v=' + id, onPlay: this.play(id, (crewVids[id] || {}).title || '') })),
           }; }),
         };
       })(),
