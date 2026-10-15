@@ -161,6 +161,12 @@
   ]
 }</script>
 <script src="/support.js" defer></script>
+<!-- Förhandsvisning: raka hörn. ?horn=raka slår på, ?horn=runda slår av (minns valet i webbläsaren). -->
+<script>(function(){try{var q=new URLSearchParams(location.search).get('horn');if(q==='raka')localStorage.setItem('cw-horn','raka');if(q==='runda')localStorage.removeItem('cw-horn');if(localStorage.getItem('cw-horn')==='raka')document.documentElement.setAttribute('data-sharp','');}catch(e){}})();</script>
+<style>
+  html[data-sharp] *:not([style*="border-radius: 50%"]):not([style*="border-radius: 999px"]):not([data-live-dot]),
+  html[data-sharp] *::before, html[data-sharp] *::after { border-radius: 0 !important; }
+</style>
 </head>
 
 <body>
