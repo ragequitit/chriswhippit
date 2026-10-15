@@ -10,7 +10,6 @@ Insats: S = en kväll, M = några timmar med Claude, L = större projekt.
 
 | # | Idé | Varför | Insats |
 |---|-----|--------|--------|
-| 1 | **Live-indikator.** En lila "LIVE NU"-banner överst på hela sajten när du streamar på Twitch eller YouTube, med länk till streamen. | Den gör att sajten känns levande. Den som besöker sajten under en stream hamnar direkt i chatten. | S |
 | 2 | **Delningsbilder per sida.** En egen bild för varje sida, till exempel Minecraft-sidan med Minecraft-bild och gänget-sidan med avatarerna, som visas när länken delas på Discord, X eller Messenger. | Länkar med en snygg bild får många fler klick. I dag har alla sidor samma bild. | S |
 | 3 | **"Chris Whippit genom åren".** En tidslinje från 2014 till i dag: första videon, gänget, Minecraft-säsongerna, GTA-eran, prenumerant-milstolpar, Twitch, nya kanaler. | Folk googlar historik ("när började chris whippit"). Fans älskar nostalgi, och sidan är lätt att dela. Länkar till gamla klassiker ger dem nya visningar. | M |
 | 4 | **Minecraft-säsongssidor.** En sida per Let's Play-säsong med spellista, karta att ladda ner, vilka som var med och höjdpunkter. Görs när spellistorna är städade. | Det här söker folk mest på ("chris whippit minecraft säsong 3"). Varje sida blir en egen ingång från Google. | M |
@@ -25,4 +24,5 @@ Insats: S = en kväll, M = några timmar med Claude, L = större projekt.
 
 ## Gjort
 
+- 2026-10-15: LIVE NU-banner (Twitch + YouTube, GitHub Action var 10:e minut).
 - 2026-10: Videohubb, seriesidor, gänget-sidan, utökad FAQ, Search Console, Lighthouse 90+, engelska.
