@@ -41,6 +41,11 @@ GitHub Pages (main / root) på www.chriswhippit.com.
 - Ny export från Claude Design? Lägg in den inpackade HTML-filen och kör
   `node tools/unbundle.js .` — den packar upp alla inpackade sidor till vanlig HTML
   och lägger delade filer i `assets/bundle/`.
+- Delningsbilder (det som syns när en länk delas): `node tools/share-images.js` gör
+  `assets/share/<sida>.jpg` med Edge och pekar varje sidas `og:image` dit. Kör om när en
+  ny sida tillkommer (lägg till den i `CFG` i skriptet) eller när gänget ändras.
+- LIVE NU-bannern: `.github/workflows/live.yml` kör `tools/live-check.js` var tionde
+  minut och skriver `live.json`.
 
 ## Efter uppladdning
 
