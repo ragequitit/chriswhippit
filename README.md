@@ -25,8 +25,10 @@ GitHub Pages (main / root) på www.chriswhippit.com.
 
 - `spel/*.html` är fristående spel. Byt ut filen men behåll namnet, så behåller
   spelarna sina framsteg (localStorage).
-- Varje spel ska ha `<script src="/spel/back.js" defer></script>` före `</body>`
-  (knappen "← Spel" tillbaka till spelsidan). Lägg tillbaka raden när ett spel byts ut.
+- Efter att ett spel bytts ut: kör `node tools/games.js`. Den lägger tillbaka knappen
+  "← Spel" (`spel/back.js`), favicons, beskrivning, canonical och delningsbild.
+- `node tools/seo.js` uppdaterar sidtitlar för navigering, strukturerad data och interna
+  länkar på alla sidor. Kör den efter att en sidas titel/beskrivning ändrats i `<head>`.
 - Bilderna på spelsidan är `spel/thumbs/<namn>-board.jpg`: själva spelplanen, 400×500.
 
 ## Utveckling
