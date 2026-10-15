@@ -1124,22 +1124,29 @@
     },
     {
       "year": "2014",
-      "text": "Det drar igång på riktigt. Jag streamar med **SoftisFFS**, och den 15 september startar **Figgehn & Whippit** – kanalen som figgehn och jag gjorde ihop. I december blir det Titanfall med **JNX**.",
-      "text_en": "Things really get going. I stream with **SoftisFFS**, and on 15 September **Figgehn & Whippit** starts – the channel figgehn and I made together. In December it’s Titanfall with **JNX**.",
+      "text": "Det drar igång på riktigt. Jag streamar med **SoftisFFS**, och den 15 september startar **Figgehn & Whippit** – kanalen som figgehn och jag gjorde ihop. Några veckor senare träffas vi för **första gången på riktigt**, på Splay Day i Stockholm. I december blir det Titanfall med **JNX**.",
+      "text_en": "Things really get going. I stream with **SoftisFFS**, and on 15 September **Figgehn & Whippit** starts – the channel figgehn and I made together. A few weeks later we meet **for the first time in real life**, at Splay Day in Stockholm. In December it’s Titanfall with **JNX**.",
       "videos": [
-        {
-          "id": "g5oWyC8T9Hg",
-          "title": "Far Cry 4 med SoftisFFS | Livestream #1",
-          "views": 31497,
-          "at": "2014-12-11",
-          "ch": "chriswhippit"
-        },
         {
           "id": "PgfwjcCWbs4",
           "title": "figgehn & Whippit första trailern!",
           "views": 39147,
           "at": "2014-09-02",
           "ch": "figgwhipp"
+        },
+        {
+          "id": "Nt1adUB6_FM",
+          "title": "Splayday vlogg med figgehn, Whippit, Ufosxm, KimmyPower, Stamsite & Italkwho mfl.",
+          "views": 22337,
+          "at": "2014-10-06",
+          "ch": "figgwhipp"
+        },
+        {
+          "id": "g5oWyC8T9Hg",
+          "title": "Far Cry 4 med SoftisFFS | Livestream #1",
+          "views": 31497,
+          "at": "2014-12-11",
+          "ch": "chriswhippit"
         },
         {
           "id": "0q9vqh_2plQ",
