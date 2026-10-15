@@ -18,12 +18,14 @@
 <meta property="og:image" content="https://www.chriswhippit.com/assets/share.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Chris Whippit">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@chriswhippit">
 <meta name="twitter:title" content="Samarbeten — varumärken och kampanjer | Chris Whippit">
 <meta name="twitter:description" content="Varumärken Chris Whippit har samarbetat med, bland andra Xbox, Ubisoft, NZXT och SodaStream. Se videorna, siffrorna och hur du kontaktar honom.">
 <meta name="twitter:image" content="https://www.chriswhippit.com/assets/share.jpg">
-<link rel="icon" href="/assets/favicon-32.png" sizes="32x32">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="/assets/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="icon" href="/assets/favicon-192.png" sizes="192x192">
 <link rel="apple-touch-icon" href="/assets/favicon-180.png">
 <link rel="manifest" href="/site.webmanifest">
@@ -65,6 +67,45 @@
       "publisher": {
         "@id": "https://www.chriswhippit.com/#chris"
       }
+    },
+    {
+      "@type": "CollectionPage",
+      "@id": "https://www.chriswhippit.com/samarbeten/#webpage",
+      "url": "https://www.chriswhippit.com/samarbeten/",
+      "name": "Samarbeten — varumärken och kampanjer | Chris Whippit",
+      "description": "Varumärken Chris Whippit har samarbetat med, bland andra Xbox, Ubisoft, NZXT och SodaStream. Se videorna, siffrorna och hur du kontaktar honom.",
+      "inLanguage": "sv-SE",
+      "isPartOf": {
+        "@id": "https://www.chriswhippit.com/#site"
+      },
+      "about": {
+        "@id": "https://www.chriswhippit.com/#chris"
+      },
+      "primaryImageOfPage": {
+        "@type": "ImageObject",
+        "url": "https://www.chriswhippit.com/assets/share.jpg"
+      },
+      "breadcrumb": {
+        "@id": "https://www.chriswhippit.com/samarbeten/#breadcrumb"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://www.chriswhippit.com/samarbeten/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Chris Whippit",
+          "item": "https://www.chriswhippit.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Samarbeten",
+          "item": "https://www.chriswhippit.com/samarbeten/"
+        }
+      ]
     }
   ]
 }</script>
@@ -6041,7 +6082,7 @@ textarea.input { min-height: 90px; resize: vertical; }
     [data-collab-item] { gap: 12px !important; padding: 8px 10px !important; }
     [data-collab-item] > span:first-child { flex-basis: 64px !important; height: 40px !important; }
     [data-collab-item] > span:last-child > span:first-child { font-size: 15px !important; }
-    [data-hnav] a[href="samarbeten/"] { display: none !important; }
+    [data-hnav] a[href="/samarbeten/"] { display: none !important; }
   }
   /* Om- och integritetssidan: länkar i brödtext, porträttet först i smalt läge. */
   [data-prose] a { color: var(--color-accent-200); text-decoration: underline; text-underline-offset: 3px; }
@@ -6074,18 +6115,18 @@ textarea.input { min-height: 90px; resize: vertical; }
 
   <header style="position: sticky; top: 0; z-index: 40; backdrop-filter: blur(18px) saturate(150%); -webkit-backdrop-filter: blur(18px) saturate(150%); background: color-mix(in srgb, var(--color-bg) 82%, transparent);">
     <div data-hbar="" style="max-width: 1240px; margin: 0 auto; padding: 10px 24px; display: flex; align-items: center; flex-wrap: wrap; column-gap: 40px; row-gap: 0;">
-      <a href="" data-hbrand="" sc-camel-on-click="{{ goHem }}" style="order: 0; display: flex; align-items: center; gap: 12px; color: #fff; min-height: 48px; flex: 0 0 auto;">
+      <a href="/" data-hbrand="" sc-camel-on-click="{{ goHem }}" style="order: 0; display: flex; align-items: center; gap: 12px; color: #fff; min-height: 48px; flex: 0 0 auto;">
         <img src="/assets/logo-white.png" alt="ChrisWhippit" style="width: 30px; height: 30px; display: block;">
         <span style="font-family: var(--font-heading); font-weight: 800; font-size: 18px; letter-spacing: .04em;">CHRISWHIPPIT</span>
       </a>
       <nav data-hnav="" style="order: 1; flex: 1 1 0; min-width: 0; display: flex; align-items: center; gap: 28px; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none;">
-        <a href="setup/" sc-camel-on-click="{{ goSetup }}" data-active="{{ atSetup }}" data-en="Setup" style="font-size: 14px; font-weight: 500; color: var(--color-neutral-400); white-space: nowrap; display: flex; align-items: center; min-height: 44px;" style-hover="color: #fff;">Setup</a>
-        <a href="schema/" sc-camel-on-click="{{ goSchema }}" data-active="{{ atSchema }}" data-en="Schedule" style="font-size: 14px; font-weight: 500; color: var(--color-neutral-400); white-space: nowrap; display: flex; align-items: center; min-height: 44px;" style-hover="color: #fff;">Schema</a>
-        <a href="faq/" sc-camel-on-click="{{ goFaq }}" data-active="{{ atFaq }}" data-en="FAQ" style="font-size: 14px; font-weight: 500; color: var(--color-neutral-400); white-space: nowrap; display: flex; align-items: center; min-height: 44px;" style-hover="color: #fff;">FAQ</a>
-        <a href="nedladdningar/" sc-camel-on-click="{{ goDl }}" data-active="{{ atDl }}" data-en="Downloads" style="font-size: 14px; font-weight: 500; color: var(--color-neutral-400); white-space: nowrap; display: flex; align-items: center; min-height: 44px;" style-hover="color: #fff;">Nedladdningar</a>
-        <a href="shop/" sc-camel-on-click="{{ goShop }}" data-active="{{ atShop }}" data-en="Shop" style="font-size: 14px; font-weight: 500; color: var(--color-neutral-400); white-space: nowrap; display: flex; align-items: center; min-height: 44px;" style-hover="color: #fff;">Shop</a>
-        <a href="spel/" sc-camel-on-click="{{ goSpel }}" data-active="{{ atSpel }}" data-en="Games" style="font-size: 14px; font-weight: 500; color: var(--color-neutral-400); white-space: nowrap; display: flex; align-items: center; min-height: 44px;" style-hover="color: #fff;">Spel</a>
-        <a href="samarbeten/" sc-camel-on-click="{{ goCollab }}" data-active="{{ atCollab }}" data-en="Partners" style="font-size: 14px; font-weight: 500; color: var(--color-neutral-400); white-space: nowrap; display: flex; align-items: center; min-height: 44px;" style-hover="color: #fff;">Samarbeten</a>
+        <a href="/setup/" sc-camel-on-click="{{ goSetup }}" data-active="{{ atSetup }}" data-en="Setup" style="font-size: 14px; font-weight: 500; color: var(--color-neutral-400); white-space: nowrap; display: flex; align-items: center; min-height: 44px;" style-hover="color: #fff;">Setup</a>
+        <a href="/schema/" sc-camel-on-click="{{ goSchema }}" data-active="{{ atSchema }}" data-en="Schedule" style="font-size: 14px; font-weight: 500; color: var(--color-neutral-400); white-space: nowrap; display: flex; align-items: center; min-height: 44px;" style-hover="color: #fff;">Schema</a>
+        <a href="/faq/" sc-camel-on-click="{{ goFaq }}" data-active="{{ atFaq }}" data-en="FAQ" style="font-size: 14px; font-weight: 500; color: var(--color-neutral-400); white-space: nowrap; display: flex; align-items: center; min-height: 44px;" style-hover="color: #fff;">FAQ</a>
+        <a href="/nedladdningar/" sc-camel-on-click="{{ goDl }}" data-active="{{ atDl }}" data-en="Downloads" style="font-size: 14px; font-weight: 500; color: var(--color-neutral-400); white-space: nowrap; display: flex; align-items: center; min-height: 44px;" style-hover="color: #fff;">Nedladdningar</a>
+        <a href="/shop/" sc-camel-on-click="{{ goShop }}" data-active="{{ atShop }}" data-en="Shop" style="font-size: 14px; font-weight: 500; color: var(--color-neutral-400); white-space: nowrap; display: flex; align-items: center; min-height: 44px;" style-hover="color: #fff;">Shop</a>
+        <a href="/spel/" sc-camel-on-click="{{ goSpel }}" data-active="{{ atSpel }}" data-en="Games" style="font-size: 14px; font-weight: 500; color: var(--color-neutral-400); white-space: nowrap; display: flex; align-items: center; min-height: 44px;" style-hover="color: #fff;">Spel</a>
+        <a href="/samarbeten/" sc-camel-on-click="{{ goCollab }}" data-active="{{ atCollab }}" data-en="Partners" style="font-size: 14px; font-weight: 500; color: var(--color-neutral-400); white-space: nowrap; display: flex; align-items: center; min-height: 44px;" style-hover="color: #fff;">Samarbeten</a>
       </nav>
       <div data-hactions="" style="order: 2; margin-left: auto; flex: 0 0 auto; display: flex; align-items: center; gap: 14px;">
         <button sc-camel-on-click="{{ toggleLang }}" style="font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: .12em; padding: 10px 14px; border-radius: 8px; border: 1px solid rgba(255,255,255,.16); background: transparent; color: var(--color-neutral-300); cursor: pointer;" style-hover="border-color: #8657FF; color: #fff;">{{ langLabel }}</button>
@@ -6151,7 +6192,7 @@ textarea.input { min-height: 90px; resize: vertical; }
       <a href="{{ v0url }}" target="_blank" data-lift="" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 0; border-radius: 14px; overflow: hidden; background: var(--color-surface); box-shadow: 0 0 0 1px var(--color-neutral-800); color: var(--color-text);">
         <div style="overflow: hidden; aspect-ratio: 16 / 9; background: var(--color-neutral-900);">
           <sc-if value="{{ v0thumb }}">
-            <img src="{{ v0thumb }}" alt="" data-thumb="" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+            <img src="{{ v0thumb }}" alt="{{ v0title }}" data-thumb="" style="width: 100%; height: 100%; object-fit: cover; display: block;">
           </sc-if>
         </div>
         <div data-vfeat-text="" style="padding: 34px 34px; display: flex; flex-direction: column; justify-content: center; gap: 14px; min-width: 0;">
@@ -6163,7 +6204,7 @@ textarea.input { min-height: 90px; resize: vertical; }
       <div data-vrest="" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 18px; margin-top: 18px;">
         <sc-for list="{{ rest }}" as="v" hint-placeholder-count="4">
           <a href="{{ v.url }}" target="_blank" data-lift="" style="border-radius: 14px; overflow: hidden; background: var(--color-surface); box-shadow: 0 0 0 1px var(--color-neutral-800); color: var(--color-text); display: block;">
-            <div style="overflow: hidden; aspect-ratio: 16 / 9; background: var(--color-neutral-900);"><sc-if value="{{ v.thumb }}"><img src="{{ v.thumb }}" alt="" data-thumb="" style="width: 100%; height: 100%; object-fit: cover; display: block;"></sc-if></div>
+            <div style="overflow: hidden; aspect-ratio: 16 / 9; background: var(--color-neutral-900);"><sc-if value="{{ v.thumb }}"><img src="{{ v.thumb }}" alt="{{ v.title }}" data-thumb="" style="width: 100%; height: 100%; object-fit: cover; display: block;"></sc-if></div>
             <div style="padding: 16px 18px 20px;">
               <h4 style="font-family: var(--font-heading); font-weight: 500; font-size: 15px; line-height: 1.35; margin: 0; text-wrap: pretty;">{{ v.title }}</h4>
               <sc-if value="{{ v.hasMeta }}">
@@ -6227,7 +6268,7 @@ textarea.input { min-height: 90px; resize: vertical; }
       <div style="max-width: 1240px; margin: 0 auto 20px; padding: 0 24px; display: flex; align-items: baseline; gap: 14px;">
         <span data-en="Partners" style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .22em; text-transform: uppercase; color: var(--color-neutral-600);">Samarbeten</span>
         <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--color-neutral-700);">{{ sponsorCount }}</span>
-        <a href="samarbeten/" sc-camel-on-click="{{ goCollab }}" data-en="All partnerships →" style="margin-left: auto; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--color-neutral-500);">Alla samarbeten →</a>
+        <a href="/samarbeten/" sc-camel-on-click="{{ goCollab }}" data-en="All partnerships →" style="margin-left: auto; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--color-neutral-500);">Alla samarbeten →</a>
       </div>
       <div style="max-width: 1240px; margin: 0 auto; padding: 0 24px;">
       <div data-marquee="" sc-camel-on-pointer-down="{{ dragStart }}" sc-camel-on-click="{{ clickGuard }}" sc-camel-on-drag-start="{{ noDrag }}" style="position: relative; overflow: hidden; cursor: grab; touch-action: pan-y; border-radius: 14px; padding: 30px 0; margin: -30px 0; mask-image: linear-gradient(90deg, transparent 0, #000 72px, #000 calc(100% - 72px), transparent 100%);">
@@ -6237,7 +6278,7 @@ textarea.input { min-height: 90px; resize: vertical; }
               <sc-if value="{{ s.hasLogo }}">
                 <div style="position: relative; height: 150px; border-radius: 8px; overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 14px, #000 calc(100% - 14px), transparent 100%); mask-image: linear-gradient(90deg, transparent 0, #000 14px, #000 calc(100% - 14px), transparent 100%);">
                   <span style="position: absolute; inset: 0; display: grid; place-items: center; transform: {{ s.tf }};">
-                    <img src="{{ s.logo }}" alt="" draggable="false" style="-webkit-user-drag: none; max-width: 78%; max-height: 74%; object-fit: contain; display: block;">
+                    <img src="{{ s.logo }}" alt="{{ s.name }}" draggable="false" style="-webkit-user-drag: none; max-width: 78%; max-height: 74%; object-fit: contain; display: block;">
                   </span>
                   <sc-if value="{{ s.hasThumb }}"><img data-yt="" src="{{ s.thumb }}" alt="" loading="lazy" draggable="false" style="-webkit-user-drag: none; position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity .35s ease;"></sc-if>
                 </div>
@@ -6321,7 +6362,7 @@ textarea.input { min-height: 90px; resize: vertical; }
         <div data-en="The setup" style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .22em; text-transform: uppercase; color: var(--color-accent-400); margin-bottom: 18px;">Setupen</div>
         <h2 data-en="The gear I use" style="font-family: var(--font-heading); font-weight: 500; font-size: clamp(28px, 3.2vw, 42px); line-height: 1.1; letter-spacing: -.03em; margin: 0 0 20px;">Grejerna jag använder</h2>
         <p data-en="Computer, camera, microphone, chair, lights. The full list with links lives on the setup page." style="font-size: 16px; line-height: 1.65; color: var(--color-neutral-400); margin: 0 0 26px; max-width: 46ch;">Dator, kamera, mikrofon, stol, ljus. Hela listan med länkar finns på setup-sidan.</p>
-        <a href="setup/" sc-camel-on-click="{{ goSetup }}" data-en="Check out my setup →" style="font-size: 15px; padding: 13px 22px; border-radius: 8px; border: 1px solid var(--color-accent); color: var(--color-accent-200); display: inline-block;" style-hover="background: var(--color-accent-900);">Kolla in min setup →</a>
+        <a href="/setup/" sc-camel-on-click="{{ goSetup }}" data-en="Check out my setup →" style="font-size: 15px; padding: 13px 22px; border-radius: 8px; border: 1px solid var(--color-accent); color: var(--color-accent-200); display: inline-block;" style-hover="background: var(--color-accent-900);">Kolla in min setup →</a>
       </div>
       </div>
     </section>
@@ -6330,7 +6371,7 @@ textarea.input { min-height: 90px; resize: vertical; }
 
     <section style="max-width: 1240px; margin: 0 auto; padding: 96px 24px 0;" data-reveal="">
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 18px;">
-        <a href="shop/" sc-camel-on-click="{{ goShop }}" data-card="" style="position: relative; display: flex; flex-direction: column; aspect-ratio: 3 / 2; min-height: 250px; border-radius: 16px; overflow: hidden; background: #0e0f26; box-shadow: 0 0 0 1px rgba(134,87,255,.38); color: #fff; isolation: isolate;">
+        <a href="/shop/" sc-camel-on-click="{{ goShop }}" data-card="" style="position: relative; display: flex; flex-direction: column; aspect-ratio: 3 / 2; min-height: 250px; border-radius: 16px; overflow: hidden; background: #0e0f26; box-shadow: 0 0 0 1px rgba(134,87,255,.38); color: #fff; isolation: isolate;">
           <img src="/assets/bundle/cc5192a165b2.webp" alt="" loading="lazy" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; z-index: -2;">
           <span aria-hidden="true" style="position: absolute; inset: 0; z-index: -1; background: linear-gradient(90deg, rgba(11,12,32,.55) 0%, rgba(11,12,32,.25) 42%, rgba(11,12,32,0) 62%);"></span>
           <div style="display: flex; flex-direction: column; height: 100%; max-width: 56%; padding: 24px 0 24px 24px;">
@@ -6350,7 +6391,7 @@ textarea.input { min-height: 90px; resize: vertical; }
             <span data-btnp="" data-en="Join →" style="margin-top: auto; align-self: flex-start; display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; padding: 11px 18px; border-radius: 9px; background: #8657FF; color: #fff; white-space: nowrap; box-shadow: 0 10px 26px -12px rgba(134,87,255,.9);">Gå med →</span>
           </div>
         </a>
-        <a href="spel/" sc-camel-on-click="{{ goSpel }}" data-card="" style="position: relative; display: flex; flex-direction: column; aspect-ratio: 3 / 2; min-height: 250px; border-radius: 16px; overflow: hidden; background: #0e0f26; box-shadow: 0 0 0 1px rgba(134,87,255,.38); color: #fff; isolation: isolate;">
+        <a href="/spel/" sc-camel-on-click="{{ goSpel }}" data-card="" style="position: relative; display: flex; flex-direction: column; aspect-ratio: 3 / 2; min-height: 250px; border-radius: 16px; overflow: hidden; background: #0e0f26; box-shadow: 0 0 0 1px rgba(134,87,255,.38); color: #fff; isolation: isolate;">
           <img src="/assets/bundle/e0392adcbd50.webp" alt="" loading="lazy" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; z-index: -2;">
           <span aria-hidden="true" style="position: absolute; inset: 0; z-index: -1; background: linear-gradient(90deg, rgba(11,12,32,.55) 0%, rgba(11,12,32,.25) 42%, rgba(11,12,32,0) 62%);"></span>
           <div style="display: flex; flex-direction: column; height: 100%; max-width: 56%; padding: 24px 0 24px 24px;">
@@ -6374,7 +6415,7 @@ textarea.input { min-height: 90px; resize: vertical; }
           </details>
         </sc-for>
       </div>
-      <a href="faq/" sc-camel-on-click="{{ goFaq }}" data-en="All questions →" style="display: inline-block; margin-top: 20px; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--color-neutral-500);">Alla frågor →</a>
+      <a href="/faq/" sc-camel-on-click="{{ goFaq }}" data-en="All questions →" style="display: inline-block; margin-top: 20px; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--color-neutral-500);">Alla frågor →</a>
     </section>
 
   </main>
@@ -6485,7 +6526,7 @@ textarea.input { min-height: 90px; resize: vertical; }
       <sc-for list="{{ dlRows }}" as="d" hint-placeholder-count="3">
         <a href="{{ d.link }}" data-lift="" style="background: var(--color-surface); border-radius: 14px; box-shadow: 0 0 0 1px var(--color-neutral-800); overflow: hidden; display: block; color: var(--color-text);">
           <sc-if value="{{ d.hasImage }}">
-            <div style="aspect-ratio: 16 / 9; overflow: hidden; background: var(--color-neutral-900);"><img src="{{ d.image }}" alt="" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; display: block; transform: {{ d.tf }};"></div>
+            <div style="aspect-ratio: 16 / 9; overflow: hidden; background: var(--color-neutral-900);"><img src="{{ d.image }}" alt="{{ d.title }}" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; display: block; transform: {{ d.tf }};"></div>
           </sc-if>
           <sc-if value="{{ d.noImage }}" hint-placeholder-val="{{ true }}">
           <div style="aspect-ratio: 16 / 9; background: repeating-linear-gradient(135deg, rgba(145,132,217,.08) 0 8px, transparent 8px 16px), var(--color-neutral-900); display: grid; place-items: center;"><span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .12em; color: var(--color-neutral-600);">nedladdning</span></div>
@@ -6543,7 +6584,7 @@ textarea.input { min-height: 90px; resize: vertical; }
       <div data-collab-list="" style="display: flex; flex-direction: column; gap: 8px;">
         <sc-for list="{{ collabItems }}" as="s" hint-placeholder-count="6">
           <button data-collab-item="" data-active="{{ s.active }}" sc-camel-on-click="{{ s.onPick }}" style="display: flex; align-items: center; gap: 14px; width: 100%; text-align: left; cursor: pointer; padding: 10px 12px; border: 0; border-radius: 12px; background: var(--color-surface); box-shadow: 0 0 0 1px var(--color-neutral-800); color: var(--color-text); font: inherit;">
-            <span style="position: relative; flex: 0 0 76px; height: 48px; border-radius: 8px; overflow: hidden; background: rgba(255,255,255,.04);"><sc-if value="{{ s.hasLogo }}"><span style="position: absolute; inset: 0; display: grid; place-items: center; transform: {{ s.tf }};"><img src="{{ s.logo }}" alt="" style="max-width: 78%; max-height: 74%; object-fit: contain; display: block;"></span></sc-if></span>
+            <span style="position: relative; flex: 0 0 76px; height: 48px; border-radius: 8px; overflow: hidden; background: rgba(255,255,255,.04);"><sc-if value="{{ s.hasLogo }}"><span style="position: absolute; inset: 0; display: grid; place-items: center; transform: {{ s.tf }};"><img src="{{ s.logo }}" alt="{{ s.name }}" style="max-width: 78%; max-height: 74%; object-fit: contain; display: block;"></span></sc-if></span>
             <span style="min-width: 0; display: flex; flex-direction: column; gap: 3px;">
               <span style="font-family: var(--font-heading); font-size: 16px; font-weight: 600; letter-spacing: -.01em;">{{ s.name }}</span>
               <span style="font-size: 12.5px; color: var(--color-neutral-500); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ s.caption }}</span>
@@ -6553,7 +6594,7 @@ textarea.input { min-height: 90px; resize: vertical; }
       </div>
       <div data-collab-detail="" style="position: sticky; top: 90px; border-radius: 16px; overflow: hidden; background: var(--color-surface); box-shadow: 0 0 0 1px rgba(134,87,255,.45), 0 26px 60px -30px rgba(134,87,255,.6);">
         <div data-collab-head="" style="display: flex; align-items: center; gap: 18px; padding: 20px 24px; border-bottom: 1px solid var(--color-neutral-800);">
-          <span style="position: relative; flex: 0 0 120px; height: 76px; border-radius: 10px; overflow: hidden; background: #0b0c20;"><sc-if value="{{ cHasLogo }}"><span style="position: absolute; inset: 0; display: grid; place-items: center; transform: {{ cTf }};"><img src="{{ cLogo }}" alt="" style="max-width: 78%; max-height: 74%; object-fit: contain; display: block;"></span></sc-if></span>
+          <span style="position: relative; flex: 0 0 120px; height: 76px; border-radius: 10px; overflow: hidden; background: #0b0c20;"><sc-if value="{{ cHasLogo }}"><span style="position: absolute; inset: 0; display: grid; place-items: center; transform: {{ cTf }};"><img src="{{ cLogo }}" alt="{{ cName }}" style="max-width: 78%; max-height: 74%; object-fit: contain; display: block;"></span></sc-if></span>
           <div style="min-width: 0;">
             <span data-en="Partnership" style="font-family: 'JetBrains Mono', monospace; letter-spacing: .14em; text-transform: uppercase; font-size: 10px; color: #b9a2ff;">Samarbete</span>
             <h2 style="font-family: var(--font-heading); font-weight: 800; font-size: clamp(24px, 3vw, 36px); letter-spacing: -.03em; line-height: 1.05; margin: 4px 0;">{{ cName }}</h2>
@@ -6564,7 +6605,7 @@ textarea.input { min-height: 90px; resize: vertical; }
           <div style="position: relative; aspect-ratio: 16 / 9; background: #000;">
             <sc-if value="{{ cNoPlay }}">
               <button sc-camel-on-click="{{ playCollab }}" aria-label="Spela videon" style="position: absolute; inset: 0; border: 0; padding: 0; cursor: pointer; background: #000;">
-                <img src="{{ cThumb }}" alt="" style="width: 100%; height: 100%; object-fit: cover; display: block; opacity: .85;">
+                <img src="{{ cThumb }}" alt="{{ cTitle }}" style="width: 100%; height: 100%; object-fit: cover; display: block; opacity: .85;">
                 <span style="position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 68px; height: 48px; border-radius: 12px; background: #8657FF; display: grid; place-items: center; color: #fff; font-size: 22px; box-shadow: 0 10px 30px -8px rgba(134,87,255,.9);"><i class="ph-fill ph-play" aria-hidden="true"></i></span>
               </button>
             </sc-if>
@@ -6679,15 +6720,15 @@ textarea.input { min-height: 90px; resize: vertical; }
       <div>
         <div data-en="Content" style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: #9d7bff; margin-bottom: 14px;">Innehåll</div>
         <div style="display: flex; flex-direction: column; gap: 9px; font-size: 14px;">
-          <a href="" sc-camel-on-click="{{ goHem }}" data-en="Latest" style="color: var(--color-neutral-400);">Senaste nytt</a>
-          <a href="setup/" sc-camel-on-click="{{ goSetup }}" data-en="Setup" style="color: var(--color-neutral-400);">Datorsetup</a>
-          <a href="schema/" sc-camel-on-click="{{ goSchema }}" data-en="Schedule" style="color: var(--color-neutral-400);">Spelschema</a>
-          <a href="faq/" sc-camel-on-click="{{ goFaq }}" data-en="FAQ" style="color: var(--color-neutral-400);">Vanliga frågor</a>
-          <a href="nedladdningar/" sc-camel-on-click="{{ goDl }}" data-en="Downloads" style="color: var(--color-neutral-400);">Nedladdningar</a>
-          <a href="shop/" sc-camel-on-click="{{ goShop }}" data-en="Shop" style="color: var(--color-neutral-400);">Shop</a>
-          <a href="spel/" sc-camel-on-click="{{ goSpel }}" data-en="Games" style="color: var(--color-neutral-400);">Spel</a>
-          <a href="samarbeten/" sc-camel-on-click="{{ goCollab }}" data-en="Partnerships" style="color: var(--color-neutral-400);">Samarbeten</a>
-          <a href="om/" sc-camel-on-click="{{ goOm }}" data-en="About" style="color: var(--color-neutral-400);">Om Chris</a>
+          <a href="/" sc-camel-on-click="{{ goHem }}" data-en="Latest" style="color: var(--color-neutral-400);">Senaste nytt</a>
+          <a href="/setup/" sc-camel-on-click="{{ goSetup }}" data-en="Setup" style="color: var(--color-neutral-400);">Datorsetup</a>
+          <a href="/schema/" sc-camel-on-click="{{ goSchema }}" data-en="Schedule" style="color: var(--color-neutral-400);">Spelschema</a>
+          <a href="/faq/" sc-camel-on-click="{{ goFaq }}" data-en="FAQ" style="color: var(--color-neutral-400);">Vanliga frågor</a>
+          <a href="/nedladdningar/" sc-camel-on-click="{{ goDl }}" data-en="Downloads" style="color: var(--color-neutral-400);">Nedladdningar</a>
+          <a href="/shop/" sc-camel-on-click="{{ goShop }}" data-en="Shop" style="color: var(--color-neutral-400);">Shop</a>
+          <a href="/spel/" sc-camel-on-click="{{ goSpel }}" data-en="Games" style="color: var(--color-neutral-400);">Spel</a>
+          <a href="/samarbeten/" sc-camel-on-click="{{ goCollab }}" data-en="Partnerships" style="color: var(--color-neutral-400);">Samarbeten</a>
+          <a href="/om/" sc-camel-on-click="{{ goOm }}" data-en="About" style="color: var(--color-neutral-400);">Om Chris</a>
         </div>
       </div>
       <div>
@@ -6731,13 +6772,13 @@ textarea.input { min-height: 90px; resize: vertical; }
         </div>
       </div>
     </sc-if>
-    <div style="max-width: 1240px; margin: 0 auto; padding: 18px 24px 42px; border-top: 1px solid var(--color-divider); font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--color-neutral-700); display: flex; gap: 18px; flex-wrap: wrap;"><span>© 2026 ChrisWhippit</span><a href="integritetspolicy/" sc-camel-on-click="{{ goPriv }}" data-en="Privacy policy" style="color: inherit;">Integritetspolicy</a><sc-if value="{{ adsOn }}"><button sc-camel-on-click="{{ reopenConsent }}" data-en="Cookies" style="all: unset; cursor: pointer; color: var(--color-neutral-700);" style-hover="color: var(--color-accent-300);">Cookies</button></sc-if><a href="admin/" style="color: var(--color-neutral-700);" style-hover="color: var(--color-accent-300);">Admin</a></div>
+    <div style="max-width: 1240px; margin: 0 auto; padding: 18px 24px 42px; border-top: 1px solid var(--color-divider); font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--color-neutral-700); display: flex; gap: 18px; flex-wrap: wrap;"><span>© 2026 ChrisWhippit</span><a href="/integritetspolicy/" sc-camel-on-click="{{ goPriv }}" data-en="Privacy policy" style="color: inherit;">Integritetspolicy</a><sc-if value="{{ adsOn }}"><button sc-camel-on-click="{{ reopenConsent }}" data-en="Cookies" style="all: unset; cursor: pointer; color: var(--color-neutral-700);" style-hover="color: var(--color-accent-300);">Cookies</button></sc-if><a href="/admin/" rel="nofollow" style="color: var(--color-neutral-700);" style-hover="color: var(--color-accent-300);">Admin</a></div>
   </footer>
 
   <sc-if value="{{ showConsent }}">
     <div role="dialog" aria-label="Cookies" style="position: fixed; left: 18px; bottom: 18px; z-index: 60; width: min(380px, calc(100vw - 36px)); box-sizing: border-box; padding: 20px 20px 18px; border-radius: 14px; background: color-mix(in srgb, #161826 92%, transparent); backdrop-filter: blur(16px) saturate(140%); box-shadow: 0 0 0 1px var(--color-neutral-800), 0 22px 50px rgba(0,0,0,.6); animation: ckin .5s cubic-bezier(.2,.7,.2,1) both;">
       <div data-en="Cookies" style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .18em; text-transform: uppercase; color: var(--color-accent-300); margin-bottom: 10px;">Cookies</div>
-      <p data-en="The site shows ads from Google, which use cookies to measure and tailor them. Accept to see ads, or decline and the site works just the same without them." style="margin: 0 0 16px; font-size: 14px; line-height: 1.55; color: var(--color-neutral-300); text-wrap: pretty;">Sajten visar annonser från Google, som använder cookies för att mäta och anpassa dem. Godkänn för att se annonser, eller neka så funkar sajten precis likadant utan. <a href="integritetspolicy/" sc-camel-on-click="{{ goPriv }}" style="color: var(--color-accent-200); text-decoration: underline;">Läs mer</a></p>
+      <p data-en="The site shows ads from Google, which use cookies to measure and tailor them. Accept to see ads, or decline and the site works just the same without them." style="margin: 0 0 16px; font-size: 14px; line-height: 1.55; color: var(--color-neutral-300); text-wrap: pretty;">Sajten visar annonser från Google, som använder cookies för att mäta och anpassa dem. Godkänn för att se annonser, eller neka så funkar sajten precis likadant utan. <a href="/integritetspolicy/" sc-camel-on-click="{{ goPriv }}" style="color: var(--color-accent-200); text-decoration: underline;">Läs mer</a></p>
       <div style="display: flex; gap: 10px; flex-wrap: wrap;">
         <button data-ck="" sc-camel-on-click="{{ acceptAds }}" data-en="Accept" style="cursor: pointer; font: inherit; font-size: 13px; padding: 10px 18px; border-radius: 8px; border: 1px solid var(--color-accent); background: transparent; color: var(--color-accent-200);">Godkänn</button>
         <button data-ck="" sc-camel-on-click="{{ declineAds }}" data-en="Decline" style="cursor: pointer; font: inherit; font-size: 13px; padding: 10px 18px; border-radius: 8px; border: 1px solid var(--color-neutral-800); background: transparent; color: var(--color-neutral-400);">Neka</button>
@@ -6815,6 +6856,15 @@ const faqParts = (text) => {
   }
   if (last < s.length) out.push({ text: s.slice(last), plain: true, href: '' });
   return out;
+};
+const ROUTE_META = {"hem":{"t":"Chris Whippit — svensk YouTuber och streamare","d":"Chris Whippit gör videor sedan 2014: gaming, Pokémon GO, discgolf och vad dagen nu blir. Senaste videorna, veckans schema, spel, merch och samarbeten.","u":"https://www.chriswhippit.com/"},"setup":{"t":"Setup — datorn, kameran och allt annat | Chris Whippit","d":"Hela listan på grejerna Chris Whippit spelar in med: dator, grafikkort, mikrofon, kamera, stol och skrivbord.","u":"https://www.chriswhippit.com/setup/"},"schema":{"t":"Spelschema — veckans videor och streams | Chris Whippit","d":"Veckans planerade videor och streams från Chris Whippit, dag för dag med tider. Se vad som släpps härnäst på kanalerna.","u":"https://www.chriswhippit.com/schema/"},"faq":{"t":"Vanliga frågor | Chris Whippit","d":"Svar på det som kommer oftast: hur ofta det laddas upp, vilka kanaler som finns, datorn, samarbeten, Discord, spelen och merch.","u":"https://www.chriswhippit.com/faq/"},"dl":{"t":"Nedladdningar — Minecraft-kartor | Chris Whippit","d":"Ladda ner kartorna från Let’s Play-serien i Minecraft med Whippit och Softis, alla fyra säsongerna. Gratis att använda som du vill.","u":"https://www.chriswhippit.com/nedladdningar/"},"shop":{"t":"Shop — t-shirts, hoodies och kepsar | Chris Whippit","d":"Merch med Whippit-märket. T-shirts, hoodies och kepsar, tryckta och skickade av Spreadshirt.","u":"https://www.chriswhippit.com/shop/"},"spel":{"t":"Spel — Project Genesis och fler webbläsarspel | Chris Whippit","d":"Spela Project Genesis, ett cyberpunk-idle-RPG, och fler gratisspel direkt i webbläsaren. Inget att ladda ner.","u":"https://www.chriswhippit.com/spel/"},"samarbeten":{"t":"Samarbeten — varumärken och kampanjer | Chris Whippit","d":"Varumärken Chris Whippit har samarbetat med, bland andra Xbox, Ubisoft, NZXT och SodaStream. Se videorna, siffrorna och hur du kontaktar honom.","u":"https://www.chriswhippit.com/samarbeten/"},"om":{"t":"Om Chris Whippit — svensk YouTuber sedan 2014","d":"Chris Whippit är en svensk YouTuber och streamare från Strömstad som gjort videor sedan 2014: gaming, Pokémon GO, discgolf och mer.","u":"https://www.chriswhippit.com/om/"},"integritet":{"t":"Integritetspolicy | Chris Whippit","d":"Hur chriswhippit.com hanterar personuppgifter, cookies och annonser från Google AdSense, och vilka rättigheter du har.","u":"https://www.chriswhippit.com/integritetspolicy/"}};
+const applyRouteMeta = (route) => {
+  const m = ROUTE_META[route]; if (!m) return;
+  document.title = m.t;
+  const set = (sel, attr, v) => { const el = document.querySelector(sel); if (el) el.setAttribute(attr, v); };
+  set('meta[name="description"]', 'content', m.d); set('meta[property="og:description"]', 'content', m.d); set('meta[name="twitter:description"]', 'content', m.d);
+  set('meta[property="og:title"]', 'content', m.t); set('meta[name="twitter:title"]', 'content', m.t);
+  set('link[rel="canonical"]', 'href', m.u); set('meta[property="og:url"]', 'content', m.u);
 };
 const GAMES = [
   { slug: 'break-shot', title: 'Break Shot' },
@@ -7180,7 +7230,7 @@ class Component extends DCLogic {
       this.setState({ ytError: (e && e.message) || 'network error' });
     }
   }
-  componentDidUpdate() { this.applyLang(); if (this.state.route === 'shop') this.loadShop(); if (this.state.route === 'samarbeten') this.loadCollabStats(); this.fillAds(); }
+  componentDidUpdate() { if (this._metaRoute !== this.state.route) { this._metaRoute = this.state.route; applyRouteMeta(this.state.route); } this.applyLang(); if (this.state.route === 'shop') this.loadShop(); if (this.state.route === 'samarbeten') this.loadCollabStats(); this.fillAds(); }
 
   loadShop() {
     if (this._shopLoaded || !document.getElementById('myShop')) return;
