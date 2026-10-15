@@ -43,7 +43,12 @@
       "@type": "Person",
       "@id": "https://www.chriswhippit.com/#chris",
       "name": "Chris Whippit",
-      "alternateName": "ChrisWhippit",
+      "alternateName": [
+        "ChrisWhippit",
+        "Whippit",
+        "Chris Whippet",
+        "Kris Whippit"
+      ],
       "url": "https://www.chriswhippit.com/",
       "image": "https://www.chriswhippit.com/assets/portrait.jpg",
       "jobTitle": "Innehållsskapare",
@@ -53,7 +58,7 @@
         "addressCountry": "SE"
       },
       "email": "chris.whippit@gmail.com",
-      "description": "Svensk YouTuber och streamare. Pokémon GO, disc golf, GTA, Fortnite, Minecraft och Pokémon TCG.",
+      "description": "Svensk YouTuber och streamare från Strömstad sedan 2014: Minecraft Let’s Play med SoftisFFS, GTA 5, Fortnite, vloggar och Pokémon GO.",
       "sameAs": [
         "https://www.youtube.com/@chriswhippit",
         "https://www.youtube.com/@whippitsson",
@@ -63,6 +68,34 @@
         "https://www.instagram.com/chriswhippit",
         "https://www.tiktok.com/@chris.whippit",
         "https://x.com/chriswhippit"
+      ],
+      "givenName": "Joakim",
+      "birthDate": "1984",
+      "homeLocation": {
+        "@type": "Place",
+        "name": "Strömstad, Sverige"
+      },
+      "knows": [
+        {
+          "@type": "Person",
+          "name": "SoftisFFS",
+          "url": "https://www.youtube.com/@softisffs"
+        },
+        {
+          "@type": "Person",
+          "name": "Ufosxm",
+          "url": "https://www.youtube.com/@ufosxm"
+        },
+        {
+          "@type": "Person",
+          "name": "Polski",
+          "url": "https://www.youtube.com/@palackenmedadrian"
+        },
+        {
+          "@type": "Person",
+          "name": "figgehn",
+          "url": "https://www.youtube.com/@figgehn_"
+        }
       ]
     },
     {
@@ -1485,6 +1518,20 @@ textarea.input { min-height: 90px; resize: vertical; }
   [data-ico] { display: inline-flex; align-items: center; line-height: 1; }
   [data-ico] svg { width: 1em; height: 1em; display: block; }
   main[style*="padding: 72px 24px 0"] { min-height: 100vh; }
+  /* Videor, serier och gänget */
+  [data-chip]:hover { box-shadow: 0 0 0 1px var(--color-accent-600) !important; }
+  @media (max-width: 899px) { [data-serie] { grid-template-columns: minmax(0, 1fr) !important; gap: 18px !important; } }
+  @media (max-width: 600px) {
+    [data-vgrid] { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 8px !important; }
+    [data-vgrid] a > div:last-child { padding: 8px 10px 10px !important; }
+    [data-vgrid] a > div:last-child > div:first-child { font-size: 12.5px !important; }
+    [data-vchan] { grid-template-columns: 1fr 1fr !important; gap: 8px !important; }
+    [data-vchan] a { padding: 10px 12px !important; }
+    [data-crew] { padding: 14px !important; }
+    [data-crew] [data-vgrid] { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; }
+    [data-crew] [data-vgrid] a > div:last-child > div:first-child { font-size: 11px !important; -webkit-line-clamp: 3 !important; }
+    [data-crew-head] h2 { font-size: 20px !important; }
+  }
   [data-thumb] { transition: transform .8s cubic-bezier(.2,.7,.2,1), opacity .5s ease; }
   [data-lift]:hover [data-thumb] { transform: scale(1.06); }
   [data-adwrap]:has(ins[data-ad-status="unfilled"]) { display: none !important; }
@@ -1569,7 +1616,7 @@ textarea.input { min-height: 90px; resize: vertical; }
     <section data-home-latest="" style="max-width: 1240px; margin: 0 auto; padding: 40px 24px 20px;" data-reveal="">
       <div style="display: flex; align-items: baseline; gap: 18px; flex-wrap: wrap; margin-bottom: 26px;">
         <h2 data-en="Latest videos" style="font-family: var(--font-heading); font-weight: 500; font-size: 30px; letter-spacing: -.025em; margin: 0;">Senaste videorna</h2>
-        <a href="https://www.youtube.com/user/chriswhippit" target="_blank" data-en="All videos →" style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--color-neutral-500); margin-left: auto;">Alla videor →</a>
+        <a href="/videor/" sc-camel-on-click="{{ goVideor }}" data-en="All videos →" style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--color-neutral-500); margin-left: auto;">Alla videor →</a>
       </div>
       <sc-if value="{{ ytOffline }}">
         <div style="display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; margin: -12px 0 22px; padding: 10px 14px; border-radius: 8px; background: var(--color-neutral-900); box-shadow: 0 0 0 1px var(--color-neutral-800);">
@@ -2117,6 +2164,116 @@ textarea.input { min-height: 90px; resize: vertical; }
   </main>
   </sc-if>
 
+  <sc-if value="{{ atVideor }}">
+  <main style="max-width: 1240px; margin: 0 auto; padding: 72px 24px 0;">
+    <h1 data-en="Videos" style="font-family: var(--font-heading); font-weight: 500; font-size: clamp(38px, 6vw, 76px); letter-spacing: -.04em; margin: 0 0 14px;">Videor</h1>
+    <p data-en="Thousands of videos since 2014 across four YouTube channels. Here are the biggest series, the channels and the crew I play with." style="font-size: 17px; line-height: 1.6; color: var(--color-neutral-400); margin: 0 0 8px; max-width: 62ch; text-wrap: pretty;">Tusentals videor sedan 2014 på fyra YouTube-kanaler. Här hittar du de största serierna, kanalerna och gänget jag spelar med.</p>
+    <sc-if value="{{ vReady }}">
+    <h2 data-en="Series" style="font-family: var(--font-heading); font-weight: 600; font-size: 24px; letter-spacing: -.02em; margin: 40px 0 14px;">Serier</h2>
+    <div data-vgrid="" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px;">
+      <sc-for list="{{ seriesCards }}" as="s" hint-placeholder-count="4">
+        <a href="{{ s.href }}" sc-camel-on-click="{{ s.onGo }}" data-lift="" style="display: block; overflow: hidden; border-radius: 14px; background: var(--color-surface); box-shadow: 0 0 0 1px var(--color-neutral-800); color: var(--color-text);">
+          <div style="aspect-ratio: 16 / 9; overflow: hidden; background: var(--color-neutral-900);"><sc-if value="{{ s.thumb }}"><img loading="lazy" decoding="async" src="{{ s.thumb }}" alt="{{ s.title }}" style="width: 100%; height: 100%; object-fit: cover; display: block;"></sc-if></div>
+          <div style="padding: 14px 16px 16px;">
+            <div style="font-family: var(--font-heading); font-size: 20px; font-weight: 700; letter-spacing: -.01em;">{{ s.title }}</div>
+            <p style="margin: 6px 0 0; font-size: 14px; line-height: 1.5; color: var(--color-neutral-400); display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">{{ s.lead }}</p>
+          </div>
+        </a>
+      </sc-for>
+    </div>
+    <h2 data-en="The channels" style="font-family: var(--font-heading); font-weight: 600; font-size: 24px; letter-spacing: -.02em; margin: 40px 0 14px;">Kanalerna</h2>
+    <div data-vchan="" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px;">
+      <sc-for list="{{ channelCards }}" as="c" hint-placeholder-count="4">
+        <a href="{{ c.url }}" target="_blank" rel="noopener" data-lift="" style="display: flex; flex-direction: column; gap: 4px; padding: 14px 16px; border-radius: 14px; background: var(--color-surface); box-shadow: 0 0 0 1px var(--color-neutral-800); color: var(--color-text);">
+          <span style="font-family: var(--font-heading); font-size: 16px; font-weight: 600;">{{ c.name }}</span>
+          <span style="font-family: 'JetBrains Mono', monospace; letter-spacing: .14em; text-transform: uppercase; font-size: 10px; color: var(--color-neutral-400);">{{ c.handle }} · {{ c.subs }}</span>
+          <span style="font-size: 13px; color: var(--color-neutral-400); line-height: 1.45;">{{ c.about }}</span>
+        </a>
+      </sc-for>
+    </div>
+    <h2 data-en="More playlists" style="font-family: var(--font-heading); font-weight: 600; font-size: 24px; letter-spacing: -.02em; margin: 40px 0 14px;">Fler spellistor</h2>
+    <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+      <sc-for list="{{ morePl }}" as="p" hint-placeholder-count="6">
+        <a href="{{ p.url }}" target="_blank" rel="noopener" data-chip="" style="font-size: 14px; padding: 8px 12px; border-radius: 999px; border-radius: 14px; background: var(--color-surface); box-shadow: 0 0 0 1px var(--color-neutral-800); color: var(--color-text);">{{ p.title }}<sc-if value="{{ p.count }}"> <span style="color: var(--color-neutral-400);">· {{ p.count }}</span></sc-if></a>
+      </sc-for>
+    </div>
+    <a href="/ganget/" sc-camel-on-click="{{ goGanget }}" data-lift="" style="margin-top: 40px; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 18px 20px; border-radius: 14px; background: #0e0f26; box-shadow: 0 0 0 1px rgba(134,87,255,.5); color: #fff;">
+      <span><span data-en="The crew" style="font-family: 'JetBrains Mono', monospace; letter-spacing: .14em; text-transform: uppercase; font-size: 11px; color: #b9a2ff; display: block; margin-bottom: 6px;">Gänget</span><span data-en="SoftisFFS, Ufosxm, Polski and figgehn – the channels I’ve played the most with." style="font-size: 16px;">SoftisFFS, Ufosxm, Polski och figgehn – kanalerna jag spelat mest med.</span></span>
+      <span aria-hidden="true" style="font-size: 22px; color: #b9a2ff;">→</span>
+    </a>
+    </sc-if>
+  </main>
+  </sc-if>
+
+  <sc-if value="{{ atSerie }}">
+  <main style="max-width: 1240px; margin: 0 auto; padding: 72px 24px 0;">
+  <sc-if value="{{ vReady }}">
+    <nav aria-label="Brödsmulor" style="font-family: 'JetBrains Mono', monospace; letter-spacing: .14em; text-transform: uppercase; font-size: 11px; color: var(--color-neutral-400); margin-bottom: 14px;"><a href="/videor/" sc-camel-on-click="{{ goVideor }}" data-en="Videos" style="color: var(--color-accent-200);">Videor</a> / <span>{{ sTitle }}</span></nav>
+    <h1 style="font-family: var(--font-heading); font-weight: 500; font-size: clamp(38px, 6vw, 76px); letter-spacing: -.04em; margin: 0 0 14px;">{{ sTitle }}</h1>
+    <sc-if value="{{ sLead }}"><p style="font-size: 17px; line-height: 1.6; color: #dcd8ee; margin: 0 0 8px; max-width: 62ch; text-wrap: pretty;">{{ sLead }}</p></sc-if>
+    <sc-if value="{{ sMissing }}"><p data-en="That series doesn’t exist. Have a look at all the videos instead." style="color: var(--color-neutral-400);">Den serien finns inte. Kika på alla videor i stället.</p></sc-if>
+    <div data-serie="" style="display: grid; grid-template-columns: minmax(0, 1fr) minmax(240px, 340px); gap: 36px; align-items: start; margin-top: 18px;">
+      <article data-prose="" style="min-width: 0; max-width: 68ch; font-size: 16px; line-height: 1.7; color: #d6d3e6;">
+        <sc-for list="{{ sBlocks }}" as="b" hint-placeholder-count="3">
+          <sc-if value="{{ b.h }}"><h2 style="font-family: var(--font-heading); font-weight: 600; font-size: 22px; letter-spacing: -.02em; color: #fff; margin: 22px 0 8px;">{{ b.h }}</h2></sc-if>
+          <sc-if value="{{ b.isP }}"><p style="margin: 0 0 14px; text-wrap: pretty;"><sc-for list="{{ b.parts }}" as="p" hint-placeholder-count="1"><sc-if value="{{ p.href }}"><a href="{{ p.href }}" target="{{ p.target }}" rel="noopener">{{ p.text }}</a></sc-if><sc-if value="{{ p.plain }}"><span>{{ p.text }}</span></sc-if></sc-for></p></sc-if>
+        </sc-for>
+      </article>
+      <aside style="display: flex; flex-direction: column; gap: 8px;">
+        <span data-en="Playlists on YouTube" style="font-family: 'JetBrains Mono', monospace; letter-spacing: .14em; text-transform: uppercase; font-size: 11px; color: #b9a2ff;">Spellistor på YouTube</span>
+        <sc-for list="{{ sPlaylists }}" as="p" hint-placeholder-count="3">
+          <a href="{{ p.url }}" target="_blank" rel="noopener" data-lift="" style="display: flex; justify-content: space-between; gap: 10px; padding: 10px 14px; border-radius: 14px; background: var(--color-surface); box-shadow: 0 0 0 1px var(--color-neutral-800); color: var(--color-text); font-size: 14px;"><span>{{ p.title }}</span><sc-if value="{{ p.count }}"><span style="color: var(--color-neutral-400); white-space: nowrap;">{{ p.count }} <span data-en="videos">videor</span></span></sc-if></a>
+        </sc-for>
+      </aside>
+    </div>
+    <sc-if value="{{ sHasVideos }}">
+      <h2 data-en="Latest in the series" style="font-family: var(--font-heading); font-weight: 600; font-size: 24px; letter-spacing: -.02em; margin: 40px 0 14px;">Senaste i serien</h2>
+      <div data-vgrid="" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px;">
+        <sc-for list="{{ sVideos }}" as="v" hint-placeholder-count="8">
+          <a href="{{ v.url }}" target="_blank" rel="noopener" data-lift="" style="display: block; overflow: hidden; border-radius: 14px; background: var(--color-surface); box-shadow: 0 0 0 1px var(--color-neutral-800); color: var(--color-text);">
+            <div style="aspect-ratio: 16 / 9; overflow: hidden; background: var(--color-neutral-900);"><img loading="lazy" decoding="async" src="{{ v.thumb }}" alt="{{ v.title }}" style="width: 100%; height: 100%; object-fit: cover; display: block;"></div>
+            <div style="padding: 10px 12px 12px;"><div style="font-family: var(--font-heading); font-size: 14px; font-weight: 500; line-height: 1.35; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">{{ v.title }}</div><sc-if value="{{ v.date }}"><div style="font-family: 'JetBrains Mono', monospace; letter-spacing: .14em; text-transform: uppercase; font-size: 10px; color: var(--color-neutral-400); margin-top: 6px;">{{ v.date }}</div></sc-if></div>
+          </a>
+        </sc-for>
+      </div>
+    </sc-if>
+  </sc-if>
+  </main>
+  </sc-if>
+
+  <sc-if value="{{ atGanget }}">
+  <main style="max-width: 1240px; margin: 0 auto; padding: 72px 24px 0;">
+    <h1 data-en="The crew" style="font-family: var(--font-heading); font-weight: 500; font-size: clamp(38px, 6vw, 76px); letter-spacing: -.04em; margin: 0 0 14px;">Gänget</h1>
+    <p data-en="The channels I’ve played the most with over the years. Check them out and subscribe – and watch a few of the videos we made together." style="font-size: 17px; line-height: 1.6; color: var(--color-neutral-400); margin: 0 0 8px; max-width: 62ch; text-wrap: pretty;">Kanalerna jag har spelat mest med genom åren. Kika in och prenumerera – och se några av videorna där vi är med tillsammans.</p>
+    <div style="display: flex; flex-direction: column; gap: 16px; margin-top: 24px;">
+      <sc-for list="{{ crewCards }}" as="m" hint-placeholder-count="4">
+        <section data-crew="" style="padding: 18px; border-radius: 14px; background: var(--color-surface); box-shadow: 0 0 0 1px var(--color-neutral-800); color: var(--color-text);">
+          <div data-crew-head="" style="display: flex; align-items: center; gap: 16px; flex-wrap: wrap;">
+            <span style="flex: 0 0 64px; width: 64px; height: 64px; border-radius: 50%; overflow: hidden; background: var(--color-neutral-900); display: grid; place-items: center; font-family: var(--font-heading); font-size: 24px; font-weight: 700; color: #b9a2ff;"><sc-if value="{{ m.avatar }}"><img loading="lazy" decoding="async" src="{{ m.avatar }}" alt="{{ m.name }}" width="64" height="64" style="width: 100%; height: 100%; object-fit: cover; display: block;"></sc-if><sc-if value="{{ m.noAvatar }}">{{ m.initial }}</sc-if></span>
+            <div style="flex: 1 1 220px; min-width: 0;">
+              <h2 style="font-family: var(--font-heading); font-weight: 700; font-size: 24px; letter-spacing: -.02em; margin: 0;">{{ m.name }} <sc-if value="{{ m.memorial }}"><span style="font-family: 'JetBrains Mono', monospace; letter-spacing: .14em; text-transform: uppercase; font-size: 11px; color: var(--color-neutral-400); vertical-align: 3px; margin-left: 6px;">{{ m.memorial }}</span></sc-if></h2>
+              <span style="font-family: 'JetBrains Mono', monospace; letter-spacing: .14em; text-transform: uppercase; font-size: 10px; color: var(--color-neutral-400);">{{ m.channelName }}<sc-if value="{{ m.subs }}"> · {{ m.subs }}</sc-if></span>
+            </div>
+            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+              <a href="{{ m.channelUrl }}" target="_blank" rel="noopener" data-btno="" data-en="Channel ↗" style="font-size: 14px; font-weight: 600; padding: 9px 14px; border-radius: 9px; border: 1.5px solid #8657FF; color: #ece8ff;">Kanalen ↗</a>
+              <a href="{{ m.subUrl }}" target="_blank" rel="noopener" data-btnp="" data-en="Subscribe" style="font-size: 14px; font-weight: 600; padding: 10px 14px; border-radius: 9px; background: #7a4af5; color: #fff;">Prenumerera</a>
+            </div>
+          </div>
+          <p style="margin: 14px 0 0; font-size: 15px; line-height: 1.6; color: #d6d3e6; max-width: 70ch;">{{ m.text }}</p>
+          <div data-vgrid="" style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 14px;">
+            <sc-for list="{{ m.videos }}" as="v" hint-placeholder-count="3">
+              <a href="{{ v.url }}" target="_blank" rel="noopener" data-lift="" style="display: block; overflow: hidden; border-radius: 14px; background: var(--color-surface); box-shadow: 0 0 0 1px var(--color-neutral-800); color: var(--color-text);">
+            <div style="aspect-ratio: 16 / 9; overflow: hidden; background: var(--color-neutral-900);"><img loading="lazy" decoding="async" src="{{ v.thumb }}" alt="{{ v.title }}" style="width: 100%; height: 100%; object-fit: cover; display: block;"></div>
+            <div style="padding: 10px 12px 12px;"><div style="font-family: var(--font-heading); font-size: 14px; font-weight: 500; line-height: 1.35; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">{{ v.title }}</div><sc-if value="{{ v.date }}"><div style="font-family: 'JetBrains Mono', monospace; letter-spacing: .14em; text-transform: uppercase; font-size: 10px; color: var(--color-neutral-400); margin-top: 6px;">{{ v.date }}</div></sc-if></div>
+          </a>
+            </sc-for>
+          </div>
+        </section>
+      </sc-for>
+    </div>
+  </main>
+  </sc-if>
+
   <sc-if value="{{ atShop }}">
   <main style="max-width: 1240px; margin: 0 auto; padding: 72px 24px 0;">
     <h1 data-en="Shop" style="font-family: var(--font-heading); font-weight: 500; font-size: clamp(38px, 6vw, 76px); letter-spacing: -.04em; margin: 0 0 14px;">Shop</h1>
@@ -2146,6 +2303,8 @@ textarea.input { min-height: 90px; resize: vertical; }
           <a href="/nedladdningar/" sc-camel-on-click="{{ goDl }}" data-en="Downloads" style="color: var(--color-neutral-400);">Nedladdningar</a>
           <a href="/shop/" sc-camel-on-click="{{ goShop }}" data-en="Shop" style="color: var(--color-neutral-400);">Shop</a>
           <a href="/spel/" sc-camel-on-click="{{ goSpel }}" data-en="Games" style="color: var(--color-neutral-400);">Spel</a>
+          <a href="/videor/" sc-camel-on-click="{{ goVideor }}" data-en="Videos" style="color: var(--color-neutral-400);">Videor</a>
+          <a href="/ganget/" sc-camel-on-click="{{ goGanget }}" data-en="The crew" style="color: var(--color-neutral-400);">Gänget</a>
           <a href="/samarbeten/" sc-camel-on-click="{{ goCollab }}" data-en="Partnerships" style="color: var(--color-neutral-400);">Samarbeten</a>
           <a href="/om/" sc-camel-on-click="{{ goOm }}" data-en="About" style="color: var(--color-neutral-400);">Om Chris</a>
         </div>
@@ -2249,21 +2408,25 @@ const hexA = (hex, a) => {
 };
 const isoDate = (d) => d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
 
-const ROOT_PATH = (() => { try { const b = document.querySelector('base'); if (b) return new URL(b.getAttribute('href'), location.href).pathname; let p = location.pathname.replace(/[^/]*$/, ''); for (const s of ['setup/', 'schema/', 'faq/', 'nedladdningar/', 'shop/', 'spel/', 'samarbeten/', 'om/', 'integritetspolicy/']) if (p.endsWith('/' + s)) return p.slice(0, -s.length); return p; } catch (e) { return '/'; } })();
+// Sajten ligger alltid i domänens rot.
+const ROOT_PATH = '/';
 const SITE_ROOT = (() => { try { return new URL(ROOT_PATH, location.href).href; } catch (e) { return ''; } })();
 const asset = (u) => (u && !/^(data:|blob:|https?:|\/)/i.test(u) ? SITE_ROOT + u : u);
 const ytId = (u) => { const m = /(?:[?&]v=|youtu\.be\/|shorts\/|embed\/|live\/)([\w-]{11})/.exec(u || ''); return m ? m[1] : ''; };
 const collabSlug = (n) => String(n || '').trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-const ROUTE_PATHS = { hem: '', setup: 'setup/', schema: 'schema/', faq: 'faq/', dl: 'nedladdningar/', shop: 'shop/', spel: 'spel/', samarbeten: 'samarbeten/', om: 'om/', integritet: 'integritetspolicy/' };
+const ROUTE_PATHS = { hem: '', setup: 'setup/', schema: 'schema/', faq: 'faq/', dl: 'nedladdningar/', shop: 'shop/', spel: 'spel/', samarbeten: 'samarbeten/', om: 'om/', integritet: 'integritetspolicy/', videor: 'videor/', ganget: 'ganget/' };
+// Adress -> sida. /videor/<serie>/ blir sidan 'serie' med serie = <serie>.
+const locRoute = () => { try { const p = location.pathname.replace(/^\/+/, '').replace(/index\.html$/, ''); const m = /^videor\/([a-z0-9-]+)\/?$/.exec(p); if (m) return { route: 'serie', serie: m[1] }; const seg = p.replace(/\/$/, ''); return { route: Object.keys(ROUTE_PATHS).find((k) => ROUTE_PATHS[k] === (seg ? seg + '/' : '')) || 'hem', serie: '' }; } catch (e) { return { route: 'hem', serie: '' }; } };
 // Gör e-post, webbadresser och några ord i FAQ-svaren klickbara (texten kommer från admin).
 const FAQ_WORDS = {
   'setup-sidan': () => SITE_ROOT + 'setup/', 'schemat': () => SITE_ROOT + 'schema/', 'spelschemat': () => SITE_ROOT + 'schema/',
   'nedladdningar': () => SITE_ROOT + 'nedladdningar/', 'shoppen': () => SITE_ROOT + 'shop/', 'spelsidan': () => SITE_ROOT + 'spel/',
   'discord': () => 'https://discord.com/invite/uqhVKeCmGz', 'youtube': () => 'https://www.youtube.com/@chriswhippit', 'twitch': () => 'https://www.twitch.tv/chriswhippit',
   'instagram': () => 'https://www.instagram.com/chriswhippit', 'tiktok': () => 'https://www.tiktok.com/@chris.whippit',
+  'gängets sida': () => SITE_ROOT + 'ganget/', 'crew page': () => SITE_ROOT + 'ganget/', 'minecraft-sidan': () => SITE_ROOT + 'videor/minecraft/', 'minecraft page': () => SITE_ROOT + 'videor/minecraft/',
   'setup page': () => SITE_ROOT + 'setup/', 'schedule': () => SITE_ROOT + 'schema/', 'downloads': () => SITE_ROOT + 'nedladdningar/', 'games page': () => SITE_ROOT + 'spel/', 'the shop': () => SITE_ROOT + 'shop/'
 };
-const FAQ_LINK = /([\w.+-]+@[\w-]+(?:\.[\w-]+)*\.[a-z]{2,})|(https?:\/\/[^\s]+[^\s.,;:!?)])|\b(setup-sidan|spelschemat|schemat|nedladdningar|shoppen|spelsidan|discord|youtube|twitch|instagram|tiktok|setup page|schedule|downloads|games page|the shop)\b|(@(?:chriswhippit|whippitsson|figgwhipp|whippitextra))\b/gi;
+const FAQ_LINK = /([\w.+-]+@[\w-]+(?:\.[\w-]+)*\.[a-z]{2,})|(https?:\/\/[^\s]+[^\s.,;:!?)])|\b(setup-sidan|spelschemat|schemat|nedladdningar|shoppen|spelsidan|discord|youtube|twitch|instagram|tiktok|setup page|schedule|downloads|games page|the shop|gängets sida|crew page|minecraft-sidan|minecraft page)\b|(@(?:chriswhippit|whippitsson|figgwhipp|whippitextra))\b/gi;
 const faqParts = (text) => {
   const s = String(text || ''), out = [];
   let last = 0, m;
@@ -2277,7 +2440,7 @@ const faqParts = (text) => {
   if (last < s.length) out.push({ text: s.slice(last), plain: true, href: '' });
   return out;
 };
-const ROUTE_META = {"hem":{"t":"Chris Whippit — svensk YouTuber och streamare","d":"Chris Whippit gör videor sedan 2014: gaming, Pokémon GO, discgolf och vad dagen nu blir. Senaste videorna, veckans schema, spel, merch och samarbeten.","u":"https://www.chriswhippit.com/"},"setup":{"t":"Setup — datorn, kameran och allt annat | Chris Whippit","d":"Hela listan på grejerna Chris Whippit spelar in med: dator, grafikkort, mikrofon, kamera, stol och skrivbord.","u":"https://www.chriswhippit.com/setup/"},"schema":{"t":"Spelschema — veckans videor och streams | Chris Whippit","d":"Veckans planerade videor och streams från Chris Whippit, dag för dag med tider. Se vad som släpps härnäst på kanalerna.","u":"https://www.chriswhippit.com/schema/"},"faq":{"t":"Vanliga frågor | Chris Whippit","d":"Svar på det som kommer oftast: hur ofta det laddas upp, vilka kanaler som finns, datorn, samarbeten, Discord, spelen och merch.","u":"https://www.chriswhippit.com/faq/"},"dl":{"t":"Nedladdningar — Minecraft-kartor | Chris Whippit","d":"Ladda ner kartorna från Let’s Play-serien i Minecraft med Whippit och Softis, alla fyra säsongerna. Gratis att använda som du vill.","u":"https://www.chriswhippit.com/nedladdningar/"},"shop":{"t":"Shop — t-shirts, hoodies och kepsar | Chris Whippit","d":"Merch med Whippit-märket. T-shirts, hoodies och kepsar, tryckta och skickade av Spreadshirt.","u":"https://www.chriswhippit.com/shop/"},"spel":{"t":"Spel — Project Genesis och fler webbläsarspel | Chris Whippit","d":"Spela Project Genesis, ett cyberpunk-idle-MMORPG, och fler gratisspel direkt i webbläsaren. Inget att ladda ner.","u":"https://www.chriswhippit.com/spel/"},"samarbeten":{"t":"Samarbeten — varumärken och kampanjer | Chris Whippit","d":"Varumärken Chris Whippit har samarbetat med, bland andra Xbox, Ubisoft, NZXT och SodaStream. Se videorna, siffrorna och hur du kontaktar honom.","u":"https://www.chriswhippit.com/samarbeten/"},"om":{"t":"Om Chris Whippit — svensk YouTuber sedan 2014","d":"Chris Whippit är en svensk YouTuber och streamare från Strömstad som gjort videor sedan 2014: gaming, Pokémon GO, discgolf och mer.","u":"https://www.chriswhippit.com/om/"},"integritet":{"t":"Integritetspolicy | Chris Whippit","d":"Hur chriswhippit.com hanterar personuppgifter, cookies och annonser från Google AdSense, och vilka rättigheter du har.","u":"https://www.chriswhippit.com/integritetspolicy/"}};
+const ROUTE_META = {"hem":{"t":"Chris Whippit — svensk YouTuber och streamare","d":"Chris Whippit gör videor sedan 2014: gaming, Pokémon GO, discgolf och vad dagen nu blir. Senaste videorna, veckans schema, spel, merch och samarbeten.","u":"https://www.chriswhippit.com/"},"setup":{"t":"Setup — datorn, kameran och allt annat | Chris Whippit","d":"Hela listan på grejerna Chris Whippit spelar in med: dator, grafikkort, mikrofon, kamera, stol och skrivbord.","u":"https://www.chriswhippit.com/setup/"},"schema":{"t":"Spelschema — veckans videor och streams | Chris Whippit","d":"Veckans planerade videor och streams från Chris Whippit, dag för dag med tider. Se vad som släpps härnäst på kanalerna.","u":"https://www.chriswhippit.com/schema/"},"faq":{"t":"Vanliga frågor | Chris Whippit","d":"Svar på det som kommer oftast: hur ofta det laddas upp, vilka kanaler som finns, datorn, samarbeten, Discord, spelen och merch.","u":"https://www.chriswhippit.com/faq/"},"dl":{"t":"Nedladdningar — Minecraft-kartor | Chris Whippit","d":"Ladda ner kartorna från Let’s Play-serien i Minecraft med Whippit och Softis, alla fyra säsongerna. Gratis att använda som du vill.","u":"https://www.chriswhippit.com/nedladdningar/"},"shop":{"t":"Shop — t-shirts, hoodies och kepsar | Chris Whippit","d":"Merch med Whippit-märket. T-shirts, hoodies och kepsar, tryckta och skickade av Spreadshirt.","u":"https://www.chriswhippit.com/shop/"},"spel":{"t":"Spel — Project Genesis och fler webbläsarspel | Chris Whippit","d":"Spela Project Genesis, ett cyberpunk-idle-MMORPG, och fler gratisspel direkt i webbläsaren. Inget att ladda ner.","u":"https://www.chriswhippit.com/spel/"},"samarbeten":{"t":"Samarbeten — varumärken och kampanjer | Chris Whippit","d":"Varumärken Chris Whippit har samarbetat med, bland andra Xbox, Ubisoft, NZXT och SodaStream. Se videorna, siffrorna och hur du kontaktar honom.","u":"https://www.chriswhippit.com/samarbeten/"},"om":{"t":"Om Chris Whippit — svensk YouTuber sedan 2014","d":"Chris Whippit är en svensk YouTuber och streamare från Strömstad som gjort videor sedan 2014: gaming, Pokémon GO, discgolf och mer.","u":"https://www.chriswhippit.com/om/"},"integritet":{"t":"Integritetspolicy | Chris Whippit","d":"Hur chriswhippit.com hanterar personuppgifter, cookies och annonser från Google AdSense, och vilka rättigheter du har.","u":"https://www.chriswhippit.com/integritetspolicy/"},"videor":{"t":"Videor — serier, kanaler och spellistor | Chris Whippit","d":"Alla serier från Chris Whippit samlade: Minecraft Let’s Play, GTA 5, Fortnite, vloggar och Pokémon GO – plus kanalerna och gänget.","u":"https://www.chriswhippit.com/videor/"},"serie:minecraft":{"t":"Minecraft med Chris Whippit — Let’s Play med Softis","d":"Minecraft Let’s Play med SoftisFFS sedan 2016 – över 500 avsnitt – plus Lucky Block, Skyblock, Hardcore och kartorna att ladda ner.","u":"https://www.chriswhippit.com/videor/minecraft/"},"serie:gta-5":{"t":"GTA 5 med Chris Whippit — race, heists och kaos","d":"Nästan 1 000 GTA 5-videor med SoftisFFS, figgehn och Polski. Rage-race, Cayo Perico, Last Team Standing och introlåten Razor Sharp.","u":"https://www.chriswhippit.com/videor/gta-5/"},"serie:fortnite":{"t":"Fortnite med Chris Whippit — nästan 600 videor","d":"Fortnite från 2017 till 2024: säsong efter säsong, live-events, Playground och Fortnite Lego med Softis, figgehn och Polski.","u":"https://www.chriswhippit.com/videor/fortnite/"},"serie:vloggar":{"t":"Chris Whippit Vloggar — Pokémon GO, discgolf och vardag","d":"Vlogg-kanalen med familjen, discgolf, teknik, mat och över 200 Pokémon GO-videor med raider, community days och shinies.","u":"https://www.chriswhippit.com/videor/vloggar/"},"ganget":{"t":"Gänget — SoftisFFS, Ufosxm, Polski och figgehn | Chris Whippit","d":"Kanalerna Chris Whippit spelat mest med: SoftisFFS, Ufosxm, Polski och figgehn. Prenumerera och se videorna de gjort tillsammans.","u":"https://www.chriswhippit.com/ganget/"}};
 const applyRouteMeta = (route) => {
   const m = ROUTE_META[route]; if (!m) return;
   document.title = m.t;
@@ -2291,6 +2454,7 @@ const applyRouteMeta = (route) => {
 const SETUP_EN = { 'Dator': 'Computer', 'Ljud och bild': 'Audio & video', 'Skrivbord': 'Desk', 'Chassi': 'Case', 'Grafikkort': 'Graphics card', 'Moderkort': 'Motherboard', 'Hårddisk': 'Drive', 'Kylare': 'Cooler', 'Nätaggregat': 'Power supply', 'Hörlurar': 'Headphones', 'Mikrofon': 'Microphone', 'Ljudutrustning': 'Audio gear', 'Skärmar': 'Monitors', 'Tangentbord': 'Keyboard', 'Mus': 'Mouse', 'Stol': 'Chair', 'Kamera': 'Camera', 'Belysning': 'Lighting', 'Ljus': 'Lights', 'Bord': 'Desk' };
 const setupEn = (s) => String(s || '').replace(/^(.+?)((?: \d+)?)( — .*)?$/, (m, label, num, rest) => (SETUP_EN[label.trim()] || label) + num + (rest || '').replace(/Vit\/Svart/g, 'White/Black').replace(/Svart/g, 'Black').replace(/Vit\b/g, 'White'));
 const pick = (lang, o, k) => (lang === 'en' && o && String(o[k + '_en'] || '').trim()) ? o[k + '_en'] : ((o && o[k]) || '');
+const YT_KEY = 'AIzaSyB7s-AxfJegsFoyo8LEqlOFeXcWoyG59Kg';
 const SAVED_LANG = (() => { try { return localStorage.getItem('cw-lang') === 'en' ? 'en' : 'sv'; } catch (e) { return 'sv'; } })();
 const GAMES = [
   { slug: 'break-shot', title: 'Break Shot' },
@@ -2367,7 +2531,7 @@ const CONTENT_DEFAULTS = {
 
 class Component extends DCLogic {
   // Rätt sida direkt (annars renderas startsidan en stund först och hinner börja ladda dess bilder).
-  state = { route: (() => { try { const seg = location.pathname.replace(/\/(?:index\.html)?$/, '').split('/').pop(); return Object.keys(ROUTE_PATHS).find((k) => ROUTE_PATHS[k] === seg + '/') || 'hem'; } catch (e) { return 'hem'; } })(), collab: 0, collabStats: null, collabPlay: false, lang: SAVED_LANG, videos: FALLBACK_VIDEOS, live: false, sponsors: FALLBACK_SPONSORS, social: [], content: CONTENT_DEFAULTS, ads: null, consent: (() => { try { return localStorage.getItem('cw-consent') || ''; } catch (e) { return ''; } })() };
+  state = { ...locRoute(), seriesVids: {}, collab: 0, collabStats: null, collabPlay: false, lang: SAVED_LANG, videos: FALLBACK_VIDEOS, live: false, sponsors: FALLBACK_SPONSORS, social: [], content: CONTENT_DEFAULTS, ads: null, consent: (() => { try { return localStorage.getItem('cw-consent') || ''; } catch (e) { return ''; } })() };
 
   setConsent(v) { try { localStorage.setItem('cw-consent', v); } catch (e) {} this.setState({ consent: v }); }
 
@@ -2444,10 +2608,68 @@ class Component extends DCLogic {
       .catch(() => this.setState({ collabStats: {} }));
   }
 
+  // Videor/serier/gänget: spellistor, senaste videor och kanalinfo från YouTube (få anrop, sparas i state).
+  loadVideoData() {
+    const r = this.state.route;
+    if (r !== 'videor' && r !== 'serie' && r !== 'ganget') return;
+    const c = this.state.content || {};
+    const key = this.props.youtubeApiKey || YT_KEY;
+    const yt = (p) => fetch('https://www.googleapis.com/youtube/v3/' + p + '&key=' + key).then((x) => x.json());
+    const series = c.series || [];
+    if (!series.length) return; // vänta på content.json
+    if ((r === 'videor' || r === 'serie') && !this._plCounts) {
+      this._plCounts = true;
+      const ids = [...series.flatMap((s) => (s.playlists || []).map((p) => p.id)), ...(c.morePlaylists || []).map((p) => p.id)].slice(0, 50);
+      yt('playlists?part=contentDetails&maxResults=50&id=' + ids.join(',')).then((j) => {
+        const m = {}; (j.items || []).forEach((p) => { m[p.id] = p.contentDetails.itemCount; }); this.setState({ plCounts: m });
+      }).catch(() => {});
+    }
+    if (r === 'videor' && !this._covers) {
+      this._covers = true;
+      series.filter((s) => !s.cover && s.playlists && s.playlists[0]).forEach((s) => {
+        yt('playlistItems?part=contentDetails&maxResults=1&playlistId=' + s.playlists[0].id).then((j) => {
+          const id = j.items && j.items[0] && j.items[0].contentDetails.videoId; if (id) this.setState((st) => ({ covers: { ...(st.covers || {}), [s.slug]: id } }));
+        }).catch(() => {});
+      });
+    }
+    if (r === 'serie') {
+      const s = series.find((x) => x.slug === this.state.serie);
+      if (s && s.playlists && s.playlists[0] && !(this.state.seriesVids || {})[s.slug] && this._serieLoading !== s.slug) {
+        this._serieLoading = s.slug;
+        const pid = s.playlists[0].id;
+        yt('playlistItems?part=snippet,contentDetails&maxResults=50&playlistId=' + pid).then((j) => {
+          const vids = (j.items || []).filter((it) => it.contentDetails.videoPublishedAt).map((it) => ({ id: it.contentDetails.videoId, title: it.snippet.title, at: it.contentDetails.videoPublishedAt, list: pid }))
+            .sort((a, b) => (a.at < b.at ? 1 : -1)).slice(0, 12);
+          this.setState((st) => ({ seriesVids: { ...(st.seriesVids || {}), [s.slug]: vids } }));
+        }).catch(() => {});
+      }
+    }
+    if (r === 'ganget' && !this._crew) {
+      this._crew = true;
+      const crew = c.crew || [];
+      yt('channels?part=snippet,statistics&id=' + crew.map((m) => m.channelId).join(',')).then((j) => {
+        const m = {}; (j.items || []).forEach((ch) => { m[ch.id] = { avatar: ch.snippet.thumbnails && (ch.snippet.thumbnails.medium || ch.snippet.thumbnails.default).url, subs: +ch.statistics.subscriberCount || 0, title: ch.snippet.title }; });
+        this.setState({ crewInfo: m });
+      }).catch(() => {});
+      const vids = crew.flatMap((m) => m.videos || []);
+      if (vids.length) yt('videos?part=snippet&id=' + vids.join(',')).then((j) => {
+        const m = {}; (j.items || []).forEach((v) => { m[v.id] = { title: v.snippet.title, at: v.snippet.publishedAt }; }); this.setState({ crewVids: m });
+      }).catch(() => {});
+    }
+  }
+
   routeFromUrl() {
-    const seg = location.pathname.replace(/\/(?:index\.html)?$/, '').split('/').pop();
-    const hit = Object.keys(ROUTE_PATHS).find((k) => ROUTE_PATHS[k] === seg + '/');
-    return hit || 'hem';
+    return locRoute().route;
+  }
+
+  // Seriesida: /videor/<slug>/
+  goSerie(slug) {
+    return (e) => {
+      if (e) e.preventDefault();
+      this.setState({ route: 'serie', serie: slug });
+      try { history.pushState({ route: 'serie', serie: slug }, '', ROOT_PATH + 'videor/' + slug + '/'); } catch (err) {}
+      window.scrollTo(0, 0);
+    };
   }
 
   applyLang() {
@@ -2526,8 +2748,8 @@ class Component extends DCLogic {
     window.addEventListener('pointermove', this.onMove);
     window.addEventListener('pointerup', this.onUp);
     window.addEventListener('pointercancel', this.onUp);
-    this.setState({ route: this.routeFromUrl() });
-    this._pop = () => this.setState({ route: this.routeFromUrl() });
+    this.setState(locRoute());
+    this._pop = () => this.setState(locRoute());
     window.addEventListener('popstate', this._pop);
     this.loadVideos();
     try {
@@ -2569,6 +2791,7 @@ class Component extends DCLogic {
     if (isPlaceholderSetup(next.setup)) delete next.setup;
     if (Array.isArray(c.schema)) next.schema = c.schema;
     if (c.about && typeof c.about === 'object') next.about = c.about;
+    ['series', 'crew', 'morePlaylists'].forEach((k) => { if (Array.isArray(c[k])) next[k] = c[k]; });
     if (Object.keys(next).length) this.setState((s) => ({ content: { ...s.content, ...next } }));
     if (c.sponsors && c.sponsors.length) this.setState({ sponsors: c.sponsors });
     if (c.social) { this.setState({ social: c.social }); this.loadSocialThumbs(c.social); }
@@ -2659,7 +2882,7 @@ class Component extends DCLogic {
       this.setState({ ytError: (e && e.message) || 'network error' });
     }
   }
-  componentDidUpdate() { if (this._metaRoute !== this.state.route) { this._metaRoute = this.state.route; applyRouteMeta(this.state.route); } this.applyLang(); if (this.state.route === 'shop') this.loadShop(); if (this.state.route === 'samarbeten') this.loadCollabStats(); this.fillAds(); }
+  componentDidUpdate() { const mk = this.state.route === 'serie' ? 'serie:' + this.state.serie : this.state.route; if (this._metaRoute !== mk) { this._metaRoute = mk; applyRouteMeta(mk); } this.applyLang(); if (this.state.route === 'shop') this.loadShop(); if (this.state.route === 'samarbeten') this.loadCollabStats(); this.loadVideoData(); this.fillAds(); }
 
   loadShop() {
     if (this._shopLoaded || !document.getElementById('myShop')) return;
@@ -2859,8 +3082,43 @@ class Component extends DCLogic {
       // '## ' i början av ett stycke blir en rubrik, tom rad = nytt stycke.
       aboutBlocks: String(pick(this.state.lang, c.about, 'text')).split(/\n\s*\n/).map((x) => x.trim()).filter(Boolean)
         .map((x) => (/^##\s+/.test(x) ? { h: x.replace(/^##\s+/, ''), isP: '' } : { h: '', isP: '1', parts: faqParts(x) })),
+      atVideor: r === 'videor' ? '1' : '', goVideor: this.go('videor'),
+      atGanget: r === 'ganget' ? '1' : '', goGanget: this.go('ganget'),
+      atSerie: r === 'serie' ? '1' : '',
+      ...(() => {
+        const L = this.state.lang;
+        const kfmt = (n) => (n >= 1e6 ? (n / 1e6).toFixed(1).replace('.0', '') + 'M' : n >= 1e3 ? Math.round(n / 1e3) + 'K' : String(n || ''));
+        const dfmt = (iso) => (iso ? new Date(iso).toLocaleDateString(L === 'en' ? 'en-GB' : 'sv-SE', { year: 'numeric', month: 'short', day: 'numeric' }) : '');
+        const counts = this.state.plCounts || {};
+        const cnt = (id) => (counts[id] ? String(counts[id]) : '');
+        const plUrl = (id) => 'https://www.youtube.com/playlist?list=' + id;
+        const blocks = (txt) => String(txt || '').split(/\n\s*\n/).map((x) => x.trim()).filter(Boolean).map((x) => (/^##\s+/.test(x) ? { h: x.replace(/^##\s+/, ''), isP: '' } : { h: '', isP: '1', parts: faqParts(x) }));
+        const series = c.series || [];
+        const s = series.find((x) => x.slug === this.state.serie);
+        const sv = s ? ((this.state.seriesVids || {})[s.slug] || []) : [];
+        const CH = { '@chriswhippit': ['ChrisWhippit', 'Huvudkanalen: gaming, Minecraft, GTA och Fortnite.', 'The main channel: gaming, Minecraft, GTA and Fortnite.'], '@whippitsson': ['Chris Whippit Vloggar', 'Familjen, discgolf, mat och Pokémon GO.', 'Family, disc golf, food and Pokémon GO.'], '@figgwhipp': ['Figgehn & Whippit', 'Den gemensamma kanalen med figgehn.', 'The shared channel with figgehn.'], '@whippitextra': ['Whippit Extra', 'Extra-kanalen med mer spel.', 'The extra channel with more gaming.'] };
+        const crewInfo = this.state.crewInfo || {}, crewVids = this.state.crewVids || {};
+        return {
+          seriesCards: series.map((x) => { const cov = x.cover || (this.state.covers || {})[x.slug]; return { title: pick(L, x, 'title'), lead: pick(L, x, 'lead'), href: '/videor/' + x.slug + '/', onGo: this.goSerie(x.slug), thumb: cov ? 'https://i.ytimg.com/vi/' + cov + '/hqdefault.jpg' : '' }; }),
+          channelCards: (c.stats || []).filter((x) => CH[x.platform]).map((x) => ({ name: CH[x.platform][0], handle: x.platform, subs: x.value, about: CH[x.platform][L === 'en' ? 2 : 1], url: 'https://www.youtube.com/' + x.platform })),
+          morePl: (c.morePlaylists || []).map((p) => ({ title: pick(L, p, 'title'), url: plUrl(p.id), count: cnt(p.id) })),
+          sTitle: s ? pick(L, s, 'title') : (L === 'en' ? 'Not found' : 'Hittades inte'),
+          sLead: s ? pick(L, s, 'lead') : '', sMissing: s ? '' : '1',
+          sBlocks: s ? blocks(pick(L, s, 'text')) : [],
+          sPlaylists: s ? (s.playlists || []).map((p) => ({ title: pick(L, p, 'title'), url: plUrl(p.id), count: cnt(p.id) })) : [],
+          sVideos: sv.map((v) => ({ title: v.title, date: dfmt(v.at), thumb: 'https://i.ytimg.com/vi/' + v.id + '/mqdefault.jpg', url: 'https://www.youtube.com/watch?v=' + v.id + '&list=' + v.list })),
+          sHasVideos: sv.length ? '1' : '',
+          crewCards: (c.crew || []).map((m) => { const info = crewInfo[m.channelId] || {}; return {
+            name: m.name, channelName: m.channelName || info.title || m.name, memorial: m.memorial || '', text: pick(L, m, 'text'),
+            avatar: info.avatar || '', noAvatar: info.avatar ? '' : '1', initial: (m.name || '?').slice(0, 1).toUpperCase(), subs: info.subs ? kfmt(info.subs) + (L === 'en' ? ' subscribers' : ' prenumeranter') : '',
+            channelUrl: 'https://www.youtube.com/' + (m.handle || 'channel/' + m.channelId), subUrl: 'https://www.youtube.com/channel/' + m.channelId + '?sub_confirmation=1',
+            videos: (m.videos || []).map((id) => ({ title: (crewVids[id] || {}).title || '', date: dfmt((crewVids[id] || {}).at), thumb: 'https://i.ytimg.com/vi/' + id + '/mqdefault.jpg', url: 'https://www.youtube.com/watch?v=' + id })),
+          }; }),
+        };
+      })(),
       atCollab: r === 'samarbeten' ? '1' : '',
       collabReady: this.state.contentReady ? '1' : '',
+      vReady: this.state.contentReady ? '1' : '',  // serier/gänget kommer från content.json — visa först då, så inget hoppar (CLS)
       goCollab: this.go('samarbeten'),
       ...(() => {
         const st = this.state.collabStats;

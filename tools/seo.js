@@ -7,19 +7,8 @@
 const fs = require('fs'), path = require('path');
 const root = path.join(__dirname, '..');
 const SITE = 'https://www.chriswhippit.com/';
-const PAGES = {
-  hem: { file: 'index.html', path: '', crumb: null, type: 'WebPage' },
-  setup: { file: 'setup/index.html', path: 'setup/', crumb: 'Setup', type: 'WebPage' },
-  schema: { file: 'schema/index.html', path: 'schema/', crumb: 'Schema', type: 'WebPage' },
-  faq: { file: 'faq/index.html', path: 'faq/', crumb: 'FAQ', type: 'WebPage' },
-  dl: { file: 'nedladdningar/index.html', path: 'nedladdningar/', crumb: 'Nedladdningar', type: 'CollectionPage' },
-  shop: { file: 'shop/index.html', path: 'shop/', crumb: 'Shop', type: 'CollectionPage' },
-  spel: { file: 'spel/index.html', path: 'spel/', crumb: 'Spel', type: 'CollectionPage' },
-  samarbeten: { file: 'samarbeten/index.html', path: 'samarbeten/', crumb: 'Samarbeten', type: 'CollectionPage' },
-  om: { file: 'om/index.html', path: 'om/', crumb: 'Om Chris', type: 'ProfilePage' },
-  integritet: { file: 'integritetspolicy/index.html', path: 'integritetspolicy/', crumb: 'Integritetspolicy', type: 'WebPage' },
-};
-const SECTIONS = ['setup', 'schema', 'faq', 'nedladdningar', 'shop', 'spel', 'samarbeten', 'om', 'integritetspolicy', 'admin'];
+const PAGES = Object.fromEntries(require('./pages').map((p) => [p.key, p]));
+const SECTIONS = ['setup', 'schema', 'faq', 'nedladdningar', 'shop', 'spel', 'samarbeten', 'om', 'integritetspolicy', 'videor', 'ganget', 'admin'];
 const esc = (s) => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;');
 const read = (f) => fs.readFileSync(path.join(root, f), 'utf8').replace(/\r\n/g, '\n');
 
@@ -82,7 +71,8 @@ const GAMES = [`;
       page.breadcrumb = { '@id': meta[k].u + '#breadcrumb' };
       nodes.push({ '@type': 'BreadcrumbList', '@id': meta[k].u + '#breadcrumb', itemListElement: [
         { '@type': 'ListItem', position: 1, name: 'Chris Whippit', item: SITE },
-        { '@type': 'ListItem', position: 2, name: p.crumb, item: meta[k].u },
+        ...(p.parent ? [{ '@type': 'ListItem', position: 2, name: PAGES[p.parent].crumb, item: SITE + PAGES[p.parent].path }] : []),
+        { '@type': 'ListItem', position: p.parent ? 3 : 2, name: p.crumb, item: meta[k].u },
       ] });
     }
     const json = nodes.map((n) => JSON.stringify(n, null, 2).replace(/^/gm, '    ')).join(',\n');
@@ -90,6 +80,15 @@ const GAMES = [`;
     if (t.split(end).length !== 2) throw new Error(p.file + ': hittar inte slutet på den strukturerade datan');
     t = t.replace(end, () => ',\n' + json + end);
   }
+
+  // 5. Personen: riktiga förnamnet, födelseår och vanliga stavningar (folk googlar 'chris whippet').
+  t = t.replace(/(<script type="application\/ld\+json">)([\s\S]*?)(<\/script>)/, (m0, a, json, b) => {
+    const j = JSON.parse(json); const person = j['@graph'].find((n) => n['@type'] === 'Person'); if (!person) return m0;
+    Object.assign(person, { givenName: 'Joakim', birthDate: '1984', alternateName: ['ChrisWhippit', 'Whippit', 'Chris Whippet', 'Kris Whippit'], homeLocation: { '@type': 'Place', name: 'Strömstad, Sverige' },
+      description: 'Svensk YouTuber och streamare från Strömstad sedan 2014: Minecraft Let’s Play med SoftisFFS, GTA 5, Fortnite, vloggar och Pokémon GO.',
+      knows: [{ '@type': 'Person', name: 'SoftisFFS', url: 'https://www.youtube.com/@softisffs' }, { '@type': 'Person', name: 'Ufosxm', url: 'https://www.youtube.com/@ufosxm' }, { '@type': 'Person', name: 'Polski', url: 'https://www.youtube.com/@palackenmedadrian' }, { '@type': 'Person', name: 'figgehn', url: 'https://www.youtube.com/@figgehn_' }] });
+    return a + JSON.stringify(j, null, 2) + b;
+  });
 
   fs.writeFileSync(path.join(root, p.file), t);
   console.log(p.file.padEnd(30), meta[k] ? 'ok' : 'SAKNAR titel/beskrivning');

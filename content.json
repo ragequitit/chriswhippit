@@ -612,6 +612,54 @@
       "a": "Vissa är affiliatelänkar. Köper du via dem får jag en liten del, utan att det kostar dig något extra.",
       "q_en": "Do you earn money from the links on the setup page?",
       "a_en": "Some are affiliate links. If you buy through them I get a small cut, at no extra cost to you."
+    },
+    {
+      "q": "Vad heter Chris Whippit på riktigt?",
+      "a": "Joakim. Chris Whippit är namnet jag använder på YouTube.",
+      "q_en": "What is Chris Whippit’s real name?",
+      "a_en": "Joakim. Chris Whippit is the name I use on YouTube."
+    },
+    {
+      "q": "Hur gammal är Chris Whippit?",
+      "a": "Jag är född 1984.",
+      "q_en": "How old is Chris Whippit?",
+      "a_en": "I was born in 1984."
+    },
+    {
+      "q": "Var kommer Chris Whippit ifrån?",
+      "a": "Från Strömstad på västkusten.",
+      "q_en": "Where is Chris Whippit from?",
+      "a_en": "From Strömstad on the Swedish west coast."
+    },
+    {
+      "q": "Har Chris Whippit familj?",
+      "a": "Ja, jag är gift och pappa till tre barn. Jag har också två bröder.",
+      "q_en": "Does Chris Whippit have a family?",
+      "a_en": "Yes, I’m married and a dad of three. I also have two brothers."
+    },
+    {
+      "q": "Vilka spelar Chris Whippit med?",
+      "a": "Genom åren mest med SoftisFFS, Ufosxm, Polski och figgehn. Läs mer på gängets sida.",
+      "q_en": "Who does Chris Whippit play with?",
+      "a_en": "Over the years mostly SoftisFFS, Ufosxm, Polski and figgehn. Read more on the crew page."
+    },
+    {
+      "q": "Vem är Polski?",
+      "a": "Polski är YouTuber och filmade och redigerade mina videor förr i tiden. Idag jobbar han med Matkoma och har kanalen På lacken med Adrian.",
+      "q_en": "Who is Polski?",
+      "a_en": "Polski is a YouTuber who used to film and edit my videos. Today he works with Matkoma and runs the channel På lacken med Adrian."
+    },
+    {
+      "q": "Vilken låt är introt i GTA 5-videorna?",
+      "a": "Razor Sharp av Pegboard Nerds och Tristam (Monstercat, 2013).",
+      "q_en": "What is the intro song in the GTA 5 videos?",
+      "a_en": "Razor Sharp by Pegboard Nerds and Tristam (Monstercat, 2013)."
+    },
+    {
+      "q": "Hur många säsonger finns det av Minecraft Let’s Play?",
+      "a": "Serien med Softis har pågått sedan 2016 och blivit över 500 avsnitt fördelat på flera säsonger. Allt finns samlat på Minecraft-sidan.",
+      "q_en": "How many seasons of the Minecraft Let’s Play are there?",
+      "a_en": "The series with Softis has been running since 2016 and has passed 500 episodes across several seasons. Everything is collected on the Minecraft page."
     }
   ],
   "downloads": [
@@ -781,8 +829,248 @@
   ],
   "about": {
     "lead": "Jag heter Joakim och har gjort videor på YouTube sedan 2014. Gaming, Pokémon GO, discgolf och vad dagen nu blir – med en ny video nästan varje dag.",
-    "text": "## Vem är Chris Whippit?\n\nJag är en svensk innehållsskapare från Strömstad. Idag har jag fyra YouTube-kanaler. Ibland streamar jag på Twitch eller YouTube, och jag har världens bästa community som följer med mig från dag till dag – oavsett vilka tokigheter jag sysslar med.\n\n## Från 2014 till idag\n\nDen första videon kom 2014. Sedan dess har det blivit tusentals videor. En serie som följt med länge är Let’s Play i Minecraft tillsammans med Softis. Kartorna från fyra av säsongerna finns att ladda ner under nedladdningar.\n\nKanalerna är @chriswhippit, som är huvudkanalen, och @whippitsson, @figgwhipp och @whippitextra.\n\n## Vad jag gör nu\n\nNya videor kommer nästan varje dag. Veckans planerade videor ser du i schemat.\n\nVid sidan av kanalerna bygger jag för skojs skull ett litet eget spel som jag kallar Project Genesis – ett cyberpunk-idle-MMORPG som du spelar direkt i webbläsaren. Det och några mindre spel hittar du på spelsidan.\n\n## Samarbeten\n\nGenom åren har jag samarbetat med bland andra Xbox, Ubisoft, Square Enix, NZXT och SodaStream. Vill du också samarbeta? Maila chris.whippit@gmail.com.",
+    "text": "## Vem är Chris Whippit?\n\nJag är född 1984 och är en svensk innehållsskapare från Strömstad. Privat är jag gift, pappa till tre barn och har två bröder. Idag har jag fyra YouTube-kanaler. Ibland streamar jag på Twitch eller YouTube, och jag har världens bästa community som följer med mig från dag till dag – oavsett vilka tokigheter jag sysslar med.\n\n## Från 2014 till idag\n\nDen första videon kom 2014. Sedan dess har det blivit tusentals videor. En serie som följt med länge är Let’s Play i Minecraft tillsammans med Softis. Kartorna från fyra av säsongerna finns att ladda ner under nedladdningar.\n\nKanalerna är @chriswhippit, som är huvudkanalen, och @whippitsson, @figgwhipp och @whippitextra.\n\n## Vad jag gör nu\n\nNya videor kommer nästan varje dag. Veckans planerade videor ser du i schemat.\n\nVid sidan av kanalerna bygger jag för skojs skull ett litet eget spel som jag kallar Project Genesis – ett cyberpunk-idle-MMORPG som du spelar direkt i webbläsaren. Det och några mindre spel hittar du på spelsidan.\n\n## Gänget\n\nGenom åren har jag spelat massor med SoftisFFS, Ufosxm, Polski och figgehn – läs mer om dem på gängets sida.\n\n## Samarbeten\n\nGenom åren har jag samarbetat med bland andra Xbox, Ubisoft, Square Enix, NZXT och SodaStream. Vill du också samarbeta? Maila chris.whippit@gmail.com.",
     "lead_en": "My name is Joakim and I’ve been making videos on YouTube since 2014. Gaming, Pokémon GO, disc golf and whatever the day turns into – with a new video almost every day.",
-    "text_en": "## Who is Chris Whippit?\n\nI’m a Swedish content creator from Strömstad. Today I have four YouTube channels. Sometimes I stream on Twitch or YouTube, and I have the world’s best community that follows along from day to day – no matter what crazy things I get up to.\n\n## From 2014 to today\n\nThe first video came out in 2014. Since then there have been thousands of videos. A series that has been around for a long time is Let’s Play in Minecraft together with Softis. Maps from four of the seasons can be downloaded under downloads.\n\nThe channels are @chriswhippit, the main channel, plus @whippitsson, @figgwhipp and @whippitextra.\n\n## What I do now\n\nNew videos come out almost every day. This week’s planned videos are in the schedule.\n\nAlongside the channels, I’m building a small game of my own just for fun, which I call Project Genesis – a cyberpunk idle MMORPG you play right in your browser. You’ll find it and a few smaller games on the games page.\n\n## Partnerships\n\nOver the years I’ve worked with Xbox, Ubisoft, Square Enix, NZXT and SodaStream, among others. Want to work together too? Email chris.whippit@gmail.com."
-  }
+    "text_en": "## Who is Chris Whippit?\n\nI was born in 1984 and I’m a Swedish content creator from Strömstad. Privately I’m married, a dad of three and have two brothers. Today I have four YouTube channels. Sometimes I stream on Twitch or YouTube, and I have the world’s best community that follows along from day to day – no matter what crazy things I get up to.\n\n## From 2014 to today\n\nThe first video came out in 2014. Since then there have been thousands of videos. A series that has been around for a long time is Let’s Play in Minecraft together with Softis. Maps from four of the seasons can be downloaded under downloads.\n\nThe channels are @chriswhippit, the main channel, plus @whippitsson, @figgwhipp and @whippitextra.\n\n## What I do now\n\nNew videos come out almost every day. This week’s planned videos are in the schedule.\n\nAlongside the channels, I’m building a small game of my own just for fun, which I call Project Genesis – a cyberpunk idle MMORPG you play right in your browser. You’ll find it and a few smaller games on the games page.\n\n## The crew\n\nOver the years I’ve played loads with SoftisFFS, Ufosxm, Polski and figgehn – read more about them on the crew page.\n\n## Partnerships\n\nOver the years I’ve worked with Xbox, Ubisoft, Square Enix, NZXT and SodaStream, among others. Want to work together too? Email chris.whippit@gmail.com."
+  },
+  "series": [
+    {
+      "slug": "minecraft",
+      "title": "Minecraft",
+      "title_en": "Minecraft",
+      "cover": "YtPTdCR1e0Q",
+      "lead": "Minecraft har följt med kanalen sedan starten – från Let’s Play med Softis till Lucky Block, Skyblock och Hardcore.",
+      "lead_en": "Minecraft has been part of the channel since the start – from the Let’s Play with Softis to Lucky Block, Skyblock and Hardcore.",
+      "text": "## Let’s Play med Softis\n\nLet’s Play-serien med SoftisFFS startade i april 2016 och har blivit över 500 avsnitt. Kartorna från fyra av säsongerna kan du ladda ner under nedladdningar.\n\n## Fler Minecraft-serier\n\nLucky Block-videorna – över 100 stycken – och Skyblock med SoftisFFS drog igång redan 2015. Sedan dess har det blivit Minecraft Hardcore, One Block, custom maps, modpacks och Så klarar man Minecraft med Polski.",
+      "text_en": "## Let’s Play with Softis\n\nThe Let’s Play series with SoftisFFS started in April 2016 and has passed 500 episodes. Maps from four of the seasons can be found under downloads.\n\n## More Minecraft series\n\nThe Lucky Block videos – over 100 of them – and Skyblock with SoftisFFS kicked off back in 2015. Since then there has been Minecraft Hardcore, One Block, custom maps, modpacks and How to beat Minecraft with Polski.",
+      "playlists": [
+        {
+          "id": "PLpinm9x4zUolixwO1pQdXHUMMSs_fUSgu",
+          "title": "Minecraft Let’s Play"
+        },
+        {
+          "id": "PLpinm9x4zUomQsLAYhwgiAfdFpFztN9_S",
+          "title": "Minecraft"
+        },
+        {
+          "id": "PLpinm9x4zUolEgfm445z9vczmS8DfW6-y",
+          "title": "Lucky Block Mod"
+        },
+        {
+          "id": "PLpinm9x4zUon-YnFLG7-jmLT8gZC6-jtp",
+          "title": "Skyblock med SoftisFFS",
+          "title_en": "Skyblock with SoftisFFS"
+        },
+        {
+          "id": "PLpinm9x4zUokrJByAejvhIDjklm-rCyx-",
+          "title": "Skyblock säsong 2",
+          "title_en": "Skyblock season 2"
+        },
+        {
+          "id": "PLpinm9x4zUolkLp6pyYAihAxwsflCb1HG",
+          "title": "Minecraft Hardcore"
+        },
+        {
+          "id": "PLpinm9x4zUonudHpGQ3Xq70bTVm7AMlLr",
+          "title": "One Block"
+        },
+        {
+          "id": "PLpinm9x4zUomJQZhKvy_9ldLvs_eqmXSv",
+          "title": "Custom maps"
+        },
+        {
+          "id": "PLpinm9x4zUolcxZif2FaCXG0TXtNGxaYu",
+          "title": "Modpacks"
+        },
+        {
+          "id": "PLpinm9x4zUokA1fB0ee7TrrdsD2F-OKJS",
+          "title": "Alla advancements",
+          "title_en": "All advancements"
+        },
+        {
+          "id": "PLpinm9x4zUokYhOGNRCzo92sq8zl0vMzm",
+          "title": "Så klarar man Minecraft med Polski",
+          "title_en": "How to beat Minecraft with Polski"
+        }
+      ]
+    },
+    {
+      "slug": "gta-5",
+      "title": "GTA 5",
+      "title_en": "GTA 5",
+      "cover": "jWfcD0ZNevU",
+      "lead": "GTA 5 är den största serien på kanalen – nästan 1 000 videor mellan 2015 och 2023 med race, heists och rent kaos.",
+      "lead_en": "GTA 5 is the biggest series on the channel – almost 1,000 videos between 2015 and 2023 of races, heists and pure chaos.",
+      "text": "## Med gänget\n\nMånga av videorna spelades med SoftisFFS, figgehn och Polski – från stunt- och rage-race till Cayo Perico-heists, Last Team Standing och att pimpa bilar.\n\n## Introlåten\n\nIntrot i GTA-videorna är Razor Sharp av Pegboard Nerds och Tristam, släppt på Monstercat 2013.",
+      "text_en": "## With the crew\n\nMany of the videos were played with SoftisFFS, figgehn and Polski – from stunt and rage races to Cayo Perico heists, Last Team Standing and pimping cars.\n\n## The intro song\n\nThe intro in the GTA videos is Razor Sharp by Pegboard Nerds and Tristam, released on Monstercat in 2013.",
+      "playlists": [
+        {
+          "id": "PLpinm9x4zUokXmRLV02nlqJUlFDnRn9vB",
+          "title": "GTA 5"
+        }
+      ]
+    },
+    {
+      "slug": "fortnite",
+      "title": "Fortnite",
+      "title_en": "Fortnite",
+      "cover": "D9mH3nRjhbs",
+      "lead": "Nästan 600 Fortnite-videor från december 2017 till 2024 – säsong efter säsong, live-events, Playground och Fortnite Lego.",
+      "lead_en": "Almost 600 Fortnite videos from December 2017 to 2024 – season after season, live events, Playground and Fortnite Lego.",
+      "text": "## Säsong efter säsong\n\nFrån de första säsongerna genom de stora live-eventen till Fortnite Lego. Många matcher spelades med SoftisFFS, figgehn och Polski, ofta i Playground-läget.",
+      "text_en": "## Season after season\n\nFrom the first seasons through the big live events to Fortnite Lego. Many matches were played with SoftisFFS, figgehn and Polski, often in Playground mode.",
+      "playlists": [
+        {
+          "id": "PLpinm9x4zUomJD8OqZNrHiSSchPom6v6c",
+          "title": "Fortnite"
+        },
+        {
+          "id": "PLpinm9x4zUonHdr_TCqihq9La88YqfgLd",
+          "title": "Fortnite Lego"
+        }
+      ]
+    },
+    {
+      "slug": "vloggar",
+      "title": "Vloggar och Pokémon GO",
+      "title_en": "Vlogs and Pokémon GO",
+      "cover": "",
+      "channel": "UCdkHBGeyStyK2GefExrzlQw",
+      "lead": "På vlogg-kanalen Chris Whippit Vloggar blir det livet med familjen, discgolf, teknik, mat och massor av Pokémon GO.",
+      "lead_en": "On the vlog channel Chris Whippit Vloggar it’s family life, disc golf, tech, food and lots of Pokémon GO.",
+      "text": "## Pokémon GO\n\nÖver 200 Pokémon GO-videor med raider, community days och jakten på shinies – och en hel del öppnade boosterpaket.\n\n## Vardag, discgolf och mat\n\nVlogg-kanalen är platsen för allt som inte är gaming: familjen, discgolfrundor, teknik, mat och IRL-äventyr.",
+      "text_en": "## Pokémon GO\n\nOver 200 Pokémon GO videos with raids, community days and shiny hunting – plus plenty of opened booster packs.\n\n## Everyday life, disc golf and food\n\nThe vlog channel is the place for everything that isn’t gaming: family, disc golf rounds, tech, food and IRL adventures.",
+      "playlists": [
+        {
+          "id": "PLr70AfFlQuzvhoP2HicrMibD-AapdzAZI",
+          "title": "Pokémon GO"
+        },
+        {
+          "id": "PLr70AfFlQuzvZhnvzsehZWtfCn00tdNGo",
+          "title": "Vloggar",
+          "title_en": "Vlogs"
+        },
+        {
+          "id": "PLr70AfFlQuztk-MjZkoafwihR46CbeD8U",
+          "title": "Discgolf",
+          "title_en": "Disc golf"
+        },
+        {
+          "id": "PLr70AfFlQuzvzflpsiqfsP3qNtrrdkouC",
+          "title": "Pokémon boosterpaket",
+          "title_en": "Pokémon booster packs"
+        },
+        {
+          "id": "PLr70AfFlQuzvDM8doszofcWWc5kHAHsni",
+          "title": "Mat",
+          "title_en": "Food"
+        },
+        {
+          "id": "PLr70AfFlQuzuzHZNQKMJuyzSOsTTUybeR",
+          "title": "Teknik",
+          "title_en": "Tech"
+        },
+        {
+          "id": "PLr70AfFlQuztnE2AiXHV4aqHZiLQvSe5J",
+          "title": "IRL"
+        },
+        {
+          "id": "PLr70AfFlQuzvqtX2a4eu_b_IFadHXrWLI",
+          "title": "Familj",
+          "title_en": "Family"
+        }
+      ]
+    }
+  ],
+  "morePlaylists": [
+    {
+      "id": "PLpinm9x4zUono9nzwLtRs1wcdSTXscaMJ",
+      "title": "Minigolf"
+    },
+    {
+      "id": "PLpinm9x4zUoleink91ABHQGjpTE7PApSJ",
+      "title": "Farming Simulator 22"
+    },
+    {
+      "id": "PLpinm9x4zUolc2WL2UL0R1NL24LwUyUuz",
+      "title": "Rocket League"
+    },
+    {
+      "id": "PLpinm9x4zUomYu3EEbmaBBfFlWGexBTPX",
+      "title": "Fall Guys"
+    },
+    {
+      "id": "PLpinm9x4zUokPXs2K8-I_W6PmQIelXSH7",
+      "title": "Ark: Survival Ascended"
+    },
+    {
+      "id": "PLpinm9x4zUon_8-NIA1BrJriN0_lEggCj",
+      "title": "Supermarket Simulator"
+    },
+    {
+      "id": "PLpinm9x4zUol4vLRfTapK5wLXBz5aIMng",
+      "title": "Thief Simulator"
+    },
+    {
+      "id": "PLpinm9x4zUonWV826-MSAyL-6TdLP1aGx",
+      "title": "Human Fall Flat"
+    },
+    {
+      "id": "PLpinm9x4zUom-1Xob7n-SJwSm_Q6CNtFw",
+      "title": "Random spel",
+      "title_en": "Random games"
+    }
+  ],
+  "crew": [
+    {
+      "name": "SoftisFFS",
+      "channelId": "UCxycITFG0dE4cMiJ78yE0CA",
+      "handle": "@softisffs",
+      "text": "Softis och jag har gjort Let’s Play i Minecraft sedan 2016, Skyblock, GTA 5, Fortnite och mycket mer.",
+      "text_en": "Softis and I have done the Minecraft Let’s Play since 2016, Skyblock, GTA 5, Fortnite and much more.",
+      "videos": [
+        "YtPTdCR1e0Q",
+        "4UVmWXkjHG8",
+        "HKTr7wA5uDw"
+      ]
+    },
+    {
+      "name": "Ufosxm",
+      "channelId": "UCCIqPk-5xTsZGnLBSdh2rNA",
+      "handle": "@ufosxm",
+      "text": "Ufosxm har varit med sedan tidigt – GTA, Who’s Your Daddy, Blocked In och mycket mer.",
+      "text_en": "Ufosxm has been around since the early days – GTA, Who’s Your Daddy, Blocked In and much more.",
+      "videos": [
+        "VmEzCbsKnPg",
+        "AFGNdxaDdO8",
+        "DPJXqFD06mU"
+      ]
+    },
+    {
+      "name": "Polski",
+      "channelId": "UCNwDhJB6Z0eHVTy23LlRsog",
+      "handle": "@palackenmedadrian",
+      "channelName": "På lacken med Adrian",
+      "text": "Polski filmade och redigerade mina videor förr i tiden och är med i bland annat GTA 5, Fortnite och Så klarar man Minecraft med Polski. Idag jobbar han med Matkoma och har en egen kanal om allt som har motor och hjul.",
+      "text_en": "Polski used to film and edit my videos and appears in GTA 5, Fortnite and How to beat Minecraft with Polski, among others. Today he works with Matkoma and has his own channel about anything with an engine and wheels.",
+      "videos": [
+        "YFkYPsL4B30",
+        "BKL5yvPXtRc",
+        "4S8SPyytFpc"
+      ]
+    },
+    {
+      "name": "figgehn",
+      "channelId": "UCoC4bwQu_2ns6f2t0GgdCXA",
+      "handle": "@figgehn_",
+      "memorial": "1984–2024",
+      "text": "figgehn och jag gjorde otaliga videor tillsammans, bland annat på vår gemensamma kanal Figgehn & Whippit. ❤️",
+      "text_en": "figgehn and I made countless videos together, including on our shared channel Figgehn & Whippit. ❤️",
+      "videos": [
+        "sTpzzSbzrbY",
+        "VCSKWlDhm7g",
+        "kCH0wlKTjZQ"
+      ]
+    }
+  ]
 }

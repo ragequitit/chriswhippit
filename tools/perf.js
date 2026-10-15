@@ -2,7 +2,7 @@
 //   node tools/perf.js
 const fs = require('fs'), path = require('path');
 const root = path.join(__dirname, '..');
-const PAGES = ['index.html', 'setup/index.html', 'schema/index.html', 'faq/index.html', 'nedladdningar/index.html', 'shop/index.html', 'spel/index.html', 'samarbeten/index.html', 'om/index.html', 'integritetspolicy/index.html'];
+const PAGES = require('./pages').map((p) => p.file);
 
 // De fyra ikonerna som används publikt, som inbyggd SVG (slipper ladda en ikonfont på 129 KB).
 const ICONS = {
