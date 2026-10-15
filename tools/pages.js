@@ -29,4 +29,7 @@ module.exports = [
   { key: 'ganget', file: 'ganget/index.html', path: 'ganget/', crumb: 'Gänget', type: 'CollectionPage',
     title: 'Gänget — SoftisFFS, Ufosxm, JNX, Polski och figgehn | Chris Whippit',
     desc: 'Kanalerna Chris Whippit spelat mest med: SoftisFFS, Ufosxm, JNX, Polski och figgehn. Prenumerera och se videorna de gjort tillsammans.' },
+  { key: 'historia', file: 'historia/index.html', path: 'historia/', crumb: 'Genom åren', type: 'WebPage',
+    title: 'Chris Whippit genom åren — tidslinje från 2013 till idag',
+    desc: 'Hela resan: från Whippitgaming 2013 till nästan 8 000 videor. Figgehn & Whippit, Minecraft Let’s Play med Softis, GTA 5, Fortnite, Pokémon GO och milstolparna.' },
 ];

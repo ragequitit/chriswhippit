@@ -23,6 +23,7 @@ const CFG = {
   'serie:fortnite': { kicker: 'Videor', title: 'Fortnite', sub: 'Nästan 600 videor från 2017 till 2024', vis: { type: 'photo', src: yt('D9mH3nRjhbs') } },
   'serie:vloggar': { kicker: 'Videor', title: 'Vloggar & Pokémon GO', sub: 'Familjen, discgolf, raids och vardagen', vis: { type: 'photo', src: yt('GqrUWpeiAdw') } },
   'ganget': { title: 'Gänget', sub: (content.crew || []).map((m) => m.name).join(' · '), vis: { type: 'avatars' } },
+  'historia': { title: 'Genom åren', sub: 'Från 2013 till nästan 8 000 videor', vis: grid(['qhP9CvQkT90', '_cbWmg8ifds', '9ll7uWVLvoM', 'eoqM7BVA1uw'].map(yt)) },
   'om': { title: 'Om Chris Whippit', sub: 'Svensk YouTuber från Strömstad sedan 2014', vis: portrait },
   'faq': { title: 'Frågor & svar', sub: 'Allt du undrat om Chris Whippit', vis: portrait },
   'setup': { title: 'Setup', sub: 'Datorn, kameran och prylarna jag använder', vis: portrait },
