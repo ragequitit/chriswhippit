@@ -29,7 +29,7 @@ GitHub Pages (main / root) på www.chriswhippit.com.
   "← Spel" (`spel/back.js`), favicons, beskrivning, canonical och delningsbild.
 - `node tools/seo.js` uppdaterar sidtitlar för navigering, strukturerad data och interna
   länkar på alla sidor. Kör den efter att en sidas titel/beskrivning ändrats i `<head>`.
-- Bilderna på spelsidan är `spel/thumbs/<namn>-board.jpg`: själva spelplanen, 400×500.
+- Bilderna på spelsidan är `spel/thumbs/<namn>-board.webp` (300×375). `-board.jpg` (400×500) används som delningsbild.
 
 ## Utveckling
 

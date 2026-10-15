@@ -17,7 +17,7 @@ for (const [slug, g] of Object.entries(GAMES)) {
   const file = path.join(root, 'spel', slug + '.html');
   let t = fs.readFileSync(file, 'utf8').replace(/\r\n/g, '\n');
   const url = SITE + 'spel/' + slug + '.html';
-  const img = SITE + 'spel/thumbs/' + slug + '-board.jpg';
+  const img = SITE + 'spel/thumbs/' + slug + '-board.jpg'; // delningsbild (JPEG för bredast stöd)
   const done = [];
 
   if (/<html(?![^>]*\blang=)/.test(t)) { t = t.replace(/<html/, '<html lang="en"'); done.push('lang'); }

@@ -28,8 +28,10 @@
     const { props, preview } = parseDataProps(
       scriptEl?.getAttribute("data-props") ?? null
     );
+    // Mallen kan ligga i <template> så att webbläsaren inte laddar bilderna i den innan sidan renderas.
+    const tpl = dc.querySelector(":scope > template");
     return {
-      template: dc.innerHTML,
+      template: tpl ? tpl.innerHTML : dc.innerHTML,
       js: scriptEl ? scriptEl.textContent || "" : "",
       props,
       preview

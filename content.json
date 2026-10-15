@@ -593,7 +593,7 @@
       "title": "Minecraft Let's Play - Säsong 1",
       "meta": "Här kan du ladda ner våran karta från Whippit och SoftisFFS första Minecraft säsong.  Whippits första avsnitt från denna säsongen Publicerades den 31 mars 2016.  Minecraft versionen på kartan är 1.12",
       "url": "https://drive.google.com/file/d/1mTocHPXtGepRIM6IGmKtBzHKhpexxAqg/view?usp=sharing",
-      "image": "media/1791210310105-1.png",
+      "image": "media/1791210310105-1.webp",
       "zoom": 1,
       "ox": 0,
       "oy": 0
@@ -602,26 +602,26 @@
       "title": "Minecraft Let's Play - Säsong 2",
       "meta": "Här kan ni ladda ner den andra säsongen av Whippit och Softis Let’s Play serie i Minecraft.  Första avsnittet från säsong 2 släpptes den 28 september 2017 på Whippits kanal.  Minecraft versionen på denna kartan är 1.13.1",
       "url": "https://drive.google.com/file/d/1c2K3BlyNegWiNzybpN9kNyxm47r6cosf/view?usp=sharing",
-      "image": "media/1791210310105-2.png"
+      "image": "media/1791210310105-2.webp"
     },
     {
       "title": "Minecraft Let's Play - Säsong 3",
       "meta": "Här kan ni ladda ner den 3e säsongen av Whippit och Softis Let’s Play serie i Minecraft.  Denna säsongen påbörjade vi den 9 nov. 2018 och avslutade vi ganska så snabbt därefter. Vi gjorde bara ett fåtal avsnitt av denna säsongen innan vi började med säsong 4.  Minecraft versionen på denna kartan är 1.13.1",
       "url": "https://drive.google.com/file/d/1VU5FEUKxOWaLmqtNUrDiD8Z68vJ__m4F/view?usp=sharing",
-      "image": "media/1791210310105-3.png"
+      "image": "media/1791210310105-3.webp"
     },
     {
       "title": "Minecraft Let's Play - Säsong 4",
       "meta": "Här kan ni ladda ner den 4e säsongen av Whippit och Softis Let’s Play serie i Minecraft.  Denna säsongen påbörjade vi den 7 maj 2019.  Minecraft versionen på denna kartan är 1.15.1",
       "url": "https://drive.google.com/file/d/1uQ4lzeY0k3evwkiKQSQ0NC6bEdpFoBA3/view?usp=sharing",
-      "image": "media/1791210310105-4.png"
+      "image": "media/1791210310105-4.webp"
     }
   ],
   "sponsors": [
     {
       "name": "OlliOlli World",
       "caption": "Skateboard spel - Youtube",
-      "logo": "media/1789734777752-1.png",
+      "logo": "media/1789734777752-1.webp",
       "url": "https://www.youtube.com/watch?v=aP0Y-DZd6tQ&t=1s",
       "zoom": 1.6,
       "ox": 3.0303030303030307,
@@ -630,14 +630,14 @@
     {
       "name": "Wargaming.net",
       "caption": "World of warships - Youtube",
-      "logo": "media/1789735506829-1.png",
+      "logo": "media/1789735506829-1.webp",
       "url": "https://www.youtube.com/watch?v=NF8XQvDK-mo",
       "zoom": 1.75
     },
     {
       "name": "SodaStream",
       "caption": "Sodastream släppte nya smak - Mountain Dew ",
-      "logo": "media/1789736082815-1.png",
+      "logo": "media/1789736082815-1.webp",
       "url": "https://www.youtube.com/watch?v=VUPbV8DkX6M&t=12s",
       "zoom": 1.8,
       "ox": 0.7575757575757576,
@@ -646,7 +646,7 @@
     {
       "name": "NZXT",
       "caption": "En av många NZXT-samarbeten",
-      "logo": "media/1790340957620-1.png",
+      "logo": "media/1790340957620-1.webp",
       "url": "https://www.youtube.com/watch?v=hRdHwM-Zhcw",
       "ox": -0.3787878787878789,
       "oy": -34.2857142857143,
@@ -722,22 +722,22 @@
     {
       "title": "T-shirt",
       "url": "https://whippit.myspreadshop.se/chriswhippit+tshirt+logo-A5d2ed51e5fd3e4608a6642a9?productType=812&sellable=qreoDRoeBptqrveoBA1p-812-7&appearance=2",
-      "image": "media/1789763523739-1.png"
+      "image": "media/1789763523739-1.webp"
     },
     {
       "title": "Hoodie",
       "url": "https://whippit.myspreadshop.se/chriswhippit+logo+vit-A5d2ed52122250975e8638208?productType=20&sellable=GBEVxONARVTodB7NmZQV-20-22&appearance=1278",
-      "image": "media/1789763523739-2.png"
+      "image": "media/1789763523739-2.webp"
     },
     {
       "title": "Keps",
       "url": "https://whippit.myspreadshop.se/chriswhippit+tshirt+logo-A5d2ed51e5fd3e4608a6642a9?productType=905&sellable=qreoDRoeBptqrveoBA1p-905-34&appearance=14&size=29",
-      "image": "media/1789763523739-3.png"
+      "image": "media/1789763523739-3.webp"
     },
     {
       "title": "Mugg",
       "url": "https://whippit.myspreadshop.se/chriswhippit+logo+svart-A5d2ed4785fd3e4608a6566cd?productType=31&sellable=bBeqk9VDlATrnMq0NvM9-31-32&appearance=1&size=29",
-      "image": "media/1789763523739-4.png"
+      "image": "media/1789763523739-4.webp"
     }
   ],
   "about": {
