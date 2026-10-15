@@ -2229,15 +2229,15 @@ textarea.input { min-height: 90px; resize: vertical; }
     <h1 style="font-family: var(--font-heading); font-weight: 500; font-size: clamp(38px, 6vw, 76px); letter-spacing: -.04em; margin: 0 0 14px;">{{ sTitle }}</h1>
     <sc-if value="{{ sLead }}"><p style="font-size: 17px; line-height: 1.6; color: #dcd8ee; margin: 0 0 8px; max-width: 62ch; text-wrap: pretty;">{{ sLead }}</p></sc-if>
     <sc-if value="{{ sMissing }}"><p data-en="That series doesn’t exist. Have a look at all the videos instead." style="color: var(--color-neutral-400);">Den serien finns inte. Kika på alla videor i stället.</p></sc-if>
-    <div data-serie="" style="display: grid; grid-template-columns: minmax(0, 1fr) minmax(240px, 340px); gap: 36px; align-items: start; margin-top: 18px;">
+    <div data-serie="" style="display: grid; grid-template-columns: minmax(0, 1fr); gap: 26px; margin-top: 18px;">
       <article data-prose="" style="min-width: 0; max-width: 68ch; font-size: 16px; line-height: 1.7; color: #d6d3e6;">
         <sc-for list="{{ sBlocks }}" as="b" hint-placeholder-count="3">
           <sc-if value="{{ b.h }}"><h2 style="font-family: var(--font-heading); font-weight: 600; font-size: 22px; letter-spacing: -.02em; color: #fff; margin: 22px 0 8px;">{{ b.h }}</h2></sc-if>
           <sc-if value="{{ b.isP }}"><p style="margin: 0 0 14px; text-wrap: pretty;"><sc-for list="{{ b.parts }}" as="p" hint-placeholder-count="1"><sc-if value="{{ p.href }}"><a href="{{ p.href }}" target="{{ p.target }}" rel="noopener">{{ p.text }}</a></sc-if><sc-if value="{{ p.plain }}"><span>{{ p.text }}</span></sc-if></sc-for></p></sc-if>
         </sc-for>
       </article>
-      <aside style="display: flex; flex-direction: column; gap: 8px;">
-        <span data-en="Playlists on YouTube" style="font-family: 'JetBrains Mono', monospace; letter-spacing: .14em; text-transform: uppercase; font-size: 11px; color: #b9a2ff;">Spellistor på YouTube</span>
+      <aside data-serie-pl="" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 8px;">
+        <span data-en="Playlists on YouTube" style="grid-column: 1 / -1; font-family: 'JetBrains Mono', monospace; letter-spacing: .14em; text-transform: uppercase; font-size: 11px; color: #b9a2ff;">Spellistor på YouTube</span>
         <sc-for list="{{ sPlaylists }}" as="p" hint-placeholder-count="3">
           <a href="{{ p.url }}" target="_blank" rel="noopener" data-lift="" style="display: flex; justify-content: space-between; gap: 10px; padding: 10px 14px; border-radius: 14px; background: var(--color-surface); box-shadow: 0 0 0 1px var(--color-neutral-800); color: var(--color-text); font-size: 14px;"><span>{{ p.title }}</span><sc-if value="{{ p.count }}"><span style="color: var(--color-neutral-400); white-space: nowrap;">{{ p.count }} <span data-en="videos">videor</span></span></sc-if></a>
         </sc-for>
