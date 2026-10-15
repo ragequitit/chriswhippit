@@ -2051,7 +2051,8 @@ textarea.input { min-height: 90px; resize: vertical; }
   <sc-if value="{{ atPriv }}">
   <main style="max-width: 900px; margin: 0 auto; padding: 72px 24px 0;">
     <h1 data-en="Privacy policy" style="font-family: var(--font-heading); font-weight: 500; font-size: clamp(38px, 6vw, 76px); letter-spacing: -.04em; margin: 0 0 14px;">Integritetspolicy</h1>
-    <p style="font-family: 'JetBrains Mono', monospace; letter-spacing: .14em; text-transform: uppercase; font-size: 11px; color: var(--color-neutral-500); margin: 0 0 26px;">Senast uppdaterad 14 oktober 2026</p>
+    <p style="font-family: 'JetBrains Mono', monospace; letter-spacing: .14em; text-transform: uppercase; font-size: 11px; color: var(--color-neutral-500); margin: 0 0 26px;" data-en="Last updated 14 October 2026">Senast uppdaterad 14 oktober 2026</p>
+    <sc-if value="{{ isSv }}">
     <article data-prose="" style="font-size: 16px; line-height: 1.75; color: #d6d3e6;">
       <p style="margin: 0 0 14px;">Den här sidan beskriver vilka uppgifter som hanteras när du besöker chriswhippit.com, varför, och vad du kan göra åt det. Kort sagt: sajten har inga konton, ingen egen besöksstatistik och visar bara annonser om du har godkänt det.</p>
       <h2 style="font-family: var(--font-heading); font-weight: 600; font-size: 22px; letter-spacing: -.02em; color: #fff; margin: 34px 0 10px;">Vem ansvarar?</h2>
@@ -2079,6 +2080,36 @@ textarea.input { min-height: 90px; resize: vertical; }
       <h2 style="font-family: var(--font-heading); font-weight: 600; font-size: 22px; letter-spacing: -.02em; color: #fff; margin: 34px 0 10px;">Dina rättigheter</h2>
       <p style="margin: 0 0 14px;">Du har rätt att få veta vilka uppgifter om dig som behandlas, få fel rättade, få uppgifter raderade och invända mot behandling. Hör av dig till <a href="mailto:chris.whippit@gmail.com">chris.whippit@gmail.com</a>. Är du missnöjd kan du klaga hos <a href="https://www.imy.se" target="_blank" rel="noopener">Integritetsskyddsmyndigheten (IMY)</a>.</p>
     </article>
+    </sc-if>
+    <sc-if value="{{ isEn }}">
+    <article data-prose="" style="font-size: 16px; line-height: 1.75; color: #d6d3e6;">
+      <p style="margin: 0 0 14px;">This page explains what data is handled when you visit chriswhippit.com, why, and what you can do about it. In short: the site has no accounts, no analytics of its own, and only shows ads if you have accepted them.</p>
+      <h2 style="font-family: var(--font-heading); font-weight: 600; font-size: 22px; letter-spacing: -.02em; color: #fff; margin: 34px 0 10px;">Who is responsible?</h2>
+      <p style="margin: 0 0 14px;">Chris Whippit is responsible for the site and for the personal data processed here. Send questions about your privacy to <a href="mailto:chris.whippit@gmail.com">chris.whippit@gmail.com</a>.</p>
+      <h2 style="font-family: var(--font-heading); font-weight: 600; font-size: 22px; letter-spacing: -.02em; color: #fff; margin: 34px 0 10px;">Ads from Google AdSense</h2>
+      <p style="margin: 0 0 14px;">The site may show ads from Google AdSense. Ads only load if you have pressed <em>Accept</em> in the cookie box. Google then uses cookies and similar technologies to show, measure and possibly personalise the ads. If you press <em>Decline</em>, no ads load and no ad cookies are set &ndash; the site works exactly the same.</p>
+      <p style="margin: 0 0 14px;">Read more about how Google uses data in <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener">Google’s policy for partner sites</a>. You can control ad personalisation in <a href="https://adssettings.google.com" target="_blank" rel="noopener">Google’s ad settings</a>.</p>
+      <sc-if value="{{ adsOn }}"><p style="margin: 0 0 14px;"><button sc-camel-on-click="{{ reopenConsent }}" data-ck="" style="cursor: pointer; font: inherit; font-size: 14px; padding: 10px 16px; border-radius: 8px; border: 1px solid var(--color-accent); background: transparent; color: var(--color-accent-200);">Change your cookie choice</button></p></sc-if>
+      <h2 style="font-family: var(--font-heading); font-weight: 600; font-size: 22px; letter-spacing: -.02em; color: #fff; margin: 34px 0 10px;">YouTube</h2>
+      <p style="margin: 0 0 14px;">The home page, the schedule and the partnerships page fetch video details (titles, images and view counts) directly from YouTube, which is run by Google. Your browser then contacts Google’s servers, which means Google sees your IP address. Videos on the partnerships page are only embedded when you press play, and then via youtube-nocookie.com. See <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google’s privacy policy</a>.</p>
+      <h2 style="font-family: var(--font-heading); font-weight: 600; font-size: 22px; letter-spacing: -.02em; color: #fff; margin: 34px 0 10px;">The shop</h2>
+      <p style="margin: 0 0 14px;">The shop is run by Spreadshirt and loads from their servers. Spreadshirt shows its own cookie box and handles the cart, payment and delivery, as described in <a href="https://www.spreadshirt.se/integritetspolicy-C3104" target="_blank" rel="noopener">Spreadshirt’s privacy policy</a>.</p>
+      <h2 style="font-family: var(--font-heading); font-weight: 600; font-size: 22px; letter-spacing: -.02em; color: #fff; margin: 34px 0 10px;">The games</h2>
+      <p style="margin: 0 0 14px;">The smaller games save your progress, high scores and sound settings in your own browser (localStorage). This data is not sent to us and disappears if you clear site data. Project Genesis at games.chriswhippit.com is a separate service with its own accounts.</p>
+      <h2 style="font-family: var(--font-heading); font-weight: 600; font-size: 22px; letter-spacing: -.02em; color: #fff; margin: 34px 0 10px;">What is stored in your browser</h2>
+      <p style="margin: 0 0 14px;">Apart from game progress, the site stores your answer in the cookie box, your language choice and a copy of the latest video lists so the page loads faster. None of this is sent to us.</p>
+      <h2 style="font-family: var(--font-heading); font-weight: 600; font-size: 22px; letter-spacing: -.02em; color: #fff; margin: 34px 0 10px;">Hosting</h2>
+      <p style="margin: 0 0 14px;">The site is hosted on GitHub Pages (GitHub Inc.). Like all web servers, GitHub may briefly log technical details such as your IP address for operations and security. See <a href="https://docs.github.com/site-policy/privacy-policies/github-general-privacy-statement" target="_blank" rel="noopener">GitHub’s privacy statement</a>.</p>
+      <h2 style="font-family: var(--font-heading); font-weight: 600; font-size: 22px; letter-spacing: -.02em; color: #fff; margin: 34px 0 10px;">Data outside the EU</h2>
+      <p style="margin: 0 0 14px;">Google and GitHub are US companies, so data may be transferred to the United States. Both participate in the EU&ndash;US Data Privacy Framework, which the European Commission has found to provide an adequate level of protection.</p>
+      <h2 style="font-family: var(--font-heading); font-weight: 600; font-size: 22px; letter-spacing: -.02em; color: #fff; margin: 34px 0 10px;">When you email</h2>
+      <p style="margin: 0 0 14px;">If you email us, for example about a partnership, your address and message are only used to reply to you and are not kept longer than necessary.</p>
+      <h2 style="font-family: var(--font-heading); font-weight: 600; font-size: 22px; letter-spacing: -.02em; color: #fff; margin: 34px 0 10px;">Links to other sites</h2>
+      <p style="margin: 0 0 14px;">Links to YouTube, Twitch, Instagram, TikTok, X and Discord lead to services with their own terms and privacy policies.</p>
+      <h2 style="font-family: var(--font-heading); font-weight: 600; font-size: 22px; letter-spacing: -.02em; color: #fff; margin: 34px 0 10px;">Your rights</h2>
+      <p style="margin: 0 0 14px;">You have the right to know what data about you is processed, to have errors corrected, to have data deleted and to object to processing. Contact <a href="mailto:chris.whippit@gmail.com">chris.whippit@gmail.com</a>. If you are unhappy, you can complain to the Swedish Authority for Privacy Protection <a href="https://www.imy.se/en/" target="_blank" rel="noopener">(IMY)</a>.</p>
+    </article>
+    </sc-if>
   </main>
   </sc-if>
 
@@ -2225,9 +2256,10 @@ const FAQ_WORDS = {
   'setup-sidan': () => SITE_ROOT + 'setup/', 'schemat': () => SITE_ROOT + 'schema/', 'spelschemat': () => SITE_ROOT + 'schema/',
   'nedladdningar': () => SITE_ROOT + 'nedladdningar/', 'shoppen': () => SITE_ROOT + 'shop/', 'spelsidan': () => SITE_ROOT + 'spel/',
   'discord': () => 'https://discord.com/invite/uqhVKeCmGz', 'youtube': () => 'https://www.youtube.com/@chriswhippit', 'twitch': () => 'https://www.twitch.tv/chriswhippit',
-  'instagram': () => 'https://www.instagram.com/chriswhippit', 'tiktok': () => 'https://www.tiktok.com/@chris.whippit'
+  'instagram': () => 'https://www.instagram.com/chriswhippit', 'tiktok': () => 'https://www.tiktok.com/@chris.whippit',
+  'setup page': () => SITE_ROOT + 'setup/', 'schedule': () => SITE_ROOT + 'schema/', 'downloads': () => SITE_ROOT + 'nedladdningar/', 'games page': () => SITE_ROOT + 'spel/', 'the shop': () => SITE_ROOT + 'shop/'
 };
-const FAQ_LINK = /([\w.+-]+@[\w-]+(?:\.[\w-]+)*\.[a-z]{2,})|(https?:\/\/[^\s]+[^\s.,;:!?)])|\b(setup-sidan|spelschemat|schemat|nedladdningar|shoppen|spelsidan|discord|youtube|twitch|instagram|tiktok)\b|(@(?:chriswhippit|whippitsson|figgwhipp|whippitextra))\b/gi;
+const FAQ_LINK = /([\w.+-]+@[\w-]+(?:\.[\w-]+)*\.[a-z]{2,})|(https?:\/\/[^\s]+[^\s.,;:!?)])|\b(setup-sidan|spelschemat|schemat|nedladdningar|shoppen|spelsidan|discord|youtube|twitch|instagram|tiktok|setup page|schedule|downloads|games page|the shop)\b|(@(?:chriswhippit|whippitsson|figgwhipp|whippitextra))\b/gi;
 const faqParts = (text) => {
   const s = String(text || ''), out = [];
   let last = 0, m;
@@ -2250,6 +2282,12 @@ const applyRouteMeta = (route) => {
   set('meta[property="og:title"]', 'content', m.t); set('meta[name="twitter:title"]', 'content', m.t);
   set('link[rel="canonical"]', 'href', m.u); set('meta[property="og:url"]', 'content', m.u);
 };
+// Engelska för innehåll från admin: fältet <namn>_en om det finns, annars svenska.
+// Setup-etiketter ("Hårddisk 1 — ...") översätts med en ordlista så de inte behöver skrivas två gånger.
+const SETUP_EN = { 'Dator': 'Computer', 'Ljud och bild': 'Audio & video', 'Skrivbord': 'Desk', 'Chassi': 'Case', 'Grafikkort': 'Graphics card', 'Moderkort': 'Motherboard', 'Hårddisk': 'Drive', 'Kylare': 'Cooler', 'Nätaggregat': 'Power supply', 'Hörlurar': 'Headphones', 'Mikrofon': 'Microphone', 'Ljudutrustning': 'Audio gear', 'Skärmar': 'Monitors', 'Tangentbord': 'Keyboard', 'Mus': 'Mouse', 'Stol': 'Chair', 'Kamera': 'Camera', 'Belysning': 'Lighting', 'Ljus': 'Lights', 'Bord': 'Desk' };
+const setupEn = (s) => String(s || '').replace(/^(.+?)((?: \d+)?)( — .*)?$/, (m, label, num, rest) => (SETUP_EN[label.trim()] || label) + num + (rest || '').replace(/Vit\/Svart/g, 'White/Black').replace(/Svart/g, 'Black').replace(/Vit\b/g, 'White'));
+const pick = (lang, o, k) => (lang === 'en' && o && String(o[k + '_en'] || '').trim()) ? o[k + '_en'] : ((o && o[k]) || '');
+const SAVED_LANG = (() => { try { return localStorage.getItem('cw-lang') === 'en' ? 'en' : 'sv'; } catch (e) { return 'sv'; } })();
 const GAMES = [
   { slug: 'break-shot', title: 'Break Shot' },
   { slug: 'peg-vault', title: 'Peg Vault' },
@@ -2325,7 +2363,7 @@ const CONTENT_DEFAULTS = {
 
 class Component extends DCLogic {
   // Rätt sida direkt (annars renderas startsidan en stund först och hinner börja ladda dess bilder).
-  state = { route: (() => { try { const seg = location.pathname.replace(/\/(?:index\.html)?$/, '').split('/').pop(); return Object.keys(ROUTE_PATHS).find((k) => ROUTE_PATHS[k] === seg + '/') || 'hem'; } catch (e) { return 'hem'; } })(), collab: 0, collabStats: null, collabPlay: false, lang: 'sv', videos: FALLBACK_VIDEOS, live: false, sponsors: FALLBACK_SPONSORS, social: [], content: CONTENT_DEFAULTS, ads: null, consent: (() => { try { return localStorage.getItem('cw-consent') || ''; } catch (e) { return ''; } })() };
+  state = { route: (() => { try { const seg = location.pathname.replace(/\/(?:index\.html)?$/, '').split('/').pop(); return Object.keys(ROUTE_PATHS).find((k) => ROUTE_PATHS[k] === seg + '/') || 'hem'; } catch (e) { return 'hem'; } })(), collab: 0, collabStats: null, collabPlay: false, lang: SAVED_LANG, videos: FALLBACK_VIDEOS, live: false, sponsors: FALLBACK_SPONSORS, social: [], content: CONTENT_DEFAULTS, ads: null, consent: (() => { try { return localStorage.getItem('cw-consent') || ''; } catch (e) { return ''; } })() };
 
   setConsent(v) { try { localStorage.setItem('cw-consent', v); } catch (e) {} this.setState({ consent: v }); }
 
@@ -2410,6 +2448,7 @@ class Component extends DCLogic {
 
   applyLang() {
     const lang = this.state.lang;
+    document.documentElement.lang = lang;
     document.querySelectorAll('[data-en]').forEach((el) => {
       if (el.dataset.sv === undefined) el.dataset.sv = el.textContent;
       const next = lang === 'en' ? el.dataset.en : el.dataset.sv;
@@ -2733,6 +2772,7 @@ class Component extends DCLogic {
     const sponsors = (this.state.sponsors && this.state.sponsors.length ? this.state.sponsors : FALLBACK_SPONSORS);
     const marked = sponsors.map((s) => ({
       ...s,
+      caption: pick(this.state.lang, s, 'caption'), desc: pick(this.state.lang, s, 'desc'),
       logo: asset(s.logo),
       hasLogo: s.logo ? true : '',
       noLogo: s.logo ? '' : true,
@@ -2748,10 +2788,10 @@ class Component extends DCLogic {
       sponsorCount: sponsors.length + (this.state.lang === 'en' ? ' partners' : ' samarbeten'),
       sponsorLoop: loop,
       setupGroups: (c.setup || []).map((g) => ({
-        group: g.group,
+        group: this.state.lang === 'en' ? (g.group_en || SETUP_EN[g.group] || g.group) : g.group,
         items: (g.items || []).map((raw) => {
           const it = typeof raw === 'string' ? { text: raw, url: '' } : (raw || {});
-          return { text: it.text || '', url: it.url || '', hasUrl: it.url ? true : '', noUrl: it.url ? '' : true, aff: it.url && it.aff ? true : '', rel: it.url && it.aff ? 'sponsored noopener' : 'noopener' };
+          return { text: this.state.lang === 'en' ? (it.text_en || setupEn(it.text)) : (it.text || ''), url: it.url || '', hasUrl: it.url ? true : '', noUrl: it.url ? '' : true, aff: it.url && it.aff ? true : '', rel: it.url && it.aff ? 'sponsored noopener' : 'noopener' };
         })
       })),
       schemaRows: schemaDays.map((d) => ({ ...d, dayShort: (d.day || '').slice(0, 3), dayColor: d.isToday ? '#c3f53c' : '#f0eefa', colBg: d.isToday ? 'linear-gradient(90deg, rgba(195,245,60,.08) 0%, rgba(24,24,44,.55) 100%)' : 'rgba(30,31,52,.5)', colRing: d.isToday ? '0 0 0 2px #c3f53c, 0 0 30px -8px rgba(195,245,60,.5)' : '0 0 0 1px rgba(255,255,255,.07)', cols: d.cols.map((col, ci) => ({ ...col, dot: ci ? '#b6f03c' : '#8657FF', items: col.items.map((it) => { const sc = SC[it.chKey] || SC.chriswhippit; return { ...it, channel: it.channel || (ci ? 'UfoSXM' : 'ChrisWhippit'), color: sc[0], tagBg: hexA(sc[0], 0.22), tagFg: sc[1], cardBg: 'linear-gradient(150deg, ' + hexA(sc[0], 0.2) + ' 0%, rgba(24,24,44,.75) 70%)', cardRing: 'inset 3px 0 0 ' + sc[0] + ', 0 0 0 1px ' + hexA(sc[0], 0.22) }; }) })) })),
@@ -2765,9 +2805,9 @@ class Component extends DCLogic {
       acceptAds: () => this.setConsent('yes'),
       declineAds: () => this.setConsent('no'),
       reopenConsent: () => this.setState({ consent: '' }),
-      faqRows: (c.faq || []).map((f) => ({ ...f, parts: faqParts(f.a) })),
-      faqTop: (c.faq || []).slice(0, 3).map((f) => ({ ...f, parts: faqParts(f.a) })),
-      dlRows: (c.downloads || []).map((r) => ({ ...r, image: asset(r.image), link: r.url || '#', hasImage: r.image ? true : '', noImage: r.image ? '' : true, tf: 'translate(' + (r.ox || 0) + '%, ' + (r.oy || 0) + '%) scale(' + (r.zoom || 1) + ')' })),
+      faqRows: (c.faq || []).map((f) => ({ ...f, q: pick(this.state.lang, f, 'q'), parts: faqParts(pick(this.state.lang, f, 'a')) })),
+      faqTop: (c.faq || []).slice(0, 3).map((f) => ({ ...f, q: pick(this.state.lang, f, 'q'), parts: faqParts(pick(this.state.lang, f, 'a')) })),
+      dlRows: (c.downloads || []).map((r) => ({ ...r, title: pick(this.state.lang, r, 'title'), meta: pick(this.state.lang, r, 'meta'), image: asset(r.image), link: r.url || '#', hasImage: r.image ? true : '', noImage: r.image ? '' : true, tf: 'translate(' + (r.ox || 0) + '%, ' + (r.oy || 0) + '%) scale(' + (r.zoom || 1) + ')' })),
       shopRows: (c.shop || []).map((p) => ({
         ...p,
         image: asset(p.image),
@@ -2810,9 +2850,10 @@ class Component extends DCLogic {
       goOm: this.go('om'),
       atPriv: r === 'integritet' ? '1' : '',
       goPriv: this.go('integritet'),
-      aboutLead: (c.about && c.about.lead) || '',
+      aboutLead: pick(this.state.lang, c.about, 'lead'),
+      isEn: this.state.lang === 'en' ? '1' : '', isSv: this.state.lang === 'en' ? '' : '1',
       // '## ' i början av ett stycke blir en rubrik, tom rad = nytt stycke.
-      aboutBlocks: String((c.about && c.about.text) || '').split(/\n\s*\n/).map((x) => x.trim()).filter(Boolean)
+      aboutBlocks: String(pick(this.state.lang, c.about, 'text')).split(/\n\s*\n/).map((x) => x.trim()).filter(Boolean)
         .map((x) => (/^##\s+/.test(x) ? { h: x.replace(/^##\s+/, ''), isP: '' } : { h: '', isP: '1', parts: faqParts(x) })),
       atCollab: r === 'samarbeten' ? '1' : '',
       collabReady: this.state.contentReady ? '1' : '',
@@ -2869,7 +2910,7 @@ class Component extends DCLogic {
       goDl: this.go('dl'),
       goShop: this.go('shop'),
       langLabel: this.state.lang === 'sv' ? 'SV / EN' : 'EN / SV',
-      toggleLang: () => this.setState((s) => ({ lang: s.lang === 'sv' ? 'en' : 'sv' }))
+      toggleLang: () => this.setState((s) => { const lang = s.lang === 'sv' ? 'en' : 'sv'; try { localStorage.setItem('cw-lang', lang); } catch (e) {} return { lang }; })
     };
   }
 }

@@ -537,55 +537,81 @@
   "faq": [
     {
       "q": "Hur ofta laddar du upp?",
-      "a": "Nästan varje dag på YouTube, plus streams på Twitch. Veckans planerade videor ser du i schemat."
+      "a": "Nästan varje dag på YouTube, plus streams på Twitch. Veckans planerade videor ser du i schemat.",
+      "q_en": "How often do you upload?",
+      "a_en": "Almost every day on YouTube, plus streams on Twitch. This week’s planned videos are in the schedule."
     },
     {
       "q": "Vilka YouTube-kanaler har du?",
-      "a": "Fyra stycken: @chriswhippit är huvudkanalen, och sen finns @whippitsson, @figgwhipp och @whippitextra."
+      "a": "Fyra stycken: @chriswhippit är huvudkanalen, och sen finns @whippitsson, @figgwhipp och @whippitextra.",
+      "q_en": "Which YouTube channels do you have?",
+      "a_en": "Four: @chriswhippit is the main channel, and then there’s @whippitsson, @figgwhipp and @whippitextra."
     },
     {
       "q": "Kan vi samarbeta?",
-      "a": "Absolut! Maila chris.whippit@gmail.com och berätta vad du har i tankarna. Jag har tidigare samarbetat med bland andra Xbox, Ubisoft, NZXT och SodaStream."
+      "a": "Absolut! Maila chris.whippit@gmail.com och berätta vad du har i tankarna. Jag har tidigare samarbetat med bland andra Xbox, Ubisoft, NZXT och SodaStream.",
+      "q_en": "Can we work together?",
+      "a_en": "Absolutely! Email chris.whippit@gmail.com and tell me what you have in mind. I’ve previously worked with Xbox, Ubisoft, NZXT and SodaStream, among others."
     },
     {
       "q": "Vilken dator har du?",
-      "a": "En Intel Core i9 11900K och ett ASUS RTX 4080 i ett NZXT H710i-chassi. Hela speclistan finns på setup-sidan."
+      "a": "En Intel Core i9 11900K och ett ASUS RTX 4080 i ett NZXT H710i-chassi. Hela speclistan finns på setup-sidan.",
+      "q_en": "What computer do you have?",
+      "a_en": "An Intel Core i9 11900K and an ASUS RTX 4080 in an NZXT H710i case. The full spec list is on the setup page."
     },
     {
       "q": "Vilken mikrofon och kamera använder du?",
-      "a": "Mikrofonen är en Shure SM7B och kameran en Sony A6600. Allt annat, med länkar till produkterna, finns på setup-sidan."
+      "a": "Mikrofonen är en Shure SM7B och kameran en Sony A6600. Allt annat, med länkar till produkterna, finns på setup-sidan.",
+      "q_en": "What microphone and camera do you use?",
+      "a_en": "The microphone is a Shure SM7B and the camera a Sony A6600. Everything else, with links to the products, is on the setup page."
     },
     {
       "q": "Finns det en Discord?",
-      "a": "Ja! Häng med i Discord – där ordnas raid-grupper, discgolfrundor och allt däremellan."
+      "a": "Ja! Häng med i Discord – där ordnas raid-grupper, discgolfrundor och allt däremellan.",
+      "q_en": "Is there a Discord?",
+      "a_en": "Yes! Join the Discord – that’s where raid groups, disc golf rounds and everything in between get organised."
     },
     {
       "q": "Var hittar jag dig på sociala medier?",
-      "a": "På YouTube, Twitch, Instagram, TikTok och X. Ändringar i schemat annonseras på X och Instagram, och alla länkar finns längst ner på sidan."
+      "a": "På YouTube, Twitch, Instagram, TikTok och X. Ändringar i schemat annonseras på X och Instagram, och alla länkar finns längst ner på sidan.",
+      "q_en": "Where can I find you on social media?",
+      "a_en": "On YouTube, Twitch, Instagram, TikTok and X. Schedule changes are announced on X and Instagram, and all links are at the bottom of the page."
     },
     {
       "q": "Var kan jag köpa merch?",
-      "a": "I shoppen finns t-shirts, hoodies och kepsar. Butiken drivs av Spreadshirt, som sköter betalning och frakt – har du frågor om en beställning går de till Spreadshirt."
+      "a": "I shoppen finns t-shirts, hoodies och kepsar. Butiken drivs av Spreadshirt, som sköter betalning och frakt – har du frågor om en beställning går de till Spreadshirt.",
+      "q_en": "Where can I buy merch?",
+      "a_en": "The shop has t-shirts, hoodies and caps. It’s run by Spreadshirt, who handle payment and shipping – so questions about an order go to Spreadshirt."
     },
     {
       "q": "Vad är Project Genesis?",
-      "a": "Mitt eget spel – ett cyberpunk-idle-RPG som du spelar direkt i webbläsaren tillsammans med andra spelare. Du hittar det på spelsidan."
+      "a": "Mitt eget spel – ett cyberpunk-idle-RPG som du spelar direkt i webbläsaren tillsammans med andra spelare. Du hittar det på spelsidan.",
+      "q_en": "What is Project Genesis?",
+      "a_en": "My own game – a cyberpunk idle MMORPG you play right in your browser with other players. You’ll find it on the games page."
     },
     {
       "q": "Kostar spelen något?",
-      "a": "Nej, alla spel är gratis och spelas direkt i webbläsaren. I de mindre spelen sparas dina framsteg i den webbläsare du spelar i."
+      "a": "Nej, alla spel är gratis och spelas direkt i webbläsaren. I de mindre spelen sparas dina framsteg i den webbläsare du spelar i.",
+      "q_en": "Do the games cost anything?",
+      "a_en": "No, all the games are free and play right in your browser. In the smaller games your progress is saved in the browser you play in."
     },
     {
       "q": "Kan jag ladda ner era Minecraft-kartor?",
-      "a": "Ja! Kartorna från alla fyra säsongerna av Let’s Play-serien med Softis finns under nedladdningar. Gratis att använda som du vill."
+      "a": "Ja! Kartorna från alla fyra säsongerna av Let’s Play-serien med Softis finns under nedladdningar. Gratis att använda som du vill.",
+      "q_en": "Can I download your Minecraft maps?",
+      "a_en": "Yes! Maps from four of the seasons of the Let’s Play series with Softis are available under downloads. Free to use however you like."
     },
     {
       "q": "Hur länge har du hållit på?",
-      "a": "Sedan 2014 – och det har hunnit bli tusentals videor sedan dess."
+      "a": "Sedan 2014 – och det har hunnit bli tusentals videor sedan dess.",
+      "q_en": "How long have you been doing this?",
+      "a_en": "Since 2014 – and there have been thousands of videos since then."
     },
     {
       "q": "Tjänar du pengar på länkarna på setup-sidan?",
-      "a": "Vissa är affiliatelänkar. Köper du via dem får jag en liten del, utan att det kostar dig något extra."
+      "a": "Vissa är affiliatelänkar. Köper du via dem får jag en liten del, utan att det kostar dig något extra.",
+      "q_en": "Do you earn money from the links on the setup page?",
+      "a_en": "Some are affiliate links. If you buy through them I get a small cut, at no extra cost to you."
     }
   ],
   "downloads": [
@@ -596,25 +622,33 @@
       "image": "media/1791210310105-1.webp",
       "zoom": 1,
       "ox": 0,
-      "oy": 0
+      "oy": 0,
+      "title_en": "Minecraft Let’s Play – Season 1",
+      "meta_en": "Download our map from Whippit and SoftisFFS’s first Minecraft season. Whippit’s first episode from this season was published on 31 March 2016. The map is for Minecraft 1.12."
     },
     {
       "title": "Minecraft Let's Play - Säsong 2",
       "meta": "Här kan ni ladda ner den andra säsongen av Whippit och Softis Let’s Play serie i Minecraft.  Första avsnittet från säsong 2 släpptes den 28 september 2017 på Whippits kanal.  Minecraft versionen på denna kartan är 1.13.1",
       "url": "https://drive.google.com/file/d/1c2K3BlyNegWiNzybpN9kNyxm47r6cosf/view?usp=sharing",
-      "image": "media/1791210310105-2.webp"
+      "image": "media/1791210310105-2.webp",
+      "title_en": "Minecraft Let’s Play – Season 2",
+      "meta_en": "Download the second season of Whippit and Softis’s Let’s Play series in Minecraft. The first episode of season 2 came out on 28 September 2017 on Whippit’s channel. The map is for Minecraft 1.13.1."
     },
     {
       "title": "Minecraft Let's Play - Säsong 3",
       "meta": "Här kan ni ladda ner den 3e säsongen av Whippit och Softis Let’s Play serie i Minecraft.  Denna säsongen påbörjade vi den 9 nov. 2018 och avslutade vi ganska så snabbt därefter. Vi gjorde bara ett fåtal avsnitt av denna säsongen innan vi började med säsong 4.  Minecraft versionen på denna kartan är 1.13.1",
       "url": "https://drive.google.com/file/d/1VU5FEUKxOWaLmqtNUrDiD8Z68vJ__m4F/view?usp=sharing",
-      "image": "media/1791210310105-3.webp"
+      "image": "media/1791210310105-3.webp",
+      "title_en": "Minecraft Let’s Play – Season 3",
+      "meta_en": "Download the third season of Whippit and Softis’s Let’s Play series in Minecraft. We started this season on 9 November 2018 and wrapped it up fairly quickly – only a few episodes before we moved on to season 4. The map is for Minecraft 1.13.1."
     },
     {
       "title": "Minecraft Let's Play - Säsong 4",
       "meta": "Här kan ni ladda ner den 4e säsongen av Whippit och Softis Let’s Play serie i Minecraft.  Denna säsongen påbörjade vi den 7 maj 2019.  Minecraft versionen på denna kartan är 1.15.1",
       "url": "https://drive.google.com/file/d/1uQ4lzeY0k3evwkiKQSQ0NC6bEdpFoBA3/view?usp=sharing",
-      "image": "media/1791210310105-4.webp"
+      "image": "media/1791210310105-4.webp",
+      "title_en": "Minecraft Let’s Play – Season 4",
+      "meta_en": "Download the fourth season of Whippit and Softis’s Let’s Play series in Minecraft. We started this season on 7 May 2019. The map is for Minecraft 1.15.1."
     }
   ],
   "sponsors": [
@@ -625,14 +659,16 @@
       "url": "https://www.youtube.com/watch?v=aP0Y-DZd6tQ&t=1s",
       "zoom": 1.6,
       "ox": 3.0303030303030307,
-      "oy": 5.793650793650791
+      "oy": 5.793650793650791,
+      "caption_en": "Skateboarding game – YouTube"
     },
     {
       "name": "Wargaming.net",
       "caption": "World of warships - Youtube",
       "logo": "media/1789735506829-1.webp",
       "url": "https://www.youtube.com/watch?v=NF8XQvDK-mo",
-      "zoom": 1.75
+      "zoom": 1.75,
+      "caption_en": "World of Warships – YouTube"
     },
     {
       "name": "SodaStream",
@@ -641,7 +677,8 @@
       "url": "https://www.youtube.com/watch?v=VUPbV8DkX6M&t=12s",
       "zoom": 1.8,
       "ox": 0.7575757575757576,
-      "oy": -20.71428571428571
+      "oy": -20.71428571428571,
+      "caption_en": "SodaStream released a new flavour – Mountain Dew"
     },
     {
       "name": "NZXT",
@@ -650,7 +687,8 @@
       "url": "https://www.youtube.com/watch?v=hRdHwM-Zhcw",
       "ox": -0.3787878787878789,
       "oy": -34.2857142857143,
-      "zoom": 1.85
+      "zoom": 1.85,
+      "caption_en": "One of many NZXT partnerships"
     },
     {
       "name": "Xbox",
@@ -695,7 +733,8 @@
       "url": "https://youtu.be/A99bN2yiJO0",
       "zoom": 3,
       "ox": -0.3787878787878788,
-      "oy": -2.857142857142857
+      "oy": -2.857142857142857,
+      "caption_en": "Ducky One 3 series"
     }
   ],
   "social": [
@@ -741,7 +780,9 @@
     }
   ],
   "about": {
-    "lead": "Jag heter Chris Whippit och har gjort videor på YouTube sedan 2014. Gaming, Pokémon GO, discgolf och vad dagen nu blir – med en ny video nästan varje dag.",
-    "text": "## Vem är Chris Whippit?\n\nJag är en svensk innehållsskapare från Strömstad. Idag blir det fyra YouTube-kanaler, streams på Twitch och en community som följer med från dag till dag.\n\n## Från 2014 till idag\n\nDen första videon kom 2014. Sedan dess har det blivit tusentals videor. En serie som följt med länge är Let’s Play i Minecraft tillsammans med Softis – fyra säsonger, och kartorna från alla finns att ladda ner under nedladdningar.\n\nIdag finns innehållet på fyra kanaler: @chriswhippit är huvudkanalen, och sen finns @whippitsson, @figgwhipp och @whippitextra.\n\n## Vad jag gör nu\n\nNya videor kommer nästan varje dag – veckans planerade videor ser du i schemat. På Twitch blir det streams, och i Discord ordnas raid-grupper, discgolfrundor och allt däremellan.\n\nVid sidan av kanalerna bygger jag mitt eget spel, Project Genesis – ett cyberpunk-idle-RPG som du spelar direkt i webbläsaren. Det och några mindre spel hittar du på spelsidan.\n\n## Samarbeten\n\nGenom åren har jag samarbetat med bland andra Xbox, Ubisoft, Square Enix, NZXT och SodaStream. Vill du också samarbeta? Maila chris.whippit@gmail.com."
+    "lead": "Jag heter Joakim och har gjort videor på YouTube sedan 2014. Gaming, Pokémon GO, discgolf och vad dagen nu blir – med en ny video nästan varje dag.",
+    "text": "## Vem är Chris Whippit?\n\nJag är en svensk innehållsskapare från Strömstad. Idag har jag fyra YouTube-kanaler. Ibland streamar jag på Twitch eller YouTube, och jag har världens bästa community som följer med mig från dag till dag – oavsett vilka tokigheter jag sysslar med.\n\n## Från 2014 till idag\n\nDen första videon kom 2014. Sedan dess har det blivit tusentals videor. En serie som följt med länge är Let’s Play i Minecraft tillsammans med Softis. Kartorna från fyra av säsongerna finns att ladda ner under nedladdningar.\n\nKanalerna är @chriswhippit, som är huvudkanalen, och @whippitsson, @figgwhipp och @whippitextra.\n\n## Vad jag gör nu\n\nNya videor kommer nästan varje dag. Veckans planerade videor ser du i schemat.\n\nVid sidan av kanalerna bygger jag för skojs skull ett litet eget spel som jag kallar Project Genesis – ett cyberpunk-idle-MMORPG som du spelar direkt i webbläsaren. Det och några mindre spel hittar du på spelsidan.\n\n## Samarbeten\n\nGenom åren har jag samarbetat med bland andra Xbox, Ubisoft, Square Enix, NZXT och SodaStream. Vill du också samarbeta? Maila chris.whippit@gmail.com.",
+    "lead_en": "My name is Joakim and I’ve been making videos on YouTube since 2014. Gaming, Pokémon GO, disc golf and whatever the day turns into – with a new video almost every day.",
+    "text_en": "## Who is Chris Whippit?\n\nI’m a Swedish content creator from Strömstad. Today I have four YouTube channels. Sometimes I stream on Twitch or YouTube, and I have the world’s best community that follows along from day to day – no matter what crazy things I get up to.\n\n## From 2014 to today\n\nThe first video came out in 2014. Since then there have been thousands of videos. A series that has been around for a long time is Let’s Play in Minecraft together with Softis. Maps from four of the seasons can be downloaded under downloads.\n\nThe channels are @chriswhippit, the main channel, plus @whippitsson, @figgwhipp and @whippitextra.\n\n## What I do now\n\nNew videos come out almost every day. This week’s planned videos are in the schedule.\n\nAlongside the channels, I’m building a small game of my own just for fun, which I call Project Genesis – a cyberpunk idle MMORPG you play right in your browser. You’ll find it and a few smaller games on the games page.\n\n## Partnerships\n\nOver the years I’ve worked with Xbox, Ubisoft, Square Enix, NZXT and SodaStream, among others. Want to work together too? Email chris.whippit@gmail.com."
   }
 }

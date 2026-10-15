@@ -5781,6 +5781,8 @@ textarea.input { min-height: 90px; resize: vertical; }
                   <button data-del="" sc-camel-on-click="{{ row.onDelete }}" title="Ta bort" style="flex: 0 0 auto; width: 34px; height: 34px; border-radius: 8px; border: 1px solid var(--color-neutral-800); background: transparent; color: var(--color-neutral-500); cursor: pointer;" style-hover="color: #f78fb6; border-color: rgba(244,114,166,.5);"><i class="ph-fill ph-trash" aria-hidden="true" style="font-size: 14px;"></i></button>
                 </div>
                 <textarea data-in="" rows="2" value="{{ row.a }}" sc-camel-on-change="{{ row.onB }}" placeholder="Svar" style="resize: vertical; line-height: 1.6;"></textarea>
+                <input data-in="" value="{{ row.q_en }}" sc-camel-on-change="{{ row.onQe }}" placeholder="EN · Question in English" style="border-left: 2px solid #6fb7c9;">
+                <textarea data-in="" rows="2" value="{{ row.a_en }}" sc-camel-on-change="{{ row.onAe }}" placeholder="EN · Answer in English (tom = svenska visas)" style="border-left: 2px solid #6fb7c9; resize: vertical; line-height: 1.6;"></textarea>
               </div>
             </sc-for>
             <button data-btn="" sc-camel-on-click="{{ addFaq }}" style="align-self: start; padding: 11px 16px; border: 1px dashed var(--color-neutral-700); background: transparent; color: var(--color-neutral-400); font-size: 13px;" style-hover="border-color: var(--color-accent-600); color: var(--color-accent-300);">+ Ny fråga</button>
@@ -5791,6 +5793,8 @@ textarea.input { min-height: 90px; resize: vertical; }
           <div style="background: var(--color-surface); border-radius: 14px; box-shadow: 0 0 0 1px var(--color-neutral-800); padding: 16px; display: flex; flex-direction: column; gap: 10px;">
             <input data-in="" value="{{ aboutLead }}" sc-camel-on-change="{{ setAboutLead }}" placeholder="Ingress, en mening överst på sidan" style="font-family: var(--font-heading); font-size: 15px;">
             <textarea data-in="" rows="22" value="{{ aboutText }}" sc-camel-on-change="{{ setAboutText }}" placeholder="Din historia. Tom rad = nytt stycke. Börja en rad med ## för en rubrik." style="resize: vertical; line-height: 1.6;"></textarea>
+            <input data-in="" value="{{ aboutLeadEn }}" sc-camel-on-change="{{ setAboutLeadEn }}" placeholder="EN · Intro sentence in English" style="border-left: 2px solid #6fb7c9; font-family: var(--font-heading); font-size: 15px;">
+            <textarea data-in="" rows="18" value="{{ aboutTextEn }}" sc-camel-on-change="{{ setAboutTextEn }}" placeholder="EN · Your story in English. Blank line = new paragraph, ## = heading." style="border-left: 2px solid #6fb7c9; resize: vertical; line-height: 1.6;"></textarea>
             <span style="font-size: 12px; color: var(--color-neutral-500);">Tom rad ger nytt stycke. En rad som börjar med <code>## </code> blir en rubrik. E-post, länkar och ord som setup-sidan, shoppen, Discord och YouTube blir klickbara.</span>
           </div>
         </sc-if>
@@ -5817,6 +5821,8 @@ textarea.input { min-height: 90px; resize: vertical; }
                 <div style="padding: 16px 18px 18px; display: flex; flex-direction: column; gap: 8px;">
                   <input data-in="" value="{{ row.title }}" sc-camel-on-change="{{ row.onA }}" placeholder="Titel" style="font-family: var(--font-heading); font-size: 16px; font-weight: 500;">
                   <textarea data-in="" value="{{ row.meta }}" sc-camel-on-change="{{ row.onB }}" placeholder="Text. Enter ger ny rad." rows="7" style="font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 1.6; resize: vertical; min-height: 120px;"></textarea>
+                  <input data-in="" value="{{ row.title_en }}" sc-camel-on-change="{{ row.onTe }}" placeholder="EN · Title in English" style="border-left: 2px solid #6fb7c9;">
+                  <textarea data-in="" rows="4" value="{{ row.meta_en }}" sc-camel-on-change="{{ row.onMe }}" placeholder="EN · Text in English (tom = svenska visas)" style="border-left: 2px solid #6fb7c9; resize: vertical; line-height: 1.6;"></textarea>
                   <input data-in="" value="{{ row.url }}" sc-camel-on-change="{{ row.onC }}" placeholder="Länk till filen">
                   <input data-in="" value="{{ row.imageField }}" sc-camel-on-change="{{ row.onImage }}" placeholder="{{ row.imagePlaceholder }}">
                   <sc-if value="{{ row.hasImage }}">
@@ -5911,6 +5917,8 @@ textarea.input { min-height: 90px; resize: vertical; }
                   <input data-in="" value="{{ row.logoField }}" sc-camel-on-change="{{ row.onC }}" placeholder="{{ row.logoPlaceholder }}">
                   <input data-in="" value="{{ row.url }}" sc-camel-on-change="{{ row.onD }}" placeholder="Länk — hemsida eller video">
                   <textarea data-in="" rows="5" value="{{ row.desc }}" sc-camel-on-change="{{ row.onE }}" placeholder="Beskrivning (visas på samarbetssidan): vad samarbetet gällde, vad ni gjorde, hur det gick. Tom rad = nytt stycke." style="resize: vertical; line-height: 1.6;"></textarea>
+                  <input data-in="" value="{{ row.caption_en }}" sc-camel-on-change="{{ row.onBe }}" placeholder="EN · Text under the logo in English" style="border-left: 2px solid #6fb7c9;">
+                  <textarea data-in="" rows="5" value="{{ row.desc_en }}" sc-camel-on-change="{{ row.onEe }}" placeholder="EN · Description in English (tom = svenska visas)" style="border-left: 2px solid #6fb7c9; resize: vertical; line-height: 1.6;"></textarea>
                   <sc-if value="{{ row.hasLogo }}">
                     <div style="display: flex; gap: 14px; align-items: center; flex-wrap: wrap; padding-top: 4px;">
                       <div sc-camel-on-pointer-down="{{ row.fitDown }}" sc-camel-on-pointer-move="{{ row.fitMove }}" sc-camel-on-pointer-up="{{ row.fitUp }}" sc-camel-on-pointer-cancel="{{ row.fitUp }}" title="Dra för att flytta" style="position: relative; flex: 0 0 auto; width: 264px; height: 140px; border-radius: 8px; overflow: hidden; cursor: grab; touch-action: none; background: var(--color-neutral-900); box-shadow: 0 0 0 1px var(--color-neutral-800);">
@@ -6650,6 +6658,10 @@ class Component extends DCLogic {
       aboutLead: (d.about && d.about.lead) || '',
       aboutText: (d.about && d.about.text) || '',
       setAboutLead: (e) => { const v = e.target.value; this.mutate((x) => { x.about = { ...(x.about || {}), lead: v }; }); },
+      aboutLeadEn: (d.about && d.about.lead_en) || '',
+      aboutTextEn: (d.about && d.about.text_en) || '',
+      setAboutLeadEn: (e) => { const v = e.target.value; this.mutate((x) => { x.about = { ...(x.about || {}), lead_en: v }; }); },
+      setAboutTextEn: (e) => { const v = e.target.value; this.mutate((x) => { x.about = { ...(x.about || {}), text_en: v }; }); },
       setAboutText: (e) => { const v = e.target.value; this.mutate((x) => { x.about = { ...(x.about || {}), text: v }; }); },
       onDl: tab === 'downloads' ? '1' : '',
       onShop: tab === 'shop' ? '1' : '',
@@ -6821,6 +6833,8 @@ class Component extends DCLogic {
         ...r,
         onA: this.field('faq', i, 'q'),
         onB: this.field('faq', i, 'a'),
+        onQe: this.field('faq', i, 'q_en'),
+        onAe: this.field('faq', i, 'a_en'),
         onDelete: () => this.mutate((x) => { x.faq.splice(i, 1); })
       })),
       addFaq: () => this.mutate((x) => { x.faq.push({ q: '', a: '' }); }),
@@ -6840,7 +6854,9 @@ class Component extends DCLogic {
         onImage: this.field('downloads', i, 'image'),
         onA: this.field('downloads', i, 'title'),
         onB: this.field('downloads', i, 'meta'),
-        onC: this.field('downloads', i, 'url')
+        onC: this.field('downloads', i, 'url'),
+        onTe: this.field('downloads', i, 'title_en'),
+        onMe: this.field('downloads', i, 'meta_en')
       })),
       addDl: () => this.mutate((x) => { x.downloads.push({ title: '', meta: '', url: '', image: '' }); }),
 
@@ -6879,6 +6895,8 @@ class Component extends DCLogic {
         onC: this.field('sponsors', i, 'logo'),
         onD: this.field('sponsors', i, 'url'),
         onE: this.field('sponsors', i, 'desc'),
+        onBe: this.field('sponsors', i, 'caption_en'),
+        onEe: this.field('sponsors', i, 'desc_en'),
         desc: r.desc || '',
         isFirst: i === 0 ? true : '',
         isLast: i === (d.sponsors || []).length - 1 ? true : '',
