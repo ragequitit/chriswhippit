@@ -1503,6 +1503,12 @@ textarea.input { min-height: 90px; resize: vertical; }
   /* Prestanda/tillgänglighet (tools/perf.js) */
   [data-ico] { display: inline-flex; align-items: center; line-height: 1; }
   [data-ico] svg { width: 1em; height: 1em; display: block; }
+  /* LIVE NU-bannern (live.json uppdateras av .github/workflows/live.yml) */
+  [data-live-dot] { width: 9px; height: 9px; border-radius: 50%; background: #ff4d6d; box-shadow: 0 0 0 0 rgba(255,77,109,.7); animation: livepulse 1.6s infinite; flex: 0 0 auto; }
+  @keyframes livepulse { 70% { box-shadow: 0 0 0 9px rgba(255,77,109,0); } 100% { box-shadow: 0 0 0 0 rgba(255,77,109,0); } }
+  [data-live]:hover { filter: brightness(1.1); }
+  @media (max-width: 600px) { [data-live] { font-size: 13px !important; padding: 7px 12px !important; } [data-live-title] { max-width: 20ch !important; } }
+  @media (prefers-reduced-motion: reduce) { [data-live-dot] { animation: none; } }
   main[style*="padding: 72px 24px 0"] { min-height: 100vh; }
   /* Videor, serier och gänget */
   [data-chip]:hover { box-shadow: 0 0 0 1px var(--color-accent-600) !important; }
@@ -1535,6 +1541,7 @@ textarea.input { min-height: 90px; resize: vertical; }
      var(--color-bg); overflow-x: clip;">
 
   <header style="position: sticky; top: 0; z-index: 40; backdrop-filter: blur(18px) saturate(150%); -webkit-backdrop-filter: blur(18px) saturate(150%); background: color-mix(in srgb, var(--color-bg) 82%, transparent);">
+    <sc-if value="{{ liveOn }}"><a href="{{ liveUrl }}" target="_blank" rel="noopener" data-live="" style="display: flex; align-items: center; justify-content: center; gap: 10px; padding: 8px 16px; background: linear-gradient(90deg, #6d3ff0, #9b4dff 50%, #6d3ff0); color: #fff; font-size: 14px; font-weight: 600; text-align: center;"><span data-live-dot="" aria-hidden="true"></span><span style="font-family: 'JetBrains Mono', monospace; letter-spacing: .14em; font-size: 12px;">LIVE NU</span><span data-live-title="" style="font-weight: 500; opacity: .95; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 52ch;">{{ liveText }}</span><span aria-hidden="true">→</span></a></sc-if>
     <div data-hbar="" style="max-width: 1240px; margin: 0 auto; padding: 10px 24px; display: flex; align-items: center; flex-wrap: wrap; column-gap: 40px; row-gap: 0;">
       <a href="/" data-hbrand="" sc-camel-on-click="{{ goHem }}" style="order: 0; display: flex; align-items: center; gap: 12px; color: #fff; min-height: 48px; flex: 0 0 auto;">
         <img src="/assets/logo-64.png" width="30" height="30" alt="ChrisWhippit" style="width: 30px; height: 30px; display: block;">
@@ -2738,6 +2745,11 @@ class Component extends DCLogic {
     this._pop = () => this.setState(locRoute());
     window.addEventListener('popstate', this._pop);
     this.loadVideos();
+    // LIVE NU: live.json skrivs av en GitHub Action som kollar Twitch och YouTube var tionde minut.
+    this.checkLive = () => fetch(SITE_ROOT + 'live.json?t=' + Math.floor(Date.now() / 60000), { cache: 'no-store' })
+      .then((r) => (r.ok ? r.json() : null)).then((j) => this.setState({ liveNow: j && j.live ? j : null })).catch(() => {});
+    this.checkLive();
+    this._liveTimer = setInterval(this.checkLive, 120000);
     try {
       const raw = localStorage.getItem('cw-admin-content');
       const stored = raw ? JSON.parse(raw) : null;
@@ -2881,6 +2893,7 @@ class Component extends DCLogic {
   }
 
   componentWillUnmount() {
+    clearInterval(this._liveTimer);
     if (this._pop) window.removeEventListener('popstate', this._pop);
     cancelAnimationFrame(this.raf);
     window.removeEventListener('pointermove', this.onMove);
@@ -3104,6 +3117,9 @@ class Component extends DCLogic {
       })(),
       atCollab: r === 'samarbeten' ? '1' : '',
       collabReady: this.state.contentReady ? '1' : '',
+      liveOn: this.state.liveNow ? '1' : '',
+      liveUrl: (this.state.liveNow && this.state.liveNow.url) || 'https://www.twitch.tv/chriswhippit',
+      liveText: this.state.liveNow ? [this.state.liveNow.title, this.state.liveNow.platform === 'youtube' ? 'YouTube' : 'Twitch'].filter(Boolean).join(' · ') : '',
       vReady: this.state.contentReady ? '1' : '',  // serier/gänget kommer från content.json — visa först då, så inget hoppar (CLS)
       goCollab: this.go('samarbeten'),
       ...(() => {

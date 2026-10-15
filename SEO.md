@@ -5,7 +5,7 @@ Den här lappen ska inte glömmas. Den följs av den schemalagda uppgiften "SEO-
 
 ## Var finns vad
 
-- **Google Search Console** finns på ChrisWhippit-kontot (whippitgaming@gmail.com), egendomen
+- **Google Search Console** finns på ChrisWhippit-kontot, egendomen
   `https://www.chriswhippit.com/` (webbadressprefix).
   - I Chrome är det konto nummer två: https://search.google.com/u/1/search-console?resource_id=https%3A%2F%2Fwww.chriswhippit.com%2F
   - Konto nummer ett (figgwhipp) har ingen egendom. Det kontot ska inte användas här.
