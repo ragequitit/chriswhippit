@@ -6544,7 +6544,9 @@ class Component extends DCLogic {
         c.width = Math.round(img.width * s);
         c.height = Math.round(img.height * s);
         c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
-        done(c.toDataURL('image/png'));
+        // WebP är ofta 5-10 gånger mindre än PNG (behåller genomskinlighet). Webbläsare utan
+        // WebP-stöd ger tillbaka PNG automatiskt.
+        done(c.toDataURL('image/webp', 0.82));
       };
       img.onerror = () => done(r.result);
       img.src = r.result;
