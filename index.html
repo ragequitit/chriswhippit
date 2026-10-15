@@ -2125,7 +2125,7 @@ textarea.input { min-height: 90px; resize: vertical; }
       <p style="margin: 0 0 14px;">Läs mer om hur Google använder uppgifter i <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener">Googles policy för partnerwebbplatser</a>. Du kan styra annonsanpassning i <a href="https://adssettings.google.com" target="_blank" rel="noopener">Googles annonsinställningar</a>.</p>
       <sc-if value="{{ adsOn }}"><p style="margin: 0 0 14px;"><button sc-camel-on-click="{{ reopenConsent }}" data-ck="" style="cursor: pointer; font: inherit; font-size: 14px; padding: 10px 16px; border-radius: 8px; border: 1px solid var(--color-accent); background: transparent; color: var(--color-accent-200);">Ändra ditt cookieval</button></p></sc-if>
       <h2 style="font-family: var(--font-heading); font-weight: 600; font-size: 22px; letter-spacing: -.02em; color: #fff; margin: 34px 0 10px;">YouTube</h2>
-      <p style="margin: 0 0 14px;">Startsidan, schemat och samarbetssidan hämtar uppgifter om videor (titlar, bilder och antal visningar) direkt från YouTube, som drivs av Google. Din webbläsare kontaktar då Googles servrar, vilket innebär att Google får se din IP-adress. Videor på samarbetssidan bäddas in först när du trycker på play, och då via youtube-nocookie.com. Se <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Googles integritetspolicy</a>.</p>
+      <p style="margin: 0 0 14px;">Startsidan, schemat, videosidorna och samarbetssidan hämtar uppgifter om videor (titlar, bilder och antal visningar) direkt från YouTube, som drivs av Google. Din webbläsare kontaktar då Googles servrar, vilket innebär att Google får se din IP-adress. Videor på samarbetssidan och seriesidorna bäddas in först när du trycker på play eller klickar på en video, och då via youtube-nocookie.com. Se <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Googles integritetspolicy</a>.</p>
       <h2 style="font-family: var(--font-heading); font-weight: 600; font-size: 22px; letter-spacing: -.02em; color: #fff; margin: 34px 0 10px;">Shoppen</h2>
       <p style="margin: 0 0 14px;">Butiken på shop-sidan drivs av Spreadshirt och laddas från deras servrar. Spreadshirt visar en egen cookie-ruta och hanterar varukorg, betalning och leverans. Det de gör regleras av <a href="https://www.spreadshirt.se/integritetspolicy-C3104" target="_blank" rel="noopener">Spreadshirts integritetspolicy</a>.</p>
       <h2 style="font-family: var(--font-heading); font-weight: 600; font-size: 22px; letter-spacing: -.02em; color: #fff; margin: 34px 0 10px;">Spelen</h2>
@@ -2154,7 +2154,7 @@ textarea.input { min-height: 90px; resize: vertical; }
       <p style="margin: 0 0 14px;">Read more about how Google uses data in <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener">Google’s policy for partner sites</a>. You can control ad personalisation in <a href="https://adssettings.google.com" target="_blank" rel="noopener">Google’s ad settings</a>.</p>
       <sc-if value="{{ adsOn }}"><p style="margin: 0 0 14px;"><button sc-camel-on-click="{{ reopenConsent }}" data-ck="" style="cursor: pointer; font: inherit; font-size: 14px; padding: 10px 16px; border-radius: 8px; border: 1px solid var(--color-accent); background: transparent; color: var(--color-accent-200);">Change your cookie choice</button></p></sc-if>
       <h2 style="font-family: var(--font-heading); font-weight: 600; font-size: 22px; letter-spacing: -.02em; color: #fff; margin: 34px 0 10px;">YouTube</h2>
-      <p style="margin: 0 0 14px;">The home page, the schedule and the partnerships page fetch video details (titles, images and view counts) directly from YouTube, which is run by Google. Your browser then contacts Google’s servers, which means Google sees your IP address. Videos on the partnerships page are only embedded when you press play, and then via youtube-nocookie.com. See <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google’s privacy policy</a>.</p>
+      <p style="margin: 0 0 14px;">The home page, the schedule, the video pages and the partnerships page fetch video details (titles, images and view counts) directly from YouTube, which is run by Google. Your browser then contacts Google’s servers, which means Google sees your IP address. Videos on the partnerships page and the series pages are only embedded when you press play or click a video, and then via youtube-nocookie.com. See <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google’s privacy policy</a>.</p>
       <h2 style="font-family: var(--font-heading); font-weight: 600; font-size: 22px; letter-spacing: -.02em; color: #fff; margin: 34px 0 10px;">The shop</h2>
       <p style="margin: 0 0 14px;">The shop is run by Spreadshirt and loads from their servers. Spreadshirt shows its own cookie box and handles the cart, payment and delivery, as described in <a href="https://www.spreadshirt.se/integritetspolicy-C3104" target="_blank" rel="noopener">Spreadshirt’s privacy policy</a>.</p>
       <h2 style="font-family: var(--font-heading); font-weight: 600; font-size: 22px; letter-spacing: -.02em; color: #fff; margin: 34px 0 10px;">The games</h2>
@@ -2242,7 +2242,7 @@ textarea.input { min-height: 90px; resize: vertical; }
       <h2 data-en="Latest in the series" style="font-family: var(--font-heading); font-weight: 600; font-size: 24px; letter-spacing: -.02em; margin: 40px 0 14px;">Senaste i serien</h2>
       <div data-vgrid="" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px;">
         <sc-for list="{{ sVideos }}" as="v" hint-placeholder-count="8">
-          <a href="{{ v.url }}" target="_blank" rel="noopener" data-lift="" style="display: block; overflow: hidden; border-radius: 14px; background: var(--color-surface); box-shadow: 0 0 0 1px var(--color-neutral-800); color: var(--color-text);">
+          <a href="{{ v.url }}" target="_blank" rel="noopener" sc-camel-on-click="{{ v.onPlay }}" data-lift="" style="display: block; overflow: hidden; border-radius: 14px; background: var(--color-surface); box-shadow: 0 0 0 1px var(--color-neutral-800); color: var(--color-text);">
             <div style="aspect-ratio: 16 / 9; overflow: hidden; background: var(--color-neutral-900);"><img loading="lazy" decoding="async" src="{{ v.thumb }}" alt="{{ v.title }}" style="width: 100%; height: 100%; object-fit: cover; display: block;"></div>
             <div style="padding: 10px 12px 12px;"><div style="font-family: var(--font-heading); font-size: 14px; font-weight: 500; line-height: 1.35; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">{{ v.title }}</div><sc-if value="{{ v.date }}"><div style="font-family: 'JetBrains Mono', monospace; letter-spacing: .14em; text-transform: uppercase; font-size: 10px; color: var(--color-neutral-400); margin-top: 6px;">{{ v.date }}</div></sc-if></div>
           </a>
@@ -2329,6 +2329,20 @@ textarea.input { min-height: 90px; resize: vertical; }
     <div style="margin-top: 14px; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .1em; color: var(--color-neutral-500);"><a href="https://whippit.myspreadshop.se/" target="_blank" data-en="Open the shop on Spreadshirt instead →" style="color: var(--color-neutral-500);">Öppna butiken på Spreadshirt istället →</a></div>
   </div>
 
+  <sc-if value="{{ playOn }}">
+    <div data-player="" role="dialog" aria-modal="true" aria-label="{{ playTitle }}" sc-camel-on-click="{{ closePlay }}" style="position: fixed; inset: 0; z-index: 80; display: grid; place-items: center; padding: 20px; background: rgba(8,8,16,.88); backdrop-filter: blur(6px);">
+      <div data-player-box="" style="width: min(1100px, 100%); background: #0e0f1a; box-shadow: 0 0 0 1px rgba(134,87,255,.5), 0 30px 80px rgba(0,0,0,.7);">
+        <div style="position: relative; aspect-ratio: 16 / 9; background: #000;">
+          <iframe src="{{ playEmbed }}" title="{{ playTitle }}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen="true" style="position: absolute; inset: 0; width: 100%; height: 100%; border: 0;"></iframe>
+        </div>
+        <div style="display: flex; align-items: center; gap: 12px; padding: 12px 14px;">
+          <span style="flex: 1; min-width: 0; font-family: var(--font-heading); font-size: 15px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ playTitle }}</span>
+          <a href="{{ playUrl }}" target="_blank" rel="noopener" data-en="Open on YouTube ↗" style="font-size: 13px; color: var(--color-neutral-400); white-space: nowrap;">Öppna på YouTube ↗</a>
+          <button type="button" sc-camel-on-click="{{ closePlay }}" aria-label="Stäng" style="font: 600 14px/1 var(--font-body); padding: 9px 14px; border: 1.5px solid #8657FF; background: transparent; color: #fff; cursor: pointer;"><span data-en="Close ✕">Stäng ✕</span></button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
   <footer data-footer="" style="margin-top: 120px; background: linear-gradient(180deg, rgba(35,37,50,0) 0%, rgba(35,37,50,.7) 100%);">
     <div data-footer-grid="" style="max-width: 1240px; margin: 0 auto; padding: 56px 24px 30px; display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 36px;">
       <div>
@@ -2706,6 +2720,15 @@ class Component extends DCLogic {
   }
 
   // Seriesida: /videor/<slug>/
+  // Spela en video i spelaren på sidan i stället för att lämna sajten. Ctrl/Cmd/mittenklick öppnar YouTube som vanligt.
+  play(id, title) {
+    return (e) => {
+      if (e && (e.metaKey || e.ctrlKey || e.shiftKey || e.button === 1)) return;
+      if (e) e.preventDefault();
+      this.setState({ playing: { id, title } });
+    };
+  }
+
   goSerie(slug) {
     return (e) => {
       if (e) e.preventDefault();
@@ -2809,6 +2832,8 @@ class Component extends DCLogic {
       ys.forEach((li) => li.toggleAttribute('data-on', li === (on || ys[0])));
     }); };
     window.addEventListener('scroll', this.onTl, { passive: true });
+    this.onPlayKey = (e) => { if (e.key === 'Escape' && this.state.playing) this.setState({ playing: null }); };
+    window.addEventListener('keydown', this.onPlayKey);
     window.addEventListener('resize', this.onTl);
     this._liveTimer = setInterval(this.checkLive, 120000);
     try {
@@ -3175,7 +3200,7 @@ class Component extends DCLogic {
           sLead: s ? pick(L, s, 'lead') : '', sMissing: s ? '' : '1',
           sBlocks: s ? blocks(pick(L, s, 'text')) : [],
           sPlaylists: s ? (s.playlists || []).map((p) => ({ title: pick(L, p, 'title'), url: plUrl(p.id), count: cnt(p.id) })) : [],
-          sVideos: sv.map((v) => ({ title: v.title, date: dfmt(v.at), thumb: 'https://i.ytimg.com/vi/' + v.id + '/mqdefault.jpg', url: 'https://www.youtube.com/watch?v=' + v.id + '&list=' + v.list })),
+          sVideos: sv.map((v) => ({ title: v.title, date: dfmt(v.at), thumb: 'https://i.ytimg.com/vi/' + v.id + '/mqdefault.jpg', url: 'https://www.youtube.com/watch?v=' + v.id + '&list=' + v.list, onPlay: this.play(v.id, v.title) })),
           sHasVideos: sv.length ? '1' : '',
           crewCards: (c.crew || []).map((m) => { const info = crewInfo[m.channelId] || {}; return {
             name: m.name, channelName: m.channelName || info.title || m.name, memorial: m.memorial || '', text: pick(L, m, 'text'),
@@ -3189,6 +3214,11 @@ class Component extends DCLogic {
       })(),
       atCollab: r === 'samarbeten' ? '1' : '',
       collabReady: this.state.contentReady ? '1' : '',
+      playOn: this.state.playing ? '1' : '',
+      playTitle: (this.state.playing && this.state.playing.title) || '',
+      playEmbed: this.state.playing ? 'https://www.youtube-nocookie.com/embed/' + this.state.playing.id + '?autoplay=1&rel=0' : '',
+      playUrl: this.state.playing ? 'https://www.youtube.com/watch?v=' + this.state.playing.id : '',
+      closePlay: (e) => { if (e && e.target.closest && e.target.closest('[data-player-box]') && !e.target.closest('button')) return; this.setState({ playing: null }); },
       liveOn: this.state.liveNow ? '1' : '',
       liveUrl: (this.state.liveNow && this.state.liveNow.url) || 'https://www.twitch.tv/chriswhippit',
       liveText: this.state.liveNow ? [this.state.liveNow.title, this.state.liveNow.platform === 'youtube' ? 'YouTube' : 'Twitch'].filter(Boolean).join(' · ') : '',
