@@ -5658,11 +5658,8 @@ textarea.input { min-height: 90px; resize: vertical; }
 
     <div style="max-width: 1180px; margin: 0 auto; padding: 34px 22px 90px; display: flex; flex-wrap: wrap; gap: 30px; align-items: flex-start;">
       <nav style="flex: 0 0 220px; display: flex; flex-direction: column; gap: 3px; position: sticky; top: 84px;">
-        <button data-tab="" data-on="{{ onStats }}" sc-camel-on-click="{{ goStats }}" style="text-align: left; padding: 11px 14px; border: none; border-radius: 8px; background: transparent; color: var(--color-neutral-400); font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 10px;"><i class="ph-fill ph-chart-bar" aria-hidden="true" style="font-size: 15px;"></i>Räckvidd</button>
         <button data-tab="" data-on="{{ onSetup }}" sc-camel-on-click="{{ goSetup }}" style="text-align: left; padding: 11px 14px; border: none; border-radius: 8px; background: transparent; color: var(--color-neutral-400); font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 10px;"><i class="ph-fill ph-desktop-tower" aria-hidden="true" style="font-size: 15px;"></i>Setup</button>
         <button data-tab="" data-on="{{ onSchema }}" sc-camel-on-click="{{ goSchema }}" style="text-align: left; padding: 11px 14px; border: none; border-radius: 8px; background: transparent; color: var(--color-neutral-400); font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 10px;"><i class="ph-fill ph-calendar-blank" aria-hidden="true" style="font-size: 15px;"></i>Schema</button>
-        <button data-tab="" data-on="{{ onFaq }}" sc-camel-on-click="{{ goFaq }}" style="text-align: left; padding: 11px 14px; border: none; border-radius: 8px; background: transparent; color: var(--color-neutral-400); font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 10px;"><i class="ph-fill ph-question" aria-hidden="true" style="font-size: 15px;"></i>FAQ</button>
-        <button data-tab="" data-on="{{ onAbout }}" sc-camel-on-click="{{ goAbout }}" style="text-align: left; padding: 11px 14px; border: none; border-radius: 8px; background: transparent; color: var(--color-neutral-400); font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 10px;"><i class="ph-fill ph-question" aria-hidden="true" style="font-size: 15px;"></i>Om mig</button>
         <button data-tab="" data-on="{{ onDl }}" sc-camel-on-click="{{ goDl }}" style="text-align: left; padding: 11px 14px; border: none; border-radius: 8px; background: transparent; color: var(--color-neutral-400); font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 10px;"><i class="ph-fill ph-download-simple" aria-hidden="true" style="font-size: 15px;"></i>Nedladdningar</button>
         <button data-tab="" data-on="{{ onShop }}" sc-camel-on-click="{{ goShop }}" style="text-align: left; padding: 11px 14px; border: none; border-radius: 8px; background: transparent; color: var(--color-neutral-400); font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 10px;"><i class="ph-fill ph-t-shirt" aria-hidden="true" style="font-size: 15px;"></i>Shop</button>
         <button data-tab="" data-on="{{ onSponsors }}" sc-camel-on-click="{{ goSponsors }}" style="text-align: left; padding: 11px 14px; border: none; border-radius: 8px; background: transparent; color: var(--color-neutral-400); font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 10px;"><i class="ph-fill ph-handshake" aria-hidden="true" style="font-size: 15px;"></i>Samarbeten</button>
@@ -6066,6 +6063,37 @@ textarea.input { min-height: 90px; resize: vertical; }
 <script type="text/x-dc" data-dc-script="" data-props="{}">
 const KEY = 'cw-admin-content';
 const BASE = 'cw-admin-base'; // publicerat innehåll som utkastet utgår från
+
+// Trevägs-sammanslagning vid publicering, så att admin aldrig skriver över det som pipelinen eller
+// Claude har ändrat i repot sedan utkastet laddades.
+//  - Delar admin inte har ändrat (jämfört med BASE) tas från repot som det ser ut nu.
+//  - Delar admin har ändrat tas från utkastet.
+//  - Schemat slås ihop rad för rad: repots rader + rader admin lagt till − rader admin tagit bort.
+//  - series/crew/timeline/morePlaylists har inget i admin och tas alltid från repot.
+const REMOTE_ONLY = ['series', 'crew', 'timeline', 'morePlaylists'];
+function mergeContent(draft, base, remote) {
+  if (!remote) return { merged: draft, conflicts: [] };
+  const j = (v) => JSON.stringify(v === undefined ? null : v);
+  const out = { ...remote };
+  const conflicts = [];
+  for (const k of new Set([...Object.keys(draft), ...Object.keys(remote)])) {
+    if (REMOTE_ONLY.includes(k)) continue;
+    const mine = draft[k], theirs = remote[k], orig = base ? base[k] : undefined;
+    if (base && j(mine) === j(orig)) continue; // admin har inte rört den här delen
+    if (k === 'schema' && base && Array.isArray(mine) && Array.isArray(theirs)) {
+      const had = new Set((orig || []).map(j)), now = new Set(mine.map(j));
+      const removed = new Set([...had].filter((r) => !now.has(r)));
+      const added = mine.filter((r) => !had.has(j(r)));
+      const kept = theirs.filter((r) => !removed.has(j(r)));
+      const seen = new Set(kept.map(j));
+      out[k] = kept.concat(added.filter((r) => !seen.has(j(r))));
+      continue;
+    }
+    if (base && j(theirs) !== j(orig)) conflicts.push(k); // båda har ändrat – admins version vinner
+    if (mine === undefined) delete out[k]; else out[k] = mine;
+  }
+  return { merged: out, conflicts };
+}
 // GitHub-tokenen hålls bara i sessionStorage: den försvinner när webbläsaren stängs
 // och låses upp igen med lösenfrasen (som dekrypterar admin/key.json).
 const TOKEN = 'cw-gh-token';
@@ -6209,7 +6237,7 @@ const TITLES = {
 };
 
 class Component extends DCLogic {
-  state = { authed: false, mode: 'login', pw: '', newToken: '', busy: false, error: false, errorMsg: '', tab: 'stats', data: DEFAULTS, saved: '', ytKey: '', paste: '', pasteMsg: '',
+  state = { authed: false, mode: 'login', pw: '', newToken: '', busy: false, error: false, errorMsg: '', tab: 'schema', data: DEFAULTS, saved: '', ytKey: '', paste: '', pasteMsg: '',
     ghToken: '', ghRepo: 'ragequitit/chriswhippit', ghBranch: 'main', ghPath: '', pubStatus: '', syncPhrase: '', syncMsg: '', remoteKey: null, openSponsor: null, dragFrom: null, dragOver: null };
 
   onPaste = (e) => {
@@ -6503,18 +6531,30 @@ class Component extends DCLogic {
         this.setState({ pubStatus: 'Laddar upp bild ' + (i + 1) + ' av ' + uploads.length + '…' });
         await this.ghPut(uploads[i].path, uploads[i].content, 'Admin: bild');
       }
-      const json = JSON.stringify(data, null, 2);
+      // Hämta det som ligger i repot just nu och slå ihop med utkastet (se mergeContent).
+      const cPath = (base ? base + '/' : '') + 'content.json';
+      this.setState({ pubStatus: 'Hämtar det senaste från repot…' });
+      let remote = null, baseC = null;
+      const probe = await this.gh(cPath + '?ref=' + encodeURIComponent(this.state.ghBranch || 'main') + '&t=' + Date.now(), { method: 'GET', cache: 'no-store' });
+      if (probe.status === 200) {
+        const pj = await probe.json();
+        remote = JSON.parse(new TextDecoder().decode(Uint8Array.from(atob((pj.content || '').replace(/\s/g, '')), (c) => c.charCodeAt(0))));
+      } else if (probe.status !== 404) throw new Error('GitHub ' + probe.status + ' när repots content.json skulle hämtas');
+      try { baseC = JSON.parse(localStorage.getItem(BASE) || 'null'); } catch (e) {}
+      const { merged, conflicts } = mergeContent(data, baseC, remote);
+      const json = JSON.stringify(merged, null, 2);
       const b64 = btoa(String.fromCharCode(...new TextEncoder().encode(json)));
-      const res = await this.ghPut((base ? base + '/' : '') + 'content.json', b64, 'Admin: uppdaterat innehåll');
+      const res = await this.ghPut(cPath, b64, 'Admin: uppdaterat innehåll');
       try { localStorage.setItem(KEY, json); localStorage.setItem(BASE, json); } catch (e) {}
       this.setState({ conflict: '' });
       const t = new Date().toLocaleTimeString('sv-SE', { hour: '2-digit', minute: '2-digit' });
+      const note = conflicts.length ? ' Obs: ' + conflicts.join(', ') + ' hade också ändrats i repot – din version gäller.' : '';
       if (res.unchanged) {
-        this.setState({ data, pubStatus: 'Inget att publicera — innehållet i repot är redan identiskt. Redigerar du i en annan flik eller webbläsare än den här?' });
+        this.setState({ data: merged, pubStatus: 'Inget att publicera — innehållet i repot är redan identiskt. Redigerar du i en annan flik eller webbläsare än den här?' });
         return;
       }
       const short = res.sha ? res.sha.slice(0, 7) : '';
-      this.setState({ data, pubStatus: 'Publicerat ' + t + ' · commit ' + short + ' — sajten uppdateras inom en minut.', saved: 'Publicerat ' + t });
+      this.setState({ data: merged, pubStatus: 'Publicerat ' + t + ' · commit ' + short + ' — sajten uppdateras inom en minut.' + note, saved: 'Publicerat ' + t });
     } catch (e) {
       const msg = String(e.message || e);
       this.setState({ pubStatus: /409/.test(msg)
