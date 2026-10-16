@@ -8,6 +8,7 @@ const fs = require('fs'), path = require('path');
 const root = path.join(__dirname, '..');
 const SITE = 'https://www.chriswhippit.com/';
 const PAGES = Object.fromEntries(require('./pages').map((p) => [p.key, p]));
+require('./build').buildAll(); // utgå från src/sida.html (se tools/build.js)
 const SECTIONS = ['setup', 'schema', 'faq', 'nedladdningar', 'shop', 'spel', 'samarbeten', 'om', 'integritetspolicy', 'videor', 'ganget', 'admin'];
 const esc = (s) => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;');
 const read = (f) => fs.readFileSync(path.join(root, f), 'utf8').replace(/\r\n/g, '\n');
@@ -95,3 +96,6 @@ const GAMES = [`;
   fs.writeFileSync(path.join(root, p.file), t);
   console.log(p.file.padEnd(30), meta[k] ? 'ok' : 'SAKNAR titel/beskrivning');
 }
+
+// Spara den ändrade mallen tillbaka i källan.
+require('./build').pullBody();

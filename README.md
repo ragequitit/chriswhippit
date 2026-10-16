@@ -1,9 +1,20 @@
 # chriswhippit.com
 
-Statisk sida, inga byggsteg. Repo: `ragequitit/chriswhippit`, publiceras med
+Statisk sida. Repo: `ragequitit/chriswhippit`, publiceras med
 GitHub Pages (main / root) på www.chriswhippit.com.
 
 **Privata anteckningar** (SEO-rutin, idébank) ligger i `privat/` – bara på datorn, aldrig på GitHub (se .gitignore).
+
+## En källa för alla sidor
+
+Allt från `<body>` och nedåt (sajtens mall och kod) finns **bara** i `src/sida.html`.
+Varje sidfil (listan i `tools/pages.js`) har bara sin egen `<head>`.
+
+- Ändra i `src/sida.html` och kör `node tools/build.js` – eller använd `node tools/patch-pages.js <patch.json>`,
+  som ändrar källan (eller sidornas `<head>`) och bygger om allt.
+- `node tools/build.js --check` kontrollerar att alla sidor stämmer; GitHub kör samma kontroll vid varje push.
+- `seo.js`, `perf.js` och `new-pages.js` bygger från källan först och sparar tillbaka efteråt.
+- Ändra aldrig i en sidfils `<body>` direkt – det skrivs över vid nästa bygge.
 
 ## DNS (one.com)
 

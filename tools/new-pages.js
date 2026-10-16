@@ -25,3 +25,6 @@ for (const p of PAGES) {
   fs.writeFileSync(file, t);
   console.log('skapade', p.file);
 }
+
+// Mallen kommer alltid från src/sida.html.
+require('./build').buildAll();

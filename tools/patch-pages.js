@@ -1,21 +1,26 @@
-// Gör samma textersättning i alla sidor (varje sida bär hela sajten, så ändringar måste in överallt).
-// Användning: node tools/patch-pages.js <patch.json>
-// patch.json: [{ "find": "...", "replace": "..." }, ...]  — varje "find" måste finnas exakt en gång per sida.
-const fs = require('fs'), path = require('path');
-const root = path.join(__dirname, '..');
-const PAGES = require('./pages').map((p) => p.file);
+// Textersättningar i sajten. Användning: node tools/patch-pages.js <patch.json>
+// patch.json: [{ "find": "...", "replace": "..." }, ...]
+// Varje "find" måste finnas exakt en gång i src/sida.html (mallen + koden) – eller, om den inte
+// finns där, exakt en gång i varje sidas <head>. Sedan byggs alla sidor om (tools/build.js).
+const fs = require('fs');
+const { split, readBody, writeBody, read, pageFile, PAGES } = require('./build');
 const patches = JSON.parse(fs.readFileSync(process.argv[2], 'utf8'));
 
-const updated = {};
-for (const p of PAGES) {
-  // git på Windows kan checka ut med CRLF; jobba alltid med LF.
-  let t = fs.readFileSync(path.join(root, p), 'utf8').replace(/\r\n/g, '\n');
-  for (const { find, replace } of patches) {
-    const n = t.split(find).length - 1;
-    if (n !== 1) throw new Error(p + ': hittade ' + n + ' st av ' + JSON.stringify(find.slice(0, 80)));
-    t = t.replace(find, () => replace);
-  }
-  updated[p] = t;
+let body = readBody();
+const heads = PAGES.map((p) => split(read(pageFile(p)), p.file).head);
+const count = (s, f) => s.split(f).length - 1;
+let inBody = 0, inHead = 0;
+for (const { find, replace } of patches) {
+  const n = count(body, find);
+  if (n === 1) { body = body.replace(find, () => replace); inBody++; continue; }
+  if (n > 1) throw new Error('src/sida.html: hittade ' + n + ' st av ' + JSON.stringify(find.slice(0, 80)));
+  heads.forEach((h, i) => {
+    const m = count(h, find);
+    if (m !== 1) throw new Error(PAGES[i].file + ' <head>: hittade ' + m + ' st av ' + JSON.stringify(find.slice(0, 80)));
+    heads[i] = h.replace(find, () => replace);
+  });
+  inHead++;
 }
-for (const [p, t] of Object.entries(updated)) fs.writeFileSync(path.join(root, p), t);
-console.log('uppdaterade', PAGES.length, 'sidor med', patches.length, 'ändringar');
+writeBody(body);
+PAGES.forEach((p, i) => fs.writeFileSync(pageFile(p), heads[i] + body));
+console.log('uppdaterade', PAGES.length, 'sidor:', inBody, 'ändringar i mallen,', inHead, 'i <head>');

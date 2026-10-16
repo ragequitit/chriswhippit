@@ -3,6 +3,7 @@
 const fs = require('fs'), path = require('path');
 const root = path.join(__dirname, '..');
 const PAGES = require('./pages').map((p) => p.file);
+require('./build').buildAll(); // utgå från src/sida.html (se tools/build.js)
 
 // De fyra ikonerna som används publikt, som inbyggd SVG (slipper ladda en ikonfont på 129 KB).
 const ICONS = {
@@ -55,3 +56,6 @@ for (const f of PAGES) {
   fs.writeFileSync(file, t);
   console.log(f.padEnd(30), (t.length - before >= 0 ? '+' : '') + (t.length - before), 'tecken');
 }
+
+// Spara den ändrade mallen tillbaka i källan.
+require('./build').pullBody();
