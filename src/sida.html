@@ -1370,10 +1370,8 @@ textarea.input { min-height: 90px; resize: vertical; }
   [data-live]:hover { filter: brightness(1.1); }
   /* Startsidans knappar i mobil: Genom åren i full bredd, Om mig och Möt gänget bredvid varandra. */
   @media (max-width: 600px) { [data-hero-btns] { gap: 10px !important; } [data-hero-btns] > a { flex: 1 1 0; justify-content: center; padding-left: 12px !important; padding-right: 12px !important; } [data-hero-btns] > a:first-child { flex-basis: 100%; } }
-  /* Milstolpsräknaren på startsidan */
-  [data-goal-fill] { transition: width 1.4s cubic-bezier(.2,.7,.2,1); }
-  [data-goal][data-done="1"] { box-shadow: 0 0 0 1px #ff4d9d, 0 0 40px -10px rgba(255,77,157,.7) !important; }
-  [data-goal][data-done="1"] [data-goal-fill] { background: #ff4d9d !important; }
+  /* XP-baren mot 1 miljon följare i menyraden */
+  @media (max-width: 1180px) { [data-xp] { display: none !important; } }
   /* Tidslinjen (/historia/) */
   [data-tl] { position: relative; border-left-color: rgba(134,87,255,.18) !important; }
   [data-tl]::before { content: ''; position: absolute; left: -2px; top: 0; width: 2px; height: calc(var(--tl-p, 0) * 100%); background: linear-gradient(#8657FF, #ff4d9d); box-shadow: 0 0 14px rgba(255,77,157,.7); }
@@ -1450,7 +1448,11 @@ textarea.input { min-height: 90px; resize: vertical; }
       </nav>
       <div data-hactions="" style="order: 2; margin-left: auto; flex: 0 0 auto; display: flex; align-items: center; gap: 14px;">
         <button sc-camel-on-click="{{ toggleLang }}" style="font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: .12em; padding: 10px 14px; border-radius: 8px; border: 1px solid rgba(255,255,255,.16); background: transparent; color: var(--color-neutral-300); cursor: pointer;" style-hover="border-color: #8657FF; color: #fff;">{{ langLabel }}</button>
-        <a href="https://www.youtube.com/user/chriswhippit" target="_blank" data-btnp="" data-en="Subscribe" style="font-size: 14px; font-weight: 600; padding: 11px 20px; border-radius: 9px; background: #7a4af5; color: #fff; white-space: nowrap; box-shadow: 0 8px 24px -10px rgba(134,87,255,.8);">Prenumerera</a>
+        <span data-xp="" title="{{ xpTitle }}" role="img" aria-label="{{ xpTitle }}" style="display: flex; flex-direction: column; gap: 5px; min-width: 112px;">
+          <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .04em; color: var(--color-neutral-400); white-space: nowrap;"><b style="color: #fff; font-weight: 700;">{{ xpNow }}</b> / 1M <span data-en="followers">följare</span></span>
+          <span style="position: relative; display: block; height: 4px; border-radius: 999px; background: rgba(255,255,255,.1); overflow: hidden;"><span style="position: absolute; inset: 0 auto 0 0; width: {{ goalW }}%; border-radius: 999px; background: #8657FF;"></span></span>
+        </span>
+        <a href="https://www.youtube.com/@chriswhippit?sub_confirmation=1" target="_blank" rel="noopener" data-btnp="" data-en="Subscribe" style="font-size: 14px; font-weight: 600; padding: 11px 20px; border-radius: 9px; background: #7a4af5; color: #fff; white-space: nowrap; box-shadow: 0 8px 24px -10px rgba(134,87,255,.8);">Prenumerera</a>
       </div>
     </div>
   </header>
@@ -1495,19 +1497,6 @@ textarea.input { min-height: 90px; resize: vertical; }
         <div style="flex: 1 1 180px; text-align: center; padding: 6px 18px;">
           <div style="font-family: var(--font-heading); font-size: clamp(28px, 3vw, 36px); font-weight: 800; letter-spacing: -.03em;">{{ statVideos }}</div>
           <div data-en="videos published" style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--color-neutral-500); margin-top: 8px;">videor publicerade</div>
-        </div>
-      </div>
-      <div data-goal="" data-done="{{ goalDone }}" style="margin: 22px auto 0; max-width: 540px; padding: 14px 18px 15px; border-radius: 16px; background: var(--color-surface); box-shadow: 0 0 0 1px rgba(134,87,255,.35);">
-        <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap;">
-          <span data-en="Road to 1 million followers" style="font-family: 'JetBrains Mono', monospace; letter-spacing: .14em; text-transform: uppercase; font-size: 11px; color: #b9a2ff;">Mot 1 miljon följare</span>
-          <span style="font-family: var(--font-heading); font-weight: 800; font-size: 18px;">{{ goalPct }}%</span>
-        </div>
-        <div data-goal-bar="" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{{ goalW }}" aria-label="{{ goalAria }}" style="position: relative; height: 8px; margin-top: 9px; border-radius: 999px; background: rgba(255,255,255,.07); overflow: hidden;">
-          <div data-goal-fill="" style="position: absolute; inset: 0 auto 0 0; border-radius: 999px; width: {{ goalW }}%; background: #8657FF;"></div>
-        </div>
-        <div style="display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-top: 9px; font-size: 13px; color: var(--color-neutral-400);">
-          <span>{{ goalText }}</span>
-          <a href="https://youtube.com/@chriswhippit?sub_confirmation=1" target="_blank" rel="noopener" style="color: var(--color-accent-200); text-decoration: underline; text-underline-offset: 3px;">{{ goalCta }}</a>
         </div>
       </div>
     </section>
@@ -2267,7 +2256,7 @@ textarea.input { min-height: 90px; resize: vertical; }
       <div>
         <div data-en="Social media" style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: #9d7bff; margin-bottom: 14px;">Social media</div>
         <div style="display: flex; flex-direction: column; gap: 9px; font-size: 14px;">
-          <a href="https://www.youtube.com/user/chriswhippit" target="_blank" style="display: flex; align-items: center; gap: 9px; color: var(--color-neutral-400);"><img loading="lazy" decoding="async" src="/assets/bundle/cb0820cfe668.webp" alt="" width="24" height="24" style="display: block; width: 24px; height: 24px; object-fit: contain; margin: -3px 0;">YouTube</a>
+          <a href="https://www.youtube.com/@chriswhippit" target="_blank" style="display: flex; align-items: center; gap: 9px; color: var(--color-neutral-400);"><img loading="lazy" decoding="async" src="/assets/bundle/cb0820cfe668.webp" alt="" width="24" height="24" style="display: block; width: 24px; height: 24px; object-fit: contain; margin: -3px 0;">YouTube</a>
           <a href="https://www.twitch.tv/chriswhippit" target="_blank" style="display: flex; align-items: center; gap: 9px; color: var(--color-neutral-400);"><img loading="lazy" decoding="async" src="/assets/bundle/6c4ef69790e3.webp" alt="" width="24" height="24" style="display: block; width: 24px; height: 24px; object-fit: contain; margin: -3px 0;">Twitch</a>
           <a href="https://discord.com/invite/uqhVKeCmGz" target="_blank" style="display: flex; align-items: center; gap: 9px; color: var(--color-neutral-400);"><img loading="lazy" decoding="async" src="/assets/bundle/2fad8dfbc900.webp" alt="" width="24" height="24" style="display: block; width: 24px; height: 24px; object-fit: contain; margin: -3px 0;">Discord</a>
           <a href="https://www.instagram.com/chriswhippit" target="_blank" style="display: flex; align-items: center; gap: 9px; color: var(--color-neutral-400);"><img loading="lazy" decoding="async" src="/assets/bundle/9323a66b85fb.webp" alt="" width="24" height="24" style="display: block; width: 24px; height: 24px; object-fit: contain; margin: -3px 0;">Instagram</a>
@@ -3080,6 +3069,8 @@ class Component extends DCLogic {
         const done = tot >= GOAL;
         return {
           goalPct: String(pct).replace('.', en ? '.' : ','), goalW: String(pct), goalDone: done ? '1' : '',
+          xpNow: Math.round(tot / 1000) + 'K',
+          xpTitle: en ? fmt(tot) + ' followers in total across all platforms – on the way to 1 million' : fmt(tot) + ' följare totalt på alla plattformar – på väg mot 1 miljon',
           goalAria: (en ? 'Followers: ' : 'Följare: ') + fmt(tot) + (en ? ' of 1,000,000' : ' av 1 000 000'),
           goalText: done ? (en ? '🎉 1 MILLION followers – thank you!' : '🎉 1 MILJON följare – tack allihop!')
             : (en ? 'About ' + fmt(GOAL - tot) + ' left to 1,000,000' : 'Ungefär ' + fmt(GOAL - tot) + ' kvar till 1 000 000'),
