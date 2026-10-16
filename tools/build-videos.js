@@ -95,7 +95,9 @@ async function crewData() {
   const data = { videos: await latest(), counts: await counts(), ...(await seriesData()), ...(await crewData()) };
   if (data.videos.length < 3) throw new Error('För få videor från YouTube – skriver inte över videos.json');
   const old = fs.existsSync(FILE) ? JSON.parse(fs.readFileSync(FILE, 'utf8')) : null;
-  if (old) { const { t, ...rest } = old; if (JSON.stringify(rest) === JSON.stringify(data)) return console.log('oförändrat'); }
+  // Oförändrat: skriv inte om – utom en gång per dygn, så att tidsstämpeln aldrig blir för gammal
+  // (sajten litar på filen i 3 dygn och hämtar sedan från YouTube själv).
+  if (old) { const { t, ...rest } = old; if (JSON.stringify(rest) === JSON.stringify(data) && Date.now() - Date.parse(t) < 86400000) return console.log('oförändrat'); }
   fs.writeFileSync(FILE, JSON.stringify({ t: new Date().toISOString(), ...data }, null, 1) + '\n');
   console.log('uppdaterat:', data.videos.length, 'videor,', Object.keys(data.seriesVids).length, 'serier,', Object.keys(data.crewInfo).length, 'kanaler');
 })().catch((e) => { console.error(e.message); process.exit(1); });
