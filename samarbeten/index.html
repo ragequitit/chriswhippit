@@ -2355,6 +2355,15 @@ textarea.input { min-height: 90px; resize: vertical; }
   <main style="max-width: 1240px; margin: 0 auto; padding: 72px 24px 0;">
     <h1 data-en="Shop" style="font-family: var(--font-heading); font-weight: 500; font-size: clamp(38px, 6vw, 76px); letter-spacing: -.04em; margin: 0 0 14px;">Shop</h1>
     <p data-en="Every product, straight from our Spreadshirt shop. Checkout and shipping are handled by Spreadshirt." style="font-size: 17px; color: var(--color-neutral-400); margin: 0 0 32px; max-width: 60ch; text-wrap: pretty;">Alla produkter, direkt från vår Spreadshirt-butik. Kassa och frakt sköts av Spreadshirt.</p>
+    <div data-shop-grid="" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; margin-top: 28px;">
+      <sc-for list="{{ shopRows }}" as="p" hint-placeholder-count="4">
+        <a href="{{ p.url }}" target="_blank" rel="noopener" data-lift="" style="display: block; overflow: hidden; background: var(--color-surface); box-shadow: 0 0 0 1px var(--color-neutral-800); color: var(--color-text);">
+          <div style="aspect-ratio: 1; overflow: hidden; background: #f4f4f6;"><sc-if value="{{ p.hasImage }}"><img loading="lazy" decoding="async" src="{{ p.image }}" alt="{{ p.title }}" width="300" height="300" style="width: 100%; height: 100%; object-fit: cover; display: block;"></sc-if></div>
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 14px; font-family: var(--font-heading); font-weight: 600; font-size: 16px;"><span>{{ p.title }}</span><span aria-hidden="true" style="color: #b9a2ff;">↗</span></div>
+        </a>
+      </sc-for>
+    </div>
+    <sc-if value="{{ shopClosed }}"><button type="button" sc-camel-on-click="{{ openShop }}" data-btnp="" style="margin-top: 22px; font: 600 15px/1 var(--font-body); padding: 14px 22px; border: 0; background: #7a4af5; color: #fff; cursor: pointer;"><span data-en="Show the whole shop ↓">Visa hela butiken ↓</span></button></sc-if>
   </main>
   </sc-if>
   <div data-off="{{ shopOff }}" style="max-width: 1240px; margin: 0 auto; padding: 0 24px;">
@@ -2627,7 +2636,7 @@ const CONTENT_DEFAULTS = {
 
 class Component extends DCLogic {
   // Rätt sida direkt (annars renderas startsidan en stund först och hinner börja ladda dess bilder).
-  state = { ...locRoute(), seriesVids: {}, collab: 0, collabStats: null, collabPlay: false, lang: SAVED_LANG, videos: FALLBACK_VIDEOS, live: false, sponsors: FALLBACK_SPONSORS, social: [], content: CONTENT_DEFAULTS, ads: null, consent: (() => { try { return localStorage.getItem('cw-consent') || ''; } catch (e) { return ''; } })() };
+  state = { ...locRoute(), shopOpen: /^#!/.test(location.hash || ''), seriesVids: {}, collab: 0, collabStats: null, collabPlay: false, lang: SAVED_LANG, videos: FALLBACK_VIDEOS, live: false, sponsors: FALLBACK_SPONSORS, social: [], content: CONTENT_DEFAULTS, ads: null, consent: (() => { try { return localStorage.getItem('cw-consent') || ''; } catch (e) { return ''; } })() };
 
   setConsent(v) { try { localStorage.setItem('cw-consent', v); } catch (e) {} this.setState({ consent: v }); }
 
@@ -3039,7 +3048,7 @@ class Component extends DCLogic {
       this.setState({ ytError: (e && e.message) || 'network error' });
     }
   }
-  componentDidUpdate() { const mk = this.state.route === 'serie' ? 'serie:' + this.state.serie : this.state.route; if (this._metaRoute !== mk) { this._metaRoute = mk; applyRouteMeta(mk); } this.applyLang(); if (this.state.route === 'shop') this.loadShop(); if (this.state.route === 'samarbeten') this.loadCollabStats(); this.loadVideoData(); this.fillAds(); if (this.onTl) this.onTl(); document.documentElement.style.overflow = this.state.playing ? 'hidden' : ''; }
+  componentDidUpdate() { const mk = this.state.route === 'serie' ? 'serie:' + this.state.serie : this.state.route; if (this._metaRoute !== mk) { this._metaRoute = mk; applyRouteMeta(mk); } this.applyLang(); if (this.state.route === 'shop' && this.state.shopOpen) this.loadShop(); if (this.state.route === 'samarbeten') this.loadCollabStats(); this.loadVideoData(); this.fillAds(); if (this.onTl) this.onTl(); document.documentElement.style.overflow = this.state.playing ? 'hidden' : ''; }
 
   loadShop() {
     if (this._shopLoaded || !document.getElementById('myShop')) return;
@@ -3194,8 +3203,11 @@ class Component extends DCLogic {
       faqRows: (c.faq || []).map((f) => ({ ...f, q: pick(this.state.lang, f, 'q'), parts: faqParts(pick(this.state.lang, f, 'a')) })),
       faqTop: (c.faq || []).slice(0, 3).map((f) => ({ ...f, q: pick(this.state.lang, f, 'q'), parts: faqParts(pick(this.state.lang, f, 'a')) })),
       dlRows: (c.downloads || []).map((r) => ({ ...r, title: pick(this.state.lang, r, 'title'), meta: pick(this.state.lang, r, 'meta'), image: asset(r.image), link: r.url || '#', hasImage: r.image ? true : '', noImage: r.image ? '' : true, tf: 'translate(' + (r.ox || 0) + '%, ' + (r.oy || 0) + '%) scale(' + (r.zoom || 1) + ')' })),
+      shopClosed: this.state.shopOpen ? '' : '1',
+      openShop: () => { this.setState({ shopOpen: true }); setTimeout(() => { const el = document.getElementById('myShop'); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 300); },
       shopRows: (c.shop || []).map((p) => ({
         ...p,
+        title: pick(this.state.lang, p, 'title'),
         image: asset(p.image),
         hasImage: p.image ? true : '',
         noImage: p.image ? '' : true,
