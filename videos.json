@@ -1,5 +1,5 @@
 {
- "t": "2026-10-16T07:46:29.507Z",
+ "t": "2026-10-16T09:14:19.596Z",
  "videos": [
   {
    "id": "cchN6tM1P3A",
@@ -42,6 +42,12 @@
   "whippitsson": 534,
   "figgwhipp": 2848,
   "whippitextra": 77
+ },
+ "subs": {
+  "chriswhippit": 299000,
+  "whippitsson": 154000,
+  "figgwhipp": 144000,
+  "whippitextra": 23800
  },
  "plCounts": {
   "PLpinm9x4zUokA1fB0ee7TrrdsD2F-OKJS": 60,

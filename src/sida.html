@@ -1370,6 +1370,13 @@ textarea.input { min-height: 90px; resize: vertical; }
   [data-live]:hover { filter: brightness(1.1); }
   /* Startsidans knappar i mobil: Genom åren i full bredd, Om mig och Möt gänget bredvid varandra. */
   @media (max-width: 600px) { [data-hero-btns] { gap: 10px !important; } [data-hero-btns] > a { flex: 1 1 0; justify-content: center; padding-left: 12px !important; padding-right: 12px !important; } [data-hero-btns] > a:first-child { flex-basis: 100%; } }
+  /* Milstolpsräknaren på startsidan */
+  [data-goal-fill] { transition: width 1.4s cubic-bezier(.2,.7,.2,1); }
+  [data-goal-fill]::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, transparent, rgba(255,255,255,.35), transparent); transform: translateX(-100%); animation: goalshine 2.8s ease-in-out infinite; }
+  @keyframes goalshine { 60%, 100% { transform: translateX(100%); } }
+  [data-goal][data-done="1"] { box-shadow: 0 0 0 1px #ff4d9d, 0 0 40px -10px rgba(255,77,157,.7) !important; }
+  [data-goal][data-done="1"] [data-goal-fill] { background: linear-gradient(90deg, #ff4d9d, #ffd166, #7a4af5, #ff4d9d) !important; background-size: 300% 100% !important; animation: goalparty 3s linear infinite; }
+  @keyframes goalparty { to { background-position: 300% 0; } }
   /* Tidslinjen (/historia/) */
   [data-tl] { position: relative; border-left-color: rgba(134,87,255,.18) !important; }
   [data-tl]::before { content: ''; position: absolute; left: -2px; top: 0; width: 2px; height: calc(var(--tl-p, 0) * 100%); background: linear-gradient(#8657FF, #ff4d9d); box-shadow: 0 0 14px rgba(255,77,157,.7); }
@@ -1491,6 +1498,19 @@ textarea.input { min-height: 90px; resize: vertical; }
         <div style="flex: 1 1 180px; text-align: center; padding: 6px 18px;">
           <div style="font-family: var(--font-heading); font-size: clamp(28px, 3vw, 36px); font-weight: 800; letter-spacing: -.03em;">{{ statVideos }}</div>
           <div data-en="videos published" style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--color-neutral-500); margin-top: 8px;">videor publicerade</div>
+        </div>
+      </div>
+      <div data-goal="" data-done="{{ goalDone }}" style="margin: 26px auto 0; max-width: 760px; padding: 18px 20px 20px; background: var(--color-surface); box-shadow: 0 0 0 1px rgba(134,87,255,.35);">
+        <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap;">
+          <span data-en="Road to 1 million followers" style="font-family: 'JetBrains Mono', monospace; letter-spacing: .14em; text-transform: uppercase; font-size: 11px; color: #b9a2ff;">Mot 1 miljon följare</span>
+          <span style="font-family: var(--font-heading); font-weight: 800; font-size: 22px;">{{ goalPct }}%</span>
+        </div>
+        <div data-goal-bar="" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{{ goalW }}" aria-label="{{ goalAria }}" style="position: relative; height: 14px; margin-top: 10px; background: rgba(255,255,255,.07); overflow: hidden;">
+          <div data-goal-fill="" style="position: absolute; inset: 0 auto 0 0; width: {{ goalW }}%; background: linear-gradient(90deg, #7a4af5, #b46bff 70%, #ff4d9d);"></div>
+        </div>
+        <div style="display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-top: 10px; font-size: 14px; color: var(--color-neutral-400);">
+          <span>{{ goalText }}</span>
+          <a href="https://youtube.com/@chriswhippit?sub_confirmation=1" target="_blank" rel="noopener" style="color: var(--color-accent-200); text-decoration: underline; text-underline-offset: 3px;">{{ goalCta }}</a>
         </div>
       </div>
     </section>
@@ -2723,7 +2743,7 @@ class Component extends DCLogic {
         if (s.crewInfo && s.crewVids) this._crew = true;
         this.setState((st) => ({ snapChecked: true, plCounts: s.plCounts || st.plCounts, covers: { ...(st.covers || {}), ...(s.covers || {}) },
           seriesVids: { ...(s.seriesVids || {}), ...(st.seriesVids || {}) }, crewInfo: s.crewInfo || st.crewInfo, crewVids: s.crewVids || st.crewVids,
-          ...(s.counts && Object.keys(s.counts).length ? { ytCounts: s.counts } : {}) }));
+          ...(s.counts && Object.keys(s.counts).length ? { ytCounts: s.counts } : {}), ...(s.subs && Object.keys(s.subs).length ? { ytSubs: s.subs } : {}) }));
         return s;
       });
     this.loadVideos();
@@ -2934,7 +2954,9 @@ class Component extends DCLogic {
     const cwFmt = (n) => { if (n >= 1e6) return (+(n / 1e6).toFixed(2)).toString() + 'M'; if (n >= 1e3) { const v = n / 1e3; return (v < 100 ? +v.toFixed(1) : Math.round(v)).toString() + 'K'; } return String(Math.round(n)); };
     const ytHandles = ['chriswhippit', 'whippitsson', 'figgwhipp', 'whippitextra'];
     const ytVals = ytHandles.map((k) => stat('@' + k));
-    const ytSum = ytVals.some((v) => v) ? ytVals.reduce((a, v) => a + cwNum(v), 0) : cwNum(stat('YouTube'));
+    const ytSubs = this.state.ytSubs || {};
+    const ytSum = ytHandles.some((k) => ytSubs[k]) ? ytHandles.reduce((a, k, i) => a + (ytSubs[k] || cwNum(ytVals[i])), 0)
+      : ytVals.some((v) => v) ? ytVals.reduce((a, v) => a + cwNum(v), 0) : cwNum(stat('YouTube'));
     const ytCounts = this.state.ytCounts || {};
     const vidSum = ytHandles.reduce((a, k) => { if (ytCounts[k] != null) return a + ytCounts[k]; const hit = (c.stats || []).find((s) => (s.platform || '').toLowerCase() === '@' + k); return a + cwNum(hit && hit.videos); }, 0);
     const otherSum = ['Instagram', 'TikTok', 'Twitch', 'X'].reduce((a, k) => a + cwNum(stat(k)), 0);
@@ -3051,6 +3073,21 @@ class Component extends DCLogic {
       })),
       statYouTube: cwFmt(ytSum),
       statTotal: cwFmt(ytSum + otherSum),
+      // Milstolpsräknaren: mot 1 miljon följare totalt (YouTube automatiskt, övriga från content.json).
+      ...(() => {
+        const GOAL = 1e6, tot = ytSum + otherSum, en = this.state.lang === 'en';
+        const pct = Math.min(100, Math.floor((tot / GOAL) * 1000) / 10);
+        const n = (v) => Math.round(v / 1000) * 1000;
+        const fmt = (v) => n(v).toLocaleString(en ? 'en-GB' : 'sv-SE');
+        const done = tot >= GOAL;
+        return {
+          goalPct: String(pct).replace('.', en ? '.' : ','), goalW: String(pct), goalDone: done ? '1' : '',
+          goalAria: (en ? 'Followers: ' : 'Följare: ') + fmt(tot) + (en ? ' of 1,000,000' : ' av 1 000 000'),
+          goalText: done ? (en ? '🎉 1 MILLION followers – thank you!' : '🎉 1 MILJON följare – tack allihop!')
+            : (en ? 'About ' + fmt(GOAL - tot) + ' left to 1,000,000' : 'Ungefär ' + fmt(GOAL - tot) + ' kvar till 1 000 000'),
+          goalCta: done ? (en ? 'Next: 2 million →' : 'Nästa: 2 miljoner →') : (en ? 'Help out – subscribe →' : 'Hjälp till – prenumerera →'),
+        };
+      })(),
       statVideos: vidSum ? Math.round(vidSum).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ') : '7 918',
       statYt_chriswhippit: ytVals[0], statYt_whippitsson: ytVals[1], statYt_figgwhipp: ytVals[2], statYt_whippitextra: ytVals[3],
       statInstagram: stat('Instagram'),

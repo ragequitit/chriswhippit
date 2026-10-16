@@ -46,13 +46,15 @@ async function latest() {
 }
 
 async function counts() {
-  const out = {};
+  const out = {}, subs = {};
   for (const hd of COUNT_HANDLES) {
     const r = await yt('channels?part=statistics&forHandle=' + encodeURIComponent('@' + hd));
     const st = r.items && r.items[0] && r.items[0].statistics;
     if (st && st.videoCount) out[hd] = +st.videoCount;
+    // Prenumeranter (för följarsiffran och milstolpsräknaren), avrundat till hundratal.
+    if (st && st.subscriberCount) subs[hd] = Math.round(+st.subscriberCount / 100) * 100;
   }
-  return out;
+  return { out, subs };
 }
 
 async function seriesData() {
@@ -92,7 +94,8 @@ async function crewData() {
 
 (async () => {
   if (!KEY) throw new Error('Hittar ingen YouTube-nyckel i index.html');
-  const data = { videos: await latest(), counts: await counts(), ...(await seriesData()), ...(await crewData()) };
+  const cs = await counts();
+  const data = { videos: await latest(), counts: cs.out, subs: cs.subs, ...(await seriesData()), ...(await crewData()) };
   if (data.videos.length < 3) throw new Error('För få videor från YouTube – skriver inte över videos.json');
   const old = fs.existsSync(FILE) ? JSON.parse(fs.readFileSync(FILE, 'utf8')) : null;
   // Oförändrat: skriv inte om – utom en gång per dygn, så att tidsstämpeln aldrig blir för gammal
