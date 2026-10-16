@@ -2708,6 +2708,7 @@ class Component extends DCLogic {
   loadVideoData() {
     const r = this.state.route;
     if (r !== 'videor' && r !== 'serie' && r !== 'ganget') return;
+    if (this._snapPending) return; // vänta på videos.json
     const c = this.state.content || {};
     const key = this.props.youtubeApiKey || YT_KEY;
     const yt = (p) => fetch('https://www.googleapis.com/youtube/v3/' + p + '&key=' + key).then((x) => x.json());
@@ -2864,6 +2865,21 @@ class Component extends DCLogic {
     this.setState(locRoute());
     this._pop = () => this.setState({ ...locRoute(), playing: null });
     window.addEventListener('popstate', this._pop);
+    // videos.json byggs av GitHub (tools/build-videos.js) – då behöver besökaren inte anropa YouTube-API:t alls.
+    // Saknas filen eller är den äldre än 3 dygn hämtas allt från API:t som förut.
+    this._snapPending = true;
+    this._snapP = fetch(SITE_ROOT + 'videos.json?t=' + Math.floor(Date.now() / 600000), { cache: 'no-store' })
+      .then((r) => (r.ok ? r.json() : null)).catch(() => null).then((s) => {
+        this._snapPending = false;
+        if (!s || !s.t || Date.now() - Date.parse(s.t) > 3 * 86400000) { this.setState({ snapChecked: true }); return null; }
+        if (s.plCounts) this._plCounts = true;
+        if (s.covers) this._covers = true;
+        if (s.crewInfo && s.crewVids) this._crew = true;
+        this.setState((st) => ({ snapChecked: true, plCounts: s.plCounts || st.plCounts, covers: { ...(st.covers || {}), ...(s.covers || {}) },
+          seriesVids: { ...(s.seriesVids || {}), ...(st.seriesVids || {}) }, crewInfo: s.crewInfo || st.crewInfo, crewVids: s.crewVids || st.crewVids,
+          ...(s.counts && Object.keys(s.counts).length ? { ytCounts: s.counts } : {}) }));
+        return s;
+      });
     this.loadVideos();
     // LIVE NU: live.json skrivs av en GitHub Action som kollar Twitch och YouTube var tionde minut.
     this.checkLive = () => fetch(SITE_ROOT + 'live.json?t=' + Math.floor(Date.now() / 60000), { cache: 'no-store' })
@@ -2953,6 +2969,8 @@ class Component extends DCLogic {
     let key = this.props.youtubeApiKey || 'AIzaSyB7s-AxfJegsFoyo8LEqlOFeXcWoyG59Kg';
     try { key = localStorage.getItem('cw-yt-key') || key; } catch (e) {}
     if (!key) return;
+    const snap = await this._snapP;
+    if (snap && snap.videos && snap.videos.length >= 3) { this.setState({ videos: snap.videos, live: true }); if (!snap.counts) this.loadCounts(key); return; }
     this.loadCounts(key);
     try {
       const cached = JSON.parse(localStorage.getItem('cw-yt-cache4') || 'null');
@@ -3201,7 +3219,7 @@ class Component extends DCLogic {
       v0url: first.url,
       v0play: this.play(first.id, first.title),
       v0title: first.title,
-      v0thumb: 'https://i.ytimg.com/vi/' + first.id + '/sddefault.jpg',
+      v0thumb: 'https://i.ytimg.com/vi_webp/' + first.id + '/sddefault.webp',  // WebP: ~45 KB mindre än JPG
       v0meta: [(this.state.lang === 'en' ? '▶ Play' : '▶ Spela'), first.channel, fmt(first.at)].filter(Boolean).join(' · '),
       rest: vids.slice(1, 5).map((v) => ({ ...v, onPlay: this.play(v.id, v.title) })),
       atHem: r === 'hem' ? '1' : '',

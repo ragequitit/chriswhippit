@@ -44,6 +44,9 @@ GitHub Pages (main / root) på www.chriswhippit.com.
 - Delningsbilder (det som syns när en länk delas): `node tools/share-images.js` gör
   `assets/share/<sida>.jpg` med Edge och pekar varje sidas `og:image` dit. Kör om när en
   ny sida tillkommer (lägg till den i `CFG` i skriptet) eller när gänget ändras.
+- Videodata: `.github/workflows/videos.yml` kör `tools/build-videos.js` var 30:e minut och skriver
+  `videos.json` (senaste videorna, antal, serier, gänget). Sidorna läser filen i stället för att
+  anropa YouTube-API:t; saknas den eller är äldre än 3 dygn används API:t som förut.
 - LIVE NU-bannern: `.github/workflows/live.yml` kör `tools/live-check.js` var tionde
   minut och skriver `live.json`.
 
