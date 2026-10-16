@@ -1878,6 +1878,7 @@ textarea.input { min-height: 90px; resize: vertical; }
             <span data-en="Community" style="font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: .16em; text-transform: uppercase; color: #b9a2ff;">Community</span>
             <h3 data-en="Join the Discord" style="font-family: var(--font-heading); font-weight: 800; font-size: clamp(20px, 2vw, 25px); line-height: 1.12; letter-spacing: -.025em; margin: 12px 0 10px; text-wrap: pretty;">Häng med i Discord</h3>
             <p data-en="Raid groups, disc golf rounds and everything in between." style="font-size: 14px; line-height: 1.5; color: #cfcce0; margin: 0; text-wrap: pretty;">Raid-grupper, discgolfrundor och allt däremellan.</p>
+            <sc-if value="{{ dcOnline }}"><span data-dc-online="" style="margin-top: 12px; display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; color: #dff7e7;"><span aria-hidden="true" style="width: 8px; height: 8px; border-radius: 50%; background: #3ba55d; box-shadow: 0 0 0 3px rgba(59,165,93,.25);"></span>{{ dcOnline }}</span></sc-if>
             <span data-btnp="" data-en="Join →" style="margin-top: auto; align-self: flex-start; display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; padding: 11px 18px; border-radius: 9px; background: #7a4af5; color: #fff; white-space: nowrap; box-shadow: 0 10px 26px -12px rgba(134,87,255,.9);">Gå med →</span>
           </div>
         </a>
@@ -2168,7 +2169,7 @@ textarea.input { min-height: 90px; resize: vertical; }
       <p style="margin: 0 0 14px;">Läs mer om hur Google använder uppgifter i <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener">Googles policy för partnerwebbplatser</a>. Du kan styra annonsanpassning i <a href="https://adssettings.google.com" target="_blank" rel="noopener">Googles annonsinställningar</a>.</p>
       <sc-if value="{{ adsOn }}"><p style="margin: 0 0 14px;"><button sc-camel-on-click="{{ reopenConsent }}" data-ck="" style="cursor: pointer; font: inherit; font-size: 14px; padding: 10px 16px; border-radius: 8px; border: 1px solid var(--color-accent); background: transparent; color: var(--color-accent-200);">Ändra ditt cookieval</button></p></sc-if>
       <h2 style="font-family: var(--font-heading); font-weight: 600; font-size: 22px; letter-spacing: -.02em; color: #fff; margin: 34px 0 10px;">YouTube</h2>
-      <p style="margin: 0 0 14px;">Startsidan, schemat, videosidorna och samarbetssidan hämtar uppgifter om videor (titlar, bilder och antal visningar) direkt från YouTube, som drivs av Google. Din webbläsare kontaktar då Googles servrar, vilket innebär att Google får se din IP-adress. Videor på startsidan, videosidorna, tidslinjen, gänget-sidan och samarbetssidan bäddas in först när du trycker på play eller klickar på en video, och då via youtube-nocookie.com. Se <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Googles integritetspolicy</a>.</p>
+      <p style="margin: 0 0 14px;">Startsidan, schemat, videosidorna och samarbetssidan hämtar uppgifter om videor (titlar, bilder och antal visningar) direkt från YouTube, som drivs av Google. Din webbläsare kontaktar då Googles servrar, vilket innebär att Google får se din IP-adress. Videor på startsidan, videosidorna, tidslinjen, gänget-sidan och samarbetssidan bäddas in först när du trycker på play eller klickar på en video, och då via youtube-nocookie.com. Startsidan hämtar också hur många som är online i vår Discord direkt från Discord, som då ser din IP-adress. Se <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Googles integritetspolicy</a>.</p>
       <h2 style="font-family: var(--font-heading); font-weight: 600; font-size: 22px; letter-spacing: -.02em; color: #fff; margin: 34px 0 10px;">Shoppen</h2>
       <p style="margin: 0 0 14px;">Butiken på shop-sidan drivs av Spreadshirt och laddas från deras servrar. Spreadshirt visar en egen cookie-ruta och hanterar varukorg, betalning och leverans. Det de gör regleras av <a href="https://www.spreadshirt.se/integritetspolicy-C3104" target="_blank" rel="noopener">Spreadshirts integritetspolicy</a>.</p>
       <h2 style="font-family: var(--font-heading); font-weight: 600; font-size: 22px; letter-spacing: -.02em; color: #fff; margin: 34px 0 10px;">Spelen</h2>
@@ -2197,7 +2198,7 @@ textarea.input { min-height: 90px; resize: vertical; }
       <p style="margin: 0 0 14px;">Read more about how Google uses data in <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener">Google’s policy for partner sites</a>. You can control ad personalisation in <a href="https://adssettings.google.com" target="_blank" rel="noopener">Google’s ad settings</a>.</p>
       <sc-if value="{{ adsOn }}"><p style="margin: 0 0 14px;"><button sc-camel-on-click="{{ reopenConsent }}" data-ck="" style="cursor: pointer; font: inherit; font-size: 14px; padding: 10px 16px; border-radius: 8px; border: 1px solid var(--color-accent); background: transparent; color: var(--color-accent-200);">Change your cookie choice</button></p></sc-if>
       <h2 style="font-family: var(--font-heading); font-weight: 600; font-size: 22px; letter-spacing: -.02em; color: #fff; margin: 34px 0 10px;">YouTube</h2>
-      <p style="margin: 0 0 14px;">The home page, the schedule, the video pages and the partnerships page fetch video details (titles, images and view counts) directly from YouTube, which is run by Google. Your browser then contacts Google’s servers, which means Google sees your IP address. Videos on the home page, the video pages, the timeline, the crew page and the partnerships page are only embedded when you press play or click a video, and then via youtube-nocookie.com. See <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google’s privacy policy</a>.</p>
+      <p style="margin: 0 0 14px;">The home page, the schedule, the video pages and the partnerships page fetch video details (titles, images and view counts) directly from YouTube, which is run by Google. Your browser then contacts Google’s servers, which means Google sees your IP address. Videos on the home page, the video pages, the timeline, the crew page and the partnerships page are only embedded when you press play or click a video, and then via youtube-nocookie.com. The home page also fetches how many people are online in our Discord directly from Discord, which then sees your IP address. See <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google’s privacy policy</a>.</p>
       <h2 style="font-family: var(--font-heading); font-weight: 600; font-size: 22px; letter-spacing: -.02em; color: #fff; margin: 34px 0 10px;">The shop</h2>
       <p style="margin: 0 0 14px;">The shop is run by Spreadshirt and loads from their servers. Spreadshirt shows its own cookie box and handles the cart, payment and delivery, as described in <a href="https://www.spreadshirt.se/integritetspolicy-C3104" target="_blank" rel="noopener">Spreadshirt’s privacy policy</a>.</p>
       <h2 style="font-family: var(--font-heading); font-weight: 600; font-size: 22px; letter-spacing: -.02em; color: #fff; margin: 34px 0 10px;">The games</h2>
@@ -3058,7 +3059,16 @@ class Component extends DCLogic {
       this.setState({ ytError: (e && e.message) || 'network error' });
     }
   }
-  componentDidUpdate() { const mk = this.state.route === 'serie' ? 'serie:' + this.state.serie : this.state.route; if (this._metaRoute !== mk) { this._metaRoute = mk; applyRouteMeta(mk); } this.applyLang(); if (this.state.route === 'shop' && this.state.shopOpen) this.loadShop(); if (this.state.route === 'samarbeten') this.loadCollabStats(); this.loadVideoData(); this.fillAds(); if (this.onTl) this.onTl(); document.documentElement.style.overflow = this.state.playing ? 'hidden' : ''; }
+  componentDidUpdate() { const mk = this.state.route === 'serie' ? 'serie:' + this.state.serie : this.state.route; if (this._metaRoute !== mk) { this._metaRoute = mk; applyRouteMeta(mk); } this.applyLang(); if (this.state.route === 'shop' && this.state.shopOpen) this.loadShop(); if (this.state.route === 'samarbeten') this.loadCollabStats(); this.loadVideoData(); this.fillAds(); this.loadDiscord(); if (this.onTl) this.onTl(); document.documentElement.style.overflow = this.state.playing ? 'hidden' : ''; }
+
+  loadDiscord() {
+    if (this.state.route !== 'hem' || this._dc) return;
+    this._dc = true;
+    fetch('https://discord.com/api/guilds/874263202622480434/widget.json')
+      .then((r) => (r.ok ? r.json() : null))
+      .then((j) => { const n = j && +j.presence_count; if (n > 0) this.setState({ dcOnline: n }); })
+      .catch(() => {});
+  }
 
   loadShop() {
     if (this._shopLoaded || !document.getElementById('myShop')) return;
@@ -3329,6 +3339,7 @@ class Component extends DCLogic {
       })(),
       atCollab: r === 'samarbeten' ? '1' : '',
       collabReady: this.state.contentReady ? '1' : '',
+      dcOnline: this.state.dcOnline ? this.state.dcOnline.toLocaleString(this.state.lang === 'en' ? 'en-GB' : 'sv-SE') + (this.state.lang === 'en' ? ' online right now' : ' online just nu') : '',
       playOn: this.state.playing ? '1' : '',
       playTitle: (this.state.playing && this.state.playing.title) || '',
       playEmbed: this.state.playing ? 'https://www.youtube-nocookie.com/embed/' + this.state.playing.id + '?autoplay=1&rel=0' : '',
