@@ -44,7 +44,7 @@
         "Chassi — NZXT H710i Vit/Svart",
         "Processor — Intel Core i9 11900K 3.5 GHz, 16MB",
         "Grafikkort — ASUS GeForce RTX 4080 16GB TUF Gaming",
-        "RAM — Corsair 64GB (4x16GB) DDR4 3200MHz CL16 Vengean",
+        "RAM — Corsair 64GB (4x16GB) DDR4 3200MHz CL16 Vengeance",
         "Moderkort — NZXT N7 Z590",
         "Hårddisk 1 — 1TB, M.2 Samsung 970 EVO Plus",
         "Hårddisk 2 — 1TB, M.2 Samsung 970 EVO Plus",
@@ -66,7 +66,7 @@
           "url": "https://link.amazon/B0fVfXOyW"
         },
         {
-          "text": "Mikrofon — Shure Sm7b",
+          "text": "Mikrofon — Shure SM7B",
           "url": "https://link.amazon/B04YQqyum"
         },
         "Ljudutrustning — TC-Helicon GO XLR",
@@ -77,7 +77,7 @@
     {
       "group": "Skrivbord",
       "items": [
-        "Tangentbord — Ducky ONE 3Series (Full Size)",
+        "Tangentbord — Ducky One 3 Series (Full Size)",
         "Mus — Steelseries Rival 700",
         "Stol — Vertagear - NZXT Special Edition"
       ]
@@ -718,7 +718,7 @@
   "sponsors": [
     {
       "name": "OlliOlli World",
-      "caption": "Skateboard spel - Youtube",
+      "caption": "Skateboardspel – YouTube",
       "logo": "media/1789734777752-1.webp",
       "url": "https://www.youtube.com/watch?v=aP0Y-DZd6tQ&t=1s",
       "zoom": 1.6,
@@ -728,7 +728,7 @@
     },
     {
       "name": "Wargaming.net",
-      "caption": "World of warships - Youtube",
+      "caption": "World of Warships – YouTube",
       "logo": "media/1789735506829-1.webp",
       "url": "https://www.youtube.com/watch?v=NF8XQvDK-mo",
       "zoom": 1.75,
@@ -736,7 +736,7 @@
     },
     {
       "name": "SodaStream",
-      "caption": "Sodastream släppte nya smak - Mountain Dew ",
+      "caption": "SodaStream släppte en ny smak – Mountain Dew",
       "logo": "media/1789736082815-1.webp",
       "url": "https://www.youtube.com/watch?v=VUPbV8DkX6M&t=12s",
       "zoom": 1.8,
@@ -746,7 +746,7 @@
     },
     {
       "name": "NZXT",
-      "caption": "En av många NZXT-samarbeten",
+      "caption": "Ett av många NZXT-samarbeten",
       "logo": "media/1790340957620-1.webp",
       "url": "https://www.youtube.com/watch?v=hRdHwM-Zhcw",
       "ox": -0.3787878787878789,
@@ -773,7 +773,7 @@
       "oy": -30.000000000000007
     },
     {
-      "name": "ONEPLUS",
+      "name": "OnePlus",
       "caption": "OnePlus 6T",
       "logo": "media/1790342393960-1.png",
       "url": "https://youtu.be/F3yqZKYtp28",
@@ -791,8 +791,8 @@
       "oy": 2.1428571428571415
     },
     {
-      "name": "Ducky ",
-      "caption": "Ducky One 3 Serien",
+      "name": "Ducky",
+      "caption": "Ducky One 3-serien",
       "logo": "media/1790342650343-1.png",
       "url": "https://youtu.be/A99bN2yiJO0",
       "zoom": 3,

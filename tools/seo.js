@@ -16,8 +16,10 @@ const read = (f) => fs.readFileSync(path.join(root, f), 'utf8').replace(/\r\n/g,
 const meta = {};
 for (const [k, p] of Object.entries(PAGES)) {
   const t = read(p.file);
-  const title = (t.match(/<title>([^<]*)<\/title>/) || [])[1];
-  const desc = (t.match(/<meta name="description" content="([^"]*)"/) || [])[1];
+  // Avkoda HTML-entiteter: ROUTE_META sätts med setAttribute, som annars visar "&amp;" ordagrant.
+  const dec = (s) => s && s.replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
+  const title = dec((t.match(/<title>([^<]*)<\/title>/) || [])[1]);
+  const desc = dec((t.match(/<meta name="description" content="([^"]*)"/) || [])[1]);
   if (title && desc) meta[k] = { t: title, d: desc, u: SITE + p.path };
 }
 

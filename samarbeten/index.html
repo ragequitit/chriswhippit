@@ -1555,7 +1555,8 @@ textarea.input { min-height: 90px; resize: vertical; }
   [data-tl-hi] { color: #fff; font-weight: 700; background: linear-gradient(transparent 60%, rgba(134,87,255,.5) 60%); padding: 0 2px; }
   [data-tl-ch] { position: absolute; left: 0; top: 0; padding: 4px 8px; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: #fff; background: #7a4af5; }
   [data-tl-ch="whippitsson"] { background: #0e8a74; }
-  [data-tl-ch="figgwhipp"] { background: #c4561c; }
+  [data-tl-ch="figgwhipp"] { background: #b04a14; }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition: none !important; scroll-behavior: auto !important; } }
   [data-tl-ch="whippitextra"] { background: #2b62c9; }
   @media (max-width: 760px) { [data-tl-year] { grid-template-columns: minmax(0, 1fr) !important; gap: 10px !important; padding-left: 20px !important; } [data-tl-year] h2 { font-size: 34px !important; } [data-tl] [data-vgrid] { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; } }
   @media (max-width: 600px) { [data-live] { font-size: 13px !important; padding: 7px 12px !important; } [data-live-title] { max-width: 20ch !important; } }
@@ -1765,7 +1766,7 @@ textarea.input { min-height: 90px; resize: vertical; }
               </sc-if>
               <sc-if value="{{ s.noLogo }}" hint-placeholder-val="{{ true }}">
                 <div style="position: relative; height: 150px; border-radius: 8px; border: 1px dashed var(--color-neutral-800); display: grid; place-items: center; overflow: hidden; background: repeating-linear-gradient(135deg, rgba(145,132,217,.06) 0 6px, transparent 6px 12px);">
-                  <span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .12em; color: var(--color-neutral-600);">sponsorlogo</span>
+                  <span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .12em; color: var(--color-neutral-400);">{{ s.name }}</span>
                   <sc-if value="{{ s.hasThumb }}"><img data-yt="" src="{{ s.thumb }}" alt="" loading="lazy" draggable="false" style="-webkit-user-drag: none; position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity .35s ease;"></sc-if>
                 </div>
               </sc-if>
@@ -2100,7 +2101,7 @@ textarea.input { min-height: 90px; resize: vertical; }
               <sc-for list="{{ cDesc }}" as="para" hint-placeholder-count="1"><p style="margin: 0; white-space: pre-line; text-wrap: pretty;"><sc-for list="{{ para.parts }}" as="p" hint-placeholder-count="1"><sc-if value="{{ p.href }}"><a href="{{ p.href }}" target="{{ p.target }}" rel="noopener">{{ p.text }}</a></sc-if><sc-if value="{{ p.plain }}"><span>{{ p.text }}</span></sc-if></sc-for></p></sc-for>
             </div>
           </sc-if>
-          <sc-if value="{{ cLoading }}"><div aria-busy="true" aria-label="Hämtar videoinfo"><div style="height: 22px; width: 70%; border-radius: 6px; background: rgba(255,255,255,.06); margin-bottom: 16px;"></div><div data-collab-stats="" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px;"><div><span style="font-family: 'JetBrains Mono', monospace; letter-spacing: .14em; text-transform: uppercase; display: block; font-size: 10px; color: var(--color-neutral-500); margin-bottom: 6px;">Visningar</span><span style="font-family: var(--font-heading); font-size: 19px; font-weight: 700; color: var(--color-neutral-600);">…</span></div><div><span style="font-family: 'JetBrains Mono', monospace; letter-spacing: .14em; text-transform: uppercase; display: block; font-size: 10px; color: var(--color-neutral-500); margin-bottom: 6px;">Gillamarkeringar</span><span style="font-family: var(--font-heading); font-size: 19px; font-weight: 700; color: var(--color-neutral-600);">…</span></div><div><span style="font-family: 'JetBrains Mono', monospace; letter-spacing: .14em; text-transform: uppercase; display: block; font-size: 10px; color: var(--color-neutral-500); margin-bottom: 6px;">Publicerad</span><span style="font-family: var(--font-heading); font-size: 19px; font-weight: 700; color: var(--color-neutral-600);">…</span></div><div><span style="font-family: 'JetBrains Mono', monospace; letter-spacing: .14em; text-transform: uppercase; display: block; font-size: 10px; color: var(--color-neutral-500); margin-bottom: 6px;">Kanal</span><span style="font-family: var(--font-heading); font-size: 19px; font-weight: 700; color: var(--color-neutral-600);">…</span></div></div></div></sc-if>
+          <sc-if value="{{ cLoading }}"><div aria-busy="true" aria-label="Hämtar videoinfo"><div style="height: 22px; width: 70%; border-radius: 6px; background: rgba(255,255,255,.06); margin-bottom: 16px;"></div><div data-collab-stats="" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px;"><div><span data-en="Views" style="font-family: 'JetBrains Mono', monospace; letter-spacing: .14em; text-transform: uppercase; display: block; font-size: 10px; color: var(--color-neutral-500); margin-bottom: 6px;">Visningar</span><span style="font-family: var(--font-heading); font-size: 19px; font-weight: 700; color: var(--color-neutral-600);">…</span></div><div><span data-en="Likes" style="font-family: 'JetBrains Mono', monospace; letter-spacing: .14em; text-transform: uppercase; display: block; font-size: 10px; color: var(--color-neutral-500); margin-bottom: 6px;">Gillamarkeringar</span><span style="font-family: var(--font-heading); font-size: 19px; font-weight: 700; color: var(--color-neutral-600);">…</span></div><div><span data-en="Published" style="font-family: 'JetBrains Mono', monospace; letter-spacing: .14em; text-transform: uppercase; display: block; font-size: 10px; color: var(--color-neutral-500); margin-bottom: 6px;">Publicerad</span><span style="font-family: var(--font-heading); font-size: 19px; font-weight: 700; color: var(--color-neutral-600);">…</span></div><div><span data-en="Channel" style="font-family: 'JetBrains Mono', monospace; letter-spacing: .14em; text-transform: uppercase; display: block; font-size: 10px; color: var(--color-neutral-500); margin-bottom: 6px;">Kanal</span><span style="font-family: var(--font-heading); font-size: 19px; font-weight: 700; color: var(--color-neutral-600);">…</span></div></div></div></sc-if>
           <sc-if value="{{ cHasStats }}">
             <div style="font-family: var(--font-heading); font-size: 17px; font-weight: 600; line-height: 1.3; text-wrap: pretty;">{{ cTitle }}</div>
             <div data-collab-stats="" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px;">
@@ -2492,6 +2493,9 @@ const PALETTE = ['#9184d9', '#6fb7c9', '#c99a6f', '#8fd19a', '#d18f9a', '#b07fd1
 const DAY_NAMES = ['Söndag', 'Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lördag'];
 const DAY_NAMES_EN = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 const MONTHS = ['jan', 'feb', 'mar', 'apr', 'maj', 'jun', 'jul', 'aug', 'sep', 'okt', 'nov', 'dec'];
+const MONTHS_EN = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+// Länkar och bilder från content.json: släpp aldrig igenom javascript:/data:-adresser.
+const safeContent = (o) => JSON.parse(JSON.stringify(o), (k, v) => (typeof v === 'string' && /^\s*(javascript|vbscript|data:text)/i.test(v) ? '' : v));
 const hexA = (hex, a) => {
   const h = (hex || '').replace('#', '');
   const n = h.length === 3 ? h.split('').map((x) => x + x).join('') : h;
@@ -2532,7 +2536,7 @@ const faqParts = (text) => {
   if (last < s.length) out.push({ text: s.slice(last), plain: true, href: '' });
   return out;
 };
-const ROUTE_META = {"hem":{"t":"Chris Whippit — svensk YouTuber och streamare","d":"Chris Whippit gör videor sedan 2014: gaming, Pokémon GO, discgolf och allt ni kan tänka er däremellan. Senaste videorna, veckans schema, spel, merch och samarbeten.","u":"https://www.chriswhippit.com/"},"setup":{"t":"Setup — datorn, kameran och allt annat | Chris Whippit","d":"Hela listan på grejerna Chris Whippit spelar in med: dator, grafikkort, mikrofon, kamera, stol och skrivbord.","u":"https://www.chriswhippit.com/setup/"},"schema":{"t":"Spelschema — veckans videor och streams | Chris Whippit","d":"Veckans planerade videor och streams från Chris Whippit, dag för dag med tider. Se vad som släpps härnäst på kanalerna.","u":"https://www.chriswhippit.com/schema/"},"faq":{"t":"Vanliga frågor | Chris Whippit","d":"Svar på det som kommer oftast: hur ofta det laddas upp, vilka kanaler som finns, datorn, samarbeten, Discord, spelen och merch.","u":"https://www.chriswhippit.com/faq/"},"dl":{"t":"Nedladdningar — Minecraft-kartor | Chris Whippit","d":"Ladda ner kartorna från Let’s Play-serien i Minecraft med Whippit och Softis, alla fyra säsongerna. Gratis att använda som du vill.","u":"https://www.chriswhippit.com/nedladdningar/"},"shop":{"t":"Shop — t-shirts, hoodies och kepsar | Chris Whippit","d":"Merch med Whippit-märket. T-shirts, hoodies och kepsar, tryckta och skickade av Spreadshirt.","u":"https://www.chriswhippit.com/shop/"},"spel":{"t":"Spel — Project Genesis och fler webbläsarspel | Chris Whippit","d":"Spela Project Genesis, ett cyberpunk-idle-MMORPG, och fler gratisspel direkt i webbläsaren. Inget att ladda ner.","u":"https://www.chriswhippit.com/spel/"},"samarbeten":{"t":"Samarbeten — varumärken och kampanjer | Chris Whippit","d":"Varumärken Chris Whippit har samarbetat med, bland andra Xbox, Ubisoft, NZXT och SodaStream. Se videorna, siffrorna och hur du kontaktar honom.","u":"https://www.chriswhippit.com/samarbeten/"},"om":{"t":"Om Chris Whippit — svensk YouTuber sedan 2014","d":"Chris Whippit är en svensk YouTuber och streamare från Strömstad som gjort videor sedan 2014: gaming, Pokémon GO, discgolf och mer.","u":"https://www.chriswhippit.com/om/"},"integritet":{"t":"Integritetspolicy | Chris Whippit","d":"Hur chriswhippit.com hanterar personuppgifter, cookies och annonser från Google AdSense, och vilka rättigheter du har.","u":"https://www.chriswhippit.com/integritetspolicy/"},"videor":{"t":"Videor — serier, kanaler och spellistor | Chris Whippit","d":"Alla serier från Chris Whippit samlade: Minecraft Let’s Play, GTA 5, Fortnite, vloggar och Pokémon GO – plus kanalerna och gänget.","u":"https://www.chriswhippit.com/videor/"},"serie:minecraft":{"t":"Minecraft med Chris Whippit — Let’s Play med Softis","d":"Minecraft Let’s Play med SoftisFFS sedan 2016 – över 500 avsnitt – plus Lucky Block, Skyblock, Hardcore och kartorna att ladda ner.","u":"https://www.chriswhippit.com/videor/minecraft/"},"serie:gta-5":{"t":"GTA 5 med Chris Whippit — race, heists och kaos","d":"Nästan 1 000 GTA 5-videor med SoftisFFS, figgehn och Polski. Rage-race, Cayo Perico, Last Team Standing och introlåten Razor Sharp.","u":"https://www.chriswhippit.com/videor/gta-5/"},"serie:fortnite":{"t":"Fortnite med Chris Whippit — nästan 600 videor","d":"Fortnite från 2017 till 2024: säsong efter säsong, live-events, Playground och Fortnite Lego med Softis, figgehn och Polski.","u":"https://www.chriswhippit.com/videor/fortnite/"},"serie:vloggar":{"t":"Chris Whippit Vloggar — Pokémon GO, discgolf och vardag","d":"Vlogg-kanalen med familjen, discgolf, teknik, mat och över 200 Pokémon GO-videor med raider, community days och shinies.","u":"https://www.chriswhippit.com/videor/vloggar/"},"ganget":{"t":"Gänget — SoftisFFS, Ufosxm, JNX, Polski och figgehn | Chris Whippit","d":"Kanalerna Chris Whippit spelat mest med: SoftisFFS, Ufosxm, JNX, Polski och figgehn. Prenumerera och se videorna de gjort tillsammans.","u":"https://www.chriswhippit.com/ganget/"},"historia":{"t":"Chris Whippit genom åren — tidslinje från 2013 till idag","d":"Hela resan: från Whippitgaming 2013 till nästan 8 000 videor. Figgehn &amp; Whippit, Minecraft Let’s Play med Softis, GTA 5, Fortnite, Pokémon GO och milstolparna.","u":"https://www.chriswhippit.com/historia/"}};
+const ROUTE_META = {"hem":{"t":"Chris Whippit — svensk YouTuber och streamare","d":"Chris Whippit gör videor sedan 2014: gaming, Pokémon GO, discgolf och allt ni kan tänka er däremellan. Senaste videorna, veckans schema, spel, merch och samarbeten.","u":"https://www.chriswhippit.com/"},"setup":{"t":"Setup — datorn, kameran och allt annat | Chris Whippit","d":"Hela listan på grejerna Chris Whippit spelar in med: dator, grafikkort, mikrofon, kamera, stol och skrivbord.","u":"https://www.chriswhippit.com/setup/"},"schema":{"t":"Spelschema — veckans videor och streams | Chris Whippit","d":"Veckans planerade videor och streams från Chris Whippit, dag för dag med tider. Se vad som släpps härnäst på kanalerna.","u":"https://www.chriswhippit.com/schema/"},"faq":{"t":"Vanliga frågor | Chris Whippit","d":"Svar på det som kommer oftast: hur ofta det laddas upp, vilka kanaler som finns, datorn, samarbeten, Discord, spelen och merch.","u":"https://www.chriswhippit.com/faq/"},"dl":{"t":"Nedladdningar — Minecraft-kartor | Chris Whippit","d":"Ladda ner kartorna från Let’s Play-serien i Minecraft med Whippit och Softis, alla fyra säsongerna. Gratis att använda som du vill.","u":"https://www.chriswhippit.com/nedladdningar/"},"shop":{"t":"Shop — t-shirts, hoodies och kepsar | Chris Whippit","d":"Merch med Whippit-märket. T-shirts, hoodies och kepsar, tryckta och skickade av Spreadshirt.","u":"https://www.chriswhippit.com/shop/"},"spel":{"t":"Spel — Project Genesis och fler webbläsarspel | Chris Whippit","d":"Spela Project Genesis, ett cyberpunk-idle-MMORPG, och fler gratisspel direkt i webbläsaren. Inget att ladda ner.","u":"https://www.chriswhippit.com/spel/"},"samarbeten":{"t":"Samarbeten — varumärken och kampanjer | Chris Whippit","d":"Varumärken Chris Whippit har samarbetat med, bland andra Xbox, Ubisoft, NZXT och SodaStream. Se videorna, siffrorna och hur du kontaktar honom.","u":"https://www.chriswhippit.com/samarbeten/"},"om":{"t":"Om Chris Whippit — svensk YouTuber sedan 2014","d":"Chris Whippit är en svensk YouTuber och streamare från Strömstad som gjort videor sedan 2014: gaming, Pokémon GO, discgolf och mer.","u":"https://www.chriswhippit.com/om/"},"integritet":{"t":"Integritetspolicy | Chris Whippit","d":"Hur chriswhippit.com hanterar personuppgifter, cookies och annonser från Google AdSense, och vilka rättigheter du har.","u":"https://www.chriswhippit.com/integritetspolicy/"},"videor":{"t":"Videor — serier, kanaler och spellistor | Chris Whippit","d":"Alla serier från Chris Whippit samlade: Minecraft Let’s Play, GTA 5, Fortnite, vloggar och Pokémon GO – plus kanalerna och gänget.","u":"https://www.chriswhippit.com/videor/"},"serie:minecraft":{"t":"Minecraft med Chris Whippit — Let’s Play med Softis","d":"Minecraft Let’s Play med SoftisFFS sedan 2016 – över 500 avsnitt – plus Lucky Block, Skyblock, Hardcore och kartorna att ladda ner.","u":"https://www.chriswhippit.com/videor/minecraft/"},"serie:gta-5":{"t":"GTA 5 med Chris Whippit — race, heists och kaos","d":"Nästan 1 000 GTA 5-videor med SoftisFFS, figgehn och Polski. Rage-race, Cayo Perico, Last Team Standing och introlåten Razor Sharp.","u":"https://www.chriswhippit.com/videor/gta-5/"},"serie:fortnite":{"t":"Fortnite med Chris Whippit — nästan 600 videor","d":"Fortnite från 2017 till 2024: säsong efter säsong, live-events, Playground och Fortnite Lego med Softis, figgehn och Polski.","u":"https://www.chriswhippit.com/videor/fortnite/"},"serie:vloggar":{"t":"Chris Whippit Vloggar — Pokémon GO, discgolf och vardag","d":"Vlogg-kanalen med familjen, discgolf, teknik, mat och över 200 Pokémon GO-videor med raider, community days och shinies.","u":"https://www.chriswhippit.com/videor/vloggar/"},"ganget":{"t":"Gänget — SoftisFFS, Ufosxm, JNX, Polski och figgehn | Chris Whippit","d":"Kanalerna Chris Whippit spelat mest med: SoftisFFS, Ufosxm, JNX, Polski och figgehn. Prenumerera och se videorna de gjort tillsammans.","u":"https://www.chriswhippit.com/ganget/"},"historia":{"t":"Chris Whippit genom åren — tidslinje från 2013 till idag","d":"Hela resan: från Whippitgaming 2013 till nästan 8 000 videor. Figgehn & Whippit, Minecraft Let’s Play med Softis, GTA 5, Fortnite, Pokémon GO och milstolparna.","u":"https://www.chriswhippit.com/historia/"}};
 const applyRouteMeta = (route) => {
   const m = ROUTE_META[route]; if (!m) return;
   document.title = m.t;
@@ -2580,7 +2584,7 @@ const CONTENT_DEFAULTS = {
       'Chassi — NZXT H710i Vit/Svart',
       'Processor — Intel Core i9 11900K 3.5 GHz, 16MB',
       'Grafikkort — ASUS GeForce RTX 4080 16GB TUF Gaming',
-      'RAM — Corsair 64GB (4x16GB) DDR4 3200MHz CL16 Vengean',
+      'RAM — Corsair 64GB (4x16GB) DDR4 3200MHz CL16 Vengeance',
       'Moderkort — NZXT N7 Z590',
       'Hårddisk 1 — 1TB, M.2 Samsung 970 EVO Plus',
       'Hårddisk 2 — 1TB, M.2 Samsung 970 EVO Plus',
@@ -2592,13 +2596,13 @@ const CONTENT_DEFAULTS = {
     { group: 'Ljud och bild', items: [
       'Capture Card — Elgato 4K60 PRO',
       'Hörlurar — Logitech Pro X',
-      'Mikrofon — Shure Sm7b',
+      'Mikrofon — Shure SM7B',
       'Ljudutrustning — TC-Helicon GO XLR',
       'Webcam — Sony A6600 + Objektiv (18-135/3.5-5.6 OSS)',
       'Skärmar — 3 x Asus 24" ROG Strix 240 Hz'
     ] },
     { group: 'Skrivbord', items: [
-      'Tangentbord — Ducky ONE 3Series (Full Size)',
+      'Tangentbord — Ducky One 3 Series (Full Size)',
       'Mus — Steelseries Rival 700',
       'Stol — Vertagear - NZXT Special Edition'
     ] }
@@ -2660,11 +2664,12 @@ class Component extends DCLogic {
 
   go(route) {
     return (e) => {
+      if (e && (e.metaKey || e.ctrlKey || e.shiftKey || e.button === 1)) return;
       if (e) e.preventDefault();
-      this.setState({ route });
+      this.setState({ route, playing: null });
       try {
-        const root = ROOT_PATH;
-        history.pushState({ route }, '', root + (ROUTE_PATHS[route] || ''));
+        const to = ROOT_PATH + (ROUTE_PATHS[route] || '');
+        if (location.pathname !== to || location.hash) history.pushState({ route }, '', to);
       } catch (err) {}
       window.scrollTo(0, 0);
     };
@@ -2760,15 +2765,18 @@ class Component extends DCLogic {
     return (e) => {
       if (e && (e.metaKey || e.ctrlKey || e.shiftKey || e.button === 1)) return;
       if (e) e.preventDefault();
+      this._playFrom = e && e.currentTarget;
       this.setState({ playing: { id, title } });
+      setTimeout(() => { const b = document.querySelector('[data-player] button'); if (b) b.focus(); }, 60);
     };
   }
 
   goSerie(slug) {
     return (e) => {
+      if (e && (e.metaKey || e.ctrlKey || e.shiftKey || e.button === 1)) return;
       if (e) e.preventDefault();
-      this.setState({ route: 'serie', serie: slug });
-      try { history.pushState({ route: 'serie', serie: slug }, '', ROOT_PATH + 'videor/' + slug + '/'); } catch (err) {}
+      this.setState({ route: 'serie', serie: slug, playing: null });
+      try { const to = ROOT_PATH + 'videor/' + slug + '/'; if (location.pathname !== to) history.pushState({ route: 'serie', serie: slug }, '', to); } catch (err) {}
       window.scrollTo(0, 0);
     };
   }
@@ -2777,9 +2785,14 @@ class Component extends DCLogic {
     const lang = this.state.lang;
     document.documentElement.lang = lang;
     document.querySelectorAll('[data-en]').forEach((el) => {
-      if (el.dataset.sv === undefined) el.dataset.sv = el.textContent;
+      // Har elementet egna barn (t.ex. en pil eller länk) byts bara den första texten.
+      const tn = el.children.length ? [...el.childNodes].find((n) => n.nodeType === 3 && n.textContent.trim()) : null;
+      if (el.children.length && !tn) return;
+      const cur = tn ? tn.textContent.trim() : el.textContent;
+      if (el.dataset.sv === undefined) el.dataset.sv = cur;
       const next = lang === 'en' ? el.dataset.en : el.dataset.sv;
-      if (next && el.textContent !== next) el.textContent = next;
+      if (!next || cur === next) return;
+      if (tn) tn.textContent = tn.textContent.replace(cur, next); else el.textContent = next;
     });
     document.documentElement.lang = lang;
   }
@@ -2850,7 +2863,7 @@ class Component extends DCLogic {
     window.addEventListener('pointerup', this.onUp);
     window.addEventListener('pointercancel', this.onUp);
     this.setState(locRoute());
-    this._pop = () => this.setState(locRoute());
+    this._pop = () => this.setState({ ...locRoute(), playing: null });
     window.addEventListener('popstate', this._pop);
     this.loadVideos();
     // LIVE NU: live.json skrivs av en GitHub Action som kollar Twitch och YouTube var tionde minut.
@@ -2862,7 +2875,7 @@ class Component extends DCLogic {
       this._tlRaf = 0; const ol = document.querySelector('[data-tl]'); if (!ol) return;
       const mid = window.innerHeight * 0.45, r = ol.getBoundingClientRect();
       ol.style.setProperty('--tl-p', Math.max(0, Math.min(1, (mid - r.top) / r.height)).toFixed(4));
-      const ys = ol.querySelectorAll('[data-tl-year]'); let on = null;
+      const ys = ol.querySelectorAll('[data-tl-year]'); let on = null; if (!ys.length) return;
       ys.forEach((li) => { const b = li.getBoundingClientRect(); if (b.top <= mid) on = li; });
       ys.forEach((li) => li.toggleAttribute('data-on', li === (on || ys[0])));
       const nav = document.querySelector('[data-tl-nav]');
@@ -2909,6 +2922,7 @@ class Component extends DCLogic {
   }
 
   applyContent(c) {
+    c = safeContent(c);
     const next = {};
     ['stats', 'setup', 'faq', 'downloads', 'shop'].forEach((k) => {
       if (Array.isArray(c[k]) && c[k].length) next[k] = c[k];
@@ -2987,7 +3001,7 @@ class Component extends DCLogic {
             });
           } catch (e) {}
         }
-        const long = all.filter((v) => (secs[v.id] || 999) > 75);
+        const long = all.filter((v) => (secs[v.id] || 999) > 180);
         if (long.length >= 5) list = long;
       }
       // slot plan: hero = newest overall; row = [newest remaining, chriswhippit, whippitsson, whippitextra]
@@ -3007,7 +3021,7 @@ class Component extends DCLogic {
       this.setState({ ytError: (e && e.message) || 'network error' });
     }
   }
-  componentDidUpdate() { const mk = this.state.route === 'serie' ? 'serie:' + this.state.serie : this.state.route; if (this._metaRoute !== mk) { this._metaRoute = mk; applyRouteMeta(mk); } this.applyLang(); if (this.state.route === 'shop') this.loadShop(); if (this.state.route === 'samarbeten') this.loadCollabStats(); this.loadVideoData(); this.fillAds(); if (this.onTl) this.onTl(); }
+  componentDidUpdate() { const mk = this.state.route === 'serie' ? 'serie:' + this.state.serie : this.state.route; if (this._metaRoute !== mk) { this._metaRoute = mk; applyRouteMeta(mk); } this.applyLang(); if (this.state.route === 'shop') this.loadShop(); if (this.state.route === 'samarbeten') this.loadCollabStats(); this.loadVideoData(); this.fillAds(); if (this.onTl) this.onTl(); document.documentElement.style.overflow = this.state.playing ? 'hidden' : ''; }
 
   loadShop() {
     if (this._shopLoaded || !document.getElementById('myShop')) return;
@@ -3097,7 +3111,7 @@ class Component extends DCLogic {
       schemaDays.push({
         key: key,
         day: (en ? DAY_NAMES_EN : DAY_NAMES)[dt.getDay()],
-        date: dt.getDate() + ' ' + MONTHS[dt.getMonth()],
+        date: dt.getDate() + ' ' + (en ? MONTHS_EN : MONTHS)[dt.getMonth()],
         isToday: isToday ? true : '',
         dayColor: isToday ? 'var(--color-accent-200)' : 'var(--color-neutral-200)',
         rowBg: isToday ? hexA('#9184d9', 0.07) : 'var(--color-bg)',
@@ -3179,7 +3193,7 @@ class Component extends DCLogic {
       statX: stat('X'),
       hasSocial: socialPosts.length ? true : '',
       socialPosts: socialPosts,
-      ytOffline: this.state.ytError ? true : '',
+      ytOffline: '',  // felet syns bara i konsolen (this.state.ytError); besökarna får sparade videor
       ytOfflineNote: this.state.ytError
         ? (this.state.lang === 'en'
             ? 'Live YouTube feed unavailable (' + this.state.ytError + ') — showing saved videos. Add this domain to the API key\u2019s HTTP referrer allowlist in Google Cloud Console.'
@@ -3218,7 +3232,7 @@ class Component extends DCLogic {
         videos: (y.videos || []).map((v) => ({
         ch: v.ch || 'chriswhippit', chName: ({ chriswhippit: 'ChrisWhippit', whippitsson: L === 'en' ? 'Vlog' : 'Vloggen', figgwhipp: 'Figgehn & Whippit', whippitextra: 'Whippit Extra' })[v.ch || 'chriswhippit'],
         title: v.title, onPlay: this.play(v.id, v.title), url: 'https://www.youtube.com/watch?v=' + v.id, thumb: 'https://i.ytimg.com/vi/' + v.id + '/mqdefault.jpg',
-        meta: [v.views >= 1e6 ? (v.views / 1e6).toFixed(1).replace('.0', '') + (L === 'en' ? 'M views' : ' milj. visningar') : v.views >= 1e3 ? Math.round(v.views / 1e3) + (L === 'en' ? 'K views' : ' 000 visningar') : '', new Date(v.at).toLocaleDateString(L === 'en' ? 'en-GB' : 'sv-SE', { year: 'numeric', month: 'short' })].filter(Boolean).join(' · '),
+        meta: [v.views >= 999500 ? (v.views / 1e6).toFixed(1).replace('.0', '') + (L === 'en' ? 'M views' : ' milj. visningar') : v.views >= 1e3 ? Math.round(v.views / 1e3) + (L === 'en' ? 'K views' : ' 000 visningar') : '', new Date(v.at).toLocaleDateString(L === 'en' ? 'en-GB' : 'sv-SE', { year: 'numeric', month: 'short' })].filter(Boolean).join(' · '),
       })) })))(this.state.lang),
       atSerie: r === 'serie' ? '1' : '',
       ...(() => {
@@ -3260,7 +3274,7 @@ class Component extends DCLogic {
       playTitle: (this.state.playing && this.state.playing.title) || '',
       playEmbed: this.state.playing ? 'https://www.youtube-nocookie.com/embed/' + this.state.playing.id + '?autoplay=1&rel=0' : '',
       playUrl: this.state.playing ? 'https://www.youtube.com/watch?v=' + this.state.playing.id : '',
-      closePlay: (e) => { if (e && e.target.closest && e.target.closest('[data-player-box]') && !e.target.closest('button')) return; this.setState({ playing: null }); },
+      closePlay: (e) => { if (e && e.target.closest && e.target.closest('[data-player-box]') && !e.target.closest('button')) return; const f = this._playFrom; this.setState({ playing: null }); if (f && f.focus) setTimeout(() => f.focus(), 0); },
       liveOn: this.state.liveNow ? '1' : '',
       liveUrl: (this.state.liveNow && this.state.liveNow.url) || 'https://www.twitch.tv/chriswhippit',
       liveText: this.state.liveNow ? [this.state.liveNow.title, this.state.liveNow.platform === 'youtube' ? 'YouTube' : 'Twitch'].filter(Boolean).join(' · ') : '',

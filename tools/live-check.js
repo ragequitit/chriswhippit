@@ -10,19 +10,26 @@ const UA = { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKi
 
 async function twitch() {
   // decapi.me svarar med "chriswhippit is offline" eller hur länge sändningen pågått.
-  const up = (await (await fetch('https://decapi.me/twitch/uptime/' + TWITCH)).text()).trim();
-  if (!up || /offline|error|not found/i.test(up)) return null;
-  const title = (await (await fetch('https://decapi.me/twitch/title/' + TWITCH)).text()).trim();
+  // Bara ett svar som ser ut som en sändningstid räknas – felsidor och "Too Many Requests" ger aldrig falsk LIVE.
+  const r = await fetch('https://decapi.me/twitch/uptime/' + TWITCH);
+  const up = r.ok ? (await r.text()).trim() : '';
+  if (!/^\d+\s*(day|hour|minute|second)s?\b/i.test(up)) return null;
+  const tr = await fetch('https://decapi.me/twitch/title/' + TWITCH);
+  const title = tr.ok ? (await tr.text()).trim().slice(0, 140) : '';
   return { live: true, platform: 'twitch', url: 'https://www.twitch.tv/' + TWITCH, title };
 }
 
 async function youtube(id) {
   // /live-sidan pekar på pågående (eller planerad) sändning; videoDetails har "isLive":true bara när den är igång.
-  const html = await (await fetch('https://www.youtube.com/channel/' + id + '/live', { headers: UA })).text();
+  const r = await fetch('https://www.youtube.com/channel/' + id + '/live', { headers: UA });
+  if (!r.ok) return null;
+  const html = await r.text();
   if (!/"isLive":true/.test(html) || /"isUpcoming":true/.test(html)) return null;
+  // Kräv att sidan pekar på en riktig video, annars är det inte en pågående sändning.
   const v = (html.match(/<link rel="canonical" href="https:\/\/www\.youtube\.com\/watch\?v=([\w-]{11})"/) || [])[1];
-  const title = ((html.match(/<meta name="title" content="([^"]*)"/) || [])[1] || '').replace(/&amp;/g, '&').replace(/&quot;/g, '"').replace(/&#39;/g, "'");
-  return { live: true, platform: 'youtube', url: v ? 'https://www.youtube.com/watch?v=' + v : 'https://www.youtube.com/channel/' + id + '/live', title };
+  if (!v) return null;
+  const title = ((html.match(/<meta name="title" content="([^"]*)"/) || [])[1] || '').replace(/&amp;/g, '&').replace(/&quot;/g, '"').replace(/&#39;/g, "'").slice(0, 140);
+  return { live: true, platform: 'youtube', url: 'https://www.youtube.com/watch?v=' + v, title };
 }
 
 (async () => {
