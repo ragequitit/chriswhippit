@@ -2353,6 +2353,7 @@ textarea.input { min-height: 90px; resize: vertical; }
             </div>
             <div style="display: flex; gap: 8px; flex-wrap: wrap;">
               <a href="{{ m.channelUrl }}" target="_blank" rel="noopener" data-btno="" data-en="Channel ↗" style="font-size: 14px; font-weight: 600; padding: 9px 14px; border-radius: 9px; border: 1.5px solid #8657FF; color: #ece8ff;">Kanalen ↗</a>
+              <sc-if value="{{ m.site }}"><a href="{{ m.site }}" target="_blank" rel="noopener" data-btno="" data-en="Website ↗" style="font-size: 14px; font-weight: 600; padding: 9px 14px; border-radius: 9px; border: 1.5px solid #8657FF; color: #ece8ff;">Hemsida ↗</a></sc-if>
               <a href="{{ m.subUrl }}" target="_blank" rel="noopener" data-btnp="" data-en="Subscribe" style="font-size: 14px; font-weight: 600; padding: 10px 14px; border-radius: 9px; background: #7a4af5; color: #fff;">Prenumerera</a>
             </div>
           </div>
@@ -3328,7 +3329,7 @@ class Component extends DCLogic {
           crewCards: (c.crew || []).map((m) => { const info = crewInfo[m.channelId] || {}; return {
             name: m.name, channelName: m.channelName || info.title || m.name, memorial: m.memorial || '', text: pick(L, m, 'text'),
             avatar: info.avatar || '', noAvatar: info.avatar ? '' : '1', initial: (m.name || '?').slice(0, 1).toUpperCase(), subs: info.subs ? kfmt(info.subs) + (L === 'en' ? ' subscribers' : ' prenumeranter') : '',
-            channelUrl: 'https://www.youtube.com/' + (m.handle || 'channel/' + m.channelId), subUrl: 'https://www.youtube.com/channel/' + m.channelId + '?sub_confirmation=1',
+            channelUrl: 'https://www.youtube.com/' + (m.handle || 'channel/' + m.channelId), site: m.site || '', subUrl: 'https://www.youtube.com/channel/' + m.channelId + '?sub_confirmation=1',
             hasAlso: (m.also || []).length ? '1' : '',
             also: (m.also || []).map((a) => { const ai = crewInfo[a.channelId] || {}; return { name: a.name, url: 'https://www.youtube.com/' + (a.handle || 'channel/' + a.channelId), subs: ai.subs ? kfmt(ai.subs) : '' }; }),
             videos: (m.videos || []).map((id) => ({ title: (crewVids[id] || {}).title || '', date: dfmt((crewVids[id] || {}).at), thumb: 'https://i.ytimg.com/vi/' + id + '/mqdefault.jpg', url: 'https://www.youtube.com/watch?v=' + id, onPlay: this.play(id, (crewVids[id] || {}).title || '') })),
