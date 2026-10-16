@@ -3,8 +3,7 @@
 Statisk sida, inga byggsteg. Repo: `ragequitit/chriswhippit`, publiceras med
 GitHub Pages (main / root) på www.chriswhippit.com.
 
-**SEO:** följ [SEO.md](SEO.md) (Google Search Console, rutin och regler för innehållet).
-**Idéer:** [IDEER.md](IDEER.md) är idébanken för att göra sajten mer sedd. Föreslå nästa steg därifrån.
+**Privata anteckningar** (SEO-rutin, idébank) ligger i `privat/` – bara på datorn, aldrig på GitHub (se .gitignore).
 
 ## DNS (one.com)
 
