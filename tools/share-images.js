@@ -8,7 +8,7 @@ const fs = require('fs'), path = require('path'), os = require('os');
 const { execFileSync } = require('child_process');
 const root = path.join(__dirname, '..');
 const SITE = 'https://www.chriswhippit.com/';
-const EDGE = ['C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe', 'C:/Program Files/Microsoft/Edge/Application/msedge.exe', 'C:/Program Files/Google/Chrome/Application/chrome.exe'].find((p) => fs.existsSync(p));
+const EDGE = ['C:/Program Files (x86)/Google/Chrome/Application/chrome.exe', 'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe', 'C:/Program Files/Microsoft/Edge/Application/msedge.exe', 'C:/Program Files/Google/Chrome/Application/chrome.exe'].find((p) => fs.existsSync(p));
 const fileUrl = (p) => 'file:///' + path.join(root, p).replace(/\\/g, '/');
 const yt = (id) => 'https://i.ytimg.com/vi/' + id + '/maxresdefault.jpg';
 const content = JSON.parse(fs.readFileSync(path.join(root, 'content.json'), 'utf8'));
