@@ -12,8 +12,11 @@ async function twitch() {
   // decapi.me svarar med "chriswhippit is offline" eller hur länge sändningen pågått.
   // Bara ett svar som ser ut som en sändningstid räknas – felsidor och "Too Many Requests" ger aldrig falsk LIVE.
   const r = await fetch('https://decapi.me/twitch/uptime/' + TWITCH);
-  const up = r.ok ? (await r.text()).trim() : '';
-  if (!/^\d+\s*(day|hour|minute|second)s?\b/i.test(up)) return null;
+  // Kastar = "vet inte" (felsvar), null = bekräftat offline.
+  if (!r.ok) throw new Error('decapi svarade ' + r.status);
+  const up = (await r.text()).trim();
+  if (/offline/i.test(up)) return null;
+  if (!/^\d+\s*(day|hour|minute|second)s?\b/i.test(up)) throw new Error('oväntat svar från decapi');
   const tr = await fetch('https://decapi.me/twitch/title/' + TWITCH);
   const title = tr.ok ? (await tr.text()).trim().slice(0, 140) : '';
   return { live: true, platform: 'twitch', url: 'https://www.twitch.tv/' + TWITCH, title };
@@ -22,7 +25,7 @@ async function twitch() {
 async function youtube(id) {
   // /live-sidan pekar på pågående (eller planerad) sändning; videoDetails har "isLive":true bara när den är igång.
   const r = await fetch('https://www.youtube.com/channel/' + id + '/live', { headers: UA });
-  if (!r.ok) return null;
+  if (!r.ok) throw new Error('YouTube svarade ' + r.status);
   const html = await r.text();
   if (!/"isLive":true/.test(html) || /"isUpcoming":true/.test(html)) return null;
   // Kräv att sidan pekar på en riktig video, annars är det inte en pågående sändning.
@@ -33,11 +36,13 @@ async function youtube(id) {
 }
 
 (async () => {
-  let now = { live: false };
+  let now = { live: false }, unsure = false;
   for (const check of [twitch, ...YOUTUBE.map((id) => () => youtube(id))]) {
-    try { const r = await check(); if (r) { now = r; break; } } catch (e) { console.error('kunde inte kolla:', e.message); }
+    try { const r = await check(); if (r) { now = r; break; } } catch (e) { unsure = true; console.error('kunde inte kolla:', e.message); }
   }
   const old = fs.existsSync(FILE) ? JSON.parse(fs.readFileSync(FILE, 'utf8')) : null;
+  // Kunde någon kontroll inte svara och ingen sa LIVE: rör inte bannern (annars blinkar den av mitt i en stream).
+  if (!now.live && unsure && old && old.live) return console.log('osäkert – behåller LIVE');
   const same = old && old.live === now.live && old.url === now.url && old.title === now.title;
   if (same) return console.log('oförändrat:', now.live ? 'LIVE' : 'offline');
   fs.writeFileSync(FILE, JSON.stringify(now, null, 2) + '\n');

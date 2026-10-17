@@ -6063,6 +6063,7 @@ textarea.input { min-height: 90px; resize: vertical; }
 <script type="text/x-dc" data-dc-script="" data-props="{}">
 const KEY = 'cw-admin-content';
 const BASE = 'cw-admin-base'; // publicerat innehåll som utkastet utgår från
+const PUBTIME = 'cw-admin-pubtime'; // när admin senast publicerade (sajten kan visa gammalt i ~1 min)
 
 // Trevägs-sammanslagning vid publicering, så att admin aldrig skriver över det som pipelinen eller
 // Claude har ändrat i repot sedan utkastet laddades.
@@ -6074,23 +6075,34 @@ const REMOTE_ONLY = ['series', 'crew', 'timeline', 'morePlaylists'];
 function mergeContent(draft, base, remote) {
   if (!remote) return { merged: draft, conflicts: [] };
   const j = (v) => JSON.stringify(v === undefined ? null : v);
+  // En schemarad identifieras av datum (eller veckodag), tid och vem – inte av hela texten,
+  // så att en rad som både admin och pipelinen ändrat inte blir två.
+  const rowKey = (r) => (r && typeof r === 'object' ? [r.date || r.day || '', r.time || '', r.who || ''].join('|') : j(r));
   const out = { ...remote };
   const conflicts = [];
   for (const k of new Set([...Object.keys(draft), ...Object.keys(remote)])) {
     if (REMOTE_ONLY.includes(k)) continue;
+    if (!(k in draft)) continue; // finns inte i admin – behåll repots
     const mine = draft[k], theirs = remote[k], orig = base ? base[k] : undefined;
     if (base && j(mine) === j(orig)) continue; // admin har inte rört den här delen
-    if (k === 'schema' && base && Array.isArray(mine) && Array.isArray(theirs)) {
+    if (k === 'schema' && Array.isArray(mine) && Array.isArray(theirs)) {
+      if (!base) { // inget att jämföra med: slå ihop, admins rad vinner vid samma nyckel
+        const mk = new Set(mine.map(rowKey));
+        out[k] = theirs.filter((r) => !mk.has(rowKey(r))).concat(mine);
+        continue;
+      }
       const had = new Set((orig || []).map(j)), now = new Set(mine.map(j));
-      const removed = new Set([...had].filter((r) => !now.has(r)));
+      const removedRows = (orig || []).filter((r) => !now.has(j(r)));
+      const removed = new Set(removedRows.map(j)), removedKeys = new Set(removedRows.map(rowKey));
       const added = mine.filter((r) => !had.has(j(r)));
-      const kept = theirs.filter((r) => !removed.has(j(r)));
+      // Rader admin tagit bort eller ändrat tas bort ur repots lista även om pipelinen hunnit ändra dem.
+      const kept = theirs.filter((r) => !removed.has(j(r)) && !removedKeys.has(rowKey(r)));
       const seen = new Set(kept.map(j));
       out[k] = kept.concat(added.filter((r) => !seen.has(j(r))));
       continue;
     }
     if (base && j(theirs) !== j(orig)) conflicts.push(k); // båda har ändrat – admins version vinner
-    if (mine === undefined) delete out[k]; else out[k] = mine;
+    out[k] = mine;
   }
   return { merged: out, conflicts };
 }
@@ -6292,7 +6304,12 @@ class Component extends DCLogic {
         const draftEdited = local && (base ? norm(local) !== norm(base) : norm(local) !== pubN);
         const pubMoved = base ? norm(base) !== pubN : !!local && norm(local) !== pubN;
         this._published = pub;
-        if (!draftEdited) {
+        let recent = false;
+        try { recent = Date.now() - +(localStorage.getItem(PUBTIME) || 0) < 600000; } catch (e) {}
+        if (!draftEdited && recent && pubMoved) {
+          // Nyss publicerat och sajten visar fortfarande den gamla versionen – behåll det du publicerade.
+          this.setState({ pubStatus: 'Sajten håller på att uppdateras efter din senaste publicering – visar din version.' });
+        } else if (!draftEdited) {
           try { localStorage.setItem(KEY, JSON.stringify(pub)); localStorage.setItem(BASE, JSON.stringify(pub)); } catch (e) {}
           this.setState({ data: fixStats({ ...DEFAULTS, ...pub }) });
         } else if (pubMoved) {
@@ -6531,21 +6548,37 @@ class Component extends DCLogic {
         this.setState({ pubStatus: 'Laddar upp bild ' + (i + 1) + ' av ' + uploads.length + '…' });
         await this.ghPut(uploads[i].path, uploads[i].content, 'Admin: bild');
       }
-      // Hämta det som ligger i repot just nu och slå ihop med utkastet (se mergeContent).
+      if (uploads.length) { this.setState({ data: JSON.parse(JSON.stringify(data)) }); try { localStorage.setItem(KEY, JSON.stringify(data)); } catch (e) {} }
+      // Hämta repots content.json, slå ihop och spara med just den versionens sha. Har någon annan
+      // hunnit spara under tiden (409) görs hela hämtningen och sammanslagningen om.
       const cPath = (base ? base + '/' : '') + 'content.json';
-      this.setState({ pubStatus: 'Hämtar det senaste från repot…' });
-      let remote = null, baseC = null;
-      const probe = await this.gh(cPath + '?ref=' + encodeURIComponent(this.state.ghBranch || 'main') + '&t=' + Date.now(), { method: 'GET', cache: 'no-store' });
-      if (probe.status === 200) {
-        const pj = await probe.json();
-        remote = JSON.parse(new TextDecoder().decode(Uint8Array.from(atob((pj.content || '').replace(/\s/g, '')), (c) => c.charCodeAt(0))));
-      } else if (probe.status !== 404) throw new Error('GitHub ' + probe.status + ' när repots content.json skulle hämtas');
+      const branch = this.state.ghBranch || 'main';
+      let baseC = null;
       try { baseC = JSON.parse(localStorage.getItem(BASE) || 'null'); } catch (e) {}
-      const { merged, conflicts } = mergeContent(data, baseC, remote);
-      const json = JSON.stringify(merged, null, 2);
-      const b64 = btoa(String.fromCharCode(...new TextEncoder().encode(json)));
-      const res = await this.ghPut(cPath, b64, 'Admin: uppdaterat innehåll');
-      try { localStorage.setItem(KEY, json); localStorage.setItem(BASE, json); } catch (e) {}
+      let merged = data, conflicts = [], json = '', res = null;
+      for (let attempt = 0; attempt < 3 && !res; attempt++) {
+        this.setState({ pubStatus: 'Hämtar det senaste från repot…' });
+        let remote = null, sha = null, remoteB64 = '';
+        const probe = await this.gh(cPath + '?ref=' + encodeURIComponent(branch) + '&t=' + Date.now(), { method: 'GET', cache: 'no-store' });
+        if (probe.status === 200) {
+          const pj = await probe.json();
+          sha = pj.sha; remoteB64 = (pj.content || '').replace(/\s/g, '');
+          remote = JSON.parse(new TextDecoder().decode(Uint8Array.from(atob(remoteB64), (c) => c.charCodeAt(0))));
+        } else if (probe.status !== 404) throw new Error('GitHub ' + probe.status + ' när repots content.json skulle hämtas');
+        ({ merged, conflicts } = mergeContent(data, baseC, remote));
+        json = JSON.stringify(merged, null, 2);
+        const b64 = btoa(String.fromCharCode(...new TextEncoder().encode(json)));
+        if (remoteB64 && remoteB64 === b64) { res = { unchanged: true }; break; }
+        const body = { message: 'Admin: uppdaterat innehåll', content: b64, branch };
+        if (sha) body.sha = sha;
+        const r = await this.gh(cPath, { method: 'PUT', body: JSON.stringify(body) });
+        if (r.status === 409 || r.status === 422) { await new Promise((ok) => setTimeout(ok, 800)); continue; }
+        if (!r.ok) throw new Error('GitHub ' + r.status + ': ' + (await r.text()).slice(0, 160));
+        const out = await r.json();
+        res = { sha: out.commit && out.commit.sha };
+      }
+      if (!res) throw new Error('409');
+      try { localStorage.setItem(KEY, json); localStorage.setItem(BASE, json); localStorage.setItem(PUBTIME, String(Date.now())); } catch (e) {}
       this.setState({ conflict: '' });
       const t = new Date().toLocaleTimeString('sv-SE', { hour: '2-digit', minute: '2-digit' });
       const note = conflicts.length ? ' Obs: ' + conflicts.join(', ') + ' hade också ändrats i repot – din version gäller.' : '';

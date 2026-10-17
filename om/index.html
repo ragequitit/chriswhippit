@@ -2514,7 +2514,7 @@ const DAY_NAMES_EN = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'F
 const MONTHS = ['jan', 'feb', 'mar', 'apr', 'maj', 'jun', 'jul', 'aug', 'sep', 'okt', 'nov', 'dec'];
 const MONTHS_EN = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 // Länkar och bilder från content.json: släpp aldrig igenom javascript:/data:-adresser.
-const safeContent = (o) => JSON.parse(JSON.stringify(o), (k, v) => (typeof v === 'string' && /^\s*(javascript|vbscript|data:text)/i.test(v) ? '' : v));
+const safeContent = (o) => JSON.parse(JSON.stringify(o), (k, v) => (typeof v === 'string' && /^(javascript|vbscript|data):/i.test(v.replace(/[\x00-\x20]/g, '')) ? '' : v));
 const hexA = (hex, a) => {
   const h = (hex || '').replace('#', '');
   const n = h.length === 3 ? h.split('').map((x) => x + x).join('') : h;
@@ -3245,7 +3245,7 @@ class Component extends DCLogic {
         const done = tot >= GOAL;
         return {
           goalPct: String(pct).replace('.', en ? '.' : ','), goalW: String(pct), goalDone: done ? '1' : '',
-          xpNow: Math.round(tot / 1000) + 'K',
+          xpNow: cwFmt(tot),
           xpTitle: en ? fmt(tot) + ' followers in total across all platforms – on the way to 1 million' : fmt(tot) + ' följare totalt på alla plattformar – på väg mot 1 miljon',
           goalAria: (en ? 'Followers: ' : 'Följare: ') + fmt(tot) + (en ? ' of 1,000,000' : ' av 1 000 000'),
           goalText: done ? (en ? '🎉 1 MILLION followers – thank you!' : '🎉 1 MILJON följare – tack allihop!')
