@@ -57,23 +57,69 @@ async function counts() {
   return { out, subs };
 }
 
+// Var hittar vi de senaste videorna i varje serie? Spellistor kan vara sorterade äldst först, och nya
+// videor hamnar inte alltid i spellistan direkt – därför slås hela första spellistan ihop med de
+// senaste uppladdningarna från kanalerna, filtrerat på spelets namn i titeln.
+const SERIES_MATCH = {
+  minecraft: { handles: ['@chriswhippit', '@whippitextra'], re: /minecraft/i },
+  'gta-5': { handles: ['@chriswhippit'], re: /\bgta\b|gta ?5|gta ?v\b/i },
+  fortnite: { handles: ['@chriswhippit'], re: /fortnite/i },
+  vloggar: { handles: ['@whippitsson'], re: null },
+};
+
+async function playlistAll(pid, maxPages = 30) {
+  const out = []; let page = '';
+  for (let i = 0; i < maxPages; i++) {
+    const j = await yt('playlistItems?part=snippet,contentDetails&maxResults=50&playlistId=' + pid + (page ? '&pageToken=' + page : ''));
+    (j.items || []).forEach((it) => { if (it.contentDetails.videoPublishedAt) out.push({ id: it.contentDetails.videoId, title: it.snippet.title, at: it.contentDetails.videoPublishedAt, list: pid }); });
+    page = j.nextPageToken; if (!page) break;
+  }
+  return out;
+}
+
+async function recentUploads(handle) {
+  const ch = await yt('channels?part=contentDetails&forHandle=' + encodeURIComponent(handle));
+  const up = ch.items && ch.items[0] && ch.items[0].contentDetails.relatedPlaylists.uploads; if (!up) return [];
+  const j = await yt('playlistItems?part=snippet,contentDetails&maxResults=50&playlistId=' + up);
+  return (j.items || []).map((it) => ({ id: it.contentDetails.videoId, title: it.snippet.title, at: it.contentDetails.videoPublishedAt || it.snippet.publishedAt, list: '' }));
+}
+
 async function seriesData() {
   const series = content.series || [];
   const plIds = [...series.flatMap((s) => (s.playlists || []).map((p) => p.id)), ...(content.morePlaylists || []).map((p) => p.id)].slice(0, 50);
   const plCounts = {};
   if (plIds.length) (await yt('playlists?part=contentDetails&maxResults=50&id=' + plIds.join(','))).items.forEach((p) => { plCounts[p.id] = p.contentDetails.itemCount; });
+  const uploads = {};
+  for (const h of [...new Set(Object.values(SERIES_MATCH).flatMap((m) => m.handles))]) uploads[h] = await recentUploads(h);
+  // Shorts (≤ 3 min) ska inte räknas som avsnitt i serien.
+  const upIds = [...new Set(Object.values(uploads).flat().map((v) => v.id))];
+  const secs = {};
+  for (let i = 0; i < upIds.length; i += 50) (await yt('videos?part=contentDetails&id=' + upIds.slice(i, i + 50).join(','))).items.forEach((it) => { secs[it.id] = secsOf(it.contentDetails.duration); });
   const covers = {}, seriesVids = {};
   for (const s of series) {
     const pid = s.playlists && s.playlists[0] && s.playlists[0].id; if (!pid) continue;
-    const j = await yt('playlistItems?part=snippet,contentDetails&maxResults=50&playlistId=' + pid);
-    const vids = (j.items || []).filter((it) => it.contentDetails.videoPublishedAt)
-      .map((it) => ({ id: it.contentDetails.videoId, title: it.snippet.title, at: it.contentDetails.videoPublishedAt, list: pid }))
-      .sort((a, b) => (a.at < b.at ? 1 : -1)).slice(0, 12);
-    seriesVids[s.slug] = vids;
-    if (!s.cover && j.items && j.items[0]) covers[s.slug] = j.items[0].contentDetails.videoId;
+    const fromList = await playlistAll(pid);
+    const m = SERIES_MATCH[s.slug] || { handles: [], re: /$^/ };
+    const fromUploads = m.handles.flatMap((h) => uploads[h] || []).filter((v) => (!m.re || m.re.test(v.title)) && (secs[v.id] || 999) > 180);
+    const seen = new Set();
+    seriesVids[s.slug] = [...fromList, ...fromUploads].sort((x, y) => (x.at < y.at ? 1 : -1))
+      .filter((v) => (seen.has(v.id) ? false : seen.add(v.id))).slice(0, 12);
+    if (!s.cover && fromList[0]) covers[s.slug] = fromList[0].id;
   }
   const sorted = (o) => Object.fromEntries(Object.keys(o).sort().map((k) => [k, o[k]]));
   return { plCounts: sorted(plCounts), covers, seriesVids };
+}
+
+// Samarbetssidans siffror (visningar, gillamarkeringar, datum) för videorna i content.json → sponsors.
+async function collabData() {
+  const ids = [...new Set((content.sponsors || []).map((sp) => (/(?:[?&]v=|youtu\.be\/|shorts\/|embed\/|live\/)([\w-]{11})/.exec(sp.url || '') || [])[1]).filter(Boolean))];
+  const out = {};
+  for (let i = 0; i < ids.length; i += 50) (await yt('videos?part=snippet,statistics&id=' + ids.slice(i, i + 50).join(','))).items.forEach((v) => {
+    // Avrundat så att filen inte ändras vid varje ny visning.
+    const r = (n) => (n >= 10000 ? Math.round(n / 1000) * 1000 : n >= 100 ? Math.round(n / 100) * 100 : n);
+    out[v.id] = { title: v.snippet.title, at: v.snippet.publishedAt, channel: v.snippet.channelTitle, views: r(+v.statistics.viewCount || 0), likes: r(+v.statistics.likeCount || 0) };
+  });
+  return Object.fromEntries(Object.keys(out).sort().map((k) => [k, out[k]]));
 }
 
 async function crewData() {
@@ -95,7 +141,7 @@ async function crewData() {
 (async () => {
   if (!KEY) throw new Error('Hittar ingen YouTube-nyckel i index.html');
   const cs = await counts();
-  const data = { videos: await latest(), counts: cs.out, subs: cs.subs, ...(await seriesData()), ...(await crewData()) };
+  const data = { videos: await latest(), counts: cs.out, subs: cs.subs, ...(await seriesData()), ...(await crewData()), collab: await collabData() };
   if (data.videos.length < 3) throw new Error('För få videor från YouTube – skriver inte över videos.json');
   const old = fs.existsSync(FILE) ? JSON.parse(fs.readFileSync(FILE, 'utf8')) : null;
   // Försvinner en kanal ur svaret (tillfälligt fel hos YouTube) – skriv inte över med mindre data.

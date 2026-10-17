@@ -2,5 +2,6 @@ User-agent: *
 Allow: /
 Disallow: /admin/
 Disallow: /tools/
+Disallow: /src/
 
 Sitemap: https://www.chriswhippit.com/sitemap.xml

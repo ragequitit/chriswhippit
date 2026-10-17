@@ -1514,11 +1514,11 @@ textarea.input { min-height: 90px; resize: vertical; }
   /* Startsidans knappar i mobil: Genom åren i full bredd, Om mig och Möt gänget bredvid varandra. */
   @media (max-width: 600px) { [data-hero-btns] { gap: 10px !important; } [data-hero-btns] > a { flex: 1 1 0; justify-content: center; padding-left: 12px !important; padding-right: 12px !important; } [data-hero-btns] > a:first-child { flex-basis: 100%; } }
   /* XP-baren mot 1 miljon följare i menyraden */
-  @media (max-width: 1180px) { [data-xp] { display: none !important; } }
+  @media (max-width: 1240px) { [data-xp] { display: none !important; } }
   /* Tidslinjen (/historia/) */
   [data-tl] { position: relative; border-left-color: rgba(134,87,255,.18) !important; }
   [data-tl]::before { content: ''; position: absolute; left: -2px; top: 0; width: 2px; height: calc(var(--tl-p, 0) * 100%); background: linear-gradient(#8657FF, #ff4d9d); box-shadow: 0 0 14px rgba(255,77,157,.7); }
-  [data-tl-year] h2 { position: sticky; top: 124px; align-self: start; color: #5d5878 !important; transform-origin: left center; transition: color .35s, transform .35s, text-shadow .35s; }
+  [data-tl-year] h2 { position: sticky; top: 124px; align-self: start; color: #8a85a3 !important; transform-origin: left center; transition: color .35s, transform .35s, text-shadow .35s; }
   [data-tl-year][data-on] h2 { color: #fff !important; transform: scale(1.22); text-shadow: 0 0 28px rgba(134,87,255,.75); }
   [data-tl-year] > span[aria-hidden] { transition: transform .35s, background .35s, box-shadow .35s; }
   [data-tl-year][data-on] > span[aria-hidden] { background: #ff4d9d !important; transform: rotate(45deg) scale(1.35); box-shadow: 0 0 0 4px var(--color-bg), 0 0 18px rgba(255,77,157,.9) !important; }
@@ -1529,7 +1529,7 @@ textarea.input { min-height: 90px; resize: vertical; }
   @media (min-width: 1480px) {
     [data-tl-nav] { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; position: fixed; top: 50%; left: calc(50% - 620px - 130px); width: 96px; transform: translateY(-50%); opacity: 0; pointer-events: none; transition: opacity .4s; z-index: 5; }
     [data-tl-nav][data-show] { opacity: 1; pointer-events: auto; }
-    [data-tl-nav] a { font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: .08em; color: #5d5878; padding: 3px 10px; border-right: 2px solid rgba(134,87,255,.25); transition: color .25s, font-size .25s, border-color .25s; }
+    [data-tl-nav] a { font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: .08em; color: #8a85a3; padding: 3px 10px; border-right: 2px solid rgba(134,87,255,.25); transition: color .25s, font-size .25s, border-color .25s; }
     [data-tl-nav] a:hover { color: #cfc8ff; }
     [data-tl-nav] a[data-on] { color: #fff; font-size: 16px; font-weight: 700; border-right-color: #ff4d9d; }
   }
@@ -1733,7 +1733,7 @@ textarea.input { min-height: 90px; resize: vertical; }
     <section data-home-partners="" style="margin: 84px 0 0; padding: 30px 0 34px; border-top: 1px solid var(--color-divider); border-bottom: 1px solid var(--color-divider);" data-reveal="">
       <div style="max-width: 1240px; margin: 0 auto 20px; padding: 0 24px; display: flex; align-items: baseline; gap: 14px;">
         <span data-en="Partners" style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .22em; text-transform: uppercase; color: var(--color-neutral-600);">Samarbeten</span>
-        <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--color-neutral-700);">{{ sponsorCount }}</span>
+        <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--color-neutral-500);">{{ sponsorCount }}</span>
         <a href="/samarbeten/" sc-camel-on-click="{{ goCollab }}" data-en="All partnerships →" style="margin-left: auto; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--color-neutral-500);">Alla samarbeten →</a>
       </div>
       <div style="max-width: 1240px; margin: 0 auto; padding: 0 24px;">
@@ -2360,15 +2360,15 @@ textarea.input { min-height: 90px; resize: vertical; }
   </div>
 
   <sc-if value="{{ playOn }}">
-    <div data-player="" role="dialog" aria-modal="true" aria-label="{{ playTitle }}" sc-camel-on-click="{{ closePlay }}" style="position: fixed; inset: 0; z-index: 80; display: grid; place-items: center; padding: 20px; background: rgba(8,8,16,.88); backdrop-filter: blur(6px);">
-      <div data-player-box="" style="width: min(1100px, 100%); background: #0e0f1a; box-shadow: 0 0 0 1px rgba(134,87,255,.5), 0 30px 80px rgba(0,0,0,.7);">
+    <div data-player="" role="dialog" aria-modal="true" aria-label="{{ playTitle }}" sc-camel-on-click="{{ closePlay }}" style="position: fixed; inset: 0; z-index: 80; display: grid; grid-template-columns: minmax(0, 1fr); place-items: center; padding: 20px; background: rgba(8,8,16,.88); backdrop-filter: blur(6px);">
+      <div data-player-box="" style="width: min(1100px, 100%); min-width: 0; background: #0e0f1a; box-shadow: 0 0 0 1px rgba(134,87,255,.5), 0 30px 80px rgba(0,0,0,.7);">
         <div style="position: relative; aspect-ratio: 16 / 9; background: #000;">
           <iframe src="{{ playEmbed }}" title="{{ playTitle }}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen="true" style="position: absolute; inset: 0; width: 100%; height: 100%; border: 0;"></iframe>
         </div>
-        <div style="display: flex; align-items: center; gap: 12px; padding: 12px 14px;">
+        <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; padding: 12px 14px;">
           <span style="flex: 1; min-width: 0; font-family: var(--font-heading); font-size: 15px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ playTitle }}</span>
           <a href="{{ playUrl }}" target="_blank" rel="noopener" data-en="Open on YouTube ↗" style="font-size: 13px; color: var(--color-neutral-400); white-space: nowrap;">Öppna på YouTube ↗</a>
-          <button type="button" sc-camel-on-click="{{ closePlay }}" aria-label="Stäng" style="font: 600 14px/1 var(--font-body); padding: 9px 14px; border: 1.5px solid #8657FF; background: transparent; color: #fff; cursor: pointer;"><span data-en="Close ✕">Stäng ✕</span></button>
+          <button type="button" sc-camel-on-click="{{ closePlay }}" style="font: 600 14px/1 var(--font-body); padding: 9px 14px; border: 1.5px solid #8657FF; background: transparent; color: #fff; cursor: pointer;"><span data-en="Close ✕">Stäng ✕</span></button>
         </div>
       </div>
     </div>
@@ -2438,7 +2438,7 @@ textarea.input { min-height: 90px; resize: vertical; }
         </div>
       </div>
     </sc-if>
-    <div style="max-width: 1240px; margin: 0 auto; padding: 18px 24px 42px; border-top: 1px solid var(--color-divider); font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--color-neutral-700); display: flex; gap: 18px; flex-wrap: wrap;"><span>© 2026 ChrisWhippit</span><a href="/integritetspolicy/" sc-camel-on-click="{{ goPriv }}" data-en="Privacy policy" style="color: inherit;">Integritetspolicy</a><sc-if value="{{ adsOn }}"><button sc-camel-on-click="{{ reopenConsent }}" data-en="Cookies" style="all: unset; cursor: pointer; color: var(--color-neutral-700);" style-hover="color: var(--color-accent-300);">Cookies</button></sc-if><a href="/admin/" rel="nofollow" style="color: var(--color-neutral-700);" style-hover="color: var(--color-accent-300);">Admin</a></div>
+    <div style="max-width: 1240px; margin: 0 auto; padding: 18px 24px 42px; border-top: 1px solid var(--color-divider); font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--color-neutral-500); display: flex; gap: 18px; flex-wrap: wrap;"><span>© 2026 ChrisWhippit</span><a href="/integritetspolicy/" sc-camel-on-click="{{ goPriv }}" data-en="Privacy policy" style="color: inherit;">Integritetspolicy</a><sc-if value="{{ adsOn }}"><button sc-camel-on-click="{{ reopenConsent }}" data-en="Cookies" style="all: unset; cursor: pointer; color: var(--color-neutral-700);" style-hover="color: var(--color-accent-300);">Cookies</button></sc-if><a href="/admin/" rel="nofollow" style="color: var(--color-neutral-700);" style-hover="color: var(--color-accent-300);">Admin</a></div>
   </footer>
 
   <sc-if value="{{ showConsent }}">
@@ -2531,7 +2531,7 @@ const faqParts = (text) => {
   if (last < s.length) out.push({ text: s.slice(last), plain: true, href: '' });
   return out;
 };
-const ROUTE_META = {"hem":{"t":"Chris Whippit — svensk YouTuber och streamare","d":"Chris Whippit gör videor sedan 2014: gaming, Pokémon GO, discgolf och allt ni kan tänka er däremellan. Senaste videorna, veckans schema, spel, merch och samarbeten.","u":"https://www.chriswhippit.com/"},"setup":{"t":"Setup — datorn, kameran och allt annat | Chris Whippit","d":"Hela listan på grejerna Chris Whippit spelar in med: dator, grafikkort, mikrofon, kamera, stol och skrivbord.","u":"https://www.chriswhippit.com/setup/"},"schema":{"t":"Spelschema — veckans videor och streams | Chris Whippit","d":"Veckans planerade videor och streams från Chris Whippit, dag för dag med tider. Se vad som släpps härnäst på kanalerna.","u":"https://www.chriswhippit.com/schema/"},"faq":{"t":"Vanliga frågor | Chris Whippit","d":"Svar på det som kommer oftast: hur ofta det laddas upp, vilka kanaler som finns, datorn, samarbeten, Discord, spelen och merch.","u":"https://www.chriswhippit.com/faq/"},"dl":{"t":"Nedladdningar — Minecraft-kartor | Chris Whippit","d":"Ladda ner kartorna från Let’s Play-serien i Minecraft med Whippit och Softis, alla fyra säsongerna. Gratis att använda som du vill.","u":"https://www.chriswhippit.com/nedladdningar/"},"shop":{"t":"Shop — t-shirts, hoodies och kepsar | Chris Whippit","d":"Merch med Whippit-märket. T-shirts, hoodies och kepsar, tryckta och skickade av Spreadshirt.","u":"https://www.chriswhippit.com/shop/"},"spel":{"t":"Spel — Project Genesis och fler webbläsarspel | Chris Whippit","d":"Spela Project Genesis, ett cyberpunk-idle-MMORPG, och fler gratisspel direkt i webbläsaren. Inget att ladda ner.","u":"https://www.chriswhippit.com/spel/"},"samarbeten":{"t":"Samarbeten — varumärken och kampanjer | Chris Whippit","d":"Varumärken Chris Whippit har samarbetat med, bland andra Xbox, Ubisoft, NZXT och SodaStream. Se videorna, siffrorna och hur du kontaktar honom.","u":"https://www.chriswhippit.com/samarbeten/"},"om":{"t":"Om Chris Whippit — svensk YouTuber sedan 2014","d":"Chris Whippit är en svensk YouTuber och streamare från Strömstad som gjort videor sedan 2014: gaming, Pokémon GO, discgolf och mer.","u":"https://www.chriswhippit.com/om/"},"integritet":{"t":"Integritetspolicy | Chris Whippit","d":"Hur chriswhippit.com hanterar personuppgifter, cookies och annonser från Google AdSense, och vilka rättigheter du har.","u":"https://www.chriswhippit.com/integritetspolicy/"},"videor":{"t":"Videor — serier, kanaler och spellistor | Chris Whippit","d":"Alla serier från Chris Whippit samlade: Minecraft Let’s Play, GTA 5, Fortnite, vloggar och Pokémon GO – plus kanalerna och gänget.","u":"https://www.chriswhippit.com/videor/"},"serie:minecraft":{"t":"Minecraft med Chris Whippit — Let’s Play med Softis","d":"Minecraft Let’s Play med SoftisFFS sedan 2016 – över 500 avsnitt – plus Lucky Block, Skyblock, Hardcore och kartorna att ladda ner.","u":"https://www.chriswhippit.com/videor/minecraft/"},"serie:gta-5":{"t":"GTA 5 med Chris Whippit — race, heists och kaos","d":"Nästan 1 000 GTA 5-videor med SoftisFFS, figgehn och Polski. Rage-race, Cayo Perico, Last Team Standing och introlåten Razor Sharp.","u":"https://www.chriswhippit.com/videor/gta-5/"},"serie:fortnite":{"t":"Fortnite med Chris Whippit — nästan 600 videor","d":"Fortnite från 2017 till 2024: säsong efter säsong, live-events, Playground och Fortnite Lego med Softis, figgehn och Polski.","u":"https://www.chriswhippit.com/videor/fortnite/"},"serie:vloggar":{"t":"Chris Whippit Vloggar — Pokémon GO, discgolf och vardag","d":"Vlogg-kanalen med familjen, discgolf, teknik, mat och över 200 Pokémon GO-videor med raider, community days och shinies.","u":"https://www.chriswhippit.com/videor/vloggar/"},"ganget":{"t":"Gänget — SoftisFFS, Ufosxm, JNX, Polski och figgehn | Chris Whippit","d":"Kanalerna Chris Whippit spelat mest med: SoftisFFS, Ufosxm, JNX, Polski och figgehn. Prenumerera och se videorna de gjort tillsammans.","u":"https://www.chriswhippit.com/ganget/"},"historia":{"t":"Chris Whippit genom åren — tidslinje från 2014 till idag","d":"Hela resan: från starten 2014 till nästan 8 000 videor. Figgehn & Whippit, Minecraft Let’s Play med Softis, GTA 5, Fortnite, Pokémon GO och milstolparna.","u":"https://www.chriswhippit.com/historia/"}};
+const ROUTE_META = {"hem":{"t":"Chris Whippit — svensk YouTuber och streamare","d":"Chris Whippit gör videor sedan 2014: gaming, Pokémon GO, discgolf och allt ni kan tänka er däremellan. Senaste videorna, veckans schema, spel, merch och samarbeten.","u":"https://www.chriswhippit.com/"},"setup":{"t":"Setup — datorn, kameran och allt annat | Chris Whippit","d":"Hela listan på grejerna Chris Whippit spelar in med: dator, grafikkort, mikrofon, kamera, stol och skrivbord.","u":"https://www.chriswhippit.com/setup/"},"schema":{"t":"Spelschema — veckans videor och streams | Chris Whippit","d":"Veckans planerade videor och streams från Chris Whippit, dag för dag med tider. Se vad som släpps härnäst på kanalerna.","u":"https://www.chriswhippit.com/schema/"},"faq":{"t":"Vanliga frågor | Chris Whippit","d":"Svar på det som kommer oftast: hur ofta det laddas upp, vilka kanaler som finns, datorn, samarbeten, Discord, spelen och merch.","u":"https://www.chriswhippit.com/faq/"},"dl":{"t":"Nedladdningar — Minecraft-kartor | Chris Whippit","d":"Ladda ner kartorna från fyra av de åtta säsongerna av Let’s Play-serien i Minecraft med Whippit och Softis. Gratis att använda som du vill.","u":"https://www.chriswhippit.com/nedladdningar/"},"shop":{"t":"Shop — t-shirts, hoodies och kepsar | Chris Whippit","d":"Merch med Whippit-märket. T-shirts, hoodies och kepsar, tryckta och skickade av Spreadshirt.","u":"https://www.chriswhippit.com/shop/"},"spel":{"t":"Spel — Project Genesis och fler webbläsarspel | Chris Whippit","d":"Spela Project Genesis, ett cyberpunk-idle-MMORPG, och fler gratisspel direkt i webbläsaren. Inget att ladda ner.","u":"https://www.chriswhippit.com/spel/"},"samarbeten":{"t":"Samarbeten — varumärken och kampanjer | Chris Whippit","d":"Varumärken Chris Whippit har samarbetat med, bland andra Xbox, Ubisoft, NZXT och SodaStream. Se videorna, siffrorna och hur du kontaktar honom.","u":"https://www.chriswhippit.com/samarbeten/"},"om":{"t":"Om Chris Whippit — svensk YouTuber sedan 2014","d":"Chris Whippit är en svensk YouTuber och streamare från Strömstad som gjort videor sedan 2014: gaming, Pokémon GO, discgolf och mer.","u":"https://www.chriswhippit.com/om/"},"integritet":{"t":"Integritetspolicy | Chris Whippit","d":"Hur chriswhippit.com hanterar personuppgifter, cookies och annonser från Google AdSense, och vilka rättigheter du har.","u":"https://www.chriswhippit.com/integritetspolicy/"},"videor":{"t":"Videor — serier, kanaler och spellistor | Chris Whippit","d":"Alla serier från Chris Whippit samlade: Minecraft Let’s Play, GTA 5, Fortnite, vloggar och Pokémon GO – plus kanalerna och gänget.","u":"https://www.chriswhippit.com/videor/"},"serie:minecraft":{"t":"Minecraft med Chris Whippit — Let’s Play med Softis","d":"Minecraft Let’s Play med SoftisFFS sedan 2016 – över 500 avsnitt – plus Lucky Block, Skyblock, Hardcore och kartorna att ladda ner.","u":"https://www.chriswhippit.com/videor/minecraft/"},"serie:gta-5":{"t":"GTA 5 med Chris Whippit — race, heists och kaos","d":"Nästan 1 000 GTA 5-videor med SoftisFFS, figgehn och Polski. Rage-race, Cayo Perico, Last Team Standing och introlåten Razor Sharp.","u":"https://www.chriswhippit.com/videor/gta-5/"},"serie:fortnite":{"t":"Fortnite med Chris Whippit — nästan 600 videor","d":"Fortnite från 2017 till 2024: säsong efter säsong, live-events, Playground och Fortnite Lego med Softis, figgehn och Polski.","u":"https://www.chriswhippit.com/videor/fortnite/"},"serie:vloggar":{"t":"Chris Whippit Vloggar — Pokémon GO, discgolf och vardag","d":"Vlogg-kanalen med familjen, discgolf, teknik, mat och över 200 Pokémon GO-videor med raider, community days och shinies.","u":"https://www.chriswhippit.com/videor/vloggar/"},"ganget":{"t":"Gänget — SoftisFFS, Ufosxm, JNX, Polski och figgehn | Chris Whippit","d":"Kanalerna Chris Whippit spelat mest med: SoftisFFS, Ufosxm, JNX, Polski och figgehn. Prenumerera och se videorna de gjort tillsammans.","u":"https://www.chriswhippit.com/ganget/"},"historia":{"t":"Chris Whippit genom åren — tidslinje från 2014 till idag","d":"Hela resan: från starten 2014 till nästan 8 000 videor. Figgehn & Whippit, Minecraft Let’s Play med Softis, GTA 5, Fortnite, Pokémon GO och milstolparna.","u":"https://www.chriswhippit.com/historia/"}};
 const applyRouteMeta = (route) => {
   const m = ROUTE_META[route]; if (!m) return;
   document.title = m.t;
@@ -2687,7 +2687,9 @@ class Component extends DCLogic {
     }
     const ids = list.map((s) => ytId(s.url)).filter(Boolean);
     const sig = ids.join(',');
-    if (!ids.length || this._collabSig === sig) return;
+    if (!ids.length || this._collabSig === sig || this._snapPending) return;
+    const snapC = this._snap && this._snap.collab;
+    if (snapC && ids.every((id) => snapC[id])) { this._collabSig = sig; this.setState({ collabStats: snapC }); return; }
     this._collabSig = sig;
     const key = this.props.youtubeApiKey || 'AIzaSyB7s-AxfJegsFoyo8LEqlOFeXcWoyG59Kg';
     fetch('https://www.googleapis.com/youtube/v3/videos?part=snippet,statistics&id=' + sig + '&key=' + key)
@@ -2867,6 +2869,7 @@ class Component extends DCLogic {
     this._snapP = fetch(SITE_ROOT + 'videos.json?t=' + Math.floor(Date.now() / 600000), { cache: 'no-store' })
       .then((r) => (r.ok ? r.json() : null)).catch(() => null).then((s) => {
         this._snapPending = false;
+        this._snap = s;
         if (!s || !s.t || Date.now() - Date.parse(s.t) > 3 * 86400000) { this.setState({ snapChecked: true }); return null; }
         if (s.plCounts) this._plCounts = true;
         if (s.covers) this._covers = true;
@@ -2897,7 +2900,17 @@ class Component extends DCLogic {
       }
     }); };
     window.addEventListener('scroll', this.onTl, { passive: true });
-    this.onPlayKey = (e) => { if (e.key === 'Escape' && this.state.playing) this.setState({ playing: null }); };
+    this.onPlayKey = (e) => {
+      if (!this.state.playing) return;
+      if (e.key === 'Escape') { const f = this._playFrom; this.setState({ playing: null }); if (f && f.focus) setTimeout(() => f.focus(), 0); return; }
+      if (e.key !== 'Tab') return;
+      const box = document.querySelector('[data-player-box]'); if (!box) return;
+      const els = [...box.querySelectorAll('iframe, a[href], button')];
+      if (!els.length) return;
+      const i = els.indexOf(document.activeElement);
+      if (e.shiftKey && i <= 0) { e.preventDefault(); els[els.length - 1].focus(); }
+      else if (!e.shiftKey && (i === -1 || i === els.length - 1)) { e.preventDefault(); els[0].focus(); }
+    };
     window.addEventListener('keydown', this.onPlayKey);
     window.addEventListener('resize', this.onTl);
     this._liveTimer = setInterval(this.checkLive, 120000);
@@ -3201,7 +3214,7 @@ class Component extends DCLogic {
       faqTop: (c.faq || []).slice(0, 3).map((f) => ({ ...f, q: pick(this.state.lang, f, 'q'), parts: faqParts(pick(this.state.lang, f, 'a')) })),
       dlRows: (c.downloads || []).map((r) => ({ ...r, title: pick(this.state.lang, r, 'title'), meta: pick(this.state.lang, r, 'meta'), image: asset(r.image), link: r.url || '#', hasImage: r.image ? true : '', noImage: r.image ? '' : true, tf: 'translate(' + (r.ox || 0) + '%, ' + (r.oy || 0) + '%) scale(' + (r.zoom || 1) + ')' })),
       shopClosed: this.state.shopOpen ? '' : '1',
-      openShop: () => { this.setState({ shopOpen: true }); setTimeout(() => { const el = document.getElementById('myShop'); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 300); },
+      openShop: () => { this.setState({ shopOpen: true }); setTimeout(() => { const el = document.getElementById('myShop'); if (el) { el.scrollIntoView({ behavior: 'smooth', block: 'start' }); el.setAttribute('tabindex', '-1'); el.focus({ preventScroll: true }); } }, 300); },
       shopRows: (c.shop || []).map((p) => ({
         ...p,
         title: pick(this.state.lang, p, 'title'),
@@ -3300,7 +3313,7 @@ class Component extends DCLogic {
           sLead: s ? pick(L, s, 'lead') : '', sMissing: s ? '' : '1',
           sBlocks: s ? blocks(pick(L, s, 'text')) : [],
           sPlaylists: s ? (s.playlists || []).map((p) => ({ title: pick(L, p, 'title'), url: plUrl(p.id), count: cnt(p.id) })) : [],
-          sVideos: sv.map((v) => ({ title: v.title, date: dfmt(v.at), thumb: 'https://i.ytimg.com/vi/' + v.id + '/mqdefault.jpg', url: 'https://www.youtube.com/watch?v=' + v.id + '&list=' + v.list, onPlay: this.play(v.id, v.title) })),
+          sVideos: sv.map((v) => ({ title: v.title, date: dfmt(v.at), thumb: 'https://i.ytimg.com/vi/' + v.id + '/mqdefault.jpg', url: 'https://www.youtube.com/watch?v=' + v.id + (v.list ? '&list=' + v.list : ''), onPlay: this.play(v.id, v.title) })),
           sHasVideos: sv.length ? '1' : '',
           crewCards: (c.crew || []).map((m) => { const info = crewInfo[m.channelId] || {}; return {
             name: m.name, channelName: m.channelName || info.title || m.name, memorial: m.memorial || '', text: pick(L, m, 'text'),
