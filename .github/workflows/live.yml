@@ -25,6 +25,6 @@ jobs:
             git add live.json
             git commit -m "Live-läge: $(node -p "require('./live.json').live ? 'LIVE' : 'offline'")"
             # Pipelinen eller admin kan ha pushat under tiden – lägg vår commit ovanpå.
-            git pull --rebase origin main
-            git push
+            # Någon annan kan pusha samtidigt – försök upp till tre gånger.
+            for i in 1 2 3; do git pull --rebase origin main && git push && break; sleep 5; done
           fi
