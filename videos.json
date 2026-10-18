@@ -1,19 +1,19 @@
 {
- "t": "2026-10-17T15:15:30.040Z",
+ "t": "2026-10-18T05:05:36.078Z",
  "videos": [
   {
-   "id": "8wdKNbE3vJE",
-   "title": "HITTAR REDAN EN ZOMBIE-VILLAGER - MINECRAFT SKYBLOCK #3",
+   "id": "MC0ZtkSTd7I",
+   "title": "FLOOR IS LAVA I BLOCKED IN - MINECRAFT MED JNX",
    "channel": "Whippit",
    "handle": "@whippitextra",
-   "at": "2026-10-17T04:30:32Z"
+   "at": "2026-10-18T04:30:17Z"
   },
   {
-   "id": "A2tl-KAxBVM",
-   "title": "VI KÖPER DOM TUNGA MASKINERNA I ORE FACTORY SQUAD",
-   "channel": "ChrisWhippit",
-   "handle": "@chriswhippit",
-   "at": "2026-10-15T04:30:35Z"
+   "id": "cchN6tM1P3A",
+   "title": "VEM HITTAR 16 GULD INGOTS FÖRST - MINECRAFT UTMANING",
+   "channel": "Whippit",
+   "handle": "@whippitextra",
+   "at": "2026-10-16T04:30:20Z"
   },
   {
    "id": "-WUSMYp3u4k",
@@ -30,15 +30,15 @@
    "at": "2026-10-10T04:30:24Z"
   },
   {
-   "id": "cchN6tM1P3A",
-   "title": "VEM HITTAR 16 GULD INGOTS FÖRST - MINECRAFT UTMANING",
+   "id": "8wdKNbE3vJE",
+   "title": "HITTAR REDAN EN ZOMBIE-VILLAGER - MINECRAFT SKYBLOCK #3",
    "channel": "Whippit",
    "handle": "@whippitextra",
-   "at": "2026-10-16T04:30:20Z"
+   "at": "2026-10-17T04:30:32Z"
   }
  ],
  "counts": {
-  "chriswhippit": 4523,
+  "chriswhippit": 4524,
   "whippitsson": 534,
   "figgwhipp": 2848,
   "whippitextra": 81
@@ -87,6 +87,12 @@
  },
  "seriesVids": {
   "minecraft": [
+   {
+    "id": "MC0ZtkSTd7I",
+    "title": "FLOOR IS LAVA I BLOCKED IN - MINECRAFT MED JNX",
+    "at": "2026-10-18T04:30:17Z",
+    "list": ""
+   },
    {
     "id": "8wdKNbE3vJE",
     "title": "HITTAR REDAN EN ZOMBIE-VILLAGER - MINECRAFT SKYBLOCK #3",
@@ -151,12 +157,6 @@
     "id": "ZRpgijZRuW4",
     "title": "SPIRAL LUCKY BLOCK I MINECRAFT",
     "at": "2026-10-04T04:30:29Z",
-    "list": ""
-   },
-   {
-    "id": "cV_BQgjw8bQ",
-    "title": "LETAR EFTER FÅGELFÅGELFÅGEL I MINECRAFT - MASKROS SMP #42",
-    "at": "2026-10-02T04:30:31Z",
     "list": ""
    }
   ],
