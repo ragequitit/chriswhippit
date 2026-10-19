@@ -1540,7 +1540,10 @@ textarea.input { min-height: 90px; resize: vertical; }
   /* XP-baren mot 1 miljon följare i menyraden */
   @media (max-width: 1240px) { [data-xp] { display: none !important; } }
   /* Mediakit */
-  @media (max-width: 760px) { [data-mk-hero] { grid-template-columns: minmax(0, 1fr) !important; } [data-mk-hero] > img { max-width: 200px; order: -1; } [data-mk-row] { grid-template-columns: minmax(0, 1fr) auto !important; } [data-mk-row] > span:last-child { grid-column: 1 / -1; } }
+  @media (max-width: 760px) { [data-mk-hero] { grid-template-columns: minmax(0, 1fr) !important; } [data-mk-hero] > img { max-width: 200px; order: -1; } [data-mk-row] { grid-template-columns: minmax(0, 1fr) auto !important; } [data-mk-row] > span:nth-child(3) { grid-column: 1 / -1; } [data-mk-row] > [data-mk-more] { grid-row: 1; grid-column: 2; } }
+  [data-mk-row]:hover { background: rgba(134,87,255,.06) !important; }
+  [data-mk-item][data-open="1"] { background: rgba(134,87,255,.05); }
+  @media print { [data-mk-more] { display: none !important; } }
   @media print {
     html, body { background: #fff !important; }
     header, footer, [data-live], [data-player], [data-mk-actions], [data-cookie] { display: none !important; }
@@ -2365,11 +2368,35 @@ textarea.input { min-height: 90px; resize: vertical; }
     <h2 data-en="Channels" style="font-family: var(--font-heading); font-weight: 600; font-size: 26px; letter-spacing: -.02em; margin: 56px 0 16px;">Kanaler</h2>
     <div data-mk-table="" style="background: var(--color-surface); box-shadow: 0 0 0 1px var(--color-neutral-800);">
       <sc-for list="{{ mkChannels }}" as="c" hint-placeholder-count="8">
-        <a href="{{ c.url }}" target="_blank" rel="noopener" data-mk-row="" style="display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) minmax(0, 1fr); gap: 12px; align-items: baseline; padding: 13px 18px; border-bottom: 1px solid var(--color-neutral-800); color: var(--color-text);">
+        <div data-mk-item="" data-open="{{ c.open }}" style="border-bottom: 1px solid var(--color-neutral-800);">
+        <button type="button" data-mk-row="" aria-expanded="{{ c.expanded }}" sc-camel-on-click="{{ c.onToggle }}" style="display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) minmax(0, 1fr) auto; gap: 12px; align-items: baseline; width: 100%; padding: 13px 18px; border: 0; background: transparent; color: var(--color-text); font: inherit; text-align: left; cursor: pointer;">
           <span><b style="font-weight: 600;">{{ c.name }}</b> <span style="color: var(--color-neutral-500); font-size: 13px;">{{ c.platform }}</span></span>
           <span style="font-family: var(--font-heading); font-weight: 700;">{{ c.followers }} <span style="font-family: var(--font-body); font-weight: 400; font-size: 13px; color: var(--color-neutral-500);">{{ c.followersLabel }}</span></span>
           <span style="font-size: 14px; color: var(--color-neutral-400);">{{ c.extra }}</span>
-        </a>
+          <span data-mk-more="" style="font-size: 13px; font-weight: 600; color: var(--color-accent-200); white-space: nowrap;">{{ c.moreLabel }}</span>
+        </button>
+        <sc-if value="{{ c.open }}">
+          <div data-mk-panel="" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 18px 28px; padding: 6px 18px 20px;">
+            <sc-if value="{{ c.hasAge }}"><div>
+              <div data-en="Age" style="font-family: 'JetBrains Mono', monospace; letter-spacing: .14em; text-transform: uppercase; font-size: 10px; color: #b9a2ff; margin-bottom: 8px;">Ålder</div>
+              <sc-for list="{{ c.age }}" as="a" hint-placeholder-count="5"><div style="display: grid; grid-template-columns: 52px minmax(0, 1fr) 40px; gap: 8px; align-items: center; font-size: 13px; margin: 5px 0;"><span style="color: var(--color-neutral-400);">{{ a.label }}</span><span style="position: relative; height: 6px; border-radius: 999px; background: rgba(255,255,255,.08); overflow: hidden;"><span style="position: absolute; inset: 0 auto 0 0; width: {{ a.w }}%; border-radius: 999px; background: #8657FF;"></span></span><span style="text-align: right;">{{ a.pct }}</span></div></sc-for>
+            </div></sc-if>
+            <sc-if value="{{ c.hasGender }}"><div>
+              <div data-en="Gender" style="font-family: 'JetBrains Mono', monospace; letter-spacing: .14em; text-transform: uppercase; font-size: 10px; color: #b9a2ff; margin-bottom: 8px;">Kön</div>
+              <sc-for list="{{ c.gender }}" as="g" hint-placeholder-count="2"><div style="display: grid; grid-template-columns: 64px minmax(0, 1fr) 40px; gap: 8px; align-items: center; font-size: 13px; margin: 5px 0;"><span style="color: var(--color-neutral-400);">{{ g.label }}</span><span style="position: relative; height: 6px; border-radius: 999px; background: rgba(255,255,255,.08); overflow: hidden;"><span style="position: absolute; inset: 0 auto 0 0; width: {{ g.w }}%; border-radius: 999px; background: #8657FF;"></span></span><span style="text-align: right;">{{ g.pct }}</span></div></sc-for>
+            </div></sc-if>
+            <sc-if value="{{ c.hasCountries }}"><div>
+              <div data-en="Countries" style="font-family: 'JetBrains Mono', monospace; letter-spacing: .14em; text-transform: uppercase; font-size: 10px; color: #b9a2ff; margin-bottom: 8px;">Länder</div>
+              <sc-for list="{{ c.countries }}" as="k" hint-placeholder-count="3"><div style="display: flex; justify-content: space-between; font-size: 13px; margin: 5px 0;"><span style="color: var(--color-neutral-400);">{{ k.label }}</span><span>{{ k.pct }}</span></div></sc-for>
+            </div></sc-if>
+            <sc-if value="{{ c.noAudience }}"><p data-en="Audience data is being added." style="margin: 0; font-size: 14px; color: var(--color-neutral-400);">Publikdata läggs till inom kort.</p></sc-if>
+            <div style="grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 6px 18px; align-items: baseline; font-size: 13px;">
+              <a href="{{ c.url }}" target="_blank" rel="noopener" style="color: var(--color-accent-200); text-decoration: underline; text-underline-offset: 3px;">{{ c.goLabel }}</a>
+              <sc-if value="{{ c.updated }}"><span style="color: var(--color-neutral-500);">{{ c.updated }}</span></sc-if>
+            </div>
+          </div>
+        </sc-if>
+        </div>
       </sc-for>
     </div>
 
@@ -3065,6 +3092,7 @@ class Component extends DCLogic {
     if (isPlaceholderSetup(next.setup)) delete next.setup;
     if (Array.isArray(c.schema)) next.schema = c.schema;
     if (c.about && typeof c.about === 'object') next.about = c.about;
+    if (c.mediakit && typeof c.mediakit === 'object') next.mediakit = c.mediakit;
     ['series', 'crew', 'morePlaylists', 'timeline'].forEach((k) => { if (Array.isArray(c[k])) next[k] = c[k]; });
     if (Object.keys(next).length) this.setState((s) => ({ content: { ...s.content, ...next } }));
     if (c.sponsors && c.sponsors.length) this.setState({ sponsors: c.sponsors });
@@ -3467,10 +3495,25 @@ class Component extends DCLogic {
             vids ? { value: loc(vids), label: en ? 'videos published since 2014' : 'videor publicerade sedan 2014' } : null,
           ].filter(Boolean),
           mkChannels: [
-            ...YT.map(([h, name]) => ({ name, platform: 'YouTube · @' + h, url: 'https://www.youtube.com/@' + h, followers: big(subs[h] || stat('@' + h)), followersLabel: en ? 'subscribers' : 'prenumeranter',
+            ...YT.map(([h, name]) => ({ id: h, name, platform: 'YouTube · @' + h, url: 'https://www.youtube.com/@' + h, followers: big(subs[h] || stat('@' + h)), followersLabel: en ? 'subscribers' : 'prenumeranter',
               extra: (m[h] && m[h].views ? big(m[h].views) + (en ? ' views' : ' visningar') : '') + (m[h] && m[h].avgViews ? ' · ' + loc(m[h].avgViews) + (en ? ' avg/video' : ' snitt/video') : '') })),
-            ...others.map(([p, url]) => ({ name: p, platform: '@chriswhippit', url, followers: big(stat(p)), followersLabel: fol, extra: '' })),
-          ],
+            ...others.map(([p, url]) => ({ id: p.toLowerCase(), name: p, platform: '@chriswhippit', url, followers: big(stat(p)), followersLabel: fol, extra: '' })),
+          ].map((c) => {
+            const a = (((this.state.content || {}).mediakit || {}).audience || {})[c.id] || {};
+            const open = this.state.mkOpen === c.id;
+            const pc = (n) => Math.round(+n || 0) + ' %';
+            const age = (a.age || []).map((x) => ({ label: x.label, pct: pc(x.pct), w: String(Math.min(100, +x.pct || 0)) }));
+            const gl = { men: en ? 'Men' : 'Män', women: en ? 'Women' : 'Kvinnor', other: en ? 'Other' : 'Annat' };
+            const gender = Object.entries(a.gender || {}).map(([k, v]) => ({ label: gl[k] || k, pct: pc(v), w: String(Math.min(100, +v || 0)) }));
+            const countries = (a.countries || []).map((x) => ({ label: (en && x.label_en) || x.label, pct: pc(x.pct) }));
+            return { ...c, open: open ? '1' : '', expanded: open ? 'true' : 'false',
+              moreLabel: open ? (en ? 'Close ▴' : 'Stäng ▴') : (en ? 'Read more ▾' : 'Läs mer ▾'),
+              onToggle: () => this.setState({ mkOpen: open ? null : c.id }),
+              age, hasAge: age.length ? '1' : '', gender, hasGender: gender.length ? '1' : '', countries, hasCountries: countries.length ? '1' : '',
+              noAudience: age.length || gender.length || countries.length ? '' : '1',
+              goLabel: en ? 'Go to the channel ↗' : 'Gå till kanalen ↗',
+              updated: a.updated ? (en ? 'Audience data from ' : 'Publikdata från ') + a.updated : '' };
+          }),
           mkFormats: (en ? [
             ['Dedicated video', 'A whole video built around your game, product or service.'],
             ['Integration', 'A 60–90 second segment inside a regular video, with a link in the description and a pinned comment.'],
