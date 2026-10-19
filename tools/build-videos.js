@@ -110,6 +110,31 @@ async function seriesData() {
   return { plCounts: sorted(plCounts), covers, seriesVids };
 }
 
+// Mediakitets nyckeltal per kanal: totala visningar, snittvisningar för videor (inte Shorts) från de
+// senaste 90 dagarna som hunnit ligga ute minst 7 dagar, och antal uppladdningar senaste 30 dagarna.
+async function mediaData() {
+  const out = {};
+  const now = Date.now(), DAY = 86400000;
+  for (const hd of COUNT_HANDLES) {
+    const ch = await yt('channels?part=statistics,contentDetails&forHandle=' + encodeURIComponent('@' + hd));
+    const c = ch.items && ch.items[0]; if (!c) continue;
+    const ups = await yt('playlistItems?part=contentDetails&maxResults=50&playlistId=' + c.contentDetails.relatedPlaylists.uploads);
+    const ids = (ups.items || []).map((it) => it.contentDetails.videoId);
+    const vids = ids.length ? (await yt('videos?part=statistics,contentDetails,snippet&id=' + ids.join(','))).items : [];
+    const age = (v) => (now - Date.parse(v.snippet.publishedAt)) / DAY;
+    const long = vids.filter((v) => secsOf(v.contentDetails.duration) > 180);
+    const sample = long.filter((v) => age(v) >= 7 && age(v) <= 90);
+    const avg = sample.length ? sample.reduce((a, v) => a + (+v.statistics.viewCount || 0), 0) / sample.length : 0;
+    const round = (n) => (n >= 10000 ? Math.round(n / 1000) * 1000 : Math.round(n / 100) * 100);
+    out[hd] = {
+      views: round(+c.statistics.viewCount || 0),
+      avgViews: round(avg), avgSample: sample.length,
+      uploads30: vids.filter((v) => age(v) <= 30).length,
+    };
+  }
+  return out;
+}
+
 // Samarbetssidans siffror (visningar, gillamarkeringar, datum) för videorna i content.json → sponsors.
 async function collabData() {
   const ids = [...new Set((content.sponsors || []).map((sp) => (/(?:[?&]v=|youtu\.be\/|shorts\/|embed\/|live\/)([\w-]{11})/.exec(sp.url || '') || [])[1]).filter(Boolean))];
@@ -141,7 +166,7 @@ async function crewData() {
 (async () => {
   if (!KEY) throw new Error('Hittar ingen YouTube-nyckel i index.html');
   const cs = await counts();
-  const data = { videos: await latest(), counts: cs.out, subs: cs.subs, ...(await seriesData()), ...(await crewData()), collab: await collabData() };
+  const data = { videos: await latest(), counts: cs.out, subs: cs.subs, ...(await seriesData()), ...(await crewData()), collab: await collabData(), media: await mediaData() };
   if (data.videos.length < 3) throw new Error('För få videor från YouTube – skriver inte över videos.json');
   const old = fs.existsSync(FILE) ? JSON.parse(fs.readFileSync(FILE, 'utf8')) : null;
   // Försvinner en kanal ur svaret (tillfälligt fel hos YouTube) – skriv inte över med mindre data.

@@ -24,6 +24,7 @@ const CFG = {
   'serie:vloggar': { kicker: 'Videor', title: 'Vloggar & Pokémon GO', sub: 'Familjen, discgolf, raids och vardagen', vis: { type: 'photo', src: yt('GqrUWpeiAdw') } },
   'ganget': { title: 'Gänget', sub: (content.crew || []).map((m) => m.name).join(' · '), vis: { type: 'avatars' } },
   'historia': { title: 'Genom åren', sub: 'Från 2014 till nästan 8 000 videor', vis: grid(['qhP9CvQkT90', '_cbWmg8ifds', '9ll7uWVLvoM', 'eoqM7BVA1uw'].map(yt)) },
+  'mediakit': { kicker: 'Mediakit', title: 'Chris Whippit', sub: 'Räckvidd, kanaler och samarbeten', vis: portrait },
   'om': { title: 'Om Chris Whippit', sub: 'Svensk YouTuber från Strömstad sedan 2014', vis: portrait },
   'faq': { title: 'Frågor & svar', sub: 'Allt du undrat om Chris Whippit', vis: portrait },
   'setup': { title: 'Setup', sub: 'Datorn, kameran och prylarna jag använder', vis: portrait },

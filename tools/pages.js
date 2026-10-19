@@ -32,4 +32,7 @@ module.exports = [
   { key: 'historia', file: 'historia/index.html', path: 'historia/', crumb: 'Genom åren', type: 'WebPage',
     title: 'Chris Whippit genom åren — tidslinje från 2014 till idag',
     desc: 'Hela resan: från starten 2014 till nästan 8 000 videor. Figgehn & Whippit, Minecraft Let’s Play med Softis, GTA 5, Fortnite, Pokémon GO och milstolparna.' },
+  { key: 'mediakit', file: 'mediakit/index.html', path: 'mediakit/', crumb: 'Mediakit', parent: 'samarbeten', type: 'WebPage',
+    title: 'Mediakit — Chris Whippit: räckvidd, kanaler och samarbeten',
+    desc: 'Chris Whippits mediakit för varumärken: 869K följare, över 390 miljoner visningar på YouTube, kanaler, innehåll, samarbetsformat och tidigare samarbeten.' },
 ];
