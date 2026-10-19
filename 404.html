@@ -27,17 +27,26 @@
 <main>
   <img src="/assets/logo-white.png" alt="Chris Whippit">
   <div class="code">404</div>
-  <h1>Sidan finns inte</h1>
-  <p>Länken kan vara gammal, eller så har sidan flyttat. Börja om från startsidan eller välj något nedan.</p>
-  <a class="btn" href="/">Till startsidan</a>
+  <h1 data-en="Page not found">Sidan finns inte</h1>
+  <p data-en="The link may be old, or the page has moved. Start over from the home page or pick something below.">Länken kan vara gammal, eller så har sidan flyttat. Börja om från startsidan eller välj något nedan.</p>
+  <a class="btn" href="/" data-en="To the home page">Till startsidan</a>
   <nav aria-label="Sidor">
-    <a href="/schema/">Schema</a>
-    <a href="/spel/">Spel</a>
-    <a href="/samarbeten/">Samarbeten</a>
-    <a href="/om/">Om Chris</a>
+    <a href="/schema/" data-en="Schedule">Schema</a>
+    <a href="/spel/" data-en="Games">Spel</a>
+    <a href="/samarbeten/" data-en="Partnerships">Samarbeten</a>
+    <a href="/om/" data-en="About Chris">Om Chris</a>
     <a href="/faq/">FAQ</a>
     <a href="/shop/">Shop</a>
   </nav>
 </main>
+<script>
+  try {
+    if (localStorage.getItem('cw-lang') === 'en') {
+      document.documentElement.lang = 'en';
+      document.title = 'Page not found | Chris Whippit';
+      document.querySelectorAll('[data-en]').forEach(function (el) { el.textContent = el.getAttribute('data-en'); });
+    }
+  } catch (e) {}
+</script>
 </body>
 </html>
