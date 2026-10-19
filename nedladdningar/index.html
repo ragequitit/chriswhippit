@@ -2339,7 +2339,7 @@ textarea.input { min-height: 90px; resize: vertical; }
       <div>
         <span data-en="Media kit" style="font-family: 'JetBrains Mono', monospace; letter-spacing: .14em; text-transform: uppercase; font-size: 11px; color: #b9a2ff;">Mediakit</span>
         <h1 style="font-family: var(--font-heading); font-weight: 600; font-size: clamp(40px, 6vw, 72px); letter-spacing: -.04em; line-height: 1; margin: 12px 0 16px;">Chris Whippit</h1>
-        <p data-en="Swedish YouTuber and streamer from Strömstad, making videos since 2014. Gaming, Pokémon GO, disc golf and everyday life with the family – a new video almost every day for a loyal, Swedish-speaking audience." style="font-size: 18px; line-height: 1.6; color: #dcd8ee; margin: 0; max-width: 58ch; text-wrap: pretty;">Svensk YouTuber och streamare från Strömstad som gjort videor sedan 2014. Gaming, Pokémon GO, discgolf och vardagen med familjen – en ny video nästan varje dag, för en trogen svensktalande publik.</p>
+        <p data-en="Swedish YouTuber from Strömstad, making videos since 2014. Gaming, Pokémon GO, disc golf and everyday life with the family – a new video almost every day for a loyal, Swedish-speaking audience." style="font-size: 18px; line-height: 1.6; color: #dcd8ee; margin: 0; max-width: 58ch; text-wrap: pretty;">Svensk YouTuber från Strömstad som gjort videor sedan 2014. Gaming, Pokémon GO, discgolf och vardagen med familjen – en ny video nästan varje dag, för en trogen svensktalande publik.</p>
         <div data-mk-actions="" style="display: flex; flex-wrap: wrap; gap: 12px; margin-top: 26px;">
           <a href="mailto:chris.whippit@gmail.com?subject=Samarbete" data-btnp="" data-en="Book a partnership →" style="display: inline-flex; align-items: center; gap: 10px; font-size: 15px; font-weight: 600; padding: 14px 22px; background: #7a4af5; color: #fff;">Boka ett samarbete →</a>
           <button type="button" sc-camel-on-click="{{ mkPrint }}" data-btno="" style="font: 600 15px/1 var(--font-body); padding: 13px 20px; border: 1.5px solid #8657FF; background: transparent; color: #ece8ff; cursor: pointer;"><span data-en="Save as PDF">Spara som PDF</span></button>
@@ -3473,14 +3473,12 @@ class Component extends DCLogic {
             ['Dedicated video', 'A whole video built around your game, product or service.'],
             ['Integration', 'A 60–90 second segment inside a regular video, with a link in the description and a pinned comment.'],
             ['Shorts, TikTok & Reels', 'Short vertical clips on YouTube Shorts, TikTok and Instagram.'],
-            ['Livestream', 'Play or show your product live with chat.'],
             ['Giveaway', 'Competitions for the community, on YouTube and in the Discord.'],
             ['Ambassador', 'A long-term partnership across several videos and channels.'],
           ] : [
             ['Dedikerad video', 'En hel video byggd kring ert spel, er produkt eller tjänst.'],
             ['Integration', 'Ett inslag på 60–90 sekunder i en vanlig video, med länk i beskrivningen och fäst kommentar.'],
             ['Shorts, TikTok & Reels', 'Korta, stående klipp på YouTube Shorts, TikTok och Instagram.'],
-            ['Livestream', 'Spela eller visa produkten live tillsammans med chatten.'],
             ['Giveaway', 'Tävlingar för communityn, på YouTube och i Discord.'],
             ['Ambassadör', 'Ett långsiktigt samarbete över flera videor och kanaler.'],
           ]).map(([t, d]) => ({ t, d })),
