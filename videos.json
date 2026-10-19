@@ -1,19 +1,19 @@
 {
- "t": "2026-10-18T05:05:36.078Z",
+ "t": "2026-10-19T05:15:55.826Z",
  "videos": [
+  {
+   "id": "vp3kgmWigcQ",
+   "title": "Vi bygger en HÖFABRIK i Needle in a Haystack med UfoSXM #2",
+   "channel": "ChrisWhippit",
+   "handle": "@chriswhippit",
+   "at": "2026-10-19T04:30:36Z"
+  },
   {
    "id": "MC0ZtkSTd7I",
    "title": "FLOOR IS LAVA I BLOCKED IN - MINECRAFT MED JNX",
    "channel": "Whippit",
    "handle": "@whippitextra",
    "at": "2026-10-18T04:30:17Z"
-  },
-  {
-   "id": "cchN6tM1P3A",
-   "title": "VEM HITTAR 16 GULD INGOTS FÖRST - MINECRAFT UTMANING",
-   "channel": "Whippit",
-   "handle": "@whippitextra",
-   "at": "2026-10-16T04:30:20Z"
   },
   {
    "id": "-WUSMYp3u4k",
@@ -30,11 +30,11 @@
    "at": "2026-10-10T04:30:24Z"
   },
   {
-   "id": "8wdKNbE3vJE",
-   "title": "HITTAR REDAN EN ZOMBIE-VILLAGER - MINECRAFT SKYBLOCK #3",
+   "id": "pzKqq3-xB9Q",
+   "title": "VI KOLLAR IN VRAKET - MINECRAFT SKYBLOCK #4",
    "channel": "Whippit",
    "handle": "@whippitextra",
-   "at": "2026-10-17T04:30:32Z"
+   "at": "2026-10-19T04:30:16Z"
   }
  ],
  "counts": {
@@ -87,6 +87,12 @@
  },
  "seriesVids": {
   "minecraft": [
+   {
+    "id": "pzKqq3-xB9Q",
+    "title": "VI KOLLAR IN VRAKET - MINECRAFT SKYBLOCK #4",
+    "at": "2026-10-19T04:30:16Z",
+    "list": ""
+   },
    {
     "id": "MC0ZtkSTd7I",
     "title": "FLOOR IS LAVA I BLOCKED IN - MINECRAFT MED JNX",
@@ -151,12 +157,6 @@
     "id": "NOqxXGD66C0",
     "title": "NY SKYBLOCK-SERIE I MINECRAFT MED MAMMASPELAR #1",
     "at": "2026-10-05T04:30:12Z",
-    "list": ""
-   },
-   {
-    "id": "ZRpgijZRuW4",
-    "title": "SPIRAL LUCKY BLOCK I MINECRAFT",
-    "at": "2026-10-04T04:30:29Z",
     "list": ""
    }
   ],
