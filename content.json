@@ -1837,6 +1837,54 @@
             "pct": 0.4
           }
         ]
+      },
+      "tiktok": {
+        "updated": "följare, okt 2026, TikTok Studio",
+        "updated_en": "followers, Oct 2026, TikTok Studio",
+        "age": [
+          {
+            "label": "18–24",
+            "pct": 51.1
+          },
+          {
+            "label": "25–34",
+            "pct": 25.1
+          },
+          {
+            "label": "35–44",
+            "pct": 8.8
+          },
+          {
+            "label": "45–54",
+            "pct": 12.6
+          },
+          {
+            "label": "55+",
+            "pct": 2.4
+          }
+        ],
+        "gender": {
+          "men": 64,
+          "women": 35,
+          "other": 1
+        },
+        "countries": [
+          {
+            "label": "Sverige",
+            "label_en": "Sweden",
+            "pct": 64.7
+          },
+          {
+            "label": "Finland",
+            "label_en": "Finland",
+            "pct": 0.6
+          },
+          {
+            "label": "Brasilien",
+            "label_en": "Brazil",
+            "pct": 0.3
+          }
+        ]
       }
     }
   }
