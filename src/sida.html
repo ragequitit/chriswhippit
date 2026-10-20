@@ -1512,6 +1512,13 @@ textarea.input { min-height: 90px; resize: vertical; }
           <div style="font-family: var(--font-heading); font-size: clamp(28px, 3vw, 36px); font-weight: 800; letter-spacing: -.03em;">{{ statVideos }}</div>
           <div data-en="videos published" style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--color-neutral-500); margin-top: 8px;">videor publicerade</div>
         </div>
+        <sc-if value="{{ statViews }}">
+        <span aria-hidden="true" style="flex: 0 0 1px; align-self: stretch; background: linear-gradient(180deg, rgba(255,255,255,0), rgba(255,255,255,.14), rgba(255,255,255,0));"></span>
+        <div style="flex: 1 1 180px; text-align: center; padding: 6px 18px;">
+          <div style="font-family: var(--font-heading); font-size: clamp(28px, 3vw, 36px); font-weight: 800; letter-spacing: -.03em;">{{ statViews }}</div>
+          <div data-en="views on YouTube" style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--color-neutral-500); margin-top: 8px;">visningar på YouTube</div>
+        </div>
+        </sc-if>
       </div>
     </section>
 
@@ -3202,6 +3209,7 @@ class Component extends DCLogic {
       })),
       statYouTube: cwFmt(ytSum),
       statTotal: cwFmt(ytSum + otherSum),
+      statViews: (() => { const m = this.state.mediaStats || {}; const v = ['chriswhippit', 'whippitsson', 'figgwhipp', 'whippitextra'].reduce((a, h) => a + ((m[h] || {}).views || 0), 0); return v >= 1e6 ? Math.floor(v / 1e6) + 'M' : ''; })(),
       // Milstolpsräknaren: mot 1 miljon följare totalt (YouTube automatiskt, övriga från content.json).
       ...(() => {
         const GOAL = 1e6, tot = ytSum + otherSum, en = this.state.lang === 'en';
