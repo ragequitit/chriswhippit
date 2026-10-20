@@ -2353,11 +2353,11 @@ textarea.input { min-height: 90px; resize: vertical; }
     <div data-mk-table="" style="background: var(--color-surface); box-shadow: 0 0 0 1px var(--color-neutral-800);">
       <sc-for list="{{ mkChannels }}" as="c" hint-placeholder-count="8">
         <div data-mk-item="" data-open="{{ c.open }}" style="border-bottom: 1px solid var(--color-neutral-800);">
-        <button type="button" data-mk-row="" data-static="{{ c.static }}" aria-expanded="{{ c.expanded }}" sc-camel-on-click="{{ c.onToggle }}" style="display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) minmax(0, 1fr) auto; gap: 12px; align-items: baseline; width: 100%; padding: 13px 18px; border: 0; background: transparent; color: var(--color-text); font: inherit; text-align: left; cursor: pointer;">
+        <button type="button" data-mk-row="" data-static="{{ c.static }}" aria-expanded="{{ c.expanded }}" sc-camel-on-click="{{ c.onToggle }}" style="display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 0.9fr) minmax(0, 1.5fr) 96px; gap: 12px; align-items: baseline; width: 100%; padding: 13px 18px; border: 0; background: transparent; color: var(--color-text); font: inherit; text-align: left; cursor: pointer;">
           <span><b style="font-weight: 600;">{{ c.name }}</b> <span style="color: var(--color-neutral-500); font-size: 13px;">{{ c.platform }}</span></span>
           <span style="font-family: var(--font-heading); font-weight: 700;">{{ c.followers }} <span style="font-family: var(--font-body); font-weight: 400; font-size: 13px; color: var(--color-neutral-500);">{{ c.followersLabel }}</span></span>
           <span style="font-size: 14px; color: var(--color-neutral-400);">{{ c.extra }}</span>
-          <span data-mk-more="" style="font-size: 13px; font-weight: 600; color: var(--color-accent-200); white-space: nowrap;">{{ c.moreLabel }}</span>
+          <span data-mk-more="" style="font-size: 13px; font-weight: 600; color: var(--color-accent-200); white-space: nowrap; text-align: right;">{{ c.moreLabel }}</span>
         </button>
         <sc-if value="{{ c.open }}">
           <div data-mk-panel="" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 18px 28px; padding: 6px 18px 20px;">
