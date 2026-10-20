@@ -1518,6 +1518,7 @@ textarea.input { min-height: 90px; resize: vertical; }
   /* Mediakit */
   @media (max-width: 760px) { [data-mk-hero] { grid-template-columns: minmax(0, 1fr) !important; } [data-mk-hero] > img { max-width: 200px; order: -1; } [data-mk-row] { grid-template-columns: minmax(0, 1fr) auto !important; } [data-mk-row] > span:nth-child(3) { grid-column: 1 / -1; } [data-mk-row] > [data-mk-more] { grid-row: 1; grid-column: 2; } }
   [data-mk-row]:hover { background: rgba(134,87,255,.06) !important; }
+  [data-mk-row][data-static="1"] { cursor: default !important; background: transparent !important; }
   [data-mk-item][data-open="1"] { background: rgba(134,87,255,.05); }
   @media print { [data-mk-more] { display: none !important; } }
   @media print {
@@ -2345,7 +2346,7 @@ textarea.input { min-height: 90px; resize: vertical; }
     <div data-mk-table="" style="background: var(--color-surface); box-shadow: 0 0 0 1px var(--color-neutral-800);">
       <sc-for list="{{ mkChannels }}" as="c" hint-placeholder-count="8">
         <div data-mk-item="" data-open="{{ c.open }}" style="border-bottom: 1px solid var(--color-neutral-800);">
-        <button type="button" data-mk-row="" aria-expanded="{{ c.expanded }}" sc-camel-on-click="{{ c.onToggle }}" style="display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) minmax(0, 1fr) auto; gap: 12px; align-items: baseline; width: 100%; padding: 13px 18px; border: 0; background: transparent; color: var(--color-text); font: inherit; text-align: left; cursor: pointer;">
+        <button type="button" data-mk-row="" data-static="{{ c.static }}" aria-expanded="{{ c.expanded }}" sc-camel-on-click="{{ c.onToggle }}" style="display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) minmax(0, 1fr) auto; gap: 12px; align-items: baseline; width: 100%; padding: 13px 18px; border: 0; background: transparent; color: var(--color-text); font: inherit; text-align: left; cursor: pointer;">
           <span><b style="font-weight: 600;">{{ c.name }}</b> <span style="color: var(--color-neutral-500); font-size: 13px;">{{ c.platform }}</span></span>
           <span style="font-family: var(--font-heading); font-weight: 700;">{{ c.followers }} <span style="font-family: var(--font-body); font-weight: 400; font-size: 13px; color: var(--color-neutral-500);">{{ c.followersLabel }}</span></span>
           <span style="font-size: 14px; color: var(--color-neutral-400);">{{ c.extra }}</span>
@@ -3480,6 +3481,8 @@ class Component extends DCLogic {
             ...others.map(([p, url]) => ({ id: p.toLowerCase(), name: p, platform: '@chriswhippit', url, followers: big(stat(p)), followersLabel: fol, extra: '' })),
           ].map((c) => {
             const a = (((this.state.content || {}).mediakit || {}).audience || {})[c.id] || {};
+            // Figgehn & Whippit tar inte samarbeten längre – raden visas men fälls inte ut.
+            if (c.id === 'figgwhipp') return { ...c, static: '1', open: '', expanded: 'false', moreLabel: '', onToggle: undefined };
             const open = this.state.mkOpen === c.id;
             const pc = (n) => (Math.round((+n || 0) * 10) / 10).toLocaleString(en ? 'en-GB' : 'sv-SE', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + ' %';
             const age = (a.age || []).map((x) => ({ label: x.label, pct: pc(x.pct), w: String(Math.min(100, +x.pct || 0)) }));
