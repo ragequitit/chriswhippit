@@ -1885,6 +1885,83 @@
             "pct": 0.3
           }
         ]
+      },
+      "whippitextra": {
+        "updated": "senaste 365 dagarna (okt 2025–okt 2026), YouTube Studio – ny kanal, flest videor från 2026",
+        "updated_en": "last 365 days (Oct 2025–Oct 2026), YouTube Studio – new channel, most videos from 2026",
+        "age": [
+          {
+            "label": "13–17",
+            "pct": 16
+          },
+          {
+            "label": "18–24",
+            "pct": 30.4
+          },
+          {
+            "label": "25–34",
+            "pct": 33.2
+          },
+          {
+            "label": "35–44",
+            "pct": 12.8
+          },
+          {
+            "label": "45–54",
+            "pct": 6.8
+          },
+          {
+            "label": "55–64",
+            "pct": 0.8
+          },
+          {
+            "label": "65+",
+            "pct": 0
+          }
+        ],
+        "gender": {
+          "men": 83.9,
+          "women": 16
+        },
+        "countries": [
+          {
+            "label": "Sverige",
+            "label_en": "Sweden",
+            "pct": 95.8
+          },
+          {
+            "label": "Finland",
+            "label_en": "Finland",
+            "pct": 0.8
+          },
+          {
+            "label": "Norge",
+            "label_en": "Norway",
+            "pct": 0.1
+          }
+        ],
+        "devices": [
+          {
+            "label": "TV",
+            "label_en": "TV",
+            "pct": 39.9
+          },
+          {
+            "label": "Mobil",
+            "label_en": "Mobile",
+            "pct": 26.2
+          },
+          {
+            "label": "Dator",
+            "label_en": "Computer",
+            "pct": 25
+          },
+          {
+            "label": "Surfplatta",
+            "label_en": "Tablet",
+            "pct": 8.8
+          }
+        ]
       }
     }
   }
