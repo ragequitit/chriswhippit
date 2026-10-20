@@ -2444,6 +2444,7 @@ textarea.input { min-height: 90px; resize: vertical; }
     <div data-mk-contact="" style="background: var(--color-surface); box-shadow: 0 0 0 1px var(--color-neutral-800); margin-top: 56px; padding: 26px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 18px; box-shadow: 0 0 0 1px rgba(134,87,255,.5);">
       <div>
         <div data-en="Get in touch" style="font-family: var(--font-heading); font-weight: 700; font-size: 22px;">Hör av dig</div>
+        <div data-en="Price and setup are tailored to each partnership – get in touch and we’ll take it from there." style="color: var(--color-neutral-400); margin-top: 4px;">Pris och upplägg tas fram för varje samarbete – hör av dig så tar vi det därifrån.</div>
         <div style="color: var(--color-neutral-400); margin-top: 4px;"><span data-en="Email:">Mejl:</span> <a href="mailto:chris.whippit@gmail.com?subject=Samarbete" style="color: #fff; text-decoration: underline; text-underline-offset: 3px;">chris.whippit@gmail.com</a></div>
       </div>
       <a href="mailto:chris.whippit@gmail.com?subject=Samarbete" data-btnp="" data-en="Book a partnership →" style="font-size: 15px; font-weight: 600; padding: 14px 22px; background: #7a4af5; color: #fff;">Boka ett samarbete →</a>
@@ -3515,8 +3516,8 @@ class Component extends DCLogic {
             ...others.map(([p, url]) => ({ id: p.toLowerCase(), name: p, platform: '@chriswhippit', url, followers: big(stat(p)), followersLabel: fol, extra: '' })),
           ].map((c) => {
             const a = (((this.state.content || {}).mediakit || {}).audience || {})[c.id] || {};
-            // Figgehn & Whippit tar inte samarbeten längre – raden visas men fälls inte ut.
-            if (c.id === 'figgwhipp') return { ...c, static: '1', open: '', expanded: 'false', moreLabel: '', onToggle: undefined };
+            // Figgehn & Whippit, Twitch och X: inga samarbeten där – raden visas men fälls inte ut.
+            if (['figgwhipp', 'twitch', 'x'].includes(c.id)) return { ...c, static: '1', open: '', expanded: 'false', moreLabel: '', onToggle: undefined };
             const open = this.state.mkOpen === c.id;
             const pc = (n) => (Math.round((+n || 0) * 10) / 10).toLocaleString(en ? 'en-GB' : 'sv-SE', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + ' %';
             const age = (a.age || []).map((x) => ({ label: x.label, pct: pc(x.pct), w: String(Math.min(100, +x.pct || 0)) }));
