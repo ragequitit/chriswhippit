@@ -2379,15 +2379,19 @@ textarea.input { min-height: 90px; resize: vertical; }
           <div data-mk-panel="" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 18px 28px; padding: 6px 18px 20px;">
             <sc-if value="{{ c.hasAge }}"><div>
               <div data-en="Age" style="font-family: 'JetBrains Mono', monospace; letter-spacing: .14em; text-transform: uppercase; font-size: 10px; color: #b9a2ff; margin-bottom: 8px;">Ålder</div>
-              <sc-for list="{{ c.age }}" as="a" hint-placeholder-count="5"><div style="display: grid; grid-template-columns: 52px minmax(0, 1fr) 40px; gap: 8px; align-items: center; font-size: 13px; margin: 5px 0;"><span style="color: var(--color-neutral-400);">{{ a.label }}</span><span style="position: relative; height: 6px; border-radius: 999px; background: rgba(255,255,255,.08); overflow: hidden;"><span style="position: absolute; inset: 0 auto 0 0; width: {{ a.w }}%; border-radius: 999px; background: #8657FF;"></span></span><span style="text-align: right;">{{ a.pct }}</span></div></sc-for>
+              <sc-for list="{{ c.age }}" as="a" hint-placeholder-count="5"><div style="display: grid; grid-template-columns: 52px minmax(0, 1fr) 58px; gap: 8px; align-items: center; font-size: 13px; margin: 5px 0;"><span style="color: var(--color-neutral-400);">{{ a.label }}</span><span style="position: relative; height: 6px; border-radius: 999px; background: rgba(255,255,255,.08); overflow: hidden;"><span style="position: absolute; inset: 0 auto 0 0; width: {{ a.w }}%; border-radius: 999px; background: #8657FF;"></span></span><span style="text-align: right; white-space: nowrap;">{{ a.pct }}</span></div></sc-for>
             </div></sc-if>
             <sc-if value="{{ c.hasGender }}"><div>
               <div data-en="Gender" style="font-family: 'JetBrains Mono', monospace; letter-spacing: .14em; text-transform: uppercase; font-size: 10px; color: #b9a2ff; margin-bottom: 8px;">Kön</div>
-              <sc-for list="{{ c.gender }}" as="g" hint-placeholder-count="2"><div style="display: grid; grid-template-columns: 64px minmax(0, 1fr) 40px; gap: 8px; align-items: center; font-size: 13px; margin: 5px 0;"><span style="color: var(--color-neutral-400);">{{ g.label }}</span><span style="position: relative; height: 6px; border-radius: 999px; background: rgba(255,255,255,.08); overflow: hidden;"><span style="position: absolute; inset: 0 auto 0 0; width: {{ g.w }}%; border-radius: 999px; background: #8657FF;"></span></span><span style="text-align: right;">{{ g.pct }}</span></div></sc-for>
+              <sc-for list="{{ c.gender }}" as="g" hint-placeholder-count="2"><div style="display: grid; grid-template-columns: 64px minmax(0, 1fr) 58px; gap: 8px; align-items: center; font-size: 13px; margin: 5px 0;"><span style="color: var(--color-neutral-400);">{{ g.label }}</span><span style="position: relative; height: 6px; border-radius: 999px; background: rgba(255,255,255,.08); overflow: hidden;"><span style="position: absolute; inset: 0 auto 0 0; width: {{ g.w }}%; border-radius: 999px; background: #8657FF;"></span></span><span style="text-align: right; white-space: nowrap;">{{ g.pct }}</span></div></sc-for>
             </div></sc-if>
             <sc-if value="{{ c.hasCountries }}"><div>
               <div data-en="Countries" style="font-family: 'JetBrains Mono', monospace; letter-spacing: .14em; text-transform: uppercase; font-size: 10px; color: #b9a2ff; margin-bottom: 8px;">Länder</div>
               <sc-for list="{{ c.countries }}" as="k" hint-placeholder-count="3"><div style="display: flex; justify-content: space-between; font-size: 13px; margin: 5px 0;"><span style="color: var(--color-neutral-400);">{{ k.label }}</span><span>{{ k.pct }}</span></div></sc-for>
+            </div></sc-if>
+            <sc-if value="{{ c.hasDevices }}"><div>
+              <div data-en="Devices (watch time)" style="font-family: 'JetBrains Mono', monospace; letter-spacing: .14em; text-transform: uppercase; font-size: 10px; color: #b9a2ff; margin-bottom: 8px;">Enheter (visningstid)</div>
+              <sc-for list="{{ c.devices }}" as="d" hint-placeholder-count="4"><div style="display: grid; grid-template-columns: 76px minmax(0, 1fr) 58px; gap: 8px; align-items: center; font-size: 13px; margin: 5px 0;"><span style="color: var(--color-neutral-400);">{{ d.label }}</span><span style="position: relative; height: 6px; border-radius: 999px; background: rgba(255,255,255,.08); overflow: hidden;"><span style="position: absolute; inset: 0 auto 0 0; width: {{ d.w }}%; border-radius: 999px; background: #8657FF;"></span></span><span style="text-align: right; white-space: nowrap;">{{ d.pct }}</span></div></sc-for>
             </div></sc-if>
             <sc-if value="{{ c.noAudience }}"><p data-en="Audience data is being added." style="margin: 0; font-size: 14px; color: var(--color-neutral-400);">Publikdata läggs till inom kort.</p></sc-if>
             <div style="grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 6px 18px; align-items: baseline; font-size: 13px;">
@@ -3501,18 +3505,20 @@ class Component extends DCLogic {
           ].map((c) => {
             const a = (((this.state.content || {}).mediakit || {}).audience || {})[c.id] || {};
             const open = this.state.mkOpen === c.id;
-            const pc = (n) => Math.round(+n || 0) + ' %';
+            const pc = (n) => (Math.round((+n || 0) * 10) / 10).toLocaleString(en ? 'en-GB' : 'sv-SE', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + ' %';
             const age = (a.age || []).map((x) => ({ label: x.label, pct: pc(x.pct), w: String(Math.min(100, +x.pct || 0)) }));
             const gl = { men: en ? 'Men' : 'Män', women: en ? 'Women' : 'Kvinnor', other: en ? 'Other' : 'Annat' };
             const gender = Object.entries(a.gender || {}).map(([k, v]) => ({ label: gl[k] || k, pct: pc(v), w: String(Math.min(100, +v || 0)) }));
             const countries = (a.countries || []).map((x) => ({ label: (en && x.label_en) || x.label, pct: pc(x.pct) }));
+            const devices = (a.devices || []).map((x) => ({ label: (en && x.label_en) || x.label, pct: pc(x.pct), w: String(Math.min(100, +x.pct || 0)) }));
             return { ...c, open: open ? '1' : '', expanded: open ? 'true' : 'false',
               moreLabel: open ? (en ? 'Close ▴' : 'Stäng ▴') : (en ? 'Read more ▾' : 'Läs mer ▾'),
               onToggle: () => this.setState({ mkOpen: open ? null : c.id }),
               age, hasAge: age.length ? '1' : '', gender, hasGender: gender.length ? '1' : '', countries, hasCountries: countries.length ? '1' : '',
-              noAudience: age.length || gender.length || countries.length ? '' : '1',
+              devices, hasDevices: devices.length ? '1' : '',
+              noAudience: age.length || gender.length || countries.length || devices.length ? '' : '1',
               goLabel: en ? 'Go to the channel ↗' : 'Gå till kanalen ↗',
-              updated: a.updated ? (en ? 'Audience data from ' : 'Publikdata från ') + a.updated : '' };
+              updated: a.updated ? (en ? 'Audience data: ' + (a.updated_en || a.updated) : 'Publikdata: ' + a.updated) : '' };
           }),
           mkFormats: (en ? [
             ['Dedicated video', 'A whole video built around your game, product or service.'],

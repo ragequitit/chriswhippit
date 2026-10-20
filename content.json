@@ -1626,5 +1626,86 @@
         }
       ]
     }
-  ]
+  ],
+  "mediakit": {
+    "audience": {
+      "chriswhippit": {
+        "updated": "senaste 365 dagarna (okt 2025–okt 2026), YouTube Studio",
+        "updated_en": "last 365 days (Oct 2025–Oct 2026), YouTube Studio",
+        "age": [
+          {
+            "label": "13–17",
+            "pct": 16.8
+          },
+          {
+            "label": "18–24",
+            "pct": 30.7
+          },
+          {
+            "label": "25–34",
+            "pct": 28.2
+          },
+          {
+            "label": "35–44",
+            "pct": 12.5
+          },
+          {
+            "label": "45–54",
+            "pct": 9.2
+          },
+          {
+            "label": "55–64",
+            "pct": 2.1
+          },
+          {
+            "label": "65+",
+            "pct": 0.5
+          }
+        ],
+        "gender": {
+          "men": 84.3,
+          "women": 15.6
+        },
+        "countries": [
+          {
+            "label": "Sverige",
+            "label_en": "Sweden",
+            "pct": 96
+          },
+          {
+            "label": "Finland",
+            "label_en": "Finland",
+            "pct": 1.1
+          },
+          {
+            "label": "Norge",
+            "label_en": "Norway",
+            "pct": 0.5
+          }
+        ],
+        "devices": [
+          {
+            "label": "TV",
+            "label_en": "TV",
+            "pct": 47.9
+          },
+          {
+            "label": "Mobil",
+            "label_en": "Mobile",
+            "pct": 25.2
+          },
+          {
+            "label": "Dator",
+            "label_en": "Computer",
+            "pct": 19.4
+          },
+          {
+            "label": "Surfplatta",
+            "label_en": "Tablet",
+            "pct": 7.4
+          }
+        ]
+      }
+    }
+  }
 }
