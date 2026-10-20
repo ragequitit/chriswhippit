@@ -1,6 +1,13 @@
 {
- "t": "2026-10-20T01:13:57.388Z",
+ "t": "2026-10-20T06:33:10.188Z",
  "videos": [
+  {
+   "id": "MIKbNTI2tzQ",
+   "title": "MINECRAFT BINGO 2026 MED JNX",
+   "channel": "Whippit",
+   "handle": "@whippitextra",
+   "at": "2026-10-20T04:30:10Z"
+  },
   {
    "id": "vp3kgmWigcQ",
    "title": "Vi bygger en HÖFABRIK i Needle in a Haystack med UfoSXM #2",
@@ -9,18 +16,11 @@
    "at": "2026-10-19T04:30:36Z"
   },
   {
-   "id": "MC0ZtkSTd7I",
-   "title": "FLOOR IS LAVA I BLOCKED IN - MINECRAFT MED JNX",
-   "channel": "Whippit",
-   "handle": "@whippitextra",
-   "at": "2026-10-18T04:30:17Z"
-  },
-  {
-   "id": "-WUSMYp3u4k",
-   "title": "6 500 000 HÖSTRÅN i Needle in a Haystack med UfoSXM #1",
+   "id": "_ufUZ7w-Dz4",
+   "title": "ALIENS TAR GÄSTERNA i Waterpark Simulator med UfoSXM",
    "channel": "ChrisWhippit",
    "handle": "@chriswhippit",
-   "at": "2026-10-16T04:30:14Z"
+   "at": "2026-10-20T04:30:04Z"
   },
   {
    "id": "9XSzCQFFMyc",
@@ -38,7 +38,7 @@
   }
  ],
  "counts": {
-  "chriswhippit": 4529,
+  "chriswhippit": 4530,
   "whippitsson": 534,
   "figgwhipp": 2848,
   "whippitextra": 81
@@ -87,6 +87,12 @@
  },
  "seriesVids": {
   "minecraft": [
+   {
+    "id": "MIKbNTI2tzQ",
+    "title": "MINECRAFT BINGO 2026 MED JNX",
+    "at": "2026-10-20T04:30:10Z",
+    "list": ""
+   },
    {
     "id": "pzKqq3-xB9Q",
     "title": "VI KOLLAR IN VRAKET - MINECRAFT SKYBLOCK #4",
@@ -151,12 +157,6 @@
     "id": "qqDQ4c6jN9I",
     "title": "MINECRAFT LUCKY BLOCK RACE I EN MINECART",
     "at": "2026-10-06T04:30:00Z",
-    "list": ""
-   },
-   {
-    "id": "NOqxXGD66C0",
-    "title": "NY SKYBLOCK-SERIE I MINECRAFT MED MAMMASPELAR #1",
-    "at": "2026-10-05T04:30:12Z",
     "list": ""
    }
   ],
@@ -545,9 +545,9 @@
  "media": {
   "chriswhippit": {
    "views": 243762000,
-   "avgViews": 6400,
-   "avgSample": 38,
-   "uploads30": 28
+   "avgViews": 6500,
+   "avgSample": 37,
+   "uploads30": 30
   },
   "whippitsson": {
    "views": 50354000,
@@ -556,7 +556,7 @@
    "uploads30": 3
   },
   "figgwhipp": {
-   "views": 97203000,
+   "views": 97204000,
    "avgViews": 0,
    "avgSample": 0,
    "uploads30": 0
@@ -564,7 +564,7 @@
   "whippitextra": {
    "views": 217000,
    "avgViews": 4700,
-   "avgSample": 28,
+   "avgSample": 29,
    "uploads30": 25
   }
  }
