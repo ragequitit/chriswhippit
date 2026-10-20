@@ -1705,6 +1705,83 @@
             "pct": 7.4
           }
         ]
+      },
+      "whippitsson": {
+        "updated": "senaste 365 dagarna (okt 2025–okt 2026), YouTube Studio",
+        "updated_en": "last 365 days (Oct 2025–Oct 2026), YouTube Studio",
+        "age": [
+          {
+            "label": "13–17",
+            "pct": 25.3
+          },
+          {
+            "label": "18–24",
+            "pct": 26.9
+          },
+          {
+            "label": "25–34",
+            "pct": 28.4
+          },
+          {
+            "label": "35–44",
+            "pct": 10
+          },
+          {
+            "label": "45–54",
+            "pct": 8.4
+          },
+          {
+            "label": "55–64",
+            "pct": 0.9
+          },
+          {
+            "label": "65+",
+            "pct": 0.1
+          }
+        ],
+        "gender": {
+          "men": 94.7,
+          "women": 5.3
+        },
+        "countries": [
+          {
+            "label": "Sverige",
+            "label_en": "Sweden",
+            "pct": 96.2
+          },
+          {
+            "label": "Finland",
+            "label_en": "Finland",
+            "pct": 0.6
+          },
+          {
+            "label": "Norge",
+            "label_en": "Norway",
+            "pct": 0.3
+          }
+        ],
+        "devices": [
+          {
+            "label": "TV",
+            "label_en": "TV",
+            "pct": 44.5
+          },
+          {
+            "label": "Dator",
+            "label_en": "Computer",
+            "pct": 24.5
+          },
+          {
+            "label": "Mobil",
+            "label_en": "Mobile",
+            "pct": 23.4
+          },
+          {
+            "label": "Surfplatta",
+            "label_en": "Tablet",
+            "pct": 7.6
+          }
+        ]
       }
     }
   }
