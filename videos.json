@@ -1,19 +1,12 @@
 {
- "t": "2026-10-20T20:31:52.717Z",
+ "t": "2026-10-21T07:30:10.839Z",
  "videos": [
   {
-   "id": "MIKbNTI2tzQ",
-   "title": "MINECRAFT BINGO 2026 MED JNX",
+   "id": "G9OsINCyz2E",
+   "title": "DEN SOM HITTAR 16 IRON INGOTS FÖRST VINNER - MINECRAFT UTMANING",
    "channel": "Whippit",
    "handle": "@whippitextra",
-   "at": "2026-10-20T04:30:10Z"
-  },
-  {
-   "id": "vp3kgmWigcQ",
-   "title": "Vi bygger en HÖFABRIK i Needle in a Haystack med UfoSXM #2",
-   "channel": "ChrisWhippit",
-   "handle": "@chriswhippit",
-   "at": "2026-10-19T04:30:36Z"
+   "at": "2026-10-21T04:30:29Z"
   },
   {
    "id": "_ufUZ7w-Dz4",
@@ -23,6 +16,13 @@
    "at": "2026-10-20T04:30:04Z"
   },
   {
+   "id": "iGfrblmwa9E",
+   "title": "CARRO SKRÄMDE MIG i Shift at Midnight med UfoSXM",
+   "channel": "ChrisWhippit",
+   "handle": "@chriswhippit",
+   "at": "2026-10-21T04:30:05Z"
+  },
+  {
    "id": "9XSzCQFFMyc",
    "title": "RAIDAR SPACE-PIKACHU MED MIN SON | POKÉMON GO",
    "channel": "Chris Whippit Vloggar",
@@ -30,15 +30,15 @@
    "at": "2026-10-10T04:30:24Z"
   },
   {
-   "id": "pzKqq3-xB9Q",
-   "title": "VI KOLLAR IN VRAKET - MINECRAFT SKYBLOCK #4",
+   "id": "MIKbNTI2tzQ",
+   "title": "MINECRAFT BINGO 2026 MED JNX",
    "channel": "Whippit",
    "handle": "@whippitextra",
-   "at": "2026-10-19T04:30:16Z"
+   "at": "2026-10-20T04:30:10Z"
   }
  ],
  "counts": {
-  "chriswhippit": 4530,
+  "chriswhippit": 4532,
   "whippitsson": 534,
   "figgwhipp": 2848,
   "whippitextra": 81
@@ -87,6 +87,12 @@
  },
  "seriesVids": {
   "minecraft": [
+   {
+    "id": "G9OsINCyz2E",
+    "title": "DEN SOM HITTAR 16 IRON INGOTS FÖRST VINNER - MINECRAFT UTMANING",
+    "at": "2026-10-21T04:30:29Z",
+    "list": ""
+   },
    {
     "id": "MIKbNTI2tzQ",
     "title": "MINECRAFT BINGO 2026 MED JNX",
@@ -151,12 +157,6 @@
     "id": "i8-WZgYpm8Q",
     "title": "GE EN VILLAGER ETT JOBB OCH DU VINNER - MINECRAFT UTMANING",
     "at": "2026-10-07T04:30:33Z",
-    "list": ""
-   },
-   {
-    "id": "qqDQ4c6jN9I",
-    "title": "MINECRAFT LUCKY BLOCK RACE I EN MINECART",
-    "at": "2026-10-06T04:30:00Z",
     "list": ""
    }
   ],
@@ -544,27 +544,27 @@
  },
  "media": {
   "chriswhippit": {
-   "views": 243773000,
-   "avgViews": 6600,
-   "avgSample": 37,
-   "uploads30": 30
+   "views": 243791000,
+   "avgViews": 6800,
+   "avgSample": 35,
+   "uploads30": 32
   },
   "whippitsson": {
-   "views": 50354000,
+   "views": 50355000,
    "avgViews": 19000,
    "avgSample": 5,
    "uploads30": 3
   },
   "figgwhipp": {
-   "views": 97205000,
+   "views": 97206000,
    "avgViews": 0,
    "avgSample": 0,
    "uploads30": 0
   },
   "whippitextra": {
-   "views": 219000,
+   "views": 221000,
    "avgViews": 4800,
-   "avgSample": 29,
+   "avgSample": 30,
    "uploads30": 25
   }
  }
