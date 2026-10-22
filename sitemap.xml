@@ -138,10 +138,4 @@
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
-  <url>
-    <loc>https://www.chriswhippit.com/blogg/en-lordag/</loc>
-    <lastmod>2026-10-17</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.5</priority>
-  </url>
 </urlset>

@@ -10,6 +10,9 @@ const SITE = 'https://www.chriswhippit.com/';
 const read = (f) => fs.readFileSync(path.join(root, f), 'utf8').replace(/\r\n/g, '\n');
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 const SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+// Bloggen är inte lanserad än: inläggen får noindex och hålls utanför sitemap.xml.
+// Sätt till true när Chris vill visa bloggen (ändra då även robots-taggen i blogg/index.html).
+const PUBLIC = false;
 
 const content = JSON.parse(read('content.json'));
 const posts = (content.blog || []).filter((p) => p && p.title && SLUG.test(p.slug || '') && p.slug.length <= 80 && !p.hidden)
@@ -49,6 +52,7 @@ function head(p) {
   set(/(<meta name="twitter:image" content=")[^"]*(")/, esc(share));
   // Delningsbildens storlek: 1200×630 bara när admin gjort en sådan (p.share), annars okänd.
   if (!p.share) h = h.replace(/<meta property="og:image:width"[^>]*>\n/, '').replace(/<meta property="og:image:height"[^>]*>\n/, '');
+  if (!PUBLIC) h = h.replace(/<meta name="robots" content="[^"]*">/, '<meta name="robots" content="noindex, follow">');
   if (p.date) h = h.replace('<meta property="og:locale"', `<meta property="article:published_time" content="${esc(p.date)}">\n<meta property="og:locale"`);
   h = h.replace(/(<script type="application\/ld\+json">)([\s\S]*?)(<\/script>)/, (m, a, json, b) => {
     const j = JSON.parse(json);
@@ -93,7 +97,7 @@ let sm = read('sitemap.xml');
 sm = sm.replace(/  <url>\n    <loc>https:\/\/www\.chriswhippit\.com\/blogg\/[a-z0-9-]+\/<\/loc>[\s\S]*?<\/url>\n/g, '');
 const newest = posts[0] && (posts[0].updated || posts[0].date);
 if (newest) sm = sm.replace(/(<loc>https:\/\/www\.chriswhippit\.com\/blogg\/<\/loc>\n    <lastmod>)[^<]*(<\/lastmod>)/, (m, a, b) => a + newest + b);
-const urls = posts.map((p) => `  <url>\n    <loc>${SITE}blogg/${p.slug}/</loc>\n${p.date ? `    <lastmod>${p.updated || p.date}</lastmod>\n` : ''}    <changefreq>yearly</changefreq>\n    <priority>0.5</priority>\n  </url>\n`).join('');
+const urls = !PUBLIC ? '' : posts.map((p) => `  <url>\n    <loc>${SITE}blogg/${p.slug}/</loc>\n${p.date ? `    <lastmod>${p.updated || p.date}</lastmod>\n` : ''}    <changefreq>yearly</changefreq>\n    <priority>0.5</priority>\n  </url>\n`).join('');
 sm = sm.replace('</urlset>', () => urls + '</urlset>');
 if (sm !== read('sitemap.xml')) { fs.writeFileSync(path.join(root, 'sitemap.xml'), sm); console.log('uppdaterade sitemap.xml'); }
 console.log(posts.length, 'inlägg');
