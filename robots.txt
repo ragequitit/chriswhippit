@@ -3,5 +3,23 @@ Allow: /
 Disallow: /admin/
 Disallow: /tools/
 Disallow: /src/
+# Mallkod ({{ ... }}) som Google ibland tolkar som länkar.
+Disallow: /*{{
+Disallow: /*%7B%7B
+# Påhittade adresser som /schema/faq/ (Google gissar från sidornas kod). Inga riktiga sidor ligger så.
+Disallow: /*/setup/
+Disallow: /*/schema/
+Disallow: /*/faq/
+Disallow: /*/nedladdningar/
+Disallow: /*/shop/
+Disallow: /*/spel/
+Disallow: /*/samarbeten/
+Disallow: /*/om/
+Disallow: /*/integritetspolicy/
+Disallow: /*/videor/
+Disallow: /*/ganget/
+Disallow: /*/historia/
+Disallow: /*/mediakit/
+Disallow: /*/blogg/
 
 Sitemap: https://www.chriswhippit.com/sitemap.xml
