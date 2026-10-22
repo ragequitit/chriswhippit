@@ -1,0 +1,31 @@
+# Skapar/uppdaterar bloggens inläggssidor (blogg/<slug>/) och sitemap när content.json ändras,
+# t.ex. när ett inlägg publiceras från admin.
+name: Blogg
+on:
+  push:
+    branches: [main]
+    paths: ['content.json']
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency: blog-build
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: node tools/build-blog.js
+      - name: Spara om något ändrats
+        run: |
+          git add -A blogg sitemap.xml
+          if ! git diff --cached --quiet; then
+            git config user.name "blogg"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git commit -m "Blogg: inläggssidor uppdaterade"
+            # Pipelinen eller admin kan ha pushat under tiden – lägg vår commit ovanpå.
+            for i in 1 2 3; do git pull --rebase origin main && git push && break; sleep 5; done
+          fi
