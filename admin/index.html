@@ -5800,47 +5800,66 @@ textarea.input { min-height: 90px; resize: vertical; }
         <sc-if value="{{ onBlog }}">
           <div style="display: flex; flex-direction: column; gap: 16px;">
             <button data-btn="" sc-camel-on-click="{{ addPost }}" style="align-self: start; padding: 11px 16px; border: 1px dashed var(--color-neutral-700); background: transparent; color: var(--color-neutral-300); font-size: 14px;" style-hover="border-color: var(--color-accent-600); color: var(--color-accent-300);">+ Nytt inlägg</button>
-            <sc-for list="{{ blogRows }}" as="row" hint-placeholder-count="2">
-              <div data-row="" style="background: var(--color-surface); box-shadow: 0 0 0 1px var(--color-neutral-800); padding: 16px 18px 18px; display: flex; flex-direction: column; gap: 10px;">
-                <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
-                  <span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--color-neutral-500);">{{ row.status }}</span>
-                  <sc-if value="{{ row.url }}"><a href="{{ row.url }}" target="_blank" rel="noopener" style="font-size: 12px; color: var(--color-accent-300);">Visa på sajten ↗</a></sc-if>
-                  <span style="flex: 1 1 auto;"></span>
-                  <button data-btn="" sc-camel-on-click="{{ row.onHidden }}" title="Ett dolt inlägg syns inte på sajten" style="padding: 7px 11px; border: 1px solid var(--color-neutral-800); background: transparent; color: var(--color-neutral-400); font-size: 12px; cursor: pointer;">{{ row.hiddenLabel }}</button>
-                  <button data-del="" sc-camel-on-click="{{ row.onDelete }}" title="Ta bort inlägget" style="flex: 0 0 auto; width: 34px; height: 34px; border-radius: 8px; border: 1px solid var(--color-neutral-800); background: transparent; color: var(--color-neutral-500); cursor: pointer;" style-hover="color: #f78fb6; border-color: rgba(244,114,166,.5);"><i class="ph-fill ph-trash" aria-hidden="true" style="font-size: 14px;"></i></button>
-                </div>
-                <input data-in="" value="{{ row.title }}" sc-camel-on-change="{{ row.onTitle }}" placeholder="Rubrik" style="font-family: var(--font-heading); font-size: 18px; font-weight: 500;">
-                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                  <input data-in="" type="date" value="{{ row.date }}" sc-camel-on-change="{{ row.onDate }}" style="flex: 0 0 170px;">
-                  <input data-in="" value="{{ row.slug }}" sc-camel-on-change="{{ row.onSlug }}" placeholder="adress (skapas från rubriken)" title="Adressen blir chriswhippit.com/blogg/<det här>/ – ändra den inte efter att inlägget delats" style="flex: 1 1 200px; font-family: 'JetBrains Mono', monospace; font-size: 12px;">
-                </div>
-                <textarea data-in="" value="{{ row.text }}" sc-camel-on-change="{{ row.onText }}" placeholder="Skriv inlägget här. Tom rad = nytt stycke." rows="10" style="line-height: 1.6; resize: vertical; min-height: 180px;"></textarea>
-                <span style="font-size: 12px; color: var(--color-neutral-500);">Tom rad ger nytt stycke. <code>## </code> först på en rad blir en rubrik. <code>[bild 2]</code> på en egen rad lägger bild 2 mitt i texten – övriga bilder visas under texten. Bild 1 är omslaget.</span>
-                <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 8px;">
-                  <sc-for list="{{ row.images }}" as="im" hint-placeholder-count="3">
-                    <div style="position: relative; aspect-ratio: 1; overflow: hidden; background: var(--color-neutral-900);">
-                      <img src="{{ im.src }}" alt="" style="width: 100%; height: 100%; object-fit: cover; display: block;">
-                      <span style="position: absolute; left: 6px; top: 6px; padding: 3px 6px; background: rgba(10,10,18,.8); color: #fff; font-size: 11px;">{{ im.label }}</span>
-                      <div style="position: absolute; left: 6px; right: 6px; bottom: 6px; display: flex; gap: 4px; justify-content: space-between;">
-                        <button sc-camel-on-click="{{ im.onLeft }}" title="Flytta vänster" style="padding: 6px 9px; border-radius: 6px; border: 1px solid var(--color-neutral-800); background: rgba(10,10,18,.75); color: #fff; font-size: 12px; cursor: pointer;">←</button>
-                        <button sc-camel-on-click="{{ im.onDel }}" title="Ta bort bilden" style="padding: 6px 9px; border-radius: 6px; border: 1px solid var(--color-neutral-800); background: rgba(10,10,18,.75); color: #fff; font-size: 12px; cursor: pointer;">✕</button>
-                        <button sc-camel-on-click="{{ im.onRight }}" title="Flytta höger" style="padding: 6px 9px; border-radius: 6px; border: 1px solid var(--color-neutral-800); background: rgba(10,10,18,.75); color: #fff; font-size: 12px; cursor: pointer;">→</button>
-                      </div>
+            <sc-for list="{{ blogMonths }}" as="m" hint-placeholder-count="2">
+              <div data-blog-month="" style="display: flex; flex-direction: column; gap: 8px;">
+                <button type="button" sc-camel-on-click="{{ m.onToggle }}" aria-expanded="{{ m.expanded }}" style="display: flex; align-items: center; gap: 12px; width: 100%; padding: 12px 16px; border: 0; background: var(--color-surface); box-shadow: 0 0 0 1px var(--color-neutral-800); color: var(--color-text); font: 600 16px/1.2 var(--font-heading); text-align: left; cursor: pointer;">
+                  <span style="flex: 1 1 auto;">{{ m.label }}</span><span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--color-neutral-500);">{{ m.count }}</span><span style="color: var(--color-neutral-400);">{{ m.arrow }}</span>
+                </button>
+                <sc-if value="{{ m.open }}">
+                <sc-for list="{{ m.posts }}" as="row" hint-placeholder-count="3">
+                  <sc-if value="{{ row.closed }}">
+                    <button type="button" sc-camel-on-click="{{ row.onToggle }}" style="display: grid; grid-template-columns: 56px minmax(0, 1fr) auto; gap: 12px; align-items: center; width: 100%; margin-left: 0; padding: 8px 12px 8px 8px; border: 0; background: transparent; box-shadow: 0 0 0 1px var(--color-neutral-800); color: var(--color-text); text-align: left; cursor: pointer;">
+                      <span style="width: 56px; height: 42px; overflow: hidden; background: var(--color-neutral-900);"><sc-if value="{{ row.thumb }}"><img src="{{ row.thumb }}" alt="" style="width: 100%; height: 100%; object-fit: cover; display: block;"></sc-if></span>
+                      <span style="min-width: 0;"><span style="display: block; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--color-neutral-500);">{{ row.dateLabel }}</span><span style="display: block; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ row.titleLabel }}</span></span>
+                      <span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--color-neutral-500); white-space: nowrap;">{{ row.status }}</span>
+                    </button>
+                  </sc-if>
+                  <sc-if value="{{ row.open }}">
+                  <div data-row="" style="background: var(--color-surface); box-shadow: 0 0 0 1px var(--color-neutral-800); padding: 16px 18px 18px; display: flex; flex-direction: column; gap: 10px;">
+                    <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                      <button data-btn="" sc-camel-on-click="{{ row.onToggle }}" style="padding: 6px 10px; border: 1px solid var(--color-neutral-800); background: transparent; color: var(--color-neutral-300); font-size: 12px; cursor: pointer;">Fäll ihop ▴</button>
+                      <span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--color-neutral-500);">{{ row.status }}</span>
+                      <sc-if value="{{ row.url }}"><a href="{{ row.url }}" target="_blank" rel="noopener" style="font-size: 12px; color: var(--color-accent-300);">Visa på sajten ↗</a></sc-if>
+                      <span style="flex: 1 1 auto;"></span>
+                      <button data-btn="" sc-camel-on-click="{{ row.onHidden }}" title="Ett dolt inlägg syns inte på sajten" style="padding: 7px 11px; border: 1px solid var(--color-neutral-800); background: transparent; color: var(--color-neutral-400); font-size: 12px; cursor: pointer;">{{ row.hiddenLabel }}</button>
+                      <button data-del="" sc-camel-on-click="{{ row.onDelete }}" title="Ta bort inlägget" style="flex: 0 0 auto; width: 34px; height: 34px; border-radius: 8px; border: 1px solid var(--color-neutral-800); background: transparent; color: var(--color-neutral-500); cursor: pointer;" style-hover="color: #f78fb6; border-color: rgba(244,114,166,.5);"><i class="ph-fill ph-trash" aria-hidden="true" style="font-size: 14px;"></i></button>
                     </div>
-                  </sc-for>
-                  <label data-drop="" sc-camel-on-drag-over="{{ row.onDragOver }}" sc-camel-on-drag-leave="{{ row.onDragLeave }}" sc-camel-on-drop="{{ row.onDrop }}" title="Välj eller dra in bilder" style="aspect-ratio: 1; display: grid; place-items: center; cursor: pointer; border: 1px dashed var(--color-neutral-700); background: repeating-linear-gradient(135deg, rgba(145,132,217,.06) 0 6px, transparent 6px 12px); text-align: center; font-size: 12px; color: var(--color-neutral-400); padding: 8px;">
-                    <input type="file" accept="image/*" data-multi="" sc-camel-on-change="{{ row.onPick }}" style="display: none;">
-                    <span><i class="ph-fill ph-images" aria-hidden="true" style="font-size: 22px; display: block; margin-bottom: 4px;"></i>Lägg till bilder</span>
-                  </label>
-                </div>
-                <sc-if value="{{ row.busy }}"><span style="font-size: 12px; color: var(--color-accent-300);">Förbereder bilder…</span></sc-if>
-                <details style="font-size: 13px; color: var(--color-neutral-400);">
-                  <summary style="cursor: pointer;">Engelsk version (valfritt)</summary>
-                  <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 8px;">
-                    <input data-in="" value="{{ row.title_en }}" sc-camel-on-change="{{ row.onTitleEn }}" placeholder="EN · Title" style="border-left: 2px solid #6fb7c9;">
-                    <textarea data-in="" rows="6" value="{{ row.text_en }}" sc-camel-on-change="{{ row.onTextEn }}" placeholder="EN · Text (tom = svenska visas)" style="border-left: 2px solid #6fb7c9; resize: vertical; line-height: 1.6;"></textarea>
+                    <input data-in="" value="{{ row.title }}" sc-camel-on-change="{{ row.onTitle }}" placeholder="Rubrik" style="font-family: var(--font-heading); font-size: 18px; font-weight: 500;">
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                      <input data-in="" type="date" value="{{ row.date }}" sc-camel-on-change="{{ row.onDate }}" style="flex: 0 0 170px;">
+                      <input data-in="" value="{{ row.slug }}" sc-camel-on-change="{{ row.onSlug }}" placeholder="adress (skapas från rubriken)" title="Adressen blir chriswhippit.com/blogg/<det här>/ – ändra den inte efter att inlägget delats" style="flex: 1 1 200px; font-family: 'JetBrains Mono', monospace; font-size: 12px;">
+                    </div>
+                    <textarea data-in="" value="{{ row.text }}" sc-camel-on-change="{{ row.onText }}" placeholder="Skriv inlägget här. Tom rad = nytt stycke." rows="10" style="line-height: 1.6; resize: vertical; min-height: 180px;"></textarea>
+                    <span style="font-size: 12px; color: var(--color-neutral-500);">Tom rad ger nytt stycke. <code>## </code> först på en rad blir en rubrik. <code>[bild 2]</code> på en egen rad lägger bild 2 mitt i texten – övriga bilder visas under texten. Bild 1 är omslaget.</span>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 8px;">
+                      <sc-for list="{{ row.images }}" as="im" hint-placeholder-count="3">
+                        <div style="position: relative; aspect-ratio: 1; overflow: hidden; background: var(--color-neutral-900);">
+                          <img src="{{ im.src }}" alt="" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                          <span style="position: absolute; left: 6px; top: 6px; padding: 3px 6px; background: rgba(10,10,18,.8); color: #fff; font-size: 11px;">{{ im.label }}</span>
+                          <div style="position: absolute; left: 6px; right: 6px; bottom: 6px; display: flex; gap: 4px; justify-content: space-between;">
+                            <button sc-camel-on-click="{{ im.onLeft }}" title="Flytta vänster" style="padding: 6px 9px; border-radius: 6px; border: 1px solid var(--color-neutral-800); background: rgba(10,10,18,.75); color: #fff; font-size: 12px; cursor: pointer;">←</button>
+                            <button sc-camel-on-click="{{ im.onDel }}" title="Ta bort bilden" style="padding: 6px 9px; border-radius: 6px; border: 1px solid var(--color-neutral-800); background: rgba(10,10,18,.75); color: #fff; font-size: 12px; cursor: pointer;">✕</button>
+                            <button sc-camel-on-click="{{ im.onRight }}" title="Flytta höger" style="padding: 6px 9px; border-radius: 6px; border: 1px solid var(--color-neutral-800); background: rgba(10,10,18,.75); color: #fff; font-size: 12px; cursor: pointer;">→</button>
+                          </div>
+                        </div>
+                      </sc-for>
+                      <label data-drop="" sc-camel-on-drag-over="{{ row.onDragOver }}" sc-camel-on-drag-leave="{{ row.onDragLeave }}" sc-camel-on-drop="{{ row.onDrop }}" title="Välj eller dra in bilder" style="aspect-ratio: 1; display: grid; place-items: center; cursor: pointer; border: 1px dashed var(--color-neutral-700); background: repeating-linear-gradient(135deg, rgba(145,132,217,.06) 0 6px, transparent 6px 12px); text-align: center; font-size: 12px; color: var(--color-neutral-400); padding: 8px;">
+                        <input type="file" accept="image/*" data-multi="" sc-camel-on-change="{{ row.onPick }}" style="display: none;">
+                        <span><i class="ph-fill ph-images" aria-hidden="true" style="font-size: 22px; display: block; margin-bottom: 4px;"></i>Lägg till bilder</span>
+                      </label>
+                    </div>
+                    <sc-if value="{{ row.busy }}"><span style="font-size: 12px; color: var(--color-accent-300);">Förbereder bilder…</span></sc-if>
+                    <details style="font-size: 13px; color: var(--color-neutral-400);">
+                      <summary style="cursor: pointer;">Engelsk version (valfritt)</summary>
+                      <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 8px;">
+                        <input data-in="" value="{{ row.title_en }}" sc-camel-on-change="{{ row.onTitleEn }}" placeholder="EN · Title" style="border-left: 2px solid #6fb7c9;">
+                        <textarea data-in="" rows="6" value="{{ row.text_en }}" sc-camel-on-change="{{ row.onTextEn }}" placeholder="EN · Text (tom = svenska visas)" style="border-left: 2px solid #6fb7c9; resize: vertical; line-height: 1.6;"></textarea>
+                      </div>
+                    </details>
                   </div>
-                </details>
+                  </sc-if>
+                </sc-for>
+                </sc-if>
               </div>
             </sc-for>
             <span style="font-size: 12px; color: var(--color-neutral-500);">Bilderna förminskas och sparas utan platsdata (GPS) innan de laddas upp. Tryck <b>Publicera</b> uppe till höger när inlägget är klart.</span>
@@ -6752,6 +6771,43 @@ class Component extends DCLogic {
     });
   }
 
+  // En rad per blogginlägg i admin (i = plats i data.blog).
+  blogRows(d) {
+    return (d.blog || []).map((p, i) => {
+          const pubd = ((this._published || {}).blog || []).some((q) => q.slug && q.slug === p.slug && !q.hidden);
+          const setB = (key, fn) => (e) => { const v = fn ? fn(e) : e.target.value; this.mutate((x) => { x.blog[i][key] = v; }); };
+          const over = (v) => (e) => { e.preventDefault(); e.currentTarget.setAttribute('data-over', v); };
+          const n = (p.images || []).length;
+          const open = this.state.blogOpen === i;
+          const th = (p.images || [])[0] || '';
+          return {
+            i, open: open ? '1' : '', closed: open ? '' : '1',
+            onToggle: () => this.setState({ blogOpen: open ? null : i }),
+            thumb: th ? (/^(https?:|data:|\/)/.test(th) ? th : '../' + th) : '',
+            dateLabel: p.date || 'utan datum', titleLabel: p.title || 'Utan rubrik',
+            title: p.title || '', date: p.date || '', slug: p.slug || '', text: p.text || '', title_en: p.title_en || '', text_en: p.text_en || '',
+            hiddenLabel: p.hidden ? 'Dolt – visa på sajten' : 'Dölj (gör till utkast)',
+            status: p.hidden ? 'Dolt utkast' : pubd ? 'Publicerat' : 'Inte publicerat än',
+            url: pubd && !p.hidden ? '../blogg/' + p.slug + '/' : '',
+            busy: this.state.blogBusy === i ? '1' : '',
+            onTitle: setB('title'), onDate: setB('date'), onText: setB('text'), onTitleEn: setB('title_en'), onTextEn: setB('text_en'),
+            onSlug: setB('slug', (e) => e.target.value.toLowerCase().replace(/[^a-z0-9-]+/g, '-')),
+            onHidden: () => this.mutate((x) => { x.blog[i].hidden = !x.blog[i].hidden; }),
+            onDelete: () => { if (confirm('Ta bort inlägget "' + (p.title || 'utan rubrik') + '"? Det försvinner från sajten när du publicerar.')) { this.setState({ blogOpen: null }); this.mutate((x) => { x.blog.splice(i, 1); }); } },
+            onPick: (e) => { this.takeBlogImages(e.target.files, i); e.target.value = ''; },
+            onDragOver: over('1'), onDragLeave: over(''),
+            onDrop: (e) => { e.preventDefault(); e.currentTarget.setAttribute('data-over', ''); this.takeBlogImages(e.dataTransfer && e.dataTransfer.files, i); },
+            images: (p.images || []).map((src, j) => ({
+              src: /^(https?:|data:|\/)/.test(src) ? src : '../' + src,
+              label: j === 0 ? 'Omslag' : 'Bild ' + (j + 1),
+              onLeft: () => { if (j > 0) this.mutate((x) => { const a = x.blog[i].images; [a[j - 1], a[j]] = [a[j], a[j - 1]]; }); },
+              onRight: () => { if (j < n - 1) this.mutate((x) => { const a = x.blog[i].images; [a[j + 1], a[j]] = [a[j], a[j + 1]]; }); },
+              onDel: () => this.mutate((x) => { x.blog[i].images.splice(j, 1); }),
+            })),
+          };
+    });
+  }
+
   // drag-to-position + zoom for an image; offsets are % of the tile
   fitHandlers(i, section) {
     const sec = section || 'sponsors';
@@ -6856,34 +6912,22 @@ class Component extends DCLogic {
       onDl: tab === 'downloads' ? '1' : '',
       onBlog: tab === 'blog' ? '1' : '',
       goBlog: go('blog'),
-      addPost: () => this.mutate((x) => { x.blog = x.blog || []; x.blog.unshift({ title: '', date: new Date().toISOString().slice(0, 10), slug: '', text: '', images: [] }); }),
-      blogRows: (d.blog || []).map((p, i) => {
-        const pubd = ((this._published || {}).blog || []).some((q) => q.slug && q.slug === p.slug && !q.hidden);
-        const setB = (key, fn) => (e) => { const v = fn ? fn(e) : e.target.value; this.mutate((x) => { x.blog[i][key] = v; }); };
-        const over = (v) => (e) => { e.preventDefault(); e.currentTarget.setAttribute('data-over', v); };
-        const n = (p.images || []).length;
-        return {
-          title: p.title || '', date: p.date || '', slug: p.slug || '', text: p.text || '', title_en: p.title_en || '', text_en: p.text_en || '',
-          hiddenLabel: p.hidden ? 'Dolt – visa på sajten' : 'Dölj (gör till utkast)',
-          status: p.hidden ? 'Dolt utkast' : pubd ? 'Publicerat' : 'Inte publicerat än',
-          url: pubd && !p.hidden ? '../blogg/' + p.slug + '/' : '',
-          busy: this.state.blogBusy === i ? '1' : '',
-          onTitle: setB('title'), onDate: setB('date'), onText: setB('text'), onTitleEn: setB('title_en'), onTextEn: setB('text_en'),
-          onSlug: setB('slug', (e) => e.target.value.toLowerCase().replace(/[^a-z0-9-]+/g, '-')),
-          onHidden: () => this.mutate((x) => { x.blog[i].hidden = !x.blog[i].hidden; }),
-          onDelete: () => { if (confirm('Ta bort inlägget "' + (p.title || 'utan rubrik') + '"? Det försvinner från sajten när du publicerar.')) this.mutate((x) => { x.blog.splice(i, 1); }); },
-          onPick: (e) => { this.takeBlogImages(e.target.files, i); e.target.value = ''; },
-          onDragOver: over('1'), onDragLeave: over(''),
-          onDrop: (e) => { e.preventDefault(); e.currentTarget.setAttribute('data-over', ''); this.takeBlogImages(e.dataTransfer && e.dataTransfer.files, i); },
-          images: (p.images || []).map((src, j) => ({
-            src: /^(https?:|data:|\/)/.test(src) ? src : '../' + src,
-            label: j === 0 ? 'Omslag' : 'Bild ' + (j + 1),
-            onLeft: () => { if (j > 0) this.mutate((x) => { const a = x.blog[i].images; [a[j - 1], a[j]] = [a[j], a[j - 1]]; }); },
-            onRight: () => { if (j < n - 1) this.mutate((x) => { const a = x.blog[i].images; [a[j + 1], a[j]] = [a[j], a[j + 1]]; }); },
-            onDel: () => this.mutate((x) => { x.blog[i].images.splice(j, 1); }),
-          })),
-        };
-      }),
+      addPost: () => { const today = new Date().toISOString().slice(0, 10); this.setState((st) => ({ blogOpen: 0, blogMonthOpen: { ...(st.blogMonthOpen || {}), [today.slice(0, 7)]: true } })); this.mutate((x) => { x.blog = x.blog || []; x.blog.unshift({ title: '', date: today, slug: '', text: '', images: [] }); }); },
+      blogMonths: (() => {
+        const MON = ['Januari', 'Februari', 'Mars', 'April', 'Maj', 'Juni', 'Juli', 'Augusti', 'September', 'Oktober', 'November', 'December'];
+        const rows = this.blogRows(d);
+        const groups = {};
+        rows.forEach((r) => { const k = /^\d{4}-\d{2}/.test(r.date) ? r.date.slice(0, 7) : 'utan'; (groups[k] = groups[k] || []).push(r); });
+        const keys = Object.keys(groups).sort().reverse();
+        const mo = this.state.blogMonthOpen || {};
+        return keys.map((k, gi) => {
+          const open = k in mo ? mo[k] : gi === 0; // senaste månaden är öppen från start
+          const posts = groups[k].sort((a, b) => String(b.date).localeCompare(String(a.date)));
+          return { label: k === 'utan' ? 'Utan datum' : MON[+k.slice(5, 7) - 1] + ' ' + k.slice(0, 4), count: posts.length + (posts.length === 1 ? ' inlägg' : ' inlägg'),
+            open: open ? '1' : '', expanded: open ? 'true' : 'false', arrow: open ? '▴' : '▾', posts,
+            onToggle: () => this.setState((st) => ({ blogMonthOpen: { ...(st.blogMonthOpen || {}), [k]: !open } })) };
+        });
+      })(),
       onShop: tab === 'shop' ? '1' : '',
       onSponsors: tab === 'sponsors' ? '1' : '',
       onYt: tab === 'yt' ? '1' : '',
