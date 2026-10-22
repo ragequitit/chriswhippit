@@ -1980,5 +1980,19 @@
         ]
       }
     }
-  }
+  },
+  "blog": [
+    {
+      "title": "En lördag",
+      "date": "2026-10-17",
+      "slug": "en-lordag",
+      "text": "Lördagen började med att jag och Teodor packade hockeygrejerna och åkte till skridskoskolan. En timme på isen tillsammans, med hockey, skratt och en hel del åkande fram och tillbaka. Det är så roligt att få göra sådant här ihop och se hur han blir tryggare på skridskorna. Efteråt åkte vi hem, hungriga och lagom trötta, och fixade lite mat tillsammans med resten av familjen. Regnet öste ner utanför fönstret och verkade inte ha några planer på att sluta. Då kändes det ganska skönt att redan ha hunnit med dagens äventyr och kunna tillbringa resten av lördagen hemma tillsammans, utan några särskilda måsten.\n\nEftermiddagen blev precis så lugn som en regnig lördag kan få vara. Vi spelade spel och kröp sedan upp i soffan, jag, mamma och våra tre pojkar, för att titta på Disneyfilmer tillsammans. Två tvååringar och en femåring betyder förstås att det sällan är helt stilla, men det hör till. Senare plockade vi fram papper och färger och målade en stund. Det blev färgglada teckningar och lite färg på fingrarna också. Till slut var det dags att avrunda dagen och säga godnatt. När barnen hade somnat satte jag mig och jobbade lite, medan huset blev tyst och regnet fortsatte smattra utanför.",
+      "images": [
+        "media/1792662068150-1.webp",
+        "media/1792662068150-2.webp"
+      ],
+      "share": "media/1792662068150-3.jpeg",
+      "shareOf": "media/1792662068150-1.webp"
+    }
+  ]
 }
