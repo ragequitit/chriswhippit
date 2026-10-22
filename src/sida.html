@@ -1377,6 +1377,7 @@ textarea.input { min-height: 90px; resize: vertical; }
   [data-lb-nav] { position: absolute; top: 50%; transform: translateY(-50%); width: 48px; height: 64px; border: 0; background: rgba(14,15,26,.7); color: #fff; font: 400 40px/1 var(--font-body); cursor: pointer; }
   [data-lb-nav]:hover { background: rgba(134,87,255,.6); }
   [data-lb-open] { cursor: zoom-in; }
+  @media (max-width: 760px) { [data-lb-box] { width: 100% !important; height: 70vh !important; } [data-lb-nav] { width: 38px !important; height: 54px !important; font-size: 32px !important; } }
   @media (max-width: 760px) { [data-mk-hero] { grid-template-columns: minmax(0, 1fr) !important; } [data-mk-hero] > img { max-width: 200px; order: -1; } [data-mk-row] { grid-template-columns: minmax(0, 1fr) auto !important; } [data-mk-row] > span:nth-child(3) { grid-column: 1 / -1; } [data-mk-row] > [data-mk-more] { grid-row: 1; grid-column: 2; } }
   [data-mk-row]:hover { background: rgba(134,87,255,.06) !important; }
   [data-mk-row][data-static="1"] { cursor: default !important; background: transparent !important; }
@@ -2402,19 +2403,20 @@ textarea.input { min-height: 90px; resize: vertical; }
   </div>
 
   <sc-if value="{{ lbOn }}">
-    <div data-lb="" role="dialog" aria-modal="true" aria-label="{{ lbAlt }}" sc-camel-on-click="{{ lbClose }}" sc-camel-on-touch-start="{{ lbTouchStart }}" sc-camel-on-touch-end="{{ lbTouchEnd }}" style="position: fixed; inset: 0; z-index: 85; display: grid; grid-template-rows: auto minmax(0, 1fr) auto; background: rgba(8,8,16,.94); backdrop-filter: blur(6px);">
-      <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 16px;">
-        <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: .14em; color: var(--color-neutral-400);">{{ lbCount }}</span>
-        <button type="button" data-lb-close="" sc-camel-on-click="{{ lbClose }}" style="font: 600 14px/1 var(--font-body); padding: 9px 14px; border: 1.5px solid #8657FF; background: transparent; color: #fff; cursor: pointer;"><span data-en="Close ✕">Stäng ✕</span></button>
+    <div data-lb="" role="dialog" aria-modal="true" aria-label="{{ lbAlt }}" sc-camel-on-click="{{ lbClose }}" sc-camel-on-touch-start="{{ lbTouchStart }}" sc-camel-on-touch-end="{{ lbTouchEnd }}" style="position: fixed; inset: 0; z-index: 85; display: grid; place-items: center; padding: 16px; background: rgba(8,8,16,.6);">
+      <div data-lb-box="" style="width: min(75vw, 1400px); height: 75vh; display: grid; grid-template-rows: auto minmax(0, 1fr); background: #0e0f1a; box-shadow: 0 0 0 1px rgba(134,87,255,.5), 0 30px 80px rgba(0,0,0,.7);">
+        <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 10px 12px 10px 16px; border-bottom: 1px solid var(--color-neutral-800);">
+          <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: .14em; color: var(--color-neutral-400);">{{ lbCount }}</span>
+          <button type="button" data-lb-close="" sc-camel-on-click="{{ lbClose }}" style="font: 600 14px/1 var(--font-body); padding: 9px 14px; border: 1.5px solid #8657FF; background: transparent; color: #fff; cursor: pointer;"><span data-en="Close ✕">Stäng ✕</span></button>
+        </div>
+        <div style="position: relative; min-height: 0; display: grid; place-items: center; padding: 12px;">
+          <img data-lb-img="" src="{{ lbSrc }}" alt="{{ lbAlt }}" style="max-width: 100%; max-height: 100%; object-fit: contain; display: block;">
+          <sc-if value="{{ lbMany }}">
+            <button type="button" data-lb-nav="" sc-camel-on-click="{{ lbPrev }}" aria-label="Föregående bild" style="left: 0;">‹</button>
+            <button type="button" data-lb-nav="" sc-camel-on-click="{{ lbNext }}" aria-label="Nästa bild" style="right: 0;">›</button>
+          </sc-if>
+        </div>
       </div>
-      <div style="position: relative; min-height: 0; display: grid; place-items: center; padding: 0 12px;">
-        <img data-lb-img="" src="{{ lbSrc }}" alt="{{ lbAlt }}" style="max-width: 100%; max-height: 100%; object-fit: contain; display: block;">
-        <sc-if value="{{ lbMany }}">
-          <button type="button" data-lb-nav="" sc-camel-on-click="{{ lbPrev }}" aria-label="Föregående bild" style="left: 12px;">‹</button>
-          <button type="button" data-lb-nav="" sc-camel-on-click="{{ lbNext }}" aria-label="Nästa bild" style="right: 12px;">›</button>
-        </sc-if>
-      </div>
-      <div style="height: 16px;"></div>
     </div>
   </sc-if>
   <sc-if value="{{ playOn }}">
@@ -3031,7 +3033,12 @@ class Component extends DCLogic {
     // published content from the repo wins over a local draft
     fetch(SITE_ROOT + 'content.json')
       .then((r) => (r.ok ? r.json() : null))
-      .then((pub) => { if (pub) this.applyContent(pub); })
+      .then((pub) => {
+        if (pub) this.applyContent(pub);
+        // Ett nytt blogginlägg kan saknas i en cachad content.json – hämta färskt en gång innan 'hittades inte'.
+        const want = this.state.route === 'post' && this.state.post;
+        if (want && !((pub && pub.blog) || []).some((p) => p && p.slug === want)) return fetch(SITE_ROOT + 'content.json?t=' + Date.now(), { cache: 'no-store' }).then((r) => (r.ok ? r.json() : null)).then((f) => { if (f) this.applyContent(f); });
+      })
       .catch(() => {})
       .then(() => this.setState({ contentReady: true }));
   }
@@ -3458,7 +3465,7 @@ class Component extends DCLogic {
         this._lbCount = imgs.length;
         const lb = this.state.lb != null && imgs[this.state.lb] ? this.state.lb : null;
         const lbVals = lb == null ? {} : { lbOn: '1', lbSrc: imgs[lb].src, lbAlt: imgs[lb].alt, lbCount: (lb + 1) + ' / ' + imgs.length, lbMany: imgs.length > 1 ? '1' : '',
-          lbClose: (e) => { if (e && e.target.closest && e.target.closest('[data-lb-img], [data-lb-nav]')) return; this.closeLb(); },
+          lbClose: (e) => { if (e && e.target.closest && e.target.closest('[data-lb-box]') && !e.target.closest('[data-lb-close]')) return; this.closeLb(); },
           lbPrev: (e) => { e.stopPropagation(); this.stepLb(-1); }, lbNext: (e) => { e.stopPropagation(); this.stepLb(1); },
           lbTouchStart: (e) => { const t = e.touches && e.touches[0]; this._lbX = t ? t.clientX : null; },
           lbTouchEnd: (e) => { const t = e.changedTouches && e.changedTouches[0]; if (this._lbX == null || !t) return; const dx = t.clientX - this._lbX; this._lbX = null; if (Math.abs(dx) > 50) this.stepLb(dx < 0 ? 1 : -1); } };
