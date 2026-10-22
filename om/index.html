@@ -1541,6 +1541,9 @@ textarea.input { min-height: 90px; resize: vertical; }
   @media (max-width: 1240px) { [data-xp] { display: none !important; } }
   /* Mediakit */
   @media (max-width: 640px) { [data-post-nav] { grid-template-columns: minmax(0, 1fr) !important; } [data-post-nav] > div:last-child { text-align: left !important; } [data-post-gallery] { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; } [data-blog-grid] { grid-template-columns: minmax(0, 1fr) !important; } }
+  [data-lb-nav] { position: absolute; top: 50%; transform: translateY(-50%); width: 48px; height: 64px; border: 0; background: rgba(14,15,26,.7); color: #fff; font: 400 40px/1 var(--font-body); cursor: pointer; }
+  [data-lb-nav]:hover { background: rgba(134,87,255,.6); }
+  [data-lb-open] { cursor: zoom-in; }
   @media (max-width: 760px) { [data-mk-hero] { grid-template-columns: minmax(0, 1fr) !important; } [data-mk-hero] > img { max-width: 200px; order: -1; } [data-mk-row] { grid-template-columns: minmax(0, 1fr) auto !important; } [data-mk-row] > span:nth-child(3) { grid-column: 1 / -1; } [data-mk-row] > [data-mk-more] { grid-row: 1; grid-column: 2; } }
   [data-mk-row]:hover { background: rgba(134,87,255,.06) !important; }
   [data-mk-row][data-static="1"] { cursor: default !important; background: transparent !important; }
@@ -2381,18 +2384,18 @@ textarea.input { min-height: 90px; resize: vertical; }
     <article data-post="">
       <div style="font-family: 'JetBrains Mono', monospace; letter-spacing: .14em; text-transform: uppercase; font-size: 11px; color: #b9a2ff; margin-bottom: 12px;">{{ postDate }}</div>
       <h1 style="font-family: var(--font-heading); font-weight: 500; font-size: clamp(32px, 5vw, 56px); letter-spacing: -.035em; line-height: 1.08; margin: 0 0 28px; text-wrap: balance;">{{ postTitle }}</h1>
-      <sc-if value="{{ postCover }}"><img src="{{ postCover }}" alt="{{ postTitle }}" fetchpriority="high" decoding="async" style="width: 100%; max-height: 78vh; object-fit: cover; display: block; margin: 0 0 30px; background: var(--color-neutral-900);"></sc-if>
+      <sc-if value="{{ postCover }}"><a href="{{ postCover }}" sc-camel-on-click="{{ postCoverOpen }}" data-lb-open="" style="display: block;"><img src="{{ postCover }}" alt="{{ postTitle }}" fetchpriority="high" decoding="async" style="width: 100%; max-height: 78vh; object-fit: cover; display: block; margin: 0 0 30px; background: var(--color-neutral-900);"></a></sc-if>
       <div data-prose="" style="font-size: 17px; line-height: 1.75; color: #d6d3e6;">
         <sc-for list="{{ postBlocks }}" as="b" hint-placeholder-count="4">
           <sc-if value="{{ b.h }}"><h2 style="font-family: var(--font-heading); font-weight: 600; font-size: 24px; letter-spacing: -.02em; color: #fff; margin: 34px 0 10px;">{{ b.h }}</h2></sc-if>
-          <sc-if value="{{ b.img }}"><a href="{{ b.img }}" target="_blank" rel="noopener" style="display: block; margin: 26px 0;"><img loading="lazy" decoding="async" src="{{ b.img }}" alt="{{ b.alt }}" style="width: 100%; display: block; background: var(--color-neutral-900);"></a></sc-if>
+          <sc-if value="{{ b.img }}"><a href="{{ b.img }}" sc-camel-on-click="{{ b.onOpen }}" data-lb-open="" style="display: block; margin: 26px 0;"><img loading="lazy" decoding="async" src="{{ b.img }}" alt="{{ b.alt }}" style="width: 100%; display: block; background: var(--color-neutral-900);"></a></sc-if>
           <sc-if value="{{ b.isP }}"><p style="margin: 0 0 18px; white-space: pre-line; text-wrap: pretty;"><sc-for list="{{ b.parts }}" as="p" hint-placeholder-count="1"><sc-if value="{{ p.href }}"><a href="{{ p.href }}" target="{{ p.target }}" rel="noopener">{{ p.text }}</a></sc-if><sc-if value="{{ p.plain }}"><span>{{ p.text }}</span></sc-if></sc-for></p></sc-if>
         </sc-for>
       </div>
       <sc-if value="{{ postHasGallery }}">
       <div data-post-gallery="" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; margin: 30px 0 0;">
         <sc-for list="{{ postGallery }}" as="g" hint-placeholder-count="4">
-          <a href="{{ g.src }}" target="_blank" rel="noopener" style="display: block; aspect-ratio: 1; overflow: hidden; background: var(--color-neutral-900);"><img loading="lazy" decoding="async" src="{{ g.src }}" alt="{{ g.alt }}" style="width: 100%; height: 100%; object-fit: cover; display: block;"></a>
+          <a href="{{ g.src }}" sc-camel-on-click="{{ g.onOpen }}" data-lb-open="" style="display: block; aspect-ratio: 1; overflow: hidden; background: var(--color-neutral-900);"><img loading="lazy" decoding="async" src="{{ g.src }}" alt="{{ g.alt }}" style="width: 100%; height: 100%; object-fit: cover; display: block;"></a>
         </sc-for>
       </div>
       </sc-if>
@@ -2565,6 +2568,22 @@ textarea.input { min-height: 90px; resize: vertical; }
     <div style="margin-top: 14px; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .1em; color: var(--color-neutral-500);"><a href="https://whippit.myspreadshop.se/" target="_blank" data-en="Open the shop on Spreadshirt instead →" style="color: var(--color-neutral-500);">Öppna butiken på Spreadshirt istället →</a></div>
   </div>
 
+  <sc-if value="{{ lbOn }}">
+    <div data-lb="" role="dialog" aria-modal="true" aria-label="{{ lbAlt }}" sc-camel-on-click="{{ lbClose }}" sc-camel-on-touch-start="{{ lbTouchStart }}" sc-camel-on-touch-end="{{ lbTouchEnd }}" style="position: fixed; inset: 0; z-index: 85; display: grid; grid-template-rows: auto minmax(0, 1fr) auto; background: rgba(8,8,16,.94); backdrop-filter: blur(6px);">
+      <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 16px;">
+        <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: .14em; color: var(--color-neutral-400);">{{ lbCount }}</span>
+        <button type="button" data-lb-close="" sc-camel-on-click="{{ lbClose }}" style="font: 600 14px/1 var(--font-body); padding: 9px 14px; border: 1.5px solid #8657FF; background: transparent; color: #fff; cursor: pointer;"><span data-en="Close ✕">Stäng ✕</span></button>
+      </div>
+      <div style="position: relative; min-height: 0; display: grid; place-items: center; padding: 0 12px;">
+        <img data-lb-img="" src="{{ lbSrc }}" alt="{{ lbAlt }}" style="max-width: 100%; max-height: 100%; object-fit: contain; display: block;">
+        <sc-if value="{{ lbMany }}">
+          <button type="button" data-lb-nav="" sc-camel-on-click="{{ lbPrev }}" aria-label="Föregående bild" style="left: 12px;">‹</button>
+          <button type="button" data-lb-nav="" sc-camel-on-click="{{ lbNext }}" aria-label="Nästa bild" style="right: 12px;">›</button>
+        </sc-if>
+      </div>
+      <div style="height: 16px;"></div>
+    </div>
+  </sc-if>
   <sc-if value="{{ playOn }}">
     <div data-player="" role="dialog" aria-modal="true" aria-label="{{ playTitle }}" sc-camel-on-click="{{ closePlay }}" style="position: fixed; inset: 0; z-index: 80; display: grid; grid-template-columns: minmax(0, 1fr); place-items: center; padding: 20px; background: rgba(8,8,16,.88); backdrop-filter: blur(6px);">
       <div data-player-box="" style="width: min(1100px, 100%); min-width: 0; background: #0e0f1a; box-shadow: 0 0 0 1px rgba(134,87,255,.5), 0 30px 80px rgba(0,0,0,.7);">
@@ -2875,7 +2894,7 @@ class Component extends DCLogic {
     return (e) => {
       if (e && (e.metaKey || e.ctrlKey || e.shiftKey || e.button === 1)) return;
       if (e) e.preventDefault();
-      this.setState({ route, playing: null });
+      this.setState({ route, playing: null, lb: null });
       try {
         const to = ROOT_PATH + (ROUTE_PATHS[route] || '');
         if (location.pathname !== to || location.hash) history.pushState({ route }, '', to);
@@ -2988,7 +3007,7 @@ class Component extends DCLogic {
     return (e) => {
       if (e && (e.metaKey || e.ctrlKey || e.shiftKey || e.button === 1)) return;
       if (e) e.preventDefault();
-      this.setState({ route: 'post', post: slug, playing: null });
+      this.setState({ route: 'post', post: slug, playing: null, lb: null });
       try { const to = ROOT_PATH + 'blogg/' + slug + '/'; if (location.pathname !== to) history.pushState({ route: 'post', post: slug }, '', to); } catch (err) {}
       window.scrollTo(0, 0);
     };
@@ -3004,6 +3023,19 @@ class Component extends DCLogic {
     set('meta[property="og:title"]', 'content', t); set('meta[name="twitter:title"]', 'content', t);
     set('link[rel="canonical"]', 'href', u); set('meta[property="og:url"]', 'content', u);
   }
+
+  // Bildvisare för blogginlägg.
+  openLb(i) {
+    return (e) => {
+      if (e && (e.metaKey || e.ctrlKey || e.shiftKey || e.button === 1)) return;
+      if (e) e.preventDefault();
+      this._lbFrom = e && e.currentTarget;
+      this.setState({ lb: i });
+      setTimeout(() => { const b = document.querySelector('[data-lb-close]'); if (b) b.focus(); }, 60);
+    };
+  }
+  stepLb(d) { const n = this._lbCount || 0; if (n > 1 && this.state.lb != null) this.setState({ lb: (this.state.lb + d + n) % n }); }
+  closeLb() { const f = this._lbFrom; this.setState({ lb: null }); if (f && f.focus) setTimeout(() => f.focus(), 0); }
 
   goSerie(slug) {
     return (e) => {
@@ -3097,7 +3129,7 @@ class Component extends DCLogic {
     window.addEventListener('pointerup', this.onUp);
     window.addEventListener('pointercancel', this.onUp);
     this.setState(locRoute());
-    this._pop = () => this.setState({ ...locRoute(), playing: null });
+    this._pop = () => this.setState({ ...locRoute(), playing: null, lb: null });
     window.addEventListener('popstate', this._pop);
     // videos.json byggs av GitHub (tools/build-videos.js) – då behöver besökaren inte anropa YouTube-API:t alls.
     // Saknas filen eller är den äldre än 3 dygn hämtas allt från API:t som förut.
@@ -3138,6 +3170,13 @@ class Component extends DCLogic {
     }); };
     window.addEventListener('scroll', this.onTl, { passive: true });
     this.onPlayKey = (e) => {
+      if (this.state.lb != null) {
+        if (e.key === 'Escape') { e.preventDefault(); this.closeLb(); }
+        else if (e.key === 'ArrowRight') { e.preventDefault(); this.stepLb(1); }
+        else if (e.key === 'ArrowLeft') { e.preventDefault(); this.stepLb(-1); }
+        else if (e.key === 'Tab') { e.preventDefault(); const els = [...document.querySelectorAll('[data-lb] button')]; const i = els.indexOf(document.activeElement); const n = els[(i + (e.shiftKey ? -1 : 1) + els.length) % els.length]; if (n) n.focus(); }
+        return;
+      }
       if (!this.state.playing) return;
       if (e.key === 'Escape') { const f = this._playFrom; this.setState({ playing: null }); if (f && f.focus) setTimeout(() => f.focus(), 0); return; }
       if (e.key !== 'Tab') return;
@@ -3285,7 +3324,7 @@ class Component extends DCLogic {
       this.setState({ ytError: (e && e.message) || 'network error' });
     }
   }
-  componentDidUpdate() { const mk = this.state.route === 'serie' ? 'serie:' + this.state.serie : this.state.route === 'post' ? 'post:' + this.state.post + (this.state.contentReady ? '' : '?') : this.state.route; if (this._metaRoute !== mk + this.state.lang) { this._metaRoute = mk + this.state.lang; applyRouteMeta(mk); if (this.state.lang === 'en' && TITLE_EN[mk]) document.title = TITLE_EN[mk]; if (this.state.route === 'post' && this.state.contentReady) this.applyPostMeta(); } this.applyLang(); if (this.state.route === 'shop' && this.state.shopOpen) this.loadShop(); if (this.state.route === 'samarbeten') this.loadCollabStats(); this.loadVideoData(); this.fillAds(); this.loadDiscord(); if (this.onTl) this.onTl(); document.documentElement.style.overflow = this.state.playing ? 'hidden' : ''; }
+  componentDidUpdate() { const mk = this.state.route === 'serie' ? 'serie:' + this.state.serie : this.state.route === 'post' ? 'post:' + this.state.post + (this.state.contentReady ? '' : '?') : this.state.route; if (this._metaRoute !== mk + this.state.lang) { this._metaRoute = mk + this.state.lang; applyRouteMeta(mk); if (this.state.lang === 'en' && TITLE_EN[mk]) document.title = TITLE_EN[mk]; if (this.state.route === 'post' && this.state.contentReady) this.applyPostMeta(); } this.applyLang(); if (this.state.route === 'shop' && this.state.shopOpen) this.loadShop(); if (this.state.route === 'samarbeten') this.loadCollabStats(); this.loadVideoData(); this.fillAds(); this.loadDiscord(); if (this.onTl) this.onTl(); document.documentElement.style.overflow = this.state.playing || this.state.lb != null ? 'hidden' : ''; }
 
   loadDiscord() {
     if (this.state.route !== 'hem' || this._dc) return;
@@ -3571,7 +3610,7 @@ class Component extends DCLogic {
         // Bloggen: listan på /blogg/ och inlägget på /blogg/<slug>/. '[bild 2]' på egen rad placerar bild 2 i texten.
         const L = this.state.lang, posts = blogPosts(this.state.content);
         const card = (p) => ({ href: '/blogg/' + p.slug + '/', onGo: this.goPost(p.slug), title: pick(L, p, 'title'), date: blogDate(p.date, L), excerpt: blogExcerpt(pick(L, p, 'text')), cover: blogImg((p.images || [])[0]) });
-        const out = { blogCards: posts.map(card), blogEmpty: posts.length ? '' : '1', atPost: r === 'post' ? '1' : '', postReady: '', postMissing: '' };
+        const out = { blogCards: posts.map(card), blogEmpty: posts.length ? '' : '1', atPost: r === 'post' ? '1' : '', postReady: '', postMissing: '', lbOn: '' };
         if (r !== 'post' || !this.state.contentReady) return out;
         const i = posts.findIndex((x) => x.slug === this.state.post), p = posts[i];
         if (!p) return { ...out, postMissing: '1' };
@@ -3579,12 +3618,19 @@ class Component extends DCLogic {
         const used = new Set([0]);
         const blocks = String(pick(L, p, 'text')).split(/\n\s*\n/).map((x) => x.trim()).filter(Boolean).map((x) => {
           const m = /^\[bild\s*(\d+)\]$/i.exec(x);
-          if (m) { const g = imgs[+m[1] - 1]; if (!g || +m[1] === 1) return null; used.add(+m[1] - 1); return { h: '', isP: '', img: g.src, alt: g.alt }; }
+          if (m) { const g = imgs[+m[1] - 1]; if (!g || +m[1] === 1) return null; used.add(+m[1] - 1); return { h: '', isP: '', img: g.src, alt: g.alt, onOpen: this.openLb(+m[1] - 1) }; }
           return /^##\s+/.test(x) ? { h: x.replace(/^##\s+/, ''), isP: '', img: '' } : { h: '', isP: '1', img: '', parts: faqParts(x) };
         }).filter(Boolean);
-        const gallery = imgs.filter((x, j) => !used.has(j));
+        const gallery = imgs.map((x, j) => ({ ...x, onOpen: this.openLb(j) })).filter((x, j) => !used.has(j));
+        this._lbCount = imgs.length;
+        const lb = this.state.lb != null && imgs[this.state.lb] ? this.state.lb : null;
+        const lbVals = lb == null ? {} : { lbOn: '1', lbSrc: imgs[lb].src, lbAlt: imgs[lb].alt, lbCount: (lb + 1) + ' / ' + imgs.length, lbMany: imgs.length > 1 ? '1' : '',
+          lbClose: (e) => { if (e && e.target.closest && e.target.closest('[data-lb-img], [data-lb-nav]')) return; this.closeLb(); },
+          lbPrev: (e) => { e.stopPropagation(); this.stepLb(-1); }, lbNext: (e) => { e.stopPropagation(); this.stepLb(1); },
+          lbTouchStart: (e) => { const t = e.touches && e.touches[0]; this._lbX = t ? t.clientX : null; },
+          lbTouchEnd: (e) => { const t = e.changedTouches && e.changedTouches[0]; if (this._lbX == null || !t) return; const dx = t.clientX - this._lbX; this._lbX = null; if (Math.abs(dx) > 50) this.stepLb(dx < 0 ? 1 : -1); } };
         const nw = posts[i - 1], od = posts[i + 1];
-        return { ...out, postReady: '1', postTitle: pick(L, p, 'title'), postDate: blogDate(p.date, L), postCover: imgs[0] ? imgs[0].src : '', postBlocks: blocks,
+        return { ...out, ...lbVals, postCoverOpen: this.openLb(0), postReady: '1', postTitle: pick(L, p, 'title'), postDate: blogDate(p.date, L), postCover: imgs[0] ? imgs[0].src : '', postBlocks: blocks,
           postGallery: gallery, postHasGallery: gallery.length ? '1' : '',
           postNewer: nw ? '1' : '', postNewerHref: nw ? '/blogg/' + nw.slug + '/' : '', postNewerGo: nw ? this.goPost(nw.slug) : null, postNewerTitle: nw ? pick(L, nw, 'title') : '',
           postOlder: od ? '1' : '', postOlderHref: od ? '/blogg/' + od.slug + '/' : '', postOlderGo: od ? this.goPost(od.slug) : null, postOlderTitle: od ? pick(L, od, 'title') : '' };
