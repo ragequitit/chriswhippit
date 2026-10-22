@@ -1,19 +1,19 @@
 {
- "t": "2026-10-21T18:15:11.379Z",
+ "t": "2026-10-22T06:04:00.159Z",
  "videos": [
+  {
+   "id": "1EOr8GfV3h8",
+   "title": "Vi HITTAR NÅLEN i Needle in a Haystack med UfoSXM #3",
+   "channel": "ChrisWhippit",
+   "handle": "@chriswhippit",
+   "at": "2026-10-22T04:30:39Z"
+  },
   {
    "id": "G9OsINCyz2E",
    "title": "DEN SOM HITTAR 16 IRON INGOTS FÖRST VINNER - MINECRAFT UTMANING",
    "channel": "Whippit",
    "handle": "@whippitextra",
    "at": "2026-10-21T04:30:29Z"
-  },
-  {
-   "id": "_ufUZ7w-Dz4",
-   "title": "ALIENS TAR GÄSTERNA i Waterpark Simulator med UfoSXM",
-   "channel": "ChrisWhippit",
-   "handle": "@chriswhippit",
-   "at": "2026-10-20T04:30:04Z"
   },
   {
    "id": "iGfrblmwa9E",
@@ -30,11 +30,11 @@
    "at": "2026-10-10T04:30:24Z"
   },
   {
-   "id": "MIKbNTI2tzQ",
-   "title": "MINECRAFT BINGO 2026 MED JNX",
+   "id": "hwwA8_Aru-g",
+   "title": "STORMEN KOMMER I BLOCKED IN - MINECRAFT MED JNX",
    "channel": "Whippit",
    "handle": "@whippitextra",
-   "at": "2026-10-20T04:30:10Z"
+   "at": "2026-10-22T04:30:13Z"
   }
  ],
  "counts": {
@@ -87,6 +87,12 @@
  },
  "seriesVids": {
   "minecraft": [
+   {
+    "id": "hwwA8_Aru-g",
+    "title": "STORMEN KOMMER I BLOCKED IN - MINECRAFT MED JNX",
+    "at": "2026-10-22T04:30:13Z",
+    "list": ""
+   },
    {
     "id": "G9OsINCyz2E",
     "title": "DEN SOM HITTAR 16 IRON INGOTS FÖRST VINNER - MINECRAFT UTMANING",
@@ -151,12 +157,6 @@
     "id": "lUOz3FreqGY",
     "title": "JNX HAR ALDRIG HAFT SÅ OTUR I MINECRAFT LUCKY BLOCK",
     "at": "2026-10-09T04:30:09Z",
-    "list": ""
-   },
-   {
-    "id": "i8-WZgYpm8Q",
-    "title": "GE EN VILLAGER ETT JOBB OCH DU VINNER - MINECRAFT UTMANING",
-    "at": "2026-10-07T04:30:33Z",
     "list": ""
    }
   ],
@@ -544,28 +544,28 @@
  },
  "media": {
   "chriswhippit": {
-   "views": 243791000,
+   "views": 243831000,
    "avgViews": 6800,
    "avgSample": 35,
    "uploads30": 32
   },
   "whippitsson": {
-   "views": 50355000,
+   "views": 50356000,
    "avgViews": 19000,
    "avgSample": 5,
    "uploads30": 3
   },
   "figgwhipp": {
-   "views": 97206000,
+   "views": 97209000,
    "avgViews": 0,
    "avgSample": 0,
    "uploads30": 0
   },
   "whippitextra": {
-   "views": 221000,
+   "views": 227000,
    "avgViews": 4900,
    "avgSample": 30,
-   "uploads30": 25
+   "uploads30": 26
   }
  }
 }
