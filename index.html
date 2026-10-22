@@ -1603,6 +1603,7 @@ textarea.input { min-height: 90px; resize: vertical; }
         <a href="/shop/" sc-camel-on-click="{{ goShop }}" data-active="{{ atShop }}" data-en="Shop" style="font-size: 14px; font-weight: 500; color: var(--color-neutral-400); white-space: nowrap; display: flex; align-items: center; min-height: 44px;" style-hover="color: #fff;">Shop</a>
         <a href="/spel/" sc-camel-on-click="{{ goSpel }}" data-active="{{ atSpel }}" data-en="Games" style="font-size: 14px; font-weight: 500; color: var(--color-neutral-400); white-space: nowrap; display: flex; align-items: center; min-height: 44px;" style-hover="color: #fff;">Spel</a>
         <a href="/samarbeten/" sc-camel-on-click="{{ goCollab }}" data-active="{{ atCollab }}" data-en="Partners" style="font-size: 14px; font-weight: 500; color: var(--color-neutral-400); white-space: nowrap; display: flex; align-items: center; min-height: 44px;" style-hover="color: #fff;">Samarbeten</a>
+        <a href="/blogg/" sc-camel-on-click="{{ goBlogg }}" data-active="{{ atBloggNav }}" data-en="Blog" style="font-size: 14px; font-weight: 500; color: var(--color-neutral-400); white-space: nowrap; display: flex; align-items: center; min-height: 44px;" style-hover="color: #fff;">Blogg</a>
       </nav>
       <div data-hactions="" style="order: 2; margin-left: auto; flex: 0 0 auto; display: flex; align-items: center; gap: 14px;">
         <span data-xp="" title="{{ xpTitle }}" role="img" aria-label="{{ xpTitle }}" style="display: flex; flex-direction: column; gap: 5px; min-width: 112px;">
@@ -3542,7 +3543,7 @@ class Component extends DCLogic {
       })(),
       atCollab: r === 'samarbeten' ? '1' : '',
       atMediakit: r === 'mediakit' ? '1' : '', goMediakit: this.go('mediakit'),
-      atBlogg: r === 'blogg' ? '1' : '', goBlogg: this.go('blogg'),
+      atBlogg: r === 'blogg' ? '1' : '', goBlogg: this.go('blogg'), atBloggNav: r === 'blogg' || r === 'post' ? '1' : '',
       ...(() => {
         // Bloggen: listan på /blogg/ och inlägget på /blogg/<slug>/. '[bild 2]' på egen rad placerar bild 2 i texten.
         const L = this.state.lang, posts = blogPosts(this.state.content);
