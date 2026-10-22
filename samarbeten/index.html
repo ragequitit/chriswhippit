@@ -1537,6 +1537,7 @@ textarea.input { min-height: 90px; resize: vertical; }
   /* XP-baren mot 1 miljon följare i menyraden */
   @media (max-width: 1240px) { [data-xp] { display: none !important; } }
   /* Mediakit */
+  @media (max-width: 640px) { [data-post-nav] { grid-template-columns: minmax(0, 1fr) !important; } [data-post-nav] > div:last-child { text-align: left !important; } [data-post-gallery] { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; } [data-blog-grid] { grid-template-columns: minmax(0, 1fr) !important; } }
   @media (max-width: 760px) { [data-mk-hero] { grid-template-columns: minmax(0, 1fr) !important; } [data-mk-hero] > img { max-width: 200px; order: -1; } [data-mk-row] { grid-template-columns: minmax(0, 1fr) auto !important; } [data-mk-row] > span:nth-child(3) { grid-column: 1 / -1; } [data-mk-row] > [data-mk-more] { grid-row: 1; grid-column: 2; } }
   [data-mk-row]:hover { background: rgba(134,87,255,.06) !important; }
   [data-mk-row][data-static="1"] { cursor: default !important; background: transparent !important; }
@@ -2344,6 +2345,63 @@ textarea.input { min-height: 90px; resize: vertical; }
   </main>
   </sc-if>
 
+  <sc-if value="{{ atBlogg }}">
+  <main style="max-width: 1240px; margin: 0 auto; padding: 72px 24px 0;">
+    <h1 data-en="Blog" style="font-family: var(--font-heading); font-weight: 500; font-size: clamp(38px, 6vw, 76px); letter-spacing: -.04em; margin: 0 0 14px;">Blogg</h1>
+    <p data-en="Everyday life behind the channel – family, trips, disc golf and everything else that never makes it into the videos." style="font-size: 17px; line-height: 1.6; color: var(--color-neutral-400); margin: 0 0 36px; max-width: 62ch; text-wrap: pretty;">Vardagen bakom kanalen – familjen, resor, discgolf och allt annat som inte hamnar i videorna.</p>
+    <sc-if value="{{ vReady }}">
+    <sc-if value="{{ blogEmpty }}"><p data-en="The first post is coming soon." style="font-size: 16px; color: var(--color-neutral-400);">Första inlägget kommer snart.</p></sc-if>
+    <div data-blog-grid="" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 22px;">
+      <sc-for list="{{ blogCards }}" as="b" hint-placeholder-count="6">
+        <a href="{{ b.href }}" sc-camel-on-click="{{ b.onGo }}" data-lift="" style="display: flex; flex-direction: column; overflow: hidden; background: var(--color-surface); box-shadow: 0 0 0 1px var(--color-neutral-800); color: var(--color-text);">
+          <sc-if value="{{ b.cover }}"><div style="aspect-ratio: 3 / 2; overflow: hidden; background: var(--color-neutral-900);"><img loading="lazy" decoding="async" src="{{ b.cover }}" alt="{{ b.title }}" style="width: 100%; height: 100%; object-fit: cover; display: block;"></div></sc-if>
+          <div style="padding: 16px 18px 20px;">
+            <div style="font-family: 'JetBrains Mono', monospace; letter-spacing: .14em; text-transform: uppercase; font-size: 10px; color: #b9a2ff; margin-bottom: 8px;">{{ b.date }}</div>
+            <h2 style="font-family: var(--font-heading); font-weight: 600; font-size: 21px; letter-spacing: -.02em; line-height: 1.25; margin: 0 0 8px;">{{ b.title }}</h2>
+            <p style="margin: 0; font-size: 14.5px; line-height: 1.6; color: var(--color-neutral-400); text-wrap: pretty;">{{ b.excerpt }}</p>
+          </div>
+        </a>
+      </sc-for>
+    </div>
+    </sc-if>
+  </main>
+  </sc-if>
+
+  <sc-if value="{{ atPost }}">
+  <main style="max-width: 820px; margin: 0 auto; padding: 56px 24px 0;">
+    <a href="/blogg/" sc-camel-on-click="{{ goBlogg }}" data-en="← All posts" style="display: inline-block; font-size: 14px; color: var(--color-accent-200); margin-bottom: 26px;">← Alla inlägg</a>
+    <sc-if value="{{ postMissing }}">
+      <h1 data-en="The post could not be found" style="font-family: var(--font-heading); font-weight: 500; font-size: clamp(30px, 4.5vw, 48px); letter-spacing: -.03em; margin: 0 0 12px;">Inlägget hittades inte</h1>
+      <p data-en="It may have been removed or moved." style="color: var(--color-neutral-400);">Det kan ha tagits bort eller flyttats.</p>
+    </sc-if>
+    <sc-if value="{{ postReady }}">
+    <article data-post="">
+      <div style="font-family: 'JetBrains Mono', monospace; letter-spacing: .14em; text-transform: uppercase; font-size: 11px; color: #b9a2ff; margin-bottom: 12px;">{{ postDate }}</div>
+      <h1 style="font-family: var(--font-heading); font-weight: 500; font-size: clamp(32px, 5vw, 56px); letter-spacing: -.035em; line-height: 1.08; margin: 0 0 28px; text-wrap: balance;">{{ postTitle }}</h1>
+      <sc-if value="{{ postCover }}"><img src="{{ postCover }}" alt="{{ postTitle }}" fetchpriority="high" decoding="async" style="width: 100%; max-height: 78vh; object-fit: cover; display: block; margin: 0 0 30px; background: var(--color-neutral-900);"></sc-if>
+      <div data-prose="" style="font-size: 17px; line-height: 1.75; color: #d6d3e6;">
+        <sc-for list="{{ postBlocks }}" as="b" hint-placeholder-count="4">
+          <sc-if value="{{ b.h }}"><h2 style="font-family: var(--font-heading); font-weight: 600; font-size: 24px; letter-spacing: -.02em; color: #fff; margin: 34px 0 10px;">{{ b.h }}</h2></sc-if>
+          <sc-if value="{{ b.img }}"><a href="{{ b.img }}" target="_blank" rel="noopener" style="display: block; margin: 26px 0;"><img loading="lazy" decoding="async" src="{{ b.img }}" alt="{{ b.alt }}" style="width: 100%; display: block; background: var(--color-neutral-900);"></a></sc-if>
+          <sc-if value="{{ b.isP }}"><p style="margin: 0 0 18px; white-space: pre-line; text-wrap: pretty;"><sc-for list="{{ b.parts }}" as="p" hint-placeholder-count="1"><sc-if value="{{ p.href }}"><a href="{{ p.href }}" target="{{ p.target }}" rel="noopener">{{ p.text }}</a></sc-if><sc-if value="{{ p.plain }}"><span>{{ p.text }}</span></sc-if></sc-for></p></sc-if>
+        </sc-for>
+      </div>
+      <sc-if value="{{ postHasGallery }}">
+      <div data-post-gallery="" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; margin: 30px 0 0;">
+        <sc-for list="{{ postGallery }}" as="g" hint-placeholder-count="4">
+          <a href="{{ g.src }}" target="_blank" rel="noopener" style="display: block; aspect-ratio: 1; overflow: hidden; background: var(--color-neutral-900);"><img loading="lazy" decoding="async" src="{{ g.src }}" alt="{{ g.alt }}" style="width: 100%; height: 100%; object-fit: cover; display: block;"></a>
+        </sc-for>
+      </div>
+      </sc-if>
+    </article>
+    <nav data-post-nav="" style="display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 14px; margin: 48px 0 0; padding: 24px 0 0; border-top: 1px solid var(--color-neutral-800);">
+      <div><sc-if value="{{ postNewer }}"><a href="{{ postNewerHref }}" sc-camel-on-click="{{ postNewerGo }}" style="display: block; color: var(--color-text);"><span data-en="← Newer" style="display: block; font-family: 'JetBrains Mono', monospace; letter-spacing: .14em; text-transform: uppercase; font-size: 10px; color: var(--color-neutral-500); margin-bottom: 6px;">← Nyare</span><span style="font-family: var(--font-heading); font-weight: 600;">{{ postNewerTitle }}</span></a></sc-if></div>
+      <div style="text-align: right;"><sc-if value="{{ postOlder }}"><a href="{{ postOlderHref }}" sc-camel-on-click="{{ postOlderGo }}" style="display: block; color: var(--color-text);"><span data-en="Older →" style="display: block; font-family: 'JetBrains Mono', monospace; letter-spacing: .14em; text-transform: uppercase; font-size: 10px; color: var(--color-neutral-500); margin-bottom: 6px;">Äldre →</span><span style="font-family: var(--font-heading); font-weight: 600;">{{ postOlderTitle }}</span></a></sc-if></div>
+    </nav>
+    </sc-if>
+  </main>
+  </sc-if>
+
   <sc-if value="{{ atMediakit }}">
   <main data-mk="" style="max-width: 1100px; margin: 0 auto; padding: 72px 24px 0;">
     <div data-mk-hero="" style="display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 36px; align-items: center;">
@@ -2537,6 +2595,7 @@ textarea.input { min-height: 90px; resize: vertical; }
           <a href="/videor/" sc-camel-on-click="{{ goVideor }}" data-en="Videos" style="color: var(--color-neutral-400);">Videor</a>
           <a href="/ganget/" sc-camel-on-click="{{ goGanget }}" data-en="The crew" style="color: var(--color-neutral-400);">Gänget</a>
           <a href="/historia/" sc-camel-on-click="{{ goHistoria }}" data-en="Through the years" style="color: var(--color-neutral-400);">Genom åren</a>
+          <a href="/blogg/" sc-camel-on-click="{{ goBlogg }}" data-en="Blog" style="color: var(--color-neutral-400);">Blogg</a>
           <a href="/samarbeten/" sc-camel-on-click="{{ goCollab }}" data-en="Partnerships" style="color: var(--color-neutral-400);">Samarbeten</a>
           <a href="/om/" sc-camel-on-click="{{ goOm }}" data-en="About" style="color: var(--color-neutral-400);">Om Chris</a>
         </div>
@@ -2650,9 +2709,14 @@ const SITE_ROOT = (() => { try { return new URL(ROOT_PATH, location.href).href; 
 const asset = (u) => (u && !/^(data:|blob:|https?:|\/)/i.test(u) ? SITE_ROOT + u : u);
 const ytId = (u) => { const m = /(?:[?&]v=|youtu\.be\/|shorts\/|embed\/|live\/)([\w-]{11})/.exec(u || ''); return m ? m[1] : ''; };
 const collabSlug = (n) => String(n || '').trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-const ROUTE_PATHS = { hem: '', setup: 'setup/', schema: 'schema/', faq: 'faq/', dl: 'nedladdningar/', shop: 'shop/', spel: 'spel/', samarbeten: 'samarbeten/', om: 'om/', integritet: 'integritetspolicy/', videor: 'videor/', ganget: 'ganget/', historia: 'historia/', mediakit: 'mediakit/' };
+const ROUTE_PATHS = { hem: '', setup: 'setup/', schema: 'schema/', faq: 'faq/', dl: 'nedladdningar/', shop: 'shop/', spel: 'spel/', samarbeten: 'samarbeten/', om: 'om/', integritet: 'integritetspolicy/', videor: 'videor/', ganget: 'ganget/', historia: 'historia/', mediakit: 'mediakit/', blogg: 'blogg/' };
 // Adress -> sida. /videor/<serie>/ blir sidan 'serie' med serie = <serie>.
-const locRoute = () => { try { const p = location.pathname.replace(/^\/+/, '').replace(/index\.html$/, ''); const m = /^videor\/([a-z0-9-]+)\/?$/.exec(p); if (m) return { route: 'serie', serie: m[1] }; const seg = p.replace(/\/$/, ''); return { route: Object.keys(ROUTE_PATHS).find((k) => ROUTE_PATHS[k] === (seg ? seg + '/' : '')) || 'hem', serie: '' }; } catch (e) { return { route: 'hem', serie: '' }; } };
+const locRoute = () => { try { const p = location.pathname.replace(/^\/+/, '').replace(/index\.html$/, ''); const m = /^videor\/([a-z0-9-]+)\/?$/.exec(p); if (m) return { route: 'serie', serie: m[1], post: '' }; const b = /^blogg\/([a-z0-9-]+)\/?$/.exec(p); if (b) return { route: 'post', serie: '', post: b[1] }; const seg = p.replace(/\/$/, ''); return { route: Object.keys(ROUTE_PATHS).find((k) => ROUTE_PATHS[k] === (seg ? seg + '/' : '')) || 'hem', serie: '', post: '' }; } catch (e) { return { route: 'hem', serie: '', post: '' }; } };
+// Blogginlägg från content.json: synliga, nyast först. Första bilden är omslaget.
+const blogPosts = (c) => ((c && c.blog) || []).filter((p) => p && p.slug && p.title && !p.hidden).slice().sort((a, b) => String(b.date || '').localeCompare(String(a.date || '')));
+const blogDate = (d, lang) => { try { return new Date(d + 'T12:00:00').toLocaleDateString(lang === 'en' ? 'en-GB' : 'sv-SE', { day: 'numeric', month: 'long', year: 'numeric' }); } catch (e) { return d || ''; } };
+const blogImg = (x) => { const v = (x && typeof x === 'object' ? x.src : x) || ''; return v && !/^(https?:|data:|\/)/.test(v) ? SITE_ROOT + v : v; };
+const blogExcerpt = (t) => { const p = String(t || '').split(/\n\s*\n/).map((x) => x.trim()).find((x) => x && !/^##\s|^\[bild\s*\d+\]$/i.test(x)) || ''; return p.length > 170 ? p.slice(0, 170).replace(/\s+\S*$/, '') + ' …' : p; };
 // Gör e-post, webbadresser och några ord i FAQ-svaren klickbara (texten kommer från admin).
 const FAQ_WORDS = {
   'setup-sidan': () => SITE_ROOT + 'setup/', 'schemat': () => SITE_ROOT + 'schema/', 'spelschemat': () => SITE_ROOT + 'schema/',
@@ -2676,9 +2740,9 @@ const faqParts = (text) => {
   if (last < s.length) out.push({ text: s.slice(last), plain: true, href: '' });
   return out;
 };
-const ROUTE_META = {"hem":{"t":"Chris Whippit — svensk YouTuber och streamare","d":"Chris Whippit gör videor sedan 2014: gaming, Pokémon GO, discgolf och allt ni kan tänka er däremellan. Senaste videorna, veckans schema, spel, merch och samarbeten.","u":"https://www.chriswhippit.com/"},"setup":{"t":"Setup — datorn, kameran och allt annat | Chris Whippit","d":"Hela listan på grejerna Chris Whippit spelar in med: dator, grafikkort, mikrofon, kamera, stol och skrivbord.","u":"https://www.chriswhippit.com/setup/"},"schema":{"t":"Spelschema — veckans videor och streams | Chris Whippit","d":"Veckans planerade videor och streams från Chris Whippit, dag för dag med tider. Se vad som släpps härnäst på kanalerna.","u":"https://www.chriswhippit.com/schema/"},"faq":{"t":"Vanliga frågor | Chris Whippit","d":"Svar på det som kommer oftast: hur ofta det laddas upp, vilka kanaler som finns, datorn, samarbeten, Discord, spelen och merch.","u":"https://www.chriswhippit.com/faq/"},"dl":{"t":"Nedladdningar — Minecraft-kartor | Chris Whippit","d":"Ladda ner kartorna från fyra av de åtta säsongerna av Let’s Play-serien i Minecraft med Whippit och Softis. Gratis att använda som du vill.","u":"https://www.chriswhippit.com/nedladdningar/"},"shop":{"t":"Shop — t-shirts, hoodies och kepsar | Chris Whippit","d":"Merch med Whippit-märket. T-shirts, hoodies och kepsar, tryckta och skickade av Spreadshirt.","u":"https://www.chriswhippit.com/shop/"},"spel":{"t":"Spel — Project Genesis och fler webbläsarspel | Chris Whippit","d":"Spela Project Genesis, ett cyberpunk-idle-MMORPG, och fler gratisspel direkt i webbläsaren. Inget att ladda ner.","u":"https://www.chriswhippit.com/spel/"},"samarbeten":{"t":"Samarbeten — varumärken och kampanjer | Chris Whippit","d":"Varumärken Chris Whippit har samarbetat med, bland andra Xbox, Ubisoft, NZXT och SodaStream. Se videorna, siffrorna och hur du kontaktar honom.","u":"https://www.chriswhippit.com/samarbeten/"},"om":{"t":"Om Chris Whippit — svensk YouTuber sedan 2014","d":"Chris Whippit är en svensk YouTuber och streamare från Strömstad som gjort videor sedan 2014: gaming, Pokémon GO, discgolf och mer.","u":"https://www.chriswhippit.com/om/"},"integritet":{"t":"Integritetspolicy | Chris Whippit","d":"Hur chriswhippit.com hanterar personuppgifter, cookies och annonser från Google AdSense, och vilka rättigheter du har.","u":"https://www.chriswhippit.com/integritetspolicy/"},"videor":{"t":"Videor — serier, kanaler och spellistor | Chris Whippit","d":"Alla serier från Chris Whippit samlade: Minecraft Let’s Play, GTA 5, Fortnite, vloggar och Pokémon GO – plus kanalerna och gänget.","u":"https://www.chriswhippit.com/videor/"},"serie:minecraft":{"t":"Minecraft med Chris Whippit — Let’s Play med Softis","d":"Minecraft Let’s Play med SoftisFFS sedan 2016 – över 500 avsnitt – plus Lucky Block, Skyblock, Hardcore och kartorna att ladda ner.","u":"https://www.chriswhippit.com/videor/minecraft/"},"serie:gta-5":{"t":"GTA 5 med Chris Whippit — race, heists och kaos","d":"Nästan 1 000 GTA 5-videor med SoftisFFS, figgehn och Polski. Rage-race, Cayo Perico, Last Team Standing och introlåten Razor Sharp.","u":"https://www.chriswhippit.com/videor/gta-5/"},"serie:fortnite":{"t":"Fortnite med Chris Whippit — nästan 600 videor","d":"Fortnite från 2017 till 2024: säsong efter säsong, live-events, Playground och Fortnite Lego med Softis, figgehn och Polski.","u":"https://www.chriswhippit.com/videor/fortnite/"},"serie:vloggar":{"t":"Chris Whippit Vloggar — Pokémon GO, discgolf och vardag","d":"Vlogg-kanalen med familjen, discgolf, teknik, mat och över 200 Pokémon GO-videor med raider, community days och shinies.","u":"https://www.chriswhippit.com/videor/vloggar/"},"ganget":{"t":"Gänget — SoftisFFS, Ufosxm, JNX, Polski och figgehn | Chris Whippit","d":"Kanalerna Chris Whippit spelat mest med: SoftisFFS, Ufosxm, JNX, Polski och figgehn. Prenumerera och se videorna de gjort tillsammans.","u":"https://www.chriswhippit.com/ganget/"},"historia":{"t":"Chris Whippit genom åren — tidslinje från 2014 till idag","d":"Hela resan: från starten 2014 till nästan 8 000 videor. Figgehn & Whippit, Minecraft Let’s Play med Softis, GTA 5, Fortnite, Pokémon GO och milstolparna.","u":"https://www.chriswhippit.com/historia/"},"mediakit":{"t":"Mediakit — Chris Whippit: räckvidd, kanaler och samarbeten","d":"Chris Whippits mediakit för varumärken: 869K följare, över 390 miljoner visningar på YouTube, kanaler, innehåll, samarbetsformat och tidigare samarbeten.","u":"https://www.chriswhippit.com/mediakit/"}};
+const ROUTE_META = {"hem":{"t":"Chris Whippit — svensk YouTuber och streamare","d":"Chris Whippit gör videor sedan 2014: gaming, Pokémon GO, discgolf och allt ni kan tänka er däremellan. Senaste videorna, veckans schema, spel, merch och samarbeten.","u":"https://www.chriswhippit.com/"},"setup":{"t":"Setup — datorn, kameran och allt annat | Chris Whippit","d":"Hela listan på grejerna Chris Whippit spelar in med: dator, grafikkort, mikrofon, kamera, stol och skrivbord.","u":"https://www.chriswhippit.com/setup/"},"schema":{"t":"Spelschema — veckans videor och streams | Chris Whippit","d":"Veckans planerade videor och streams från Chris Whippit, dag för dag med tider. Se vad som släpps härnäst på kanalerna.","u":"https://www.chriswhippit.com/schema/"},"faq":{"t":"Vanliga frågor | Chris Whippit","d":"Svar på det som kommer oftast: hur ofta det laddas upp, vilka kanaler som finns, datorn, samarbeten, Discord, spelen och merch.","u":"https://www.chriswhippit.com/faq/"},"dl":{"t":"Nedladdningar — Minecraft-kartor | Chris Whippit","d":"Ladda ner kartorna från fyra av de åtta säsongerna av Let’s Play-serien i Minecraft med Whippit och Softis. Gratis att använda som du vill.","u":"https://www.chriswhippit.com/nedladdningar/"},"shop":{"t":"Shop — t-shirts, hoodies och kepsar | Chris Whippit","d":"Merch med Whippit-märket. T-shirts, hoodies och kepsar, tryckta och skickade av Spreadshirt.","u":"https://www.chriswhippit.com/shop/"},"spel":{"t":"Spel — Project Genesis och fler webbläsarspel | Chris Whippit","d":"Spela Project Genesis, ett cyberpunk-idle-MMORPG, och fler gratisspel direkt i webbläsaren. Inget att ladda ner.","u":"https://www.chriswhippit.com/spel/"},"samarbeten":{"t":"Samarbeten — varumärken och kampanjer | Chris Whippit","d":"Varumärken Chris Whippit har samarbetat med, bland andra Xbox, Ubisoft, NZXT och SodaStream. Se videorna, siffrorna och hur du kontaktar honom.","u":"https://www.chriswhippit.com/samarbeten/"},"om":{"t":"Om Chris Whippit — svensk YouTuber sedan 2014","d":"Chris Whippit är en svensk YouTuber och streamare från Strömstad som gjort videor sedan 2014: gaming, Pokémon GO, discgolf och mer.","u":"https://www.chriswhippit.com/om/"},"integritet":{"t":"Integritetspolicy | Chris Whippit","d":"Hur chriswhippit.com hanterar personuppgifter, cookies och annonser från Google AdSense, och vilka rättigheter du har.","u":"https://www.chriswhippit.com/integritetspolicy/"},"videor":{"t":"Videor — serier, kanaler och spellistor | Chris Whippit","d":"Alla serier från Chris Whippit samlade: Minecraft Let’s Play, GTA 5, Fortnite, vloggar och Pokémon GO – plus kanalerna och gänget.","u":"https://www.chriswhippit.com/videor/"},"serie:minecraft":{"t":"Minecraft med Chris Whippit — Let’s Play med Softis","d":"Minecraft Let’s Play med SoftisFFS sedan 2016 – över 500 avsnitt – plus Lucky Block, Skyblock, Hardcore och kartorna att ladda ner.","u":"https://www.chriswhippit.com/videor/minecraft/"},"serie:gta-5":{"t":"GTA 5 med Chris Whippit — race, heists och kaos","d":"Nästan 1 000 GTA 5-videor med SoftisFFS, figgehn och Polski. Rage-race, Cayo Perico, Last Team Standing och introlåten Razor Sharp.","u":"https://www.chriswhippit.com/videor/gta-5/"},"serie:fortnite":{"t":"Fortnite med Chris Whippit — nästan 600 videor","d":"Fortnite från 2017 till 2024: säsong efter säsong, live-events, Playground och Fortnite Lego med Softis, figgehn och Polski.","u":"https://www.chriswhippit.com/videor/fortnite/"},"serie:vloggar":{"t":"Chris Whippit Vloggar — Pokémon GO, discgolf och vardag","d":"Vlogg-kanalen med familjen, discgolf, teknik, mat och över 200 Pokémon GO-videor med raider, community days och shinies.","u":"https://www.chriswhippit.com/videor/vloggar/"},"ganget":{"t":"Gänget — SoftisFFS, Ufosxm, JNX, Polski och figgehn | Chris Whippit","d":"Kanalerna Chris Whippit spelat mest med: SoftisFFS, Ufosxm, JNX, Polski och figgehn. Prenumerera och se videorna de gjort tillsammans.","u":"https://www.chriswhippit.com/ganget/"},"historia":{"t":"Chris Whippit genom åren — tidslinje från 2014 till idag","d":"Hela resan: från starten 2014 till nästan 8 000 videor. Figgehn & Whippit, Minecraft Let’s Play med Softis, GTA 5, Fortnite, Pokémon GO och milstolparna.","u":"https://www.chriswhippit.com/historia/"},"mediakit":{"t":"Mediakit — Chris Whippit: räckvidd, kanaler och samarbeten","d":"Chris Whippits mediakit för varumärken: 869K följare, över 390 miljoner visningar på YouTube, kanaler, innehåll, samarbetsformat och tidigare samarbeten.","u":"https://www.chriswhippit.com/mediakit/"},"blogg":{"t":"Blogg — vardagen bakom kanalen | Chris Whippit","d":"Chris Whippits blogg: familjen, resor, discgolf och vardagen bakom YouTube-kanalen – med bilder.","u":"https://www.chriswhippit.com/blogg/"}};
 // Fliktiteln på engelska när sajten visas på engelska (beskrivningarna för Google är kvar på svenska).
-const TITLE_EN = {"hem":"Chris Whippit — Swedish YouTuber and streamer","setup":"Setup — the PC, camera and everything else | Chris Whippit","schema":"Schedule — this week’s videos and streams | Chris Whippit","faq":"FAQ | Chris Whippit","dl":"Downloads — Minecraft maps | Chris Whippit","shop":"Shop — t-shirts, hoodies and caps | Chris Whippit","spel":"Games — Project Genesis and more browser games | Chris Whippit","samarbeten":"Partnerships — brands and campaigns | Chris Whippit","om":"About Chris Whippit — Swedish YouTuber since 2014","integritet":"Privacy policy | Chris Whippit","videor":"Videos — series, channels and playlists | Chris Whippit","serie:minecraft":"Minecraft with Chris Whippit — Let’s Play with Softis","serie:gta-5":"GTA 5 with Chris Whippit — races, heists and chaos","serie:fortnite":"Fortnite with Chris Whippit — almost 600 videos","serie:vloggar":"Chris Whippit Vlogs — Pokémon GO, disc golf and everyday life","ganget":"The crew — SoftisFFS, Ufosxm, JNX, Polski and figgehn | Chris Whippit","historia":"Chris Whippit through the years — timeline from 2014 to today","mediakit":"Media kit — Chris Whippit: reach, channels and partnerships"};
+const TITLE_EN = {"blogg":"Blog — everyday life behind the channel | Chris Whippit","hem":"Chris Whippit — Swedish YouTuber and streamer","setup":"Setup — the PC, camera and everything else | Chris Whippit","schema":"Schedule — this week’s videos and streams | Chris Whippit","faq":"FAQ | Chris Whippit","dl":"Downloads — Minecraft maps | Chris Whippit","shop":"Shop — t-shirts, hoodies and caps | Chris Whippit","spel":"Games — Project Genesis and more browser games | Chris Whippit","samarbeten":"Partnerships — brands and campaigns | Chris Whippit","om":"About Chris Whippit — Swedish YouTuber since 2014","integritet":"Privacy policy | Chris Whippit","videor":"Videos — series, channels and playlists | Chris Whippit","serie:minecraft":"Minecraft with Chris Whippit — Let’s Play with Softis","serie:gta-5":"GTA 5 with Chris Whippit — races, heists and chaos","serie:fortnite":"Fortnite with Chris Whippit — almost 600 videos","serie:vloggar":"Chris Whippit Vlogs — Pokémon GO, disc golf and everyday life","ganget":"The crew — SoftisFFS, Ufosxm, JNX, Polski and figgehn | Chris Whippit","historia":"Chris Whippit through the years — timeline from 2014 to today","mediakit":"Media kit — Chris Whippit: reach, channels and partnerships"};
 const applyRouteMeta = (route) => {
   const m = ROUTE_META[route]; if (!m) return;
   document.title = m.t;
@@ -2916,6 +2980,28 @@ class Component extends DCLogic {
     };
   }
 
+  // Blogginlägg: /blogg/<slug>/
+  goPost(slug) {
+    return (e) => {
+      if (e && (e.metaKey || e.ctrlKey || e.shiftKey || e.button === 1)) return;
+      if (e) e.preventDefault();
+      this.setState({ route: 'post', post: slug, playing: null });
+      try { const to = ROOT_PATH + 'blogg/' + slug + '/'; if (location.pathname !== to) history.pushState({ route: 'post', post: slug }, '', to); } catch (err) {}
+      window.scrollTo(0, 0);
+    };
+  }
+
+  // Titel, beskrivning och adress för blogginlägg vid navigering inne i sajten (sidfilen har dem redan från start).
+  applyPostMeta() {
+    const p = blogPosts(this.state.content).find((x) => x.slug === this.state.post); if (!p) return;
+    const L = this.state.lang, t = pick(L, p, 'title') + ' | Chris Whippit', d = blogExcerpt(pick(L, p, 'text')) || t, u = 'https://www.chriswhippit.com/blogg/' + p.slug + '/';
+    document.title = t;
+    const set = (sel, attr, v) => { const el = document.querySelector(sel); if (el) el.setAttribute(attr, v); };
+    set('meta[name="description"]', 'content', d); set('meta[property="og:description"]', 'content', d); set('meta[name="twitter:description"]', 'content', d);
+    set('meta[property="og:title"]', 'content', t); set('meta[name="twitter:title"]', 'content', t);
+    set('link[rel="canonical"]', 'href', u); set('meta[property="og:url"]', 'content', u);
+  }
+
   goSerie(slug) {
     return (e) => {
       if (e && (e.metaKey || e.ctrlKey || e.shiftKey || e.button === 1)) return;
@@ -3103,7 +3189,7 @@ class Component extends DCLogic {
     if (Array.isArray(c.schema)) next.schema = c.schema;
     if (c.about && typeof c.about === 'object') next.about = c.about;
     if (c.mediakit && typeof c.mediakit === 'object') next.mediakit = c.mediakit;
-    ['series', 'crew', 'morePlaylists', 'timeline'].forEach((k) => { if (Array.isArray(c[k])) next[k] = c[k]; });
+    ['series', 'crew', 'morePlaylists', 'timeline', 'blog'].forEach((k) => { if (Array.isArray(c[k])) next[k] = c[k]; });
     if (Object.keys(next).length) this.setState((s) => ({ content: { ...s.content, ...next } }));
     if (c.sponsors && c.sponsors.length) this.setState({ sponsors: c.sponsors });
     if (c.social) { this.setState({ social: c.social }); this.loadSocialThumbs(c.social); }
@@ -3196,7 +3282,7 @@ class Component extends DCLogic {
       this.setState({ ytError: (e && e.message) || 'network error' });
     }
   }
-  componentDidUpdate() { const mk = this.state.route === 'serie' ? 'serie:' + this.state.serie : this.state.route; if (this._metaRoute !== mk + this.state.lang) { this._metaRoute = mk + this.state.lang; applyRouteMeta(mk); if (this.state.lang === 'en' && TITLE_EN[mk]) document.title = TITLE_EN[mk]; } this.applyLang(); if (this.state.route === 'shop' && this.state.shopOpen) this.loadShop(); if (this.state.route === 'samarbeten') this.loadCollabStats(); this.loadVideoData(); this.fillAds(); this.loadDiscord(); if (this.onTl) this.onTl(); document.documentElement.style.overflow = this.state.playing ? 'hidden' : ''; }
+  componentDidUpdate() { const mk = this.state.route === 'serie' ? 'serie:' + this.state.serie : this.state.route === 'post' ? 'post:' + this.state.post + (this.state.contentReady ? '' : '?') : this.state.route; if (this._metaRoute !== mk + this.state.lang) { this._metaRoute = mk + this.state.lang; applyRouteMeta(mk); if (this.state.lang === 'en' && TITLE_EN[mk]) document.title = TITLE_EN[mk]; if (this.state.route === 'post' && this.state.contentReady) this.applyPostMeta(); } this.applyLang(); if (this.state.route === 'shop' && this.state.shopOpen) this.loadShop(); if (this.state.route === 'samarbeten') this.loadCollabStats(); this.loadVideoData(); this.fillAds(); this.loadDiscord(); if (this.onTl) this.onTl(); document.documentElement.style.overflow = this.state.playing ? 'hidden' : ''; }
 
   loadDiscord() {
     if (this.state.route !== 'hem' || this._dc) return;
@@ -3477,6 +3563,29 @@ class Component extends DCLogic {
       })(),
       atCollab: r === 'samarbeten' ? '1' : '',
       atMediakit: r === 'mediakit' ? '1' : '', goMediakit: this.go('mediakit'),
+      atBlogg: r === 'blogg' ? '1' : '', goBlogg: this.go('blogg'),
+      ...(() => {
+        // Bloggen: listan på /blogg/ och inlägget på /blogg/<slug>/. '[bild 2]' på egen rad placerar bild 2 i texten.
+        const L = this.state.lang, posts = blogPosts(this.state.content);
+        const card = (p) => ({ href: '/blogg/' + p.slug + '/', onGo: this.goPost(p.slug), title: pick(L, p, 'title'), date: blogDate(p.date, L), excerpt: blogExcerpt(pick(L, p, 'text')), cover: blogImg((p.images || [])[0]) });
+        const out = { blogCards: posts.map(card), blogEmpty: posts.length ? '' : '1', atPost: r === 'post' ? '1' : '', postReady: '', postMissing: '' };
+        if (r !== 'post' || !this.state.contentReady) return out;
+        const i = posts.findIndex((x) => x.slug === this.state.post), p = posts[i];
+        if (!p) return { ...out, postMissing: '1' };
+        const imgs = (p.images || []).map((x) => ({ src: blogImg(x), alt: (x && x.alt) || pick(L, p, 'title') })).filter((x) => x.src);
+        const used = new Set([0]);
+        const blocks = String(pick(L, p, 'text')).split(/\n\s*\n/).map((x) => x.trim()).filter(Boolean).map((x) => {
+          const m = /^\[bild\s*(\d+)\]$/i.exec(x);
+          if (m) { const g = imgs[+m[1] - 1]; if (!g || +m[1] === 1) return null; used.add(+m[1] - 1); return { h: '', isP: '', img: g.src, alt: g.alt }; }
+          return /^##\s+/.test(x) ? { h: x.replace(/^##\s+/, ''), isP: '', img: '' } : { h: '', isP: '1', img: '', parts: faqParts(x) };
+        }).filter(Boolean);
+        const gallery = imgs.filter((x, j) => !used.has(j));
+        const nw = posts[i - 1], od = posts[i + 1];
+        return { ...out, postReady: '1', postTitle: pick(L, p, 'title'), postDate: blogDate(p.date, L), postCover: imgs[0] ? imgs[0].src : '', postBlocks: blocks,
+          postGallery: gallery, postHasGallery: gallery.length ? '1' : '',
+          postNewer: nw ? '1' : '', postNewerHref: nw ? '/blogg/' + nw.slug + '/' : '', postNewerGo: nw ? this.goPost(nw.slug) : null, postNewerTitle: nw ? pick(L, nw, 'title') : '',
+          postOlder: od ? '1' : '', postOlderHref: od ? '/blogg/' + od.slug + '/' : '', postOlderGo: od ? this.goPost(od.slug) : null, postOlderTitle: od ? pick(L, od, 'title') : '' };
+      })(),
       mkPrint: () => window.print(),
       ...(() => {
         // Mediakitets siffror: YouTube automatiskt (videos.json), övriga plattformar från content.json.

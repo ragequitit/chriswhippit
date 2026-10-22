@@ -5660,6 +5660,7 @@ textarea.input { min-height: 90px; resize: vertical; }
       <nav style="flex: 0 0 220px; display: flex; flex-direction: column; gap: 3px; position: sticky; top: 84px;">
         <button data-tab="" data-on="{{ onSetup }}" sc-camel-on-click="{{ goSetup }}" style="text-align: left; padding: 11px 14px; border: none; border-radius: 8px; background: transparent; color: var(--color-neutral-400); font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 10px;"><i class="ph-fill ph-desktop-tower" aria-hidden="true" style="font-size: 15px;"></i>Setup</button>
         <button data-tab="" data-on="{{ onSchema }}" sc-camel-on-click="{{ goSchema }}" style="text-align: left; padding: 11px 14px; border: none; border-radius: 8px; background: transparent; color: var(--color-neutral-400); font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 10px;"><i class="ph-fill ph-calendar-blank" aria-hidden="true" style="font-size: 15px;"></i>Schema</button>
+        <button data-tab="" data-on="{{ onBlog }}" sc-camel-on-click="{{ goBlog }}" style="text-align: left; padding: 11px 14px; border: none; border-radius: 8px; background: transparent; color: var(--color-neutral-400); font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 10px;"><i class="ph-fill ph-notebook" aria-hidden="true" style="font-size: 15px;"></i>Blogg</button>
         <button data-tab="" data-on="{{ onDl }}" sc-camel-on-click="{{ goDl }}" style="text-align: left; padding: 11px 14px; border: none; border-radius: 8px; background: transparent; color: var(--color-neutral-400); font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 10px;"><i class="ph-fill ph-download-simple" aria-hidden="true" style="font-size: 15px;"></i>Nedladdningar</button>
         <button data-tab="" data-on="{{ onShop }}" sc-camel-on-click="{{ goShop }}" style="text-align: left; padding: 11px 14px; border: none; border-radius: 8px; background: transparent; color: var(--color-neutral-400); font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 10px;"><i class="ph-fill ph-t-shirt" aria-hidden="true" style="font-size: 15px;"></i>Shop</button>
         <button data-tab="" data-on="{{ onSponsors }}" sc-camel-on-click="{{ goSponsors }}" style="text-align: left; padding: 11px 14px; border: none; border-radius: 8px; background: transparent; color: var(--color-neutral-400); font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 10px;"><i class="ph-fill ph-handshake" aria-hidden="true" style="font-size: 15px;"></i>Samarbeten</button>
@@ -5793,6 +5794,56 @@ textarea.input { min-height: 90px; resize: vertical; }
             <input data-in="" value="{{ aboutLeadEn }}" sc-camel-on-change="{{ setAboutLeadEn }}" placeholder="EN · Intro sentence in English" style="border-left: 2px solid #6fb7c9; font-family: var(--font-heading); font-size: 15px;">
             <textarea data-in="" rows="18" value="{{ aboutTextEn }}" sc-camel-on-change="{{ setAboutTextEn }}" placeholder="EN · Your story in English. Blank line = new paragraph, ## = heading." style="border-left: 2px solid #6fb7c9; resize: vertical; line-height: 1.6;"></textarea>
             <span style="font-size: 12px; color: var(--color-neutral-500);">Tom rad ger nytt stycke. En rad som börjar med <code>## </code> blir en rubrik. E-post, länkar och ord som setup-sidan, shoppen, Discord och YouTube blir klickbara.</span>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ onBlog }}">
+          <div style="display: flex; flex-direction: column; gap: 16px;">
+            <button data-btn="" sc-camel-on-click="{{ addPost }}" style="align-self: start; padding: 11px 16px; border: 1px dashed var(--color-neutral-700); background: transparent; color: var(--color-neutral-300); font-size: 14px;" style-hover="border-color: var(--color-accent-600); color: var(--color-accent-300);">+ Nytt inlägg</button>
+            <sc-for list="{{ blogRows }}" as="row" hint-placeholder-count="2">
+              <div data-row="" style="background: var(--color-surface); box-shadow: 0 0 0 1px var(--color-neutral-800); padding: 16px 18px 18px; display: flex; flex-direction: column; gap: 10px;">
+                <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                  <span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--color-neutral-500);">{{ row.status }}</span>
+                  <sc-if value="{{ row.url }}"><a href="{{ row.url }}" target="_blank" rel="noopener" style="font-size: 12px; color: var(--color-accent-300);">Visa på sajten ↗</a></sc-if>
+                  <span style="flex: 1 1 auto;"></span>
+                  <button data-btn="" sc-camel-on-click="{{ row.onHidden }}" title="Ett dolt inlägg syns inte på sajten" style="padding: 7px 11px; border: 1px solid var(--color-neutral-800); background: transparent; color: var(--color-neutral-400); font-size: 12px; cursor: pointer;">{{ row.hiddenLabel }}</button>
+                  <button data-del="" sc-camel-on-click="{{ row.onDelete }}" title="Ta bort inlägget" style="flex: 0 0 auto; width: 34px; height: 34px; border-radius: 8px; border: 1px solid var(--color-neutral-800); background: transparent; color: var(--color-neutral-500); cursor: pointer;" style-hover="color: #f78fb6; border-color: rgba(244,114,166,.5);"><i class="ph-fill ph-trash" aria-hidden="true" style="font-size: 14px;"></i></button>
+                </div>
+                <input data-in="" value="{{ row.title }}" sc-camel-on-change="{{ row.onTitle }}" placeholder="Rubrik" style="font-family: var(--font-heading); font-size: 18px; font-weight: 500;">
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                  <input data-in="" type="date" value="{{ row.date }}" sc-camel-on-change="{{ row.onDate }}" style="flex: 0 0 170px;">
+                  <input data-in="" value="{{ row.slug }}" sc-camel-on-change="{{ row.onSlug }}" placeholder="adress (skapas från rubriken)" title="Adressen blir chriswhippit.com/blogg/<det här>/ – ändra den inte efter att inlägget delats" style="flex: 1 1 200px; font-family: 'JetBrains Mono', monospace; font-size: 12px;">
+                </div>
+                <textarea data-in="" value="{{ row.text }}" sc-camel-on-change="{{ row.onText }}" placeholder="Skriv inlägget här. Tom rad = nytt stycke." rows="10" style="line-height: 1.6; resize: vertical; min-height: 180px;"></textarea>
+                <span style="font-size: 12px; color: var(--color-neutral-500);">Tom rad ger nytt stycke. <code>## </code> först på en rad blir en rubrik. <code>[bild 2]</code> på en egen rad lägger bild 2 mitt i texten – övriga bilder visas under texten. Bild 1 är omslaget.</span>
+                <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 8px;">
+                  <sc-for list="{{ row.images }}" as="im" hint-placeholder-count="3">
+                    <div style="position: relative; aspect-ratio: 1; overflow: hidden; background: var(--color-neutral-900);">
+                      <img src="{{ im.src }}" alt="" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                      <span style="position: absolute; left: 6px; top: 6px; padding: 3px 6px; background: rgba(10,10,18,.8); color: #fff; font-size: 11px;">{{ im.label }}</span>
+                      <div style="position: absolute; left: 6px; right: 6px; bottom: 6px; display: flex; gap: 4px; justify-content: space-between;">
+                        <button sc-camel-on-click="{{ im.onLeft }}" title="Flytta vänster" style="padding: 6px 9px; border-radius: 6px; border: 1px solid var(--color-neutral-800); background: rgba(10,10,18,.75); color: #fff; font-size: 12px; cursor: pointer;">←</button>
+                        <button sc-camel-on-click="{{ im.onDel }}" title="Ta bort bilden" style="padding: 6px 9px; border-radius: 6px; border: 1px solid var(--color-neutral-800); background: rgba(10,10,18,.75); color: #fff; font-size: 12px; cursor: pointer;">✕</button>
+                        <button sc-camel-on-click="{{ im.onRight }}" title="Flytta höger" style="padding: 6px 9px; border-radius: 6px; border: 1px solid var(--color-neutral-800); background: rgba(10,10,18,.75); color: #fff; font-size: 12px; cursor: pointer;">→</button>
+                      </div>
+                    </div>
+                  </sc-for>
+                  <label data-drop="" sc-camel-on-drag-over="{{ row.onDragOver }}" sc-camel-on-drag-leave="{{ row.onDragLeave }}" sc-camel-on-drop="{{ row.onDrop }}" title="Välj eller dra in bilder" style="aspect-ratio: 1; display: grid; place-items: center; cursor: pointer; border: 1px dashed var(--color-neutral-700); background: repeating-linear-gradient(135deg, rgba(145,132,217,.06) 0 6px, transparent 6px 12px); text-align: center; font-size: 12px; color: var(--color-neutral-400); padding: 8px;">
+                    <input type="file" accept="image/*" data-multi="" sc-camel-on-change="{{ row.onPick }}" style="display: none;">
+                    <span><i class="ph-fill ph-images" aria-hidden="true" style="font-size: 22px; display: block; margin-bottom: 4px;"></i>Lägg till bilder</span>
+                  </label>
+                </div>
+                <sc-if value="{{ row.busy }}"><span style="font-size: 12px; color: var(--color-accent-300);">Förbereder bilder…</span></sc-if>
+                <details style="font-size: 13px; color: var(--color-neutral-400);">
+                  <summary style="cursor: pointer;">Engelsk version (valfritt)</summary>
+                  <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 8px;">
+                    <input data-in="" value="{{ row.title_en }}" sc-camel-on-change="{{ row.onTitleEn }}" placeholder="EN · Title" style="border-left: 2px solid #6fb7c9;">
+                    <textarea data-in="" rows="6" value="{{ row.text_en }}" sc-camel-on-change="{{ row.onTextEn }}" placeholder="EN · Text (tom = svenska visas)" style="border-left: 2px solid #6fb7c9; resize: vertical; line-height: 1.6;"></textarea>
+                  </div>
+                </details>
+              </div>
+            </sc-for>
+            <span style="font-size: 12px; color: var(--color-neutral-500);">Bilderna förminskas och sparas utan platsdata (GPS) innan de laddas upp. Tryck <b>Publicera</b> uppe till höger när inlägget är klart.</span>
           </div>
         </sc-if>
 
@@ -6240,6 +6291,7 @@ const TITLES = {
   faq: ['FAQ', 'Frågor och svar, i ordningen de visas.'],
   about: ['Om mig', 'Texten på sidan Om Chris Whippit (/om/).'],
   downloads: ['Nedladdningar', 'Filer besökare kan ladda ner.'],
+  blog: ['Blogg', 'Inlägg med text och bilder. Varje inlägg får en egen sida på chriswhippit.com/blogg/ ungefär en minut efter att du publicerat.'],
   shop: ['Shop', 'Produkter och vart de länkar.'],
   sponsors: ['Samarbeten', 'Loggor, texten under dem och vart de länkar.'],
   yt: ['YouTube-flöde', 'Koppla in API-nyckeln så hämtas senaste videorna automatiskt.'],
@@ -6318,6 +6370,9 @@ class Component extends DCLogic {
       })
       .catch(() => {});
   }
+
+  // Mallen tar bort attributet multiple – sätt det här så att man kan välja flera bilder på en gång.
+  componentDidUpdate() { document.querySelectorAll('input[data-multi]').forEach((el) => { el.multiple = true; }); }
 
   // Släng det lokala utkastet och ladda det som är publicerat.
   loadPublished = async () => {
@@ -6541,6 +6596,23 @@ class Component extends DCLogic {
     walk(data.social, 'image');
     walk(data.shop, 'image');
     walk(data.downloads, 'image');
+    // Bloggen: varje inlägg får en unik adress, och bilderna laddas upp som egna filer.
+    const slugify = (t) => String(t || '').toLowerCase().replace(/[åä]/g, 'a').replace(/ö/g, 'o').replace(/é/g, 'e').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 60).replace(/-+$/, '') || 'inlagg';
+    const usedSlugs = new Set();
+    const newShares = [];
+    // Äldst först, så att ett publicerat inlägg behåller sin adress om ett nytt får samma rubrik.
+    for (const p of (data.blog || []).slice().reverse()) {
+      if (!p.date) p.date = new Date().toISOString().slice(0, 10);
+      let sl = /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(p.slug || '') ? p.slug : slugify(p.title);
+      for (let k = 2; usedSlugs.has(sl); k++) sl = sl.replace(/-\d+$/, '') + '-' + k;
+      usedSlugs.add(sl); p.slug = sl;
+      const cover = (p.images || [])[0] || '';
+      if (!cover) { p.share = ''; p.shareOf = ''; }
+      else if (!p.share || p.shareOf !== cover) { this.setState({ pubStatus: 'Gör delningsbild…' }); p.share = await this.makeShare(cover); newShares.push(p); }
+      p.images = (p.images || []).map((v) => ({ v })); walk(p.images, 'v'); p.images = p.images.map((x) => x.v);
+    }
+    walk(data.blog, 'share');
+    newShares.forEach((p) => { p.shareOf = p.images[0] || ''; });
 
     try {
       this.setState({ pubStatus: 'Publicerar…' });
@@ -6587,6 +6659,7 @@ class Component extends DCLogic {
         return;
       }
       const short = res.sha ? res.sha.slice(0, 7) : '';
+      this._published = merged;
       this.setState({ data: merged, pubStatus: 'Publicerat ' + t + ' · commit ' + short + ' — sajten uppdateras inom en minut.' + note, saved: 'Publicerat ' + t });
     } catch (e) {
       const msg = String(e.message || e);
@@ -6633,6 +6706,50 @@ class Component extends DCLogic {
       img.src = r.result;
     };
     r.readAsDataURL(file);
+  }
+
+  // Bloggbilder: förminskas till högst 1600 px och sparas som WebP (canvas tar bort EXIF/GPS).
+  takeBlogImages(files, i) {
+    const list = [...(files || [])].filter((f) => f && /^image\//.test(f.type));
+    if (!list.length) return;
+    this.setState({ blogBusy: i });
+    const one = (file) => new Promise((ok) => {
+      const r = new FileReader();
+      r.onload = () => {
+        const img = new Image();
+        img.onload = () => {
+          const s = Math.min(1, 1600 / Math.max(img.width, img.height));
+          const c = document.createElement('canvas');
+          c.width = Math.round(img.width * s); c.height = Math.round(img.height * s);
+          c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+          ok(c.toDataURL('image/webp', 0.8));
+        };
+        img.onerror = () => ok(null);
+        img.src = r.result;
+      };
+      r.onerror = () => ok(null);
+      r.readAsDataURL(file);
+    });
+    Promise.all(list.map(one)).then((srcs) => {
+      this.setState({ blogBusy: null });
+      this.mutate((d) => { const p = d.blog[i]; p.images = (p.images || []).concat(srcs.filter(Boolean)); });
+    });
+  }
+
+  // Delningsbild för Facebook m.fl.: omslaget beskuret till 1200×630 som JPEG.
+  makeShare(src) {
+    return new Promise((ok) => {
+      const img = new Image();
+      img.onload = () => {
+        const W = 1200, H = 630, s = Math.max(W / img.width, H / img.height);
+        const c = document.createElement('canvas'); c.width = W; c.height = H;
+        const w = img.width * s, h = img.height * s;
+        c.getContext('2d').drawImage(img, (W - w) / 2, (H - h) / 2, w, h);
+        ok(c.toDataURL('image/jpeg', 0.84));
+      };
+      img.onerror = () => ok('');
+      img.src = /^(https?:|data:|\/)/.test(src) ? src : '../' + src;
+    });
   }
 
   // drag-to-position + zoom for an image; offsets are % of the tile
@@ -6737,6 +6854,36 @@ class Component extends DCLogic {
       setAboutTextEn: (e) => { const v = e.target.value; this.mutate((x) => { x.about = { ...(x.about || {}), text_en: v }; }); },
       setAboutText: (e) => { const v = e.target.value; this.mutate((x) => { x.about = { ...(x.about || {}), text: v }; }); },
       onDl: tab === 'downloads' ? '1' : '',
+      onBlog: tab === 'blog' ? '1' : '',
+      goBlog: go('blog'),
+      addPost: () => this.mutate((x) => { x.blog = x.blog || []; x.blog.unshift({ title: '', date: new Date().toISOString().slice(0, 10), slug: '', text: '', images: [] }); }),
+      blogRows: (d.blog || []).map((p, i) => {
+        const pubd = ((this._published || {}).blog || []).some((q) => q.slug && q.slug === p.slug && !q.hidden);
+        const setB = (key, fn) => (e) => { const v = fn ? fn(e) : e.target.value; this.mutate((x) => { x.blog[i][key] = v; }); };
+        const over = (v) => (e) => { e.preventDefault(); e.currentTarget.setAttribute('data-over', v); };
+        const n = (p.images || []).length;
+        return {
+          title: p.title || '', date: p.date || '', slug: p.slug || '', text: p.text || '', title_en: p.title_en || '', text_en: p.text_en || '',
+          hiddenLabel: p.hidden ? 'Dolt – visa på sajten' : 'Dölj (gör till utkast)',
+          status: p.hidden ? 'Dolt utkast' : pubd ? 'Publicerat' : 'Inte publicerat än',
+          url: pubd && !p.hidden ? '../blogg/' + p.slug + '/' : '',
+          busy: this.state.blogBusy === i ? '1' : '',
+          onTitle: setB('title'), onDate: setB('date'), onText: setB('text'), onTitleEn: setB('title_en'), onTextEn: setB('text_en'),
+          onSlug: setB('slug', (e) => e.target.value.toLowerCase().replace(/[^a-z0-9-]+/g, '-')),
+          onHidden: () => this.mutate((x) => { x.blog[i].hidden = !x.blog[i].hidden; }),
+          onDelete: () => { if (confirm('Ta bort inlägget "' + (p.title || 'utan rubrik') + '"? Det försvinner från sajten när du publicerar.')) this.mutate((x) => { x.blog.splice(i, 1); }); },
+          onPick: (e) => { this.takeBlogImages(e.target.files, i); e.target.value = ''; },
+          onDragOver: over('1'), onDragLeave: over(''),
+          onDrop: (e) => { e.preventDefault(); e.currentTarget.setAttribute('data-over', ''); this.takeBlogImages(e.dataTransfer && e.dataTransfer.files, i); },
+          images: (p.images || []).map((src, j) => ({
+            src: /^(https?:|data:|\/)/.test(src) ? src : '../' + src,
+            label: j === 0 ? 'Omslag' : 'Bild ' + (j + 1),
+            onLeft: () => { if (j > 0) this.mutate((x) => { const a = x.blog[i].images; [a[j - 1], a[j]] = [a[j], a[j - 1]]; }); },
+            onRight: () => { if (j < n - 1) this.mutate((x) => { const a = x.blog[i].images; [a[j + 1], a[j]] = [a[j], a[j + 1]]; }); },
+            onDel: () => this.mutate((x) => { x.blog[i].images.splice(j, 1); }),
+          })),
+        };
+      }),
       onShop: tab === 'shop' ? '1' : '',
       onSponsors: tab === 'sponsors' ? '1' : '',
       onYt: tab === 'yt' ? '1' : '',

@@ -1,5 +1,11 @@
 // Alla sidor på sajten. Varje sida är en egen fil (så GitHub Pages hittar adressen) men bär hela
 // sajtens mall; route-nyckeln avgör vad som visas. Används av patch-pages, perf, seo och new-pages.
+const fs = require('fs'), path = require('path');
+function posts() {
+  const dir = path.join(__dirname, '..', 'blogg');
+  let names = []; try { names = fs.readdirSync(dir).filter((n) => fs.existsSync(path.join(dir, n, 'index.html'))).sort(); } catch (e) {}
+  return names.map((n) => ({ key: 'post:' + n, file: 'blogg/' + n + '/index.html', path: 'blogg/' + n + '/', post: true }));
+}
 module.exports = [
   { key: 'hem', file: 'index.html', path: '', type: 'WebPage' },
   { key: 'setup', file: 'setup/index.html', path: 'setup/', crumb: 'Setup', type: 'WebPage' },
@@ -35,4 +41,9 @@ module.exports = [
   { key: 'mediakit', file: 'mediakit/index.html', path: 'mediakit/', crumb: 'Mediakit', parent: 'samarbeten', type: 'WebPage',
     title: 'Mediakit — Chris Whippit: räckvidd, kanaler och samarbeten',
     desc: 'Chris Whippits mediakit för varumärken: 869K följare, över 390 miljoner visningar på YouTube, kanaler, innehåll, samarbetsformat och tidigare samarbeten.' },
+  { key: 'blogg', file: 'blogg/index.html', path: 'blogg/', crumb: 'Blogg', type: 'CollectionPage',
+    title: 'Blogg — vardagen bakom kanalen | Chris Whippit',
+    desc: 'Chris Whippits blogg: familjen, resor, discgolf och vardagen bakom YouTube-kanalen – med bilder.' },
+  // Blogginläggen: en sidfil per inlägg i blogg/<slug>/ (skapas av tools/build-blog.js utifrån content.json).
+  ...posts(),
 ];

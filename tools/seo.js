@@ -16,6 +16,7 @@ const read = (f) => fs.readFileSync(path.join(root, f), 'utf8').replace(/\r\n/g,
 // Titel och beskrivning per sida hämtas från respektive fil (källan för sanningen är <head>).
 const meta = {};
 for (const [k, p] of Object.entries(PAGES)) {
+  if (p.post) continue; // blogginläggen får sin head av tools/build-blog.js och sin titel från content.json
   const t = read(p.file);
   // Avkoda HTML-entiteter: ROUTE_META sätts med setAttribute, som annars visar "&amp;" ordagrant.
   const dec = (s) => s && s.replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
@@ -94,7 +95,7 @@ const GAMES = [`;
   });
 
   fs.writeFileSync(path.join(root, p.file), t);
-  console.log(p.file.padEnd(30), meta[k] ? 'ok' : 'SAKNAR titel/beskrivning');
+  console.log(p.file.padEnd(30), meta[k] ? 'ok' : p.post ? 'blogginlägg' : 'SAKNAR titel/beskrivning');
 }
 
 // Spara den ändrade mallen tillbaka i källan.
