@@ -1,12 +1,12 @@
 {
- "t": "2026-10-22T17:05:35.796Z",
+ "t": "2026-10-23T07:24:23.839Z",
  "videos": [
   {
-   "id": "1EOr8GfV3h8",
-   "title": "Vi HITTAR NÅLEN i Needle in a Haystack med UfoSXM #3",
+   "id": "mD6ggVul2tM",
+   "title": "UFO KÖR MOTORCYKEL i RV There Yet? med UfoSXM",
    "channel": "ChrisWhippit",
    "handle": "@chriswhippit",
-   "at": "2026-10-22T04:30:39Z"
+   "at": "2026-10-23T04:30:14Z"
   },
   {
    "id": "G9OsINCyz2E",
@@ -16,11 +16,11 @@
    "at": "2026-10-21T04:30:29Z"
   },
   {
-   "id": "iGfrblmwa9E",
-   "title": "CARRO SKRÄMDE MIG i Shift at Midnight med UfoSXM",
+   "id": "1EOr8GfV3h8",
+   "title": "Vi HITTAR NÅLEN i Needle in a Haystack med UfoSXM #3",
    "channel": "ChrisWhippit",
    "handle": "@chriswhippit",
-   "at": "2026-10-21T04:30:05Z"
+   "at": "2026-10-22T04:30:39Z"
   },
   {
    "id": "9XSzCQFFMyc",
@@ -544,28 +544,28 @@
  },
  "media": {
   "chriswhippit": {
-   "views": 243839000,
-   "avgViews": 6400,
+   "views": 243855000,
+   "avgViews": 7000,
    "avgSample": 32,
    "uploads30": 35
   },
   "whippitsson": {
-   "views": 50356000,
+   "views": 50357000,
    "avgViews": 19000,
    "avgSample": 5,
    "uploads30": 3
   },
   "figgwhipp": {
-   "views": 97210000,
+   "views": 97211000,
    "avgViews": 0,
    "avgSample": 0,
    "uploads30": 0
   },
   "whippitextra": {
-   "views": 228000,
-   "avgViews": 4900,
-   "avgSample": 30,
-   "uploads30": 26
+   "views": 230000,
+   "avgViews": 4800,
+   "avgSample": 31,
+   "uploads30": 25
   }
  }
 }
