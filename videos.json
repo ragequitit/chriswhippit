@@ -1,19 +1,12 @@
 {
- "t": "2026-10-24T04:28:16.474Z",
+ "t": "2026-10-24T09:05:32.096Z",
  "videos": [
   {
-   "id": "mD6ggVul2tM",
-   "title": "UFO KÖR MOTORCYKEL i RV There Yet? med UfoSXM",
-   "channel": "ChrisWhippit",
-   "handle": "@chriswhippit",
-   "at": "2026-10-23T04:30:14Z"
-  },
-  {
-   "id": "G9OsINCyz2E",
-   "title": "DEN SOM HITTAR 16 IRON INGOTS FÖRST VINNER - MINECRAFT UTMANING",
+   "id": "yogPqpesPv0",
+   "title": "TITTA VI FISKAR! - MINECRAFT SKYBLOCK #5",
    "channel": "Whippit",
    "handle": "@whippitextra",
-   "at": "2026-10-21T04:30:29Z"
+   "at": "2026-10-24T04:30:05Z"
   },
   {
    "id": "1EOr8GfV3h8",
@@ -21,6 +14,13 @@
    "channel": "ChrisWhippit",
    "handle": "@chriswhippit",
    "at": "2026-10-22T04:30:39Z"
+  },
+  {
+   "id": "mD6ggVul2tM",
+   "title": "UFO KÖR MOTORCYKEL i RV There Yet? med UfoSXM",
+   "channel": "ChrisWhippit",
+   "handle": "@chriswhippit",
+   "at": "2026-10-23T04:30:14Z"
   },
   {
    "id": "9XSzCQFFMyc",
@@ -88,6 +88,12 @@
  "seriesVids": {
   "minecraft": [
    {
+    "id": "yogPqpesPv0",
+    "title": "TITTA VI FISKAR! - MINECRAFT SKYBLOCK #5",
+    "at": "2026-10-24T04:30:05Z",
+    "list": ""
+   },
+   {
     "id": "hwwA8_Aru-g",
     "title": "STORMEN KOMMER I BLOCKED IN - MINECRAFT MED JNX",
     "at": "2026-10-22T04:30:13Z",
@@ -151,12 +157,6 @@
     "id": "LoOuf3De6i0",
     "title": "DEN SOM FÅR 16 BRÖD FÖRST VINNER - MINECRAFT UTMANING",
     "at": "2026-10-11T04:30:23Z",
-    "list": ""
-   },
-   {
-    "id": "lUOz3FreqGY",
-    "title": "JNX HAR ALDRIG HAFT SÅ OTUR I MINECRAFT LUCKY BLOCK",
-    "at": "2026-10-09T04:30:09Z",
     "list": ""
    }
   ],
@@ -547,7 +547,7 @@
    "views": 243878000,
    "avgViews": 6900,
    "avgSample": 30,
-   "uploads30": 37
+   "uploads30": 36
   },
   "whippitsson": {
    "views": 50357000,
@@ -563,9 +563,9 @@
   },
   "whippitextra": {
    "views": 232000,
-   "avgViews": 4800,
-   "avgSample": 31,
-   "uploads30": 25
+   "avgViews": 4700,
+   "avgSample": 32,
+   "uploads30": 26
   }
  }
 }
