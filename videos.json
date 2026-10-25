@@ -1,5 +1,5 @@
 {
- "t": "2026-10-24T19:27:17.018Z",
+ "t": "2026-10-25T05:14:29.194Z",
  "videos": [
   {
    "id": "yogPqpesPv0",
@@ -547,7 +547,7 @@
    "views": 243889000,
    "avgViews": 7000,
    "avgSample": 28,
-   "uploads30": 38
+   "uploads30": 37
   },
   "whippitsson": {
    "views": 50358000,
@@ -564,8 +564,8 @@
   "whippitextra": {
    "views": 232000,
    "avgViews": 4700,
-   "avgSample": 32,
-   "uploads30": 26
+   "avgSample": 33,
+   "uploads30": 25
   }
  }
 }
