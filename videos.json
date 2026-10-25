@@ -1,12 +1,12 @@
 {
- "t": "2026-10-25T05:14:29.194Z",
+ "t": "2026-10-25T10:06:43.652Z",
  "videos": [
   {
-   "id": "yogPqpesPv0",
-   "title": "TITTA VI FISKAR! - MINECRAFT SKYBLOCK #5",
+   "id": "cT9Fhzc5VNM",
+   "title": "JAG MÅSTE PARA 3 SORTERS DJUR INNAN DOM ANDRA - MINECRAFT UTMANING",
    "channel": "Whippit",
    "handle": "@whippitextra",
-   "at": "2026-10-24T04:30:05Z"
+   "at": "2026-10-25T05:30:19Z"
   },
   {
    "id": "1EOr8GfV3h8",
@@ -30,11 +30,11 @@
    "at": "2026-10-10T04:30:24Z"
   },
   {
-   "id": "hwwA8_Aru-g",
-   "title": "STORMEN KOMMER I BLOCKED IN - MINECRAFT MED JNX",
+   "id": "yogPqpesPv0",
+   "title": "TITTA VI FISKAR! - MINECRAFT SKYBLOCK #5",
    "channel": "Whippit",
    "handle": "@whippitextra",
-   "at": "2026-10-22T04:30:13Z"
+   "at": "2026-10-24T04:30:05Z"
   }
  ],
  "counts": {
@@ -87,6 +87,12 @@
  },
  "seriesVids": {
   "minecraft": [
+   {
+    "id": "cT9Fhzc5VNM",
+    "title": "JAG MÅSTE PARA 3 SORTERS DJUR INNAN DOM ANDRA - MINECRAFT UTMANING",
+    "at": "2026-10-25T05:30:19Z",
+    "list": ""
+   },
    {
     "id": "yogPqpesPv0",
     "title": "TITTA VI FISKAR! - MINECRAFT SKYBLOCK #5",
@@ -151,12 +157,6 @@
     "id": "jwlEb3hcsSc",
     "title": "SKYBLOCKS SÄMSTA COBBLE-GENERATORN  - MINECRAFT MED MAMMA  #2",
     "at": "2026-10-12T04:30:05Z",
-    "list": ""
-   },
-   {
-    "id": "LoOuf3De6i0",
-    "title": "DEN SOM FÅR 16 BRÖD FÖRST VINNER - MINECRAFT UTMANING",
-    "at": "2026-10-11T04:30:23Z",
     "list": ""
    }
   ],
@@ -565,7 +565,7 @@
    "views": 232000,
    "avgViews": 4700,
    "avgSample": 33,
-   "uploads30": 25
+   "uploads30": 26
   }
  }
 }
