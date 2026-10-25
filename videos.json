@@ -1,5 +1,5 @@
 {
- "t": "2026-10-25T17:50:02.018Z",
+ "t": "2026-10-25T20:45:50.474Z",
  "videos": [
   {
    "id": "cT9Fhzc5VNM",
@@ -545,7 +545,7 @@
  "media": {
   "chriswhippit": {
    "views": 243912000,
-   "avgViews": 7100,
+   "avgViews": 7200,
    "avgSample": 26,
    "uploads30": 39
   },
@@ -556,13 +556,13 @@
    "uploads30": 2
   },
   "figgwhipp": {
-   "views": 97214000,
+   "views": 97215000,
    "avgViews": 0,
    "avgSample": 0,
    "uploads30": 0
   },
   "whippitextra": {
-   "views": 232000,
+   "views": 235000,
    "avgViews": 4700,
    "avgSample": 33,
    "uploads30": 26
