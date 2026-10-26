@@ -1,26 +1,26 @@
 {
- "t": "2026-10-25T20:45:50.474Z",
+ "t": "2026-10-26T07:43:52.762Z",
  "videos": [
   {
-   "id": "cT9Fhzc5VNM",
-   "title": "JAG MÅSTE PARA 3 SORTERS DJUR INNAN DOM ANDRA - MINECRAFT UTMANING",
+   "id": "i6ymJqboH5Y",
+   "title": "VI BLIR RIKA - MINECRAFT SKYBLOCK #6",
    "channel": "Whippit",
    "handle": "@whippitextra",
-   "at": "2026-10-25T05:30:19Z"
+   "at": "2026-10-26T05:30:37Z"
   },
   {
-   "id": "hwwA8_Aru-g",
-   "title": "STORMEN KOMMER I BLOCKED IN - MINECRAFT MED JNX",
+   "id": "yogPqpesPv0",
+   "title": "TITTA VI FISKAR! - MINECRAFT SKYBLOCK #5",
    "channel": "Whippit",
    "handle": "@whippitextra",
-   "at": "2026-10-22T04:30:13Z"
+   "at": "2026-10-24T04:30:05Z"
   },
   {
-   "id": "mD6ggVul2tM",
-   "title": "UFO KÖR MOTORCYKEL i RV There Yet? med UfoSXM",
+   "id": "Y6QwbzWnL50",
+   "title": "VI SPRUTAR OLJA i Needle in a Haystack med UfoSXM #4",
    "channel": "ChrisWhippit",
    "handle": "@chriswhippit",
-   "at": "2026-10-23T04:30:14Z"
+   "at": "2026-10-26T05:30:32Z"
   },
   {
    "id": "9XSzCQFFMyc",
@@ -30,11 +30,11 @@
    "at": "2026-10-10T04:30:24Z"
   },
   {
-   "id": "yogPqpesPv0",
-   "title": "TITTA VI FISKAR! - MINECRAFT SKYBLOCK #5",
+   "id": "cT9Fhzc5VNM",
+   "title": "JAG MÅSTE PARA 3 SORTERS DJUR INNAN DOM ANDRA - MINECRAFT UTMANING",
    "channel": "Whippit",
    "handle": "@whippitextra",
-   "at": "2026-10-24T04:30:05Z"
+   "at": "2026-10-25T05:30:19Z"
   }
  ],
  "counts": {
@@ -87,6 +87,12 @@
  },
  "seriesVids": {
   "minecraft": [
+   {
+    "id": "i6ymJqboH5Y",
+    "title": "VI BLIR RIKA - MINECRAFT SKYBLOCK #6",
+    "at": "2026-10-26T05:30:37Z",
+    "list": ""
+   },
    {
     "id": "cT9Fhzc5VNM",
     "title": "JAG MÅSTE PARA 3 SORTERS DJUR INNAN DOM ANDRA - MINECRAFT UTMANING",
@@ -151,12 +157,6 @@
     "id": "5jp8TcR3XWs",
     "title": "TNT LUCKY BLOCK RACE I MINECRAFT OCH JAG HATAR DET",
     "at": "2026-10-13T04:30:14Z",
-    "list": ""
-   },
-   {
-    "id": "jwlEb3hcsSc",
-    "title": "SKYBLOCKS SÄMSTA COBBLE-GENERATORN  - MINECRAFT MED MAMMA  #2",
-    "at": "2026-10-12T04:30:05Z",
     "list": ""
    }
   ],
@@ -386,7 +386,7 @@
  "crewInfo": {
   "UCCIqPk-5xTsZGnLBSdh2rNA": {
    "avatar": "https://yt3.ggpht.com/2XDlbyk8rxb0XZHsLNAjhEmwVJR0pq4Ak2bf1Z_Y6SdbmAvpg1yH9eMoqyPU7c9ZVZGgG2fCKQ=s240-c-k-c0x00ffffff-no-rj",
-   "subs": 253000,
+   "subs": 252000,
    "title": "Ufosxm"
   },
   "UCEwsH0YhM3TCaVn3ImJ4QNw": {
@@ -545,9 +545,9 @@
  "media": {
   "chriswhippit": {
    "views": 243912000,
-   "avgViews": 7200,
+   "avgViews": 7400,
    "avgSample": 26,
-   "uploads30": 39
+   "uploads30": 40
   },
   "whippitsson": {
    "views": 50358000,
@@ -563,8 +563,8 @@
   },
   "whippitextra": {
    "views": 235000,
-   "avgViews": 4700,
-   "avgSample": 33,
+   "avgViews": 4600,
+   "avgSample": 34,
    "uploads30": 26
   }
  }
