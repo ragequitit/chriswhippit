@@ -1,19 +1,12 @@
 {
- "t": "2026-10-26T20:44:23.093Z",
+ "t": "2026-10-27T05:32:26.631Z",
  "videos": [
   {
-   "id": "i6ymJqboH5Y",
-   "title": "VI BLIR RIKA - MINECRAFT SKYBLOCK #6",
+   "id": "g0e_2gaMTDg",
+   "title": "LUCKY BLOCK RACE i GRUVORNA i Minecraft med Jnx",
    "channel": "Whippit",
    "handle": "@whippitextra",
-   "at": "2026-10-26T05:30:37Z"
-  },
-  {
-   "id": "yogPqpesPv0",
-   "title": "TITTA VI FISKAR! - MINECRAFT SKYBLOCK #5",
-   "channel": "Whippit",
-   "handle": "@whippitextra",
-   "at": "2026-10-24T04:30:05Z"
+   "at": "2026-10-27T05:30:27Z"
   },
   {
    "id": "Y6QwbzWnL50",
@@ -23,6 +16,13 @@
    "at": "2026-10-26T05:30:32Z"
   },
   {
+   "id": "rLYGAlziq4w",
+   "title": "VART ÄR UPGRADEN i Waterpark Simulator med UfoSXM",
+   "channel": "ChrisWhippit",
+   "handle": "@chriswhippit",
+   "at": "2026-10-27T05:30:09Z"
+  },
+  {
    "id": "9XSzCQFFMyc",
    "title": "RAIDAR SPACE-PIKACHU MED MIN SON | POKÉMON GO",
    "channel": "Chris Whippit Vloggar",
@@ -30,11 +30,11 @@
    "at": "2026-10-10T04:30:24Z"
   },
   {
-   "id": "cT9Fhzc5VNM",
-   "title": "JAG MÅSTE PARA 3 SORTERS DJUR INNAN DOM ANDRA - MINECRAFT UTMANING",
+   "id": "i6ymJqboH5Y",
+   "title": "VI BLIR RIKA - MINECRAFT SKYBLOCK #6",
    "channel": "Whippit",
    "handle": "@whippitextra",
-   "at": "2026-10-25T05:30:19Z"
+   "at": "2026-10-26T05:30:37Z"
   }
  ],
  "counts": {
@@ -87,6 +87,12 @@
  },
  "seriesVids": {
   "minecraft": [
+   {
+    "id": "g0e_2gaMTDg",
+    "title": "LUCKY BLOCK RACE i GRUVORNA i Minecraft med Jnx",
+    "at": "2026-10-27T05:30:27Z",
+    "list": ""
+   },
    {
     "id": "i6ymJqboH5Y",
     "title": "VI BLIR RIKA - MINECRAFT SKYBLOCK #6",
@@ -151,12 +157,6 @@
     "id": "o993vcp9Z-k",
     "title": "MINECRAFT - BLOCKED IN COMBAT 2026 MED JNX",
     "at": "2026-10-14T04:30:07Z",
-    "list": ""
-   },
-   {
-    "id": "5jp8TcR3XWs",
-    "title": "TNT LUCKY BLOCK RACE I MINECRAFT OCH JAG HATAR DET",
-    "at": "2026-10-13T04:30:14Z",
     "list": ""
    }
   ],
@@ -544,10 +544,10 @@
  },
  "media": {
   "chriswhippit": {
-   "views": 243941000,
+   "views": 243959000,
    "avgViews": 7400,
    "avgSample": 25,
-   "uploads30": 41
+   "uploads30": 42
   },
   "whippitsson": {
    "views": 50359000,
@@ -564,7 +564,7 @@
   "whippitextra": {
    "views": 237000,
    "avgViews": 4600,
-   "avgSample": 34,
+   "avgSample": 35,
    "uploads30": 26
   }
  }
