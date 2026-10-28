@@ -1,19 +1,19 @@
 {
- "t": "2026-10-28T00:28:03.956Z",
+ "t": "2026-10-28T06:14:50.005Z",
  "videos": [
   {
-   "id": "g0e_2gaMTDg",
-   "title": "LUCKY BLOCK RACE i GRUVORNA i Minecraft med Jnx",
-   "channel": "Whippit",
-   "handle": "@whippitextra",
-   "at": "2026-10-27T05:30:27Z"
-  },
-  {
-   "id": "Y6QwbzWnL50",
-   "title": "VI SPRUTAR OLJA i Needle in a Haystack med UfoSXM #4",
+   "id": "_3qJLXM8_3w",
+   "title": "BYGGER ETT BAGERI i Brick by Brick med UfoSXM",
    "channel": "ChrisWhippit",
    "handle": "@chriswhippit",
-   "at": "2026-10-26T05:30:32Z"
+   "at": "2026-10-28T05:30:30Z"
+  },
+  {
+   "id": "i6ymJqboH5Y",
+   "title": "VI BLIR RIKA - MINECRAFT SKYBLOCK #6",
+   "channel": "Whippit",
+   "handle": "@whippitextra",
+   "at": "2026-10-26T05:30:37Z"
   },
   {
    "id": "rLYGAlziq4w",
@@ -30,11 +30,11 @@
    "at": "2026-10-10T04:30:24Z"
   },
   {
-   "id": "i6ymJqboH5Y",
-   "title": "VI BLIR RIKA - MINECRAFT SKYBLOCK #6",
+   "id": "g0e_2gaMTDg",
+   "title": "LUCKY BLOCK RACE i GRUVORNA i Minecraft med Jnx",
    "channel": "Whippit",
    "handle": "@whippitextra",
-   "at": "2026-10-26T05:30:37Z"
+   "at": "2026-10-27T05:30:27Z"
   }
  ],
  "counts": {
@@ -544,8 +544,8 @@
  },
  "media": {
   "chriswhippit": {
-   "views": 243967000,
-   "avgViews": 7500,
+   "views": 243981000,
+   "avgViews": 7600,
    "avgSample": 23,
    "uploads30": 44
   },
@@ -556,15 +556,15 @@
    "uploads30": 2
   },
   "figgwhipp": {
-   "views": 97219000,
+   "views": 97220000,
    "avgViews": 0,
    "avgSample": 0,
    "uploads30": 0
   },
   "whippitextra": {
-   "views": 239000,
-   "avgViews": 4600,
-   "avgSample": 35,
+   "views": 242000,
+   "avgViews": 4500,
+   "avgSample": 36,
    "uploads30": 27
   }
  }
