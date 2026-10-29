@@ -1,19 +1,12 @@
 {
- "t": "2026-10-28T23:10:28.658Z",
+ "t": "2026-10-29T09:50:04.869Z",
  "videos": [
   {
-   "id": "_3qJLXM8_3w",
-   "title": "BYGGER ETT BAGERI i Brick by Brick med UfoSXM",
+   "id": "Hec2mwzHsGs",
+   "title": "30 MILJONER HÖ i Needle in a Haystack med UfoSXM #5",
    "channel": "ChrisWhippit",
    "handle": "@chriswhippit",
-   "at": "2026-10-28T05:30:30Z"
-  },
-  {
-   "id": "i6ymJqboH5Y",
-   "title": "VI BLIR RIKA - MINECRAFT SKYBLOCK #6",
-   "channel": "Whippit",
-   "handle": "@whippitextra",
-   "at": "2026-10-26T05:30:37Z"
+   "at": "2026-10-29T05:30:07Z"
   },
   {
    "id": "rLYGAlziq4w",
@@ -21,6 +14,13 @@
    "channel": "ChrisWhippit",
    "handle": "@chriswhippit",
    "at": "2026-10-27T05:30:09Z"
+  },
+  {
+   "id": "_3qJLXM8_3w",
+   "title": "BYGGER ETT BAGERI i Brick by Brick med UfoSXM",
+   "channel": "ChrisWhippit",
+   "handle": "@chriswhippit",
+   "at": "2026-10-28T05:30:30Z"
   },
   {
    "id": "9XSzCQFFMyc",
@@ -544,8 +544,8 @@
  },
  "media": {
   "chriswhippit": {
-   "views": 243995000,
-   "avgViews": 7900,
+   "views": 244013000,
+   "avgViews": 8200,
    "avgSample": 20,
    "uploads30": 47
   },
@@ -556,16 +556,16 @@
    "uploads30": 2
   },
   "figgwhipp": {
-   "views": 97221000,
+   "views": 97223000,
    "avgViews": 0,
    "avgSample": 0,
    "uploads30": 0
   },
   "whippitextra": {
-   "views": 244000,
+   "views": 246000,
    "avgViews": 4500,
-   "avgSample": 36,
-   "uploads30": 29
+   "avgSample": 37,
+   "uploads30": 28
   }
  }
 }
