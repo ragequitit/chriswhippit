@@ -1,6 +1,13 @@
 {
- "t": "2026-10-29T21:45:27.625Z",
+ "t": "2026-10-30T08:32:19.324Z",
  "videos": [
+  {
+   "id": "2ggFF0avWjo",
+   "title": "VEM KAN HITTA ALLA ITEMS FÖRST - MINECRAFT UTMANING",
+   "channel": "Whippit",
+   "handle": "@whippitextra",
+   "at": "2026-10-30T05:30:28Z"
+  },
   {
    "id": "Hec2mwzHsGs",
    "title": "30 MILJONER HÖ i Needle in a Haystack med UfoSXM #5",
@@ -9,18 +16,11 @@
    "at": "2026-10-29T05:30:07Z"
   },
   {
-   "id": "i6ymJqboH5Y",
-   "title": "VI BLIR RIKA - MINECRAFT SKYBLOCK #6",
-   "channel": "Whippit",
-   "handle": "@whippitextra",
-   "at": "2026-10-26T05:30:37Z"
-  },
-  {
-   "id": "_3qJLXM8_3w",
-   "title": "BYGGER ETT BAGERI i Brick by Brick med UfoSXM",
+   "id": "sxn-MBZ21A8",
+   "title": "DJÄVULENS PENGAR i Shift at Midnight med UfoSXM",
    "channel": "ChrisWhippit",
    "handle": "@chriswhippit",
-   "at": "2026-10-28T05:30:30Z"
+   "at": "2026-10-30T05:30:16Z"
   },
   {
    "id": "9XSzCQFFMyc",
@@ -88,6 +88,12 @@
  "seriesVids": {
   "minecraft": [
    {
+    "id": "2ggFF0avWjo",
+    "title": "VEM KAN HITTA ALLA ITEMS FÖRST - MINECRAFT UTMANING",
+    "at": "2026-10-30T05:30:28Z",
+    "list": ""
+   },
+   {
     "id": "g0e_2gaMTDg",
     "title": "LUCKY BLOCK RACE i GRUVORNA i Minecraft med Jnx",
     "at": "2026-10-27T05:30:27Z",
@@ -151,12 +157,6 @@
     "id": "cchN6tM1P3A",
     "title": "VEM HITTAR 16 GULD INGOTS FÖRST - MINECRAFT UTMANING",
     "at": "2026-10-16T04:30:20Z",
-    "list": ""
-   },
-   {
-    "id": "o993vcp9Z-k",
-    "title": "MINECRAFT - BLOCKED IN COMBAT 2026 MED JNX",
-    "at": "2026-10-14T04:30:07Z",
     "list": ""
    }
   ],
@@ -545,12 +545,12 @@
  "media": {
   "chriswhippit": {
    "views": 244025000,
-   "avgViews": 8400,
+   "avgViews": 8500,
    "avgSample": 17,
    "uploads30": 50
   },
   "whippitsson": {
-   "views": 50361000,
+   "views": 50362000,
    "avgViews": 20000,
    "avgSample": 5,
    "uploads30": 2
