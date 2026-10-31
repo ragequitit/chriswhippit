@@ -1,5 +1,5 @@
 {
- "t": "2026-10-31T16:17:52.370Z",
+ "t": "2026-10-31T20:16:42.436Z",
  "videos": [
   {
    "id": "lXT6rzgBefA",
@@ -9,11 +9,11 @@
    "at": "2026-10-31T05:30:12Z"
   },
   {
-   "id": "Hec2mwzHsGs",
-   "title": "30 MILJONER HÖ i Needle in a Haystack med UfoSXM #5",
-   "channel": "ChrisWhippit",
-   "handle": "@chriswhippit",
-   "at": "2026-10-29T05:30:07Z"
+   "id": "g0e_2gaMTDg",
+   "title": "LUCKY BLOCK RACE i GRUVORNA i Minecraft med Jnx",
+   "channel": "Whippit",
+   "handle": "@whippitextra",
+   "at": "2026-10-27T05:30:27Z"
   },
   {
    "id": "sxn-MBZ21A8",
@@ -38,7 +38,7 @@
   }
  ],
  "counts": {
-  "chriswhippit": 4560,
+  "chriswhippit": 4561,
   "whippitsson": 534,
   "figgwhipp": 2848,
   "whippitextra": 91
@@ -47,7 +47,7 @@
   "chriswhippit": 299000,
   "whippitsson": 154000,
   "figgwhipp": 144000,
-  "whippitextra": 23800
+  "whippitextra": 23900
  },
  "plCounts": {
   "PLpinm9x4zUokA1fB0ee7TrrdsD2F-OKJS": 60,
@@ -544,9 +544,9 @@
  },
  "media": {
   "chriswhippit": {
-   "views": 244066000,
-   "avgViews": 9400,
-   "avgSample": 12,
+   "views": 244075000,
+   "avgViews": 9700,
+   "avgSample": 11,
    "uploads30": 50
   },
   "whippitsson": {
@@ -562,7 +562,7 @@
    "uploads30": 0
   },
   "whippitextra": {
-   "views": 253000,
+   "views": 254000,
    "avgViews": 4500,
    "avgSample": 38,
    "uploads30": 29
