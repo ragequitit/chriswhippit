@@ -1,12 +1,12 @@
 {
- "t": "2026-10-31T05:28:08.922Z",
+ "t": "2026-10-31T11:11:43.962Z",
  "videos": [
   {
-   "id": "2ggFF0avWjo",
-   "title": "VEM KAN HITTA ALLA ITEMS FÖRST - MINECRAFT UTMANING",
+   "id": "lXT6rzgBefA",
+   "title": "JAG HÄNGER I NETHER - MINECRAFT SKYBLOCK #7",
    "channel": "Whippit",
    "handle": "@whippitextra",
-   "at": "2026-10-30T05:30:28Z"
+   "at": "2026-10-31T05:30:12Z"
   },
   {
    "id": "Hec2mwzHsGs",
@@ -30,18 +30,18 @@
    "at": "2026-10-10T04:30:24Z"
   },
   {
-   "id": "g0e_2gaMTDg",
-   "title": "LUCKY BLOCK RACE i GRUVORNA i Minecraft med Jnx",
+   "id": "2ggFF0avWjo",
+   "title": "VEM KAN HITTA ALLA ITEMS FÖRST - MINECRAFT UTMANING",
    "channel": "Whippit",
    "handle": "@whippitextra",
-   "at": "2026-10-27T05:30:27Z"
+   "at": "2026-10-30T05:30:28Z"
   }
  ],
  "counts": {
-  "chriswhippit": 4558,
+  "chriswhippit": 4559,
   "whippitsson": 534,
   "figgwhipp": 2848,
-  "whippitextra": 93
+  "whippitextra": 91
  },
  "subs": {
   "chriswhippit": 299000,
@@ -87,6 +87,12 @@
  },
  "seriesVids": {
   "minecraft": [
+   {
+    "id": "lXT6rzgBefA",
+    "title": "JAG HÄNGER I NETHER - MINECRAFT SKYBLOCK #7",
+    "at": "2026-10-31T05:30:12Z",
+    "list": ""
+   },
    {
     "id": "2ggFF0avWjo",
     "title": "VEM KAN HITTA ALLA ITEMS FÖRST - MINECRAFT UTMANING",
@@ -151,12 +157,6 @@
     "id": "8wdKNbE3vJE",
     "title": "HITTAR REDAN EN ZOMBIE-VILLAGER - MINECRAFT SKYBLOCK #3",
     "at": "2026-10-17T04:30:32Z",
-    "list": ""
-   },
-   {
-    "id": "cchN6tM1P3A",
-    "title": "VEM HITTAR 16 GULD INGOTS FÖRST - MINECRAFT UTMANING",
-    "at": "2026-10-16T04:30:20Z",
     "list": ""
    }
   ],
@@ -545,8 +545,8 @@
  "media": {
   "chriswhippit": {
    "views": 244066000,
-   "avgViews": 9100,
-   "avgSample": 14,
+   "avgViews": 9200,
+   "avgSample": 13,
    "uploads30": 50
   },
   "whippitsson": {
@@ -556,16 +556,16 @@
    "uploads30": 2
   },
   "figgwhipp": {
-   "views": 97225000,
+   "views": 97226000,
    "avgViews": 0,
    "avgSample": 0,
    "uploads30": 0
   },
   "whippitextra": {
    "views": 253000,
-   "avgViews": 4400,
+   "avgViews": 4500,
    "avgSample": 38,
-   "uploads30": 28
+   "uploads30": 29
   }
  }
 }
