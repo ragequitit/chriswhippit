@@ -1,19 +1,19 @@
 {
- "t": "2026-11-05T00:20:17.468Z",
+ "t": "2026-11-05T07:20:39.847Z",
  "videos": [
+  {
+   "id": "qS6i3TIQbjM",
+   "title": "Vi STÄDAR MÅNEN i Moon Sweepers med UfoSXM",
+   "channel": "ChrisWhippit",
+   "handle": "@chriswhippit",
+   "at": "2026-11-05T05:30:27Z"
+  },
   {
    "id": "FMeRJ7eihrw",
    "title": "TÄVLAR genom GODISLANDET i Minecraft med Jnx",
    "channel": "Whippit",
    "handle": "@whippitextra",
    "at": "2026-11-04T05:30:33Z"
-  },
-  {
-   "id": "1GAnvwM4RSE",
-   "title": "HUSET ÄR KLART i Brick by Brick med UfoSXM",
-   "channel": "ChrisWhippit",
-   "handle": "@chriswhippit",
-   "at": "2026-11-03T05:30:22Z"
   },
   {
    "id": "rrsazYOoDYc",
@@ -30,11 +30,11 @@
    "at": "2026-10-10T04:30:24Z"
   },
   {
-   "id": "gfwSa_FCL1E",
-   "title": "JAG GÖR DEN SÄMSTA BYTESFARMEN I NETHER - MINECRAFT SKYBLOCK #8",
+   "id": "0qJizFjc-LU",
+   "title": "4 SAKER – VEM VINNER? i Minecraft med Mammaspelar och Pappaspelar",
    "channel": "Whippit",
    "handle": "@whippitextra",
-   "at": "2026-11-02T05:30:08Z"
+   "at": "2026-11-05T05:30:15Z"
   }
  ],
  "counts": {
@@ -87,6 +87,12 @@
  },
  "seriesVids": {
   "minecraft": [
+   {
+    "id": "0qJizFjc-LU",
+    "title": "4 SAKER – VEM VINNER? i Minecraft med Mammaspelar och Pappaspelar",
+    "at": "2026-11-05T05:30:15Z",
+    "list": ""
+   },
    {
     "id": "FMeRJ7eihrw",
     "title": "TÄVLAR genom GODISLANDET i Minecraft med Jnx",
@@ -151,12 +157,6 @@
     "id": "G9OsINCyz2E",
     "title": "DEN SOM HITTAR 16 IRON INGOTS FÖRST VINNER - MINECRAFT UTMANING",
     "at": "2026-10-21T04:30:29Z",
-    "list": ""
-   },
-   {
-    "id": "MIKbNTI2tzQ",
-    "title": "MINECRAFT BINGO 2026 MED JNX",
-    "at": "2026-10-20T04:30:10Z",
     "list": ""
    }
   ],
@@ -544,9 +544,9 @@
  },
  "media": {
   "chriswhippit": {
-   "views": 244146000,
-   "avgViews": 8400,
-   "avgSample": 8,
+   "views": 244156000,
+   "avgViews": 8300,
+   "avgSample": 9,
    "uploads30": 50
   },
   "whippitsson": {
@@ -556,15 +556,15 @@
    "uploads30": 2
   },
   "figgwhipp": {
-   "views": 97234000,
+   "views": 97235000,
    "avgViews": 0,
    "avgSample": 0,
    "uploads30": 0
   },
   "whippitextra": {
-   "views": 268000,
+   "views": 271000,
    "avgViews": 4700,
-   "avgSample": 33,
+   "avgSample": 32,
    "uploads30": 35
   }
  }
