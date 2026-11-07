@@ -1,5 +1,5 @@
 {
- "t": "2026-11-07T09:12:12.946Z",
+ "t": "2026-11-07T15:53:50.798Z",
  "videos": [
   {
    "id": "VtLOlI1m2-c",
@@ -9,18 +9,18 @@
    "at": "2026-11-07T05:30:29Z"
   },
   {
+   "id": "qS6i3TIQbjM",
+   "title": "Vi STÄDAR MÅNEN i Moon Sweepers med UfoSXM",
+   "channel": "ChrisWhippit",
+   "handle": "@chriswhippit",
+   "at": "2026-11-05T05:30:27Z"
+  },
+  {
    "id": "s9FziPjX9mo",
    "title": "ANACONDAN ÅT UPP UFO i RV There Yet? med UfoSXM",
    "channel": "ChrisWhippit",
    "handle": "@chriswhippit",
    "at": "2026-11-06T05:30:02Z"
-  },
-  {
-   "id": "wQ3pzgfrBaU",
-   "title": "VÅR FÖRSTA ROBOT på månen i Moon Sweepers med UfoSXM",
-   "channel": "ChrisWhippit",
-   "handle": "@chriswhippit",
-   "at": "2026-11-07T05:30:00Z"
   },
   {
    "id": "9XSzCQFFMyc",
@@ -41,7 +41,7 @@
   "chriswhippit": 4579,
   "whippitsson": 534,
   "figgwhipp": 2848,
-  "whippitextra": 102
+  "whippitextra": 103
  },
  "subs": {
   "chriswhippit": 299000,
@@ -544,8 +544,8 @@
  },
  "media": {
   "chriswhippit": {
-   "views": 244187000,
-   "avgViews": 7500,
+   "views": 244195000,
+   "avgViews": 7600,
    "avgSample": 7,
    "uploads30": 50
   },
@@ -563,9 +563,9 @@
   },
   "whippitextra": {
    "views": 276000,
-   "avgViews": 4400,
-   "avgSample": 30,
-   "uploads30": 38
+   "avgViews": 4300,
+   "avgSample": 29,
+   "uploads30": 39
   }
  }
 }
