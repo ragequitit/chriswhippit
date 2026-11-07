@@ -1,6 +1,13 @@
 {
- "t": "2026-11-06T22:21:46.092Z",
+ "t": "2026-11-07T09:12:12.946Z",
  "videos": [
+  {
+   "id": "VtLOlI1m2-c",
+   "title": "MAMMASPELAR RAMLAR NER OCH DÖÖÖÖÖR - MINECRAFT SKYBLOCK #9",
+   "channel": "Whippit",
+   "handle": "@whippitextra",
+   "at": "2026-11-07T05:30:29Z"
+  },
   {
    "id": "s9FziPjX9mo",
    "title": "ANACONDAN ÅT UPP UFO i RV There Yet? med UfoSXM",
@@ -9,18 +16,11 @@
    "at": "2026-11-06T05:30:02Z"
   },
   {
-   "id": "FMeRJ7eihrw",
-   "title": "TÄVLAR genom GODISLANDET i Minecraft med Jnx",
-   "channel": "Whippit",
-   "handle": "@whippitextra",
-   "at": "2026-11-04T05:30:33Z"
-  },
-  {
-   "id": "qS6i3TIQbjM",
-   "title": "Vi STÄDAR MÅNEN i Moon Sweepers med UfoSXM",
+   "id": "wQ3pzgfrBaU",
+   "title": "VÅR FÖRSTA ROBOT på månen i Moon Sweepers med UfoSXM",
    "channel": "ChrisWhippit",
    "handle": "@chriswhippit",
-   "at": "2026-11-05T05:30:27Z"
+   "at": "2026-11-07T05:30:00Z"
   },
   {
    "id": "9XSzCQFFMyc",
@@ -88,6 +88,12 @@
  "seriesVids": {
   "minecraft": [
    {
+    "id": "VtLOlI1m2-c",
+    "title": "MAMMASPELAR RAMLAR NER OCH DÖÖÖÖÖR - MINECRAFT SKYBLOCK #9",
+    "at": "2026-11-07T05:30:29Z",
+    "list": ""
+   },
+   {
     "id": "0qJizFjc-LU",
     "title": "4 SAKER – VEM VINNER? i Minecraft med Mammaspelar och Pappaspelar",
     "at": "2026-11-05T05:30:15Z",
@@ -151,12 +157,6 @@
     "id": "hwwA8_Aru-g",
     "title": "STORMEN KOMMER I BLOCKED IN - MINECRAFT MED JNX",
     "at": "2026-10-22T04:30:13Z",
-    "list": ""
-   },
-   {
-    "id": "G9OsINCyz2E",
-    "title": "DEN SOM HITTAR 16 IRON INGOTS FÖRST VINNER - MINECRAFT UTMANING",
-    "at": "2026-10-21T04:30:29Z",
     "list": ""
    }
   ],
@@ -544,9 +544,9 @@
  },
  "media": {
   "chriswhippit": {
-   "views": 244178000,
-   "avgViews": 7600,
-   "avgSample": 8,
+   "views": 244187000,
+   "avgViews": 7500,
+   "avgSample": 7,
    "uploads30": 50
   },
   "whippitsson": {
@@ -556,16 +556,16 @@
    "uploads30": 1
   },
   "figgwhipp": {
-   "views": 97238000,
+   "views": 97239000,
    "avgViews": 0,
    "avgSample": 0,
    "uploads30": 0
   },
   "whippitextra": {
-   "views": 275000,
-   "avgViews": 4800,
+   "views": 276000,
+   "avgViews": 4400,
    "avgSample": 30,
-   "uploads30": 37
+   "uploads30": 38
   }
  }
 }
