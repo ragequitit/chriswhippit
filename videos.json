@@ -1,26 +1,26 @@
 {
- "t": "2026-11-09T01:56:24.460Z",
+ "t": "2026-11-09T09:39:49.621Z",
  "videos": [
   {
-   "id": "d2bbbyKks_4",
-   "title": "Blocked in combat i MINECRAFT men jnx FLYR",
+   "id": "2dQNQgg7eq4",
+   "title": "ENCHANTINGBORD men ingen LAPIS i Minecraft SKYBLOCK #10",
    "channel": "Whippit",
    "handle": "@whippitextra",
-   "at": "2026-11-08T05:30:37Z"
+   "at": "2026-11-09T05:30:13Z"
   },
   {
-   "id": "0qJizFjc-LU",
-   "title": "4 SAKER – VEM VINNER? i Minecraft med Mammaspelar och Pappaspelar",
+   "id": "VtLOlI1m2-c",
+   "title": "MAMMASPELAR RAMLAR NER OCH DÖÖÖÖÖR - MINECRAFT SKYBLOCK #9",
    "channel": "Whippit",
    "handle": "@whippitextra",
-   "at": "2026-11-05T05:30:15Z"
+   "at": "2026-11-07T05:30:29Z"
   },
   {
-   "id": "s9FziPjX9mo",
-   "title": "ANACONDAN ÅT UPP UFO i RV There Yet? med UfoSXM",
+   "id": "wQ3pzgfrBaU",
+   "title": "VÅR FÖRSTA ROBOT på månen i Moon Sweepers med UfoSXM",
    "channel": "ChrisWhippit",
    "handle": "@chriswhippit",
-   "at": "2026-11-06T05:30:02Z"
+   "at": "2026-11-07T05:30:00Z"
   },
   {
    "id": "9XSzCQFFMyc",
@@ -30,15 +30,15 @@
    "at": "2026-10-10T04:30:24Z"
   },
   {
-   "id": "VtLOlI1m2-c",
-   "title": "MAMMASPELAR RAMLAR NER OCH DÖÖÖÖÖR - MINECRAFT SKYBLOCK #9",
+   "id": "d2bbbyKks_4",
+   "title": "Blocked in combat i MINECRAFT men jnx FLYR",
    "channel": "Whippit",
    "handle": "@whippitextra",
-   "at": "2026-11-07T05:30:29Z"
+   "at": "2026-11-08T05:30:37Z"
   }
  ],
  "counts": {
-  "chriswhippit": 4582,
+  "chriswhippit": 4583,
   "whippitsson": 534,
   "figgwhipp": 2848,
   "whippitextra": 104
@@ -87,6 +87,12 @@
  },
  "seriesVids": {
   "minecraft": [
+   {
+    "id": "2dQNQgg7eq4",
+    "title": "ENCHANTINGBORD men ingen LAPIS i Minecraft SKYBLOCK #10",
+    "at": "2026-11-09T05:30:13Z",
+    "list": ""
+   },
    {
     "id": "d2bbbyKks_4",
     "title": "Blocked in combat i MINECRAFT men jnx FLYR",
@@ -151,12 +157,6 @@
     "id": "cT9Fhzc5VNM",
     "title": "JAG MÅSTE PARA 3 SORTERS DJUR INNAN DOM ANDRA - MINECRAFT UTMANING",
     "at": "2026-10-25T05:30:19Z",
-    "list": ""
-   },
-   {
-    "id": "yogPqpesPv0",
-    "title": "TITTA VI FISKAR! - MINECRAFT SKYBLOCK #5",
-    "at": "2026-10-24T04:30:05Z",
     "list": ""
    }
   ],
@@ -544,28 +544,28 @@
  },
  "media": {
   "chriswhippit": {
-   "views": 244210000,
-   "avgViews": 6500,
-   "avgSample": 6,
+   "views": 244219000,
+   "avgViews": 6400,
+   "avgSample": 7,
    "uploads30": 50
   },
   "whippitsson": {
    "views": 50368000,
    "avgViews": 20000,
    "avgSample": 5,
-   "uploads30": 1
+   "uploads30": 0
   },
   "figgwhipp": {
-   "views": 97241000,
+   "views": 97242000,
    "avgViews": 0,
    "avgSample": 0,
    "uploads30": 0
   },
   "whippitextra": {
-   "views": 282000,
-   "avgViews": 4200,
+   "views": 284000,
+   "avgViews": 4100,
    "avgSample": 28,
-   "uploads30": 40
+   "uploads30": 41
   }
  }
 }
