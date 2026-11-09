@@ -13,11 +13,18 @@ const HANDLES = ['@chriswhippit', '@whippitsson', '@whippitextra'];
 const COUNT_HANDLES = ['chriswhippit', 'whippitsson', 'figgwhipp', 'whippitextra'];
 
 // Nyckeln är begränsad till sajtens adress, så anropen skickar sajten som Referer.
+// Tillfälliga fel hos YouTube (5xx, 'Internal error') försöks igen; består de hoppas körningen över utan fel.
+class Temporary extends Error {}
 const yt = async (p) => {
-  const r = await fetch('https://www.googleapis.com/youtube/v3/' + p + '&key=' + KEY, { headers: { Referer: 'https://www.chriswhippit.com/' } });
-  const j = await r.json();
-  if (j.error) throw new Error('YouTube: ' + (j.error.message || r.status));
-  return j;
+  for (let n = 1; ; n++) {
+    let r, j;
+    try { r = await fetch('https://www.googleapis.com/youtube/v3/' + p + '&key=' + KEY, { headers: { Referer: 'https://www.chriswhippit.com/' } }); j = await r.json(); }
+    catch (e) { j = { error: { code: 503, message: e.message } }; }
+    if (!j.error) return j;
+    const temp = (j.error.code || (r && r.status) || 0) >= 500 || /internal|backend/i.test(j.error.message || '');
+    if (temp && n < 3) { await new Promise((ok) => setTimeout(ok, 5000 * n)); continue; }
+    throw new (temp ? Temporary : Error)('YouTube: ' + (j.error.message || (r && r.status)));
+  }
 };
 const secsOf = (d) => { const m = /PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/.exec(d || '') || []; return (+m[1] || 0) * 3600 + (+m[2] || 0) * 60 + (+m[3] || 0); };
 
@@ -179,4 +186,7 @@ async function crewData() {
   if (old) { const { t, ...rest } = old; if (JSON.stringify(rest) === JSON.stringify(data) && Date.now() - Date.parse(t) < 86400000) return console.log('oförändrat'); }
   fs.writeFileSync(FILE, JSON.stringify({ t: new Date().toISOString(), ...data }, null, 1) + '\n');
   console.log('uppdaterat:', data.videos.length, 'videor,', Object.keys(data.seriesVids).length, 'serier,', Object.keys(data.crewInfo).length, 'kanaler');
-})().catch((e) => { console.error(e.message); process.exit(1); });
+})().catch((e) => {
+  if (e instanceof Temporary) { console.log(e.message + ' – tillfälligt fel, behåller videos.json och försöker nästa körning.'); return; }
+  console.error(e.message); process.exit(1);
+});
