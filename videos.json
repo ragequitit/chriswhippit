@@ -1,5 +1,5 @@
 {
- "t": "2026-11-09T09:39:49.621Z",
+ "t": "2026-11-09T21:03:48.066Z",
  "videos": [
   {
    "id": "2dQNQgg7eq4",
@@ -38,10 +38,10 @@
   }
  ],
  "counts": {
-  "chriswhippit": 4583,
+  "chriswhippit": 4585,
   "whippitsson": 534,
   "figgwhipp": 2848,
-  "whippitextra": 104
+  "whippitextra": 105
  },
  "subs": {
   "chriswhippit": 299000,
@@ -544,9 +544,9 @@
  },
  "media": {
   "chriswhippit": {
-   "views": 244219000,
-   "avgViews": 6400,
-   "avgSample": 7,
+   "views": 244229000,
+   "avgViews": 6300,
+   "avgSample": 6,
    "uploads30": 50
   },
   "whippitsson": {
@@ -556,16 +556,16 @@
    "uploads30": 0
   },
   "figgwhipp": {
-   "views": 97242000,
+   "views": 97243000,
    "avgViews": 0,
    "avgSample": 0,
    "uploads30": 0
   },
   "whippitextra": {
-   "views": 284000,
-   "avgViews": 4100,
-   "avgSample": 28,
-   "uploads30": 41
+   "views": 286000,
+   "avgViews": 4000,
+   "avgSample": 26,
+   "uploads30": 43
   }
  }
 }
