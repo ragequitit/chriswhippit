@@ -1,19 +1,19 @@
 {
- "t": "2026-11-10T11:42:33.305Z",
+ "t": "2026-11-10T19:39:55.148Z",
  "videos": [
   {
-   "id": "2dQNQgg7eq4",
-   "title": "ENCHANTINGBORD men ingen LAPIS i Minecraft SKYBLOCK #10",
-   "channel": "Whippit",
-   "handle": "@whippitextra",
-   "at": "2026-11-09T05:30:13Z"
+   "id": "7Vre_Qd-V5Y",
+   "title": "WHY SO SERIES X? i Brick by Brick med UfoSXM",
+   "channel": "ChrisWhippit",
+   "handle": "@chriswhippit",
+   "at": "2026-11-10T14:30:25Z"
   },
   {
-   "id": "VtLOlI1m2-c",
-   "title": "MAMMASPELAR RAMLAR NER OCH DÖÖÖÖÖR - MINECRAFT SKYBLOCK #9",
+   "id": "d2bbbyKks_4",
+   "title": "Blocked in combat i MINECRAFT men jnx FLYR",
    "channel": "Whippit",
    "handle": "@whippitextra",
-   "at": "2026-11-07T05:30:29Z"
+   "at": "2026-11-08T05:30:37Z"
   },
   {
    "id": "wQ3pzgfrBaU",
@@ -30,18 +30,18 @@
    "at": "2026-10-10T04:30:24Z"
   },
   {
-   "id": "d2bbbyKks_4",
-   "title": "Blocked in combat i MINECRAFT men jnx FLYR",
+   "id": "2dQNQgg7eq4",
+   "title": "ENCHANTINGBORD men ingen LAPIS i Minecraft SKYBLOCK #10",
    "channel": "Whippit",
    "handle": "@whippitextra",
-   "at": "2026-11-08T05:30:37Z"
+   "at": "2026-11-09T05:30:13Z"
   }
  ],
  "counts": {
-  "chriswhippit": 4586,
+  "chriswhippit": 4590,
   "whippitsson": 534,
   "figgwhipp": 2848,
-  "whippitextra": 105
+  "whippitextra": 108
  },
  "subs": {
   "chriswhippit": 299000,
@@ -563,9 +563,9 @@
   },
   "whippitextra": {
    "views": 287000,
-   "avgViews": 4000,
-   "avgSample": 26,
-   "uploads30": 42
+   "avgViews": 3900,
+   "avgSample": 24,
+   "uploads30": 44
   }
  }
 }
