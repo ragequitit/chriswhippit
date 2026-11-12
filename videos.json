@@ -1,19 +1,12 @@
 {
- "t": "2026-11-12T03:19:43.064Z",
+ "t": "2026-11-12T11:46:57.835Z",
  "videos": [
   {
-   "id": "xPx8mQ4Z51s",
-   "title": "MONSTRET ÄR HÄR i Shift at Midnight med UfoSXM",
+   "id": "Bq9dUbiA7Vw",
+   "title": "TELEPORT UPPLÅST i Moon Sweepers med UfoSXM",
    "channel": "ChrisWhippit",
    "handle": "@chriswhippit",
-   "at": "2026-11-11T05:30:28Z"
-  },
-  {
-   "id": "d2bbbyKks_4",
-   "title": "Blocked in combat i MINECRAFT men jnx FLYR",
-   "channel": "Whippit",
-   "handle": "@whippitextra",
-   "at": "2026-11-08T05:30:37Z"
+   "at": "2026-11-12T05:30:23Z"
   },
   {
    "id": "7Vre_Qd-V5Y",
@@ -23,6 +16,13 @@
    "at": "2026-11-10T14:30:25Z"
   },
   {
+   "id": "xPx8mQ4Z51s",
+   "title": "MONSTRET ÄR HÄR i Shift at Midnight med UfoSXM",
+   "channel": "ChrisWhippit",
+   "handle": "@chriswhippit",
+   "at": "2026-11-11T05:30:28Z"
+  },
+  {
    "id": "9XSzCQFFMyc",
    "title": "RAIDAR SPACE-PIKACHU MED MIN SON | POKÉMON GO",
    "channel": "Chris Whippit Vloggar",
@@ -30,11 +30,11 @@
    "at": "2026-10-10T04:30:24Z"
   },
   {
-   "id": "2dQNQgg7eq4",
-   "title": "ENCHANTINGBORD men ingen LAPIS i Minecraft SKYBLOCK #10",
+   "id": "xXZ2NkUB5-A",
+   "title": "0 GRISAR, 0 BRO i Minecraft med Mammaspelar och Pappaspelar",
    "channel": "Whippit",
    "handle": "@whippitextra",
-   "at": "2026-11-09T05:30:13Z"
+   "at": "2026-11-12T05:30:20Z"
   }
  ],
  "counts": {
@@ -87,6 +87,12 @@
  },
  "seriesVids": {
   "minecraft": [
+   {
+    "id": "xXZ2NkUB5-A",
+    "title": "0 GRISAR, 0 BRO i Minecraft med Mammaspelar och Pappaspelar",
+    "at": "2026-11-12T05:30:20Z",
+    "list": ""
+   },
    {
     "id": "2dQNQgg7eq4",
     "title": "ENCHANTINGBORD men ingen LAPIS i Minecraft SKYBLOCK #10",
@@ -151,12 +157,6 @@
     "id": "i6ymJqboH5Y",
     "title": "VI BLIR RIKA - MINECRAFT SKYBLOCK #6",
     "at": "2026-10-26T05:30:37Z",
-    "list": ""
-   },
-   {
-    "id": "cT9Fhzc5VNM",
-    "title": "JAG MÅSTE PARA 3 SORTERS DJUR INNAN DOM ANDRA - MINECRAFT UTMANING",
-    "at": "2026-10-25T05:30:19Z",
     "list": ""
    }
   ],
@@ -236,75 +236,75 @@
   ],
   "fortnite": [
    {
-    "id": "DO9mI9GaaIE",
-    "title": "KAN JAG FÅ PLATINUM I RANKED FORTNITE",
-    "at": "2024-01-13T08:00:06Z",
+    "id": "3YbmRPPrZl4",
+    "title": "ROCKET LAUNCHER ÄR OP I OG FORTNITE",
+    "at": "2024-12-23T07:00:01Z",
     "list": "PLpinm9x4zUomJD8OqZNrHiSSchPom6v6c"
    },
    {
-    "id": "XTUG_U2hEik",
-    "title": "40 ÅRING DROPPAR 10 BOMB MED 4 MEDALJONGER I FORTNITE",
-    "at": "2024-01-11T05:00:16Z",
+    "id": "fjEeqTzWq_8",
+    "title": "OG FORTNITE TRIO vs SQUADS",
+    "at": "2024-12-20T05:30:21Z",
     "list": "PLpinm9x4zUomJD8OqZNrHiSSchPom6v6c"
    },
    {
-    "id": "B2run2yVejY",
-    "title": "VINNER MED 3 MEDALJONGER I FORTNITE CHAPTER 5",
-    "at": "2024-01-08T05:00:05Z",
+    "id": "OE1ScZyDRR8",
+    "title": "SÅ VINNER MAN I OG FORTNITE PÅ GAMLA KARTAN",
+    "at": "2024-12-14T07:30:14Z",
     "list": "PLpinm9x4zUomJD8OqZNrHiSSchPom6v6c"
    },
    {
-    "id": "wsTGS1S_guM",
-    "title": "FORTNITE ZERO BUILD MED MIN SON",
-    "at": "2024-01-06T08:00:28Z",
+    "id": "D3lUIB3D6ps",
+    "title": "OG FORTNITE MED GAMLA KARTAN ÄR HÄR IGEN",
+    "at": "2024-12-09T14:30:10Z",
     "list": "PLpinm9x4zUomJD8OqZNrHiSSchPom6v6c"
    },
    {
-    "id": "CQgWF2va_Zk",
-    "title": "NYTT VAPEN & HEALING I FORTNITE UPDATE",
-    "at": "2024-01-02T16:21:13Z",
+    "id": "zgwZWXmQie0",
+    "title": "OP VAPEN - ONI MASKS I FORTNITE CHAPTER 6",
+    "at": "2024-12-04T05:30:20Z",
     "list": "PLpinm9x4zUomJD8OqZNrHiSSchPom6v6c"
    },
    {
-    "id": "vkJKfOvLMWc",
-    "title": "ÖPPNAR ALLA JULKLAPPAR I FORTNITE CHAPTER 5",
-    "at": "2023-12-30T08:00:25Z",
+    "id": "UJgd7wVJwKM",
+    "title": "FORTNITE NYASTE CHAPTER 6 ÄR HÄR!",
+    "at": "2024-12-03T05:30:20Z",
     "list": "PLpinm9x4zUomJD8OqZNrHiSSchPom6v6c"
    },
    {
-    "id": "2Vz7oDdJVYw",
-    "title": "NY HEMLIG JUL-BOSS I FORTNITE CHAPTER 5",
-    "at": "2023-12-21T05:00:01Z",
+    "id": "BsiHlRh9M0Q",
+    "title": "MIN FÖRSTA VICTORY ROYALE I SOLO RANKED RELOAD",
+    "at": "2024-11-26T05:30:04Z",
     "list": "PLpinm9x4zUomJD8OqZNrHiSSchPom6v6c"
    },
    {
-    "id": "cku44WWyRbA",
-    "title": "ALLA SÄTT MAN KAN DÖ PÅ I FORTNITE CHAPTER 5",
-    "at": "2023-12-19T05:00:18Z",
+    "id": "hn4JYjy8UdA",
+    "title": "SNIPERKUNGEN I FORTNITE - RANKED RELOAD SOLO",
+    "at": "2024-11-22T05:30:16Z",
     "list": "PLpinm9x4zUomJD8OqZNrHiSSchPom6v6c"
    },
    {
-    "id": "nKItovI-cHg",
-    "title": "MÖTER SVETT-BYGGARE BOB I FORTNITE CHAPTER 5",
-    "at": "2023-12-17T08:00:32Z",
+    "id": "tIKiwYPbcQ0",
+    "title": "FORTNITE - RANKED RELOAD SOLO",
+    "at": "2024-11-18T14:30:31Z",
     "list": "PLpinm9x4zUomJD8OqZNrHiSSchPom6v6c"
    },
    {
-    "id": "22qpzMfnbXk",
-    "title": "GRATIS ITEMS TILL ALLA I FORTNITE JUL-UPDATE",
-    "at": "2023-12-15T05:00:01Z",
+    "id": "PgDhER4EIy4",
+    "title": "OG FORTNITE ÄR TILLBAKS - REMIX CHAPTER 2",
+    "at": "2024-11-05T14:30:12Z",
     "list": "PLpinm9x4zUomJD8OqZNrHiSSchPom6v6c"
    },
    {
-    "id": "7_vFgD5O900",
-    "title": "SNIPERN ÄR GALEN I FORTNITE CHAPTER 5",
-    "at": "2023-12-13T05:00:04Z",
+    "id": "RGDfhLDSxKI",
+    "title": "TESTAR NYA MEDALJONGER I FORTNITE SEASON 3",
+    "at": "2024-06-02T05:00:12Z",
     "list": "PLpinm9x4zUomJD8OqZNrHiSSchPom6v6c"
    },
    {
-    "id": "Xwfpkza7WOI",
-    "title": "FÖRSTA FORTNITE VINSTEN I CHAPTER 5 & JAG GER BORT ETT BATTLEPASS!",
-    "at": "2023-12-10T10:45:02Z",
+    "id": "sFjtkOd2wxs",
+    "title": "NYTT OP-VAPEN I FORTNITE SEASON 3",
+    "at": "2024-05-25T05:00:27Z",
     "list": "PLpinm9x4zUomJD8OqZNrHiSSchPom6v6c"
    }
   ],
@@ -544,26 +544,26 @@
  },
  "media": {
   "chriswhippit": {
-   "views": 244265000,
-   "avgViews": 6000,
-   "avgSample": 8,
+   "views": 244275000,
+   "avgViews": 6400,
+   "avgSample": 9,
    "uploads30": 50
   },
   "whippitsson": {
-   "views": 50369000,
+   "views": 50370000,
    "avgViews": 20000,
    "avgSample": 5,
    "uploads30": 0
   },
   "figgwhipp": {
-   "views": 97247000,
+   "views": 97248000,
    "avgViews": 0,
    "avgSample": 0,
    "uploads30": 0
   },
   "whippitextra": {
    "views": 294000,
-   "avgViews": 3700,
+   "avgViews": 3400,
    "avgSample": 24,
    "uploads30": 44
   }
