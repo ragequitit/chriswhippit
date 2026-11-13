@@ -1,19 +1,12 @@
 {
- "t": "2026-11-12T19:51:30.122Z",
+ "t": "2026-11-13T07:51:13.153Z",
  "videos": [
   {
-   "id": "Bq9dUbiA7Vw",
-   "title": "TELEPORT UPPLÅST i Moon Sweepers med UfoSXM",
+   "id": "Y7QgnOWR1p8",
+   "title": "FÖRSTA HYLLAN KLAR i Mega Store Tidy Up Together med UfoSXM",
    "channel": "ChrisWhippit",
    "handle": "@chriswhippit",
-   "at": "2026-11-12T05:30:23Z"
-  },
-  {
-   "id": "7Vre_Qd-V5Y",
-   "title": "WHY SO SERIES X? i Brick by Brick med UfoSXM",
-   "channel": "ChrisWhippit",
-   "handle": "@chriswhippit",
-   "at": "2026-11-10T14:30:25Z"
+   "at": "2026-11-13T05:30:22Z"
   },
   {
    "id": "xPx8mQ4Z51s",
@@ -21,6 +14,13 @@
    "channel": "ChrisWhippit",
    "handle": "@chriswhippit",
    "at": "2026-11-11T05:30:28Z"
+  },
+  {
+   "id": "Bq9dUbiA7Vw",
+   "title": "TELEPORT UPPLÅST i Moon Sweepers med UfoSXM",
+   "channel": "ChrisWhippit",
+   "handle": "@chriswhippit",
+   "at": "2026-11-12T05:30:23Z"
   },
   {
    "id": "9XSzCQFFMyc",
@@ -545,8 +545,8 @@
  "media": {
   "chriswhippit": {
    "views": 244281000,
-   "avgViews": 6000,
-   "avgSample": 8,
+   "avgViews": 5800,
+   "avgSample": 9,
    "uploads30": 50
   },
   "whippitsson": {
@@ -556,16 +556,16 @@
    "uploads30": 0
   },
   "figgwhipp": {
-   "views": 97249000,
+   "views": 97250000,
    "avgViews": 0,
    "avgSample": 0,
    "uploads30": 0
   },
   "whippitextra": {
-   "views": 296000,
+   "views": 297000,
    "avgViews": 3400,
    "avgSample": 24,
-   "uploads30": 43
+   "uploads30": 42
   }
  }
 }
