@@ -1,19 +1,12 @@
 {
- "t": "2026-11-13T22:08:34.831Z",
+ "t": "2026-11-14T10:12:31.038Z",
  "videos": [
   {
-   "id": "Y7QgnOWR1p8",
-   "title": "FÖRSTA HYLLAN KLAR i Mega Store Tidy Up Together med UfoSXM",
-   "channel": "ChrisWhippit",
-   "handle": "@chriswhippit",
-   "at": "2026-11-13T05:30:22Z"
-  },
-  {
-   "id": "xPx8mQ4Z51s",
-   "title": "MONSTRET ÄR HÄR i Shift at Midnight med UfoSXM",
-   "channel": "ChrisWhippit",
-   "handle": "@chriswhippit",
-   "at": "2026-11-11T05:30:28Z"
+   "id": "Ssx_KtS1ozw",
+   "title": "FÅNGAR en FARLIG HÄXA i Minecraft SKYBLOCK #11",
+   "channel": "Whippit",
+   "handle": "@whippitextra",
+   "at": "2026-11-14T05:30:25Z"
   },
   {
    "id": "Bq9dUbiA7Vw",
@@ -21,6 +14,13 @@
    "channel": "ChrisWhippit",
    "handle": "@chriswhippit",
    "at": "2026-11-12T05:30:23Z"
+  },
+  {
+   "id": "Y7QgnOWR1p8",
+   "title": "FÖRSTA HYLLAN KLAR i Mega Store Tidy Up Together med UfoSXM",
+   "channel": "ChrisWhippit",
+   "handle": "@chriswhippit",
+   "at": "2026-11-13T05:30:22Z"
   },
   {
    "id": "9XSzCQFFMyc",
@@ -88,6 +88,12 @@
  "seriesVids": {
   "minecraft": [
    {
+    "id": "Ssx_KtS1ozw",
+    "title": "FÅNGAR en FARLIG HÄXA i Minecraft SKYBLOCK #11",
+    "at": "2026-11-14T05:30:25Z",
+    "list": ""
+   },
+   {
     "id": "xXZ2NkUB5-A",
     "title": "0 GRISAR, 0 BRO i Minecraft med Mammaspelar och Pappaspelar",
     "at": "2026-11-12T05:30:20Z",
@@ -151,12 +157,6 @@
     "id": "g0e_2gaMTDg",
     "title": "LUCKY BLOCK RACE i GRUVORNA i Minecraft med Jnx",
     "at": "2026-10-27T05:30:27Z",
-    "list": ""
-   },
-   {
-    "id": "i6ymJqboH5Y",
-    "title": "VI BLIR RIKA - MINECRAFT SKYBLOCK #6",
-    "at": "2026-10-26T05:30:37Z",
     "list": ""
    }
   ],
@@ -544,9 +544,9 @@
  },
  "media": {
   "chriswhippit": {
-   "views": 244299000,
-   "avgViews": 6100,
-   "avgSample": 8,
+   "views": 244307000,
+   "avgViews": 6200,
+   "avgSample": 9,
    "uploads30": 50
   },
   "whippitsson": {
@@ -556,16 +556,16 @@
    "uploads30": 0
   },
   "figgwhipp": {
-   "views": 97250000,
+   "views": 97251000,
    "avgViews": 0,
    "avgSample": 0,
    "uploads30": 0
   },
   "whippitextra": {
-   "views": 297000,
-   "avgViews": 3300,
+   "views": 298000,
+   "avgViews": 3200,
    "avgSample": 23,
-   "uploads30": 42
+   "uploads30": 43
   }
  }
 }
