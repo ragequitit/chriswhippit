@@ -97,6 +97,9 @@ td.kat, th.kat { text-align: left; }
 .chip.cheap { color: var(--green); border-color: rgba(127, 212, 154, .5); }
 .chip.cheap[aria-pressed=true] { border-color: var(--green); background: rgba(127, 212, 154, .14); }
 .chip.dear { color: var(--red); border-color: rgba(255, 90, 74, .5); }
+.chip.day { color: var(--gold); border-color: rgba(214, 168, 59, .6); }
+.chip.day[aria-pressed=true] { border-color: var(--gold); background: var(--sel); }
+.sun { color: var(--edge); } .moon { color: var(--grey); }
 .chip.dear[aria-pressed=true] { border-color: var(--red); background: rgba(255, 90, 74, .14); }
 .inset { background: var(--inset); border: 1px solid var(--line); border-radius: 4px; min-width: 0; }
 .scroll { overflow-x: auto; }
@@ -236,6 +239,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     <input type="search" id="q" data-t-ph="search_ph" data-t-aria="search_aria" placeholder="Sök vara, t.ex. Silk Cloth" autocomplete="off" aria-label="Sök vara">
     <button class="chip cheap" id="chipCheap" aria-pressed="false" type="button" data-t-title="cheap_tip" title="">Billigt just nu</button>
     <button class="chip dear" id="chipDear" aria-pressed="false" type="button" data-t-title="dear_tip" title="">Dyrt just nu</button>
+    <button class="chip day" id="chipDay" aria-pressed="false" type="button" data-t-title="day_tip" title="">Dygnshandel</button>
     <button class="chip" id="chipAll" aria-pressed="false" type="button" hidden></button>
     <span class="count" id="count"></span>
   </div>
@@ -282,7 +286,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   "use strict";
   var $ = function (id) { return document.getElementById(id); };
   var D = null, rows = [], view = [], shown = 0, PAGE = 60;
-  var sortKey = "day", sortDir = -1, showAll = false, cheapOnly = false, dearOnly = false, selId = null, query = "";
+  var sortKey = "day", sortDir = -1, showAll = false, cheapOnly = false, dearOnly = false, dayOnly = false, selId = null, query = "";
   var CHEAP_MIN = 25;   // "Billigt just nu": minst så många procent under de senaste dagarnas vanliga pris
   var byId = {}, lastUpdate = null;   // lastUpdate = { key, t } (översätts när den visas)
   var ICON_BASE = "https://ragequitit.github.io/ah/icons/";             // mappen med ikoner; tom = inga ikoner (Claude-sidan kan inte ladda bilder utifrån)
@@ -334,6 +338,9 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       f_day: "Sålda per dag (uppskattning)", per_scan: "Pris per scan", lg_qty: "Antal ute", hover: "Peka på grafen för en scan.",
       dayday: "Morgon och kväll", lg_morning: "Morgon (05–12)", lg_evening: "Kväll (17–24)", dd_hover: "Peka på en dag.", dd_none: "Ingen dag har både morgon- och kvällsscan än.",
       dd_morning: "morgon", dd_evening: "kväll", dd_gain: "köp %1, sälj %2: %3", dd_scans: "%1 scans",
+      dayt: "Dygnshandel", day_tip: "Varor som gett minst 10 % vinst mellan morgon och kväll minst 3 dagar den senaste veckan (högst en dag utan). Vinsten är den sämsta dagens.",
+      day_none: "Ingen vara har ett stabilt dygnsmönster än.", col_trade: "Dygn", trade_tip: "Köp %1, sälj %2: %3 per st (sämsta dagen senaste veckan)",
+      lg_p20: "* = snitt för 20 st",
       err1: "Scannen gick inte att läsa in", err2: "Ladda om sidan. Hjälper det inte har datan inte laddats upp."
     },
     en: {
@@ -368,6 +375,9 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       f_day: "Sold per day (estimate)", per_scan: "Price per scan", lg_qty: "Listed", hover: "Hover the chart for a scan.",
       dayday: "Morning and evening", lg_morning: "Morning (05–12)", lg_evening: "Evening (17–24)", dd_hover: "Hover a day.", dd_none: "No day has both a morning and an evening scan yet.",
       dd_morning: "morning", dd_evening: "evening", dd_gain: "buy %1, sell %2: %3", dd_scans: "%1 scans",
+      dayt: "Day trade", day_tip: "Items with at least 10% profit between morning and evening on at least 3 days this week (at most one day without). The profit shown is the worst day's.",
+      day_none: "No item has a stable day pattern yet.", col_trade: "Day", trade_tip: "Buy %1, sell %2: %3 each (worst day this week)",
+      lg_p20: "* = average of 20",
       err1: "The scan could not be loaded", err2: "Reload the page. If that does not help, the data has not been uploaded."
     }
   };
@@ -477,13 +487,13 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       }
       body += '<tr tabindex="0" data-id="' + w.id + '"><td>' + iconHtml(r) + '<span class="' + cls + '">' + esc(name) + "</span></td><td>" +
         (r ? money(r.min) + diff : '<span class="dim">' + t("not_listed") + "</span>") + "</td><td>" + (r ? spark(r) : "") +
-        "</td><td>" + (r ? num(r.qty) : '<span class="dim">–</span>') + '</td><td><button class="x" type="button" data-star="' + w.id +
+        "</td><td>" + (r ? (tradeHtml(r) || '<span class="dim">–</span>') : "") + '</td><td><button class="x" type="button" data-star="' + w.id +
         '" title="' + t("remove") + '" aria-label="' + t("remove") + " " + esc(name) + '">✕</button></td></tr>';
     });
     $("watch").innerHTML =
       '<div class="strip"><h2>' + t("tab_watch") + "</h2><small>" + t("watch_sub") + "</small></div>" +
       (watch.length
-        ? '<div class="scroll"><table><thead><tr><th>' + t("col_item") + "</th><th>" + t("col_min") + "</th><th>" + t("col_trend") + "</th><th>" + t("col_qty") +
+        ? '<div class="scroll"><table><thead><tr><th>' + t("col_item") + "</th><th>" + t("col_min") + "</th><th>" + t("col_trend") + "</th><th>" + t("col_trade") +
           '</th><th></th></tr></thead><tbody id="wrows">' + body + "</tbody></table></div>"
         : '<div class="note">' + t("watch_empty") + "</div>") +
       '<div class="btnrow"><button class="btn" id="update" type="button">' + t("update") + '</button><span class="note" id="upd">' + updateText() + "</span></div>";
@@ -561,6 +571,10 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     $("chipCheap").hidden = nCheap === 0;
     $("chipDear").textContent = t("dear") + " (" + num(nDear) + ")";
     $("chipDear").hidden = nDear === 0;
+    var nDay = 0;
+    rows.forEach(function (r) { if (r.tg) nDay++; });
+    $("chipDay").textContent = t("dayt") + " (" + num(nDay) + ")";
+    $("chipDay").hidden = nDay === 0;
     $("market").textContent = "WoW Forever · " + D.market;
     $("scanTime").textContent = t("scan_at", w.day, w.hm);
     $("scanInfo").textContent = t("on_ah", num(rows.length));
@@ -573,7 +587,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     rows = d.items.map(function (r) {
       return { id: r[0], name: r[1] || "", q: r[2], min: r[3], qty: r[7] || r[4], exact: r[7] > 0, p20: r[5], p100: r[6], day: r[8],
         mh: r[9], qh: r[10], ph: r[11], ic: r[12] || "", ci: r[13] == null ? -1 : r[13], si: r[14] == null ? -1 : r[14], ui: r[15] == null ? -1 : r[15],
-        lvl: r[16] || 0, dip: r[17] || 0,
+        lvl: r[16] || 0, dip: r[17] || 0, tg: r[18] || 0, td: r[19] || 0,
         lower: (r[1] || "").toLowerCase() };
     });
     byId = {};
@@ -605,6 +619,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       if (!showAll && !r.name) return false;
       if (cheapOnly && r.dip < CHEAP_MIN) return false;
       if (dearOnly && r.dip > -CHEAP_MIN) return false;
+      if (dayOnly && !r.tg) return false;
       if (catSel >= 0 && r.ci !== catSel) return false;
       if (subSel >= 0 && r.si !== subSel) return false;
       if (sub2Sel >= 0 && r.ui !== sub2Sel) return false;
@@ -615,6 +630,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     view.sort(function (a, b) {
       if (k === "name") return dir * (a.name || "~" + a.id).localeCompare(b.name || "~" + b.id, "sv");
       if (k === "dip") return dir * (a.dip - b.dip) || a.id - b.id;
+      if (k === "tg") return dir * (a.tg - b.tg) || a.id - b.id;
       if (k === "cat") {   // kategori, underkategori, sedan namn; okänd kategori sist
         var ac = a.ci < 0 ? 9999 : a.ci, bc = b.ci < 0 ? 9999 : b.ci;
         return dir * (ac - bc || a.si - b.si || a.ui - b.ui) || (a.name || "").localeCompare(b.name || "", "sv");
@@ -657,10 +673,18 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     return '<button class="catlink" type="button" data-cat="' + r.ci + '"' + (sub ? ' data-sub="' + r.si + '"' : "") + (un ? ' data-sub2="' + r.ui + '"' : "") +
       ' title="' + esc(catName(c[0]) + (sub ? " › " + sub : "") + (un ? " › " + un : "")) + '">' + esc(txt) + "</button>";
   }
+  // Dygnshandeln på en rad: sol→måne (köp morgon, sälj kväll) eller måne→sol, och vinsten per st.
+  function tradeHtml(r) {
+    if (!r.tg) return "";
+    var a = r.td === 1 ? '<span class="sun">☀</span>→<span class="moon">☾</span>' : '<span class="moon">☾</span>→<span class="sun">☀</span>';
+    var tip = t("trade_tip", t(r.td === 1 ? "dd_morning" : "dd_evening"), t(r.td === 1 ? "dd_evening" : "dd_morning"), "+" + moneyText(r.tg));
+    return '<span class="down2" title="' + tip + '">' + a + " +" + moneyText(r.tg) + "</span>";
+  }
   function rowHtml(r) {
     var name = iconHtml(r) + (r.name ? '<span class="' + qcls(r.q) + '">' + esc(r.name) + "</span>" : '<span class="dim">' + t("item_n", r.id) + "</span>");
     var pct = '<span class="dim">–</span>';
-    if (r.dip !== 0) {   // 0 = inget vanligt pris att jämföra med (eller exakt som vanligt)
+    if (dayOnly) pct = tradeHtml(r) || pct;
+    else if (r.dip !== 0) {   // 0 = inget vanligt pris att jämföra med (eller exakt som vanligt)
       var usual = moneyText(Math.round(r.min / (1 - r.dip / 100)));
       if (r.dip > 0) pct = '<span class="down2" title="' + t("dip_tip", r.dip, usual) + '">▼' + r.dip + "%</span>";
       else pct = '<span class="up2" title="' + t("rise_tip", -r.dip, usual) + '">▲' + (-r.dip) + "%</span>";
@@ -675,12 +699,17 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     for (var i = 0; i < shown; i++) { html += rowHtml(view[i]); if (view[i].id === openId) html += expHtml(view[i]); }
     $("rows").innerHTML = html;
     $("empty").hidden = view.length > 0;
-    $("empty").textContent = t(!query && cheapOnly ? "cheap_none" : !query && dearOnly ? "dear_none" : "empty");
+    $("empty").textContent = t(!query && cheapOnly ? "cheap_none" : !query && dearOnly ? "dear_none" : !query && dayOnly ? "day_none" : "empty");
     $("more").hidden = shown >= view.length;
     $("more").textContent = t("more", num(view.length - shown));
     $("count").textContent = t("count", num(view.length));
     var btns = document.querySelectorAll("th button");
     for (var j = 0; j < btns.length; j++) {
+      if (btns[j].dataset.k === "dip" || btns[j].dataset.k === "tg") {   // samma kolumn: Mot vanligt, eller Dygn när Dygnshandel är på
+        btns[j].dataset.k = dayOnly ? "tg" : "dip";
+        btns[j].textContent = t(dayOnly ? "col_trade" : "col_pct");
+        btns[j].title = t(dayOnly ? "day_tip" : "col_pct_tip");
+      }
       if (btns[j].dataset.k === sortKey) btns[j].setAttribute("aria-sort", sortDir > 0 ? "ascending" : "descending");
       else btns[j].removeAttribute("aria-sort");
     }
@@ -761,15 +790,18 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       var b = blockOf(T[i]);
       if (!b) continue;
       var k = dayKey(T[i]);
-      if (!days[k]) { days[k] = { key: k, m: [], e: [], mq: 0, eq: 0 }; order.push(k); }
+      if (!days[k]) { days[k] = { key: k, m: [], e: [], mp: [], ep: [], mq: 0, eq: 0 }; order.push(k); }
       days[k][b].push(r.mh[i]);
+      if (r.ph[i] > 0) days[k][b + "p"].push(r.ph[i]);
       days[k][b + "q"] = r.qh[i];
     }
     order.sort();
     return order.map(function (k) {
       var dd = days[k];
       var avg = function (a) { if (!a.length) return 0; var sum = 0; a.forEach(function (v) { sum += v; }); return Math.round(sum / a.length); };
-      return { key: k, m: avg(dd.m), e: avg(dd.e), mn: dd.m.length, en: dd.e.length, mq: dd.mq, eq: dd.eq };
+      // Snittet för 20 st när båda blocken har det (det som faktiskt säljs), annars lägsta pris för båda: aldrig blandat.
+      var p20 = dd.mp.length > 0 && dd.ep.length > 0;
+      return { key: k, m: avg(p20 ? dd.mp : dd.m), e: avg(p20 ? dd.ep : dd.e), mn: dd.m.length, en: dd.e.length, mq: dd.mq, eq: dd.eq, p20: p20 };
     });
   }
   function dayChart(r) {
@@ -801,7 +833,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   }
   // Raden under dagstaplarna: "13/11 · morgon 2s 10c (2 scans) · kväll 3s 05c (1 scan) · köp morgon, sälj kväll: +85c"
   function dayReadout(dd) {
-    var parts = ['<b>' + (dd.key % 100) + "/" + Math.floor(dd.key / 100 % 100) + "</b>"];
+    var parts = ['<b>' + (dd.key % 100) + "/" + Math.floor(dd.key / 100 % 100) + (dd.p20 ? "*" : "") + "</b>"];
     if (dd.m) parts.push(t("dd_morning") + " " + money(dd.m) + ' <span class="dim">(' + t("dd_scans", dd.mn) + ")</span>");
     if (dd.e) parts.push(t("dd_evening") + " " + money(dd.e) + ' <span class="dim">(' + t("dd_scans", dd.en) + ")</span>");
     if (dd.m && dd.e) {
@@ -847,7 +879,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       '</span><span><i style="background:#7ea2d6"></i>' + t("lg_qty") + "</span></div>" +
       '<div class="read" id="read">' + t("hover") + "</div></div>" +
       "<div><h3>" + t("dayday") + "</h3>" + dayChart(r) +
-      '<div class="legend"><span><i style="background:#d6a83b;height:8px"></i>' + t("lg_morning") + '</span><span><i style="background:#a1a1a1;height:8px"></i>' + t("lg_evening") + "</span></div>" +
+      '<div class="legend"><span><i style="background:#d6a83b;height:8px"></i>' + t("lg_morning") + '</span><span><i style="background:#a1a1a1;height:8px"></i>' + t("lg_evening") + "</span><span>" + t("lg_p20") + "</span></div>" +
       '<div class="read" id="dread">' + t("dd_hover") + "</div></div>" +
       "<div>" + stepsHtml(r) + "</div>";
     var hits = $("detail").querySelectorAll(".hit");
@@ -931,16 +963,24 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   function setChips() {
     $("chipCheap").setAttribute("aria-pressed", cheapOnly ? "true" : "false");
     $("chipDear").setAttribute("aria-pressed", dearOnly ? "true" : "false");
+    $("chipDay").setAttribute("aria-pressed", dayOnly ? "true" : "false");
   }
   $("chipCheap").addEventListener("click", function () {
-    cheapOnly = !cheapOnly; dearOnly = false;
+    cheapOnly = !cheapOnly; dearOnly = false; dayOnly = false;
     if (cheapOnly) { sortKey = "dip"; sortDir = -1; } else if (sortKey === "dip") { sortKey = "day"; sortDir = -1; }
     setChips(); refresh();
     var lb = document.querySelector(".left .scroll");
     if (lb) lb.scrollTop = 0;
   });
+  $("chipDay").addEventListener("click", function () {
+    dayOnly = !dayOnly; cheapOnly = false; dearOnly = false;
+    if (dayOnly) { sortKey = "tg"; sortDir = -1; } else if (sortKey === "tg") { sortKey = "day"; sortDir = -1; }
+    setChips(); refresh();
+    var lb = document.querySelector(".left .scroll");
+    if (lb) lb.scrollTop = 0;
+  });
   $("chipDear").addEventListener("click", function () {
-    dearOnly = !dearOnly; cheapOnly = false;
+    dearOnly = !dearOnly; cheapOnly = false; dayOnly = false;
     if (dearOnly) { sortKey = "dip"; sortDir = 1; } else if (sortKey === "dip") { sortKey = "day"; sortDir = -1; }
     setChips(); refresh();
     var lb = document.querySelector(".left .scroll");
