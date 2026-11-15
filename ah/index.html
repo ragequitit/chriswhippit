@@ -67,7 +67,7 @@ h1 { font-family: var(--display); font-weight: 700; font-size: 22px; margin: 0; 
 .flag:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
 .flag svg { display: block; width: 100%; height: 100%; }
 .bar { display: flex; gap: 10px; align-items: center; padding: 12px 18px; flex-wrap: wrap; }
-.bar input[type=search] { flex: 1 1 220px; min-width: 0; height: 34px; padding: 0 12px; border-radius: 4px; border: 1px solid var(--line);
+.bar input[type=search] { flex: 0 1 340px; min-width: 0; height: 34px; padding: 0 12px; border-radius: 4px; border: 1px solid var(--line);
   background: var(--inset); color: var(--fg); font: inherit; }
 .bar input[type=search]:focus-visible, button:focus-visible, tr:focus-visible { outline: 2px solid var(--gold); outline-offset: 1px; }
 .chip { height: 30px; padding: 0 12px; border-radius: 15px; border: 1px solid var(--line); background: transparent; color: var(--grey);
@@ -75,14 +75,21 @@ h1 { font-family: var(--display); font-weight: 700; font-size: 22px; margin: 0; 
 .chip[aria-pressed=true] { border-color: var(--edge); color: var(--gold); background: var(--sel); }
 .count { color: var(--grey); font-size: 13px; margin-left: auto; }
 
-.cols { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 420px); gap: 16px; padding: 0 18px 18px; align-items: start; }
-.cats { display: flex; flex-wrap: wrap; gap: 5px; padding: 8px 10px; border-bottom: 1px solid var(--line); }
-.cat { all: unset; cursor: pointer; padding: 3px 10px; border-radius: 12px; border: 1px solid var(--line); color: var(--gold); font-size: 13px; white-space: nowrap; }
-.cat span { color: var(--grey); font-size: 11px; margin-left: 5px; }
-.cat:hover { background: var(--hover); }
-.cat[aria-pressed=true] { background: var(--sel); border-color: var(--edge); color: var(--q1); }
-.cat.sub { color: var(--fg); border-style: dashed; }
-.cat:focus-visible, .catlink:focus-visible { outline: 2px solid var(--gold); }
+.cols { display: grid; grid-template-columns: 200px minmax(0, 1fr) minmax(0, 420px); gap: 16px; padding: 0 18px 18px; align-items: start; }
+/* Kategorilistan som i spelets AH: 21 px höga knappar, toppnivån guld på en mörk platta, undernivå vit och indragen,
+   tredje nivån utan platta. Vald = gul glöd, hover = blå. (Mått och färger ur Blizzards Blizzard_AuctionHouseCategoriesList.) */
+.cats { padding: 6px 4px; display: flex; flex-direction: column; gap: 0; align-self: start; }
+.cat { all: unset; cursor: pointer; display: flex; align-items: center; height: 26px; padding: 0 0 0 10px; margin: 0 2px 1px 2px; border-radius: 3px;
+  color: var(--gold); font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  background: linear-gradient(#312c29, #292421 50%, #211c18); box-shadow: inset 0 1px 0 #4a423b, 0 0 0 1px #0c0e0c, 0 2px 4px rgba(0, 0, 0, .4); }
+.cat span { color: var(--grey); font-size: 11px; margin-left: auto; padding-right: 8px; }
+.cat:hover { background: linear-gradient(#3a4a9a, #2b3a86 50%, #233078); color: var(--q1); box-shadow: inset 0 1px 0 #b0cdff, inset 0 -1px 0 #81a0e9, 0 0 0 1px #0c0e0c; }
+.cat[aria-pressed=true] { color: var(--q1); box-shadow: inset 0 0 0 1px #f8f09e, inset 0 0 8px rgba(231, 210, 0, .55), 0 0 0 1px #0c0e0c; }
+.cat.sub { margin-left: 12px; padding-left: 10px; color: var(--q1); }
+.cat.sub2 { margin-left: 22px; padding-left: 8px; height: 22px; background: none; box-shadow: none; color: var(--q1); font-size: 13px; border-left: 1px solid #5a514a; border-radius: 0; }
+.cat.sub2:hover { background: linear-gradient(90deg, #10163c, #263489 50%, #10163c); }
+.cat.sub2[aria-pressed=true] { background: linear-gradient(90deg, #2b2100, #7b5d00 50%, #2b2100); box-shadow: inset 0 1px 0 #b39a2a, inset 0 -1px 0 #b39a2a; }
+.cat:focus-visible, .catlink:focus-visible { outline: 2px solid var(--gold); outline-offset: -2px; }
 .catlink { all: unset; cursor: pointer; color: var(--grey); font-size: 13px; }
 .catlink:hover { color: var(--gold); text-decoration: underline; }
 td.kat, th.kat { text-align: left; }
@@ -146,6 +153,14 @@ tbody tr.exp, tbody tr.exp:hover { background: var(--panel); cursor: default; }
 .facts dt { color: var(--grey); font-size: 12px; }
 .facts dd { margin: 0; font-size: 17px; font-weight: 600; }
 .chart { width: 100%; height: auto; display: block; }
+.range { display: flex; gap: 4px; margin: 0 0 6px; }
+.range button { all: unset; cursor: pointer; padding: 2px 10px; border-radius: 10px; border: 1px solid var(--line); color: var(--grey); font-size: 12px; }
+.range button:hover { color: var(--gold); }
+.range button[aria-pressed=true] { color: var(--q1); border-color: var(--edge); background: var(--sel); }
+.range button:focus-visible { outline: 2px solid var(--gold); }
+h3.row { display: flex; align-items: center; justify-content: space-between; gap: 8px; white-space: nowrap; }
+.range { flex: none; }
+.range button { padding: 1px 7px; font-size: 11px; letter-spacing: 0; text-transform: none; }
 .legend { display: flex; gap: 14px; flex-wrap: wrap; font-size: 12px; color: var(--grey); }
 .legend i { display: inline-block; width: 14px; height: 3px; vertical-align: middle; margin-right: 5px; border-radius: 2px; }
 .read { min-height: 20px; font-size: 13px; color: var(--grey); }
@@ -162,13 +177,18 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   .win { flex: 1 1 auto; min-height: 0; width: 100%; display: flex; flex-direction: column; }
   .cols { flex: 1 1 auto; min-height: 0; grid-template-rows: minmax(0, 1fr); align-items: stretch; }
   .left, .right { display: flex; flex-direction: column; min-height: 0; }
+  .cats { align-self: stretch; min-height: 0; overflow: auto; scrollbar-width: thin; scrollbar-color: var(--edge) var(--inset); }
   .left .scroll, .right .detail { flex: 1 1 auto; min-height: 0; overflow: auto; scrollbar-width: thin; scrollbar-color: var(--edge) var(--inset); }
   .right .detail { position: static; align-content: start; }
   .foot { padding-block: 8px 10px; }
 }
+@media (max-width: 1100px) {
+  .cols { grid-template-columns: 170px minmax(0, 1fr) minmax(0, 360px); }
+}
 @media (max-width: 860px) {
   .cols { grid-template-columns: minmax(0, 1fr); }
-  .cats { flex-wrap: nowrap; overflow-x: auto; }
+  .cats { flex-direction: row; flex-wrap: nowrap; overflow-x: auto; order: -2; }
+  .cat, .cat.sub, .cat.sub2 { margin-left: 2px; flex: none; }
   .right { order: -1; }
   .detail { position: static; }
   .scan { text-align: left; flex-basis: 100%; }
@@ -207,8 +227,8 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   </div>
 
   <div class="cols">
+    <nav class="inset cats" id="cats" data-t-aria="cats_label" aria-label="Kategorier"></nav>
     <section class="inset left">
-      <nav class="cats" id="cats" data-t-aria="cats_label" aria-label="Kategorier"></nav>
       <div class="scroll">
         <table id="list">
           <thead><tr>
@@ -250,17 +270,25 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   var byId = {}, lastUpdate = null;   // lastUpdate = { key, t } (översätts när den visas)
   var ICON_BASE = "https://ragequitit.github.io/ah/icons/";             // mappen med ikoner; tom = inga ikoner (Claude-sidan kan inte ladda bilder utifrån)
   var openId = null;              // raden som är utfälld i listan (de tio lägsta prisstegen)
-  var catSel = -1, subSel = -1;   // vald kategori och underkategori (-1 = alla), som AH:s kategorilista i spelet
-  var catCount = [], subCount = [];
+  // Grafens tidsspann som på en aktiesida: 3 dagar, vecka, månad, allt. Sparas i webbläsaren.
+  var RANGES = [["3d", 3 * 86400], ["1w", 7 * 86400], ["1m", 30 * 86400], ["all", 0]];
+  var RKEY = "whippit-ah-span";
+  var rangeKey = (function () { try { var v = localStorage.getItem(RKEY); if (RANGES.some(function (r) { return r[0] === v; })) return v; } catch (e) {} return "1w"; })();
+  function rangeHtml() {
+    return '<div class="range" role="group">' + RANGES.map(function (r) {
+      return '<button type="button" data-range="' + r[0] + '" aria-pressed="' + (rangeKey === r[0]) + '">' + t("rng_" + r[0]) + "</button>";
+    }).join("") + "</div>";
+  }
+  var catSel = -1, subSel = -1, sub2Sel = -1;   // vald nivå 1/2/3 (-1 = ingen vald = alla), som AH:s kategorilista
+  var catCount = [], subCount = [], sub2Count = [];
   var DATA_URL = "https://ragequitit.github.io/ah/data.json";   // priserna; på chriswhippit.com/ah byts den mot adressen på GitHub (build.js)
 
   // ---- Språk: svenska eller engelska, väljs med flaggorna och sparas i webbläsaren. %1, %2 = insatta värden. ----
   var S = {
     sv: {
       title: "Auktionshuset", loading: "Läser in scannen…", lang_label: "Språk", cats_label: "Kategorier", cat_all: "Alla varor", col_cat: "Kategori",
-      cat_Weapon: "Vapen", cat_Armor: "Rustning", cat_Container: "Väskor", cat_Consumable: "Förbrukning", "cat_Trade Goods": "Handelsvaror",
-      cat_Projectile: "Ammunition", cat_Quiver: "Koger", cat_Recipe: "Recept", cat_Reagent: "Reagenser", cat_Gem: "Ädelstenar",
-      cat_Miscellaneous: "Diverse", cat_Quest: "Questföremål", cat_Key: "Nycklar", cat_Unknown: "Okänd kategori",
+      cat_Weapons: "Vapen", cat_Armor: "Rustning", cat_Containers: "Väskor", cat_Consumables: "Förbrukning", "cat_Trade Goods": "Handelsvaror",
+      cat_Ammo: "Ammunition", cat_Recipes: "Recept", "cat_Quest Items": "Questföremål", cat_Gems: "Ädelstenar", cat_Miscellaneous: "Diverse",
       search_ph: "Sök vara, t.ex. Silk Cloth", search_aria: "Sök vara", chip_all: "Även varor utan namn (%1)",
       col_item: "Vara", col_min: "Lägsta pris", col_p20: "Snitt 20 st", col_p20_tip: "Snittpris per styck för de 20 billigaste",
       col_qty: "Ute", col_day: "Sålda/dag", col_day_tip: "Uppskattning från goldcap, inte uppmätt i scannen",
@@ -280,15 +308,15 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       sellers: "%1 säljare bland de 100 billigaste", ten: "de 10 lägsta priserna",
       few_scans: "För få scans av varan för en graf.", chart_aria: "Pris per scan för %1", the_item: "varan",
       rd_low: "lägsta %1", rd_p20: "snitt 20 st %1", rd_qty: "%1 ute",
+      rng_3d: "3 d", rng_1w: "Vecka", rng_1m: "Månad", rng_all: "Allt",
       steps: "Prissteg", price: "Pris", qty: "Antal", f_p100: "Snitt 100 st", f_now: "Ute nu", f_max: "Ute (högst i dag)",
       f_day: "Sålda per dag (uppskattning)", per_scan: "Pris per scan", lg_qty: "Antal ute", hover: "Peka på grafen för en scan.",
       err1: "Scannen gick inte att läsa in", err2: "Ladda om sidan. Hjälper det inte har datan inte laddats upp."
     },
     en: {
       title: "Auction House", loading: "Loading the scan…", lang_label: "Language", cats_label: "Categories", cat_all: "All items", col_cat: "Category",
-      cat_Weapon: "Weapons", cat_Armor: "Armor", cat_Container: "Containers", cat_Consumable: "Consumables", "cat_Trade Goods": "Trade Goods",
-      cat_Projectile: "Projectiles", cat_Quiver: "Quivers", cat_Recipe: "Recipes", cat_Reagent: "Reagents", cat_Gem: "Gems",
-      cat_Miscellaneous: "Miscellaneous", cat_Quest: "Quest items", cat_Key: "Keys", cat_Unknown: "Uncategorised",
+      cat_Weapons: "Weapons", cat_Armor: "Armor", cat_Containers: "Containers", cat_Consumables: "Consumables", "cat_Trade Goods": "Trade Goods",
+      cat_Ammo: "Ammo", cat_Recipes: "Recipes", "cat_Quest Items": "Quest Items", cat_Gems: "Gems", cat_Miscellaneous: "Miscellaneous",
       search_ph: "Search item, e.g. Silk Cloth", search_aria: "Search item", chip_all: "Include unnamed items (%1)",
       col_item: "Item", col_min: "Lowest price", col_p20: "Avg of 20", col_p20_tip: "Average price each for the 20 cheapest",
       col_qty: "Listed", col_day: "Sold/day", col_day_tip: "Estimate from goldcap, not measured in the scan",
@@ -308,6 +336,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       sellers: "%1 sellers among the 100 cheapest", ten: "the 10 lowest prices",
       few_scans: "Too few scans of this item for a chart.", chart_aria: "Price per scan for %1", the_item: "the item",
       rd_low: "lowest %1", rd_p20: "avg of 20 %1", rd_qty: "%1 listed",
+      rng_3d: "3 d", rng_1w: "Week", rng_1m: "Month", rng_all: "All",
       steps: "Price steps", price: "Price", qty: "Quantity", f_p100: "Avg of 100", f_now: "Listed now", f_max: "Listed (today's high)",
       f_day: "Sold per day (estimate)", per_scan: "Price per scan", lg_qty: "Listed", hover: "Hover the chart for a scan.",
       err1: "The scan could not be loaded", err2: "Reload the page. If that does not help, the data has not been uploaded."
@@ -455,20 +484,27 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   }
   function qcls(q) { return q >= 0 && q <= 5 ? "q" + q : "qx"; }
 
-  // Kategorierna till vänster: klick väljer, den valda visar sina underkategorier.
+  // Kategorilistan till vänster, som i spelets AH: klick på en kategori väljer den och fäller ut dess undernivå,
+  // bara en gren öppen åt gången, klick på den valda igen fäller ihop. Ingen "Alla"-rad: inget valt = alla varor.
   function catName(n) { var v = S[lang]["cat_" + n]; return v || n; }
   function drawCats() {
     var cats = (D && D.cats) || [], html = "";
-    html += '<button class="cat" type="button" data-cat="-1" aria-pressed="' + (catSel < 0) + '">' + t("cat_all") + "<span>" + num(rows.length) + "</span></button>";
     cats.forEach(function (c, i) {
       if (!catCount[i]) return;
-      html += '<button class="cat" type="button" data-cat="' + i + '" aria-pressed="' + (catSel === i && subSel < 0) + '">' + esc(catName(c[0])) + "<span>" + num(catCount[i]) + "</span></button>";
-      if (catSel === i && c[1].length > 1) {
-        c[1].forEach(function (sn, j) {
-          if (!subCount[i][j]) return;
-          html += '<button class="cat sub" type="button" data-cat="' + i + '" data-sub="' + j + '" aria-pressed="' + (subSel === j) + '">' + esc(sn) + "<span>" + num(subCount[i][j]) + "</span></button>";
+      html += '<button class="cat" type="button" data-cat="' + i + '" aria-pressed="' + (catSel === i && subSel < 0) + '" title="' + esc(catName(c[0])) + '">' +
+        esc(catName(c[0])) + "<span>" + num(catCount[i]) + "</span></button>";
+      if (catSel !== i) return;
+      c[1].forEach(function (sc, j) {
+        if (!subCount[i][j]) return;
+        html += '<button class="cat sub" type="button" data-cat="' + i + '" data-sub="' + j + '" aria-pressed="' + (subSel === j && sub2Sel < 0) + '" title="' + esc(sc[0]) + '">' +
+          esc(sc[0]) + "<span>" + num(subCount[i][j]) + "</span></button>";
+        if (subSel !== j) return;
+        sc[1].forEach(function (un, k) {
+          if (!sub2Count[i][j][k]) return;
+          html += '<button class="cat sub2" type="button" data-cat="' + i + '" data-sub="' + j + '" data-sub2="' + k + '" aria-pressed="' + (sub2Sel === k) + '" title="' + esc(un) + '">' +
+            esc(un) + "<span>" + num(sub2Count[i][j][k]) + "</span></button>";
         });
-      }
+      });
     });
     $("cats").innerHTML = html;
     $("cats").hidden = cats.length === 0;
@@ -488,7 +524,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     D = d;
     rows = d.items.map(function (r) {
       return { id: r[0], name: r[1] || "", q: r[2], min: r[3], qty: r[7] || r[4], exact: r[7] > 0, p20: r[5], p100: r[6], day: r[8],
-        mh: r[9], qh: r[10], ph: r[11], ic: r[12] || "", ci: r[13] == null ? -1 : r[13], si: r[14] == null ? -1 : r[14],
+        mh: r[9], qh: r[10], ph: r[11], ic: r[12] || "", ci: r[13] == null ? -1 : r[13], si: r[14] == null ? -1 : r[14], ui: r[15] == null ? -1 : r[15],
         lower: (r[1] || "").toLowerCase() };
     });
     byId = {};
@@ -496,12 +532,14 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     var cats = d.cats || [];
     catCount = cats.map(function () { return 0; });
     subCount = cats.map(function (c) { return c[1].map(function () { return 0; }); });
+    sub2Count = cats.map(function (c) { return c[1].map(function (sc) { return sc[1].map(function () { return 0; }); }); });
     rows.forEach(function (r) {
       if (r.ci < 0 || !cats[r.ci]) return;
       catCount[r.ci]++;
-      if (r.si >= 0) subCount[r.ci][r.si]++;
+      if (r.si >= 0 && subCount[r.ci][r.si] != null) subCount[r.ci][r.si]++;
+      if (r.si >= 0 && r.ui >= 0 && sub2Count[r.ci][r.si] && sub2Count[r.ci][r.si][r.ui] != null) sub2Count[r.ci][r.si][r.ui]++;
     });
-    if (catSel >= cats.length) { catSel = -1; subSel = -1; }
+    if (catSel >= cats.length) { catSel = -1; subSel = -1; sub2Sel = -1; }
     drawCats();
     header();
     refresh();
@@ -518,6 +556,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       if (!showAll && !r.name) return false;
       if (catSel >= 0 && r.ci !== catSel) return false;
       if (subSel >= 0 && r.si !== subSel) return false;
+      if (sub2Sel >= 0 && r.ui !== sub2Sel) return false;
       if (!q) return true;
       return r.lower.indexOf(q) >= 0 || String(r.id) === q;
     });
@@ -526,7 +565,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       if (k === "name") return dir * (a.name || "~" + a.id).localeCompare(b.name || "~" + b.id, "sv");
       if (k === "cat") {   // kategori, underkategori, sedan namn; okänd kategori sist
         var ac = a.ci < 0 ? 9999 : a.ci, bc = b.ci < 0 ? 9999 : b.ci;
-        return dir * (ac - bc || a.si - b.si) || (a.name || "").localeCompare(b.name || "", "sv");
+        return dir * (ac - bc || a.si - b.si || a.ui - b.ui) || (a.name || "").localeCompare(b.name || "", "sv");
       }
       var av = a[k] || 0, bv = b[k] || 0;
       if (!av !== !bv) return av ? -1 : 1;   // saknat värde sist, åt båda hållen
@@ -561,9 +600,10 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   function catCell(r) {
     var c = D.cats && D.cats[r.ci];
     if (!c) return "";
-    var sub = r.si >= 0 ? c[1][r.si] : "";
-    return '<button class="catlink" type="button" data-cat="' + r.ci + '"' + (sub ? ' data-sub="' + r.si + '"' : "") + ">" +
-      esc(catName(c[0])) + (sub && sub !== c[0] ? " · " + esc(sub) : "") + "</button>";
+    var sc = r.si >= 0 ? c[1][r.si] : null, sub = sc ? sc[0] : "", un = sc && r.ui >= 0 ? sc[1][r.ui] : "";
+    var txt = un || sub || catName(c[0]);
+    return '<button class="catlink" type="button" data-cat="' + r.ci + '"' + (sub ? ' data-sub="' + r.si + '"' : "") + (un ? ' data-sub2="' + r.ui + '"' : "") +
+      ' title="' + esc(catName(c[0]) + (sub ? " › " + sub : "") + (un ? " › " + un : "")) + '">' + esc(txt) + "</button>";
   }
   function rowHtml(r) {
     var name = iconHtml(r) + (r.name ? '<span class="' + qcls(r.q) + '">' + esc(r.name) + "</span>" : '<span class="dim">' + t("item_n", r.id) + "</span>");
@@ -590,8 +630,11 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   function chart(r) {
     var T = D.scans, W = 600, H = 250, L = 62, R = 12, TOP = 14, PH = 150, BH = 40, BY = TOP + PH + 16;
     var pts = [], maxP = 0, maxQ = 0;
+    var secs = 0;
+    RANGES.forEach(function (rg) { if (rg[0] === rangeKey) secs = rg[1]; });   // (span nedan är tidsaxelns bredd)
+    var from = secs ? D.t - secs : 0;
     for (var i = 0; i < T.length; i++) {
-      if (r.mh[i] > 0) { pts.push(i); maxP = Math.max(maxP, r.mh[i], r.ph[i] || 0); maxQ = Math.max(maxQ, r.qh[i]); }
+      if (r.mh[i] > 0 && T[i] >= from) { pts.push(i); maxP = Math.max(maxP, r.mh[i], r.ph[i] || 0); maxQ = Math.max(maxQ, r.qh[i]); }
     }
     if (pts.length < 2) return '<div class="note">' + t("few_scans") + "</div>";
     var t0 = T[pts[0]], t1 = T[pts[pts.length - 1]], span = Math.max(1, t1 - t0);
@@ -669,7 +712,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     $("detail").innerHTML =
       '<div class="strip">' + starHtml(r.id, t(watched(r.id) ? "star_lbl_on" : "star_lbl_add")) + iconHtml(r, true) + '<h2 class="' + qcls(r.q) + '">' + name + "</h2><small>" + t("item_n", r.id) + "</small></div>" +
       '<dl class="facts">' + facts + "</dl>" +
-      "<div><h3>" + t("per_scan") + "</h3>" + chart(r) +
+      '<div><h3 class="row">' + t("per_scan") + rangeHtml() + "</h3>" + chart(r) +
       '<div class="legend"><span><i style="background:#a1a1a1"></i>' + t("col_min") + '</span><span><i style="background:#ffd100"></i>' + t("col_p20") +
       '</span><span><i style="background:rgba(214,168,59,.5);height:8px"></i>' + t("lg_qty") + "</span></div>" +
       '<div class="read" id="read">' + t("hover") + "</div></div>" +
@@ -686,11 +729,25 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   document.addEventListener("click", function (e) {
     var fl = e.target.closest(".flag");
     if (fl) { setLang(fl.getAttribute("data-lang")); return; }
+    var rg = e.target.closest("[data-range]");
+    if (rg) {
+      rangeKey = rg.getAttribute("data-range");
+      try { localStorage.setItem(RKEY, rangeKey); } catch (e2) {}
+      if (selId) select(selId, false);
+      return;
+    }
     var cb = e.target.closest(".cat, .catlink");
     if (cb) {
-      catSel = +cb.getAttribute("data-cat");
-      subSel = cb.hasAttribute("data-sub") ? +cb.getAttribute("data-sub") : -1;
+      var nc = +cb.getAttribute("data-cat");
+      var ns = cb.hasAttribute("data-sub") ? +cb.getAttribute("data-sub") : -1;
+      var nu = cb.hasAttribute("data-sub2") ? +cb.getAttribute("data-sub2") : -1;
+      var same = nc === catSel && ns === subSel && nu === sub2Sel;
+      if (same && cb.classList.contains("cat")) {   // klick på den valda igen: ett steg upp (toppen: allt)
+        if (nu >= 0) { sub2Sel = -1; } else if (ns >= 0) { subSel = -1; sub2Sel = -1; } else { catSel = -1; subSel = -1; sub2Sel = -1; }
+      } else { catSel = nc; subSel = ns; sub2Sel = nu; }
       drawCats(); refresh();
+      var top = document.querySelector('#cats .cat[data-cat="' + catSel + '"]:not(.sub):not(.sub2)');
+      if (top && ns < 0 && !same) top.scrollIntoView({ block: "start" });
       var lb = document.querySelector(".left .scroll");
       if (lb) lb.scrollTop = 0;
       return;
