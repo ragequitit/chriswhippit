@@ -130,6 +130,17 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
 .note { color: var(--grey); font-size: 13px; }
 .foot { padding: 12px 18px 16px; border-top: 1px solid var(--line); color: var(--grey); font-size: 13px; display: grid; gap: 4px; }
 
+/* Dator: hela fönstret ryms på skärmen och bara listan (och varuvyn) rullar inuti sin ram, som i spelets AH. */
+@media (min-width: 861px) {
+  html, body { height: 100%; }
+  body { display: flex; flex-direction: column; }
+  .win { flex: 1 1 auto; min-height: 0; width: 100%; display: flex; flex-direction: column; }
+  .cols { flex: 1 1 auto; min-height: 0; grid-template-rows: minmax(0, 1fr); align-items: stretch; }
+  .left, .right { display: flex; flex-direction: column; min-height: 0; }
+  .left .scroll, .right .detail { flex: 1 1 auto; min-height: 0; overflow: auto; scrollbar-width: thin; scrollbar-color: var(--edge) var(--inset); }
+  .right .detail { position: static; align-content: start; }
+  .foot { padding-block: 8px 10px; }
+}
 @media (max-width: 860px) {
   .cols { grid-template-columns: minmax(0, 1fr); }
   .right { order: -1; }
@@ -480,6 +491,14 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     e.preventDefault(); showTab("item"); select(+e.target.dataset.id, true);
   });
   $("more").addEventListener("click", function () { shown = Math.min(view.length, shown + PAGE); draw(); });
+  // Listan rullar i sin egen ram: nära slutet läggs fler varor till av sig själva (knappen finns kvar).
+  var listBox = document.querySelector(".left .scroll");
+  listBox.addEventListener("scroll", function () {
+    if (shown < view.length && listBox.scrollTop + listBox.clientHeight > listBox.scrollHeight - 240) {
+      shown = Math.min(view.length, shown + PAGE);
+      draw();
+    }
+  });
   $("q").addEventListener("input", function () { query = this.value.trim().toLowerCase(); refresh(); });
   $("chipAll").addEventListener("click", function () {
     showAll = !showAll;
