@@ -213,6 +213,26 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   td, th { padding-left: 7px; padding-right: 7px; }
 }
 @media (prefers-reduced-motion: no-preference) { tbody tr { transition: background .08s; } }
+/* Tooltipen som i spelet: Wowheads text, rensad i build.js. */
+.wtip { position: fixed; z-index: 50; max-width: 320px; padding: 8px 10px; pointer-events: none;
+  background: rgba(10, 12, 28, .96); border: 1px solid #8a8a8a; border-radius: 5px; box-shadow: 0 4px 14px rgba(0, 0, 0, .6);
+  color: #fff; font: 13px/1.35 system-ui, -apple-system, "Segoe UI", sans-serif; }
+.wtip { width: max-content; min-width: 180px; }
+.wtip table { border-collapse: collapse; width: 100%; table-layout: auto; margin: 0; }
+.wtip tr, .wtip tr:hover { background: none; }
+.wtip td, .wtip th { padding: 0; vertical-align: top; text-align: left; font-weight: normal; border: 0; width: auto; height: auto;
+  white-space: normal; overflow: visible; text-overflow: clip; max-width: none; position: static; background: none; color: inherit;
+  font-size: inherit; text-transform: none; letter-spacing: normal; }
+.wtip th { text-align: right; padding-left: 12px; }
+.wtip b { font-size: 14px; font-weight: 600; }
+.wtip .q { color: #ffd100; } .wtip .q0 { color: #9d9d9d; } .wtip .q1 { color: #fff; } .wtip .q2 { color: #1eff00; } .wtip .q3 { color: #0070dd; }
+.wtip .q4 { color: #a335ee; } .wtip .q5 { color: #ff8000; } .wtip .q6 { color: #e6cc80; } .wtip .q7 { color: #0cf; } .wtip .q8 { color: #0cf; }
+.wtip .q9 { color: #71d5ff; } .wtip .q10 { color: #ff4040; } .wtip .toycolor { color: #66bbff; } .wtip .c { color: #ffd100; }
+.wtip .whtt-droppedby { color: #9d9d9d; font-size: 12px; }
+.wtip .moneygold::after { content: "g"; color: #d6a83b; } .wtip .moneysilver::after { content: "s"; color: #c0c0c0; }
+.wtip .moneycopper::after { content: "c"; color: #c7793f; }
+.wtip .moneygold, .wtip .moneysilver, .wtip .moneycopper { margin-right: 3px; }
+.wtip .ah { margin-top: 6px; padding-top: 5px; border-top: 1px solid rgba(255, 255, 255, .15); color: #ffd100; }
 </style>
 </head>
 <body>
@@ -340,7 +360,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       dd_morning: "morgon", dd_evening: "kväll", dd_gain: "köp %1, sälj %2: %3", dd_scans: "%1 scans",
       dayt: "Dygnshandel", day_tip: "Varor som gett minst 10 % vinst mellan morgon och kväll minst 3 dagar den senaste veckan (högst en dag utan). Vinsten är den sämsta dagens.",
       day_none: "Ingen vara har ett stabilt dygnsmönster än.", col_trade: "Dygn", trade_tip: "Köp %1, sälj %2: %3 per st (sämsta dagen senaste veckan)",
-      lg_p20: "* = snitt för 20 st",
+      lg_p20: "* = snitt för 20 st", tip_ah: "AH: %1 · %2 ute",
       err1: "Scannen gick inte att läsa in", err2: "Ladda om sidan. Hjälper det inte har datan inte laddats upp."
     },
     en: {
@@ -377,7 +397,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       dd_morning: "morning", dd_evening: "evening", dd_gain: "buy %1, sell %2: %3", dd_scans: "%1 scans",
       dayt: "Day trade", day_tip: "Items with at least 10% profit between morning and evening on at least 3 days this week (at most one day without). The profit shown is the worst day's.",
       day_none: "No item has a stable day pattern yet.", col_trade: "Day", trade_tip: "Buy %1, sell %2: %3 each (worst day this week)",
-      lg_p20: "* = average of 20",
+      lg_p20: "* = average of 20", tip_ah: "AH: %1 · %2 listed",
       err1: "The scan could not be loaded", err2: "Reload the page. If that does not help, the data has not been uploaded."
     }
   };
@@ -485,7 +505,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
         diff = ' <span class="' + (r.min > w.p ? "up" : "down") + '" title="' + t("since_saved", moneyText(w.p)) + '">' +
           (r.min > w.p ? "▲" : "▼") + " " + moneyText(Math.abs(r.min - w.p)) + "</span>";
       }
-      body += '<tr tabindex="0" data-id="' + w.id + '"><td>' + iconHtml(r) + '<span class="' + cls + '">' + esc(name) + "</span></td><td>" +
+      body += '<tr tabindex="0" data-id="' + w.id + '"><td>' + iconHtml(r) + '<span data-tip="' + w.id + '" class="' + cls + '">' + esc(name) + "</span></td><td>" +
         (r ? money(r.min) + diff : '<span class="dim">' + t("not_listed") + "</span>") + "</td><td>" + (r ? spark(r) : "") +
         "</td><td>" + (r ? (tradeHtml(r) || '<span class="dim">–</span>') : "") + '</td><td><button class="x" type="button" data-star="' + w.id +
         '" title="' + t("remove") + '" aria-label="' + t("remove") + " " + esc(name) + '">✕</button></td></tr>';
@@ -643,9 +663,48 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     draw();
   }
 
+  // Tooltipen som i spelet när musen är över en varas namn eller ikon (data-tip = varu-id). Texten ligger bredvid
+  // ikonerna (tips/<id % 100>.json, från Wowhead via build.js); utan ikoner (Claude-sidan) finns ingen tooltip.
+  var TIP_BASE = ICON_BASE ? ICON_BASE.replace(/icons\/$/, "tips/") : "";
+  var tipBox = null, tipFiles = {}, tipId = 0, tipX = 0, tipY = 0;
+  function tipFile(n) {
+    if (!tipFiles[n]) tipFiles[n] = fetch(TIP_BASE + n + ".json").then(function (r) { return r.ok ? r.json() : {}; }).catch(function () { return {}; });
+    return tipFiles[n];
+  }
+  function placeTip() {
+    var w = tipBox.offsetWidth, h = tipBox.offsetHeight, x = tipX + 16, y = tipY + 18;
+    if (x + w > window.innerWidth - 8) x = Math.max(8, tipX - w - 12);
+    if (y + h > window.innerHeight - 8) y = Math.max(8, tipY - h - 12);
+    tipBox.style.left = x + "px"; tipBox.style.top = y + "px";
+  }
+  function hideTip() { tipId = 0; if (tipBox) tipBox.hidden = true; }
+  function showTip(id) {
+    if (!TIP_BASE || id === tipId) return;
+    tipId = id;
+    tipFile(id % 100).then(function (m) {
+      if (tipId !== id) return;
+      var h = m && m[id];
+      if (!h) { hideTip(); return; }
+      if (!tipBox) { tipBox = document.createElement("div"); tipBox.className = "wtip"; document.body.appendChild(tipBox); }
+      var r = byId[id];
+      tipBox.innerHTML = h + (r ? '<div class="ah">' + t("tip_ah", moneyText(r.min), num(r.qty)) + "</div>" : "");
+      tipBox.hidden = false;
+      placeTip();
+    });
+  }
+  document.addEventListener("mouseover", function (e) {
+    var el = e.target && e.target.closest ? e.target.closest("[data-tip]") : null;
+    if (el) showTip(+el.getAttribute("data-tip")); else if (tipId) hideTip();
+  });
+  document.addEventListener("mousemove", function (e) {
+    tipX = e.clientX; tipY = e.clientY;
+    if (tipBox && !tipBox.hidden) placeTip();
+  });
+  document.addEventListener("scroll", hideTip, true);
+
   function iconHtml(r, big) {
     if (!ICON_BASE || !r || !r.ic) return "";
-    return '<img class="ic ' + qcls(r.q) + (big ? " big" : "") + '" src="' + ICON_BASE + r.ic + '.jpg" width="' + (big ? 36 : 18) + '" height="' + (big ? 36 : 18) + '" alt="" loading="lazy">';
+    return '<img data-tip="' + r.id + '" class="ic ' + qcls(r.q) + (big ? " big" : "") + '" src="' + ICON_BASE + r.ic + '.jpg" width="' + (big ? 36 : 18) + '" height="' + (big ? 36 : 18) + '" alt="" loading="lazy">';
   }
   // De tio lägsta prisstegen, som köpvyn i spelet: pris per styck och hur många som ligger på det priset.
   function ladder(r, asTable) {
@@ -681,7 +740,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     return '<span class="down2" title="' + tip + '">' + a + " +" + moneyText(r.tg) + "</span>";
   }
   function rowHtml(r) {
-    var name = iconHtml(r) + (r.name ? '<span class="' + qcls(r.q) + '">' + esc(r.name) + "</span>" : '<span class="dim">' + t("item_n", r.id) + "</span>");
+    var name = iconHtml(r) + (r.name ? '<span data-tip="' + r.id + '" class="' + qcls(r.q) + '">' + esc(r.name) + "</span>" : '<span class="dim">' + t("item_n", r.id) + "</span>");
     var pct = '<span class="dim">–</span>';
     if (dayOnly) pct = tradeHtml(r) || pct;
     else if (r.dip !== 0) {   // 0 = inget vanligt pris att jämföra med (eller exakt som vanligt)
@@ -872,7 +931,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       (r.lvl ? "<div><dt>" + t("col_lvl_tip") + "</dt><dd>" + r.lvl + "</dd></div>" : "") +
       (r.day ? "<div><dt>" + t("f_day") + '</dt><dd><span class="est">' + num(r.day) + "</span></dd></div>" : "");
     $("detail").innerHTML =
-      '<div class="strip">' + starHtml(r.id, t(watched(r.id) ? "star_lbl_on" : "star_lbl_add")) + iconHtml(r, true) + '<h2 class="' + qcls(r.q) + '">' + name + "</h2><small>" + t("item_n", r.id) + "</small></div>" +
+      '<div class="strip">' + starHtml(r.id, t(watched(r.id) ? "star_lbl_on" : "star_lbl_add")) + iconHtml(r, true) + '<h2 data-tip="' + r.id + '" class="' + qcls(r.q) + '">' + name + "</h2><small>" + t("item_n", r.id) + "</small></div>" +
       '<dl class="facts">' + facts + "</dl>" +
       '<div><h3 class="row">' + t("per_scan") + rangeHtml() + "</h3>" + chart(r) +
       '<div class="legend"><span><i style="background:#a1a1a1"></i>' + t("col_min") + '</span><span><i style="background:#ffd100"></i>' + t("col_p20") +
