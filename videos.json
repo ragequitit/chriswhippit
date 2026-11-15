@@ -1,12 +1,12 @@
 {
- "t": "2026-11-14T21:24:36.130Z",
+ "t": "2026-11-15T08:24:46.870Z",
  "videos": [
   {
-   "id": "Ssx_KtS1ozw",
-   "title": "FÅNGAR en FARLIG HÄXA i Minecraft SKYBLOCK #11",
+   "id": "KSfbpS_QyV0",
+   "title": "QUICK CHARGE-BOKEN i Minecraft med Mammaspelar och Pappaspelar",
    "channel": "Whippit",
    "handle": "@whippitextra",
-   "at": "2026-11-14T05:30:25Z"
+   "at": "2026-11-15T05:30:21Z"
   },
   {
    "id": "Bq9dUbiA7Vw",
@@ -30,11 +30,11 @@
    "at": "2026-10-10T04:30:24Z"
   },
   {
-   "id": "xXZ2NkUB5-A",
-   "title": "0 GRISAR, 0 BRO i Minecraft med Mammaspelar och Pappaspelar",
+   "id": "Ssx_KtS1ozw",
+   "title": "FÅNGAR en FARLIG HÄXA i Minecraft SKYBLOCK #11",
    "channel": "Whippit",
    "handle": "@whippitextra",
-   "at": "2026-11-12T05:30:20Z"
+   "at": "2026-11-14T05:30:25Z"
   }
  ],
  "counts": {
@@ -87,6 +87,12 @@
  },
  "seriesVids": {
   "minecraft": [
+   {
+    "id": "KSfbpS_QyV0",
+    "title": "QUICK CHARGE-BOKEN i Minecraft med Mammaspelar och Pappaspelar",
+    "at": "2026-11-15T05:30:21Z",
+    "list": ""
+   },
    {
     "id": "Ssx_KtS1ozw",
     "title": "FÅNGAR en FARLIG HÄXA i Minecraft SKYBLOCK #11",
@@ -151,12 +157,6 @@
     "id": "2ggFF0avWjo",
     "title": "VEM KAN HITTA ALLA ITEMS FÖRST - MINECRAFT UTMANING",
     "at": "2026-10-30T05:30:28Z",
-    "list": ""
-   },
-   {
-    "id": "g0e_2gaMTDg",
-    "title": "LUCKY BLOCK RACE i GRUVORNA i Minecraft med Jnx",
-    "at": "2026-10-27T05:30:27Z",
     "list": ""
    }
   ],
@@ -544,7 +544,7 @@
  },
  "media": {
   "chriswhippit": {
-   "views": 244312000,
+   "views": 244319000,
    "avgViews": 6200,
    "avgSample": 9,
    "uploads30": 50
@@ -556,13 +556,13 @@
    "uploads30": 0
   },
   "figgwhipp": {
-   "views": 97252000,
+   "views": 97253000,
    "avgViews": 0,
    "avgSample": 0,
    "uploads30": 0
   },
   "whippitextra": {
-   "views": 299000,
+   "views": 300000,
    "avgViews": 3000,
    "avgSample": 22,
    "uploads30": 44
