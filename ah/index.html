@@ -173,6 +173,8 @@ h3.row { display: flex; align-items: center; justify-content: space-between; gap
 .legend { display: flex; gap: 14px; flex-wrap: wrap; font-size: 12px; color: var(--grey); }
 .legend i { display: inline-block; width: 14px; height: 3px; vertical-align: middle; margin-right: 5px; border-radius: 2px; }
 .read { min-height: 20px; font-size: 13px; color: var(--grey); }
+.read b { color: var(--fg); font-weight: 600; }
+.chart2 { margin-top: 14px; }
 h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: var(--gold); margin: 0 0 6px; font-weight: 600; }
 .steps td, .steps th { padding: 4px 10px; }
 .steps td:first-child, .steps th:first-child { text-align: right; min-width: 0; white-space: nowrap; }
@@ -330,6 +332,8 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       rng_3d: "3 d", rng_1w: "Vecka", rng_1m: "Månad", rng_all: "Allt",
       steps: "Prissteg", price: "Pris", qty: "Antal", f_p100: "Snitt 100 st", f_now: "Ute nu", f_max: "Ute (högst i dag)",
       f_day: "Sålda per dag (uppskattning)", per_scan: "Pris per scan", lg_qty: "Antal ute", hover: "Peka på grafen för en scan.",
+      dayday: "Morgon och kväll", lg_morning: "Morgon (05–12)", lg_evening: "Kväll (17–24)", dd_hover: "Peka på en dag.", dd_none: "Ingen dag har både morgon- och kvällsscan än.",
+      dd_morning: "morgon", dd_evening: "kväll", dd_gain: "köp %1, sälj %2: %3", dd_scans: "%1 scans",
       err1: "Scannen gick inte att läsa in", err2: "Ladda om sidan. Hjälper det inte har datan inte laddats upp."
     },
     en: {
@@ -362,6 +366,8 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       rng_3d: "3 d", rng_1w: "Week", rng_1m: "Month", rng_all: "All",
       steps: "Price steps", price: "Price", qty: "Quantity", f_p100: "Avg of 100", f_now: "Listed now", f_max: "Listed (today's high)",
       f_day: "Sold per day (estimate)", per_scan: "Price per scan", lg_qty: "Listed", hover: "Hover the chart for a scan.",
+      dayday: "Morning and evening", lg_morning: "Morning (05–12)", lg_evening: "Evening (17–24)", dd_hover: "Hover a day.", dd_none: "No day has both a morning and an evening scan yet.",
+      dd_morning: "morning", dd_evening: "evening", dd_gain: "buy %1, sell %2: %3", dd_scans: "%1 scans",
       err1: "The scan could not be loaded", err2: "Reload the page. If that does not help, the data has not been uploaded."
     }
   };
@@ -681,8 +687,10 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   }
 
   // Grafen: lägsta pris per scan (grå linje), snittet för 20 st (guld, där djupet är mätt), antal ute (staplar nederst).
+  // Prisgrafen: två paneler. Överst lägsta pris (grå) och snittet för 20 st (guld), underst antalet ute som en blå
+  // linje med fyllning. Hover visar scannen i raden under (readout).
   function chart(r) {
-    var T = D.scans, W = 600, H = 250, L = 62, R = 12, TOP = 14, PH = 150, BH = 40, BY = TOP + PH + 16;
+    var T = D.scans, W = 600, H = 260, L = 62, R = 12, TOP = 14, PH = 140, QH = 56, QY = TOP + PH + 18;
     var pts = [], maxP = 0, maxQ = 0;
     var secs = 0;
     RANGES.forEach(function (rg) { if (rg[0] === rangeKey) secs = rg[1]; });   // (span nedan är tidsaxelns bredd)
@@ -694,32 +702,32 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     var t0 = T[pts[0]], t1 = T[pts[pts.length - 1]], span = Math.max(1, t1 - t0);
     function x(i) { return L + (T[i] - t0) / span * (W - L - R); }
     function y(p) { return TOP + PH - p / maxP * PH; }
+    function yq(q) { return QY + QH - (maxQ ? q / maxQ * QH : 0); }
     var s = '<svg class="chart" viewBox="0 0 ' + W + " " + H + '" role="img" aria-label="' + t("chart_aria", esc(r.name || t("the_item"))) + '">';
     // prisaxel: 0, halva och högsta
     [0, maxP / 2, maxP].forEach(function (p) {
       s += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + y(p) + '" y2="' + y(p) + '" stroke="#2a313b" stroke-width="1"/>' +
         '<text x="' + (L - 6) + '" y="' + (y(p) + 4) + '" text-anchor="end" font-size="15" fill="#a0a0a0">' + moneyText(p) + "</text>";
     });
-    // dagar: en tunn linje vid midnatt, datum under
+    // dagar: en tunn linje vid midnatt genom båda panelerna, datum under
     var d = new Date(t0 * 1000); d.setHours(24, 0, 0, 0);
     var lastX = -99;
     for (var m = d.getTime() / 1000; m < t1; m += 86400) {
       var mx = L + (m - t0) / span * (W - L - R);
-      s += '<line x1="' + mx + '" x2="' + mx + '" y1="' + TOP + '" y2="' + (BY + BH) + '" stroke="#2a313b" stroke-width="1" stroke-dasharray="2 3"/>';
+      s += '<line x1="' + mx + '" x2="' + mx + '" y1="' + TOP + '" y2="' + (QY + QH) + '" stroke="#2a313b" stroke-width="1" stroke-dasharray="2 3"/>';
       if (mx - lastX > 40 && mx < W - R - 20) {
         var dd = new Date(m * 1000);
         s += '<text x="' + (mx + 3) + '" y="' + (H - 4) + '" font-size="15" fill="#a0a0a0">' + dd.getDate() + "/" + (dd.getMonth() + 1) + "</text>";
         lastX = mx;
       }
     }
-    // antal ute
-    var bw = Math.max(2, Math.min(10, (W - L - R) / pts.length - 2));
-    pts.forEach(function (i) {
-      var h = maxQ ? r.qh[i] / maxQ * BH : 0;
-      s += '<rect x="' + (x(i) - bw / 2) + '" y="' + (BY + BH - h) + '" width="' + bw + '" height="' + Math.max(0.5, h) + '" fill="#d6a83b" fill-opacity=".35"/>';
-    });
-    s += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + (BY + BH) + '" y2="' + (BY + BH) + '" stroke="#d6a83b" stroke-opacity=".5"/>' +
-      '<text x="' + (L - 6) + '" y="' + (BY + 10) + '" text-anchor="end" font-size="15" fill="#a0a0a0">' + num(maxQ) + "</text>";
+    // antal ute: fylld linje i den nedre panelen
+    var qpts = pts.map(function (i) { return x(i).toFixed(1) + "," + yq(r.qh[i]).toFixed(1); }).join(" ");
+    s += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + (QY + QH) + '" y2="' + (QY + QH) + '" stroke="#2a313b" stroke-width="1"/>' +
+      '<polygon fill="#7ea2d6" fill-opacity=".18" points="' + x(pts[0]).toFixed(1) + "," + (QY + QH) + " " + qpts + " " + x(pts[pts.length - 1]).toFixed(1) + "," + (QY + QH) + '"/>' +
+      '<polyline fill="none" stroke="#7ea2d6" stroke-width="1.5" points="' + qpts + '"/>' +
+      '<text x="' + (L - 6) + '" y="' + (QY + 10) + '" text-anchor="end" font-size="15" fill="#a0a0a0">' + num(maxQ) + "</text>" +
+      '<text x="' + (L - 6) + '" y="' + (QY + QH + 4) + '" text-anchor="end" font-size="15" fill="#a0a0a0">0</text>';
     // lägsta pris
     s += '<polyline fill="none" stroke="#a1a1a1" stroke-width="1.5" points="' + pts.map(function (i) { return x(i).toFixed(1) + "," + y(r.mh[i]).toFixed(1); }).join(" ") + '"/>';
     // snitt 20 st
@@ -730,16 +738,83 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     }
     var li = pts[pts.length - 1];
     s += '<circle cx="' + x(li).toFixed(1) + '" cy="' + y(r.mh[li]).toFixed(1) + '" r="3.5" fill="#e9e3d6"/>';
-    // osynliga träffytor per scan
+    // osynliga träffytor per scan, och en markör som flyttas vid hover
+    s += '<line class="cursor" x1="0" x2="0" y1="' + TOP + '" y2="' + (QY + QH) + '" stroke="#ffd100" stroke-opacity=".5" stroke-width="1" visibility="hidden"/>';
     pts.forEach(function (i, n) {
       var a = n ? (x(pts[n - 1]) + x(i)) / 2 : L, b = n < pts.length - 1 ? (x(i) + x(pts[n + 1])) / 2 : W - R;
-      s += '<rect class="hit" data-i="' + i + '" x="' + a + '" y="' + TOP + '" width="' + Math.max(1, b - a) + '" height="' + (BY + BH - TOP) + '" fill="transparent"/>';
+      s += '<rect class="hit" data-i="' + i + '" data-x="' + x(i).toFixed(1) + '" x="' + a + '" y="' + TOP + '" width="' + Math.max(1, b - a) + '" height="' + (QY + QH - TOP) + '" fill="transparent"/>';
     });
     return s + "</svg>";
   }
+
+  // Morgon och kväll per dag: två staplar per dag (guld morgon 05–12, grå kväll 17–24), snitt av lägsta pris i blocket.
+  // Det är det en tradare vill se: köp i det billiga blocket, sälj i det dyra. Samma block som addonets Trading-flik.
+  function blockOf(ts) { var h = new Date(ts * 1000).getHours(); return h >= 5 && h < 12 ? "m" : (h >= 17 ? "e" : null); }
+  function dayKey(ts) { var dd = new Date(ts * 1000); return dd.getFullYear() * 10000 + (dd.getMonth() + 1) * 100 + dd.getDate(); }
+  function dayData(r) {
+    var T = D.scans, days = {}, order = [];
+    var secs = 0;
+    RANGES.forEach(function (rg) { if (rg[0] === rangeKey) secs = rg[1]; });
+    var from = secs ? D.t - secs : 0;
+    for (var i = 0; i < T.length; i++) {
+      if (!(r.mh[i] > 0) || T[i] < from) continue;
+      var b = blockOf(T[i]);
+      if (!b) continue;
+      var k = dayKey(T[i]);
+      if (!days[k]) { days[k] = { key: k, m: [], e: [], mq: 0, eq: 0 }; order.push(k); }
+      days[k][b].push(r.mh[i]);
+      days[k][b + "q"] = r.qh[i];
+    }
+    order.sort();
+    return order.map(function (k) {
+      var dd = days[k];
+      var avg = function (a) { if (!a.length) return 0; var sum = 0; a.forEach(function (v) { sum += v; }); return Math.round(sum / a.length); };
+      return { key: k, m: avg(dd.m), e: avg(dd.e), mn: dd.m.length, en: dd.e.length, mq: dd.mq, eq: dd.eq };
+    });
+  }
+  function dayChart(r) {
+    var days = dayData(r);
+    if (!days.length) return '<div class="note">' + t("dd_none") + "</div>";
+    var W = 600, H = 150, L = 62, R = 12, TOP = 12, BH = 108, BASE = TOP + BH;
+    var maxP = 1;
+    days.forEach(function (dd) { maxP = Math.max(maxP, dd.m, dd.e); });
+    var gw = (W - L - R) / Math.max(days.length, 4);
+    var bw = Math.min(22, Math.floor((gw - 10) / 2));
+    var x0 = L + ((W - L - R) - days.length * gw) / 2;
+    var s = '<svg class="chart chart2" viewBox="0 0 ' + W + " " + H + '" role="img" aria-label="' + t("dayday") + '">';
+    [maxP / 2, maxP].forEach(function (p) {
+      var yy = BASE - p / maxP * BH;
+      s += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + yy + '" y2="' + yy + '" stroke="#2a313b"/>' +
+        '<text x="' + (L - 6) + '" y="' + (yy + 4) + '" text-anchor="end" font-size="15" fill="#a0a0a0">' + moneyText(p) + "</text>";
+    });
+    s += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + BASE + '" y2="' + BASE + '" stroke="#d6a83b" stroke-opacity=".5"/>';
+    days.forEach(function (dd, n) {
+      var cx = x0 + n * gw + gw / 2;
+      var hm = dd.m ? Math.max(1, dd.m / maxP * BH) : 0, he = dd.e ? Math.max(1, dd.e / maxP * BH) : 0;
+      if (hm) s += '<rect x="' + (cx - bw - 1) + '" y="' + (BASE - hm) + '" width="' + bw + '" height="' + hm + '" fill="#d6a83b" fill-opacity=".9"/>';
+      if (he) s += '<rect x="' + (cx + 1) + '" y="' + (BASE - he) + '" width="' + bw + '" height="' + he + '" fill="#a1a1a1" fill-opacity=".9"/>';
+      var label = (dd.key % 100) + "/" + Math.floor(dd.key / 100 % 100);
+      s += '<text x="' + cx + '" y="' + (H - 4) + '" text-anchor="middle" font-size="15" fill="#a0a0a0">' + label + "</text>";
+      s += '<rect class="dhit" data-n="' + n + '" x="' + (x0 + n * gw) + '" y="' + TOP + '" width="' + gw + '" height="' + (BASE - TOP) + '" fill="transparent"/>';
+    });
+    return s + "</svg>";
+  }
+  // Raden under dagstaplarna: "13/11 · morgon 2s 10c (2 scans) · kväll 3s 05c (1 scan) · köp morgon, sälj kväll: +85c"
+  function dayReadout(dd) {
+    var parts = ['<b>' + (dd.key % 100) + "/" + Math.floor(dd.key / 100 % 100) + "</b>"];
+    if (dd.m) parts.push(t("dd_morning") + " " + money(dd.m) + ' <span class="dim">(' + t("dd_scans", dd.mn) + ")</span>");
+    if (dd.e) parts.push(t("dd_evening") + " " + money(dd.e) + ' <span class="dim">(' + t("dd_scans", dd.en) + ")</span>");
+    if (dd.m && dd.e) {
+      var up = dd.e > dd.m;   // billigt på morgonen: köp morgon, sälj kväll
+      var buy = up ? dd.m : dd.e, sell = up ? dd.e : dd.m;
+      var g = Math.floor(sell * 0.95 - buy);
+      parts.push(t("dd_gain", t(up ? "dd_morning" : "dd_evening"), t(up ? "dd_evening" : "dd_morning"), '<span class="' + (g >= 0 ? "down2" : "up2") + '">' + (g >= 0 ? "+" : "−") + moneyText(Math.abs(g)) + "</span>"));
+    }
+    return parts.join(" · ");
+  }
   function readout(r, i) {
     var w = when(D.scans[i]);
-    return w.day + " " + w.hm + " · " + t("rd_low", money(r.mh[i])) + (r.ph[i] ? " · " + t("rd_p20", money(r.ph[i])) : "") + " · " + t("rd_qty", num(r.qh[i]));
+    return "<b>" + w.day + " " + w.hm + "</b> · " + t("rd_low", money(r.mh[i])) + (r.ph[i] ? " · " + t("rd_p20", money(r.ph[i])) : "") + " · " + t("rd_qty", num(r.qh[i]));
   }
 
   function stepsHtml(r) {
@@ -769,13 +844,28 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       '<dl class="facts">' + facts + "</dl>" +
       '<div><h3 class="row">' + t("per_scan") + rangeHtml() + "</h3>" + chart(r) +
       '<div class="legend"><span><i style="background:#a1a1a1"></i>' + t("col_min") + '</span><span><i style="background:#ffd100"></i>' + t("col_p20") +
-      '</span><span><i style="background:rgba(214,168,59,.5);height:8px"></i>' + t("lg_qty") + "</span></div>" +
+      '</span><span><i style="background:#7ea2d6"></i>' + t("lg_qty") + "</span></div>" +
       '<div class="read" id="read">' + t("hover") + "</div></div>" +
+      "<div><h3>" + t("dayday") + "</h3>" + dayChart(r) +
+      '<div class="legend"><span><i style="background:#d6a83b;height:8px"></i>' + t("lg_morning") + '</span><span><i style="background:#a1a1a1;height:8px"></i>' + t("lg_evening") + "</span></div>" +
+      '<div class="read" id="dread">' + t("dd_hover") + "</div></div>" +
       "<div>" + stepsHtml(r) + "</div>";
     var hits = $("detail").querySelectorAll(".hit");
+    var cursor = $("detail").querySelector(".cursor");
+    var showScan = function (e) {
+      $("read").innerHTML = readout(r, +e.target.dataset.i);
+      if (cursor) { cursor.setAttribute("x1", e.target.dataset.x); cursor.setAttribute("x2", e.target.dataset.x); cursor.setAttribute("visibility", "visible"); }
+    };
     for (var h = 0; h < hits.length; h++) {
-      hits[h].addEventListener("pointerenter", function (e) { $("read").innerHTML = readout(r, +e.target.dataset.i); });
-      hits[h].addEventListener("click", function (e) { $("read").innerHTML = readout(r, +e.target.dataset.i); });
+      hits[h].addEventListener("pointerenter", showScan);
+      hits[h].addEventListener("click", showScan);
+    }
+    var dayList = dayData(r);
+    var dhits = $("detail").querySelectorAll(".dhit");
+    var showDay = function (e) { var dd = dayList[+e.target.dataset.n]; if (dd) $("dread").innerHTML = dayReadout(dd); };
+    for (var g = 0; g < dhits.length; g++) {
+      dhits[g].addEventListener("pointerenter", showDay);
+      dhits[g].addEventListener("click", showDay);
     }
     if (scroll && window.matchMedia("(max-width: 860px)").matches) $("tabItem").scrollIntoView({ block: "start", behavior: "smooth" });
   }
