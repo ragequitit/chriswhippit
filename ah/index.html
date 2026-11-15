@@ -1,0 +1,507 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Priserna på WoW Forevers auktionshus (EU PvP Horde) från Whippits senaste scan.">
+<link rel="canonical" href="https://www.chriswhippit.com/ah/">
+<link rel="icon" href="/favicon.ico">
+<style>html{color-scheme:dark}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Whippit Auktionshuset</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Source+Sans+3:wght@400;600&display=swap">
+<style>
+/* Layout: en ram som spelets AH-fönster: titelremsa med myntmedaljong, sökrad, varulistan till vänster och den valda
+   varan (nyckeltal, graf, prissteg) till höger; på mobil hamnar varan ovanför listan. Ett enda mörkt utseende, med flit:
+   sidan ska se ut som AH-fönstret i spelet och som addonets panel. */
+:root {
+  color-scheme: dark;
+  --bg: #0e1116;          /* sidans botten (samma som Forever-briefen) */
+  --panel: #161b22;       /* fönstret */
+  --inset: #0b0d11;       /* infällda listor, nästan svart som i AH */
+  --line: #2a313b;
+  --fg: #e9e3d6;
+  --grey: #a0a0a0;        /* addonets GREY: detaljer */
+  --gold: #ffd100;        /* addonets GOLD: rubriker, nyckeltal */
+  --edge: #d6a83b;        /* guldkanten: linjer, remsor */
+  --green: #7fd49a;
+  --red: #ff5a4a;
+  --silver: #c9ccd3;
+  --copper: #d08a4e;
+  --btn-a: #8a1f17;        /* spelets röda knapp */
+  --btn-b: #5c120d;
+  --hover: rgba(255, 209, 51, .18);
+  --sel: rgba(255, 209, 51, .12);
+  --q0: #9d9d9d; --q1: #ffffff; --q2: #1eff00; --q3: #0070dd; --q4: #a335ee; --q5: #ff8000;
+  --display: "Cinzel", "Times New Roman", serif;
+  --body: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { background: var(--bg); color: var(--fg); }
+body {
+  font-family: var(--body); font-size: 15px; line-height: 1.4;
+  padding-block: 20px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  font-variant-numeric: tabular-nums;
+}
+.win { max-width: 1180px; margin: 0 auto; background: var(--panel); border: 1px solid var(--line); border-radius: 6px;
+  box-shadow: 0 0 0 1px rgba(214, 168, 59, .25), 0 12px 40px rgba(0, 0, 0, .5); }
+.top { display: flex; align-items: center; gap: 14px; padding: 14px 18px; border-bottom: 1px solid rgba(214, 168, 59, .4); flex-wrap: wrap; }
+.coin { flex: none; width: 52px; height: 52px; border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #fff3b0, #ffd100 38%, #b8860b 78%, #6b4e00);
+  box-shadow: 0 0 0 2px #6b4e00, 0 0 0 4px var(--edge), 0 2px 8px rgba(0, 0, 0, .6);
+  display: grid; place-items: center; font-family: var(--display); font-weight: 700; font-size: 24px; color: #6b4e00; }
+.title { min-width: 0; flex: 1 1 260px; }
+h1 { font-family: var(--display); font-weight: 700; font-size: 22px; margin: 0; color: var(--gold); letter-spacing: .02em; text-wrap: balance; }
+.sub { color: var(--grey); margin-top: 2px; }
+.scan { flex: 0 1 auto; text-align: right; }
+.scan b { display: block; color: var(--gold); font-weight: 600; font-size: 16px; }
+.scan span { color: var(--grey); font-size: 13px; }
+
+.bar { display: flex; gap: 10px; align-items: center; padding: 12px 18px; flex-wrap: wrap; }
+.bar input[type=search] { flex: 1 1 220px; min-width: 0; height: 34px; padding: 0 12px; border-radius: 4px; border: 1px solid var(--line);
+  background: var(--inset); color: var(--fg); font: inherit; }
+.bar input[type=search]:focus-visible, button:focus-visible, tr:focus-visible { outline: 2px solid var(--gold); outline-offset: 1px; }
+.chip { height: 30px; padding: 0 12px; border-radius: 15px; border: 1px solid var(--line); background: transparent; color: var(--grey);
+  font: inherit; font-size: 13px; cursor: pointer; }
+.chip[aria-pressed=true] { border-color: var(--edge); color: var(--gold); background: var(--sel); }
+.count { color: var(--grey); font-size: 13px; margin-left: auto; }
+
+.cols { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 420px); gap: 16px; padding: 0 18px 18px; align-items: start; }
+.inset { background: var(--inset); border: 1px solid var(--line); border-radius: 4px; min-width: 0; }
+.scroll { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; }
+th { position: sticky; top: 0; text-align: right; font-weight: 600; font-size: 12px; letter-spacing: .06em; text-transform: uppercase;
+  color: var(--gold); padding: 8px 10px; border-bottom: 1px solid rgba(214, 168, 59, .4); background: var(--inset); white-space: nowrap; }
+th:first-child { text-align: left; }
+th button { all: unset; cursor: pointer; }
+th button[aria-sort]::after { content: " ▾"; color: var(--edge); }
+th button[aria-sort=ascending]::after { content: " ▴"; }
+td { padding: 5px 10px; text-align: right; white-space: nowrap; border-bottom: 1px solid rgba(255, 255, 255, .04); }
+td:first-child { text-align: left; white-space: normal; min-width: 150px; }
+tbody tr { cursor: pointer; }
+tbody tr:hover { background: var(--hover); }
+tbody tr[aria-selected=true] { background: var(--sel); box-shadow: inset 2px 0 0 var(--edge); }
+.dim { color: var(--grey); }
+.est::before { content: "≈ "; color: var(--grey); }
+.g { color: var(--gold); } .s { color: var(--silver); } .c { color: var(--copper); }
+.q0 { color: var(--q0); } .q1 { color: var(--q1); } .q2 { color: var(--q2); } .q3 { color: var(--q3); } .q4 { color: var(--q4); } .q5 { color: var(--q5); }
+.qx { color: var(--fg); }
+.more { display: block; width: 100%; padding: 10px; border: 0; border-top: 1px solid var(--line); background: transparent; color: var(--gold);
+  font: inherit; cursor: pointer; }
+.more:hover { background: var(--hover); }
+.empty { padding: 28px 16px; color: var(--grey); text-align: center; }
+
+.tabs { display: flex; gap: 4px; padding: 8px 8px 0; border-bottom: 1px solid rgba(214, 168, 59, .4); }
+.tab { font: inherit; font-size: 14px; background: transparent; border: 1px solid var(--line); border-bottom: 0; border-radius: 5px 5px 0 0;
+  padding: 6px 14px; color: var(--gold); cursor: pointer; }
+.tab[aria-pressed=true] { color: var(--q1); background: var(--panel); border-color: var(--edge); }
+.star { all: unset; cursor: pointer; color: var(--grey); padding: 2px 8px 2px 0; font-size: 16px; line-height: 1; }
+.star:hover, .star[aria-pressed=true] { color: var(--gold); }
+.star:focus-visible { outline: 2px solid var(--gold); }
+.btn { height: 32px; padding: 0 16px; border-radius: 4px; border: 1px solid var(--edge); color: var(--gold); font: inherit; cursor: pointer;
+  background: linear-gradient(var(--btn-a), var(--btn-b)); }
+.btn:hover { filter: brightness(1.2); }
+.btn[disabled] { opacity: .5; cursor: default; }
+.btnrow { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.watch td:first-child { min-width: 0; }
+.watch .x { all: unset; cursor: pointer; color: var(--grey); padding: 0 4px; }
+.watch .x:hover { color: var(--red); }
+.up { color: var(--red); } .down { color: var(--green); }
+.strip .star { float: right; font-size: 14px; padding: 2px 0 2px 8px; }
+.detail { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 12px); display: grid; gap: 12px; padding: 14px; }
+.strip { margin: -14px -14px 0; padding: 9px 14px; border-top: 1px solid rgba(214, 168, 59, .6);
+  background: linear-gradient(90deg, rgba(214, 168, 59, .30), rgba(214, 168, 59, .04)); border-radius: 4px 4px 0 0; }
+.strip h2 { font-family: var(--display); font-size: 17px; margin: 0; text-wrap: balance; }
+.strip small { color: var(--grey); }
+.facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(118px, 1fr)); gap: 8px 14px; margin: 0; }
+.facts div { min-width: 0; }
+.facts dt { color: var(--grey); font-size: 12px; }
+.facts dd { margin: 0; font-size: 17px; font-weight: 600; }
+.chart { width: 100%; height: auto; display: block; }
+.legend { display: flex; gap: 14px; flex-wrap: wrap; font-size: 12px; color: var(--grey); }
+.legend i { display: inline-block; width: 14px; height: 3px; vertical-align: middle; margin-right: 5px; border-radius: 2px; }
+.read { min-height: 20px; font-size: 13px; color: var(--grey); }
+h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: var(--gold); margin: 0 0 6px; font-weight: 600; }
+.steps td, .steps th { padding: 4px 10px; }
+.steps td:first-child, .steps th:first-child { text-align: right; min-width: 0; white-space: nowrap; }
+.note { color: var(--grey); font-size: 13px; }
+.foot { padding: 12px 18px 16px; border-top: 1px solid var(--line); color: var(--grey); font-size: 13px; display: grid; gap: 4px; }
+
+@media (max-width: 860px) {
+  .cols { grid-template-columns: minmax(0, 1fr); }
+  .right { order: -1; }
+  .detail { position: static; }
+  .scan { text-align: left; flex-basis: 100%; }
+}
+@media (max-width: 520px) {
+  .hide-s { display: none; }
+  td, th { padding-left: 7px; padding-right: 7px; }
+}
+@media (prefers-reduced-motion: no-preference) { tbody tr { transition: background .08s; } }
+</style>
+</head>
+<body>
+
+<div class="win">
+  <header class="top">
+    <div class="coin" aria-hidden="true">W</div>
+    <div class="title">
+      <h1>Whippit · Auktionshuset</h1>
+      <div class="sub" id="market">WoW Forever</div>
+    </div>
+    <div class="scan"><b id="scanTime">Läser in scannen…</b><span id="scanInfo"></span></div>
+  </header>
+
+  <div class="bar">
+    <input type="search" id="q" placeholder="Sök vara, t.ex. Silk Cloth" autocomplete="off" aria-label="Sök vara">
+    <button class="chip" id="chipAll" aria-pressed="false" type="button">Även varor utan namn</button>
+    <span class="count" id="count"></span>
+  </div>
+
+  <div class="cols">
+    <section class="inset left">
+      <div class="scroll">
+        <table id="list">
+          <thead><tr>
+            <th><button type="button" data-k="name">Vara</button></th>
+            <th><button type="button" data-k="min">Lägsta pris</button></th>
+            <th><button type="button" data-k="p20" title="Snittpris per styck för de 20 billigaste">Snitt 20 st</button></th>
+            <th><button type="button" data-k="qty">Ute</button></th>
+            <th class="hide-s"><button type="button" data-k="day" title="Uppskattning från goldcap, inte uppmätt i scannen">Sålda/dag</button></th>
+          </tr></thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </div>
+      <div class="empty" id="empty" hidden>Ingen vara matchar sökningen.</div>
+      <button class="more" id="more" type="button" hidden>Visa fler</button>
+    </section>
+
+    <aside class="inset right">
+      <div class="tabs">
+        <button class="tab" id="tabItem" type="button" aria-pressed="true">Vara</button>
+        <button class="tab" id="tabWatch" type="button" aria-pressed="false">Min lista</button>
+      </div>
+      <div class="detail" id="detail"><div class="note">Välj en vara i listan.</div></div>
+      <div class="detail watch" id="watch" hidden></div>
+    </aside>
+  </div>
+
+  <footer class="foot">
+    <div>Priserna är per styck och kommer från Whippits senaste scan av auktionshuset. Lägsta pris kan vara en ensam listning: snittet för 20 st säger vad du faktiskt får betala.</div>
+    <div>Min lista sparas bara i din egen webbläsare. Uppdatera priser hämtar den senaste scannen.</div>
+    <div>Sålda per dag är en uppskattning från goldcap och är inte uppmätt i scannen. Antal ute är dagens högsta antal där inget djup finns.</div>
+  </footer>
+</div>
+
+<script>
+(function () {
+  "use strict";
+  var $ = function (id) { return document.getElementById(id); };
+  var D = null, rows = [], view = [], shown = 0, PAGE = 60;
+  var sortKey = "day", sortDir = -1, showAll = false, selId = null, query = "";
+  var byId = {}, lastUpdate = "";
+  var DATA_URL = "https://ragequitit.github.io/ah/data.json";   // priserna; på chriswhippit.com/ah byts den mot adressen på GitHub (build.js)
+
+  // Min lista: sparas bara i besökarens egen webbläsare (inget skickas någonstans). p = lägsta pris när varan sparades.
+  var WKEY = "whippit-ah-lista";
+  function loadWatch() {
+    try {
+      var a = JSON.parse(localStorage.getItem(WKEY) || "[]");
+      return Array.isArray(a) ? a.filter(function (o) { return o && typeof o.id === "number"; }) : [];
+    } catch (e) { return []; }
+  }
+  var watch = loadWatch();
+  function saveWatch() { try { localStorage.setItem(WKEY, JSON.stringify(watch)); } catch (e) { /* privat läge: listan gäller tills sidan stängs */ } }
+  function watched(id) { for (var i = 0; i < watch.length; i++) if (watch[i].id === id) return true; return false; }
+  function toggleWatch(id) {
+    if (watched(id)) watch = watch.filter(function (w) { return w.id !== id; });
+    else { var r = byId[id]; if (!r) return; watch.push({ id: id, name: r.name, p: r.min }); }
+    saveWatch();
+    draw();
+    drawWatch();
+    if (selId === id) select(id, false);
+  }
+  function starHtml(id, label) {
+    var on = watched(id);
+    return '<button class="star" type="button" data-star="' + id + '" aria-pressed="' + on + '" title="' + (on ? "Ta bort från min lista" : "Håll koll på varan") +
+      '" aria-label="' + (on ? "Ta bort från min lista" : "Håll koll på varan") + '">' + (on ? "★" : "☆") + (label ? " " + label : "") + "</button>";
+  }
+  function showTab(which) {
+    $("tabItem").setAttribute("aria-pressed", which === "item" ? "true" : "false");
+    $("tabWatch").setAttribute("aria-pressed", which === "watch" ? "true" : "false");
+    $("detail").hidden = which !== "item";
+    $("watch").hidden = which !== "watch";
+  }
+  function drawWatch() {
+    $("tabWatch").textContent = "Min lista" + (watch.length ? " (" + watch.length + ")" : "");
+    var body = "";
+    watch.forEach(function (w) {
+      var r = byId[w.id];
+      var name = (r && r.name) || w.name || "Vara " + w.id;
+      var cls = r ? qcls(r.q) : "dim";
+      var diff = "";
+      if (r && w.p && r.min !== w.p) {
+        diff = ' <span class="' + (r.min > w.p ? "up" : "down") + '" title="Sedan du sparade varan (då ' + moneyText(w.p) + ')">' +
+          (r.min > w.p ? "▲" : "▼") + " " + moneyText(Math.abs(r.min - w.p)) + "</span>";
+      }
+      body += '<tr tabindex="0" data-id="' + w.id + '"><td><span class="' + cls + '">' + esc(name) + "</span></td><td>" +
+        (r ? money(r.min) + diff : '<span class="dim">inte ute nu</span>') + "</td><td>" + (r && r.p20 ? money(r.p20) : '<span class="dim">–</span>') +
+        "</td><td>" + (r ? num(r.qty) : '<span class="dim">–</span>') + '</td><td><button class="x" type="button" data-star="' + w.id +
+        '" title="Ta bort" aria-label="Ta bort ' + esc(name) + '">✕</button></td></tr>';
+    });
+    var w = D ? when(D.t) : null;
+    $("watch").innerHTML =
+      '<div class="strip"><h2>Min lista</h2><small>Sparas i din webbläsare, bara du ser den.</small></div>' +
+      (watch.length
+        ? '<div class="scroll"><table><thead><tr><th>Vara</th><th>Lägsta pris</th><th>Snitt 20 st</th><th>Ute</th><th></th></tr></thead><tbody id="wrows">' + body + "</tbody></table></div>"
+        : '<div class="note">Tom än. Tryck på ☆ vid en vara i listan för att hålla koll på den.</div>') +
+      '<div class="btnrow"><button class="btn" id="update" type="button">Uppdatera priser</button><span class="note" id="upd">' +
+      (lastUpdate || (w ? "Priser från scannen " + w.day + " kl. " + w.hm : "")) + "</span></div>";
+    $("update").addEventListener("click", update);
+  }
+  function update() {
+    var b = $("update");
+    if (b) { b.disabled = true; b.textContent = "Hämtar…"; }
+    var before = D ? D.t : 0;
+    fetch(DATA_URL, { cache: "no-store" }).then(function (r) {
+      if (!r.ok) throw new Error(r.status);
+      return r.json();
+    }).then(function (d) {
+      var w = when(d.t);
+      lastUpdate = d.t > before ? "Ny scan: " + w.day + " kl. " + w.hm : "Ingen nyare scan än " + w.day + " kl. " + w.hm;
+      load(d, true);
+    }).catch(function () {
+      lastUpdate = "Gick inte att hämta. Försök igen om en stund.";
+      drawWatch();
+    });
+  }
+
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+  function num(n) { return Math.round(n).toLocaleString("sv-SE"); }
+  // Pengar som i spelet: guld, silver, koppar. Koppar visas inte från 1g.
+  function money(c) {
+    c = Math.round(c || 0);
+    if (c <= 0) return '<span class="dim">–</span>';
+    var g = Math.floor(c / 10000), s = Math.floor(c % 10000 / 100), k = c % 100, out = [];
+    if (g) out.push(num(g) + '<span class="g">g</span>');
+    if (s) out.push(s + '<span class="s">s</span>');
+    if (k && !g) out.push(k + '<span class="c">c</span>');
+    return out.join(" ") || '0<span class="c">c</span>';
+  }
+  function moneyText(c) { return money(c).replace(/<[^>]+>/g, ""); }
+  function when(t) {
+    var d = new Date(t * 1000), now = new Date();
+    var hm = d.toLocaleTimeString("sv-SE", { hour: "2-digit", minute: "2-digit" });
+    var day = d.toDateString() === now.toDateString() ? "i dag" : d.getDate() + "/" + (d.getMonth() + 1);
+    return { day: day, hm: hm };
+  }
+  function qcls(q) { return q >= 0 && q <= 5 ? "q" + q : "qx"; }
+
+  function load(d, keep) {
+    D = d;
+    rows = d.items.map(function (r) {
+      return { id: r[0], name: r[1] || "", q: r[2], min: r[3], qty: r[7] || r[4], exact: r[7] > 0, p20: r[5], p100: r[6], day: r[8],
+        mh: r[9], qh: r[10], ph: r[11], lower: (r[1] || "").toLowerCase() };
+    });
+    byId = {};
+    rows.forEach(function (r) { byId[r.id] = r; });
+    var w = when(d.t);
+    $("market").textContent = "WoW Forever · " + d.market;
+    $("scanTime").textContent = "Senaste scan " + w.day + " kl. " + w.hm;
+    $("scanInfo").textContent = num(rows.length) + " varor på auktionshuset";
+    var unnamed = rows.length - d.named;
+    $("chipAll").textContent = "Även varor utan namn (" + num(unnamed) + ")";
+    $("chipAll").hidden = unnamed === 0;
+    refresh();
+    drawWatch();
+    if (keep && selId && byId[selId]) { select(selId, false); return; }
+    var first = view[0];
+    if (first) select(first.id, false);
+    if (!keep && watch.length) showTab("watch");   // den som har en lista ser den först
+  }
+
+  function refresh() {
+    var q = query;
+    view = rows.filter(function (r) {
+      if (!showAll && !r.name) return false;
+      if (!q) return true;
+      return r.lower.indexOf(q) >= 0 || String(r.id) === q;
+    });
+    var k = sortKey, dir = sortDir;
+    view.sort(function (a, b) {
+      if (k === "name") return dir * (a.name || "~" + a.id).localeCompare(b.name || "~" + b.id, "sv");
+      var av = a[k] || 0, bv = b[k] || 0;
+      if (!av !== !bv) return av ? -1 : 1;   // saknat värde sist, åt båda hållen
+      return dir * (av - bv) || a.id - b.id;
+    });
+    shown = Math.min(PAGE, view.length);
+    draw();
+  }
+
+  function rowHtml(r) {
+    var name = r.name ? '<span class="' + qcls(r.q) + '">' + esc(r.name) + "</span>" : '<span class="dim">Vara ' + r.id + "</span>";
+    return '<tr tabindex="0" data-id="' + r.id + '"' + (r.id === selId ? ' aria-selected="true"' : "") + "><td>" + starHtml(r.id) + name + "</td><td>" + money(r.min) +
+      "</td><td>" + (r.p20 ? money(r.p20) : '<span class="dim">–</span>') + "</td><td>" + num(r.qty) + '</td><td class="hide-s">' +
+      (r.day ? '<span class="est">' + num(r.day) + "</span>" : '<span class="dim">–</span>') + "</td></tr>";
+  }
+  function draw() {
+    var html = "";
+    for (var i = 0; i < shown; i++) html += rowHtml(view[i]);
+    $("rows").innerHTML = html;
+    $("empty").hidden = view.length > 0;
+    $("more").hidden = shown >= view.length;
+    $("more").textContent = "Visa fler (" + num(view.length - shown) + " till)";
+    $("count").textContent = num(view.length) + " varor";
+    var btns = document.querySelectorAll("th button");
+    for (var j = 0; j < btns.length; j++) {
+      if (btns[j].dataset.k === sortKey) btns[j].setAttribute("aria-sort", sortDir > 0 ? "ascending" : "descending");
+      else btns[j].removeAttribute("aria-sort");
+    }
+  }
+
+  // Grafen: lägsta pris per scan (grå linje), snittet för 20 st (guld, där djupet är mätt), antal ute (staplar nederst).
+  function chart(r) {
+    var T = D.scans, W = 600, H = 250, L = 62, R = 12, TOP = 14, PH = 150, BH = 40, BY = TOP + PH + 16;
+    var pts = [], maxP = 0, maxQ = 0;
+    for (var i = 0; i < T.length; i++) {
+      if (r.mh[i] > 0) { pts.push(i); maxP = Math.max(maxP, r.mh[i], r.ph[i] || 0); maxQ = Math.max(maxQ, r.qh[i]); }
+    }
+    if (pts.length < 2) return '<div class="note">För få scans av varan för en graf.</div>';
+    var t0 = T[pts[0]], t1 = T[pts[pts.length - 1]], span = Math.max(1, t1 - t0);
+    function x(i) { return L + (T[i] - t0) / span * (W - L - R); }
+    function y(p) { return TOP + PH - p / maxP * PH; }
+    var s = '<svg class="chart" viewBox="0 0 ' + W + " " + H + '" role="img" aria-label="Pris per scan för ' + esc(r.name || "varan") + '">';
+    // prisaxel: 0, halva och högsta
+    [0, maxP / 2, maxP].forEach(function (p) {
+      s += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + y(p) + '" y2="' + y(p) + '" stroke="#2a313b" stroke-width="1"/>' +
+        '<text x="' + (L - 6) + '" y="' + (y(p) + 4) + '" text-anchor="end" font-size="15" fill="#a0a0a0">' + moneyText(p) + "</text>";
+    });
+    // dagar: en tunn linje vid midnatt, datum under
+    var d = new Date(t0 * 1000); d.setHours(24, 0, 0, 0);
+    var lastX = -99;
+    for (var m = d.getTime() / 1000; m < t1; m += 86400) {
+      var mx = L + (m - t0) / span * (W - L - R);
+      s += '<line x1="' + mx + '" x2="' + mx + '" y1="' + TOP + '" y2="' + (BY + BH) + '" stroke="#2a313b" stroke-width="1" stroke-dasharray="2 3"/>';
+      if (mx - lastX > 40 && mx < W - R - 20) {
+        var dd = new Date(m * 1000);
+        s += '<text x="' + (mx + 3) + '" y="' + (H - 4) + '" font-size="15" fill="#a0a0a0">' + dd.getDate() + "/" + (dd.getMonth() + 1) + "</text>";
+        lastX = mx;
+      }
+    }
+    // antal ute
+    var bw = Math.max(2, Math.min(10, (W - L - R) / pts.length - 2));
+    pts.forEach(function (i) {
+      var h = maxQ ? r.qh[i] / maxQ * BH : 0;
+      s += '<rect x="' + (x(i) - bw / 2) + '" y="' + (BY + BH - h) + '" width="' + bw + '" height="' + Math.max(0.5, h) + '" fill="#d6a83b" fill-opacity=".35"/>';
+    });
+    s += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + (BY + BH) + '" y2="' + (BY + BH) + '" stroke="#d6a83b" stroke-opacity=".5"/>' +
+      '<text x="' + (L - 6) + '" y="' + (BY + 10) + '" text-anchor="end" font-size="15" fill="#a0a0a0">' + num(maxQ) + "</text>";
+    // lägsta pris
+    s += '<polyline fill="none" stroke="#a1a1a1" stroke-width="1.5" points="' + pts.map(function (i) { return x(i).toFixed(1) + "," + y(r.mh[i]).toFixed(1); }).join(" ") + '"/>';
+    // snitt 20 st
+    var pp = pts.filter(function (i) { return r.ph[i] > 0; });
+    if (pp.length) {
+      s += '<polyline fill="none" stroke="#ffd100" stroke-width="2" points="' + pp.map(function (i) { return x(i).toFixed(1) + "," + y(r.ph[i]).toFixed(1); }).join(" ") + '"/>';
+      pp.forEach(function (i) { s += '<circle cx="' + x(i).toFixed(1) + '" cy="' + y(r.ph[i]).toFixed(1) + '" r="3" fill="#ffd100"/>'; });
+    }
+    var li = pts[pts.length - 1];
+    s += '<circle cx="' + x(li).toFixed(1) + '" cy="' + y(r.mh[li]).toFixed(1) + '" r="3.5" fill="#e9e3d6"/>';
+    // osynliga träffytor per scan
+    pts.forEach(function (i, n) {
+      var a = n ? (x(pts[n - 1]) + x(i)) / 2 : L, b = n < pts.length - 1 ? (x(i) + x(pts[n + 1])) / 2 : W - R;
+      s += '<rect class="hit" data-i="' + i + '" x="' + a + '" y="' + TOP + '" width="' + Math.max(1, b - a) + '" height="' + (BY + BH - TOP) + '" fill="transparent"/>';
+    });
+    return s + "</svg>";
+  }
+  function readout(r, i) {
+    var w = when(D.scans[i]);
+    return w.day + " " + w.hm + " · lägsta " + money(r.mh[i]) + (r.ph[i] ? " · snitt 20 st " + money(r.ph[i]) : "") + " · " + num(r.qh[i]) + " ute";
+  }
+
+  function stepsHtml(r) {
+    var st = D.steps[r.id];
+    if (!st || !st.steg || !st.steg.length) return '<h3>Prissteg</h3><div class="note">Prisstegen (hur många som ligger på varje pris) kommer med nästa scan.</div>';
+    var w = when(st.t), sum = 0, body = "";
+    st.steg.slice(0, 12).forEach(function (p) {
+      sum += p[1];
+      body += "<tr><td>" + money(p[0]) + "</td><td>" + num(p[1]) + "</td><td>" + num(sum) + "</td></tr>";
+    });
+    var src = st.src === "scan" ? "Från scannen " : "Från en sökning ";
+    var extra = st.sellers ? " · " + st.sellers + " säljare bland de 100 billigaste" : "";
+    return "<h3>Prissteg</h3>" + '<div class="scroll"><table class="steps"><thead><tr><th>Pris</th><th>Antal</th><th>Summa</th></tr></thead><tbody>' + body +
+      '</tbody></table></div><div class="note">' + src + w.day + " kl. " + w.hm + extra + (st.steg.length > 12 ? " · de 12 billigaste stegen" : "") + "</div>";
+  }
+
+  function select(id, scroll) {
+    selId = id;
+    var r = null;
+    for (var i = 0; i < rows.length; i++) if (rows[i].id === id) { r = rows[i]; break; }
+    if (!r) return;
+    var trs = $("rows").children;
+    for (var j = 0; j < trs.length; j++) {
+      if (+trs[j].dataset.id === id) trs[j].setAttribute("aria-selected", "true"); else trs[j].removeAttribute("aria-selected");
+    }
+    var name = r.name ? esc(r.name) : "Vara " + r.id;
+    var facts = '<div><dt>Lägsta pris</dt><dd>' + money(r.min) + "</dd></div>" +
+      "<div><dt>Snitt 20 st</dt><dd>" + (r.p20 ? money(r.p20) : '<span class="dim">–</span>') + "</dd></div>" +
+      "<div><dt>Snitt 100 st</dt><dd>" + (r.p100 ? money(r.p100) : '<span class="dim">–</span>') + "</dd></div>" +
+      "<div><dt>" + (r.exact ? "Ute nu" : "Ute (högst i dag)") + "</dt><dd>" + num(r.qty) + "</dd></div>" +
+      (r.day ? '<div><dt>Sålda per dag (uppskattning)</dt><dd><span class="est">' + num(r.day) + "</span></dd></div>" : "");
+    $("detail").innerHTML =
+      '<div class="strip">' + starHtml(r.id, watched(r.id) ? "I min lista" : "Håll koll") + '<h2 class="' + qcls(r.q) + '">' + name + "</h2><small>Vara " + r.id + "</small></div>" +
+      '<dl class="facts">' + facts + "</dl>" +
+      "<div><h3>Pris per scan</h3>" + chart(r) +
+      '<div class="legend"><span><i style="background:#a1a1a1"></i>Lägsta pris</span><span><i style="background:#ffd100"></i>Snitt 20 st</span><span><i style="background:rgba(214,168,59,.5);height:8px"></i>Antal ute</span></div>' +
+      '<div class="read" id="read">Peka på grafen för en scan.</div></div>' +
+      "<div>" + stepsHtml(r) + "</div>";
+    var hits = $("detail").querySelectorAll(".hit");
+    for (var h = 0; h < hits.length; h++) {
+      hits[h].addEventListener("pointerenter", function (e) { $("read").innerHTML = readout(r, +e.target.dataset.i); });
+      hits[h].addEventListener("click", function (e) { $("read").innerHTML = readout(r, +e.target.dataset.i); });
+    }
+    if (scroll && window.matchMedia("(max-width: 860px)").matches) $("tabItem").scrollIntoView({ block: "start", behavior: "smooth" });
+  }
+
+  // En lyssnare för hela sidan: stjärnan (håll koll / ta bort) går före radklicket.
+  document.addEventListener("click", function (e) {
+    var st = e.target.closest("[data-star]");
+    if (st) { e.stopPropagation(); toggleWatch(+st.dataset.star); return; }
+    var tr = e.target.closest("tbody tr[data-id]");
+    if (tr) { showTab("item"); select(+tr.dataset.id, true); }
+  });
+  $("tabItem").addEventListener("click", function () { showTab("item"); });
+  $("tabWatch").addEventListener("click", function () { showTab("watch"); });
+  document.addEventListener("keydown", function (e) {
+    if (e.key !== "Enter" && e.key !== " ") return;
+    if (e.target.tagName !== "TR" || !e.target.dataset.id) return;
+    e.preventDefault(); showTab("item"); select(+e.target.dataset.id, true);
+  });
+  $("more").addEventListener("click", function () { shown = Math.min(view.length, shown + PAGE); draw(); });
+  $("q").addEventListener("input", function () { query = this.value.trim().toLowerCase(); refresh(); });
+  $("chipAll").addEventListener("click", function () {
+    showAll = !showAll;
+    this.setAttribute("aria-pressed", showAll ? "true" : "false");
+    refresh();
+  });
+  document.querySelector("thead").addEventListener("click", function (e) {
+    var b = e.target.closest("button");
+    if (!b) return;
+    var k = b.dataset.k;
+    if (k === sortKey) sortDir = -sortDir; else { sortKey = k; sortDir = k === "name" || k === "min" || k === "p20" ? 1 : -1; }
+    refresh();
+  });
+
+  fetch(DATA_URL).then(function (r) {
+    if (!r.ok) throw new Error(r.status);
+    return r.json();
+  }).then(load).catch(function () {
+    $("scanTime").textContent = "Scannen gick inte att läsa in";
+    $("scanInfo").textContent = "Ladda om sidan. Hjälper det inte har datan inte laddats upp.";
+  });
+})();
+</script>
+</body>
+</html>
