@@ -89,6 +89,15 @@ tbody tr[aria-selected=true] { background: var(--sel); box-shadow: inset 2px 0 0
 .g { color: var(--gold); } .s { color: var(--silver); } .c { color: var(--copper); }
 .q0 { color: var(--q0); } .q1 { color: var(--q1); } .q2 { color: var(--q2); } .q3 { color: var(--q3); } .q4 { color: var(--q4); } .q5 { color: var(--q5); }
 .qx { color: var(--fg); }
+.ic { width: 18px; height: 18px; border-radius: 3px; vertical-align: -4px; margin-right: 7px; border: 1px solid var(--line); background: var(--panel); }
+.ic.q2 { border-color: var(--q2); } .ic.q3 { border-color: var(--q3); } .ic.q4 { border-color: var(--q4); } .ic.q5 { border-color: var(--q5); }
+.ic.big { width: 36px; height: 36px; border-radius: 5px; float: left; margin: 0 10px 0 0; vertical-align: top; }
+tbody tr.exp, tbody tr.exp:hover { background: var(--panel); cursor: default; }
+.exp td { padding: 8px 12px 10px 36px; white-space: normal; text-align: left; border-bottom: 1px solid rgba(214, 168, 59, .4); box-shadow: inset 2px 0 0 var(--edge); }
+.ladder { display: grid; grid-auto-flow: column; grid-template-rows: repeat(5, auto); grid-auto-columns: minmax(0, 170px); justify-content: start; gap: 3px 36px; }
+.ladder div { display: flex; justify-content: space-between; gap: 14px; min-width: 0; }
+.ladder .n { color: var(--grey); }
+.exp .note { margin-top: 6px; }
 .more { display: block; width: 100%; padding: 10px; border: 0; border-top: 1px solid var(--line); background: transparent; color: var(--gold);
   font: inherit; cursor: pointer; }
 .more:hover { background: var(--hover); }
@@ -214,6 +223,8 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   var D = null, rows = [], view = [], shown = 0, PAGE = 60;
   var sortKey = "day", sortDir = -1, showAll = false, selId = null, query = "";
   var byId = {}, lastUpdate = "";
+  var ICON_BASE = "https://ragequitit.github.io/ah/icons/";             // mappen med ikoner; tom = inga ikoner (Claude-sidan kan inte ladda bilder utifrån)
+  var openId = null;              // raden som är utfälld i listan (de tio lägsta prisstegen)
   var DATA_URL = "https://ragequitit.github.io/ah/data.json";   // priserna; på chriswhippit.com/ah byts den mot adressen på GitHub (build.js)
 
   // Min lista: sparas bara i besökarens egen webbläsare (inget skickas någonstans). p = lägsta pris när varan sparades.
@@ -258,7 +269,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
         diff = ' <span class="' + (r.min > w.p ? "up" : "down") + '" title="Sedan du sparade varan (då ' + moneyText(w.p) + ')">' +
           (r.min > w.p ? "▲" : "▼") + " " + moneyText(Math.abs(r.min - w.p)) + "</span>";
       }
-      body += '<tr tabindex="0" data-id="' + w.id + '"><td><span class="' + cls + '">' + esc(name) + "</span></td><td>" +
+      body += '<tr tabindex="0" data-id="' + w.id + '"><td>' + iconHtml(r) + '<span class="' + cls + '">' + esc(name) + "</span></td><td>" +
         (r ? money(r.min) + diff : '<span class="dim">inte ute nu</span>') + "</td><td>" + (r && r.p20 ? money(r.p20) : '<span class="dim">–</span>') +
         "</td><td>" + (r ? num(r.qty) : '<span class="dim">–</span>') + '</td><td><button class="x" type="button" data-star="' + w.id +
         '" title="Ta bort" aria-label="Ta bort ' + esc(name) + '">✕</button></td></tr>';
@@ -315,7 +326,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     D = d;
     rows = d.items.map(function (r) {
       return { id: r[0], name: r[1] || "", q: r[2], min: r[3], qty: r[7] || r[4], exact: r[7] > 0, p20: r[5], p100: r[6], day: r[8],
-        mh: r[9], qh: r[10], ph: r[11], lower: (r[1] || "").toLowerCase() };
+        mh: r[9], qh: r[10], ph: r[11], ic: r[12] || "", lower: (r[1] || "").toLowerCase() };
     });
     byId = {};
     rows.forEach(function (r) { byId[r.id] = r; });
@@ -352,15 +363,36 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     draw();
   }
 
+  function iconHtml(r, big) {
+    if (!ICON_BASE || !r || !r.ic) return "";
+    return '<img class="ic ' + qcls(r.q) + (big ? " big" : "") + '" src="' + ICON_BASE + r.ic + '.jpg" width="' + (big ? 36 : 18) + '" height="' + (big ? 36 : 18) + '" alt="" loading="lazy">';
+  }
+  // De tio lägsta prisstegen, som köpvyn i spelet: pris per styck och hur många som ligger på det priset.
+  function ladder(r, asTable) {
+    var st = D.steps[r.id];
+    if (!st || !st.steg || !st.steg.length) return { html: "", note: "Prisstegen (hur många som ligger på varje pris) kommer med nästa scan." };
+    var w = when(st.t), steps = st.steg.slice(0, 10), html = "";
+    steps.forEach(function (p) {
+      html += asTable ? "<tr><td>" + money(p[0]) + "</td><td>" + num(p[1]) + "</td></tr>"
+        : "<div><span>" + money(p[0]) + '</span><span class="n">' + num(p[1]) + " st</span></div>";
+    });
+    var note = (st.src === "scan" ? "Från scannen " : "Från en sökning ") + w.day + " kl. " + w.hm +
+      (st.sellers ? " · " + st.sellers + " säljare bland de 100 billigaste" : "") + (st.steg.length > 10 ? " · de 10 lägsta priserna" : "");
+    return { html: html, note: note };
+  }
+  function expHtml(r) {
+    var l = ladder(r, false);
+    return '<tr class="exp"><td colspan="5">' + (l.html ? '<div class="ladder">' + l.html + "</div>" : "") + '<div class="note">' + l.note + "</div></td></tr>";
+  }
   function rowHtml(r) {
-    var name = r.name ? '<span class="' + qcls(r.q) + '">' + esc(r.name) + "</span>" : '<span class="dim">Vara ' + r.id + "</span>";
+    var name = iconHtml(r) + (r.name ? '<span class="' + qcls(r.q) + '">' + esc(r.name) + "</span>" : '<span class="dim">Vara ' + r.id + "</span>");
     return '<tr tabindex="0" data-id="' + r.id + '"' + (r.id === selId ? ' aria-selected="true"' : "") + "><td>" + starHtml(r.id) + name + "</td><td>" + money(r.min) +
       "</td><td>" + (r.p20 ? money(r.p20) : '<span class="dim">–</span>') + "</td><td>" + num(r.qty) + '</td><td class="hide-s">' +
       (r.day ? '<span class="est">' + num(r.day) + "</span>" : '<span class="dim">–</span>') + "</td></tr>";
   }
   function draw() {
     var html = "";
-    for (var i = 0; i < shown; i++) html += rowHtml(view[i]);
+    for (var i = 0; i < shown; i++) { html += rowHtml(view[i]); if (view[i].id === openId) html += expHtml(view[i]); }
     $("rows").innerHTML = html;
     $("empty").hidden = view.length > 0;
     $("more").hidden = shown >= view.length;
@@ -433,17 +465,10 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   }
 
   function stepsHtml(r) {
-    var st = D.steps[r.id];
-    if (!st || !st.steg || !st.steg.length) return '<h3>Prissteg</h3><div class="note">Prisstegen (hur många som ligger på varje pris) kommer med nästa scan.</div>';
-    var w = when(st.t), sum = 0, body = "";
-    st.steg.slice(0, 12).forEach(function (p) {
-      sum += p[1];
-      body += "<tr><td>" + money(p[0]) + "</td><td>" + num(p[1]) + "</td><td>" + num(sum) + "</td></tr>";
-    });
-    var src = st.src === "scan" ? "Från scannen " : "Från en sökning ";
-    var extra = st.sellers ? " · " + st.sellers + " säljare bland de 100 billigaste" : "";
-    return "<h3>Prissteg</h3>" + '<div class="scroll"><table class="steps"><thead><tr><th>Pris</th><th>Antal</th><th>Summa</th></tr></thead><tbody>' + body +
-      '</tbody></table></div><div class="note">' + src + w.day + " kl. " + w.hm + extra + (st.steg.length > 12 ? " · de 12 billigaste stegen" : "") + "</div>";
+    var l = ladder(r, true);
+    if (!l.html) return '<h3>Prissteg</h3><div class="note">' + l.note + "</div>";
+    return "<h3>Prissteg</h3>" + '<div class="scroll"><table class="steps"><thead><tr><th>Pris</th><th>Antal</th></tr></thead><tbody>' + l.html +
+      '</tbody></table></div><div class="note">' + l.note + "</div>";
   }
 
   function select(id, scroll) {
@@ -462,7 +487,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       "<div><dt>" + (r.exact ? "Ute nu" : "Ute (högst i dag)") + "</dt><dd>" + num(r.qty) + "</dd></div>" +
       (r.day ? '<div><dt>Sålda per dag (uppskattning)</dt><dd><span class="est">' + num(r.day) + "</span></dd></div>" : "");
     $("detail").innerHTML =
-      '<div class="strip">' + starHtml(r.id, watched(r.id) ? "I min lista" : "Håll koll") + '<h2 class="' + qcls(r.q) + '">' + name + "</h2><small>Vara " + r.id + "</small></div>" +
+      '<div class="strip">' + starHtml(r.id, watched(r.id) ? "I min lista" : "Håll koll") + iconHtml(r, true) + '<h2 class="' + qcls(r.q) + '">' + name + "</h2><small>Vara " + r.id + "</small></div>" +
       '<dl class="facts">' + facts + "</dl>" +
       "<div><h3>Pris per scan</h3>" + chart(r) +
       '<div class="legend"><span><i style="background:#a1a1a1"></i>Lägsta pris</span><span><i style="background:#ffd100"></i>Snitt 20 st</span><span><i style="background:rgba(214,168,59,.5);height:8px"></i>Antal ute</span></div>' +
@@ -481,14 +506,23 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     var st = e.target.closest("[data-star]");
     if (st) { e.stopPropagation(); toggleWatch(+st.dataset.star); return; }
     var tr = e.target.closest("tbody tr[data-id]");
-    if (tr) { showTab("item"); select(+tr.dataset.id, true); }
+    if (tr) {
+      var id = +tr.dataset.id;
+      if (tr.parentNode.id === "rows") openId = openId === id ? null : id;   // listan: fäll ut eller ihop
+      showTab("item"); select(id, true); draw();
+    }
   });
   $("tabItem").addEventListener("click", function () { showTab("item"); });
   $("tabWatch").addEventListener("click", function () { showTab("watch"); });
   document.addEventListener("keydown", function (e) {
     if (e.key !== "Enter" && e.key !== " ") return;
     if (e.target.tagName !== "TR" || !e.target.dataset.id) return;
-    e.preventDefault(); showTab("item"); select(+e.target.dataset.id, true);
+    e.preventDefault();
+    var kid = +e.target.dataset.id;
+    if (e.target.parentNode.id === "rows") openId = openId === kid ? null : kid;
+    showTab("item"); select(kid, true); draw();
+    var again = document.querySelector('#rows tr[data-id="' + kid + '"]');
+    if (again) again.focus();
   });
   $("more").addEventListener("click", function () { shown = Math.min(view.length, shown + PAGE); draw(); });
   // Listan rullar i sin egen ram: nära slutet läggs fler varor till av sig själva (knappen finns kvar).
