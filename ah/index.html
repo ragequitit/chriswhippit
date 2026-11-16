@@ -137,6 +137,7 @@ h1 { font-family: var(--display); font-weight: 500; font-size: 36px; margin: 0; 
   color: var(--fg); font-size: 14.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; border-left: 2px solid transparent; }
 .cat .ci { width: 24px; height: 24px; object-fit: contain; flex: none; border-radius: 3px; }
 .cat span { color: var(--grey); font-size: 12.5px; margin-left: auto; padding-left: 8px; }
+.cat span.dim { margin-left: 6px; padding-left: 0; font-size: 12px; }
 .cat:hover { background: var(--hover); }
 .cat[aria-pressed=true] { background: linear-gradient(#39271A, #21170F); border-left-color: var(--edge); box-shadow: inset 0 0 0 1px rgba(246, 196, 72, .25); color: var(--gold); }
 .cat.sub { margin-left: 18px; height: 30px; font-size: 13.5px; }
@@ -555,7 +556,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       mode_cr: "Crafting", mode_cr_tip: "Every recipe with what it costs to craft at today's market prices, what it sells for and the profit",
       col_recipe: "Recipe", col_skill: "Skill", col_skill_tip: "Skill required to learn the recipe", col_cost: "Cost", col_cost_tip: "Reagents at market price; vendor reagents at vendor price",
       col_sell: "Sells for", col_sell_tip: "Market price of the crafted item", col_profit: "Profit", col_profit_tip: "Sells for minus the auction house's 5% minus cost, per craft",
-      cr_h: "Professions", cr_count: "%1 recipes", cr_empty: "No recipe matches the search.", cr_loading: "Loading recipes…", cr_fail: "The recipes could not be loaded.",
+      cr_h: "Professions", cr_all: "All", cr_count: "%1 recipes", cr_empty: "No recipe matches the search.", cr_loading: "Loading recipes…", cr_fail: "The recipes could not be loaded.",
       f_cost: "Cost to craft", f_sellf: "Sells for", f_profit: "Profit after 5%", f_trainer: "Trainer price", f_makes: "Makes %1", reagents: "Reagents", col_each: "Each", col_total: "Total", col_qty_s: "Qty",
       vendor_tag: "vendor", missing_n: "No price for %1 reagent(s): the cost is incomplete.", not_on_ah: "The crafted item is not on the auction house right now, so there is no selling price.",
       src_h: "Where to learn it", src_trainer: "Trainer", src_vendor: "Vendor", src_drop: "Drops from", src_quest: "Quest reward", src_none: "No known source in the Classic database.",
@@ -772,12 +773,24 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     profList = Object.keys(RECEPT.profs).map(function (k) { return { id: +k, name: RECEPT.profs[k], n: counts[k] || 0 }; }).filter(function (p) { return p.n > 0; })
       .sort(function (a, b) { return a.name.localeCompare(b.name); });
   }
+  // Nivåerna som underkategorier under ett yrke (Joakim 2026-11-16): All, sedan de fyra nivåerna med spelets gränser.
+  var TIERS = [[1, 74], [75, 149], [150, 224], [225, 300]];
+  function tierOf(skill) { return skill >= 225 ? 3 : skill >= 150 ? 2 : skill >= 75 ? 1 : 0; }
   function tierName(skill) { return t(skill >= 225 ? "tier_4" : skill >= 150 ? "tier_3" : skill >= 75 ? "tier_2" : "tier_1"); }   // 1–74 Apprentice, 75–149 Journeyman, 150–224 Expert, 225–300 Artisan
   function drawCats() {
     if (mode === "cr") {
       $("cats").innerHTML = "<h2>" + t("cr_h") + "</h2>" + profList.map(function (p, i) {
         var ic = ASSET_BASE && PROF_ICON[p.name] ? '<img class="ci" src="' + ASSET_BASE + "icons/cat-" + PROF_ICON[p.name] + '.jpg" alt="">' : "";
-        return '<button class="cat" type="button" data-cat="' + i + '" aria-pressed="' + (catSel === i) + '" title="' + esc(p.name) + '">' + ic + esc(p.name) + "<span>" + num(p.n) + "</span></button>";
+        var h = '<button class="cat" type="button" data-cat="' + i + '" aria-pressed="' + (catSel === i && subSel < 1) + '" title="' + esc(p.name) + '">' + ic + esc(p.name) + "<span>" + num(p.n) + "</span></button>";
+        if (catSel !== i) return h;
+        var cnt = [0, 0, 0, 0];
+        crRows.forEach(function (r) { if (r.prof === p.id) cnt[tierOf(r.skill)]++; });
+        h += '<button class="cat sub" type="button" data-cat="' + i + '" data-sub="0" aria-pressed="' + (subSel < 1) + '">' + t("cr_all") + "<span>" + num(p.n) + "</span></button>";
+        TIERS.forEach(function (tr, k) {
+          h += '<button class="cat sub" type="button" data-cat="' + i + '" data-sub="' + (k + 1) + '" aria-pressed="' + (subSel === k + 1) + '" title="' + esc(t("tier_" + (k + 1))) + '">' +
+            t("tier_" + (k + 1)) + ' <span class="dim">' + tr[0] + "–" + tr[1] + "</span><span>" + num(cnt[k]) + "</span></button>";
+        });
+        return h;
       }).join("");
       $("cats").hidden = false;
       return;
@@ -864,7 +877,8 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     var q = query;
     if (mode === "cr") {
       var pid = catSel >= 0 && profList[catSel] ? profList[catSel].id : 0;
-      view = crRows.filter(function (r) { return (!pid || r.prof === pid) && (!q || r.lower.indexOf(q) >= 0); });
+      var tier = subSel >= 1 ? TIERS[subSel - 1] : null;
+      view = crRows.filter(function (r) { return (!pid || r.prof === pid) && (!tier || (r.skill >= tier[0] && r.skill <= tier[1])) && (!q || r.lower.indexOf(q) >= 0); });
       var ck = sortKey, cd = sortDir;
       view.sort(function (a, b) {
         if (ck === "name") return cd * a.name.localeCompare(b.name, "sv");
