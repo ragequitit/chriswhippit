@@ -64,30 +64,33 @@ body {
 }
 .win { width: 81%; max-width: 1560px; margin: 0 auto; background: var(--panel); border: 1px solid var(--bronze); border-radius: 7px;
   box-shadow: inset 0 0 0 1px var(--line), 0 14px 36px rgba(0, 0, 0, .42); }
-.top { display: flex; align-items: center; gap: 16px; min-height: 112px; padding: 12px 18px; flex-wrap: wrap;
+.top { display: flex; align-items: center; gap: 16px; min-height: 104px; padding: 14px 18px; flex-wrap: wrap;
   background: linear-gradient(#2a1e15, #130F0D); border-bottom: 1px solid var(--line); border-radius: 7px 7px 0 0;
   box-shadow: inset 0 1px 0 rgba(229, 180, 106, .10); }
 /* Fraktionston i rubriklisten (Joakim 2026-11-16): Horde-röd eller Alliance-blå, svagt, så hela sidan följer flippen. */
 .fa-horde .top { background: linear-gradient(#3b1a13, #1a100c 70%, #130F0D); }
 .fa-alliance .top { background: linear-gradient(#17243d, #10151f 70%, #130F0D); }
+.home { display: flex; align-items: center; gap: 16px; color: inherit; text-decoration: none; border-radius: 6px; }
+.home:hover h1 { color: var(--edge); }
+.home:focus-visible { outline: 2px solid var(--edge); outline-offset: 4px; }
 .logo { flex: none; width: 80px; height: 80px; object-fit: contain; display: block; }
 .logo:not([src]) { display: none; }
 .title { min-width: 0; flex: 0 1 auto; }
 h1 { font-family: var(--display); font-weight: 500; font-size: 36px; margin: 0; color: var(--gold); letter-spacing: .06em; line-height: 1.1; text-wrap: balance; }
 .sub { color: var(--grey); margin-top: 2px; font-size: 18px; letter-spacing: .01em; }
 /* Marknaden: två flippar, Normal/PvP och Horde/Alliance (Joakim 2026-11-16), de fyra husen Blizzard ger för EU. */
-.mkt { display: inline-flex; gap: 10px; align-self: center; margin-left: 28px; flex: 0 0 auto; }
+.mkt { display: inline-flex; gap: 10px; align-self: center; align-items: stretch; margin-left: 28px; flex: 0 0 auto; }
 .flip { display: inline-flex; border: 1px solid var(--line); border-radius: 4px; overflow: hidden; }
 .flip button { all: unset; cursor: pointer; height: 34px; padding: 0 14px; font-size: 14.5px; color: var(--grey); display: inline-flex; align-items: center; gap: 7px; }
 .flip button + button { border-left: 1px solid var(--line); }
 .flip button[aria-pressed=true] { color: var(--gold); background: var(--sel); box-shadow: inset 0 -2px 0 var(--edge); }
 /* Stående: valet går uppifrån och ner (Joakim 2026-11-16), aktiv rad får en guldkant till vänster. */
 .flip.v { flex-direction: column; }
-.flip.v button { height: 36px; min-width: 96px; justify-content: flex-start; }
+.flip.v button { height: 38px; flex: 1 1 auto; min-width: 96px; justify-content: flex-start; }
 .flip.v button + button { border-left: 0; border-top: 1px solid var(--line); }
 .flip.v button[aria-pressed=true] { box-shadow: inset 3px 0 0 var(--edge); }
-.flip.fac button { height: 48px; padding: 0 14px 0 8px; min-width: 140px; }
-.flip.fac .fi { width: 40px; height: 40px; }
+.flip.fac button { height: 38px; padding: 0 14px 0 8px; min-width: 136px; }
+.flip.fac .fi { width: 30px; height: 30px; }
 .flip button:focus-visible { outline: 2px solid var(--edge); outline-offset: -2px; }
 .flip .fi { width: 22px; height: 22px; object-fit: contain; display: block; }
 .flip .fi:not([src]) { display: none; }
@@ -330,11 +333,13 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
 
 <div class="win">
   <header class="top">
+    <a class="home" id="home" href="#" data-t-title="home_tip" title="">
     <img class="logo" id="logo" alt="" width="80" height="80">
     <div class="title">
       <h1 data-t="title">Auktionshuset</h1>
       <div class="sub">WoW Forever</div>
     </div>
+    </a>
         <span class="mkt" role="group" data-t-aria="market_label" aria-label="Marknad">
           <span class="flip v fac" role="group">
             <button type="button" data-fa="horde" aria-pressed="true"><img class="fi" data-icon="faction-horde.png" alt="">Horde</button>
@@ -518,7 +523,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       empty: "No item matches the search.", more: "Show more (%1 more)", count: "%1 items",
       tab_item: "Item", tab_watch: "My list", pick: "Pick an item in the list.",
       foot3: "Independent fan site, not affiliated with Blizzard Entertainment. World of Warcraft is a trademark of Blizzard Entertainment, Inc. Auction data from Blizzard's API.",
-      scan_at: "Updated %1 at %2", on_ah: "%1 items on the auction house", market_label: "Market", search_btn: "Search", col_fav: "Fav",
+      scan_at: "Updated %1 at %2", home_tip: "Back to the start: all items, latest prices", on_ah: "%1 items on the auction house", market_label: "Market", search_btn: "Search", col_fav: "Fav",
       hist_loading: "Loading history…", hist_fail: "The history could not be loaded.", today: "today", item_n: "Item %1",
       copy_link: "Copy link", copied: "Link copied", star_add: "Watch this item", star_del: "Remove from my list", star_lbl_add: "Watch", star_lbl_on: "In my list",
       not_listed: "not listed now", remove: "Remove", watch_sub: "Saved in your browser, only you can see it.",
@@ -1195,6 +1200,17 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   });
   $("q").addEventListener("input", function () { query = this.value.trim().toLowerCase(); refresh(); });
   function toTop() { var lb = document.querySelector(".left .scroll"); if (lb) lb.scrollTop = 0; }
+  // Hem (Joakim 2026-11-16): medaljongen eller rubriken = som Search med tom ruta: ingen sökning, ingen kategori, överst,
+  // och de senaste uppgifterna hämtas.
+  $("home").addEventListener("click", function (e) {
+    e.preventDefault();
+    query = ""; $("q").value = "";
+    catSel = -1; subSel = -1; sub2Sel = -1;
+    openId = null;
+    if (D) { drawCats(); refresh(); }
+    toTop(); window.scrollTo(0, 0);
+    update();
+  });
   function setMode(m) {
     if (m === mode) return;
     mode = m;
