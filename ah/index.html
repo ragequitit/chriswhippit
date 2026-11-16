@@ -190,7 +190,21 @@ td.nm, .watch td:first-child { text-align: left; white-space: nowrap; max-width:
 .arhead .lnk { float: none; margin-left: auto; }
 .arbody { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 10px 22px; align-items: start; }
 .arside { min-width: 0; } .arside h3 { margin: 12px 0 6px; }
-.dollwrap { position: sticky; top: 0; }   /* dockan står kvar medan yrkena rullar (Joakim 2026-11-16) */
+.dollwrap { position: sticky; top: 0; max-height: calc(100vh - 236px); overflow-y: auto; scrollbar-width: thin; scrollbar-color: var(--edge) var(--inset); padding-right: 4px; }   /* dockan står kvar medan yrkena rullar (Joakim 2026-11-16); rullar själv om kortet är högre än rutan */
+.dollwrap h3 { margin: 12px 0 6px; width: 100%; }
+.arfacts.stats { grid-template-columns: repeat(2, minmax(100px, 1fr)); border-top: 0; padding-top: 0; }
+.arfacts.stats dd small { font-weight: 400; font-size: 12px; }
+.arpvp { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; width: 100%; font-size: 14px; }
+.arpvp .hk b { color: var(--gold); }
+.rank { display: inline-flex; align-items: center; gap: 6px; padding: 2px 9px 2px 4px; border-radius: 12px; border: 1px solid var(--bronze); background: linear-gradient(#3a2a16, #221709); color: var(--gold); font-size: 12.5px; white-space: nowrap; }
+.rank b { display: inline-grid; place-items: center; width: 18px; height: 18px; border-radius: 50%; background: var(--edge); color: #1a1208; font-size: 11px; }
+.mounts { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 8px; width: 100%; }
+.mount { display: grid; gap: 4px; justify-items: center; font-size: 12px; text-align: center; color: var(--fg); }
+.mount img, .mount .noimg { width: 96px; height: 96px; object-fit: cover; border-radius: 6px; border: 1px solid var(--line); background: var(--inset); }
+.statlist { width: 100%; font-size: 13px; } .statlist > div { display: flex; justify-content: space-between; gap: 10px; padding: 3px 0; border-bottom: 1px solid var(--line); }
+.statlist .scat { display: block; color: var(--gold); font-family: var(--display); font-size: 12px; letter-spacing: .04em; text-transform: uppercase; padding-top: 8px; border-bottom: 0; }
+.statlist b { white-space: nowrap; }
+.roster .rank { font-size: 11.5px; padding: 1px 7px 1px 3px; } .roster .rank b { width: 15px; height: 15px; font-size: 10px; }
 .known .craft th { position: static; }      /* rubrikraden ska inte fastna överst */
 .craft tr.tierhd td { text-align: left; color: var(--gold); font-family: var(--display); font-size: 12.5px; letter-spacing: .04em; text-transform: uppercase; padding-top: 8px; border-bottom: 1px solid var(--line); background: none; }
 .craft tbody tr[aria-selected=true] td { background: var(--sel); }
@@ -233,7 +247,7 @@ td.nm, .watch td:first-child { text-align: left; white-space: nowrap; max-width:
 .known { margin: 0 0 6px; }
 .known .craft td.nm { text-align: left; width: 60%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 0; }
 .known .craft td, .known .craft th { padding: 4px 6px; font-size: 13px; }
-.roster td.nm { width: 55%; } .roster a { color: inherit; text-decoration: none; } .roster a:hover { color: var(--gold); }
+.roster td.nm { width: 40%; } .roster td.pvp, .roster th.pvp { text-align: left; } .roster a { color: inherit; text-decoration: none; } .roster a:hover { color: var(--gold); }
 .known .craft tbody tr { cursor: pointer; } .known .craft tbody tr:hover td { background: var(--hover); }
 .crq { width: 100%; box-sizing: border-box; height: 32px; margin: 6px 0 8px; padding: 0 10px; border-radius: 4px; border: 1px solid var(--line); background: var(--inset); color: var(--fg); font: inherit; font-size: 13.5px; }
 .crq:focus-visible { outline: 2px solid var(--edge); }
@@ -656,7 +670,8 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       ar_level: "Level %1 %2 %3", ar_guild: "Guild", ar_player: "Player", ar_picnote: "Picture rendered by Blizzard – it can lag behind the gear or show the wrong character.",
       ar_craft: "Known recipes", ar_sells: "Sells for", ar_cost: "Cost", ar_profit: "Profit", ar_noprice: "no price", ar_nofr: "Recipe names are not available right now.", ar_ilvl: "Item level",
       ar_crafters: "Who can craft what", ar_crafters_load: "Loading professions… %1 / %2", ar_crafters_q: "Recipe name, e.g. Bolt of Woolen Cloth", ar_nobody: "Nobody in the guild knows a recipe with that name.",
-      ar_nobody_p: "No professions found in the guild.", skill_unknown: "skill requirement unknown", ar_friends: "Friends", ar_recipes_n: "%1 rec.", ar_pick: "Open a profession and pick a recipe to see cost, reagents and profit here.", skill_unknown_h: "Skill requirement unknown", fr_add: "Add to friends", fr_del: "Remove from friends", ar_open_cr: "Open in Professions", ar_last: "Last seen", ar_mounts: "Mounts", ar_pets: "Pets", ar_members: "Members", ar_faction: "Faction",
+      ar_nobody_p: "No professions found in the guild.", skill_unknown: "skill requirement unknown", ar_friends: "Friends", ar_recipes_n: "%1 rec.", ar_quests: "Quests done", ar_general: "General", st_health: "Health", st_str: "Strength", st_agi: "Agility", st_sta: "Stamina", st_int: "Intellect", st_spi: "Spirit", st_armor: "Armor", st_crit: "Crit", st_scrit: "Spell crit", st_dodge: "Dodge",
+      ar_pvp: "PvP", pvp_hk: "honorable kills", pvp_norank: "No rank yet", pvp_rank_n: "PvP rank %1", ar_stats: "Statistics", col_hk: "HK", col_pvp: "PvP rank", ar_pick: "Open a profession and pick a recipe to see cost, reagents and profit here.", skill_unknown_h: "Skill requirement unknown", fr_add: "Add to friends", fr_del: "Remove from friends", ar_open_cr: "Open in Professions", ar_last: "Last seen", ar_mounts: "Mounts", ar_pets: "Pets", ar_members: "Members", ar_faction: "Faction",
       ar_prof: "Professions", ar_prof2: "Secondary", ar_rep: "Reputation", ar_recipes: "%1 recipes known", ar_roster: "Roster", ar_rank: "Rank", ar_noimg: "No picture yet",
       ar_open: "Open in the armory", slot_HEAD: "Head", slot_NECK: "Neck", slot_SHOULDER: "Shoulder", slot_BACK: "Back", slot_CHEST: "Chest", slot_SHIRT: "Shirt", slot_TABARD: "Tabard",
       slot_WRIST: "Wrist", slot_HANDS: "Hands", slot_WAIST: "Waist", slot_LEGS: "Legs", slot_FEET: "Feet", slot_FINGER_1: "Ring", slot_FINGER_2: "Ring", slot_TRINKET_1: "Trinket",
@@ -986,6 +1001,38 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     });
     return h + "</tbody></table>";
   }
+  // Under dockan (Joakim 2026-11-16): siffrorna som i karaktärsfönstret, PvP-rank med honorable kills, mounts med bild,
+  // gjorda quests och spelets egen statistik (hopfällbar). PvP-rankerna 1–14 per fraktion som i Classic.
+  var PVP_RANKS = { ALLIANCE: ["", "Private", "Corporal", "Sergeant", "Master Sergeant", "Sergeant Major", "Knight", "Knight-Lieutenant", "Knight-Captain", "Knight-Champion", "Lieutenant Commander", "Commander", "Marshal", "Field Marshal", "Grand Marshal"],
+    HORDE: ["", "Scout", "Grunt", "Sergeant", "Senior Sergeant", "First Sergeant", "Stone Guard", "Blood Guard", "Legionnaire", "Centurion", "Champion", "Lieutenant General", "General", "Warlord", "High Warlord"] };
+  function rankName(faction, r) { var a = PVP_RANKS[faction === "ALLIANCE" ? "ALLIANCE" : "HORDE"]; return r > 0 && a[r] ? a[r] : ""; }
+  function rankBadge(faction, r) { var n = rankName(faction, r); return n ? '<span class="rank r' + r + '" title="' + t("pvp_rank_n", r) + '"><b>' + r + "</b> " + esc(n) + "</span>" : ""; }
+  var STAT_PICK = ["Total kills", "Total deaths", "Quests completed", "Total Honorable Kills", "Fish caught", "Flight paths taken", "Number of times hearthed", "Food eaten", "Total 5-player dungeons entered", "Creature type killed the most"];
+  var arStatsOpen = false;
+  function pct(v) { return v == null ? "–" : (Math.round(v * 100) / 100) + "%"; }
+  function cardHtml(d) {
+    var s = d.stats, h = "";
+    if (s) {
+      var row = function (lbl, v, sub) { return "<div><dt>" + lbl + "</dt><dd>" + v + (sub ? ' <small class="dim">' + sub + "</small>" : "") + "</dd></div>"; };
+      var attr = function (lbl, a) { return a ? row(lbl, num(a.eff), a.eff !== a.base ? "(" + num(a.base) + ")" : "") : ""; };
+      h += "<h3>" + t("ar_general") + '</h3><dl class="arfacts stats">' + row(t("st_health"), num(s.health)) + row(esc(s.powerType || "Power"), num(s.power)) +
+        attr(t("st_str"), s.str) + attr(t("st_agi"), s.agi) + attr(t("st_sta"), s.sta) + attr(t("st_int"), s.int) + attr(t("st_spi"), s.spi) +
+        row(t("st_armor"), num(s.armor || 0)) + row(t("st_crit"), pct(s.meleeCrit)) + row(t("st_scrit"), pct(s.spellCrit)) + (s.dodge ? row(t("st_dodge"), pct(s.dodge)) : "") + "</dl>";
+    }
+    if (d.pvp) h += "<h3>" + t("ar_pvp") + '</h3><div class="arpvp">' + (rankBadge(d.faction, d.pvp.rank) || '<span class="dim">' + t("pvp_norank") + "</span>") + '<span class="hk"><b>' + num(d.pvp.hk) + "</b> " + t("pvp_hk") + "</span></div>";
+    if (d.mountList && d.mountList.length) h += "<h3>" + t("ar_mounts") + " (" + d.mountList.length + ')</h3><div class="mounts">' + d.mountList.map(function (m) {
+      return '<div class="mount">' + (m.img ? '<img src="' + esc(m.img) + '" alt="" loading="lazy">' : '<span class="noimg"></span>') + "<span>" + esc(m.name) + "</span></div>";
+    }).join("") + "</div>";
+    if (d.statList && d.statList.length) {
+      var pick = STAT_PICK.map(function (n) { return d.statList.find(function (x) { return x[1] === n; }); }).filter(Boolean);
+      var all = {};
+      d.statList.forEach(function (x) { (all[x[0]] = all[x[0]] || []).push(x); });
+      h += '<button class="prof rephd" type="button" data-statstoggle="1" aria-expanded="' + arStatsOpen + '"><span class="pn"><span>' + t("ar_stats") + " (" + d.statList.length + ')</span></span><span class="chev">' + (arStatsOpen ? "▾" : "▸") + "</span></button>" +
+        '<div class="statlist">' + (arStatsOpen ? Object.keys(all).map(function (cat) { return '<div class="scat">' + esc(cat) + "</div>" + all[cat].map(function (x) { return "<div><span>" + esc(x[1]) + (x[3] ? ' <small class="dim">' + esc(x[3]) + "</small>" : "") + "</span><b>" + num(x[2]) + "</b></div>"; }).join(""); }).join("")
+          : pick.map(function (x) { return "<div><span>" + esc(x[1]) + (x[3] ? ' <small class="dim">' + esc(x[3]) + "</small>" : "") + "</span><b>" + num(x[2]) + "</b></div>"; }).join("")) + "</div>";
+    }
+    return h;
+  }
   function renderChar(d) {
     var pic = d.media && (d.media["main-raw"] || d.media["main-sd-raw"]), fr = isFriend(d.slug);
     var mid = '<div class="arhead"><h2 class="q1">' + esc(d.name + " " + d.surname) + '</h2><button class="star fr" type="button" data-friend="' + esc(d.slug) + '" data-label="' + esc(d.name + " " + d.surname) + '" aria-pressed="' + fr + '" title="' + t(fr ? "fr_del" : "fr_add") + '">' + (fr ? "★" : "☆") + "</button>" +
@@ -999,7 +1046,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       '<div class="col">' + SLOT_R.map(function (sl) { return slotHtml(d, sl); }).join("") + "</div></div>" +
       '<div class="picnote">' + t("ar_picnote") + "</div>" +
       '<dl class="arfacts"><div><dt>' + t("ar_ilvl") + "</dt><dd>" + d.ilvl + "</dd></div><div><dt>" + t("ar_last") + "</dt><dd>" + when2(d.lastLogin) + "</dd></div>" +
-      "<div><dt>" + t("ar_mounts") + "</dt><dd>" + d.mounts + "</dd></div><div><dt>" + t("ar_pets") + "</dt><dd>" + d.pets + "</dd></div></dl></div>" +
+      "<div><dt>" + t("ar_quests") + "</dt><dd>" + num((d.quests || []).length) + "</dd></div><div><dt>" + t("ar_pets") + "</dt><dd>" + d.pets + "</dd></div></dl>" + cardHtml(d) + "</div>" +
       '<div class="arside">' +
       '<button class="prof rephd" type="button" data-reptoggle="1" aria-expanded="' + arRepOpen + '"><span class="pn"><span>' + t("ar_rep") + " (" + d.reputations.length + ')</span></span><span class="chev">' + (arRepOpen ? "▾" : "▸") + "</span></button>" +
       (arRepOpen ? '<div class="reps">' + repsHtml(d) + "</div>" : "") +
@@ -1017,13 +1064,16 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     arShow(mid, right);
   }
   function renderGuild(d) {
+    // PvP-rank och honorable kills fylls i när "Who can craft what" hämtat medlemmarna (samma anrop ger pvp-summary).
+    var cr = crafters[d.slug] || null;
     var rows = d.members.slice().sort(function (a, b) { return b.level - a.level || a.name.localeCompare(b.name); }).map(function (m) {
-      var slug = arSlug(m.name + " " + m.surname);
-      return '<tr><td class="nm"><a href="#player=' + esc(slug) + '" data-ar="char" data-slug="' + esc(slug) + '">' + esc(m.name + " " + m.surname) + "</a></td><td>" + m.level + "</td><td>" + (m.cls ? esc((m.race ? m.race + " " : "") + m.cls) : '<span class="dim">–</span>') + "</td><td>" + (m.rank === 0 ? "GM" : m.rank) + "</td></tr>";
+      var slug = arSlug(m.name + " " + m.surname), pv = cr && cr[slug] && cr[slug].pvp;
+      return '<tr><td class="nm"><a href="#player=' + esc(slug) + '" data-ar="char" data-slug="' + esc(slug) + '">' + esc(m.name + " " + m.surname) + "</a></td><td>" + m.level + "</td><td>" + (m.cls ? esc((m.race ? m.race + " " : "") + m.cls) : '<span class="dim">–</span>') + "</td><td>" + (m.rank === 0 ? "GM" : m.rank) +
+        (cr ? '</td><td class="pvp">' + (pv ? rankBadge(d.faction, pv.rank) || '<span class="dim">–</span>' : '<span class="dim">–</span>') + "</td><td>" + (pv ? num(pv.hk) : '<span class="dim">–</span>') : "") + "</td></tr>";
     }).join("");
     var mid = '<div class="arhead"><h2 class="q1">&lt;' + esc(d.name) + '&gt;</h2><span class="sub2">' + (d.faction === "ALLIANCE" ? "Alliance" : "Horde") + " · " + num(d.count) + " " + t("ar_members").toLowerCase() + "</span>" +
       '<button class="lnk" type="button" data-copyany="#guild=' + esc(d.slug) + '" title="' + t("copy_link") + '">' + t("copy_link") + "</button></div>" +
-      '<div class="roster-box"><table class="roster"><thead><tr><th class="nm">' + t("col_item").replace(/.*/, "Name") + "</th><th>" + t("col_lvl") + "</th><th>Class</th><th>" + t("ar_rank") + "</th></tr></thead><tbody>" + rows + "</tbody></table></div>";
+      '<div class="roster-box"><table class="roster"><thead><tr><th class="nm">' + t("col_item").replace(/.*/, "Name") + "</th><th>" + t("col_lvl") + "</th><th>Class</th><th>" + t("ar_rank") + "</th>" + (cr ? '<th class="pvp">' + t("col_pvp") + "</th><th>" + t("col_hk") + "</th>" : "") + "</tr></thead><tbody>" + rows + "</tbody></table></div>";
     var right = '<div class="strip"><h2 class="q1">' + esc(d.name) + "</h2><small>" + t("ar_roster") + "</small></div>" +
       '<dl class="facts"><div><dt>' + t("ar_faction") + "</dt><dd>" + (d.faction === "ALLIANCE" ? "Alliance" : "Horde") + "</dd></div><div><dt>" + t("ar_members") + "</dt><dd>" + num(d.count) + "</dd></div></dl>" +
       '<div id="crafters">' + (crafters[d.slug] ? "" : '<button class="star all" type="button" data-crafters="1">⚒ ' + t("ar_crafters") + "</button>") + "</div>";
@@ -1041,11 +1091,11 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       if (!list.length) return Promise.resolve();
       var x = list.shift();
       return fetch(ARMORY_API + "/profs/" + encodeURIComponent(x.slug)).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; })
-        .then(function (j) { if (j) out[x.slug] = { m: x.m, profs: j.professions }; done++; var n = box.querySelector(".note"); if (n) n.textContent = t("ar_crafters_load", done, done + list.length); return next(); });
+        .then(function (j) { if (j) out[x.slug] = { m: x.m, profs: j.professions, pvp: j.pvp || null }; done++; var n = box.querySelector(".note"); if (n) n.textContent = t("ar_crafters_load", done, done + list.length); return next(); });
     };
     Promise.all([loadFR(), next(), next(), next(), next(), next(), next()]).then(function () {
       crafters[d.slug] = out;
-      if (arData && arData.kind === "guild" && arData.slug === d.slug) drawCrafters(d);
+      if (arData && arData.kind === "guild" && arData.slug === d.slug) renderGuild(d);   // ritar om rostern med PvP-kolumnerna och crafters
     });
   }
   function drawCrafters(d) {
@@ -1748,6 +1798,8 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     if (sec) { arSec[sec.dataset.arsec] = !arSec[sec.dataset.arsec]; try { localStorage.setItem(SEC_KEY, JSON.stringify(arSec)); } catch (e2) {} drawCats(); return; }
     var rt = e.target.closest("[data-reptoggle]");
     if (rt && arData && arData.kind === "character") { arRepOpen = !arRepOpen; renderChar(arData); return; }
+    var stt = e.target.closest("[data-statstoggle]");
+    if (stt && arData && arData.kind === "character") { arStatsOpen = !arStatsOpen; renderChar(arData); return; }
     var ab = e.target.closest("[data-arback]");
     if (ab && arData && arData.kind === "character") { arRec = 0; renderChar(arData); return; }
     var ar2 = e.target.closest("[data-arrec]");   // känt recept i Armory → receptrutan i högerpanelen
