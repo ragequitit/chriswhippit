@@ -56,11 +56,14 @@ body {
 .title { min-width: 0; flex: 1 1 260px; }
 h1 { font-family: var(--display); font-weight: 700; font-size: 22px; margin: 0; color: var(--gold); letter-spacing: .02em; text-wrap: balance; }
 .sub { color: var(--grey); margin-top: 2px; }
-/* Marknadsväljaren: de fyra husen Blizzard ger (EU PvP/Normal × Horde/Alliance). */
-.msel { all: unset; cursor: pointer; color: var(--gold); border-bottom: 1px dotted var(--edge); padding-right: 14px;
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0h10L5 6z' fill='%23d6a83b'/%3E%3C/svg%3E") no-repeat right center; }
-.msel option { background: #14181e; color: var(--fg); }
-.msel:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+/* Marknaden: två flippar, Normal/PvP och Horde/Alliance (Joakim 2026-11-16), de fyra husen Blizzard ger för EU. */
+.mkt { display: inline-flex; gap: 8px; vertical-align: middle; margin-left: 4px; }
+.flip { display: inline-flex; border: 1px solid var(--line); border-radius: 4px; overflow: hidden; }
+.flip button { all: unset; cursor: pointer; height: 24px; padding: 0 9px; font-size: 12px; color: var(--grey); display: inline-flex; align-items: center; gap: 5px; }
+.flip button + button { border-left: 1px solid var(--line); }
+.flip button[aria-pressed=true] { color: var(--gold); background: var(--sel); box-shadow: inset 0 -2px 0 var(--edge); }
+.flip button:focus-visible { outline: 2px solid var(--gold); outline-offset: -2px; }
+.flip svg { width: 14px; height: 14px; display: block; }
 /* Sökknappen som i spelets AH: röd platta, guldtext. */
 .wowbtn { height: 34px; padding: 0 22px; border-radius: 4px; cursor: pointer; font: inherit; font-size: 14px; color: #ffd100;
   background: linear-gradient(#a52a22, #6b0f0f 55%, #4a0909); border: 1px solid #b08a3a; box-shadow: inset 0 1px 0 rgba(255, 180, 160, .35), 0 1px 2px rgba(0, 0, 0, .6);
@@ -278,7 +281,15 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     <div class="coin" aria-hidden="true">W</div>
     <div class="title">
       <h1 data-t="title">Auktionshuset</h1>
-      <div class="sub">WoW Forever · <select id="marketSel" class="msel" data-t-aria="market_label" aria-label="Marknad"></select></div>
+      <div class="sub">WoW Forever
+        <span class="mkt" role="group" data-t-aria="market_label" aria-label="Marknad">
+          <span class="flip" role="group"><button type="button" data-rs="normal" aria-pressed="false">Normal</button><button type="button" data-rs="pvp" aria-pressed="true">PvP</button></span>
+          <span class="flip" role="group">
+            <button type="button" data-fa="horde" aria-pressed="true"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1 15 8 8 15 1 8z" fill="#b3261e"/><path d="M8 4.5 11.5 8 8 11.5 4.5 8z" fill="#2a0806"/></svg>Horde</button>
+            <button type="button" data-fa="alliance" aria-pressed="false"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1 14 3.5V8c0 3.6-2.6 6.2-6 7-3.4-.8-6-3.4-6-7V3.5z" fill="#2f6fd6"/><path d="M8 4v8M5 7h6" stroke="#ffd100" stroke-width="1.6" stroke-linecap="round"/></svg>Alliance</button>
+          </span>
+        </span>
+      </div>
     </div>
     <div class="scan"><b id="scanTime" data-t="loading">Läser in scannen…</b><span id="scanInfo"></span></div>
     <div class="lang" role="group" data-t-aria="lang_label" aria-label="Språk">
@@ -365,6 +376,16 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   var MKEY = "whippit-ah-market";
   var house = (function () { try { var h = +localStorage.getItem(MKEY); return h === 110 || h === 111 || h === 114 ? h : 113; } catch (e) { return 113; } })();
   function dataUrl() { return DATA_BASE + (house === 113 ? "data.json" : "data-" + house + ".json"); }
+  // Husnummer per ruleset och sida (Blizzards API för EU): PvP Horde 113, PvP Alliance 110, Normal Horde 114, Normal Alliance 111.
+  var HOUSES = { pvp: { horde: 113, alliance: 110 }, normal: { horde: 114, alliance: 111 } };
+  function houseParts(h) { return h === 110 ? ["pvp", "alliance"] : h === 114 ? ["normal", "horde"] : h === 111 ? ["normal", "alliance"] : ["pvp", "horde"]; }
+  function drawMarket() {
+    var hp = houseParts(house), bs = document.querySelectorAll(".mkt button");
+    for (var i = 0; i < bs.length; i++) {
+      var rs = bs[i].getAttribute("data-rs"), fa = bs[i].getAttribute("data-fa");
+      bs[i].setAttribute("aria-pressed", (rs && rs === hp[0]) || (fa && fa === hp[1]) ? "true" : "false");
+    }
+  }
   var histCache = {};
   function histFile(day, b) {
     var k = house + "/" + day + "/" + b;
@@ -667,8 +688,8 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   // Raden överst och knappen för namnlösa varor (ritas om vid språkbyte).
   function header() {
     var w = when(D.t);
-    var ms = $("marketSel"), mk = D.markets || {};
-    ms.innerHTML = Object.keys(mk).map(function (h) { return '<option value="' + h + '"' + (+h === D.house ? " selected" : "") + ">" + esc(mk[h]) + "</option>"; }).join("");
+    if (D.house) house = D.house;
+    drawMarket();
     $("scanTime").textContent = t("scan_at", w.day, w.hm);
     $("scanInfo").textContent = t("on_ah", num(rows.length));
     var unnamed = rows.length - D.named;
@@ -1154,9 +1175,16 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     $("scanInfo").textContent = t("err2");
   }
   applyStatic();
-  $("marketSel").addEventListener("change", function () {
-    house = +this.value;
-    try { localStorage.setItem(MKEY, String(house)); } catch (e) {}
+  document.querySelector(".mkt").addEventListener("click", function (e) {
+    var b = e.target.closest("button");
+    if (!b) return;
+    var hp = houseParts(house);
+    var rs = b.getAttribute("data-rs") || hp[0], fa = b.getAttribute("data-fa") || hp[1];
+    var h = HOUSES[rs][fa];
+    if (h === house) return;
+    house = h;
+    drawMarket();
+    try { localStorage.setItem(MKEY, String(house)); } catch (e2) {}
     lastUpdate = null;
     fetch(dataUrl(), { cache: "no-store" }).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
       .then(function (d) { load(d, true); }).catch(function () { showError(); });
