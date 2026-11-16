@@ -223,9 +223,21 @@ td.nm, .watch td:first-child { text-align: left; white-space: nowrap; max-width:
 .known .craft td.nm { text-align: left; width: 60%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 0; }
 .known .craft td, .known .craft th { padding: 4px 6px; font-size: 13px; }
 .roster td.nm { width: 55%; } .roster a { color: inherit; text-decoration: none; } .roster a:hover { color: var(--gold); }
+.known .craft tbody tr { cursor: pointer; } .known .craft tbody tr:hover td { background: var(--hover); }
+.crq { width: 100%; box-sizing: border-box; height: 32px; margin: 6px 0 8px; padding: 0 10px; border-radius: 4px; border: 1px solid var(--line); background: var(--inset); color: var(--fg); font: inherit; font-size: 13.5px; }
+.crq:focus-visible { outline: 2px solid var(--edge); }
+.crrec, .crprof { padding: 6px 0; border-top: 1px solid var(--line); font-size: 13.5px; }
+.crrec .nm { cursor: pointer; } .crrec .nm:hover { text-decoration: underline; }
+.crprof { display: grid; grid-template-columns: 26px 1fr; gap: 2px 8px; align-items: center; } .crprof .ci { width: 24px; height: 24px; border-radius: 3px; } .crprof .who { grid-column: 2; }
+.who { color: var(--grey); font-size: 13px; line-height: 1.6; } .who a { color: var(--fg); text-decoration: none; } .who a:hover { color: var(--gold); }
 .wtip .ln.c { color: var(--grey); font-size: 12px; }
 .reag td, .reag th { padding: 3px 6px; font-size: 13px; }
 .reag td:first-child { text-align: left; max-width: 0; width: 52%; overflow: hidden; text-overflow: ellipsis; }
+.reag td.st { width: 26px; max-width: none; padding: 0; text-align: center; } .reag td.st .star { font-size: 15px; padding: 2px 4px; }
+.reag td.st + td { text-align: left; max-width: 0; width: 50%; overflow: hidden; text-overflow: ellipsis; }
+.h3row { display: flex; align-items: center; justify-content: space-between; gap: 8px; } .h3row h3 { margin: 0; }
+.star.all { font-size: 13px; padding: 2px 6px; border-radius: 4px; border: 1px solid var(--line); background: var(--inset); color: var(--grey); }
+.star.all:hover, .star.all[aria-pressed=true] { color: var(--gold); border-color: var(--bronze); }
 .reag .ic { width: 20px; height: 20px; vertical-align: -5px; margin-right: 6px; }
 .tag.v { color: var(--grey); }
 #list.tr th { letter-spacing: .03em; padding: 8px 8px; }
@@ -613,7 +625,9 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       ar_recent: "Recent", ar_loading: "Looking up…", ar_notfound: "No player or guild with that name. Players show up from level 10, after logging out.",
       ar_fail: "The lookup is not available right now.", ar_off: "The armory is not connected yet.",
       ar_level: "Level %1 %2 %3", ar_guild: "Guild", ar_player: "Player", ar_picnote: "Picture rendered by Blizzard – it can lag behind the gear or show the wrong character.",
-      ar_craft: "Known recipes", ar_sells: "Sells for", ar_cost: "Cost", ar_profit: "Profit", ar_noprice: "no price", ar_nofr: "Recipe names are not available right now.", ar_ilvl: "Item level", ar_last: "Last seen", ar_mounts: "Mounts", ar_pets: "Pets", ar_members: "Members", ar_faction: "Faction",
+      ar_craft: "Known recipes", ar_sells: "Sells for", ar_cost: "Cost", ar_profit: "Profit", ar_noprice: "no price", ar_nofr: "Recipe names are not available right now.", ar_ilvl: "Item level",
+      ar_crafters: "Who can craft what", ar_crafters_load: "Loading professions… %1 / %2", ar_crafters_q: "Recipe name, e.g. Bolt of Woolen Cloth", ar_nobody: "Nobody in the guild knows a recipe with that name.",
+      ar_nobody_p: "No professions found in the guild.", skill_unknown: "skill requirement unknown", ar_last: "Last seen", ar_mounts: "Mounts", ar_pets: "Pets", ar_members: "Members", ar_faction: "Faction",
       ar_prof: "Professions", ar_prof2: "Secondary", ar_rep: "Reputation", ar_recipes: "%1 recipes known", ar_roster: "Roster", ar_rank: "Rank", ar_noimg: "No picture yet",
       ar_open: "Open in the armory", slot_HEAD: "Head", slot_NECK: "Neck", slot_SHOULDER: "Shoulder", slot_BACK: "Back", slot_CHEST: "Chest", slot_SHIRT: "Shirt", slot_TABARD: "Tabard",
       slot_WRIST: "Wrist", slot_HANDS: "Hands", slot_WAIST: "Waist", slot_LEGS: "Legs", slot_FEET: "Feet", slot_FINGER_1: "Ring", slot_FINGER_2: "Ring", slot_TRINKET_1: "Trinket",
@@ -639,7 +653,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       foot3: "Independent fan site, not affiliated with Blizzard Entertainment. World of Warcraft is a trademark of Blizzard Entertainment, Inc. Auction data from Blizzard's API.",
       scan_at: "Updated %1 at %2", m_faction: "Faction", m_realm: "Realm type", home_tip: "Back to the start: all items, latest prices", on_ah: "%1 items on the auction house", market_label: "Market", search_btn: "Search", col_fav: "Fav",
       hist_loading: "Loading history…", hist_fail: "The history could not be loaded.", today: "today", item_n: "Item %1",
-      copy_link: "Copy link", copied: "Link copied", star_add: "Watch this item", star_del: "Remove from my list", star_lbl_add: "Watch", star_lbl_on: "In my list",
+      copy_link: "Copy link", copied: "Link copied", star_add: "Watch this item", star_del: "Remove from my list", star_all: "All reagents to my list", star_all_del: "Remove reagents from my list", star_lbl_add: "Watch", star_lbl_on: "In my list",
       not_listed: "not listed now", remove: "Remove", watch_sub: "Saved in your browser, only you can see it.",
       watch_empty: "Empty so far. Press ☆ next to an item in the list to watch it.",
       update: "Update prices", fetching: "Fetching…", from_scan: "Prices from the scan %1 at %2",
@@ -701,6 +715,13 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     draw();
     drawWatch();
     if (selId === id) select(id, false);
+    if (mode === "cr" && selRec) selectRecipe(selRec, false);   // stjärnorna i receptets reagenstabell
+  }
+  function toggleWatchAll(ids) {   // alla reagenser i ett recept: lägg till om någon saknas, annars ta bort alla
+    var add = !ids.every(watched);
+    ids.forEach(function (id) { if (add ? !watched(id) : watched(id)) { var r = byId[id]; if (!r) return; if (add) watch.push({ id: id, name: r.name, p: r.min }); else watch = watch.filter(function (w) { return w.id !== id; }); } });
+    saveWatch(); draw(); drawWatch();
+    if (mode === "cr" && selRec) selectRecipe(selRec, false);
   }
   function starHtml(id, label) {
     var on = watched(id), tip = t(on ? "star_del" : "star_add");
@@ -903,7 +924,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     if (!rows.length) return '<div class="note">' + t("ar_nofr") + "</div>";
     return '<table class="steps craft"><thead><tr><th style="text-align:left">' + t("ar_craft") + "</th><th>" + t("ar_sells") + "</th><th>" + t("ar_profit") + '</th></tr></thead><tbody>' + rows.map(function (r) {
       var tip = r.item && byId[r.item] ? ' data-tip="' + r.item + '"' : "";
-      return "<tr" + tip + '><td class="nm ' + qcls(r.q) + '">' + esc(r.name) + "</td><td>" + (r.sell ? money(r.sell) : '<span class="dim">–</span>') + "</td><td>" +
+      return "<tr" + tip + ' data-gorec="' + r.id + '" tabindex="0"><td class="nm ' + qcls(r.q) + '">' + esc(r.name) + "</td><td>" + (r.sell ? money(r.sell) : '<span class="dim">–</span>') + "</td><td>" +
         (r.profit == null ? '<span class="dim">' + (r.sell ? t("ar_noprice") : "–") + "</span>" : '<span class="' + (r.profit >= 0 ? "up" : "down") + '">' + (r.profit >= 0 ? "+" : "−") + money(Math.abs(r.profit)) + "</span>") + "</td></tr>";
     }).join("") + "</tbody></table>";
   }
@@ -934,8 +955,53 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       '<button class="lnk" type="button" data-copyany="#guild=' + esc(d.slug) + '" title="' + t("copy_link") + '">' + t("copy_link") + "</button></div>" +
       '<div class="roster-box"><table class="roster"><thead><tr><th class="nm">' + t("col_item").replace(/.*/, "Name") + "</th><th>" + t("col_lvl") + "</th><th>Class</th><th>" + t("ar_rank") + "</th></tr></thead><tbody>" + rows + "</tbody></table></div>";
     var right = '<div class="strip"><h2 class="q1">' + esc(d.name) + "</h2><small>" + t("ar_roster") + "</small></div>" +
-      '<dl class="facts"><div><dt>' + t("ar_faction") + "</dt><dd>" + (d.faction === "ALLIANCE" ? "Alliance" : "Horde") + "</dd></div><div><dt>" + t("ar_members") + "</dt><dd>" + num(d.count) + "</dd></div></dl>";
+      '<dl class="facts"><div><dt>' + t("ar_faction") + "</dt><dd>" + (d.faction === "ALLIANCE" ? "Alliance" : "Horde") + "</dd></div><div><dt>" + t("ar_members") + "</dt><dd>" + num(d.count) + "</dd></div></dl>" +
+      '<div id="crafters">' + (crafters[d.slug] ? "" : '<button class="star all" type="button" data-crafters="1">⚒ ' + t("ar_crafters") + "</button>") + "</div>";
     arShow(mid, right);
+    if (crafters[d.slug]) drawCrafters(d);
+  }
+  // Guild: vem kan crafta vad (Joakim 2026-11-16). Yrkena hämtas per medlem (/profs/<slug>, ett Blizzard-anrop var) och
+  // recepten slås upp i forever-recept.json. Sök på receptnamn → vilka som kan det, med skill; annars yrke för yrke.
+  var crafters = {}, crQ = "";
+  function loadCrafters(d) {
+    var box = $("crafters"); if (!box) return;
+    var list = d.members.map(function (m) { return { m: m, slug: arSlug(m.name + " " + m.surname) }; }), done = 0, out = {};
+    box.innerHTML = '<div class="note">' + t("ar_crafters_load", 0, list.length) + "</div>";
+    var next = function () {
+      if (!list.length) return Promise.resolve();
+      var x = list.shift();
+      return fetch(ARMORY_API + "/profs/" + encodeURIComponent(x.slug)).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; })
+        .then(function (j) { if (j) out[x.slug] = { m: x.m, profs: j.professions }; done++; var n = box.querySelector(".note"); if (n) n.textContent = t("ar_crafters_load", done, done + list.length); return next(); });
+    };
+    Promise.all([loadFR(), next(), next(), next(), next(), next(), next()]).then(function () {
+      crafters[d.slug] = out;
+      if (arData && arData.kind === "guild" && arData.slug === d.slug) drawCrafters(d);
+    });
+  }
+  function drawCrafters(d) {
+    var box = $("crafters"), data = crafters[d.slug]; if (!box || !data) return;
+    var q = crQ.trim().toLowerCase(), h = '<div class="h3row"><h3>' + t("ar_crafters") + '</h3></div><input type="search" id="crq" class="crq" placeholder="' + t("ar_crafters_q") + '" value="' + esc(crQ) + '" autocomplete="off">';
+    if (q.length >= 2 && FRX) {
+      var who = {};   // receptId -> [{namn, skill}]
+      Object.keys(data).forEach(function (slug) { data[slug].profs.forEach(function (p) { p.recipes.forEach(function (id) { var fr = FRX.recipes[id]; if (fr && fr[0].toLowerCase().indexOf(q) >= 0) (who[id] = who[id] || []).push({ slug: slug, name: data[slug].m.name, skill: p.skill, prof: p.name }); }); }); });
+      var ids = Object.keys(who).sort(function (a, b) { return FRX.recipes[a][0].localeCompare(FRX.recipes[b][0]); }).slice(0, 40);
+      h += ids.length ? ids.map(function (id) {
+        var fr = FRX.recipes[id], out = byId[fr[2]];
+        return '<div class="crrec"><div class="nm ' + (out ? qcls(out.q) : "") + '"' + (out ? ' data-tip="' + fr[2] + '"' : "") + ' data-gorec="' + id + '">' + esc(fr[0]) + ' <small class="dim">' + esc(FRX.profs[fr[1]] || "") + "</small></div><div class=\"who\">" +
+          who[id].sort(function (a, b) { return b.skill - a.skill; }).map(function (w) { return '<a href="#player=' + esc(w.slug) + '" data-ar="char" data-slug="' + esc(w.slug) + '">' + esc(w.name) + "</a> <span class=\"dim\">" + w.skill + "</span>"; }).join(" · ") + "</div></div>";
+      }).join("") : '<div class="note">' + t("ar_nobody") + "</div>";
+    } else {
+      var byProf = {};
+      Object.keys(data).forEach(function (slug) { data[slug].profs.forEach(function (p) { if (!p.recipes.length) return; (byProf[p.name] = byProf[p.name] || []).push({ slug: slug, name: data[slug].m.name, skill: p.skill, max: p.max }); }); });
+      var names = Object.keys(byProf).sort();
+      h += names.length ? names.map(function (pn) {
+        var pi = PROF_ICON[pn], ic = pi && ASSET_BASE ? '<img class="ci" src="' + ASSET_BASE + "icons/" + pi[0] + '.jpg" alt="">' : "";
+        return '<div class="crprof">' + ic + "<b>" + esc(pn) + '</b><div class="who">' + byProf[pn].sort(function (a, b) { return b.skill - a.skill; }).map(function (w) { return '<a href="#player=' + esc(w.slug) + '" data-ar="char" data-slug="' + esc(w.slug) + '">' + esc(w.name) + "</a> <span class=\"dim\">" + w.skill + "</span>"; }).join(" · ") + "</div></div>";
+      }).join("") : '<div class="note">' + t("ar_nobody_p") + "</div>";
+    }
+    box.innerHTML = h;
+    var inp = $("crq");
+    if (inp) { inp.addEventListener("input", function () { crQ = inp.value; var pos = inp.selectionStart; drawCrafters(d); var i2 = $("crq"); if (i2) { i2.focus(); try { i2.setSelectionRange(pos, pos); } catch (e) {} } }); if (crQ) { inp.focus(); try { inp.setSelectionRange(crQ.length, crQ.length); } catch (e) {} } }
   }
   var RECEPT = null, recPromise = null, crRows = [], profList = [], selRec = null;
   // Yrkesikoner (Joakim 2026-11-16): spelets riktiga yrkesikoner via Blizzards profession media (/data/wow/media/profession/<id>),
@@ -1250,7 +1316,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   }
   function rowHtml(r) {
     if (mode === "cr") {
-      return '<tr tabindex="0" data-rid="' + r.rid + '"' + (r.rid === selRec ? ' aria-selected="true"' : "") + '><td class="fav"></td><td class="nm">' + recName(r) + "</td><td>" + r.skill +
+      return '<tr tabindex="0" data-rid="' + r.rid + '"' + (r.rid === selRec ? ' aria-selected="true"' : "") + '><td class="fav"></td><td class="nm">' + recName(r) + "</td><td>" + (r.skill || DASH) +
         "</td><td>" + (r.cost ? money(r.cost) + (r.miss ? '<span class="dim" title="' + esc(t("missing_n", r.miss)) + '"> ?</span>' : "") : DASH) + "</td><td>" + (r.sell ? money(r.sell) : DASH) +
         '</td><td class="pct">' + profitHtml(r) + '</td><td class="hide-s">' + (r.day ? '<span class="est">' + num(r.day) + "</span>" : DASH) + "</td></tr>";
     }
@@ -1462,9 +1528,13 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       (rc.n > 1 ? "<div><dt>" + t("f_makes") + "</dt><dd>" + rc.n + "</dd></div>" : "");
     var reag = rc.reagents.map(function (rg) {
       var ri = byId[rg[0]], nm = RECEPT.items[rg[0]], p = recPrice(rg[0]), vend = !(ri && ri.min > 0) && nm && nm[2] > 0;
-      return "<tr><td>" + (ri ? iconHtml(ri) : "") + '<span data-tip="' + rg[0] + '" class="' + qcls(ri ? ri.q : nm ? nm[1] : -1) + '">' + esc(nm ? nm[0] : ri ? ri.name : "Item " + rg[0]) + "</span>" +
+      // Stjärnan (Joakim 2026-11-16): reagensen hamnar i Min lista som inköpslista; bara varor som finns på AH går att spara.
+      return '<tr><td class="st">' + (ri ? starHtml(rg[0]) : "") + "</td><td>" + (ri ? iconHtml(ri) : "") + '<span data-tip="' + rg[0] + '" class="' + qcls(ri ? ri.q : nm ? nm[1] : -1) + '">' + esc(nm ? nm[0] : ri ? ri.name : "Item " + rg[0]) + "</span>" +
         (vend ? ' <span class="tag v">' + t("vendor_tag") + "</span>" : "") + "</td><td>" + rg[1] + "</td><td>" + (p ? money(p) : DASH) + "</td><td>" + (p ? money(p * rg[1]) : DASH) + "</td></tr>";
     }).join("");
+    var ahReag = rc.reagents.filter(function (rg) { return byId[rg[0]]; }).map(function (rg) { return rg[0]; });
+    var allOn = ahReag.length && ahReag.every(watched);
+    var starAll = ahReag.length ? '<button class="star all" type="button" data-starall="' + ahReag.join(",") + '" aria-pressed="' + allOn + '" title="' + t(allOn ? "star_all_del" : "star_all") + '">' + (allOn ? "★" : "☆") + " " + t(allOn ? "star_all_del" : "star_all") + "</button>" : "";
     // Källorna länkar till Wowheads Forever-sidor i en ny flik (Joakim 2026-11-16): mobs, kistor, handlare, tränare, quests.
     var wh = function (kind, id, text) { return id ? '<a class="wh" href="https://www.wowhead.com/forever/' + kind + "=" + id + '" target="_blank" rel="noopener">' + esc(text) + "</a>" : esc(text); };
     var srcs = "";
@@ -1476,10 +1546,10 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     var onlyDrop = sr.drop.length && !sr.trainer.length && !sr.vendor.length && !sr.quest.length;
     $("detail").innerHTML =
       '<div class="strip"><button class="lnk" type="button" data-copyr="' + rid + '" title="' + t("copy_link") + '"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M6.5 9.5l3-3M5 11l-1 1a2.5 2.5 0 01-3.5-3.5l2-2A2.5 2.5 0 016 6M11 5l1-1a2.5 2.5 0 013.5 3.5l-2 2A2.5 2.5 0 0110 10"/></svg>' + t("copy_link") + "</button>" +
-      (out ? iconHtml(out, true) : "") + '<h2 data-tip="' + rc.item + '" class="' + qcls(q) + '">' + esc(rc.name) + "</h2><small>" + esc(RECEPT.profs[rc.prof]) + " · " + t("requires", rc.skill + " (" + tierName(rc.skill) + ")") + (learn ? " · " + esc(learn) : "") + "</small></div>" +
+      (out ? iconHtml(out, true) : "") + '<h2 data-tip="' + rc.item + '" class="' + qcls(q) + '">' + esc(rc.name) + "</h2><small>" + esc(RECEPT.profs[rc.prof]) + " · " + (rc.skill ? t("requires", rc.skill + " (" + tierName(rc.skill) + ")") : esc(rc.cat || "") + " · " + t("skill_unknown")) + (learn ? " · " + esc(learn) : "") + "</small></div>" +
       '<dl class="facts">' + facts + "</dl>" +
       (r.miss ? '<div class="note">' + t("missing_n", r.miss) + "</div>" : "") + (!r.sell ? '<div class="note">' + t("not_on_ah") + "</div>" : "") +
-      "<div><h3>" + t("reagents") + '</h3><div class="scroll"><table class="steps reag"><thead><tr><th style="text-align:left">' + t("reagents") + "</th><th>" + t("col_qty_s") + "</th><th>" + t("col_each") + "</th><th>" + t("col_total") + "</th></tr></thead><tbody>" + reag + "</tbody></table></div></div>" +
+      '<div><div class="h3row"><h3>' + t("reagents") + "</h3>" + starAll + '</div><div class="scroll"><table class="steps reag"><thead><tr><th></th><th style="text-align:left">' + t("reagents") + "</th><th>" + t("col_qty_s") + "</th><th>" + t("col_each") + "</th><th>" + t("col_total") + "</th></tr></thead><tbody>" + reag + "</tbody></table></div></div>" +
       "<div><h3>" + t(onlyDrop ? "src_h_drop" : "src_h") + "</h3>" + (srcs ? '<dl class="srcs">' + srcs + "</dl>" : '<div class="note">' + t("src_none") + "</div>") + "</div>" +
       '<div class="note">' + t("cr_source") + "</div>";
     if (scroll && window.matchMedia("(max-width: 860px)").matches) $("tabItem").scrollIntoView({ block: "start", behavior: "smooth" });
@@ -1575,6 +1645,8 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     }
     var st = e.target.closest("[data-star]");
     if (st) { e.stopPropagation(); toggleWatch(+st.dataset.star); return; }
+    var sa = e.target.closest("[data-starall]");
+    if (sa) { e.stopPropagation(); toggleWatchAll(sa.dataset.starall.split(",").map(Number)); return; }
     var cp = e.target.closest("[data-copy]");
     if (cp) {
       e.stopPropagation();
@@ -1594,6 +1666,10 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     if (al) { e.preventDefault(); e.stopPropagation(); showTab("item"); arLoad(al.dataset.ar, al.dataset.slug); return; }
     var pb = e.target.closest("[data-prof]");
     if (pb && arData && arData.kind === "character") { arOpenProf = arOpenProf === +pb.dataset.prof ? 0 : +pb.dataset.prof; renderChar(arData); return; }
+    var gr = e.target.closest("[data-gorec]");   // känt recept i Armory → samma recept i Professions (samma Blizzard-id)
+    if (gr) { var gid = +gr.dataset.gorec; setMode("cr"); loadRecept().then(function () { selectRecipe(gid, true); }); return; }
+    var gc = e.target.closest("[data-crafters]");
+    if (gc && arData && arData.kind === "guild") { loadCrafters(arData); return; }
     var cr = e.target.closest("[data-copyr]");
     if (cr) {
       e.stopPropagation();
