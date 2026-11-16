@@ -94,13 +94,7 @@ h1 { font-family: var(--display); font-weight: 700; font-size: 22px; margin: 0; 
 .catlink:hover { color: var(--gold); text-decoration: underline; }
 td.kat, th.kat { text-align: left; }
 .spark { display: block; width: 90px; height: 22px; vertical-align: middle; }
-.chip.cheap { color: var(--green); border-color: rgba(127, 212, 154, .5); }
-.chip.cheap[aria-pressed=true] { border-color: var(--green); background: rgba(127, 212, 154, .14); }
-.chip.dear { color: var(--red); border-color: rgba(255, 90, 74, .5); }
-.chip.day { color: var(--gold); border-color: rgba(214, 168, 59, .6); }
-.chip.day[aria-pressed=true] { border-color: var(--gold); background: var(--sel); }
 .sun { color: var(--edge); } .moon { color: var(--grey); }
-.chip.dear[aria-pressed=true] { border-color: var(--red); background: rgba(255, 90, 74, .14); }
 .inset { background: var(--inset); border: 1px solid var(--line); border-radius: 4px; min-width: 0; }
 .scroll { overflow-x: auto; }
 table { width: 100%; border-collapse: collapse; }
@@ -114,6 +108,9 @@ td { padding: 5px 10px; text-align: right; white-space: nowrap; border-bottom: 1
 td:first-child { text-align: left; white-space: nowrap; max-width: 0; width: 36%; overflow: hidden; text-overflow: ellipsis; }
 #list { table-layout: fixed; }
 #list th:first-child { width: 36%; }
+#list.tr th:first-child { width: 30%; }
+#list.tr th { letter-spacing: .03em; padding: 8px 8px; }
+#list.tr td { padding: 5px 8px; }
 td.pct { font-size: 13px; }
 .up2 { color: var(--red); } .down2 { color: var(--green); }
 tbody tr { cursor: pointer; }
@@ -162,6 +159,8 @@ tbody tr.exp, tbody tr.exp:hover { background: var(--panel); cursor: default; }
 .strip small { color: var(--grey); }
 .facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(118px, 1fr)); gap: 8px 14px; margin: 0; }
 .facts div { min-width: 0; }
+.facts .wide { grid-column: 1 / -1; }
+.facts .wide dd { font-size: 14px; font-weight: 500; }
 .facts dt { color: var(--grey); font-size: 12px; }
 .facts dd { margin: 0; font-size: 17px; font-weight: 600; }
 .chart { width: 100%; height: auto; display: block; }
@@ -233,6 +232,24 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
 .wtip .moneycopper::after { content: "c"; color: #c7793f; }
 .wtip .moneygold, .wtip .moneysilver, .wtip .moneycopper { margin-right: 3px; }
 .wtip .ah { margin-top: 6px; padding-top: 5px; border-top: 1px solid rgba(255, 255, 255, .15); color: #ffd100; }
+/* Läget: vanligt auktionshus eller Trading (aktiesidan). Två knappar som sitter ihop. */
+.mode { display: inline-flex; border: 1px solid var(--line); border-radius: 4px; overflow: hidden; }
+.mode button { all: unset; cursor: pointer; height: 32px; padding: 0 14px; font-size: 13px; color: var(--grey); display: inline-flex; align-items: center; gap: 6px; }
+.mode button + button { border-left: 1px solid var(--line); }
+.mode button[aria-pressed=true] { color: var(--gold); background: var(--sel); box-shadow: inset 0 -2px 0 var(--edge); }
+.mode button:focus-visible { outline: 2px solid var(--gold); outline-offset: -2px; }
+.sorts { display: inline-flex; gap: 6px; flex-wrap: wrap; }
+.chip.cheap { color: var(--green); border-color: rgba(127, 212, 154, .5); }
+.chip.cheap[aria-pressed=true] { border-color: var(--green); background: rgba(127, 212, 154, .14); }
+.chip.dear { color: var(--red); border-color: rgba(255, 90, 74, .5); }
+.chip.dear[aria-pressed=true] { border-color: var(--red); background: rgba(255, 90, 74, .14); }
+.chip.day { color: var(--gold); border-color: rgba(214, 168, 59, .6); }
+.chip.day[aria-pressed=true] { border-color: var(--gold); background: var(--sel); }
+/* Prissteg som räknas bort ur riktpriset: överstrukna och grå, med en liten etikett. */
+.gone, .gone td { color: var(--grey); }
+.gone .m, .ladder .gone span:first-child { text-decoration: line-through; text-decoration-color: rgba(255, 255, 255, .35); }
+.tag { font-size: 11px; color: var(--grey); border: 1px solid var(--line); border-radius: 3px; padding: 0 4px; margin-left: 6px; text-decoration: none; display: inline-block; }
+.bt { font-size: 13px; }
 </style>
 </head>
 <body>
@@ -257,9 +274,16 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
 
   <div class="bar">
     <input type="search" id="q" data-t-ph="search_ph" data-t-aria="search_aria" placeholder="Sök vara, t.ex. Silk Cloth" autocomplete="off" aria-label="Sök vara">
-    <button class="chip cheap" id="chipCheap" aria-pressed="false" type="button" data-t-title="cheap_tip" title="">Billigt just nu</button>
-    <button class="chip dear" id="chipDear" aria-pressed="false" type="button" data-t-title="dear_tip" title="">Dyrt just nu</button>
-    <button class="chip day" id="chipDay" aria-pressed="false" type="button" data-t-title="day_tip" title="">Dygnshandel</button>
+    <div class="mode" role="group">
+      <button type="button" id="modeAh" aria-pressed="true" data-t="mode_ah" data-t-title="mode_ah_tip">Auktionshus</button>
+      <button type="button" id="modeTr" aria-pressed="false" data-t="mode_tr" data-t-title="mode_tr_tip">Trading</button>
+    </div>
+    <div class="sorts" id="sorts" hidden>
+      <button class="chip cheap" type="button" data-sort="cheap" aria-pressed="false" data-t="s_cheap" data-t-title="s_cheap_tip">Billigast nu</button>
+      <button class="chip dear" type="button" data-sort="dear" aria-pressed="false" data-t="s_dear" data-t-title="s_dear_tip">Dyrast nu</button>
+      <button class="chip day" type="button" data-sort="day" aria-pressed="false" data-t="s_day" data-t-title="day_tip">Dygnshandel</button>
+      <button class="chip day" type="button" data-sort="best" aria-pressed="false" data-t="s_best" data-t-title="col_best_tip">Bästa tid</button>
+    </div>
     <button class="chip" id="chipAll" aria-pressed="false" type="button" hidden></button>
     <span class="count" id="count"></span>
   </div>
@@ -269,15 +293,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     <section class="inset left">
       <div class="scroll">
         <table id="list">
-          <thead><tr>
-            <th><button type="button" data-k="name" data-t="col_item">Vara</button></th>
-            <th class="kat hide-s"><button type="button" data-k="cat" data-t="col_cat">Kategori</button></th>
-            <th class="hide-s"><button type="button" data-k="lvl" data-t="col_lvl" data-t-title="col_lvl_tip">Nivå</button></th>
-            <th><button type="button" data-k="min" data-t="col_min">Lägsta pris</button></th>
-            <th><button type="button" data-k="dip" data-t="col_pct" data-t-title="col_pct_tip">Mot vanligt</button></th>
-            <th><button type="button" data-k="qty" data-t="col_qty">Ute</button></th>
-            <th class="hide-s"><button type="button" data-k="day" data-t="col_day" data-t-title="col_day_tip">Sålda/dag</button></th>
-          </tr></thead>
+          <thead id="head"></thead>
           <tbody id="rows"></tbody>
         </table>
       </div>
@@ -296,7 +312,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   </div>
 
   <footer class="foot">
-    <div data-t="foot1">Priserna är per styck och kommer från senaste scannen av auktionshuset. Lägsta pris kan vara en ensam listning: snittet för 20 st säger vad du faktiskt får betala.</div>
+    <div data-t="foot1">Priserna är riktpriser per styck från senaste scannen.</div>
     <div data-t="foot2">Min lista sparas bara i din egen webbläsare. Uppdatera priser hämtar den senaste scannen.</div>
   </footer>
 </div>
@@ -306,8 +322,15 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   "use strict";
   var $ = function (id) { return document.getElementById(id); };
   var D = null, rows = [], view = [], shown = 0, PAGE = 60;
-  var sortKey = "day", sortDir = -1, showAll = false, cheapOnly = false, dearOnly = false, dayOnly = false, selId = null, query = "";
-  var CHEAP_MIN = 25;   // "Billigt just nu": minst så många procent under de senaste dagarnas vanliga pris
+  var sortKey = "day", sortDir = -1, showAll = false, selId = null, query = "";
+  // Läget (Joakim 2026-11-16): "ah" = vanligt auktionshus med förklarande text, "tr" = Trading, en aktiesida med billigt/dyrt
+  // mot vanligt, dygnshandel och bästa tid. Trading visar bara stapelbart med minst TR_MIN ute (gear och tunna varor svänger
+  // i guld, där säger procent ingenting). Sparas i webbläsaren.
+  var MKEY = "whippit-ah-mode", TR_MIN = 20;
+  var mode = (function () { try { return localStorage.getItem(MKEY) === "tr" ? "tr" : "ah"; } catch (e) { return "ah"; } })();
+  if (mode === "tr") { sortKey = "dip"; sortDir = -1; }
+  var BT_MIN = 3;   // bästa tid räknas som tydlig vid minst 3 % vinst efter AH:s andel och plus minst 6 av 10 dagar
+  function btClear(r) { return !!(r.bt && r.bt[2] >= BT_MIN && r.bt[3] * 10 >= r.bt[4] * 6); }
   var byId = {}, lastUpdate = null;   // lastUpdate = { key, t } (översätts när den visas)
   var ICON_BASE = "https://ragequitit.github.io/ah/icons/";             // mappen med ikoner; tom = inga ikoner (Claude-sidan kan inte ladda bilder utifrån)
   var openId = null;              // raden som är utfälld i listan (de tio lägsta prisstegen)
@@ -331,15 +354,22 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       cat_Weapons: "Vapen", cat_Armor: "Rustning", cat_Containers: "Väskor", cat_Consumables: "Förbrukning", "cat_Trade Goods": "Handelsvaror",
       cat_Ammo: "Ammunition", cat_Recipes: "Recept", "cat_Quest Items": "Questföremål", cat_Gems: "Ädelstenar", cat_Miscellaneous: "Diverse",
       search_ph: "Sök vara, t.ex. Silk Cloth", search_aria: "Sök vara", chip_all: "Även varor utan namn (%1)",
-      col_item: "Vara", col_min: "Lägsta pris", col_p20: "Snitt 20 st", col_p20_tip: "Snittpris per styck för de 20 billigaste",
+      col_item: "Vara", col_min: "Riktpris", col_min_tip: "Priset där varorna faktiskt ligger. Ensamma billiga listningar långt under resten räknas bort. Gear: billigaste priset.",
       col_qty: "Ute", col_day: "Sålda/dag", col_day_tip: "Uppskattning från goldcap, inte uppmätt i scannen",
-      col_lvl: "Nivå", col_lvl_tip: "Kräver level", cheap: "Billigt just nu", cheap_tip: "Varor som ligger minst 25 % under sitt vanliga pris de senaste dagarna, i två scans i rad",
-      cheap_none: "Inget är ovanligt billigt just nu.", dip_tip: "%1 % under de senaste dagarnas vanliga pris (%2)", trend: "Senaste veckan",
-      dear: "Dyrt just nu", dear_tip: "Varor som ligger minst 25 % över sitt vanliga pris de senaste dagarna, i två scans i rad", dear_none: "Inget är ovanligt dyrt just nu.",
-      rise_tip: "%1 % över de senaste dagarnas vanliga pris (%2)", col_pct: "Mot vanligt", col_pct_tip: "Priset nu mot de senaste dagarnas vanliga pris. Grönt = billigare, rött = dyrare.",
+      col_lvl: "Nivå", col_lvl_tip: "Kräver level", dip_tip: "%1 % under de senaste dagarnas vanliga pris (%2)", trend: "Senaste veckan",
+      rise_tip: "%1 % över de senaste dagarnas vanliga pris (%2)", col_pct: "Mot vanligt", col_pct_s: "Nu", col_pct_tip: "Riktpriset nu mot de senaste dagarnas vanliga riktpris. Grönt = billigare, rött = dyrare.",
+      mode_ah: "Auktionshus", mode_ah_tip: "Alla varor som i spelets auktionshus", mode_tr: "Trading",
+      mode_tr_tip: "Som en aktiesida: vad som är billigt och dyrt mot vanligt, dygnshandel och bästa tid att köpa och sälja",
+      s_cheap: "Billigast nu", s_cheap_tip: "Störst nedgång mot de senaste dagarnas vanliga pris först",
+      s_dear: "Dyrast nu", s_dear_tip: "Störst uppgång mot de senaste dagarnas vanliga pris först", s_best: "Bästa tid", s_day: "Dygnshandel",
+      col_best: "Bästa tid", col_best_tip: "När på dygnet varan brukat vara billigast och dyrast den senaste veckan. Vinsten är efter AH:s 5 %.",
+      bt_0: "natten", bt_1: "morgonen", bt_2: "eftermiddagen", bt_3: "kvällen", bs_0: "natt", bs_1: "morg", bs_2: "em", bs_3: "kväll",
+      best_txt: "Köp på %1, sälj på %2: +%3 % (%4 av %5 dagar)", best_none: "Ingen tydlig skillnad över dygnet än",
+      f_gone: "Räknas bort", gone_tip: "Ensamma billiga listningar långt under resten. De räknas inte in i riktpriset, men låg ute vid scannen.",
+      gone_tag: "räknas bort", f_usual: "Vanligt pris", f_gear: "Säljs styckvis, som gear och recept: billigaste priset, ingen procent (priserna skiljer i guld).",
       empty: "Ingen vara matchar sökningen.", more: "Visa fler (%1 till)", count: "%1 varor",
       tab_item: "Vara", tab_watch: "Min lista", pick: "Välj en vara i listan.",
-      foot1: "Priserna är per styck och kommer från senaste scannen av auktionshuset. Lägsta pris kan vara en ensam listning: snittet för 20 st säger vad du faktiskt får betala.",
+      foot1: "Priserna är riktpriser per styck från senaste scannen: priset där varorna faktiskt ligger, utan ensamma billiga listningar långt under resten. För gear visas billigaste priset.",
       foot2: "Min lista sparas bara i din egen webbläsare. Uppdatera priser hämtar den senaste scannen.",
       scan_at: "Senaste scan %1 kl. %2", on_ah: "%1 varor på auktionshuset", today: "i dag", item_n: "Vara %1",
       star_add: "Håll koll på varan", star_del: "Ta bort från min lista", star_lbl_add: "Håll koll", star_lbl_on: "I min lista",
@@ -352,15 +382,14 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       steps_scan: "Från scannen %1 kl. %2", steps_search: "Från en sökning %1 kl. %2",
       sellers: "%1 säljare bland de 100 billigaste", ten: "de 10 lägsta priserna",
       few_scans: "För få scans av varan för en graf.", chart_aria: "Pris per scan för %1", the_item: "varan",
-      rd_low: "lägsta %1", rd_p20: "snitt 20 st %1", rd_qty: "%1 ute",
+      rd_low: "riktpris %1", rd_qty: "%1 ute",
       rng_3d: "3 d", rng_1w: "Vecka", rng_1m: "Månad", rng_all: "Allt",
-      steps: "Prissteg", price: "Pris", qty: "Antal", f_p100: "Snitt 100 st", f_now: "Ute nu", f_max: "Ute (högst i dag)",
+      steps: "Prissteg", price: "Pris", qty: "Antal", f_now: "Ute nu", f_max: "Ute (högst i dag)",
       f_day: "Sålda per dag (uppskattning)", per_scan: "Pris per scan", lg_qty: "Antal ute", hover: "Peka på grafen för en scan.",
       dayday: "Morgon och kväll", lg_morning: "Morgon (05–12)", lg_evening: "Kväll (17–24)", dd_hover: "Peka på en dag.", dd_none: "Ingen dag har både morgon- och kvällsscan än.",
       dd_morning: "morgon", dd_evening: "kväll", dd_gain: "köp %1, sälj %2: %3", dd_scans: "%1 scans",
       dayt: "Dygnshandel", day_tip: "Varor som gett minst 10 % vinst mellan morgon och kväll minst 3 dagar den senaste veckan (högst en dag utan). Vinsten är den sämsta dagens.",
-      day_none: "Ingen vara har ett stabilt dygnsmönster än.", col_trade: "Dygn", trade_tip: "Köp %1, sälj %2: %3 per st (sämsta dagen senaste veckan)",
-      lg_p20: "* = snitt för 20 st", tip_ah: "AH: %1 · %2 ute",
+      col_trade: "Dygn", trade_tip: "Köp %1, sälj %2: %3 per st (sämsta dagen senaste veckan)", tip_ah: "AH: riktpris %1 · %2 ute",
       err1: "Scannen gick inte att läsa in", err2: "Ladda om sidan. Hjälper det inte har datan inte laddats upp."
     },
     en: {
@@ -368,15 +397,22 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       cat_Weapons: "Weapons", cat_Armor: "Armor", cat_Containers: "Containers", cat_Consumables: "Consumables", "cat_Trade Goods": "Trade Goods",
       cat_Ammo: "Ammo", cat_Recipes: "Recipes", "cat_Quest Items": "Quest Items", cat_Gems: "Gems", cat_Miscellaneous: "Miscellaneous",
       search_ph: "Search item, e.g. Silk Cloth", search_aria: "Search item", chip_all: "Include unnamed items (%1)",
-      col_item: "Item", col_min: "Lowest price", col_p20: "Avg of 20", col_p20_tip: "Average price each for the 20 cheapest",
+      col_item: "Item", col_min: "Market price", col_min_tip: "The price the item actually sits at. Lone cheap listings far below the rest are left out. Gear: the cheapest price.",
       col_qty: "Listed", col_day: "Sold/day", col_day_tip: "Estimate from goldcap, not measured in the scan",
-      col_lvl: "Level", col_lvl_tip: "Requires level", cheap: "Cheap right now", cheap_tip: "Items at least 25% below their usual price over the last few days, in two scans in a row",
-      cheap_none: "Nothing is unusually cheap right now.", dip_tip: "%1% below the usual price these days (%2)", trend: "Last week",
-      dear: "Expensive right now", dear_tip: "Items at least 25% above their usual price over the last few days, in two scans in a row", dear_none: "Nothing is unusually expensive right now.",
-      rise_tip: "%1% above the usual price these days (%2)", col_pct: "Vs usual", col_pct_tip: "Price now versus the usual price these days. Green = cheaper, red = dearer.",
+      col_lvl: "Level", col_lvl_tip: "Requires level", dip_tip: "%1% below the usual price these days (%2)", trend: "Last week",
+      rise_tip: "%1% above the usual price these days (%2)", col_pct: "Vs usual", col_pct_s: "Now", col_pct_tip: "Market price now versus the usual market price these days. Green = cheaper, red = dearer.",
+      mode_ah: "Auction house", mode_ah_tip: "All items, like the in-game auction house", mode_tr: "Trading",
+      mode_tr_tip: "Like a stock site: what is cheap and dear versus usual, day trade and the best time to buy and sell",
+      s_cheap: "Cheapest now", s_cheap_tip: "Biggest drop versus the usual price these days first",
+      s_dear: "Dearest now", s_dear_tip: "Biggest rise versus the usual price these days first", s_best: "Best time", s_day: "Day trade",
+      col_best: "Best time", col_best_tip: "When in the day the item has been cheapest and dearest this week. The profit is after the AH's 5%.",
+      bt_0: "at night", bt_1: "in the morning", bt_2: "in the afternoon", bt_3: "in the evening", bs_0: "night", bs_1: "morn", bs_2: "aftn", bs_3: "eve",
+      best_txt: "Buy %1, sell %2: +%3% (%4 of %5 days)", best_none: "No clear difference over the day yet",
+      f_gone: "Left out", gone_tip: "Lone cheap listings far below the rest. They are not part of the market price, but were listed at the scan.",
+      gone_tag: "left out", f_usual: "Usual price", f_gear: "Sold one by one, like gear and recipes: the cheapest price, no percent (prices differ in gold).",
       empty: "No item matches the search.", more: "Show more (%1 more)", count: "%1 items",
       tab_item: "Item", tab_watch: "My list", pick: "Pick an item in the list.",
-      foot1: "Prices are per item and come from the latest scan of the auction house. The lowest price may be a single listing: the average of 20 tells you what you will actually pay.",
+      foot1: "Prices are market prices per item from the latest scan: the price items actually sit at, without lone cheap listings far below the rest. Gear shows the cheapest price.",
       foot2: "My list is saved only in your own browser. Update prices fetches the latest scan.",
       scan_at: "Latest scan %1 at %2", on_ah: "%1 items on the auction house", today: "today", item_n: "Item %1",
       star_add: "Watch this item", star_del: "Remove from my list", star_lbl_add: "Watch", star_lbl_on: "In my list",
@@ -389,15 +425,14 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       steps_scan: "From the scan %1 at %2", steps_search: "From a search %1 at %2",
       sellers: "%1 sellers among the 100 cheapest", ten: "the 10 lowest prices",
       few_scans: "Too few scans of this item for a chart.", chart_aria: "Price per scan for %1", the_item: "the item",
-      rd_low: "lowest %1", rd_p20: "avg of 20 %1", rd_qty: "%1 listed",
+      rd_low: "market price %1", rd_qty: "%1 listed",
       rng_3d: "3 d", rng_1w: "Week", rng_1m: "Month", rng_all: "All",
-      steps: "Price steps", price: "Price", qty: "Quantity", f_p100: "Avg of 100", f_now: "Listed now", f_max: "Listed (today's high)",
+      steps: "Price steps", price: "Price", qty: "Quantity", f_now: "Listed now", f_max: "Listed (today's high)",
       f_day: "Sold per day (estimate)", per_scan: "Price per scan", lg_qty: "Listed", hover: "Hover the chart for a scan.",
       dayday: "Morning and evening", lg_morning: "Morning (05–12)", lg_evening: "Evening (17–24)", dd_hover: "Hover a day.", dd_none: "No day has both a morning and an evening scan yet.",
       dd_morning: "morning", dd_evening: "evening", dd_gain: "buy %1, sell %2: %3", dd_scans: "%1 scans",
       dayt: "Day trade", day_tip: "Items with at least 10% profit between morning and evening on at least 3 days this week (at most one day without). The profit shown is the worst day's.",
-      day_none: "No item has a stable day pattern yet.", col_trade: "Day", trade_tip: "Buy %1, sell %2: %3 each (worst day this week)",
-      lg_p20: "* = average of 20", tip_ah: "AH: %1 · %2 listed",
+      col_trade: "Day", trade_tip: "Buy %1, sell %2: %3 each (worst day this week)", tip_ah: "AH: market price %1 · %2 listed",
       err1: "The scan could not be loaded", err2: "Reload the page. If that does not help, the data has not been uploaded."
     }
   };
@@ -438,7 +473,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     draw();
     drawWatch();
     if (selId && byId[selId]) select(selId, false);
-    setChips();
+    drawMode();
   }
 
   // Min lista: sparas bara i besökarens egen webbläsare (inget skickas någonstans). p = lägsta pris när varan sparades.
@@ -585,16 +620,6 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   // Raden överst och knappen för namnlösa varor (ritas om vid språkbyte).
   function header() {
     var w = when(D.t);
-    var nCheap = 0, nDear = 0;
-    rows.forEach(function (r) { if (r.dip >= CHEAP_MIN) nCheap++; else if (r.dip <= -CHEAP_MIN) nDear++; });
-    $("chipCheap").textContent = t("cheap") + " (" + num(nCheap) + ")";
-    $("chipCheap").hidden = nCheap === 0;
-    $("chipDear").textContent = t("dear") + " (" + num(nDear) + ")";
-    $("chipDear").hidden = nDear === 0;
-    var nDay = 0;
-    rows.forEach(function (r) { if (r.tg) nDay++; });
-    $("chipDay").textContent = t("dayt") + " (" + num(nDay) + ")";
-    $("chipDay").hidden = nDay === 0;
     $("market").textContent = "WoW Forever · " + D.market;
     $("scanTime").textContent = t("scan_at", w.day, w.hm);
     $("scanInfo").textContent = t("on_ah", num(rows.length));
@@ -605,10 +630,13 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   function load(d, keep) {
     D = d;
     rows = d.items.map(function (r) {
-      return { id: r[0], name: r[1] || "", q: r[2], min: r[3], qty: r[7] || r[4], exact: r[7] > 0, p20: r[5], p100: r[6], day: r[8],
-        mh: r[9], qh: r[10], ph: r[11], ic: r[12] || "", ci: r[13] == null ? -1 : r[13], si: r[14] == null ? -1 : r[14], ui: r[15] == null ? -1 : r[15],
-        lvl: r[16] || 0, dip: r[17] || 0, tg: r[18] || 0, td: r[19] || 0,
+      // min = riktpriset (gear: lägsta), lo/loN = billigaste priset och antalet som räknades bort, mh = riktpris per scan
+      var o = { id: r[0], name: r[1] || "", q: r[2], min: r[3], qty: r[7] || r[4], exact: r[7] > 0, lo: r[5] || 0, loN: r[6] || 0, day: r[8],
+        mh: r[9], qh: r[10], ic: r[12] || "", ci: r[13] == null ? -1 : r[13], si: r[14] == null ? -1 : r[14], ui: r[15] == null ? -1 : r[15],
+        lvl: r[16] || 0, dip: r[17] || 0, tg: r[18] || 0, td: r[19] || 0, us: r[20] || 0, gear: r[21] === 1, bt: Array.isArray(r[22]) ? r[22] : null,
         lower: (r[1] || "").toLowerCase() };
+      o.btg = btClear(o) ? o.bt[2] : 0;   // sortering på bästa tid: bara tydliga mönster
+      return o;
     });
     byId = {};
     rows.forEach(function (r) { byId[r.id] = r; });
@@ -637,9 +665,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     var q = query;
     view = rows.filter(function (r) {
       if (!showAll && !r.name) return false;
-      if (cheapOnly && r.dip < CHEAP_MIN) return false;
-      if (dearOnly && r.dip > -CHEAP_MIN) return false;
-      if (dayOnly && !r.tg) return false;
+      if (mode === "tr" && (r.gear || r.qty < TR_MIN)) return false;
       if (catSel >= 0 && r.ci !== catSel) return false;
       if (subSel >= 0 && r.si !== subSel) return false;
       if (sub2Sel >= 0 && r.ui !== sub2Sel) return false;
@@ -651,6 +677,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       if (k === "name") return dir * (a.name || "~" + a.id).localeCompare(b.name || "~" + b.id, "sv");
       if (k === "dip") return dir * (a.dip - b.dip) || a.id - b.id;
       if (k === "tg") return dir * (a.tg - b.tg) || a.id - b.id;
+      if (k === "btg") return dir * (a.btg - b.btg) || a.id - b.id;
       if (k === "cat") {   // kategori, underkategori, sedan namn; okänd kategori sist
         var ac = a.ci < 0 ? 9999 : a.ci, bc = b.ci < 0 ? 9999 : b.ci;
         return dir * (ac - bc || a.si - b.si || a.ui - b.ui) || (a.name || "").localeCompare(b.name || "", "sv");
@@ -712,8 +739,10 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     if (!st || !st.steg || !st.steg.length) return { html: "", note: t("steps_none") };
     var w = when(st.t), steps = st.steg.slice(0, 10), html = "";
     steps.forEach(function (p) {
-      html += asTable ? "<tr><td>" + money(p[0]) + "</td><td>" + num(p[1]) + "</td></tr>"
-        : "<div><span>" + money(p[0]) + '</span><span class="n">' + t("pcs", num(p[1])) + "</span></div>";
+      var gone = !r.gear && p[0] < r.min;   // under riktpriset = en ensam billig klump som räknas bort
+      var tag = gone ? '<span class="tag" title="' + esc(t("gone_tip")) + '">' + t("gone_tag") + "</span>" : "";
+      html += asTable ? "<tr" + (gone ? ' class="gone"' : "") + "><td>" + money(p[0]) + tag + "</td><td>" + num(p[1]) + "</td></tr>"
+        : "<div" + (gone ? ' class="gone"' : "") + "><span>" + money(p[0]) + '</span><span class="n">' + t("pcs", num(p[1])) + tag + "</span></div>";
     });
     var note = t(st.src === "scan" ? "steps_scan" : "steps_search", w.day, w.hm) +
       (st.sellers ? " · " + t("sellers", st.sellers) : "") + (st.steg.length > 10 ? " · " + t("ten") : "");
@@ -721,7 +750,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   }
   function expHtml(r) {
     var l = ladder(r, false);
-    return '<tr class="exp"><td colspan="7">' + (l.html ? '<div class="ladder">' + l.html + "</div>" : "") + '<div class="note">' + l.note + "</div></td></tr>";
+    return '<tr class="exp"><td colspan="' + (mode === "tr" ? 7 : 6) + '">' + (l.html ? '<div class="ladder">' + l.html + "</div>" : "") + '<div class="note">' + l.note + "</div></td></tr>";
   }
   // Kategorin på raden: klick filtrerar listan på den (underkategorin om varan har en).
   function catCell(r) {
@@ -739,44 +768,72 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     var tip = t("trade_tip", t(r.td === 1 ? "dd_morning" : "dd_evening"), t(r.td === 1 ? "dd_evening" : "dd_morning"), "+" + moneyText(r.tg));
     return '<span class="down2" title="' + tip + '">' + a + " +" + moneyText(r.tg) + "</span>";
   }
+  var DASH = '<span class="dim">–</span>';
+  // Mot vanligt: ▼ grönt = billigare än de senaste dagarnas vanliga riktpris, ▲ rött = dyrare. 0 = inget att jämföra med.
+  function pctHtml(r) {
+    if (!r.dip) return DASH;
+    var usual = moneyText(r.us);
+    if (r.dip > 0) return '<span class="down2" title="' + t("dip_tip", r.dip, usual) + '">▼' + r.dip + "%</span>";
+    return '<span class="up2" title="' + t("rise_tip", -r.dip, usual) + '">▲' + (-r.dip) + "%</span>";
+  }
+  // Bästa tid i listan: "kväll→morgon +10%" (köp→sälj), bara när mönstret är tydligt.
+  function btHtml(r) {
+    if (!btClear(r)) return DASH;
+    var b = r.bt;
+    return '<span class="bt down2" title="' + esc(t("best_txt", t("bt_" + b[0]), t("bt_" + b[1]), b[2], b[3], b[4])) + '">' +
+      t("bs_" + b[0]) + "→" + t("bs_" + b[1]) + " +" + b[2] + "%</span>";
+  }
   function rowHtml(r) {
     var name = iconHtml(r) + (r.name ? '<span data-tip="' + r.id + '" class="' + qcls(r.q) + '">' + esc(r.name) + "</span>" : '<span class="dim">' + t("item_n", r.id) + "</span>");
-    var pct = '<span class="dim">–</span>';
-    if (dayOnly) pct = tradeHtml(r) || pct;
-    else if (r.dip !== 0) {   // 0 = inget vanligt pris att jämföra med (eller exakt som vanligt)
-      var usual = moneyText(Math.round(r.min / (1 - r.dip / 100)));
-      if (r.dip > 0) pct = '<span class="down2" title="' + t("dip_tip", r.dip, usual) + '">▼' + r.dip + "%</span>";
-      else pct = '<span class="up2" title="' + t("rise_tip", -r.dip, usual) + '">▲' + (-r.dip) + "%</span>";
+    var day = '<td class="hide-s">' + (r.day ? '<span class="est">' + num(r.day) + "</span>" : DASH) + "</td>";
+    var tr = '<tr tabindex="0" data-id="' + r.id + '"' + (r.id === selId ? ' aria-selected="true"' : "") + "><td>" + starHtml(r.id) + name + "</td>";
+    if (mode === "tr") {
+      return tr + "<td>" + money(r.min) + '</td><td class="pct">' + pctHtml(r) + '</td><td class="pct hide-s">' + (tradeHtml(r) || DASH) +
+        '</td><td class="pct">' + btHtml(r) + "</td><td>" + num(r.qty) + "</td>" + day + "</tr>";
     }
-    return '<tr tabindex="0" data-id="' + r.id + '"' + (r.id === selId ? ' aria-selected="true"' : "") + "><td>" + starHtml(r.id) + name + '</td><td class="kat hide-s">' + catCell(r) +
-      '</td><td class="hide-s">' + (r.lvl ? r.lvl : '<span class="dim">–</span>') + "</td><td>" + money(r.min) + '</td><td class="pct">' + pct +
-      "</td><td>" + num(r.qty) + '</td><td class="hide-s">' +
-      (r.day ? '<span class="est">' + num(r.day) + "</span>" : '<span class="dim">–</span>') + "</td></tr>";
+    return tr + '<td class="kat hide-s">' + catCell(r) + '</td><td class="hide-s">' + (r.lvl ? r.lvl : DASH) + "</td><td>" + money(r.min) +
+      "</td><td>" + num(r.qty) + "</td>" + day + "</tr>";
+  }
+  // Kolumnerna efter läget. [nyckel, text, tips, klass]
+  function headHtml() {
+    var cols = mode === "tr"
+      ? [["name", "col_item"], ["min", "col_min", "col_min_tip"], ["dip", "col_pct_s", "col_pct_tip"], ["tg", "col_trade", "day_tip", "hide-s"],
+         ["btg", "col_best", "col_best_tip"], ["qty", "col_qty"], ["day", "col_day", "col_day_tip", "hide-s"]]
+      : [["name", "col_item"], ["cat", "col_cat", null, "kat hide-s"], ["lvl", "col_lvl", "col_lvl_tip", "hide-s"], ["min", "col_min", "col_min_tip"],
+         ["qty", "col_qty"], ["day", "col_day", "col_day_tip", "hide-s"]];
+    return "<tr>" + cols.map(function (c) {
+      return "<th" + (c[3] ? ' class="' + c[3] + '"' : "") + '><button type="button" data-k="' + c[0] + '"' + (c[2] ? ' title="' + esc(t(c[2])) + '"' : "") +
+        (c[0] === sortKey ? ' aria-sort="' + (sortDir > 0 ? "ascending" : "descending") + '"' : "") + ">" + t(c[1]) + "</button></th>";
+    }).join("") + "</tr>";
+  }
+  // Lägesknapparna och Tradings sorteringsknappar.
+  var SORTS = { cheap: ["dip", -1], dear: ["dip", 1], day: ["tg", -1], best: ["btg", -1] };
+  function drawMode() {
+    $("modeAh").setAttribute("aria-pressed", mode === "ah" ? "true" : "false");
+    $("modeTr").setAttribute("aria-pressed", mode === "tr" ? "true" : "false");
+    $("sorts").hidden = mode !== "tr";
+    var bs = $("sorts").querySelectorAll("[data-sort]");
+    for (var i = 0; i < bs.length; i++) {
+      var so = SORTS[bs[i].getAttribute("data-sort")];
+      bs[i].setAttribute("aria-pressed", so[0] === sortKey && so[1] === sortDir ? "true" : "false");
+    }
   }
   function draw() {
     var html = "";
     for (var i = 0; i < shown; i++) { html += rowHtml(view[i]); if (view[i].id === openId) html += expHtml(view[i]); }
     $("rows").innerHTML = html;
     $("empty").hidden = view.length > 0;
-    $("empty").textContent = t(!query && cheapOnly ? "cheap_none" : !query && dearOnly ? "dear_none" : !query && dayOnly ? "day_none" : "empty");
+    $("empty").textContent = t("empty");
     $("more").hidden = shown >= view.length;
     $("more").textContent = t("more", num(view.length - shown));
     $("count").textContent = t("count", num(view.length));
-    var btns = document.querySelectorAll("th button");
-    for (var j = 0; j < btns.length; j++) {
-      if (btns[j].dataset.k === "dip" || btns[j].dataset.k === "tg") {   // samma kolumn: Mot vanligt, eller Dygn när Dygnshandel är på
-        btns[j].dataset.k = dayOnly ? "tg" : "dip";
-        btns[j].textContent = t(dayOnly ? "col_trade" : "col_pct");
-        btns[j].title = t(dayOnly ? "day_tip" : "col_pct_tip");
-      }
-      if (btns[j].dataset.k === sortKey) btns[j].setAttribute("aria-sort", sortDir > 0 ? "ascending" : "descending");
-      else btns[j].removeAttribute("aria-sort");
-    }
+    $("head").innerHTML = headHtml();
+    $("list").className = mode === "tr" ? "tr" : "";
+    drawMode();
   }
 
-  // Grafen: lägsta pris per scan (grå linje), snittet för 20 st (guld, där djupet är mätt), antal ute (staplar nederst).
-  // Prisgrafen: två paneler. Överst lägsta pris (grå) och snittet för 20 st (guld), underst antalet ute som en blå
-  // linje med fyllning. Hover visar scannen i raden under (readout).
+  // Prisgrafen: två paneler. Överst riktpriset per scan, underst antalet ute som en blå linje med fyllning. Hover visar
+  // scannen i raden under (readout).
   function chart(r) {
     var T = D.scans, W = 600, H = 260, L = 62, R = 12, TOP = 14, PH = 140, QH = 56, QY = TOP + PH + 18;
     var pts = [], maxP = 0, maxQ = 0;
@@ -784,7 +841,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     RANGES.forEach(function (rg) { if (rg[0] === rangeKey) secs = rg[1]; });   // (span nedan är tidsaxelns bredd)
     var from = secs ? D.t - secs : 0;
     for (var i = 0; i < T.length; i++) {
-      if (r.mh[i] > 0 && T[i] >= from) { pts.push(i); maxP = Math.max(maxP, r.mh[i], r.ph[i] || 0); maxQ = Math.max(maxQ, r.qh[i]); }
+      if (r.mh[i] > 0 && T[i] >= from) { pts.push(i); maxP = Math.max(maxP, r.mh[i]); maxQ = Math.max(maxQ, r.qh[i]); }
     }
     if (pts.length < 2) return '<div class="note">' + t("few_scans") + "</div>";
     var t0 = T[pts[0]], t1 = T[pts[pts.length - 1]], span = Math.max(1, t1 - t0);
@@ -816,14 +873,8 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       '<polyline fill="none" stroke="#7ea2d6" stroke-width="1.5" points="' + qpts + '"/>' +
       '<text x="' + (L - 6) + '" y="' + (QY + 10) + '" text-anchor="end" font-size="15" fill="#a0a0a0">' + num(maxQ) + "</text>" +
       '<text x="' + (L - 6) + '" y="' + (QY + QH + 4) + '" text-anchor="end" font-size="15" fill="#a0a0a0">0</text>';
-    // lägsta pris
-    s += '<polyline fill="none" stroke="#a1a1a1" stroke-width="1.5" points="' + pts.map(function (i) { return x(i).toFixed(1) + "," + y(r.mh[i]).toFixed(1); }).join(" ") + '"/>';
-    // snitt 20 st
-    var pp = pts.filter(function (i) { return r.ph[i] > 0; });
-    if (pp.length) {
-      s += '<polyline fill="none" stroke="#ffd100" stroke-width="2" points="' + pp.map(function (i) { return x(i).toFixed(1) + "," + y(r.ph[i]).toFixed(1); }).join(" ") + '"/>';
-      pp.forEach(function (i) { s += '<circle cx="' + x(i).toFixed(1) + '" cy="' + y(r.ph[i]).toFixed(1) + '" r="3" fill="#ffd100"/>'; });
-    }
+    // riktpris
+    s += '<polyline fill="none" stroke="#d6a83b" stroke-width="2" points="' + pts.map(function (i) { return x(i).toFixed(1) + "," + y(r.mh[i]).toFixed(1); }).join(" ") + '"/>';
     var li = pts[pts.length - 1];
     s += '<circle cx="' + x(li).toFixed(1) + '" cy="' + y(r.mh[li]).toFixed(1) + '" r="3.5" fill="#e9e3d6"/>';
     // osynliga träffytor per scan, och en markör som flyttas vid hover
@@ -835,7 +886,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     return s + "</svg>";
   }
 
-  // Morgon och kväll per dag: två staplar per dag (guld morgon 05–12, grå kväll 17–24), snitt av lägsta pris i blocket.
+  // Morgon och kväll per dag: två staplar per dag (guld morgon 05–12, grå kväll 17–24), snitt av riktpriset i blocket.
   // Det är det en tradare vill se: köp i det billiga blocket, sälj i det dyra. Samma block som addonets Trading-flik.
   function blockOf(ts) { var h = new Date(ts * 1000).getHours(); return h >= 5 && h < 12 ? "m" : (h >= 17 ? "e" : null); }
   function dayKey(ts) { var dd = new Date(ts * 1000); return dd.getFullYear() * 10000 + (dd.getMonth() + 1) * 100 + dd.getDate(); }
@@ -849,18 +900,15 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       var b = blockOf(T[i]);
       if (!b) continue;
       var k = dayKey(T[i]);
-      if (!days[k]) { days[k] = { key: k, m: [], e: [], mp: [], ep: [], mq: 0, eq: 0 }; order.push(k); }
+      if (!days[k]) { days[k] = { key: k, m: [], e: [], mq: 0, eq: 0 }; order.push(k); }
       days[k][b].push(r.mh[i]);
-      if (r.ph[i] > 0) days[k][b + "p"].push(r.ph[i]);
       days[k][b + "q"] = r.qh[i];
     }
     order.sort();
     return order.map(function (k) {
       var dd = days[k];
       var avg = function (a) { if (!a.length) return 0; var sum = 0; a.forEach(function (v) { sum += v; }); return Math.round(sum / a.length); };
-      // Snittet för 20 st när båda blocken har det (det som faktiskt säljs), annars lägsta pris för båda: aldrig blandat.
-      var p20 = dd.mp.length > 0 && dd.ep.length > 0;
-      return { key: k, m: avg(p20 ? dd.mp : dd.m), e: avg(p20 ? dd.ep : dd.e), mn: dd.m.length, en: dd.e.length, mq: dd.mq, eq: dd.eq, p20: p20 };
+      return { key: k, m: avg(dd.m), e: avg(dd.e), mn: dd.m.length, en: dd.e.length, mq: dd.mq, eq: dd.eq };
     });
   }
   function dayChart(r) {
@@ -892,7 +940,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   }
   // Raden under dagstaplarna: "13/11 · morgon 2s 10c (2 scans) · kväll 3s 05c (1 scan) · köp morgon, sälj kväll: +85c"
   function dayReadout(dd) {
-    var parts = ['<b>' + (dd.key % 100) + "/" + Math.floor(dd.key / 100 % 100) + (dd.p20 ? "*" : "") + "</b>"];
+    var parts = ['<b>' + (dd.key % 100) + "/" + Math.floor(dd.key / 100 % 100) + "</b>"];
     if (dd.m) parts.push(t("dd_morning") + " " + money(dd.m) + ' <span class="dim">(' + t("dd_scans", dd.mn) + ")</span>");
     if (dd.e) parts.push(t("dd_evening") + " " + money(dd.e) + ' <span class="dim">(' + t("dd_scans", dd.en) + ")</span>");
     if (dd.m && dd.e) {
@@ -905,7 +953,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   }
   function readout(r, i) {
     var w = when(D.scans[i]);
-    return "<b>" + w.day + " " + w.hm + "</b> · " + t("rd_low", money(r.mh[i])) + (r.ph[i] ? " · " + t("rd_p20", money(r.ph[i])) : "") + " · " + t("rd_qty", num(r.qh[i]));
+    return "<b>" + w.day + " " + w.hm + "</b> · " + t("rd_low", money(r.mh[i])) + " · " + t("rd_qty", num(r.qh[i]));
   }
 
   function stepsHtml(r) {
@@ -924,21 +972,24 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       if (+trs[j].dataset.id === id) trs[j].setAttribute("aria-selected", "true"); else trs[j].removeAttribute("aria-selected");
     }
     var name = r.name ? esc(r.name) : t("item_n", r.id);
-    var facts = "<div><dt>" + t("col_min") + "</dt><dd>" + money(r.min) + "</dd></div>" +
-      "<div><dt>" + t("col_p20") + "</dt><dd>" + (r.p20 ? money(r.p20) : '<span class="dim">–</span>') + "</dd></div>" +
-      "<div><dt>" + t("f_p100") + "</dt><dd>" + (r.p100 ? money(r.p100) : '<span class="dim">–</span>') + "</dd></div>" +
+    var best = "";
+    if (!r.gear && r.bt) best = btClear(r) ? t("best_txt", t("bt_" + r.bt[0]), t("bt_" + r.bt[1]), r.bt[2], r.bt[3], r.bt[4]) : t("best_none");
+    var facts = '<div><dt title="' + esc(t("col_min_tip")) + '">' + t("col_min") + "</dt><dd>" + money(r.min) + "</dd></div>" +
+      (r.lo ? '<div><dt title="' + esc(t("gone_tip")) + '">' + t("f_gone") + "</dt><dd>" + (r.loN ? t("pcs", num(r.loN)) + " · " : "") + money(r.lo) + "</dd></div>" : "") +
+      (r.us && r.dip ? "<div><dt>" + t("f_usual") + "</dt><dd>" + money(r.us) + " " + pctHtml(r) + "</dd></div>" : "") +
       "<div><dt>" + t(r.exact ? "f_now" : "f_max") + "</dt><dd>" + num(r.qty) + "</dd></div>" +
       (r.lvl ? "<div><dt>" + t("col_lvl_tip") + "</dt><dd>" + r.lvl + "</dd></div>" : "") +
-      (r.day ? "<div><dt>" + t("f_day") + '</dt><dd><span class="est">' + num(r.day) + "</span></dd></div>" : "");
+      (r.day ? "<div><dt>" + t("f_day") + '</dt><dd><span class="est">' + num(r.day) + "</span></dd></div>" : "") +
+      (best ? '<div class="wide"><dt title="' + esc(t("col_best_tip")) + '">' + t("col_best") + "</dt><dd>" + best + "</dd></div>" : "") +
+      (r.gear ? '<div class="wide"><dd class="dim">' + t("f_gear") + "</dd></div>" : "");
     $("detail").innerHTML =
       '<div class="strip">' + starHtml(r.id, t(watched(r.id) ? "star_lbl_on" : "star_lbl_add")) + iconHtml(r, true) + '<h2 data-tip="' + r.id + '" class="' + qcls(r.q) + '">' + name + "</h2><small>" + t("item_n", r.id) + "</small></div>" +
       '<dl class="facts">' + facts + "</dl>" +
       '<div><h3 class="row">' + t("per_scan") + rangeHtml() + "</h3>" + chart(r) +
-      '<div class="legend"><span><i style="background:#a1a1a1"></i>' + t("col_min") + '</span><span><i style="background:#ffd100"></i>' + t("col_p20") +
-      '</span><span><i style="background:#7ea2d6"></i>' + t("lg_qty") + "</span></div>" +
+      '<div class="legend"><span><i style="background:#d6a83b"></i>' + t("col_min") + '</span><span><i style="background:#7ea2d6"></i>' + t("lg_qty") + "</span></div>" +
       '<div class="read" id="read">' + t("hover") + "</div></div>" +
       "<div><h3>" + t("dayday") + "</h3>" + dayChart(r) +
-      '<div class="legend"><span><i style="background:#d6a83b;height:8px"></i>' + t("lg_morning") + '</span><span><i style="background:#a1a1a1;height:8px"></i>' + t("lg_evening") + "</span><span>" + t("lg_p20") + "</span></div>" +
+      '<div class="legend"><span><i style="background:#d6a83b;height:8px"></i>' + t("lg_morning") + '</span><span><i style="background:#a1a1a1;height:8px"></i>' + t("lg_evening") + "</span></div>" +
       '<div class="read" id="dread">' + t("dd_hover") + "</div></div>" +
       "<div>" + stepsHtml(r) + "</div>";
     var hits = $("detail").querySelectorAll(".hit");
@@ -1019,38 +1070,30 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     }
   });
   $("q").addEventListener("input", function () { query = this.value.trim().toLowerCase(); refresh(); });
-  function setChips() {
-    $("chipCheap").setAttribute("aria-pressed", cheapOnly ? "true" : "false");
-    $("chipDear").setAttribute("aria-pressed", dearOnly ? "true" : "false");
-    $("chipDay").setAttribute("aria-pressed", dayOnly ? "true" : "false");
+  function toTop() { var lb = document.querySelector(".left .scroll"); if (lb) lb.scrollTop = 0; }
+  function setMode(m) {
+    if (m === mode) return;
+    mode = m;
+    try { localStorage.setItem(MKEY, m); } catch (e) { /* gäller tills sidan stängs */ }
+    if (m === "tr") { sortKey = "dip"; sortDir = -1; } else { sortKey = "day"; sortDir = -1; }
+    openId = null;
+    refresh(); toTop();
   }
-  $("chipCheap").addEventListener("click", function () {
-    cheapOnly = !cheapOnly; dearOnly = false; dayOnly = false;
-    if (cheapOnly) { sortKey = "dip"; sortDir = -1; } else if (sortKey === "dip") { sortKey = "day"; sortDir = -1; }
-    setChips(); refresh();
-    var lb = document.querySelector(".left .scroll");
-    if (lb) lb.scrollTop = 0;
-  });
-  $("chipDay").addEventListener("click", function () {
-    dayOnly = !dayOnly; cheapOnly = false; dearOnly = false;
-    if (dayOnly) { sortKey = "tg"; sortDir = -1; } else if (sortKey === "tg") { sortKey = "day"; sortDir = -1; }
-    setChips(); refresh();
-    var lb = document.querySelector(".left .scroll");
-    if (lb) lb.scrollTop = 0;
-  });
-  $("chipDear").addEventListener("click", function () {
-    dearOnly = !dearOnly; cheapOnly = false; dayOnly = false;
-    if (dearOnly) { sortKey = "dip"; sortDir = 1; } else if (sortKey === "dip") { sortKey = "day"; sortDir = -1; }
-    setChips(); refresh();
-    var lb = document.querySelector(".left .scroll");
-    if (lb) lb.scrollTop = 0;
+  $("modeAh").addEventListener("click", function () { setMode("ah"); });
+  $("modeTr").addEventListener("click", function () { setMode("tr"); });
+  $("sorts").addEventListener("click", function (e) {
+    var b = e.target.closest("[data-sort]");
+    if (!b) return;
+    var so = SORTS[b.getAttribute("data-sort")];
+    sortKey = so[0]; sortDir = so[1];
+    refresh(); toTop();
   });
   $("chipAll").addEventListener("click", function () {
     showAll = !showAll;
     this.setAttribute("aria-pressed", showAll ? "true" : "false");
     refresh();
   });
-  document.querySelector("thead").addEventListener("click", function (e) {
+  $("head").addEventListener("click", function (e) {
     var b = e.target.closest("button");
     if (!b) return;
     var k = b.dataset.k;
