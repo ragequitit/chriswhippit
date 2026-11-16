@@ -1007,7 +1007,8 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   // Yrkesikoner (Joakim 2026-11-16): spelets riktiga yrkesikoner via Blizzards profession media (/data/wow/media/profession/<id>),
   // yrke-<yrke>.jpg. Kategoriikonerna (cat-<namn>.jpg) är reserv om en bild saknas.
   var PROF_ICON = { Alchemy: ["yrke-alchemy", "consumables"], Blacksmithing: ["yrke-blacksmithing", "weapons"], Cooking: ["yrke-cooking", "trade-goods"], Enchanting: ["yrke-enchanting", "recipes"],
-    Engineering: ["yrke-engineering", "ammo"], "First Aid": ["yrke-first-aid", "consumables"], Leatherworking: ["yrke-leatherworking", "armor"], Tailoring: ["yrke-tailoring", "containers"], Mining: ["yrke-mining", "trade-goods"] };
+    Engineering: ["yrke-engineering", "ammo"], "First Aid": ["yrke-first-aid", "consumables"], Leatherworking: ["yrke-leatherworking", "armor"], Tailoring: ["yrke-tailoring", "containers"], Mining: ["yrke-mining", "trade-goods"],
+    Herbalism: ["yrke-herbalism", "trade-goods"], Fishing: ["yrke-fishing", "trade-goods"], Skinning: ["yrke-skinning", "trade-goods"] };
   function loadRecept() {
     if (!recPromise) recPromise = fetch(DATA_BASE + "recept.json").then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }).then(function (j) { RECEPT = j; buildCr(); return j; });
     return recPromise;
