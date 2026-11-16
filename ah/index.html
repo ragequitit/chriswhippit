@@ -188,7 +188,10 @@ td.nm, .watch td:first-child { text-align: left; white-space: nowrap; max-width:
 .arhead h2 { font-family: var(--display); font-weight: 500; font-size: 24px; margin: 0; }
 .arhead .sub2 { color: var(--grey); font-size: 14px; }
 .arhead .lnk { float: none; margin-left: auto; }
-.arbody { display: grid; grid-template-columns: max-content; justify-content: center; gap: 10px 22px; align-items: start; }
+.arbody { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 10px 22px; align-items: start; }
+.arside { min-width: 0; } .arside h3 { margin: 12px 0 6px; }
+.craft tr.tierhd td { text-align: left; color: var(--gold); font-family: var(--display); font-size: 12.5px; letter-spacing: .04em; text-transform: uppercase; padding-top: 8px; border-bottom: 1px solid var(--line); background: none; }
+.craft tbody tr[aria-selected=true] td { background: var(--sel); }
 .dollwrap { display: grid; gap: 8px; justify-items: center; }
 .doll { display: grid; grid-template-columns: 40px 232px 40px; gap: 8px; align-items: start; justify-items: center;
   padding: 10px; border-radius: 6px; background: var(--inset); border: 1px solid var(--line); box-shadow: inset 0 1px 4px rgba(0, 0, 0, .5); }
@@ -637,7 +640,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       ar_level: "Level %1 %2 %3", ar_guild: "Guild", ar_player: "Player", ar_picnote: "Picture rendered by Blizzard – it can lag behind the gear or show the wrong character.",
       ar_craft: "Known recipes", ar_sells: "Sells for", ar_cost: "Cost", ar_profit: "Profit", ar_noprice: "no price", ar_nofr: "Recipe names are not available right now.", ar_ilvl: "Item level",
       ar_crafters: "Who can craft what", ar_crafters_load: "Loading professions… %1 / %2", ar_crafters_q: "Recipe name, e.g. Bolt of Woolen Cloth", ar_nobody: "Nobody in the guild knows a recipe with that name.",
-      ar_nobody_p: "No professions found in the guild.", skill_unknown: "skill requirement unknown", ar_friends: "Friends", ar_recipes_n: "%1 rec.", fr_add: "Add to friends", fr_del: "Remove from friends", ar_open_cr: "Open in Professions", ar_last: "Last seen", ar_mounts: "Mounts", ar_pets: "Pets", ar_members: "Members", ar_faction: "Faction",
+      ar_nobody_p: "No professions found in the guild.", skill_unknown: "skill requirement unknown", ar_friends: "Friends", ar_recipes_n: "%1 rec.", ar_pick: "Open a profession and pick a recipe to see cost, reagents and profit here.", skill_unknown_h: "Skill requirement unknown", fr_add: "Add to friends", fr_del: "Remove from friends", ar_open_cr: "Open in Professions", ar_last: "Last seen", ar_mounts: "Mounts", ar_pets: "Pets", ar_members: "Members", ar_faction: "Faction",
       ar_prof: "Professions", ar_prof2: "Secondary", ar_rep: "Reputation", ar_recipes: "%1 recipes known", ar_roster: "Roster", ar_rank: "Rank", ar_noimg: "No picture yet",
       ar_open: "Open in the armory", slot_HEAD: "Head", slot_NECK: "Neck", slot_SHOULDER: "Shoulder", slot_BACK: "Back", slot_CHEST: "Chest", slot_SHIRT: "Shirt", slot_TABARD: "Tabard",
       slot_WRIST: "Wrist", slot_HANDS: "Hands", slot_WAIST: "Waist", slot_LEGS: "Legs", slot_FEET: "Feet", slot_FINGER_1: "Ring", slot_FINGER_2: "Ring", slot_TRINKET_1: "Trinket",
@@ -924,23 +927,6 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     if (open && rec) h += '<div class="known">' + knownHtml(ti.recipes) + "</div>";
     return h;
   }
-  function knownHtml(ids) {
-    if (!FRX) { loadFR().then(function () { if (arData && arData.kind === "character") renderChar(arData); }); return '<div class="note">' + t("ar_loading") + "</div>"; }
-    var rows = ids.map(function (id) {
-      var fr = FRX.recipes[id];
-      if (!fr) return null;
-      var item = fr[2], out = byId[item], sell = out && out.min > 0 ? out.min : 0, cost = 0, miss = false;
-      fr[3].forEach(function (rg) { var p = recPrice(rg[0]); if (!p) miss = true; cost += p * rg[1]; });
-      var profit = sell && !miss ? Math.round(sell * 0.95 - cost) : null;
-      return { id: id, name: fr[0], item: item, q: out ? out.q : -1, sell: sell, cost: cost, miss: miss, profit: profit, cat: fr[4] };
-    }).filter(Boolean).sort(function (a, b) { return (b.profit == null ? -1e12 : b.profit) - (a.profit == null ? -1e12 : a.profit) || a.name.localeCompare(b.name); });
-    if (!rows.length) return '<div class="note">' + t("ar_nofr") + "</div>";
-    return '<table class="steps craft"><thead><tr><th style="text-align:left">' + t("ar_craft") + "</th><th>" + t("ar_sells") + "</th><th>" + t("ar_profit") + '</th></tr></thead><tbody>' + rows.map(function (r) {
-      var tip = r.item && byId[r.item] ? ' data-tip="' + r.item + '"' : "";
-      return "<tr" + tip + ' data-arrec="' + r.id + '" tabindex="0"><td class="nm ' + qcls(r.q) + '">' + esc(r.name) + "</td><td>" + (r.sell ? money(r.sell) : '<span class="dim">–</span>') + "</td><td>" +
-        (r.profit == null ? '<span class="dim">' + (r.sell ? t("ar_noprice") : "–") + "</span>" : '<span class="' + (r.profit >= 0 ? "up" : "down") + '">' + (r.profit >= 0 ? "+" : "−") + money(Math.abs(r.profit)) + "</span>") + "</td></tr>";
-    }).join("") + "</tbody></table>";
-  }
   // Vänner (Joakim 2026-11-16): stjärnmärkta spelare, egen lista ovanför Recent; båda listorna fälls ihop/ut per rubrik.
   var FR_KEY = "whippit-ah-friends", SEC_KEY = "whippit-ah-arsec";
   var arFriends = (function () { try { var a = JSON.parse(localStorage.getItem(FR_KEY) || "[]"); return Array.isArray(a) ? a : []; } catch (e) { return []; } })();
@@ -960,30 +946,57 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     }).join(""));
   }
   var arRepOpen = false, arRec = 0;   // ryktesraden utfälld; recept som visas i högerpanelen (0 = yrkena)
+  // Kända recept, grupperade per skill-nivå (1–74, 75–149, 150–224, 225–300; skill ur recept.json, okänd sist), i skill-
+  // ordning inom gruppen, med säljpris och vinst på vald marknad. Klick → receptrutan i högerpanelen (som en vara i AH).
+  function knownHtml(ids) {
+    if (!FRX || !RECEPT) { Promise.all([loadFR(), loadRecept()]).then(function () { if (arData && arData.kind === "character") renderChar(arData); }); return '<div class="note">' + t("ar_loading") + "</div>"; }
+    var skillOf = {};
+    crRows.forEach(function (x) { skillOf[x.rid] = x.skill; });
+    var rows = ids.map(function (id) {
+      var fr = FRX.recipes[id];
+      if (!fr) return null;
+      var item = fr[2], out = byId[item], sell = out && out.min > 0 ? out.min * (fr[5] || 1) : 0, cost = 0, miss = false;
+      fr[3].forEach(function (rg) { var p = recPrice(rg[0]); if (!p) miss = true; cost += p * rg[1]; });
+      var profit = sell && !miss ? Math.round(sell * 0.95 - cost) : null, sk = skillOf[id] || 0;
+      return { id: id, name: fr[0], item: item, q: out ? out.q : -1, sell: sell, profit: profit, skill: sk, tier: sk ? tierOf(sk) : 4 };
+    }).filter(Boolean).sort(function (a, b) { return a.tier - b.tier || a.skill - b.skill || a.name.localeCompare(b.name); });
+    if (!rows.length) return '<div class="note">' + t("ar_nofr") + "</div>";
+    var h = '<table class="steps craft"><thead><tr><th style="text-align:left">' + t("ar_craft") + "</th><th>" + t("col_skill") + "</th><th>" + t("ar_sells") + "</th><th>" + t("ar_profit") + "</th></tr></thead><tbody>", last = -1;
+    rows.forEach(function (r) {
+      if (r.tier !== last) { last = r.tier; h += '<tr class="tierhd"><td colspan="4">' + (r.tier < 4 ? t("tier_" + (r.tier + 1)) + " · " + TIERS[r.tier][0] + "–" + TIERS[r.tier][1] : t("skill_unknown_h")) + "</td></tr>"; }
+      var tip = r.item && byId[r.item] ? ' data-tip="' + r.item + '"' : "";
+      h += "<tr" + tip + ' data-arrec="' + r.id + '" tabindex="0"' + (r.id === arRec ? ' aria-selected="true"' : "") + '><td class="nm ' + qcls(r.q) + '">' + esc(r.name) + "</td><td>" + (r.skill || '<span class="dim">–</span>') + "</td><td>" + (r.sell ? money(r.sell) : '<span class="dim">–</span>') + "</td><td>" +
+        (r.profit == null ? '<span class="dim">' + (r.sell ? t("ar_noprice") : "–") + "</span>" : '<span class="' + (r.profit >= 0 ? "up" : "down") + '">' + (r.profit >= 0 ? "+" : "−") + money(Math.abs(r.profit)) + "</span>") + "</td></tr>";
+    });
+    return h + "</tbody></table>";
+  }
   function renderChar(d) {
     var pic = d.media && (d.media["main-raw"] || d.media["main-sd-raw"]), fr = isFriend(d.slug);
     var mid = '<div class="arhead"><h2 class="q1">' + esc(d.name + " " + d.surname) + '</h2><button class="star fr" type="button" data-friend="' + esc(d.slug) + '" data-label="' + esc(d.name + " " + d.surname) + '" aria-pressed="' + fr + '" title="' + t(fr ? "fr_del" : "fr_add") + '">' + (fr ? "★" : "☆") + "</button>" +
       '<span class="sub2">' + t("ar_level", d.level, esc(d.race || ""), esc(d.cls || "")) +
       (d.guild ? ' · <a class="wh" href="#guild=' + esc(d.guild.slug) + '" data-ar="guild" data-slug="' + esc(d.guild.slug) + '">&lt;' + esc(d.guild.name) + "&gt;</a>" : "") + "</span>" +
       '<button class="lnk" type="button" data-copyany="#player=' + esc(d.slug) + '" title="' + t("copy_link") + '">' + t("copy_link") + "</button></div>" +
+      // Vänster: dockan. Höger (i samma ruta): ryktesraden och yrkena. Högerpanelen (#detail) = valt recept, som i AH.
       '<div class="arbody"><div class="dollwrap"><div class="doll"><div class="col">' + SLOT_L.map(function (sl) { return slotHtml(d, sl); }).join("") + '</div><div class="mid">' +
       (pic ? '<div class="picbox"><img class="pic" src="' + esc(pic) + '" alt=""></div>' : '<div class="picbox none hint">' + t("ar_noimg") + "</div>") +
       '<div class="bot">' + SLOT_B.map(function (sl) { return slotHtml(d, sl); }).join("") + "</div></div>" +
       '<div class="col">' + SLOT_R.map(function (sl) { return slotHtml(d, sl); }).join("") + "</div></div>" +
       '<div class="picnote">' + t("ar_picnote") + "</div>" +
       '<dl class="arfacts"><div><dt>' + t("ar_ilvl") + "</dt><dd>" + d.ilvl + "</dd></div><div><dt>" + t("ar_last") + "</dt><dd>" + when2(d.lastLogin) + "</dd></div>" +
-      "<div><dt>" + t("ar_mounts") + "</dt><dd>" + d.mounts + "</dd></div><div><dt>" + t("ar_pets") + "</dt><dd>" + d.pets + "</dd></div></dl></div></div>";
-    var right = '<div class="strip"><h2 class="q1">' + esc(d.name) + "</h2><small>" + esc(d.ruleset || "") + " · " + (d.faction === "ALLIANCE" ? "Alliance" : "Horde") + "</small></div>";
-    if (arRec) {   // ett känt recept, visat här i stället för att hoppa till Professions-fliken
+      "<div><dt>" + t("ar_mounts") + "</dt><dd>" + d.mounts + "</dd></div><div><dt>" + t("ar_pets") + "</dt><dd>" + d.pets + "</dd></div></dl></div>" +
+      '<div class="arside">' +
+      '<button class="prof rephd" type="button" data-reptoggle="1" aria-expanded="' + arRepOpen + '"><span class="pn"><span>' + t("ar_rep") + " (" + d.reputations.length + ')</span></span><span class="chev">' + (arRepOpen ? "▾" : "▸") + "</span></button>" +
+      (arRepOpen ? '<div class="reps">' + repsHtml(d) + "</div>" : "") +
+      "<h3>" + t("ar_prof") + '</h3><div class="profs">' + (d.professions.primary.map(profHtml).join("") || '<div class="note">–</div>') + "</div>" +
+      "<h3>" + t("ar_prof2") + '</h3><div class="profs">' + (d.professions.secondary.map(profHtml).join("") || '<div class="note">–</div>') + "</div>" +
+      "</div></div>";
+    var right;
+    if (arRec) {
       var row = null;
       crRows.forEach(function (x) { if (x.rid === arRec) row = x; });
-      right += '<div class="h3row"><button class="lnk back" type="button" data-arback="1">← ' + t("ar_prof") + '</button><button class="lnk" type="button" data-gorec="' + arRec + '">' + t("ar_open_cr") + "</button></div>" +
-        (row ? recipeHtml(row).replace('<div class="strip">', '<div class="strip rec">') : '<div class="note">' + t("ar_nofr") + "</div>");
+      right = row ? recipeHtml(row) + '<div class="h3row"><button class="lnk" type="button" data-gorec="' + arRec + '">' + t("ar_open_cr") + "</button></div>" : '<div class="note">' + t("ar_nofr") + "</div>";
     } else {
-      right += '<button class="prof rephd" type="button" data-reptoggle="1" aria-expanded="' + arRepOpen + '"><span class="pn"><span>' + t("ar_rep") + "</span><small>" + d.reputations.length + "</small></span><span class=\"chev\">" + (arRepOpen ? "▾" : "▸") + "</span></button>" +
-        (arRepOpen ? '<div class="reps">' + repsHtml(d) + "</div>" : "") +
-        "<div><h3>" + t("ar_prof") + '</h3><div class="profs">' + (d.professions.primary.map(profHtml).join("") || '<div class="note">–</div>') + "</div></div>" +
-        "<div><h3>" + t("ar_prof2") + '</h3><div class="profs">' + (d.professions.secondary.map(profHtml).join("") || '<div class="note">–</div>') + "</div></div>";
+      right = '<div class="strip"><h2 class="q1">' + esc(d.name) + "</h2><small>" + esc(d.ruleset || "") + " · " + (d.faction === "ALLIANCE" ? "Alliance" : "Horde") + "</small></div>" + '<div class="note">' + t("ar_pick") + "</div>";
     }
     arShow(mid, right);
   }
