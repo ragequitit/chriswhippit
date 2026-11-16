@@ -190,6 +190,8 @@ td.nm, .watch td:first-child { text-align: left; white-space: nowrap; max-width:
 .arhead .lnk { float: none; margin-left: auto; }
 .arbody { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 10px 22px; align-items: start; }
 .arside { min-width: 0; } .arside h3 { margin: 12px 0 6px; }
+.dollwrap { position: sticky; top: 0; }   /* dockan står kvar medan yrkena rullar (Joakim 2026-11-16) */
+.known .craft th { position: static; }      /* rubrikraden ska inte fastna överst */
 .craft tr.tierhd td { text-align: left; color: var(--gold); font-family: var(--display); font-size: 12.5px; letter-spacing: .04em; text-transform: uppercase; padding-top: 8px; border-bottom: 1px solid var(--line); background: none; }
 .craft tbody tr[aria-selected=true] td { background: var(--sel); }
 .dollwrap { display: grid; gap: 8px; justify-items: center; }
@@ -415,7 +417,8 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
 .wtip .ln { display: flex; justify-content: space-between; gap: 14px; } .wtip .ln .r { text-align: right; white-space: nowrap; }
 /* Läget: Auction house eller Trading, som flikar med en tunn guldlinje under den aktiva (mockupen). */
 .mode { display: inline-flex; border-bottom: 1px solid var(--line); }
-.mode button { all: unset; cursor: pointer; height: 36px; padding: 0 16px; font-size: 14.5px; color: var(--grey); display: inline-flex; align-items: center; gap: 6px; margin-bottom: -1px; }
+.mode button { all: unset; cursor: pointer; height: 40px; padding: 0 16px 0 12px; font-size: 14.5px; color: var(--grey); display: inline-flex; align-items: center; gap: 8px; margin-bottom: -1px; }
+.mode .mi { width: 24px; height: 24px; object-fit: contain; filter: saturate(.7) brightness(.85); } .mode button[aria-pressed=true] .mi, .mode button:hover .mi { filter: none; }
 .mode button[aria-pressed=true] { color: var(--edge); background: var(--sel); box-shadow: inset 0 -2px 0 var(--edge); }
 .mode button:focus-visible { outline: 2px solid var(--edge); outline-offset: -2px; }
 .chip.cheap { color: var(--green); border-color: rgba(127, 212, 154, .5); }
@@ -465,10 +468,10 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     <input type="search" id="q" data-t-ph="search_ph" data-t-aria="search_aria" placeholder="Sök vara, t.ex. Silk Cloth" autocomplete="off" aria-label="Sök vara">
     <button class="wowbtn" id="qbtn" type="button" data-t="search_btn">Sök</button>
     <div class="mode" role="group">
-      <button type="button" id="modeAh" aria-pressed="true" data-t="mode_ah" data-t-title="mode_ah_tip">Auktionshus</button>
-      <button type="button" id="modeTr" aria-pressed="false" data-t="mode_tr" data-t-title="mode_tr_tip">Trading</button>
-      <button type="button" id="modeCr" aria-pressed="false" data-t="mode_cr" data-t-title="mode_cr_tip">Professions</button>
-      <button type="button" id="modeAr" aria-pressed="false" data-t="mode_ar" data-t-title="mode_ar_tip">Armory</button>
+      <button type="button" id="modeAh" aria-pressed="true" data-t-title="mode_ah_tip"><img class="mi" alt="" data-mi="ah"><span data-t="mode_ah">Auktionshus</span></button>
+      <button type="button" id="modeTr" aria-pressed="false" data-t-title="mode_tr_tip"><img class="mi" alt="" data-mi="tr"><span data-t="mode_tr">Trading</span></button>
+      <button type="button" id="modeCr" aria-pressed="false" data-t-title="mode_cr_tip"><img class="mi" alt="" data-mi="cr"><span data-t="mode_cr">Professions</span></button>
+      <button type="button" id="modeAr" aria-pressed="false" data-t-title="mode_ar_tip"><img class="mi" alt="" data-mi="ar"><span data-t="mode_ar">Armory</span></button>
     </div>
     <span class="count" id="count"></span>
   </div>
@@ -520,6 +523,8 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   var ICON_BASE = "https://ragequitit.github.io/ah/icons/";             // mappen med ikoner; tom = inga ikoner (Claude-sidan kan inte ladda bilder utifrån)
   // Bilderna ur Joakims designpaket (publik/assets/): medaljong, sökikon, fraktionsmärken, kategoriikoner, panoraman.
   var ASSET_BASE = ICON_BASE ? ICON_BASE.replace(/icons\/$/, "assets/") : "";
+  // Flikikonerna (Joakims fyra guldbilder 2026-11-16: våg, kurva, städ, hjälm) – mode-<läge>.png i assets/icons.
+  Array.prototype.forEach.call(document.querySelectorAll("img[data-mi]"), function (im) { if (ASSET_BASE) im.src = ASSET_BASE + "icons/mode-" + im.getAttribute("data-mi") + ".png"; else im.remove(); });
   // Kategoriikoner: spelets egna via Blizzards item media (cat-<namn>.jpg, hämtade i förväg), reserv = paketets PNG.
   // Quest Items använder paketets guldutropstecken direkt. Bundet till kategorinamnet i datan, inte till texten.
   var CAT_ICON = { Weapons: "weapons", Armor: "armor", Containers: "containers", Consumables: "consumables", "Trade Goods": "trade-goods",
