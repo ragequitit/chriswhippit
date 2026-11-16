@@ -250,6 +250,7 @@ td.nm, .watch td:first-child { text-align: left; white-space: nowrap; max-width:
 .known .craft td, .known .craft th { padding: 4px 6px; font-size: 13px; }
 .roster td.nm { width: 40%; } .roster td.pvp, .roster th.pvp { text-align: left; } .roster a { color: inherit; text-decoration: none; } .roster a:hover { color: var(--gold); }
 /* Quests och Dungeons (Joakim 2026-11-16): nivå först i vänsterspalten, sedan zon/instans. */
+.cat.grp { margin-top: 8px; border-top: 1px solid var(--line); border-radius: 0 0 4px 4px; color: var(--gold); font-family: var(--display); font-size: 13.5px; letter-spacing: .03em; }
 .cath { color: var(--gold); font-family: var(--display); font-size: 12.5px; letter-spacing: .05em; text-transform: uppercase; padding: 12px 10px 4px; }
 .qplayer { display: grid; gap: 6px; padding: 2px 4px 10px; margin-bottom: 6px; border-bottom: 1px solid var(--line); font-size: 13px; }
 .qplayer label { color: var(--grey); font-size: 12px; }
@@ -687,7 +688,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       rise_tip: "%1% above the usual price these days (%2)", col_pct: "Vs usual", col_pct_s: "Now", col_pct_tip: "Market price now versus the usual market price these days. Red = down, green = up.",
       mode_qu: "Quests", mode_qu_tip: "Every quest in WoW Forever by level and zone, with rewards priced on the auction house", search_qu: "Search quest or zone, e.g. Kobold Camp Cleanup",
       mode_dg: "Dungeons", mode_dg_tip: "Dungeons and raids by level: bosses in order and what they drop, priced on the auction house", search_dg: "Search loot in every dungeon, e.g. Cape of the Brotherhood",
-      qu_h: "Level", qu_zones: "Zones", qu_after: "Complete first", qu_during: "While on", qu_skill: "Profession", qu_class: "Class", qu_reqs: "Requirements", qu_chain: "Quest chain (%1)", qu_also: "Also leads to:", qu_lv: "Level %1–%2", qu_unknown: "New in Forever (level unknown)", qu_count: "%1 quests", qu_empty: "No quest matches.", qu_fail: "Could not be loaded.",
+      qu_h: "Level", qu_zones: "Zones", qu_g_dungeons: "Dungeons & raids", qu_g_other: "Other (1–2 quests)", qu_after: "Complete first", qu_during: "While on", qu_skill: "Profession", qu_class: "Class", qu_reqs: "Requirements", qu_chain: "Quest chain (%1)", qu_also: "Also leads to:", qu_lv: "Level %1–%2", qu_unknown: "New in Forever (level unknown)", qu_count: "%1 quests", qu_empty: "No quest matches.", qu_fail: "Could not be loaded.",
       qu_check: "Check a player", qu_nobody: "— nobody —", qu_check_tip: "Look up a player in Armory first, then pick them here to tick off their done quests.", qu_hide: "Hide done (%1)",
       qu_fac_h: "Showing Horde and neutral quests (your market).", qu_fac_a: "Showing Alliance and neutral quests (your market).", qu_done_by: "Done by %1", qu_notdone: "Not done by %1 yet",
       qu_elite: "Elite", qu_est_tip: "Estimated from the zone (new quest in Forever)", qu_both: "Both factions", qu_req: "Requires level", qu_rewards: "Rewards", qu_choose: "choose one",
@@ -1232,9 +1233,23 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       o.lo = o.lv.length ? o.lv[Math.floor(o.lv.length * 0.1)] : 0; o.hi = o.lv.length ? o.lv[Math.floor(o.lv.length * 0.9)] : 0;   // spann utan udda enstaka quests
       return o;
     }).sort(function (a, b) { return (!a.med - !b.med) || a.med - b.med || a.name.localeCompare(b.name); });
-    quZoneCache = { key: key, list: list };
-    return list;
+    // Vanliga zoner var för sig; dungeons och raider samlade under en rubrik, likaså zoner som är nya i Forever (utan
+    // nivå) och småzoner med 1–2 quests (Joakim 2026-11-16: "inga riktiga zoner").
+    var main = [], dung = [], fresh = [], small = [];
+    list.forEach(function (o) { if (isDgArea(o.name)) dung.push(o); else if (o.n <= 2) small.push(o); else if (!o.med) fresh.push(o); else main.push(o); });
+    var sum = function (a) { return a.reduce(function (s, o) { return s + o.n; }, 0); };
+    var out = main.map(function (o) { return { zone: o }; });
+    if (dung.length) out.push({ group: "qu_g_dungeons", zones: dung, n: sum(dung) });
+    if (fresh.length) out.push({ group: "qu_unknown", zones: fresh, n: sum(fresh) });
+    if (small.length) out.push({ group: "qu_g_other", zones: small.sort(function (a, b) { return a.name.localeCompare(b.name); }), n: sum(small) });
+    quZoneCache = { key: key, list: out };
+    return out;
   }
+  var DG_AREAS = ["Ragefire Chasm", "The Deadmines", "Deadmines", "Wailing Caverns", "Shadowfang Keep", "Blackfathom Deeps", "The Stockade", "Stormwind Stockade", "Gnomeregan", "Razorfen Kraul",
+    "Scarlet Monastery", "Razorfen Downs", "Uldaman", "Zul'Farrak", "Maraudon", "Sunken Temple", "The Temple of Atal'Hakkar", "Blackrock Depths", "Blackrock Spire", "Lower Blackrock Spire", "Upper Blackrock Spire",
+    "Dire Maul", "Scholomance", "Stratholme", "Zul'Gurub", "Onyxia's Lair", "Molten Core", "Blackwing Lair", "Ruins of Ahn'Qiraj", "Ahn'Qiraj", "Temple of Ahn'Qiraj", "Naxxramas", "Karazhan Crypts", "Scarlet Enclave"];
+  function isDgArea(n) { return DG_AREAS.indexOf(n) >= 0 || dgList.some(function (d) { return d.name === n; }); }
+  function zoneRange(z) { return z.med ? (z.lo === z.hi ? "" + z.lo : z.lo + "–" + z.hi) : num(z.n); }
   function skillName(id) { return { 171: "Alchemy", 164: "Blacksmithing", 185: "Cooking", 333: "Enchanting", 202: "Engineering", 129: "First Aid", 165: "Leatherworking", 197: "Tailoring", 186: "Mining", 182: "Herbalism", 356: "Fishing", 393: "Skinning" }[id] || "Skill " + id; }
   function classNames(m) { var n = [], C = [[1, "Warrior"], [2, "Paladin"], [4, "Hunter"], [8, "Rogue"], [16, "Priest"], [64, "Shaman"], [128, "Mage"], [256, "Warlock"], [1024, "Druid"]]; C.forEach(function (c) { if (m & c[0]) n.push(c[1]); }); return n.length && n.length < 9 ? n.join(", ") : ""; }
   // Ikon för föremål som inte finns på AH: Blizzards ikon via item-icons.json (hamta-item-ikoner.js).
@@ -1287,18 +1302,24 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       (quPlayer ? (quPlayer.set ? '<button class="chip' + (quHideDone ? " on" : "") + '" type="button" data-quhide="1" aria-pressed="' + quHideDone + '">' + t("qu_hide", num(quPlayer.n)) + "</button>" : '<span class="dim">' + t("ar_loading") + "</span>") : (opts.length ? "" : '<small class="dim">' + t("qu_check_tip") + "</small>")) +
       '<small class="dim">' + t(myFaction() === "A" ? "qu_fac_a" : "qu_fac_h") + "</small></div>";
     h += "<h2>" + t("qu_zones") + "</h2>";
-    var unk = false;
-    quZoneList().forEach(function (z, i) {
-      if (!z.med && !unk) { unk = true; h += '<div class="cath">' + t("qu_unknown") + "</div>"; }
-      h += '<button class="cat" type="button" data-cat="' + i + '" aria-pressed="' + (catSel === i && subSel < 0) + '" title="' + esc(z.name) + '"><em class="nm">' + esc(z.name) + "</em><span>" + (z.med ? (z.lo === z.hi ? z.lo : z.lo + "–" + z.hi) : num(z.n)) + "</span></button>";
+    quZoneList().forEach(function (e, i) {
+      if (e.group) {   // samlad rubrik: zonerna som underkategori
+        h += '<button class="cat grp" type="button" data-cat="' + i + '" aria-pressed="' + (catSel === i && subSel < 0) + '"><em class="nm">' + t(e.group) + "</em><span>" + num(e.n) + " " + (catSel === i ? "▾" : "▸") + "</span></button>";
+        if (catSel === i) e.zones.forEach(function (z, j) { h += '<button class="cat sub" type="button" data-cat="' + i + '" data-sub="' + j + '" aria-pressed="' + (subSel === j) + '" title="' + esc(z.name) + '"><em class="nm">' + esc(z.name) + "</em><span>" + zoneRange(z) + "</span></button>"; });
+        return;
+      }
+      var z = e.zone;
+      h += '<button class="cat" type="button" data-cat="' + i + '" aria-pressed="' + (catSel === i && subSel < 0) + '" title="' + esc(z.name) + '"><em class="nm">' + esc(z.name) + "</em><span>" + zoneRange(z) + "</span></button>";
       if (catSel !== i) return;
       for (var g = 0; g < 7; g++) if (z.g[g]) h += '<button class="cat sub" type="button" data-cat="' + i + '" data-sub="' + g + '" aria-pressed="' + (subSel === g) + '">' + quGroupName(g) + "<span>" + num(z.g[g]) + "</span></button>";
     });
     return h;
   }
   function quRefresh(q) {
-    var zs = catSel >= 0 ? quZoneList()[catSel] : null, gs = zs && subSel >= 0 ? subSel : -1;
-    view = quMine().filter(function (r) { return (!zs || r.area === zs.area) && (gs < 0 || r.grp === gs) && (!q || r.lower.indexOf(q) >= 0 || r.zone.toLowerCase().indexOf(q) >= 0) && !(quHideDone && quDone(r.qid)); });
+    var e = catSel >= 0 ? quZoneList()[catSel] : null, areas = null, gs = -1;
+    if (e && e.zone) { areas = {}; areas[e.zone.area] = 1; gs = subSel; }
+    else if (e && e.group) { areas = {}; (subSel >= 0 && e.zones[subSel] ? [e.zones[subSel]] : e.zones).forEach(function (z) { areas[z.area] = 1; }); }
+    view = quMine().filter(function (r) { return (!areas || areas[r.area]) && (gs < 0 || r.grp === gs) && (!q || r.lower.indexOf(q) >= 0 || r.zone.toLowerCase().indexOf(q) >= 0) && !(quHideDone && quDone(r.qid)); });
     var ck = sortKey, cd = sortDir;
     view.sort(function (a, b) {
       if (ck === "name") return cd * a.name.localeCompare(b.name);
