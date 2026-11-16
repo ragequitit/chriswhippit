@@ -1261,9 +1261,14 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   function skillName(id) { return { 171: "Alchemy", 164: "Blacksmithing", 185: "Cooking", 333: "Enchanting", 202: "Engineering", 129: "First Aid", 165: "Leatherworking", 197: "Tailoring", 186: "Mining", 182: "Herbalism", 356: "Fishing", 393: "Skinning" }[id] || "Skill " + id; }
   function classNames(m) { var n = [], C = [[1, "Warrior"], [2, "Paladin"], [4, "Hunter"], [8, "Rogue"], [16, "Priest"], [64, "Shaman"], [128, "Mage"], [256, "Warlock"], [1024, "Druid"]]; C.forEach(function (c) { if (m & c[0]) n.push(c[1]); }); return n.length && n.length < 9 ? n.join(", ") : ""; }
   // Ikon för föremål som inte finns på AH: Blizzards ikon via item-icons.json (hamta-item-ikoner.js).
-  var XICON = null, xiconPromise = null;
+  var XICON = null, xiconPromise = null, GQ = {};   // GQ[id] = kvalitet ur spelets tooltip (finns = spelets tooltip finns)
+  function hasGameTip(id) { return GQ[id] != null; }
   function loadXIcons() {
-    if (!xiconPromise) xiconPromise = fetch(DATA_BASE + "item-icons.json").then(function (r) { return r.ok ? r.json() : {}; }).catch(function () { return {}; }).then(function (j) { XICON = j; return j; });
+    // Ikonerna och kvaliteten ur spelets egna tooltips (game-quality.json, addonets ExtraTipIds) laddas tillsammans.
+    if (!xiconPromise) xiconPromise = Promise.all([
+      fetch(DATA_BASE + "item-icons.json").then(function (r) { return r.ok ? r.json() : {}; }).catch(function () { return {}; }),
+      fetch(DATA_BASE + "game-quality.json").then(function (r) { return r.ok ? r.json() : {}; }).catch(function () { return {}; })
+    ]).then(function (a) { XICON = a[0]; GQ = a[1]; return XICON; });
     return xiconPromise;
   }
   function xIcon(id, q) {
@@ -1347,8 +1352,8 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   }
   function quItems(list, choose) {
     return list.map(function (it) {
-      var r = byId[it[0]], meta = QU.items[it[0]] || ["Item " + it[0], -1], q = r ? r.q : meta[1];
-      return '<tr><td class="st">' + (r ? starHtml(it[0]) : "") + "</td><td>" + (r && r.ic && ICON_BASE ? iconHtml(r) : xIcon(it[0], q)) + '<span class="' + qcls(q) + '"' + (r ? ' data-tip="' + it[0] + '"' : DG && DG.items[it[0]] ? ' data-dgtip="' + it[0] + '"' : "") + ">" + esc(r && r.name ? r.name : meta[0]) + "</span>" +
+      var r = byId[it[0]], meta = QU.items[it[0]] || ["Item " + it[0], -1], q = r ? r.q : hasGameTip(it[0]) ? GQ[it[0]] : meta[1];
+      return '<tr><td class="st">' + (r ? starHtml(it[0]) : "") + "</td><td>" + (r && r.ic && ICON_BASE ? iconHtml(r) : xIcon(it[0], q)) + '<span class="' + qcls(q) + '"' + (r || hasGameTip(it[0]) ? ' data-tip="' + it[0] + '"' : DG && DG.items[it[0]] ? ' data-dgtip="' + it[0] + '"' : "") + ">" + esc(r && r.name ? r.name : meta[0]) + "</span>" +
         (choose ? ' <span class="tag v">' + t("qu_choose") + "</span>" : "") + "</td><td>" + it[1] + "</td><td>" + (r && r.min > 0 ? money(r.min * it[1]) : '<span class="dim">' + t("qu_notah") + "</span>") + "</td></tr>";
     }).join("");
   }
@@ -1480,9 +1485,9 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   function dgRow(r) {
     if (r.sub) return '<tr class="fvhd' + (r.sub === "cl" ? " cl" : r.sub === "al" ? " al" : "") + '"><td colspan="5">' + (r.sub === "fv" ? t("dg_fv", r.kills) : r.sub === "al" ? t(r.fresh ? "dg_al_new" : "dg_al") : t("dg_cl")) + "</td></tr>";
     if (r.hd) return '<tr class="bosshd"><td colspan="5"><b>' + esc(r.boss.name) + '</b> <span class="dim">' + (r.boss.lvl ? t("dg_boss_lvl", r.boss.lvl) : "") + (query ? " · " + esc(r.d.name) : "") + (r.n ? "" : " · " + t("dg_noloot")) + "</span></td></tr>";
-    var ah = byId[r.item], m = DG.items[r.item] || ["", FLN[r.item] ? FLN[r.item][1] : -1, 0, 0], q = ah ? ah.q : m[1];
+    var ah = byId[r.item], m = DG.items[r.item] || ["", FLN[r.item] ? FLN[r.item][1] : -1, 0, 0], q = ah ? ah.q : hasGameTip(r.item) ? GQ[r.item] : m[1];
     return '<tr tabindex="0"' + (r.cl ? ' class="clrow"' : "") + ' ' + (ah ? 'data-id="' + r.item + '"' + (r.item === selId ? ' aria-selected="true"' : "") : 'data-dgi="' + r.item + '"') + '><td class="fav">' + (ah ? starHtml(r.item) : "") + '</td><td class="nm">' + (ah && ah.ic && ICON_BASE ? iconHtml(ah) : xIcon(r.item, q)) +
-      '<span class="' + qcls(q) + '"' + (ah ? ' data-tip="' + r.item + '"' : ' data-dgtip="' + r.item + '"') + ">" + esc(dgName(r.item)) + "</span>" + (r.mx > 1 ? ' <span class="dim">×' + r.mn + (r.mx > r.mn ? "–" + r.mx : "") + "</span>" : "") +
+      '<span class="' + qcls(q) + '"' + (ah || hasGameTip(r.item) ? ' data-tip="' + r.item + '"' : ' data-dgtip="' + r.item + '"') + ">" + esc(dgName(r.item)) + "</span>" + (r.mx > 1 ? ' <span class="dim">×' + r.mn + (r.mx > r.mn ? "–" + r.mx : "") + "</span>" : "") +
       "</td><td" + (r.fv ? ' title="' + esc(t("dg_fv_tip", r.seen)) + '"' : "") + ">" + (r.al ? '<span class="dim" title="' + esc(t("dg_al_tip")) + '">–</span>' : r.fv && r.den < 3 ? r.seen + "/" + r.den : (r.ch >= 10 ? Math.round(r.ch) : r.ch) + "%") + "</td><td>" + (m[3] || DASH) + "</td><td>" + (ah && ah.min > 0 ? money(ah.min) : '<span class="dim">' + t("qu_notah") + "</span>") + "</td></tr>";
   }
   function dgDetail() {
