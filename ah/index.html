@@ -173,6 +173,35 @@ td.nm, .watch td:first-child { text-align: left; white-space: nowrap; max-width:
 .srcs dd .dim { font-size: 12px; }
 .srcs a.wh { color: var(--fg); text-decoration: underline dotted; text-decoration-color: var(--bronze); text-underline-offset: 3px; }
 .srcs a.wh:hover { color: var(--gold); text-decoration-color: var(--gold); }
+/* Armory (Joakim 2026-11-16): spelarens docka som i spelet, med slots runt bilden; guildens roster som tabell. */
+.armory { padding: 14px; }
+.armory .hint { color: var(--grey); padding: 40px 20px; text-align: center; font-size: 14.5px; }
+.arhead { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 10px; }
+.arhead h2 { font-family: var(--display); font-weight: 500; font-size: 24px; margin: 0; }
+.arhead .sub2 { color: var(--grey); font-size: 14px; }
+.arhead .lnk { float: none; margin-left: auto; }
+.doll { display: grid; grid-template-columns: 52px minmax(0, 1fr) 52px; gap: 10px; align-items: start; justify-items: center; }
+.doll .col { display: grid; gap: 6px; }
+.doll .mid { width: 100%; display: grid; justify-items: center; align-content: start; gap: 6px; }
+/* Blizzards figurbild är 1600×1200 med figuren liten mitt i: visas beskuren i en stående ruta, bilden 3× rutans bredd. */
+.doll .picbox { position: relative; width: 100%; max-width: 340px; aspect-ratio: 5 / 6; overflow: hidden; border-radius: 6px; }
+.doll .pic { position: absolute; left: 50%; top: 50%; width: 300%; max-width: none; transform: translate(-47.4%, -57.8%); filter: drop-shadow(0 10px 18px rgba(0, 0, 0, .6)); }   /* figurens mitt (uppmätt) ligger på 47 % / 58 % av bilden */
+.doll .picbox.none { display: grid; place-items: center; }
+.doll .bot { display: flex; gap: 6px; justify-content: center; }
+.slot { width: 48px; height: 48px; border-radius: 5px; border: 1px solid var(--line); background: var(--inset); box-shadow: inset 0 1px 3px rgba(0, 0, 0, .5); position: relative; cursor: default; }
+.slot img { width: 100%; height: 100%; border-radius: 4px; display: block; }
+.slot.q2 { border-color: var(--q2); } .slot.q3 { border-color: var(--q3); } .slot.q4 { border-color: var(--q4); } .slot.q5 { border-color: var(--q5); }
+.slot .lv { position: absolute; right: 2px; bottom: 1px; font-size: 10px; color: var(--fg); text-shadow: 0 0 3px #000, 0 0 3px #000; }
+.arfacts { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 8px 14px; margin: 12px 0 0; padding-top: 10px; border-top: 1px solid var(--line); }
+.arfacts dt { color: var(--grey); font-size: 12px; } .arfacts dd { margin: 0; font-size: 15px; font-weight: 600; }
+.pbar { position: relative; height: 8px; border-radius: 4px; background: var(--inset); border: 1px solid var(--line); overflow: hidden; margin-top: 3px; }
+.pbar i { display: block; height: 100%; background: linear-gradient(90deg, #d6a83b, #f6c448); }
+.profs div { margin-bottom: 8px; } .profs .n { display: flex; justify-content: space-between; font-size: 14px; }
+.profs .n small { color: var(--grey); }
+.reps { display: grid; grid-template-columns: 1fr auto; gap: 2px 10px; font-size: 13px; } .reps .dim { text-align: right; }
+.roster td.nm { width: 55%; } .roster a { color: inherit; text-decoration: none; } .roster a:hover { color: var(--gold); }
+.armory .roster-box { max-height: 100%; overflow: auto; }
+.wtip .ln.c { color: var(--grey); font-size: 12px; }
 .reag td, .reag th { padding: 3px 6px; font-size: 13px; }
 .reag td:first-child { text-align: left; max-width: 0; width: 52%; overflow: hidden; text-overflow: ellipsis; }
 .reag .ic { width: 20px; height: 20px; vertical-align: -5px; margin-right: 6px; }
@@ -392,6 +421,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       <button type="button" id="modeAh" aria-pressed="true" data-t="mode_ah" data-t-title="mode_ah_tip">Auktionshus</button>
       <button type="button" id="modeTr" aria-pressed="false" data-t="mode_tr" data-t-title="mode_tr_tip">Trading</button>
       <button type="button" id="modeCr" aria-pressed="false" data-t="mode_cr" data-t-title="mode_cr_tip">Professions</button>
+      <button type="button" id="modeAr" aria-pressed="false" data-t="mode_ar" data-t-title="mode_ar_tip">Armory</button>
     </div>
     <span class="count" id="count"></span>
   </div>
@@ -406,6 +436,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
         </table>
       </div>
       <div class="empty" id="empty" data-t="empty" hidden>Ingen vara matchar sökningen.</div>
+      <div class="armory" id="armory" hidden></div>
       <button class="more" id="more" type="button" hidden></button>
     </section>
 
@@ -434,7 +465,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   // mot vanligt, dygnshandel och bästa tid. Trading visar bara stapelbart med minst TR_MIN ute (gear och tunna varor svänger
   // i guld, där säger procent ingenting). Sparas i webbläsaren.
   var MKEY = "whippit-ah-mode", TR_MIN = 20;
-  var mode = (function () { try { var m = localStorage.getItem(MKEY); return m === "tr" || m === "cr" ? m : "ah"; } catch (e) { return "ah"; } })();
+  var mode = (function () { try { var m = localStorage.getItem(MKEY); return m === "tr" || m === "cr" || m === "ar" ? m : "ah"; } catch (e) { return "ah"; } })();
   if (mode === "tr") { sortKey = "dip"; sortDir = -1; }
   var BT_MIN = 3;   // bästa tid räknas som tydlig vid minst 3 % vinst efter AH:s andel och plus minst 6 av 10 dagar
   function btClear(r) { return !!(r.bt && r.bt[2] >= BT_MIN && r.bt[3] * 10 >= r.bt[4] * 6); }
@@ -555,6 +586,15 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       col_qty: "Listed", col_day: "Sold/day", col_day_tip: "Estimate from Blizzard's hourly data: listings that vanished before they could expire",
       col_lvl: "Level", col_lvl_tip: "Requires level", dip_tip: "%1% below the usual price these days (%2)", trend: "Last week",
       rise_tip: "%1% above the usual price these days (%2)", col_pct: "Vs usual", col_pct_s: "Now", col_pct_tip: "Market price now versus the usual market price these days. Red = down, green = up.",
+      mode_ar: "Armory", mode_ar_tip: "Look up any player or guild: gear, professions, reputation and guild roster",
+      search_ar: "Player (Name Surname) or guild name", ar_hint: "Type a player's name and surname, or a guild name, and press Search.",
+      ar_recent: "Recent", ar_loading: "Looking up…", ar_notfound: "No player or guild with that name. Players show up from level 10, after logging out.",
+      ar_fail: "The lookup is not available right now.", ar_off: "The armory is not connected yet.",
+      ar_level: "Level %1 %2 %3", ar_guild: "Guild", ar_ilvl: "Item level", ar_last: "Last seen", ar_mounts: "Mounts", ar_pets: "Pets", ar_members: "Members", ar_faction: "Faction",
+      ar_prof: "Professions", ar_prof2: "Secondary", ar_rep: "Reputation", ar_recipes: "%1 recipes known", ar_roster: "Roster", ar_rank: "Rank", ar_noimg: "No picture yet",
+      ar_open: "Open in the armory", slot_HEAD: "Head", slot_NECK: "Neck", slot_SHOULDER: "Shoulder", slot_BACK: "Back", slot_CHEST: "Chest", slot_SHIRT: "Shirt", slot_TABARD: "Tabard",
+      slot_WRIST: "Wrist", slot_HANDS: "Hands", slot_WAIST: "Waist", slot_LEGS: "Legs", slot_FEET: "Feet", slot_FINGER_1: "Ring", slot_FINGER_2: "Ring", slot_TRINKET_1: "Trinket",
+      slot_TRINKET_2: "Trinket", slot_MAIN_HAND: "Main hand", slot_OFF_HAND: "Off hand", slot_RANGED: "Ranged",
       mode_cr: "Professions", mode_cr_tip: "Every recipe with what it costs to craft at today's market prices, what it sells for and the profit",
       col_recipe: "Recipe", col_skill: "Skill", col_skill_tip: "Skill required to learn the recipe", col_cost: "Cost", col_cost_tip: "Reagents at market price; vendor reagents at vendor price",
       col_sell: "Sells for", col_sell_tip: "Market price of the crafted item", col_profit: "Profit", col_profit_tip: "Sells for minus the auction house's 5% minus cost, per craft",
@@ -749,6 +789,95 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   // Crafting (Joakim 2026-11-16): recept.json (recept-db.js, ur den öppna Classic-databasen) med reagenser, tränarpris
   // och källor. Kostnad = reagenser gånger riktpriset på vald marknad, handlarvaror till handlarpris. Säljpris = den
   // tillverkade varans riktpris. Vinst = säljpris × 0,95 − kostnad, per tillverkning.
+  // Armory: uppslag via vår lilla funktion hos Cloudflare (armory/worker.js) som håller nyckeln; lokalt via armory-proxy.js.
+  var ARMORY_API = location.hostname === "localhost" ? "http://localhost:8767" : "https://whippit-armory.discord-tjanst.workers.dev";   // Cloudflare Worker (armory/worker.js), driftsatt 2026-11-16
+  var AR_KEY = "whippit-ah-armory";
+  var arRecent = (function () { try { var a = JSON.parse(localStorage.getItem(AR_KEY) || "[]"); return Array.isArray(a) ? a : []; } catch (e) { return []; } })();
+  var arData = null, arToken = 0;
+  var SLOT_L = ["HEAD", "NECK", "SHOULDER", "BACK", "CHEST", "SHIRT", "TABARD", "WRIST"], SLOT_R = ["HANDS", "WAIST", "LEGS", "FEET", "FINGER_1", "FINGER_2", "TRINKET_1", "TRINKET_2"], SLOT_B = ["MAIN_HAND", "OFF_HAND", "RANGED"];
+  function arRemember(kind, slug, label) {
+    arRecent = arRecent.filter(function (r) { return !(r.kind === kind && r.slug === slug); });
+    arRecent.unshift({ kind: kind, slug: slug, label: label });
+    arRecent = arRecent.slice(0, 20);
+    try { localStorage.setItem(AR_KEY, JSON.stringify(arRecent)); } catch (e) {}
+  }
+  function arSlug(q) { return q.trim().toLowerCase().replace(/\s+/g, "-"); }
+  // Sök: två ord = troligen spelare (förnamn efternamn), annars guild; misslyckas det ena provas det andra.
+  function arLookup(q) {
+    var slug = arSlug(q);
+    if (!slug) return;
+    var words = q.trim().split(/\s+/);
+    var first = words.length === 2 ? "char" : "guild", second = first === "char" ? "guild" : "char";
+    arLoad(first, slug, function () { arLoad(second, slug, function () { arShow('<div class="hint">' + t("ar_notfound") + "</div>", ""); }); });
+  }
+  function arShow(mid, right) { $("armory").innerHTML = mid; if (right != null) $("detail").innerHTML = right; }
+  function arLoad(kind, slug, onMiss) {
+    if (!ARMORY_API) { arShow('<div class="hint">' + t("ar_off") + "</div>", ""); return; }
+    var my = ++arToken;
+    arShow('<div class="hint">' + t("ar_loading") + "</div>", "");
+    fetch(ARMORY_API + "/" + kind + "/" + encodeURIComponent(slug)).then(function (r) {
+      if (r.status === 404) throw new Error("404");
+      if (!r.ok) throw new Error("fail");
+      return r.json();
+    }).then(function (d) {
+      if (my !== arToken) return;
+      arData = d;
+      if (d.kind === "character") renderChar(d); else renderGuild(d);
+      arRemember(d.kind === "character" ? "char" : "guild", d.slug, d.kind === "character" ? d.name + " " + d.surname : d.name);
+      drawCats();
+      try { history.replaceState(null, "", "#" + (d.kind === "character" ? "player" : "guild") + "=" + d.slug); } catch (e) {}
+    }).catch(function (e) {
+      if (my !== arToken) return;
+      if (e.message === "404" && onMiss) onMiss(); else if (e.message === "404") arShow('<div class="hint">' + t("ar_notfound") + "</div>", ""); else { console.error("armory", e); arShow('<div class="hint">' + t("ar_fail") + "</div>", ""); }
+    });
+  }
+  function arIcon(it) {   // ikon: vår egen fil om varan finns på AH, annars Blizzards bildserver
+    var r = byId[it.id];
+    if (r && r.ic && ICON_BASE) return ICON_BASE + r.ic + ".jpg";
+    return it.icon ? "https://render.worldofwarcraft.com/forever-eu/icons/56/" + it.icon + ".jpg" : "";
+  }
+  function slotHtml(d, slot) {
+    var it = null;
+    d.items.forEach(function (x) { if (x.slot === slot) it = x; });
+    if (!it) return '<div class="slot" title="' + esc(t("slot_" + slot)) + '"></div>';
+    var src = arIcon(it), tip = byId[it.id] ? ' data-tip="' + it.id + '"' : ' data-artip="' + d.items.indexOf(it) + '"';
+    return '<div class="slot ' + qcls(it.q) + '"' + tip + ' title="' + esc(it.name) + '">' + (src ? '<img src="' + src + '" alt="">' : "") + (it.ilvl ? '<span class="lv">' + it.ilvl + "</span>" : "") + "</div>";
+  }
+  function when2(ms) { if (!ms) return "–"; var d = new Date(ms); return d.getDate() + "/" + (d.getMonth() + 1) + " " + d.toLocaleTimeString(locale(), { hour: "2-digit", minute: "2-digit" }); }
+  function renderChar(d) {
+    var pic = d.media && (d.media["main-raw"] || d.media["main-sd-raw"]);
+    var mid = '<div class="arhead"><h2 class="q1">' + esc(d.name + " " + d.surname) + '</h2><span class="sub2">' + t("ar_level", d.level, esc(d.race || ""), esc(d.cls || "")) +
+      (d.guild ? ' · <a class="wh" href="#guild=' + esc(d.guild.slug) + '" data-ar="guild" data-slug="' + esc(d.guild.slug) + '">&lt;' + esc(d.guild.name) + "&gt;</a>" : "") + "</span>" +
+      '<button class="lnk" type="button" data-copyany="#player=' + esc(d.slug) + '" title="' + t("copy_link") + '">' + t("copy_link") + "</button></div>" +
+      '<div class="doll"><div class="col">' + SLOT_L.map(function (sl) { return slotHtml(d, sl); }).join("") + '</div><div class="mid">' +
+      (pic ? '<div class="picbox"><img class="pic" src="' + esc(pic) + '" alt=""></div>' : '<div class="picbox none hint">' + t("ar_noimg") + "</div>") +
+      '<div class="bot">' + SLOT_B.map(function (sl) { return slotHtml(d, sl); }).join("") + "</div></div>" +
+      '<div class="col">' + SLOT_R.map(function (sl) { return slotHtml(d, sl); }).join("") + "</div></div>" +
+      '<dl class="arfacts"><div><dt>' + t("ar_ilvl") + "</dt><dd>" + d.ilvl + "</dd></div><div><dt>" + t("ar_last") + "</dt><dd>" + when2(d.lastLogin) + "</dd></div>" +
+      "<div><dt>" + t("ar_mounts") + "</dt><dd>" + d.mounts + "</dd></div><div><dt>" + t("ar_pets") + "</dt><dd>" + d.pets + "</dd></div></dl>";
+    var prof = function (list) { return list.map(function (pr) { return pr.tiers.map(function (ti) {
+      var rec = ti.recipes.length;
+      return "<div><div class=\"n\"><span>" + esc(pr.name) + "</span><small>" + ti.skill + " / " + ti.max + (rec ? " · " + t("ar_recipes", rec) : "") + '</small></div><div class="pbar"><i style="width:' + (ti.max ? Math.round(ti.skill / ti.max * 100) : 0) + '%"></i></div></div>';
+    }).join(""); }).join(""); };
+    var reps = d.reputations.slice().sort(function (a, b) { return b.value - a.value; }).slice(0, 12).map(function (r) { return "<span>" + esc(r.name) + '</span><span class="dim">' + esc(r.standing) + " " + num(r.value) + "/" + num(r.max) + "</span>"; }).join("");
+    var right = '<div class="strip"><h2 class="q1">' + esc(d.name) + "</h2><small>" + esc(d.ruleset || "") + " · " + (d.faction === "ALLIANCE" ? "Alliance" : "Horde") + "</small></div>" +
+      "<div><h3>" + t("ar_prof") + '</h3><div class="profs">' + (prof(d.professions.primary) || '<div class="note">–</div>') + "</div></div>" +
+      "<div><h3>" + t("ar_prof2") + '</h3><div class="profs">' + (prof(d.professions.secondary) || '<div class="note">–</div>') + "</div></div>" +
+      "<div><h3>" + t("ar_rep") + '</h3><div class="reps">' + (reps || "–") + "</div></div>";
+    arShow(mid, right);
+  }
+  function renderGuild(d) {
+    var rows = d.members.slice().sort(function (a, b) { return b.level - a.level || a.name.localeCompare(b.name); }).map(function (m) {
+      var slug = arSlug(m.name + " " + m.surname);
+      return '<tr><td class="nm"><a href="#player=' + esc(slug) + '" data-ar="char" data-slug="' + esc(slug) + '">' + esc(m.name + " " + m.surname) + "</a></td><td>" + m.level + "</td><td>" + (m.cls ? esc((m.race ? m.race + " " : "") + m.cls) : '<span class="dim">–</span>') + "</td><td>" + (m.rank === 0 ? "GM" : m.rank) + "</td></tr>";
+    }).join("");
+    var mid = '<div class="arhead"><h2 class="q1">&lt;' + esc(d.name) + '&gt;</h2><span class="sub2">' + (d.faction === "ALLIANCE" ? "Alliance" : "Horde") + " · " + num(d.count) + " " + t("ar_members").toLowerCase() + "</span>" +
+      '<button class="lnk" type="button" data-copyany="#guild=' + esc(d.slug) + '" title="' + t("copy_link") + '">' + t("copy_link") + "</button></div>" +
+      '<div class="roster-box"><table class="roster"><thead><tr><th class="nm">' + t("col_item").replace(/.*/, "Name") + "</th><th>" + t("col_lvl") + "</th><th>Class</th><th>" + t("ar_rank") + "</th></tr></thead><tbody>" + rows + "</tbody></table></div>";
+    var right = '<div class="strip"><h2 class="q1">' + esc(d.name) + "</h2><small>" + t("ar_roster") + "</small></div>" +
+      '<dl class="facts"><div><dt>' + t("ar_faction") + "</dt><dd>" + (d.faction === "ALLIANCE" ? "Alliance" : "Horde") + "</dd></div><div><dt>" + t("ar_members") + "</dt><dd>" + num(d.count) + "</dd></div></dl>";
+    arShow(mid, right);
+  }
   var RECEPT = null, recPromise = null, crRows = [], profList = [], selRec = null;
   // Yrkesikoner (Joakim 2026-11-16): spelets riktiga yrkesikoner via Blizzards profession media (/data/wow/media/profession/<id>),
   // yrke-<yrke>.jpg. Kategoriikonerna (cat-<namn>.jpg) är reserv om en bild saknas.
@@ -783,6 +912,14 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   function tierOf(skill) { return skill >= 225 ? 3 : skill >= 150 ? 2 : skill >= 75 ? 1 : 0; }
   function tierName(skill) { return t(skill >= 225 ? "tier_4" : skill >= 150 ? "tier_3" : skill >= 75 ? "tier_2" : "tier_1"); }   // 1–74 Apprentice, 75–149 Journeyman, 150–224 Expert, 225–300 Artisan
   function drawCats() {
+    if (mode === "ar") {
+      $("cats").innerHTML = "<h2>" + t("ar_recent") + "</h2>" + arRecent.map(function (r) {
+        var on = arData && arData.slug === r.slug && ((arData.kind === "character") === (r.kind === "char"));
+        return '<button class="cat" type="button" data-ar="' + r.kind + '" data-slug="' + esc(r.slug) + '" aria-pressed="' + on + '">' + (r.kind === "guild" ? "&lt;" + esc(r.label) + "&gt;" : esc(r.label)) + "</button>";
+      }).join("");
+      $("cats").hidden = false;
+      return;
+    }
     if (mode === "cr") {
       $("cats").innerHTML = "<h2>" + t("cr_h") + "</h2>" + profList.map(function (p, i) {
         var pi = PROF_ICON[p.name], ic = "";
@@ -861,6 +998,14 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     header();
     refresh();
     drawWatch();
+    var hp0 = hashParams();
+    if (mode === "ar" || hp0.player || hp0.guild) {
+      mode = "ar"; $("q").placeholder = t("search_ar");
+      drawCats(); refresh();
+      if (hp0.player) arLoad("char", hp0.player); else if (hp0.guild) arLoad("guild", hp0.guild);
+      else if (arRecent[0]) arLoad(arRecent[0].kind, arRecent[0].slug); else arShow('<div class="hint">' + t("ar_hint") + "</div>", "");
+      return;
+    }
     if (mode === "cr" || hashParams().recipe) {   // Crafting: recepten laddas först, sedan listan och rutan
       mode = "cr"; sortKey = "profit"; sortDir = -1; $("q").placeholder = t("search_rc");
       var wantR = +hashParams().recipe;
@@ -882,6 +1027,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
 
   function refresh() {
     var q = query;
+    if (mode === "ar") { view = []; shown = 0; draw(); return; }
     if (mode === "cr") {
       var pid = catSel >= 0 && profList[catSel] ? profList[catSel].id : 0;
       var tier = subSel >= 1 ? TIERS[subSel - 1] : null;
@@ -956,7 +1102,23 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   }
   document.addEventListener("mouseover", function (e) {
     var el = e.target && e.target.closest ? e.target.closest("[data-tip]") : null;
-    if (el) showTip(+el.getAttribute("data-tip")); else if (tipId) hideTip();
+    if (el) showTip(+el.getAttribute("data-tip"));
+    else {
+      var ea = e.target && e.target.closest ? e.target.closest("[data-artip]") : null;
+      if (ea && arData && arData.items) {
+        var it = arData.items[+ea.getAttribute("data-artip")];
+        if (it) {
+          tipId = -1;
+          if (!tipBox) { tipBox = document.createElement("div"); tipBox.className = "wtip"; document.body.appendChild(tipBox); }
+          var ln = ['<div class="ln"><b class="' + qcls(it.q) + '">' + esc(it.name) + "</b></div>", '<div class="ln c"><span>Item Level ' + it.ilvl + "</span></div>", '<div class="ln"><span>' + esc(t("slot_" + it.slot)) + "</span></div>"];
+          if (it.armor) ln.push('<div class="ln"><span>' + esc(it.armor) + "</span></div>");
+          if (it.weapon && it.weapon.damage) ln.push('<div class="ln"><span>' + esc(it.weapon.damage) + '</span><span class="r">' + esc(it.weapon.speed || "") + "</span></div>" + (it.weapon.dps ? '<div class="ln"><span>' + esc(it.weapon.dps) + "</span></div>" : ""));
+          it.stats.forEach(function (st) { ln.push('<div class="ln"><span class="q2">' + esc(st) + "</span></div>"); });
+          it.enchant.forEach(function (en) { ln.push('<div class="ln"><span class="q2">' + esc(en) + "</span></div>"); });
+          tipBox.innerHTML = ln.join(""); tipBox.hidden = false; placeTip();
+        }
+      } else if (tipId) hideTip();
+    }
   });
   document.addEventListener("mousemove", function (e) {
     tipX = e.clientX; tipY = e.clientY;
@@ -1063,6 +1225,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     $("modeAh").setAttribute("aria-pressed", mode === "ah" ? "true" : "false");
     $("modeTr").setAttribute("aria-pressed", mode === "tr" ? "true" : "false");
     $("modeCr").setAttribute("aria-pressed", mode === "cr" ? "true" : "false");
+    $("modeAr").setAttribute("aria-pressed", mode === "ar" ? "true" : "false");
   }
   function draw() {
     var html = "";
@@ -1073,8 +1236,12 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     $("more").hidden = shown >= view.length;
     $("more").textContent = t("more", num(view.length - shown));
     $("count").textContent = t(mode === "cr" ? "cr_count" : "count", num(view.length));
-    $("head").innerHTML = headHtml();
+    $("head").innerHTML = mode === "ar" ? "" : headHtml();
     $("list").className = mode === "tr" ? "tr" : mode === "cr" ? "cr" : "";
+    var ar = mode === "ar";
+    $("armory").hidden = !ar;
+    document.querySelector(".left .scroll").hidden = ar;
+    if (ar) { $("empty").hidden = true; $("more").hidden = true; $("count").textContent = ""; }
     drawMode();
   }
 
@@ -1356,6 +1523,15 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       else window.prompt(t("copy_link"), url);
       return;
     }
+    var ca = e.target.closest("[data-copyany]");
+    if (ca) {
+      e.stopPropagation();
+      var urlA = location.origin + location.pathname + ca.dataset.copyany, doneA = function () { ca.textContent = t("copied"); setTimeout(function () { ca.textContent = t("copy_link"); }, 1500); };
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(urlA).then(doneA, function () { window.prompt(t("copy_link"), urlA); }); else window.prompt(t("copy_link"), urlA);
+      return;
+    }
+    var al = e.target.closest("[data-ar]");
+    if (al) { e.preventDefault(); e.stopPropagation(); showTab("item"); arLoad(al.dataset.ar, al.dataset.slug); return; }
     var cr = e.target.closest("[data-copyr]");
     if (cr) {
       e.stopPropagation();
@@ -1395,7 +1571,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       draw();
     }
   });
-  $("q").addEventListener("input", function () { query = this.value.trim().toLowerCase(); refresh(); });
+  $("q").addEventListener("input", function () { if (mode === "ar") return; query = this.value.trim().toLowerCase(); refresh(); });
   function toTop() { var lb = document.querySelector(".left .scroll"); if (lb) lb.scrollTop = 0; }
   // Hem (Joakim 2026-11-16): medaljongen eller rubriken = som Search med tom ruta: ingen sökning, ingen kategori, överst,
   // och de senaste uppgifterna hämtas.
@@ -1416,7 +1592,14 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     openId = null;
     catSel = -1; subSel = -1; sub2Sel = -1;   // kategorierna och yrkena är olika listor
     query = ""; $("q").value = "";
-    $("q").placeholder = t(m === "cr" ? "search_rc" : "search_ph");
+    $("q").placeholder = t(m === "cr" ? "search_rc" : m === "ar" ? "search_ar" : "search_ph");
+    if (m === "ar") {
+      drawCats(); refresh();
+      if (arData) { if (arData.kind === "character") renderChar(arData); else renderGuild(arData); }
+      else if (arRecent[0]) arLoad(arRecent[0].kind, arRecent[0].slug);
+      else arShow('<div class="hint">' + t("ar_hint") + "</div>", "");
+      return;
+    }
     if (m === "cr") {
       $("detail").innerHTML = '<div class="note">' + t("cr_loading") + "</div>";
       loadRecept().then(function () { drawCats(); refresh(); toTop(); if (view[0]) selectRecipe(view[0].rid, false); })
@@ -1429,6 +1612,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   $("modeAh").addEventListener("click", function () { setMode("ah"); });
   $("modeTr").addEventListener("click", function () { setMode("tr"); });
   $("modeCr").addEventListener("click", function () { setMode("cr"); });
+  $("modeAr").addEventListener("click", function () { setMode("ar"); });
   $("head").addEventListener("click", function (e) {
     var b = e.target.closest("button");
     if (!b) return;
@@ -1464,7 +1648,10 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   });
   // Sökknappen (som i spelets AH): söker på det som står i rutan, även tomt = hela AH, och hämtar samtidigt de senaste
   // uppgifterna (Joakim 2026-11-16: den som inte tryckt på flera timmar ska få nytt när den trycker).
-  $("qbtn").addEventListener("click", function () { query = $("q").value.trim().toLowerCase(); refresh(); $("q").blur(); update(); });
+  $("qbtn").addEventListener("click", function () {
+    if (mode === "ar") { $("q").blur(); showTab("item"); arLookup($("q").value); return; }
+    query = $("q").value.trim().toLowerCase(); refresh(); $("q").blur(); update();
+  });
   $("q").addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); $("qbtn").click(); } });
   fetch(dataUrl()).then(function (r) {
     if (!r.ok) throw new Error(r.status);
