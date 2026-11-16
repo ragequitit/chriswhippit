@@ -185,7 +185,7 @@ tbody tr.exp, tbody tr.exp:hover { background: var(--panel); cursor: default; }
 .watch td:first-child { min-width: 0; }
 .watch .x { all: unset; cursor: pointer; color: var(--grey); padding: 0 4px; }
 .watch .x:hover { color: var(--red); }
-.up { color: var(--red); } .down { color: var(--green); }
+.up { color: var(--green); } .down { color: var(--red); }   /* Min lista: upp sedan sparat = grönt, ner = rött (aktiesidan) */
 .strip .star { float: right; font-size: 14px; padding: 2px 0 2px 8px; }
 /* Länk till varan: kopierar adressen (#item=…) till urklipp. */
 .lnk { all: unset; cursor: pointer; float: right; color: var(--grey); font-size: 13px; padding: 3px 6px; margin-left: 4px; display: inline-flex; align-items: center; gap: 5px; border-radius: 4px; }
@@ -489,7 +489,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       col_item: "Item", col_min: "Market price", col_min_tip: "The price the item actually sits at. Lone cheap listings far below the rest are left out. Gear: the cheapest price.",
       col_qty: "Listed", col_day: "Sold/day", col_day_tip: "Estimate from Blizzard's hourly data: listings that vanished before they could expire",
       col_lvl: "Level", col_lvl_tip: "Requires level", dip_tip: "%1% below the usual price these days (%2)", trend: "Last week",
-      rise_tip: "%1% above the usual price these days (%2)", col_pct: "Vs usual", col_pct_s: "Now", col_pct_tip: "Market price now versus the usual market price these days. Green = cheaper, red = dearer.",
+      rise_tip: "%1% above the usual price these days (%2)", col_pct: "Vs usual", col_pct_s: "Now", col_pct_tip: "Market price now versus the usual market price these days. Red = down, green = up.",
       mode_ah: "Auction house", mode_ah_tip: "All items, like the in-game auction house", mode_tr: "Trading",
       mode_tr_tip: "Like a stock site: what is cheap and dear versus usual, day trade and the best time to buy and sell",
       col_best: "Best time", col_best_tip: "When in the day the item has been cheapest and dearest this week. The profit is after the AH's 5%.",
@@ -857,8 +857,9 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   function pctHtml(r) {
     if (!r.dip) return DASH;
     var usual = moneyText(r.us);
-    if (r.dip > 0) return '<span class="down2" title="' + t("dip_tip", r.dip, usual) + '">▼' + r.dip + "%</span>";
-    return '<span class="up2" title="' + t("rise_tip", -r.dip, usual) + '">▲' + (-r.dip) + "%</span>";
+    // Som en aktiesida (Joakim 2026-11-16): rött med pil ner när priset gått ner mot vanligt, grönt med pil upp när det gått upp.
+    if (r.dip > 0) return '<span class="up2" title="' + t("dip_tip", r.dip, usual) + '">▼' + r.dip + "%</span>";
+    return '<span class="down2" title="' + t("rise_tip", -r.dip, usual) + '">▲' + (-r.dip) + "%</span>";
   }
   // Bästa tid i listan: "kväll→morgon +10%" (köp→sälj), bara när mönstret är tydligt.
   function btHtml(r) {
