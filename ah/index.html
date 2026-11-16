@@ -217,8 +217,17 @@ h3.row { display: flex; align-items: center; justify-content: space-between; gap
 .range button { padding: 1px 7px; font-size: 11px; letter-spacing: 0; text-transform: none; }
 .legend { display: flex; gap: 14px; flex-wrap: wrap; font-size: 12px; color: var(--grey); }
 .legend i { display: inline-block; width: 14px; height: 3px; vertical-align: middle; margin-right: 5px; border-radius: 2px; }
-.read { min-height: 20px; font-size: 13px; color: var(--grey); }
+/* Raden under graferna när man pekar: en liten tabell i stället för en textsträng (Joakim 2026-11-16). */
+.read { min-height: 64px; font-size: 13px; color: var(--grey); }
 .read b { color: var(--fg); font-weight: 600; }
+.rdh { font-weight: 600; color: var(--fg); margin-bottom: 3px; }
+.rdg { display: grid; grid-template-columns: auto max-content auto; gap: 2px 12px; align-items: baseline; }
+.rdg b { text-align: right; white-space: nowrap; }
+.rdg small { color: var(--grey); font-size: 12px; }
+.rdg .sw { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 7px; vertical-align: -1px; }
+.rdg .gain { grid-column: 1 / -1; display: flex; justify-content: space-between; gap: 12px; margin-top: 4px; padding-top: 4px; border-top: 1px solid var(--line); color: var(--fg); }
+.rdg .gain b { font-size: 14px; }
+.rdg .why { grid-column: 1 / -1; color: var(--grey); font-size: 11.5px; }
 .chart2 { margin-top: 14px; }
 h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: var(--gold); margin: 0 0 6px; font-weight: 500; }
 .steps td, .steps th { padding: 4px 10px; }
@@ -517,7 +526,9 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       steps: "Price steps", price: "Price", qty: "Quantity", f_now: "Listed now", f_max: "Listed (today's high)",
       f_day: "Sold per day (estimate)", f_sell: "Vendor pays", per_scan: "Price per scan", lg_qty: "Listed", hover: "Hover the chart for a scan.",
       dayday: "Morning and evening", lg_morning: "Morning (05–12)", lg_evening: "Evening (17–24)", dd_hover: "Hover a day.", dd_none: "No day has both a morning and an evening scan yet.",
-      dd_morning: "morning", dd_evening: "evening", dd_gain: "buy %1, sell %2: %3", dd_scans: "%1 scans",
+      dd_morning: "morning", dd_evening: "evening", dd_gain: "Buy %1, sell %2", dd_scans: "%1 scans", dd_scan1: "1 scan",
+      rd_morning: "Morning", rd_evening: "Evening", rd_buy: "Buy %1 at %2 → sell %3 at %4", rd_why: "Profit each after the auction house's 5% cut.",
+      rd_flat: "Same price morning and evening: nothing to gain.",
       dayt: "Day trade", day_tip: "Items with at least 10% profit between morning and evening on at least 3 days this week (at most one day without). The profit shown is the worst day's.",
       col_trade: "Day", trade_tip: "Buy %1, sell %2: %3 each (worst day this week)", tip_ah: "AH: market price %1 · %2 listed",
       err1: "The scan could not be loaded", err2: "Reload the page. If that does not help, the data has not been uploaded."
@@ -1021,22 +1032,26 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     });
     return s + "</svg>";
   }
-  // Raden under dagstaplarna: "13/11 · morgon 2s 10c (2 scans) · kväll 3s 05c (1 scan) · köp morgon, sälj kväll: +85c"
+  // Under dagstaplarna: datum som rubrik, Morning och Evening på var sin rad (pris, antal scans), köprådet sist.
+  function scansTxt(n) { return n === 1 ? t("dd_scan1") : t("dd_scans", n); }
   function dayReadout(dd) {
-    var parts = ['<b>' + (dd.key % 100) + "/" + Math.floor(dd.key / 100 % 100) + "</b>"];
-    if (dd.m) parts.push(t("dd_morning") + " " + money(dd.m) + ' <span class="dim">(' + t("dd_scans", dd.mn) + ")</span>");
-    if (dd.e) parts.push(t("dd_evening") + " " + money(dd.e) + ' <span class="dim">(' + t("dd_scans", dd.en) + ")</span>");
+    var h = '<div class="rdh">' + (dd.key % 100) + "/" + Math.floor(dd.key / 100 % 100) + '</div><div class="rdg">';
+    if (dd.m) h += '<span><i class="sw" style="background:#d6a83b"></i>' + t("rd_morning") + "</span><b>" + money(dd.m) + "</b><small>" + scansTxt(dd.mn) + "</small>";
+    if (dd.e) h += '<span><i class="sw" style="background:#a1a1a1"></i>' + t("rd_evening") + "</span><b>" + money(dd.e) + "</b><small>" + scansTxt(dd.en) + "</small>";
     if (dd.m && dd.e) {
       var up = dd.e > dd.m;   // billigt på morgonen: köp morgon, sälj kväll
       var buy = up ? dd.m : dd.e, sell = up ? dd.e : dd.m;
       var g = Math.floor(sell * 0.95 - buy);
-      parts.push(t("dd_gain", t(up ? "dd_morning" : "dd_evening"), t(up ? "dd_evening" : "dd_morning"), '<span class="' + (g >= 0 ? "down2" : "up2") + '">' + (g >= 0 ? "+" : "−") + moneyText(Math.abs(g)) + "</span>"));
+      if (dd.m === dd.e) h += '<div class="why">' + t("rd_flat") + "</div>";
+      else h += '<div class="gain"><span>' + t("rd_buy", t(up ? "dd_morning" : "dd_evening"), moneyText(buy), t(up ? "dd_evening" : "dd_morning"), moneyText(sell)) + '</span><b class="' + (g >= 0 ? "down2" : "up2") + '">' + (g >= 0 ? "+" : "−") + moneyText(Math.abs(g)) + "</b></div>" +
+        '<div class="why">' + t("rd_why") + "</div>";
     }
-    return parts.join(" · ");
+    return h + "</div>";
   }
+  // Under prisgrafen: tid som rubrik, riktpris och antal på var sin rad.
   function readout(Hh, i) {
     var w = when(Hh.T[i]);
-    return "<b>" + w.day + " " + w.hm + "</b> · " + t("rd_low", money(Hh.rh[i])) + " · " + t("rd_qty", num(Hh.qh[i]));
+    return '<div class="rdh">' + w.day + " " + w.hm + '</div><div class="rdg"><span>' + t("col_min") + "</span><b>" + money(Hh.rh[i]) + "</b><small></small><span>" + t("col_qty") + "</span><b>" + num(Hh.qh[i]) + "</b><small></small></div>";
   }
 
   function stepsHtml(r) {
