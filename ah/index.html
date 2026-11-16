@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="sv">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="Priserna på WoW Forevers auktionshus (EU PvP Horde) från Whippits senaste scan.">
+<meta name="description" content="WoW Forever auction house prices, updated every hour: market price, listed, day trade and best time to buy and sell.">
 <link rel="canonical" href="https://www.chriswhippit.com/ah/">
 <link rel="icon" href="/favicon.ico">
 <style>html{color-scheme:dark}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
@@ -74,12 +74,6 @@ h1 { font-family: var(--display); font-weight: 700; font-size: 22px; margin: 0; 
 .scan b { display: block; color: var(--gold); font-weight: 600; font-size: 16px; }
 .scan span { color: var(--grey); font-size: 13px; }
 
-.lang { flex: none; display: flex; gap: 8px; align-items: center; }
-.flag { all: unset; cursor: pointer; width: 30px; height: 20px; border-radius: 3px; overflow: hidden; outline: 1px solid var(--line); opacity: .45; }
-.flag:hover { opacity: .8; }
-.flag[aria-pressed=true] { opacity: 1; outline: 2px solid var(--edge); }
-.flag:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
-.flag svg { display: block; width: 100%; height: 100%; }
 .bar { display: flex; gap: 10px; align-items: center; padding: 12px 18px; flex-wrap: wrap; }
 .bar input[type=search] { flex: 0 1 340px; min-width: 0; height: 34px; padding: 0 12px; border-radius: 4px; border: 1px solid var(--line);
   background: var(--inset); color: var(--fg); font: inherit; }
@@ -292,14 +286,6 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       </div>
     </div>
     <div class="scan"><b id="scanTime" data-t="loading">Läser in scannen…</b><span id="scanInfo"></span></div>
-    <div class="lang" role="group" data-t-aria="lang_label" aria-label="Språk">
-      <button type="button" class="flag" data-lang="sv" aria-pressed="true" title="Svenska" aria-label="Svenska">
-        <svg viewBox="0 0 16 10" aria-hidden="true"><rect width="16" height="10" fill="#006aa7"/><rect x="5" width="2" height="10" fill="#fecc00"/><rect y="4" width="16" height="2" fill="#fecc00"/></svg>
-      </button>
-      <button type="button" class="flag" data-lang="en" aria-pressed="false" title="English" aria-label="English">
-        <svg viewBox="0 0 60 30" aria-hidden="true"><rect width="60" height="30" fill="#012169"/><path d="M0,0 60,30M60,0 0,30" stroke="#ffffff" stroke-width="6" fill="none"/><path d="M0,0 60,30M60,0 0,30" stroke="#c8102e" stroke-width="2" fill="none"/><path d="M30,0v30M0,15h60" stroke="#ffffff" stroke-width="10" fill="none"/><path d="M30,0v30M0,15h60" stroke="#c8102e" stroke-width="6" fill="none"/></svg>
-      </button>
-    </div>
   </header>
 
   <div class="bar">
@@ -413,48 +399,8 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   }
 
   // ---- Språk: svenska eller engelska, väljs med flaggorna och sparas i webbläsaren. %1, %2 = insatta värden. ----
+  // Bara engelska (Joakim 2026-11-16: flaggorna och den svenska delen bort).
   var S = {
-    sv: {
-      title: "Auktionshuset", loading: "Läser in scannen…", lang_label: "Språk", cats_label: "Kategorier", cat_all: "Alla varor", col_cat: "Kategori", col_trend: "Vecka",
-      cat_Weapons: "Vapen", cat_Armor: "Rustning", cat_Containers: "Väskor", cat_Consumables: "Förbrukning", "cat_Trade Goods": "Handelsvaror",
-      cat_Ammo: "Ammunition", cat_Recipes: "Recept", "cat_Quest Items": "Questföremål", cat_Gems: "Ädelstenar", cat_Miscellaneous: "Diverse",
-      search_ph: "Sök vara, t.ex. Silk Cloth", search_aria: "Sök vara", chip_all: "Även varor utan namn (%1)",
-      col_item: "Vara", col_min: "Riktpris", col_min_tip: "Priset där varorna faktiskt ligger. Ensamma billiga listningar långt under resten räknas bort. Gear: billigaste priset.",
-      col_qty: "Ute", col_day: "Sålda/dag", col_day_tip: "Uppskattning ur Blizzards timvisa data: listningar som försvann innan de kunde gå ut",
-      col_lvl: "Nivå", col_lvl_tip: "Kräver level", dip_tip: "%1 % under de senaste dagarnas vanliga pris (%2)", trend: "Senaste veckan",
-      rise_tip: "%1 % över de senaste dagarnas vanliga pris (%2)", col_pct: "Mot vanligt", col_pct_s: "Nu", col_pct_tip: "Riktpriset nu mot de senaste dagarnas vanliga riktpris. Grönt = billigare, rött = dyrare.",
-      mode_ah: "Auktionshus", mode_ah_tip: "Alla varor som i spelets auktionshus", mode_tr: "Trading",
-      mode_tr_tip: "Som en aktiesida: vad som är billigt och dyrt mot vanligt, dygnshandel och bästa tid att köpa och sälja",
-      col_best: "Bästa tid", col_best_tip: "När på dygnet varan brukat vara billigast och dyrast den senaste veckan. Vinsten är efter AH:s 5 %.",
-      bt_0: "natten", bt_1: "morgonen", bt_2: "eftermiddagen", bt_3: "kvällen", bs_0: "natt", bs_1: "morg", bs_2: "em", bs_3: "kväll",
-      best_txt: "Köp på %1, sälj på %2: +%3 % (%4 av %5 dagar)", best_none: "Ingen tydlig skillnad över dygnet än",
-      f_gone: "Räknas bort", gone_tip: "Ensamma billiga listningar långt under resten. De räknas inte in i riktpriset, men låg ute vid scannen.",
-      gone_tag: "räknas bort", f_usual: "Vanligt pris", f_gear: "Säljs styckvis, som gear och recept: billigaste priset, ingen procent (priserna skiljer i guld).",
-      empty: "Ingen vara matchar sökningen.", more: "Visa fler (%1 till)", count: "%1 varor",
-      tab_item: "Vara", tab_watch: "Min lista", pick: "Välj en vara i listan.",
-      foot3: "Fristående fansida, inte knuten till Blizzard Entertainment. World of Warcraft är ett varumärke som tillhör Blizzard Entertainment, Inc. Auktionsdata från Blizzards API.",
-      scan_at: "Uppdaterad %1 kl. %2", on_ah: "%1 varor på auktionshuset", market_label: "Marknad", search_btn: "Sök", col_fav: "Fav",
-      hist_loading: "Hämtar historik…", hist_fail: "Historiken gick inte att hämta.", today: "i dag", item_n: "Vara %1",
-      star_add: "Håll koll på varan", star_del: "Ta bort från min lista", star_lbl_add: "Håll koll", star_lbl_on: "I min lista",
-      not_listed: "inte ute nu", remove: "Ta bort", watch_sub: "Sparas i din webbläsare, bara du ser den.",
-      watch_empty: "Tom än. Tryck på ☆ vid en vara i listan för att hålla koll på den.",
-      update: "Uppdatera priser", fetching: "Hämtar…", from_scan: "Priser från scannen %1 kl. %2",
-      new_scan: "Ny scan: %1 kl. %2", no_new: "Ingen nyare scan än %1 kl. %2", fetch_fail: "Gick inte att hämta. Försök igen om en stund.",
-      since_saved: "Sedan du sparade varan (då %1)",
-      steps_none: "Prisstegen (hur många som ligger på varje pris) kommer med nästa scan.", pcs: "%1 st",
-      steps_scan: "Från scannen %1 kl. %2", steps_search: "Från en sökning %1 kl. %2", steps_api: "Från Blizzards uppdatering %1 kl. %2",
-      sellers: "%1 säljare bland de 100 billigaste", ten: "de 10 lägsta priserna",
-      few_scans: "För få scans av varan för en graf.", chart_aria: "Pris per scan för %1", the_item: "varan",
-      rd_low: "riktpris %1", rd_qty: "%1 ute",
-      rng_24h: "24 h", rng_3d: "3 d", rng_1w: "Vecka", rng_1m: "Månad",
-      steps: "Prissteg", price: "Pris", qty: "Antal", f_now: "Ute nu", f_max: "Ute (högst i dag)",
-      f_day: "Sålda per dag (uppskattning)", f_sell: "Handlaren ger", per_scan: "Pris per scan", lg_qty: "Antal ute", hover: "Peka på grafen för en scan.",
-      dayday: "Morgon och kväll", lg_morning: "Morgon (05–12)", lg_evening: "Kväll (17–24)", dd_hover: "Peka på en dag.", dd_none: "Ingen dag har både morgon- och kvällsscan än.",
-      dd_morning: "morgon", dd_evening: "kväll", dd_gain: "köp %1, sälj %2: %3", dd_scans: "%1 scans",
-      dayt: "Dygnshandel", day_tip: "Varor som gett minst 10 % vinst mellan morgon och kväll minst 3 dagar den senaste veckan (högst en dag utan). Vinsten är den sämsta dagens.",
-      col_trade: "Dygn", trade_tip: "Köp %1, sälj %2: %3 per st (sämsta dagen senaste veckan)", tip_ah: "AH: riktpris %1 · %2 ute",
-      err1: "Scannen gick inte att läsa in", err2: "Ladda om sidan. Hjälper det inte har datan inte laddats upp."
-    },
     en: {
       title: "Auction House", loading: "Loading the scan…", lang_label: "Language", cats_label: "Categories", cat_all: "All items", col_cat: "Category", col_trend: "Week",
       cat_Weapons: "Weapons", cat_Armor: "Armor", cat_Containers: "Containers", cat_Consumables: "Consumables", "cat_Trade Goods": "Trade Goods",
@@ -497,18 +443,14 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       err1: "The scan could not be loaded", err2: "Reload the page. If that does not help, the data has not been uploaded."
     }
   };
-  var LKEY = "whippit-ah-lang";
-  var lang = (function () {
-    try { var l = localStorage.getItem(LKEY); if (l === "sv" || l === "en") return l; } catch (e) { /* ingen lagring: gissa på webbläsarens språk */ }
-    return String(navigator.language || "sv").toLowerCase().indexOf("sv") === 0 ? "sv" : "en";
-  })();
+  var lang = "en";
   function t(k) {
     var v = S[lang][k];
-    if (v == null) v = S.sv[k] || k;
+    if (v == null) v = k;
     for (var i = 1; i < arguments.length; i++) v = v.split("%" + i).join(arguments[i]);
     return v;
   }
-  function locale() { return lang === "sv" ? "sv-SE" : "en-GB"; }
+  function locale() { return "en-GB"; }
   // Fasta texter i sidan: data-t (text), data-t-title, data-t-ph (placeholder), data-t-aria (aria-label).
   function applyStatic() {
     document.documentElement.lang = lang;
@@ -520,21 +462,6 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     for (i = 0; i < els.length; i++) els[i].placeholder = t(els[i].getAttribute("data-t-ph"));
     els = document.querySelectorAll("[data-t-aria]");
     for (i = 0; i < els.length; i++) els[i].setAttribute("aria-label", t(els[i].getAttribute("data-t-aria")));
-    els = document.querySelectorAll(".flag");
-    for (i = 0; i < els.length; i++) els[i].setAttribute("aria-pressed", els[i].getAttribute("data-lang") === lang ? "true" : "false");
-  }
-  function setLang(l) {
-    if (l !== "sv" && l !== "en") return;
-    lang = l;
-    try { localStorage.setItem(LKEY, l); } catch (e) { /* gäller tills sidan stängs */ }
-    applyStatic();
-    if (!D) { if (failed) showError(); return; }
-    header();
-    drawCats();
-    draw();
-    drawWatch();
-    if (selId && byId[selId]) select(selId, false);
-    drawMode();
   }
 
   // Min lista: sparas bara i besökarens egen webbläsare (inget skickas någonstans). p = lägsta pris när varan sparades.
@@ -1094,8 +1021,6 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
 
   // En lyssnare för hela sidan: flaggorna, stjärnan (håll koll / ta bort) och radklicket.
   document.addEventListener("click", function (e) {
-    var fl = e.target.closest(".flag");
-    if (fl) { setLang(fl.getAttribute("data-lang")); return; }
     var rg = e.target.closest("[data-range]");
     if (rg) {
       rangeKey = rg.getAttribute("data-range");
