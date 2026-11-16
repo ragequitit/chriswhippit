@@ -5,11 +5,11 @@ const fs = require('fs'), path = require('path');
 const root = path.join(__dirname, '..');
 const SITE = 'https://www.chriswhippit.com/';
 const GAMES = {
-  'break-shot': { name: 'Break Shot', desc: 'Break Shot is a free pool arcade game in your browser. Aim, shoot and chain combos for points. No download, progress is saved.' },
-  'peg-vault': { name: 'Peg Vault', desc: 'Peg Vault is a free peg-drop game in your browser. Pick a board, collect Charms and upgrade the Vault. No download, progress is saved.' },
-  'pop-parade': { name: 'Pop Parade', desc: 'Pop Parade is a free balloon-popping peg game in your browser. Aim the cannon and pop the parade. No download, progress is saved.' },
-  'sky-burst': { name: 'Sky Burst', desc: 'Sky Burst is a free fireworks peg game in your browser. Aim at the night sky and launch. No download, progress is saved.' },
-  'volt-storm': { name: 'Volt Storm', desc: 'Volt Storm is a free lab-themed peg game in your browser. Charge the board and chase sparks. No download, progress is saved.' },
+  'break-shot': { name: 'Break Shot', desc: 'Break Shot är ett gratis biljardspel i webbläsaren. Sikta, skjut och kedja ihop kombos för poäng. Ingen nedladdning, och spelet sparar hur långt du kommit.' },
+  'peg-vault': { name: 'Peg Vault', desc: 'Peg Vault är ett gratis kulspel i webbläsaren. Välj bana, samla Charms och uppgradera valvet. Ingen nedladdning, och spelet sparar hur långt du kommit.' },
+  'pop-parade': { name: 'Pop Parade', desc: 'Pop Parade är ett gratis ballongspel i webbläsaren. Sikta med kanonen och spräck paraden. Ingen nedladdning, och spelet sparar hur långt du kommit.' },
+  'sky-burst': { name: 'Sky Burst', desc: 'Sky Burst är ett gratis fyrverkerispel i webbläsaren. Sikta mot natthimlen och avfyra. Ingen nedladdning, och spelet sparar hur långt du kommit.' },
+  'volt-storm': { name: 'Volt Storm', desc: 'Volt Storm är ett gratis kulspel i ett laboratorium, direkt i webbläsaren. Ladda brädet och jaga gnistor. Ingen nedladdning, och spelet sparar hur långt du kommit.' },
 };
 const esc = (s) => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;');
 
@@ -22,7 +22,7 @@ for (const [slug, g] of Object.entries(GAMES)) {
 
   if (/<html(?![^>]*\blang=)/.test(t)) { t = t.replace(/<html/, '<html lang="en"'); done.push('lang'); }
   if (!t.includes('rel="canonical"')) {
-    const title = `${g.name} – free browser game | Chris Whippit`;
+    const title = `${g.name} – gratis spel i webbläsaren | Chris Whippit`;
     const head = [
       `<meta name="description" content="${esc(g.desc)}">`,
       `<link rel="canonical" href="${url}">`,
