@@ -182,7 +182,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
 .steps td:first-child, .steps th:first-child { text-align: right; min-width: 0; white-space: nowrap; }
 .note { color: var(--grey); font-size: 13px; }
 .foot { padding: 12px 18px 16px; border-top: 1px solid var(--line); color: var(--grey); font-size: 13px; display: grid; gap: 4px; }
-.foot .legal { margin-top: 4px; font-size: 12px; opacity: .75; }
+.foot .legal { font-size: 12px; opacity: .75; }
 
 /* Dator: hela fönstret ryms på skärmen och bara listan (och varuvyn) rullar inuti sin ram, som i spelets AH. */
 @media (min-width: 861px) {
@@ -315,9 +315,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   </div>
 
   <footer class="foot">
-    <div data-t="foot1">Priserna är riktpriser per styck från senaste scannen.</div>
-    <div data-t="foot2">Min lista sparas bara i din egen webbläsare. Uppdatera priser hämtar den senaste scannen.</div>
-    <div class="legal" data-t="foot3">Priserna kommer från Whippits egna scans i spelet. Fristående fansida, inte knuten till Blizzard Entertainment. World of Warcraft är ett varumärke som tillhör Blizzard Entertainment, Inc.</div>
+    <div class="legal" data-t="foot3">Fristående fansida, inte knuten till Blizzard Entertainment. World of Warcraft är ett varumärke som tillhör Blizzard Entertainment, Inc. Auktionsdata från Blizzards API.</div>
   </footer>
 </div>
 
@@ -374,9 +372,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       gone_tag: "räknas bort", f_usual: "Vanligt pris", f_gear: "Säljs styckvis, som gear och recept: billigaste priset, ingen procent (priserna skiljer i guld).",
       empty: "Ingen vara matchar sökningen.", more: "Visa fler (%1 till)", count: "%1 varor",
       tab_item: "Vara", tab_watch: "Min lista", pick: "Välj en vara i listan.",
-      foot1: "Priserna är riktpriser per styck från senaste scannen: priset där varorna faktiskt ligger, utan ensamma billiga listningar långt under resten. För gear visas billigaste priset.",
-      foot2: "Min lista sparas bara i din egen webbläsare. Uppdatera priser hämtar den senaste scannen.",
-      foot3: "Priserna kommer från Whippits egna scans i spelet. Fristående fansida, inte knuten till Blizzard Entertainment. World of Warcraft är ett varumärke som tillhör Blizzard Entertainment, Inc.",
+      foot3: "Fristående fansida, inte knuten till Blizzard Entertainment. World of Warcraft är ett varumärke som tillhör Blizzard Entertainment, Inc. Auktionsdata från Blizzards API.",
       scan_at: "Senaste scan %1 kl. %2", on_ah: "%1 varor på auktionshuset", today: "i dag", item_n: "Vara %1",
       star_add: "Håll koll på varan", star_del: "Ta bort från min lista", star_lbl_add: "Håll koll", star_lbl_on: "I min lista",
       not_listed: "inte ute nu", remove: "Ta bort", watch_sub: "Sparas i din webbläsare, bara du ser den.",
@@ -419,9 +415,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       gone_tag: "left out", f_usual: "Usual price", f_gear: "Sold one by one, like gear and recipes: the cheapest price, no percent (prices differ in gold).",
       empty: "No item matches the search.", more: "Show more (%1 more)", count: "%1 items",
       tab_item: "Item", tab_watch: "My list", pick: "Pick an item in the list.",
-      foot1: "Prices are market prices per item from the latest scan: the price items actually sit at, without lone cheap listings far below the rest. Gear shows the cheapest price.",
-      foot2: "My list is saved only in your own browser. Update prices fetches the latest scan.",
-      foot3: "Prices come from Whippit's own in-game scans. Independent fan site, not affiliated with Blizzard Entertainment. World of Warcraft is a trademark of Blizzard Entertainment, Inc.",
+      foot3: "Independent fan site, not affiliated with Blizzard Entertainment. World of Warcraft is a trademark of Blizzard Entertainment, Inc. Auction data from Blizzard's API.",
       scan_at: "Latest scan %1 at %2", on_ah: "%1 items on the auction house", today: "today", item_n: "Item %1",
       star_add: "Watch this item", star_del: "Remove from my list", star_lbl_add: "Watch", star_lbl_on: "In my list",
       not_listed: "not listed now", remove: "Remove", watch_sub: "Saved in your browser, only you can see it.",
