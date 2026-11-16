@@ -56,6 +56,17 @@ body {
 .title { min-width: 0; flex: 1 1 260px; }
 h1 { font-family: var(--display); font-weight: 700; font-size: 22px; margin: 0; color: var(--gold); letter-spacing: .02em; text-wrap: balance; }
 .sub { color: var(--grey); margin-top: 2px; }
+/* Marknadsväljaren: de fyra husen Blizzard ger (EU PvP/Normal × Horde/Alliance). */
+.msel { all: unset; cursor: pointer; color: var(--gold); border-bottom: 1px dotted var(--edge); padding-right: 14px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0h10L5 6z' fill='%23d6a83b'/%3E%3C/svg%3E") no-repeat right center; }
+.msel option { background: #14181e; color: var(--fg); }
+.msel:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+/* Sökknappen som i spelets AH: röd platta, guldtext. */
+.wowbtn { height: 34px; padding: 0 22px; border-radius: 4px; cursor: pointer; font: inherit; font-size: 14px; color: #ffd100;
+  background: linear-gradient(#a52a22, #6b0f0f 55%, #4a0909); border: 1px solid #b08a3a; box-shadow: inset 0 1px 0 rgba(255, 180, 160, .35), 0 1px 2px rgba(0, 0, 0, .6);
+  text-shadow: 0 1px 1px #000; }
+.wowbtn:hover { background: linear-gradient(#c23a30, #7e1414 55%, #560c0c); }
+.wowbtn:active { background: linear-gradient(#5a0d0d, #7a1818); }
 .scan { flex: 0 1 auto; text-align: right; }
 .scan b { display: block; color: var(--gold); font-weight: 600; font-size: 16px; }
 .scan span { color: var(--grey); font-size: 13px; }
@@ -100,15 +111,16 @@ td.kat, th.kat { text-align: left; }
 table { width: 100%; border-collapse: collapse; }
 th { position: sticky; top: 0; text-align: right; font-weight: 600; font-size: 12px; letter-spacing: .06em; text-transform: uppercase;
   color: var(--gold); padding: 8px 10px; border-bottom: 1px solid rgba(214, 168, 59, .4); background: var(--inset); white-space: nowrap; }
-th:first-child { text-align: left; }
+th.nm { text-align: left; }
+th.fav, td.fav { width: 34px; padding-left: 10px; padding-right: 0; text-align: center; }
 th button { all: unset; cursor: pointer; }
 th button[aria-sort]::after { content: " ▾"; color: var(--edge); }
 th button[aria-sort=ascending]::after { content: " ▴"; }
-td { padding: 5px 10px; text-align: right; white-space: nowrap; border-bottom: 1px solid rgba(255, 255, 255, .04); }
-td:first-child { text-align: left; white-space: nowrap; max-width: 0; width: 36%; overflow: hidden; text-overflow: ellipsis; }
+td { padding: 8px 10px; text-align: right; white-space: nowrap; border-bottom: 1px solid rgba(255, 255, 255, .04); }
+td.nm, .watch td:first-child { text-align: left; white-space: nowrap; max-width: 0; width: 36%; overflow: hidden; text-overflow: ellipsis; }
 #list { table-layout: fixed; }
-#list th:first-child { width: 36%; }
-#list.tr th:first-child { width: 30%; }
+#list th.nm { width: 34%; }
+#list.tr th.nm { width: 28%; }
 #list.tr th { letter-spacing: .03em; padding: 8px 8px; }
 #list.tr td { padding: 5px 8px; }
 td.pct { font-size: 13px; }
@@ -121,11 +133,11 @@ tbody tr[aria-selected=true] { background: var(--sel); box-shadow: inset 2px 0 0
 .g { color: var(--gold); } .s { color: var(--silver); } .c { color: var(--copper); }
 .q0 { color: var(--q0); } .q1 { color: var(--q1); } .q2 { color: var(--q2); } .q3 { color: var(--q3); } .q4 { color: var(--q4); } .q5 { color: var(--q5); }
 .qx { color: var(--fg); }
-.ic { width: 18px; height: 18px; border-radius: 3px; vertical-align: -4px; margin-right: 7px; border: 1px solid var(--line); background: var(--panel); }
+.ic { width: 28px; height: 28px; border-radius: 4px; vertical-align: -9px; margin-right: 9px; border: 1px solid var(--line); background: var(--panel); }
 .ic.q2 { border-color: var(--q2); } .ic.q3 { border-color: var(--q3); } .ic.q4 { border-color: var(--q4); } .ic.q5 { border-color: var(--q5); }
-.ic.big { width: 36px; height: 36px; border-radius: 5px; float: left; margin: 0 10px 0 0; vertical-align: top; }
+.ic.big { width: 48px; height: 48px; border-radius: 6px; float: left; margin: 0 10px 0 0; vertical-align: top; }
 tbody tr.exp, tbody tr.exp:hover { background: var(--panel); cursor: default; }
-.exp td { padding: 8px 12px 10px 36px; white-space: normal; text-align: left; border-bottom: 1px solid rgba(214, 168, 59, .4); box-shadow: inset 2px 0 0 var(--edge); }
+.exp td { padding: 8px 12px 10px 48px; white-space: normal; text-align: left; border-bottom: 1px solid rgba(214, 168, 59, .4); box-shadow: inset 2px 0 0 var(--edge); }
 .ladder { display: grid; grid-auto-flow: column; grid-template-rows: repeat(5, auto); grid-auto-columns: minmax(0, 170px); justify-content: start; gap: 3px 36px; }
 .ladder div { display: flex; justify-content: space-between; gap: 14px; min-width: 0; }
 .ladder .n { color: var(--grey); }
@@ -139,7 +151,7 @@ tbody tr.exp, tbody tr.exp:hover { background: var(--panel); cursor: default; }
 .tab { font: inherit; font-size: 14px; background: transparent; border: 1px solid var(--line); border-bottom: 0; border-radius: 5px 5px 0 0;
   padding: 6px 14px; color: var(--gold); cursor: pointer; }
 .tab[aria-pressed=true] { color: var(--q1); background: var(--panel); border-color: var(--edge); }
-.star { all: unset; cursor: pointer; color: var(--grey); padding: 2px 8px 2px 0; font-size: 16px; line-height: 1; }
+.star { all: unset; cursor: pointer; color: var(--grey); padding: 4px 6px; font-size: 18px; line-height: 1; }
 .star:hover, .star[aria-pressed=true] { color: var(--gold); }
 .star:focus-visible { outline: 2px solid var(--gold); }
 .btn { height: 32px; padding: 0 16px; border-radius: 4px; border: 1px solid var(--edge); color: var(--gold); font: inherit; cursor: pointer;
@@ -229,8 +241,14 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
 .wtip .q4 { color: #a335ee; } .wtip .q5 { color: #ff8000; } .wtip .q6 { color: #e6cc80; } .wtip .q7 { color: #0cf; } .wtip .q8 { color: #0cf; }
 .wtip .q9 { color: #71d5ff; } .wtip .q10 { color: #ff4040; } .wtip .toycolor { color: #66bbff; } .wtip .c { color: #ffd100; }
 .wtip .whtt-droppedby { color: #9d9d9d; font-size: 12px; }
-.wtip .moneygold::after { content: "g"; color: #d6a83b; } .wtip .moneysilver::after { content: "s"; color: #c0c0c0; }
-.wtip .moneycopper::after { content: "c"; color: #c7793f; }
+/* Mynten som i spelet (Joakim 2026-11-16): guld, silver, koppar efter siffran. */
+.coin, .wtip .moneygold::after, .wtip .moneysilver::after, .wtip .moneycopper::after { content: ""; display: inline-block; width: 12px; height: 12px; border-radius: 50%;
+  vertical-align: -1px; box-shadow: inset 0 -2px 2px rgba(0, 0, 0, .45), inset 0 1px 1px rgba(255, 255, 255, .45), 0 0 0 1px rgba(0, 0, 0, .5); }
+.coin.g, .wtip .moneygold::after { background: radial-gradient(circle at 35% 30%, #ffe680, #d6a83b 55%, #8a6514); }
+.coin.s, .wtip .moneysilver::after { background: radial-gradient(circle at 35% 30%, #ffffff, #c0c0c0 55%, #6e6e6e); }
+.coin.c, .wtip .moneycopper::after { background: radial-gradient(circle at 35% 30%, #f0b07a, #c7793f 55%, #6a3a14); }
+.wtip .moneygold::after, .wtip .moneysilver::after, .wtip .moneycopper::after { margin-left: 3px; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .wtip .moneygold, .wtip .moneysilver, .wtip .moneycopper { margin-right: 3px; }
 .wtip .ah { margin-top: 6px; padding-top: 5px; border-top: 1px solid rgba(255, 255, 255, .15); color: #ffd100; }
 .wtip .ln { display: flex; justify-content: space-between; gap: 14px; } .wtip .ln .r { text-align: right; white-space: nowrap; }
@@ -261,7 +279,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     <div class="coin" aria-hidden="true">W</div>
     <div class="title">
       <h1 data-t="title">Auktionshuset</h1>
-      <div class="sub" id="market">WoW Forever</div>
+      <div class="sub">WoW Forever · <select id="marketSel" class="msel" data-t-aria="market_label" aria-label="Marknad"></select></div>
     </div>
     <div class="scan"><b id="scanTime" data-t="loading">Läser in scannen…</b><span id="scanInfo"></span></div>
     <div class="lang" role="group" data-t-aria="lang_label" aria-label="Språk">
@@ -276,6 +294,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
 
   <div class="bar">
     <input type="search" id="q" data-t-ph="search_ph" data-t-aria="search_aria" placeholder="Sök vara, t.ex. Silk Cloth" autocomplete="off" aria-label="Sök vara">
+    <button class="wowbtn" id="qbtn" type="button" data-t="search_btn">Sök</button>
     <div class="mode" role="group">
       <button type="button" id="modeAh" aria-pressed="true" data-t="mode_ah" data-t-title="mode_ah_tip">Auktionshus</button>
       <button type="button" id="modeTr" aria-pressed="false" data-t="mode_tr" data-t-title="mode_tr_tip">Trading</button>
@@ -348,6 +367,36 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   var catSel = -1, subSel = -1, sub2Sel = -1;   // vald nivå 1/2/3 (-1 = ingen vald = alla), som AH:s kategorilista
   var catCount = [], subCount = [], sub2Count = [];
   var DATA_URL = "https://ragequitit.github.io/ah/data.json";   // priserna; på chriswhippit.com/ah byts den mot adressen på GitHub (build.js)
+  // Fyra marknader (Blizzards hus): data.json = EU PvP Horde (113), data-<hus>.json för de andra. Historiken per vara
+  // ligger i dagsfiler bredvid: hist/<hus>/<dag>/<id % 100>.json (build.js). Valet sparas i webbläsaren.
+  var DATA_BASE = DATA_URL.replace(/data\.json$/, "");
+  var MKEY = "whippit-ah-market";
+  var house = (function () { try { var h = +localStorage.getItem(MKEY); return h === 110 || h === 111 || h === 114 ? h : 113; } catch (e) { return 113; } })();
+  function dataUrl() { return DATA_BASE + (house === 113 ? "data.json" : "data-" + house + ".json"); }
+  var histCache = {};
+  function histFile(day, b) {
+    var k = house + "/" + day + "/" + b;
+    if (!histCache[k]) histCache[k] = fetch(DATA_BASE + "hist/" + k + ".json").then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; });
+    return histCache[k];
+  }
+  function dayEnd(k) { return new Date(Math.floor(k / 10000), Math.floor(k / 100 % 100) - 1, k % 100 + 1).getTime() / 1000; }
+  // Historiken för en vara från tidpunkten from (0 = allt): { T: [scantider], rh: [riktpris], qh: [antal] }.
+  function histFor(id, from) {
+    var days = (D.days || []).filter(function (k) { return !from || dayEnd(k) >= from; });
+    return Promise.all(days.map(function (k) { return histFile(k, id % 100); })).then(function (files) {
+      var T = [], rh = [], qh = [], any = false;
+      files.forEach(function (f) {
+        if (!f) return;
+        any = true;
+        var sr = f.i[id];
+        for (var j = 0; j < f.t.length; j++) {
+          if (from && f.t[j] < from) continue;
+          T.push(f.t[j]); rh.push(sr ? sr[0][j] : 0); qh.push(sr ? sr[1][j] : 0);
+        }
+      });
+      return any ? { T: T, rh: rh, qh: qh } : null;
+    });
+  }
 
   // ---- Språk: svenska eller engelska, väljs med flaggorna och sparas i webbläsaren. %1, %2 = insatta värden. ----
   var S = {
@@ -373,7 +422,8 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       empty: "Ingen vara matchar sökningen.", more: "Visa fler (%1 till)", count: "%1 varor",
       tab_item: "Vara", tab_watch: "Min lista", pick: "Välj en vara i listan.",
       foot3: "Fristående fansida, inte knuten till Blizzard Entertainment. World of Warcraft är ett varumärke som tillhör Blizzard Entertainment, Inc. Auktionsdata från Blizzards API.",
-      scan_at: "Senaste scan %1 kl. %2", on_ah: "%1 varor på auktionshuset", today: "i dag", item_n: "Vara %1",
+      scan_at: "Uppdaterad %1 kl. %2", on_ah: "%1 varor på auktionshuset", market_label: "Marknad", search_btn: "Sök", col_fav: "Fav",
+      hist_loading: "Hämtar historik…", hist_fail: "Historiken gick inte att hämta.", today: "i dag", item_n: "Vara %1",
       star_add: "Håll koll på varan", star_del: "Ta bort från min lista", star_lbl_add: "Håll koll", star_lbl_on: "I min lista",
       not_listed: "inte ute nu", remove: "Ta bort", watch_sub: "Sparas i din webbläsare, bara du ser den.",
       watch_empty: "Tom än. Tryck på ☆ vid en vara i listan för att hålla koll på den.",
@@ -381,7 +431,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       new_scan: "Ny scan: %1 kl. %2", no_new: "Ingen nyare scan än %1 kl. %2", fetch_fail: "Gick inte att hämta. Försök igen om en stund.",
       since_saved: "Sedan du sparade varan (då %1)",
       steps_none: "Prisstegen (hur många som ligger på varje pris) kommer med nästa scan.", pcs: "%1 st",
-      steps_scan: "Från scannen %1 kl. %2", steps_search: "Från en sökning %1 kl. %2",
+      steps_scan: "Från scannen %1 kl. %2", steps_search: "Från en sökning %1 kl. %2", steps_api: "Från Blizzards uppdatering %1 kl. %2",
       sellers: "%1 säljare bland de 100 billigaste", ten: "de 10 lägsta priserna",
       few_scans: "För få scans av varan för en graf.", chart_aria: "Pris per scan för %1", the_item: "varan",
       rd_low: "riktpris %1", rd_qty: "%1 ute",
@@ -416,7 +466,8 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       empty: "No item matches the search.", more: "Show more (%1 more)", count: "%1 items",
       tab_item: "Item", tab_watch: "My list", pick: "Pick an item in the list.",
       foot3: "Independent fan site, not affiliated with Blizzard Entertainment. World of Warcraft is a trademark of Blizzard Entertainment, Inc. Auction data from Blizzard's API.",
-      scan_at: "Latest scan %1 at %2", on_ah: "%1 items on the auction house", today: "today", item_n: "Item %1",
+      scan_at: "Updated %1 at %2", on_ah: "%1 items on the auction house", market_label: "Market", search_btn: "Search", col_fav: "Fav",
+      hist_loading: "Loading history…", hist_fail: "The history could not be loaded.", today: "today", item_n: "Item %1",
       star_add: "Watch this item", star_del: "Remove from my list", star_lbl_add: "Watch", star_lbl_on: "In my list",
       not_listed: "not listed now", remove: "Remove", watch_sub: "Saved in your browser, only you can see it.",
       watch_empty: "Empty so far. Press ☆ next to an item in the list to watch it.",
@@ -424,7 +475,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       new_scan: "New scan: %1 at %2", no_new: "No newer scan than %1 at %2", fetch_fail: "Could not fetch. Try again in a moment.",
       since_saved: "Since you saved the item (then %1)",
       steps_none: "The price steps (how many are listed at each price) arrive with the next scan.", pcs: "×%1",
-      steps_scan: "From the scan %1 at %2", steps_search: "From a search %1 at %2",
+      steps_scan: "From the scan %1 at %2", steps_search: "From a search %1 at %2", steps_api: "From Blizzard’s update %1 at %2",
       sellers: "%1 sellers among the 100 cheapest", ten: "the 10 lowest prices",
       few_scans: "Too few scans of this item for a chart.", chart_aria: "Price per scan for %1", the_item: "the item",
       rd_low: "market price %1", rd_qty: "%1 listed",
@@ -520,15 +571,15 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   }
   // Liten graf i Min lista: lägsta pris per scan den senaste veckan, grå linje med sista punkten vit.
   function spark(r) {
-    var T = D.scans, from = D.t - 7 * 86400, pts = [], mx = 0, mn = Infinity;
-    for (var i = 0; i < T.length; i++) if (r.mh[i] > 0 && T[i] >= from) { pts.push(i); mx = Math.max(mx, r.mh[i]); mn = Math.min(mn, r.mh[i]); }
+    var v = r.sp, pts = [], mx = 0, mn = Infinity;
+    for (var i = 0; i < v.length; i++) if (v[i] > 0) { pts.push(i); mx = Math.max(mx, v[i]); mn = Math.min(mn, v[i]); }
     if (pts.length < 2) return "";
-    var W = 90, H = 22, t0 = T[pts[0]], t1 = T[pts[pts.length - 1]], sp = Math.max(1, t1 - t0), rg = Math.max(1, mx - mn);
-    var x = function (i) { return (2 + (T[i] - t0) / sp * (W - 4)).toFixed(1); };
-    var y = function (v) { return (H - 3 - (v - mn) / rg * (H - 6)).toFixed(1); };
+    var W = 90, H = 22, rg = Math.max(1, mx - mn), n = Math.max(1, v.length - 1);
+    var x = function (i) { return (2 + i / n * (W - 4)).toFixed(1); };
+    var y = function (val) { return (H - 3 - (val - mn) / rg * (H - 6)).toFixed(1); };
     var li = pts[pts.length - 1];
     return '<svg class="spark" viewBox="0 0 ' + W + " " + H + '" aria-label="' + t("trend") + '"><polyline fill="none" stroke="#a1a1a1" stroke-width="1.5" points="' +
-      pts.map(function (i) { return x(i) + "," + y(r.mh[i]); }).join(" ") + '"/><circle cx="' + x(li) + '" cy="' + y(r.mh[li]) + '" r="2.5" fill="#e9e3d6"/></svg>';
+      pts.map(function (i) { return x(i) + "," + y(v[i]); }).join(" ") + '"/><circle cx="' + x(li) + '" cy="' + y(v[li]) + '" r="2.5" fill="#e9e3d6"/></svg>';
   }
   function drawWatch() {
     $("tabWatch").textContent = t("tab_watch") + (watch.length ? " (" + watch.length + ")" : "");
@@ -560,7 +611,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     var b = $("update");
     if (b) { b.disabled = true; b.textContent = t("fetching"); }
     var before = D ? D.t : 0;
-    fetch(DATA_URL, { cache: "no-store" }).then(function (r) {
+    fetch(dataUrl(), { cache: "no-store" }).then(function (r) {
       if (!r.ok) throw new Error(r.status);
       return r.json();
     }).then(function (d) {
@@ -575,16 +626,24 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
   function num(n) { return Math.round(n).toLocaleString(locale()); }
   // Pengar som i spelet: guld, silver, koppar. Koppar visas inte från 1g.
-  function money(c) {
+  // Pengar som i spelet: siffra, mellanslag, mynt (guld, silver, koppar). Koppar visas inte från 1g.
+  function moneyParts(c) {
     c = Math.round(c || 0);
-    if (c <= 0) return '<span class="dim">–</span>';
     var g = Math.floor(c / 10000), s = Math.floor(c % 10000 / 100), k = c % 100, out = [];
-    if (g) out.push(num(g) + '<span class="g">g</span>');
-    if (s) out.push(s + '<span class="s">s</span>');
-    if (k && !g) out.push(k + '<span class="c">c</span>');
-    return out.join(" ") || '0<span class="c">c</span>';
+    if (g) out.push([num(g), "g"]);
+    if (s) out.push([String(s), "s"]);
+    if (k && !g) out.push([String(k), "c"]);
+    if (!out.length) out.push(["0", "c"]);
+    return out;
   }
-  function moneyText(c) { return money(c).replace(/<[^>]+>/g, ""); }
+  function money(c) {
+    if (Math.round(c || 0) <= 0) return '<span class="dim">–</span>';
+    return moneyParts(c).map(function (p) { return p[0] + ' <i class="coin ' + p[1] + '" aria-hidden="true"></i><span class="sr">' + p[1] + "</span>"; }).join(" ");
+  }
+  function moneyText(c) {
+    if (Math.round(c || 0) <= 0) return "–";
+    return moneyParts(c).map(function (p) { return p[0] + p[1]; }).join(" ");
+  }
   function when(ts) {
     var d = new Date(ts * 1000), now = new Date();
     var hm = d.toLocaleTimeString(locale(), { hour: "2-digit", minute: "2-digit" });
@@ -622,7 +681,8 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   // Raden överst och knappen för namnlösa varor (ritas om vid språkbyte).
   function header() {
     var w = when(D.t);
-    $("market").textContent = "WoW Forever · " + D.market;
+    var ms = $("marketSel"), mk = D.markets || {};
+    ms.innerHTML = Object.keys(mk).map(function (h) { return '<option value="' + h + '"' + (+h === D.house ? " selected" : "") + ">" + esc(mk[h]) + "</option>"; }).join("");
     $("scanTime").textContent = t("scan_at", w.day, w.hm);
     $("scanInfo").textContent = t("on_ah", num(rows.length));
     var unnamed = rows.length - D.named;
@@ -634,7 +694,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     rows = d.items.map(function (r) {
       // min = riktpriset (gear: lägsta), lo/loN = billigaste priset och antalet som räknades bort, mh = riktpris per scan
       var o = { id: r[0], name: r[1] || "", q: r[2], min: r[3], qty: r[7] || r[4], exact: r[7] > 0, lo: r[5] || 0, loN: r[6] || 0, day: r[8],
-        mh: r[9], qh: r[10], ic: r[12] || "", ci: r[13] == null ? -1 : r[13], si: r[14] == null ? -1 : r[14], ui: r[15] == null ? -1 : r[15],
+        sp: Array.isArray(r[9]) ? r[9] : [], ic: r[12] || "", ci: r[13] == null ? -1 : r[13], si: r[14] == null ? -1 : r[14], ui: r[15] == null ? -1 : r[15],
         lvl: r[16] || 0, dip: r[17] || 0, tg: r[18] || 0, td: r[19] || 0, us: r[20] || 0, gear: r[21] === 1, bt: Array.isArray(r[22]) ? r[22] : null, sp: r[23] || 0,
         lower: (r[1] || "").toLowerCase() };
       o.btg = btClear(o) ? o.bt[2] : 0;   // sortering på bästa tid: bara tydliga mönster
@@ -750,13 +810,13 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       html += asTable ? "<tr" + (gone ? ' class="gone"' : "") + "><td>" + money(p[0]) + tag + "</td><td>" + num(p[1]) + "</td></tr>"
         : "<div" + (gone ? ' class="gone"' : "") + "><span>" + money(p[0]) + '</span><span class="n">' + t("pcs", num(p[1])) + tag + "</span></div>";
     });
-    var note = t(st.src === "scan" ? "steps_scan" : "steps_search", w.day, w.hm) +
+    var note = t(st.src === "scan" ? "steps_scan" : st.src === "api" ? "steps_api" : "steps_search", w.day, w.hm) +
       (st.sellers ? " · " + t("sellers", st.sellers) : "") + (st.steg.length > 10 ? " · " + t("ten") : "");
     return { html: html, note: note };
   }
   function expHtml(r) {
     var l = ladder(r, false);
-    return '<tr class="exp"><td colspan="' + (mode === "tr" ? 7 : 6) + '">' + (l.html ? '<div class="ladder">' + l.html + "</div>" : "") + '<div class="note">' + l.note + "</div></td></tr>";
+    return '<tr class="exp"><td colspan="' + (mode === "tr" ? 8 : 7) + '">' + (l.html ? '<div class="ladder">' + l.html + "</div>" : "") + '<div class="note">' + l.note + "</div></td></tr>";
   }
   // Kategorin på raden: klick filtrerar listan på den (underkategorin om varan har en).
   function catCell(r) {
@@ -796,7 +856,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   function rowHtml(r) {
     var name = iconHtml(r) + (r.name ? '<span data-tip="' + r.id + '" class="' + qcls(r.q) + '">' + esc(r.name) + "</span>" : '<span class="dim">' + t("item_n", r.id) + "</span>");
     var day = '<td class="hide-s">' + (r.day ? '<span class="est">' + num(r.day) + "</span>" : DASH) + "</td>";
-    var tr = '<tr tabindex="0" data-id="' + r.id + '"' + (r.id === selId ? ' aria-selected="true"' : "") + "><td>" + starHtml(r.id) + name + "</td>";
+    var tr = '<tr tabindex="0" data-id="' + r.id + '"' + (r.id === selId ? ' aria-selected="true"' : "") + '><td class="fav">' + starHtml(r.id) + '</td><td class="nm">' + name + "</td>";
     if (mode === "tr") {
       return tr + "<td>" + money(r.min) + '</td><td class="pct">' + (sortKey === "vg" ? vendorHtml(r) : pctHtml(r)) + '</td><td class="pct hide-s">' + (tradeHtml(r) || DASH) +
         '</td><td class="pct">' + btHtml(r) + "</td><td>" + num(r.qty) + "</td>" + day + "</tr>";
@@ -811,8 +871,8 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
          ["btg", "col_best", "col_best_tip"], ["qty", "col_qty"], ["day", "col_day", "col_day_tip", "hide-s"]]
       : [["name", "col_item"], ["cat", "col_cat", null, "kat hide-s"], ["lvl", "col_lvl", "col_lvl_tip", "hide-s"], ["min", "col_min", "col_min_tip"],
          ["qty", "col_qty"], ["day", "col_day", "col_day_tip", "hide-s"]];
-    return "<tr>" + cols.map(function (c) {
-      return "<th" + (c[3] ? ' class="' + c[3] + '"' : "") + '><button type="button" data-k="' + c[0] + '"' + (c[2] ? ' title="' + esc(t(c[2])) + '"' : "") +
+    return '<tr><th class="fav">' + t("col_fav") + "</th>" + cols.map(function (c) {
+      return "<th" + (c[3] ? ' class="' + c[3] + '"' : c[0] === "name" ? ' class="nm"' : "") + '><button type="button" data-k="' + c[0] + '"' + (c[2] ? ' title="' + esc(t(c[2])) + '"' : "") +
         (c[0] === sortKey ? ' aria-sort="' + (sortDir > 0 ? "ascending" : "descending") + '"' : "") + ">" + t(c[1]) + "</button></th>";
     }).join("") + "</tr>";
   }
@@ -848,14 +908,14 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
 
   // Prisgrafen: två paneler. Överst riktpriset per scan, underst antalet ute som en blå linje med fyllning. Hover visar
   // scannen i raden under (readout).
-  function chart(r) {
-    var T = D.scans, W = 600, H = 260, L = 62, R = 12, TOP = 14, PH = 140, QH = 56, QY = TOP + PH + 18;
+  function chart(r, Hh) {
+    var T = Hh.T, W = 600, H = 260, L = 62, R = 12, TOP = 14, PH = 140, QH = 56, QY = TOP + PH + 18;
     var pts = [], maxP = 0, maxQ = 0;
     var secs = 0;
     RANGES.forEach(function (rg) { if (rg[0] === rangeKey) secs = rg[1]; });   // (span nedan är tidsaxelns bredd)
     var from = secs ? D.t - secs : 0;
     for (var i = 0; i < T.length; i++) {
-      if (r.mh[i] > 0 && T[i] >= from) { pts.push(i); maxP = Math.max(maxP, r.mh[i]); maxQ = Math.max(maxQ, r.qh[i]); }
+      if (Hh.rh[i] > 0 && T[i] >= from) { pts.push(i); maxP = Math.max(maxP, Hh.rh[i]); maxQ = Math.max(maxQ, Hh.qh[i]); }
     }
     if (pts.length < 2) return '<div class="note">' + t("few_scans") + "</div>";
     var t0 = T[pts[0]], t1 = T[pts[pts.length - 1]], span = Math.max(1, t1 - t0);
@@ -881,16 +941,16 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       }
     }
     // antal ute: fylld linje i den nedre panelen
-    var qpts = pts.map(function (i) { return x(i).toFixed(1) + "," + yq(r.qh[i]).toFixed(1); }).join(" ");
+    var qpts = pts.map(function (i) { return x(i).toFixed(1) + "," + yq(Hh.qh[i]).toFixed(1); }).join(" ");
     s += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + (QY + QH) + '" y2="' + (QY + QH) + '" stroke="#2a313b" stroke-width="1"/>' +
       '<polygon fill="#7ea2d6" fill-opacity=".18" points="' + x(pts[0]).toFixed(1) + "," + (QY + QH) + " " + qpts + " " + x(pts[pts.length - 1]).toFixed(1) + "," + (QY + QH) + '"/>' +
       '<polyline fill="none" stroke="#7ea2d6" stroke-width="1.5" points="' + qpts + '"/>' +
       '<text x="' + (L - 6) + '" y="' + (QY + 10) + '" text-anchor="end" font-size="15" fill="#a0a0a0">' + num(maxQ) + "</text>" +
       '<text x="' + (L - 6) + '" y="' + (QY + QH + 4) + '" text-anchor="end" font-size="15" fill="#a0a0a0">0</text>';
     // riktpris
-    s += '<polyline fill="none" stroke="#d6a83b" stroke-width="2" points="' + pts.map(function (i) { return x(i).toFixed(1) + "," + y(r.mh[i]).toFixed(1); }).join(" ") + '"/>';
+    s += '<polyline fill="none" stroke="#d6a83b" stroke-width="2" points="' + pts.map(function (i) { return x(i).toFixed(1) + "," + y(Hh.rh[i]).toFixed(1); }).join(" ") + '"/>';
     var li = pts[pts.length - 1];
-    s += '<circle cx="' + x(li).toFixed(1) + '" cy="' + y(r.mh[li]).toFixed(1) + '" r="3.5" fill="#e9e3d6"/>';
+    s += '<circle cx="' + x(li).toFixed(1) + '" cy="' + y(Hh.rh[li]).toFixed(1) + '" r="3.5" fill="#e9e3d6"/>';
     // osynliga träffytor per scan, och en markör som flyttas vid hover
     s += '<line class="cursor" x1="0" x2="0" y1="' + TOP + '" y2="' + (QY + QH) + '" stroke="#ffd100" stroke-opacity=".5" stroke-width="1" visibility="hidden"/>';
     pts.forEach(function (i, n) {
@@ -904,19 +964,19 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   // Det är det en tradare vill se: köp i det billiga blocket, sälj i det dyra. Samma block som addonets Trading-flik.
   function blockOf(ts) { var h = new Date(ts * 1000).getHours(); return h >= 5 && h < 12 ? "m" : (h >= 17 ? "e" : null); }
   function dayKey(ts) { var dd = new Date(ts * 1000); return dd.getFullYear() * 10000 + (dd.getMonth() + 1) * 100 + dd.getDate(); }
-  function dayData(r) {
-    var T = D.scans, days = {}, order = [];
+  function dayData(r, Hh) {
+    var T = Hh.T, days = {}, order = [];
     var secs = 0;
     RANGES.forEach(function (rg) { if (rg[0] === rangeKey) secs = rg[1]; });
     var from = secs ? D.t - secs : 0;
     for (var i = 0; i < T.length; i++) {
-      if (!(r.mh[i] > 0) || T[i] < from) continue;
+      if (!(Hh.rh[i] > 0) || T[i] < from) continue;
       var b = blockOf(T[i]);
       if (!b) continue;
       var k = dayKey(T[i]);
       if (!days[k]) { days[k] = { key: k, m: [], e: [], mq: 0, eq: 0 }; order.push(k); }
-      days[k][b].push(r.mh[i]);
-      days[k][b + "q"] = r.qh[i];
+      days[k][b].push(Hh.rh[i]);
+      days[k][b + "q"] = Hh.qh[i];
     }
     order.sort();
     return order.map(function (k) {
@@ -925,8 +985,8 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       return { key: k, m: avg(dd.m), e: avg(dd.e), mn: dd.m.length, en: dd.e.length, mq: dd.mq, eq: dd.eq };
     });
   }
-  function dayChart(r) {
-    var days = dayData(r);
+  function dayChart(r, Hh) {
+    var days = dayData(r, Hh);
     if (!days.length) return '<div class="note">' + t("dd_none") + "</div>";
     var W = 600, H = 150, L = 62, R = 12, TOP = 12, BH = 108, BASE = TOP + BH;
     var maxP = 1;
@@ -965,9 +1025,9 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     }
     return parts.join(" · ");
   }
-  function readout(r, i) {
-    var w = when(D.scans[i]);
-    return "<b>" + w.day + " " + w.hm + "</b> · " + t("rd_low", money(r.mh[i])) + " · " + t("rd_qty", num(r.qh[i]));
+  function readout(Hh, i) {
+    var w = when(Hh.T[i]);
+    return "<b>" + w.day + " " + w.hm + "</b> · " + t("rd_low", money(Hh.rh[i])) + " · " + t("rd_qty", num(Hh.qh[i]));
   }
 
   function stepsHtml(r) {
@@ -1000,32 +1060,43 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     $("detail").innerHTML =
       '<div class="strip">' + starHtml(r.id, t(watched(r.id) ? "star_lbl_on" : "star_lbl_add")) + iconHtml(r, true) + '<h2 data-tip="' + r.id + '" class="' + qcls(r.q) + '">' + name + "</h2><small>" + t("item_n", r.id) + "</small></div>" +
       '<dl class="facts">' + facts + "</dl>" +
-      '<div><h3 class="row">' + t("per_scan") + rangeHtml() + "</h3>" + chart(r) +
+      '<div><h3 class="row">' + t("per_scan") + rangeHtml() + '</h3><div id="chartBox"><div class="note">' + t("hist_loading") + "</div></div>" +
       '<div class="legend"><span><i style="background:#d6a83b"></i>' + t("col_min") + '</span><span><i style="background:#7ea2d6"></i>' + t("lg_qty") + "</span></div>" +
       '<div class="read" id="read">' + t("hover") + "</div></div>" +
-      "<div><h3>" + t("dayday") + "</h3>" + dayChart(r) +
+      "<div><h3>" + t("dayday") + '</h3><div id="dayBox"></div>' +
       '<div class="legend"><span><i style="background:#d6a83b;height:8px"></i>' + t("lg_morning") + '</span><span><i style="background:#a1a1a1;height:8px"></i>' + t("lg_evening") + "</span></div>" +
       '<div class="read" id="dread">' + t("dd_hover") + "</div></div>" +
       "<div>" + stepsHtml(r) + "</div>";
-    var hits = $("detail").querySelectorAll(".hit");
-    var cursor = $("detail").querySelector(".cursor");
-    var showScan = function (e) {
-      $("read").innerHTML = readout(r, +e.target.dataset.i);
-      if (cursor) { cursor.setAttribute("x1", e.target.dataset.x); cursor.setAttribute("x2", e.target.dataset.x); cursor.setAttribute("visibility", "visible"); }
-    };
-    for (var h = 0; h < hits.length; h++) {
-      hits[h].addEventListener("pointerenter", showScan);
-      hits[h].addEventListener("click", showScan);
-    }
-    var dayList = dayData(r);
-    var dhits = $("detail").querySelectorAll(".dhit");
-    var showDay = function (e) { var dd = dayList[+e.target.dataset.n]; if (dd) $("dread").innerHTML = dayReadout(dd); };
-    for (var g = 0; g < dhits.length; g++) {
-      dhits[g].addEventListener("pointerenter", showDay);
-      dhits[g].addEventListener("click", showDay);
-    }
     if (scroll && window.matchMedia("(max-width: 860px)").matches) $("tabItem").scrollIntoView({ block: "start", behavior: "smooth" });
+    // Historiken hämtas per dag (cache i histFile); bara det valda spannet, "Allt" = alla dagar.
+    var secs = 0;
+    RANGES.forEach(function (rg) { if (rg[0] === rangeKey) secs = rg[1]; });
+    var my = ++selToken;
+    histFor(r.id, secs ? D.t - secs : 0).then(function (Hh) {
+      if (my !== selToken || !$("chartBox")) return;
+      if (!Hh) { $("chartBox").innerHTML = '<div class="note">' + t("hist_fail") + "</div>"; return; }
+      $("chartBox").innerHTML = chart(r, Hh);
+      $("dayBox").innerHTML = dayChart(r, Hh);
+      var hits = $("detail").querySelectorAll(".hit");
+      var cursor = $("detail").querySelector(".cursor");
+      var showScan = function (e) {
+        $("read").innerHTML = readout(Hh, +e.target.dataset.i);
+        if (cursor) { cursor.setAttribute("x1", e.target.dataset.x); cursor.setAttribute("x2", e.target.dataset.x); cursor.setAttribute("visibility", "visible"); }
+      };
+      for (var h = 0; h < hits.length; h++) {
+        hits[h].addEventListener("pointerenter", showScan);
+        hits[h].addEventListener("click", showScan);
+      }
+      var dayList = dayData(r, Hh);
+      var dhits = $("detail").querySelectorAll(".dhit");
+      var showDay = function (e) { var dd = dayList[+e.target.dataset.n]; if (dd) $("dread").innerHTML = dayReadout(dd); };
+      for (var g = 0; g < dhits.length; g++) {
+        dhits[g].addEventListener("pointerenter", showDay);
+        dhits[g].addEventListener("click", showDay);
+      }
+    });
   }
+  var selToken = 0;
 
   // En lyssnare för hela sidan: flaggorna, stjärnan (håll koll / ta bort) och radklicket.
   document.addEventListener("click", function (e) {
@@ -1122,7 +1193,18 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     $("scanInfo").textContent = t("err2");
   }
   applyStatic();
-  fetch(DATA_URL).then(function (r) {
+  $("marketSel").addEventListener("change", function () {
+    house = +this.value;
+    try { localStorage.setItem(MKEY, String(house)); } catch (e) {}
+    lastUpdate = null;
+    fetch(dataUrl(), { cache: "no-store" }).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+      .then(function (d) { load(d, true); }).catch(function () { showError(); });
+  });
+  // Sökknappen (som i spelets AH): söker på det som står i rutan, även tomt = hela AH, och hämtar samtidigt de senaste
+  // uppgifterna (Joakim 2026-11-16: den som inte tryckt på flera timmar ska få nytt när den trycker).
+  $("qbtn").addEventListener("click", function () { query = $("q").value.trim().toLowerCase(); refresh(); $("q").blur(); update(); });
+  $("q").addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); $("qbtn").click(); } });
+  fetch(dataUrl()).then(function (r) {
     if (!r.ok) throw new Error(r.status);
     return r.json();
   }).then(load).catch(function () {
