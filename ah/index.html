@@ -64,7 +64,7 @@ body {
 }
 .win { width: 81%; max-width: 1560px; margin: 0 auto; background: var(--panel); border: 1px solid var(--bronze); border-radius: 7px;
   box-shadow: inset 0 0 0 1px var(--line), 0 14px 36px rgba(0, 0, 0, .42); }
-.top { display: flex; align-items: center; gap: 16px; min-height: 92px; padding: 12px 18px; flex-wrap: wrap;
+.top { display: flex; align-items: center; gap: 16px; min-height: 112px; padding: 12px 18px; flex-wrap: wrap;
   background: linear-gradient(#2a1e15, #130F0D); border-bottom: 1px solid var(--line); border-radius: 7px 7px 0 0;
   box-shadow: inset 0 1px 0 rgba(229, 180, 106, .10); }
 /* Fraktionston i rubriklisten (Joakim 2026-11-16): Horde-röd eller Alliance-blå, svagt, så hela sidan följer flippen. */
@@ -81,6 +81,13 @@ h1 { font-family: var(--display); font-weight: 500; font-size: 36px; margin: 0; 
 .flip button { all: unset; cursor: pointer; height: 34px; padding: 0 14px; font-size: 14.5px; color: var(--grey); display: inline-flex; align-items: center; gap: 7px; }
 .flip button + button { border-left: 1px solid var(--line); }
 .flip button[aria-pressed=true] { color: var(--gold); background: var(--sel); box-shadow: inset 0 -2px 0 var(--edge); }
+/* Stående: valet går uppifrån och ner (Joakim 2026-11-16), aktiv rad får en guldkant till vänster. */
+.flip.v { flex-direction: column; }
+.flip.v button { height: 36px; min-width: 96px; justify-content: flex-start; }
+.flip.v button + button { border-left: 0; border-top: 1px solid var(--line); }
+.flip.v button[aria-pressed=true] { box-shadow: inset 3px 0 0 var(--edge); }
+.flip.fac button { height: 48px; padding: 0 14px 0 8px; min-width: 140px; }
+.flip.fac .fi { width: 40px; height: 40px; }
 .flip button:focus-visible { outline: 2px solid var(--edge); outline-offset: -2px; }
 .flip .fi { width: 22px; height: 22px; object-fit: contain; display: block; }
 .flip .fi:not([src]) { display: none; }
@@ -329,11 +336,11 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       <div class="sub">WoW Forever</div>
     </div>
         <span class="mkt" role="group" data-t-aria="market_label" aria-label="Marknad">
-          <span class="flip" role="group"><button type="button" data-rs="normal" aria-pressed="false">Normal</button><button type="button" data-rs="pvp" aria-pressed="true">PvP</button></span>
-          <span class="flip" role="group">
+          <span class="flip v fac" role="group">
             <button type="button" data-fa="horde" aria-pressed="true"><img class="fi" data-icon="faction-horde.png" alt="">Horde</button>
             <button type="button" data-fa="alliance" aria-pressed="false"><img class="fi" data-icon="faction-alliance.png" alt="">Alliance</button>
           </span>
+          <span class="flip v" role="group"><button type="button" data-rs="normal" aria-pressed="false">Normal</button><button type="button" data-rs="pvp" aria-pressed="true">PvP</button></span>
         </span>
     <div class="scan"><b id="scanTime" data-t="loading">Läser in scannen…</b><span id="scanInfo"></span></div>
   </header>
@@ -345,7 +352,6 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       <button type="button" id="modeAh" aria-pressed="true" data-t="mode_ah" data-t-title="mode_ah_tip">Auktionshus</button>
       <button type="button" id="modeTr" aria-pressed="false" data-t="mode_tr" data-t-title="mode_tr_tip">Trading</button>
     </div>
-    <button class="chip" id="chipAll" aria-pressed="false" type="button" hidden></button>
     <span class="count" id="count"></span>
   </div>
 
@@ -412,6 +418,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     $("q").style.backgroundImage = "url(" + ASSET_BASE + "icons/search.png)";
     var fi = document.querySelectorAll(".flip .fi");
     for (var i = 0; i < fi.length; i++) fi[i].src = ASSET_BASE + "icons/" + fi[i].getAttribute("data-icon");
+    ["horde-orgrimmar", "alliance-stormwind"].forEach(function (n) { var im = new Image(); im.src = ASSET_BASE + "backgrounds/" + n + ".webp"; });   // förladdas: bytet ska inte hacka
   }
   function applyPanorama(faction) {
     document.body.classList.toggle("fa-horde", faction !== "alliance");
@@ -713,9 +720,6 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     drawMarket();
     $("scanTime").textContent = t("scan_at", w.day, w.hm);
     $("scanInfo").textContent = t("on_ah", num(rows.length));
-    var unnamed = rows.length - D.named;
-    $("chipAll").textContent = t("chip_all", num(unnamed));
-    $("chipAll").hidden = unnamed === 0;
   }
   function load(d, keep) {
     D = d;
@@ -1201,11 +1205,6 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   }
   $("modeAh").addEventListener("click", function () { setMode("ah"); });
   $("modeTr").addEventListener("click", function () { setMode("tr"); });
-  $("chipAll").addEventListener("click", function () {
-    showAll = !showAll;
-    this.setAttribute("aria-pressed", showAll ? "true" : "false");
-    refresh();
-  });
   $("head").addEventListener("click", function (e) {
     var b = e.target.closest("button");
     if (!b) return;
