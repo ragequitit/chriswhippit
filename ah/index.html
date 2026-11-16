@@ -78,28 +78,37 @@ body {
 .title { min-width: 0; flex: 0 1 auto; }
 h1 { font-family: var(--display); font-weight: 500; font-size: 36px; margin: 0; color: var(--gold); letter-spacing: .06em; line-height: 1.1; text-wrap: balance; }
 .sub { color: var(--grey); margin-top: 2px; font-size: 18px; letter-spacing: .01em; }
-/* Marknaden: två flippar, Normal/PvP och Horde/Alliance (Joakim 2026-11-16), de fyra husen Blizzard ger för EU. */
-.mkt { display: inline-flex; gap: 10px; align-self: center; align-items: stretch; margin-left: 28px; flex: 0 0 auto; }
-.flip { display: inline-flex; border: 1px solid var(--line); border-radius: 4px; overflow: hidden; }
-.flip button { all: unset; cursor: pointer; height: 34px; padding: 0 14px; font-size: 14.5px; color: var(--grey); display: inline-flex; align-items: center; gap: 7px; }
-.flip button + button { border-left: 1px solid var(--line); }
-.flip button[aria-pressed=true] { color: var(--gold); background: var(--sel); box-shadow: inset 0 -2px 0 var(--edge); }
-/* Stående: valet går uppifrån och ner (Joakim 2026-11-16), aktiv rad får en guldkant till vänster. */
-.flip.v { flex-direction: column; }
-.flip.v button { height: 38px; flex: 1 1 auto; min-width: 96px; justify-content: flex-start; }
-.flip.v button + button { border-left: 0; border-top: 1px solid var(--line); }
-.flip.v button[aria-pressed=true] { box-shadow: inset 3px 0 0 var(--edge); }
-.flip.fac button { height: 38px; padding: 0 14px 0 8px; min-width: 136px; }
-.flip.fac .fi { width: 30px; height: 30px; }
-.flip button:focus-visible { outline: 2px solid var(--edge); outline-offset: -2px; }
-.flip .fi { width: 22px; height: 22px; object-fit: contain; display: block; }
-.flip .fi:not([src]) { display: none; }
+/* Marknaden (Joakims spec 2026-11-16): en kompakt väljare till vänster om uppdateringstiden. Stängd: fraktionsmärke,
+   fraktion · servertyp och en pil. Öppen: panel under knappen med Faction (Horde/Alliance) och Realm type (Normal/PvP). */
+.mkt { position: relative; margin-left: auto; align-self: center; flex: 0 0 auto; }
+.mbtn { all: unset; cursor: pointer; height: 40px; padding: 0 12px 0 10px; border-radius: 5px; background: #1B140F; border: 1px solid #7A5739;
+  display: inline-flex; align-items: center; gap: 8px; font-size: 14.5px; font-weight: 500; color: var(--fg);
+  box-shadow: inset 0 1px 0 rgba(229, 180, 106, .10), 0 1px 2px rgba(0, 0, 0, .5); }
+.mbtn:hover, .mbtn[aria-expanded=true] { border-color: var(--edge); }
+.mbtn:focus-visible { outline: 2px solid var(--edge); outline-offset: 2px; }
+.mbtn .dot { color: var(--grey); }
+.mbtn .caret { width: 10px; height: 6px; color: var(--grey); margin-left: 2px; transition: transform .15s; }
+.mbtn[aria-expanded=true] .caret { transform: rotate(180deg); }
+.mkt .fi { width: 26px; height: 26px; object-fit: contain; display: block; }
+.mkt .fi:not([src]) { display: none; }
+.rt { font-size: 12.5px; padding: 2px 7px; border-radius: 4px; background: rgba(255, 255, 255, .08); color: var(--grey); }
+.rt.pvp { background: rgba(246, 196, 72, .16); color: var(--gold); }
+.mpop { position: absolute; right: 0; top: calc(100% + 6px); z-index: 40; min-width: 330px; padding: 8px; border-radius: 6px;
+  background: #1B140F; border: 1px solid #7A5739; box-shadow: 0 12px 30px rgba(0, 0, 0, .55), inset 0 1px 0 rgba(229, 180, 106, .10); }
+.mrow { display: grid; grid-template-columns: 86px 1fr 1fr; gap: 6px; align-items: center; }
+.mrow + .mrow { margin-top: 6px; }
+.mlbl { font-size: 11.5px; letter-spacing: .07em; text-transform: uppercase; color: var(--grey); font-weight: 600; padding-left: 4px; }
+.mrow button { all: unset; cursor: pointer; height: 36px; padding: 0 10px; border-radius: 5px; border: 1px solid transparent; color: var(--grey);
+  display: inline-flex; align-items: center; justify-content: center; gap: 7px; font-size: 14px; }
+.mrow button:hover { background: var(--hover); color: var(--fg); }
+.mrow button[aria-pressed=true] { color: var(--fg); background: linear-gradient(#39271A, #21170F); border-color: rgba(246, 196, 72, .6); }
+.mrow button:focus-visible { outline: 2px solid var(--edge); outline-offset: -2px; }
 /* Sökknappen som i spelets AH: röd platta, guldtext. */
 .wowbtn { height: 36px; padding: 0 22px; border-radius: 5px; cursor: pointer; font: inherit; font-size: 14px; font-weight: 500; color: var(--gold);
   background: linear-gradient(var(--btn-a), var(--btn-b)); border: 1px solid var(--bronze); box-shadow: inset 0 1px 0 rgba(255, 200, 160, .22), inset 0 -2px 0 rgba(0, 0, 0, .35), 0 1px 2px rgba(0, 0, 0, .6); }
 .wowbtn:hover { filter: brightness(1.18); }
 .wowbtn:active { filter: brightness(.9); }
-.scan { flex: 0 1 auto; margin-left: auto; text-align: right; }
+.scan { flex: 0 1 auto; text-align: right; }
 .scan b { display: block; color: var(--gold); font-weight: 600; font-size: 16px; }
 .scan span { color: var(--grey); font-size: 13px; }
 
@@ -276,8 +285,10 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   .cat, .cat.sub, .cat.sub2 { margin-left: 2px; flex: none; }
   .right { order: -1; }
   .detail { position: static; }
-  .scan { text-align: left; flex-basis: 100%; margin-left: 0; }
-  .mkt { margin-left: 0; flex-basis: 100%; }
+  .home { flex-basis: 100%; }
+  .mkt { margin-left: 0; }
+  .scan { text-align: right; flex: 1 1 auto; }
+  .mpop { right: auto; left: 0; }
 }
 @media (max-width: 520px) {
   .hide-s { display: none; }
@@ -340,13 +351,22 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       <div class="sub">WoW Forever</div>
     </div>
     </a>
-        <span class="mkt" role="group" data-t-aria="market_label" aria-label="Marknad">
-          <span class="flip v fac" role="group">
-            <button type="button" data-fa="horde" aria-pressed="true"><img class="fi" data-icon="faction-horde.png" alt="">Horde</button>
-            <button type="button" data-fa="alliance" aria-pressed="false"><img class="fi" data-icon="faction-alliance.png" alt="">Alliance</button>
-          </span>
-          <span class="flip v" role="group"><button type="button" data-rs="normal" aria-pressed="false">Normal</button><button type="button" data-rs="pvp" aria-pressed="true">PvP</button></span>
-        </span>
+    <div class="mkt" id="mkt">
+      <button type="button" class="mbtn" id="mktBtn" aria-haspopup="true" aria-expanded="false" data-t-title="market_label" title="">
+        <img class="fi" id="mktIcon" data-icon="faction-horde.png" alt=""><span id="mktFa">Horde</span><span class="dot">·</span><span class="rt" id="mktRs">PvP</span>
+        <svg class="caret" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+      </button>
+      <div class="mpop" id="mktPop" hidden>
+        <div class="mrow"><span class="mlbl" data-t="m_faction">Faction</span>
+          <button type="button" data-fa="horde" aria-pressed="true"><img class="fi" data-icon="faction-horde.png" alt="">Horde</button>
+          <button type="button" data-fa="alliance" aria-pressed="false"><img class="fi" data-icon="faction-alliance.png" alt="">Alliance</button>
+        </div>
+        <div class="mrow"><span class="mlbl" data-t="m_realm">Realm type</span>
+          <button type="button" data-rs="normal" aria-pressed="false">Normal</button>
+          <button type="button" data-rs="pvp" aria-pressed="true">PvP</button>
+        </div>
+      </div>
+    </div>
     <div class="scan"><b id="scanTime" data-t="loading">Läser in scannen…</b><span id="scanInfo"></span></div>
   </header>
 
@@ -421,7 +441,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     if (!ASSET_BASE) return;
     $("logo").src = ASSET_BASE + "icons/auction-house-logo.png";
     $("q").style.backgroundImage = "url(" + ASSET_BASE + "icons/search.png)";
-    var fi = document.querySelectorAll(".flip .fi");
+    var fi = document.querySelectorAll(".mkt .fi");
     for (var i = 0; i < fi.length; i++) fi[i].src = ASSET_BASE + "icons/" + fi[i].getAttribute("data-icon");
     ["horde-orgrimmar", "alliance-stormwind"].forEach(function (n) { var im = new Image(); im.src = ASSET_BASE + "backgrounds/" + n + ".webp"; });   // förladdas: bytet ska inte hacka
   }
@@ -469,13 +489,19 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   var HOUSES = { pvp: { horde: 113, alliance: 110 }, normal: { horde: 114, alliance: 111 } };
   function houseParts(h) { return h === 110 ? ["pvp", "alliance"] : h === 114 ? ["normal", "horde"] : h === 111 ? ["normal", "alliance"] : ["pvp", "horde"]; }
   function drawMarket() {
-    var hp = houseParts(house), bs = document.querySelectorAll(".mkt button");
+    var hp = houseParts(house), bs = document.querySelectorAll(".mpop button");
     applyPanorama(hp[1]);
     for (var i = 0; i < bs.length; i++) {
       var rs = bs[i].getAttribute("data-rs"), fa = bs[i].getAttribute("data-fa");
       bs[i].setAttribute("aria-pressed", (rs && rs === hp[0]) || (fa && fa === hp[1]) ? "true" : "false");
     }
+    $("mktFa").textContent = hp[1] === "alliance" ? "Alliance" : "Horde";
+    $("mktRs").textContent = hp[0] === "pvp" ? "PvP" : "Normal";
+    $("mktRs").className = "rt " + hp[0];
+    var ic = $("mktIcon"); ic.setAttribute("data-icon", "faction-" + hp[1] + ".png");
+    if (ASSET_BASE) ic.src = ASSET_BASE + "icons/faction-" + hp[1] + ".png";
   }
+  function mktOpen(open) { $("mktPop").hidden = !open; $("mktBtn").setAttribute("aria-expanded", open ? "true" : "false"); }
   var histCache = {};
   function histFile(day, b) {
     var k = house + "/" + day + "/" + b;
@@ -523,7 +549,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       empty: "No item matches the search.", more: "Show more (%1 more)", count: "%1 items",
       tab_item: "Item", tab_watch: "My list", pick: "Pick an item in the list.",
       foot3: "Independent fan site, not affiliated with Blizzard Entertainment. World of Warcraft is a trademark of Blizzard Entertainment, Inc. Auction data from Blizzard's API.",
-      scan_at: "Updated %1 at %2", home_tip: "Back to the start: all items, latest prices", on_ah: "%1 items on the auction house", market_label: "Market", search_btn: "Search", col_fav: "Fav",
+      scan_at: "Updated %1 at %2", m_faction: "Faction", m_realm: "Realm type", home_tip: "Back to the start: all items, latest prices", on_ah: "%1 items on the auction house", market_label: "Market", search_btn: "Search", col_fav: "Fav",
       hist_loading: "Loading history…", hist_fail: "The history could not be loaded.", today: "today", item_n: "Item %1",
       copy_link: "Copy link", copied: "Link copied", star_add: "Watch this item", star_del: "Remove from my list", star_lbl_add: "Watch", star_lbl_on: "In my list",
       not_listed: "not listed now", remove: "Remove", watch_sub: "Saved in your browser, only you can see it.",
@@ -1237,7 +1263,10 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   applyStatic();
   applyAssets();
   applyPanorama(houseParts(house)[1]);
-  document.querySelector(".mkt").addEventListener("click", function (e) {
+  $("mktBtn").addEventListener("click", function () { mktOpen($("mktPop").hidden); });
+  document.addEventListener("click", function (e) { if (!$("mktPop").hidden && !e.target.closest("#mkt")) mktOpen(false); });
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape" && !$("mktPop").hidden) { mktOpen(false); $("mktBtn").focus(); } });
+  $("mktPop").addEventListener("click", function (e) {   // panelen ligger kvar: fraktion och servertyp kan bytas i samma öppning
     var b = e.target.closest("button");
     if (!b) return;
     var hp = houseParts(house);
