@@ -748,11 +748,10 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   // och källor. Kostnad = reagenser gånger riktpriset på vald marknad, handlarvaror till handlarpris. Säljpris = den
   // tillverkade varans riktpris. Vinst = säljpris × 0,95 − kostnad, per tillverkning.
   var RECEPT = null, recPromise = null, crRows = [], profList = [], selRec = null;
-  // Yrkesikoner (Joakim 2026-11-16): spelets egna varuikoner via Blizzards item media, prof-<yrke>.jpg: Alchemy = Flask of the
-  // Titans, Cooking = Roasted Quail, Engineering = EZ-Thro Dynamite, First Aid = Heavy Silk Bandage, Leatherworking = Light
-  // Leather, Tailoring = Wool Cloth. Övriga lånar kategoriikonerna (cat-<namn>.jpg), som också är reserv.
-  var PROF_ICON = { Alchemy: ["prof-alchemy", "consumables"], Blacksmithing: [null, "weapons"], Cooking: ["prof-cooking", "trade-goods"], Enchanting: [null, "recipes"], Engineering: ["prof-engineering", "ammo"],
-    "First Aid": ["prof-first-aid", "consumables"], Leatherworking: ["prof-leatherworking", "armor"], Tailoring: ["prof-tailoring", "containers"], Mining: [null, "trade-goods"] };
+  // Yrkesikoner (Joakim 2026-11-16): spelets riktiga yrkesikoner via Blizzards profession media (/data/wow/media/profession/<id>),
+  // prof-<yrke>.jpg. Kategoriikonerna (cat-<namn>.jpg) är reserv om en bild saknas.
+  var PROF_ICON = { Alchemy: ["prof-alchemy", "consumables"], Blacksmithing: ["prof-blacksmithing", "weapons"], Cooking: ["prof-cooking", "trade-goods"], Enchanting: ["prof-enchanting", "recipes"],
+    Engineering: ["prof-engineering", "ammo"], "First Aid": ["prof-first-aid", "consumables"], Leatherworking: ["prof-leatherworking", "armor"], Tailoring: ["prof-tailoring", "containers"], Mining: ["prof-mining", "trade-goods"] };
   function loadRecept() {
     if (!recPromise) recPromise = fetch(DATA_BASE + "recept.json").then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }).then(function (j) { RECEPT = j; buildCr(); return j; });
     return recPromise;
