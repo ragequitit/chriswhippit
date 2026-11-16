@@ -263,6 +263,8 @@ td.nm, .watch td:first-child { text-align: left; white-space: nowrap; max-width:
 #list tr.bosshd td { text-align: left; padding-top: 14px; padding-bottom: 6px; border-bottom: 1px solid var(--bronze); color: var(--gold); font-family: var(--display); font-size: 14.5px; background: none; cursor: default; }
 #list tr.fvhd td { text-align: left; padding: 6px 8px 4px; font-size: 12px; letter-spacing: .04em; text-transform: uppercase; color: var(--green); background: none; cursor: default; }
 #list tr.fvhd.cl td { color: var(--grey); }
+#list tr.fvhd.al td { color: var(--gold); }
+.tag.fv { color: var(--gold); border-color: rgba(246, 196, 72, .5); }
 #list tr.clrow td { opacity: .6; }
 #list tr.bosshd .dim { font-family: var(--body); font-size: 12px; }
 #list.qu th.nm { width: 38%; } #list.dg th.nm { width: 52%; }
@@ -698,6 +700,8 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       qu_notah: "not on AH", qu_notah_long: "Not on the auction house right now", qu_text: "Quest", qu_obj: "Objective:", qu_wowhead: "Open on Wowhead",
       qu_source: "Quests and rewards from Blizzard's API; levels from the open Classic database (1.12).", col_quest: "Quest", col_zone: "Zone", col_xp: "XP", col_money: "Money",
       col_reward: "Best reward", col_reward_tip: "The most valuable reward item on the auction house right now", col_drop: "Drop", col_drop_tip: "Drop chance from the boss (Classic 1.12 data)",
+      dg_al: "New in Forever · from AtlasLoot", dg_al_new: "Loot · from AtlasLoot", dg_al_tip: "Drop chance not known yet: WhippitPanel logs it as bosses die", dg_al_src: "Forever loot:",
+      dg_source_fv: "New dungeon in WoW Forever. Bosses and loot from AtlasLoot Classic Forever; drop chances appear as kills are logged.",
       dg_fv: "Seen in Forever · %1 kills logged", dg_cl: "Classic 1.12 list (may be outdated in Forever)", dg_fv_tip: "Seen in %1 of the logged kills", dg_logged: "Logged in Forever", dg_logged_n: "%1 of %2 bosses",
       dg_lv: "Level %1", dg_raids: "Raids", dg_count: "%1 drops", dg_empty: "No drop matches the search.", dg_pick: "Pick a dungeon on the left.", dg_boss_lvl: "level %1", dg_noloot: "no listed loot",
       dg_raid: "Raid · %1 players", dg_party: "Dungeon · 5 players", dg_bosses: "Bosses", dg_players: "Players", dg_onah: "Drops on the AH", dg_ilvl: "Item level", dg_dropsfrom: "Drops from",
@@ -1397,7 +1401,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
 
   // ---- Dungeons (Joakim 2026-11-16): instanserna ur den öppna Classic-databasen (dungeons.json, dungeon-db.js, 1.12):
   // nivå först, sedan instans; bossarna i spelordning med sin loot och dropchans, priset från vald marknad. ----
-  var DG = null, FL = {}, dgPromise = null, dgList = [], dgSel = -1;   // FL = bossloot loggad i Forever (forever-loot.json)
+  var DG = null, FL = {}, AL = null, dgPromise = null, dgList = [], dgSel = -1;   // FL = bossloot loggad i Forever (forever-loot.json)
   var DG_RAID_ORDER = [309, 509, 249, 409, 469, 531, 533];
   function dgGroup(d) { return d.raid ? 5 : d.min < 20 ? 0 : d.min < 30 ? 1 : d.min < 40 ? 2 : d.min < 50 ? 3 : 4; }
   function loadDungeons() {
@@ -1405,12 +1409,26 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       DG = j;
       return fetch(DATA_BASE + "forever-loot.json").then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; }).then(function (fl) {
         FL = fl && fl.bosses ? fl.bosses : {};
+        return fetch(DATA_BASE + "atlasloot-forever.json").then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; });
+      }).then(function (al) {
+        // Forevers loot ur AtlasLoot Classic Forever (GPL-2.0): tillägg på klassiska bossar (npcID) och nya Forever-instanser.
+        AL = al || null;
+        if (AL) {
+          Object.keys(AL.items).forEach(function (id) { if (!j.items[id]) j.items[id] = AL.items[id]; });
+          j.dungeons.forEach(function (d) { d.bosses.forEach(function (b) { if (AL.bosses[b.id]) b.al = AL.bosses[b.id]; }); });
+          AL.dungeons.forEach(function (x, i) {
+            j.dungeons.push({ map: 900 + i, name: x.name, short: x.name, min: x.rec || x.min, max: x.max, players: x.raid ? 20 : 5, raid: x.raid, forever: true,
+              bosses: x.bosses.map(function (b) { return { name: b.name, id: 0, lvl: 0, loot: [], al: b.items }; }) });
+          });
+        }
         var known = {};
         j.dungeons.forEach(function (d) { d.bosses.forEach(function (b) { known[b.id] = 1; }); });
         Object.keys(FL).forEach(function (k) {   // Forever-nya bossar (eller encounter utan bossram): under instansen med samma id
           if (known[k]) return;
           var e = FL[k], d = j.dungeons.filter(function (x) { return x.map === e.map || x.name === e.inst; })[0];
-          if (d) d.bosses.push({ name: e.name || "?", id: +k, lvl: 0, loot: [], fresh: true });
+          if (!d) return;
+          var same = d.bosses.filter(function (b) { return !b.id && b.name === e.name; })[0];   // AtlasLoot-boss utan npcID: samma namn = samma boss
+          if (same) same.id = +k; else d.bosses.push({ name: e.name || "?", id: +k, lvl: 0, loot: [], fresh: true });
         });
         return j;
       });
@@ -1425,7 +1443,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     dgList.forEach(function (d, i) {
       var g = dgGroup(d);
       if (g !== last) { last = g; h += '<div class="cath">' + (g === 5 ? t("dg_raids") : t("dg_lv", ["10–19", "20–29", "30–39", "40–49", "50–60"][g])) + "</div>"; }
-      h += '<button class="cat" type="button" data-dg="' + i + '" aria-pressed="' + (dgSel === i) + '" title="' + esc(d.name) + '"><em class="nm">' + esc(d.name) + "</em><span>" + (d.raid ? d.players + "p" : d.min + "–" + d.max) + "</span></button>";
+      h += '<button class="cat" type="button" data-dg="' + i + '" aria-pressed="' + (dgSel === i) + '" title="' + esc(d.name) + '"><em class="nm">' + esc(d.name) + (d.forever ? ' <span class="tag fv">Forever</span>' : "") + "</em><span>" + (d.raid ? d.players + "p" : d.min + "–" + d.max) + "</span></button>";
     });
     return h;
   }
@@ -1442,25 +1460,30 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
         var hit = function (id) { return !q || dgName(id).toLowerCase().indexOf(q) >= 0; };
         fv = fv.filter(function (l) { return hit(l[0]); }).sort(function (a, c) { return c[1] - a[1]; });
         var loot = b.loot.filter(function (l) { return hit(l[0]); });
-        if (q && !loot.length && !fv.length) return;
-        view.push({ hd: 1, boss: b, d: d, n: loot.length + fv.length });
+        var al = (b.al || []).filter(function (id) { return hit(id) && !fv.some(function (l) { return l[0] === id; }); });
+        if (q && !loot.length && !fv.length && !al.length) return;
+        view.push({ hd: 1, boss: b, d: d, n: loot.length + fv.length + al.length });
         if (fl) {
           view.push({ sub: "fv", kills: den });
           fv.forEach(function (l) { view.push({ id: byId[l[0]] ? l[0] : undefined, item: l[0], ch: l[1], seen: l[2], den: l[3], fv: 1, d: d, boss: b }); });
-          if (loot.length) view.push({ sub: "cl" });
         }
-        loot.forEach(function (l) { view.push({ id: byId[l[0]] ? l[0] : undefined, item: l[0], ch: l[1], mn: l[2], mx: l[3], d: d, boss: b, cl: !!fl }); });
+        if (al.length) {
+          view.push({ sub: "al", fresh: !b.loot.length });
+          al.forEach(function (id) { view.push({ id: byId[id] ? id : undefined, item: id, al: 1, d: d, boss: b }); });
+        }
+        if ((fl || al.length) && loot.length) view.push({ sub: "cl" });
+        loot.forEach(function (l) { view.push({ id: byId[l[0]] ? l[0] : undefined, item: l[0], ch: l[1], mn: l[2], mx: l[3], d: d, boss: b, cl: !!(fl || al.length) }); });
       });
     });
     shown = view.length;
   }
   function dgRow(r) {
-    if (r.sub) return '<tr class="fvhd' + (r.sub === "cl" ? " cl" : "") + '"><td colspan="5">' + (r.sub === "fv" ? t("dg_fv", r.kills) : t("dg_cl")) + "</td></tr>";
+    if (r.sub) return '<tr class="fvhd' + (r.sub === "cl" ? " cl" : r.sub === "al" ? " al" : "") + '"><td colspan="5">' + (r.sub === "fv" ? t("dg_fv", r.kills) : r.sub === "al" ? t(r.fresh ? "dg_al_new" : "dg_al") : t("dg_cl")) + "</td></tr>";
     if (r.hd) return '<tr class="bosshd"><td colspan="5"><b>' + esc(r.boss.name) + '</b> <span class="dim">' + (r.boss.lvl ? t("dg_boss_lvl", r.boss.lvl) : "") + (query ? " · " + esc(r.d.name) : "") + (r.n ? "" : " · " + t("dg_noloot")) + "</span></td></tr>";
     var ah = byId[r.item], m = DG.items[r.item] || ["", FLN[r.item] ? FLN[r.item][1] : -1, 0, 0], q = ah ? ah.q : m[1];
     return '<tr tabindex="0"' + (r.cl ? ' class="clrow"' : "") + ' ' + (ah ? 'data-id="' + r.item + '"' + (r.item === selId ? ' aria-selected="true"' : "") : 'data-dgi="' + r.item + '"') + '><td class="fav">' + (ah ? starHtml(r.item) : "") + '</td><td class="nm">' + (ah && ah.ic && ICON_BASE ? iconHtml(ah) : xIcon(r.item, q)) +
       '<span class="' + qcls(q) + '"' + (ah ? ' data-tip="' + r.item + '"' : ' data-dgtip="' + r.item + '"') + ">" + esc(dgName(r.item)) + "</span>" + (r.mx > 1 ? ' <span class="dim">×' + r.mn + (r.mx > r.mn ? "–" + r.mx : "") + "</span>" : "") +
-      "</td><td" + (r.fv ? ' title="' + esc(t("dg_fv_tip", r.seen)) + '"' : "") + ">" + (r.fv && r.den < 3 ? r.seen + "/" + r.den : (r.ch >= 10 ? Math.round(r.ch) : r.ch) + "%") + "</td><td>" + (m[3] || DASH) + "</td><td>" + (ah && ah.min > 0 ? money(ah.min) : '<span class="dim">' + t("qu_notah") + "</span>") + "</td></tr>";
+      "</td><td" + (r.fv ? ' title="' + esc(t("dg_fv_tip", r.seen)) + '"' : "") + ">" + (r.al ? '<span class="dim" title="' + esc(t("dg_al_tip")) + '">–</span>' : r.fv && r.den < 3 ? r.seen + "/" + r.den : (r.ch >= 10 ? Math.round(r.ch) : r.ch) + "%") + "</td><td>" + (m[3] || DASH) + "</td><td>" + (ah && ah.min > 0 ? money(ah.min) : '<span class="dim">' + t("qu_notah") + "</span>") + "</td></tr>";
   }
   function dgDetail() {
     var d = dgList[dgSel];
@@ -1474,7 +1497,8 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       "<div><dt>" + t("dg_players") + "</dt><dd>" + d.players + "</dd></div><div><dt>" + t("dg_onah") + "</dt><dd>" + ah + "</dd></div>" +
       '<div class="wide"><dt>' + t("dg_logged") + "</dt><dd>" + t("dg_logged_n", d.bosses.filter(function (b) { return FL[b.id]; }).length, d.bosses.length) + "</dd></div></dl>" +
       "<div><h3>" + t("dg_bosses") + '</h3><ol class="bosslist">' + d.bosses.map(function (b) { return "<li>" + esc(b.name) + ' <span class="dim">' + (b.lvl ? t("dg_boss_lvl", b.lvl) : "") + "</span></li>"; }).join("") + "</ol></div>" +
-      '<div class="note">' + t("dg_source") + "</div>";
+      (AL ? '<div class="note">' + t("dg_al_src") + ' <a class="wh" href="' + esc(AL.url) + '" target="_blank" rel="noopener">AtlasLoot Classic Forever</a> (' + esc(AL.license) + ")</div>" : "") +
+      '<div class="note">' + t(d.forever ? "dg_source_fv" : "dg_source") + "</div>";
   }
   function dgItemDetail(id) {   // föremål som inte finns på AH: bara fakta och var det droppar
     var m = DG.items[id] || ["Item " + id, -1, 0, 0], from = [];
