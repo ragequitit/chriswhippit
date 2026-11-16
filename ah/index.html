@@ -171,6 +171,8 @@ td.nm, .watch td:first-child { text-align: left; white-space: nowrap; max-width:
 .srcs dt { color: var(--grey); white-space: nowrap; }
 .srcs dd { margin: 0; }
 .srcs dd .dim { font-size: 12px; }
+.srcs a.wh { color: var(--fg); text-decoration: underline dotted; text-decoration-color: var(--bronze); text-underline-offset: 3px; }
+.srcs a.wh:hover { color: var(--gold); text-decoration-color: var(--gold); }
 .reag td, .reag th { padding: 3px 6px; font-size: 13px; }
 .reag td:first-child { text-align: left; max-width: 0; width: 52%; overflow: hidden; text-overflow: ellipsis; }
 .reag .ic { width: 20px; height: 20px; vertical-align: -5px; margin-right: 6px; }
@@ -389,7 +391,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     <div class="mode" role="group">
       <button type="button" id="modeAh" aria-pressed="true" data-t="mode_ah" data-t-title="mode_ah_tip">Auktionshus</button>
       <button type="button" id="modeTr" aria-pressed="false" data-t="mode_tr" data-t-title="mode_tr_tip">Trading</button>
-      <button type="button" id="modeCr" aria-pressed="false" data-t="mode_cr" data-t-title="mode_cr_tip">Crafting</button>
+      <button type="button" id="modeCr" aria-pressed="false" data-t="mode_cr" data-t-title="mode_cr_tip">Professions</button>
     </div>
     <span class="count" id="count"></span>
   </div>
@@ -553,13 +555,13 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       col_qty: "Listed", col_day: "Sold/day", col_day_tip: "Estimate from Blizzard's hourly data: listings that vanished before they could expire",
       col_lvl: "Level", col_lvl_tip: "Requires level", dip_tip: "%1% below the usual price these days (%2)", trend: "Last week",
       rise_tip: "%1% above the usual price these days (%2)", col_pct: "Vs usual", col_pct_s: "Now", col_pct_tip: "Market price now versus the usual market price these days. Red = down, green = up.",
-      mode_cr: "Crafting", mode_cr_tip: "Every recipe with what it costs to craft at today's market prices, what it sells for and the profit",
+      mode_cr: "Professions", mode_cr_tip: "Every recipe with what it costs to craft at today's market prices, what it sells for and the profit",
       col_recipe: "Recipe", col_skill: "Skill", col_skill_tip: "Skill required to learn the recipe", col_cost: "Cost", col_cost_tip: "Reagents at market price; vendor reagents at vendor price",
       col_sell: "Sells for", col_sell_tip: "Market price of the crafted item", col_profit: "Profit", col_profit_tip: "Sells for minus the auction house's 5% minus cost, per craft",
       cr_h: "Professions", cr_all: "All", cr_count: "%1 recipes", cr_empty: "No recipe matches the search.", cr_loading: "Loading recipes…", cr_fail: "The recipes could not be loaded.",
       f_cost: "Cost to craft", f_sellf: "Sells for", f_profit: "Profit after 5%", f_trainer: "Trainer price", f_makes: "Makes %1", reagents: "Reagents", col_each: "Each", col_total: "Total", col_qty_s: "Qty",
       vendor_tag: "vendor", missing_n: "No price for %1 reagent(s): the cost is incomplete.", not_on_ah: "The crafted item is not on the auction house right now, so there is no selling price.",
-      src_h: "Where to learn it", src_trainer: "Trainer", src_vendor: "Vendor", src_drop: "Drops from", src_quest: "Quest reward", src_none: "No known source in the Classic database.",
+      src_h: "Where to learn it", src_h_drop: "Where it drops", src_trainer: "Trainer", src_vendor: "Vendor", src_drop: "Drops from", src_quest: "Quest reward", src_none: "No known source in the Classic database.",
       limited: "limited stock", more_n: "and %1 more", requires: "requires %1", tier_1: "Apprentice", tier_2: "Journeyman", tier_3: "Expert", tier_4: "Artisan",
       cr_source: "Recipes, trainer prices and sources from the open Classic database (1.12). Prices from the latest update.",
       mode_ah: "Auction house", mode_ah_tip: "All items, like the in-game auction house", mode_tr: "Trading",
@@ -1237,19 +1239,22 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       return "<tr><td>" + (ri ? iconHtml(ri) : "") + '<span data-tip="' + rg[0] + '" class="' + qcls(ri ? ri.q : nm ? nm[1] : -1) + '">' + esc(nm ? nm[0] : ri ? ri.name : "Item " + rg[0]) + "</span>" +
         (vend ? ' <span class="tag v">' + t("vendor_tag") + "</span>" : "") + "</td><td>" + rg[1] + "</td><td>" + (p ? money(p) : DASH) + "</td><td>" + (p ? money(p * rg[1]) : DASH) + "</td></tr>";
     }).join("");
+    // Källorna länkar till Wowheads Forever-sidor i en ny flik (Joakim 2026-11-16): mobs, kistor, handlare, tränare, quests.
+    var wh = function (kind, id, text) { return id ? '<a class="wh" href="https://www.wowhead.com/forever/' + kind + "=" + id + '" target="_blank" rel="noopener">' + esc(text) + "</a>" : esc(text); };
     var srcs = "";
     var sr = rc.src;
-    if (sr.trainer.length) srcs += "<dt>" + t("src_trainer") + "</dt><dd>" + esc(sr.trainer.join(", ")) + (sr.trainers > sr.trainer.length ? ' <span class="dim">' + t("more_n", sr.trainers - sr.trainer.length) + "</span>" : "") + (rc.cost ? ' <span class="dim">· ' + moneyText(rc.cost) + "</span>" : "") + "</dd>";
-    if (sr.vendor.length) srcs += "<dt>" + t("src_vendor") + "</dt><dd>" + sr.vendor.map(function (v) { return esc(v[0]) + ' <span class="dim">· ' + moneyText(v[1]) + (v[2] ? " · " + t("limited") : "") + "</span>"; }).join("<br>") + "</dd>";
-    if (sr.drop.length) srcs += "<dt>" + t("src_drop") + "</dt><dd>" + sr.drop.map(function (d) { return esc(d[0]) + (d[1] ? ' <span class="dim">' + d[1] + " %</span>" : ""); }).join("<br>") + "</dd>";
-    if (sr.quest.length) srcs += "<dt>" + t("src_quest") + "</dt><dd>" + esc(sr.quest.join(", ")) + "</dd>";
+    if (sr.trainer.length) srcs += "<dt>" + t("src_trainer") + "</dt><dd>" + sr.trainer.map(function (x) { return wh("npc", x[1], x[0]); }).join(", ") + (sr.trainers > sr.trainer.length ? ' <span class="dim">' + t("more_n", sr.trainers - sr.trainer.length) + "</span>" : "") + (rc.cost ? ' <span class="dim">· ' + moneyText(rc.cost) + "</span>" : "") + "</dd>";
+    if (sr.vendor.length) srcs += "<dt>" + t("src_vendor") + "</dt><dd>" + sr.vendor.map(function (v) { return wh("npc", v[3], v[0]) + ' <span class="dim">· ' + moneyText(v[1]) + (v[2] ? " · " + t("limited") : "") + "</span>"; }).join("<br>") + "</dd>";
+    if (sr.drop.length) srcs += "<dt>" + t("src_drop") + "</dt><dd>" + sr.drop.map(function (d) { return wh(d[2] === "object" ? "object" : "npc", d[2] === "world" ? 0 : d[3], d[0]) + (d[1] ? ' <span class="dim">' + d[1] + " %</span>" : ""); }).join("<br>") + "</dd>";
+    if (sr.quest.length) srcs += "<dt>" + t("src_quest") + "</dt><dd>" + sr.quest.map(function (x) { return wh("quest", x[1], x[0]); }).join(", ") + "</dd>";
+    var onlyDrop = sr.drop.length && !sr.trainer.length && !sr.vendor.length && !sr.quest.length;
     $("detail").innerHTML =
       '<div class="strip"><button class="lnk" type="button" data-copyr="' + rid + '" title="' + t("copy_link") + '"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M6.5 9.5l3-3M5 11l-1 1a2.5 2.5 0 01-3.5-3.5l2-2A2.5 2.5 0 016 6M11 5l1-1a2.5 2.5 0 013.5 3.5l-2 2A2.5 2.5 0 0110 10"/></svg>' + t("copy_link") + "</button>" +
       (out ? iconHtml(out, true) : "") + '<h2 data-tip="' + rc.item + '" class="' + qcls(q) + '">' + esc(rc.name) + "</h2><small>" + esc(RECEPT.profs[rc.prof]) + " · " + t("requires", rc.skill + " (" + tierName(rc.skill) + ")") + (learn ? " · " + esc(learn) : "") + "</small></div>" +
       '<dl class="facts">' + facts + "</dl>" +
       (r.miss ? '<div class="note">' + t("missing_n", r.miss) + "</div>" : "") + (!r.sell ? '<div class="note">' + t("not_on_ah") + "</div>" : "") +
       "<div><h3>" + t("reagents") + '</h3><div class="scroll"><table class="steps reag"><thead><tr><th style="text-align:left">' + t("reagents") + "</th><th>" + t("col_qty_s") + "</th><th>" + t("col_each") + "</th><th>" + t("col_total") + "</th></tr></thead><tbody>" + reag + "</tbody></table></div></div>" +
-      "<div><h3>" + t("src_h") + "</h3>" + (srcs ? '<dl class="srcs">' + srcs + "</dl>" : '<div class="note">' + t("src_none") + "</div>") + "</div>" +
+      "<div><h3>" + t(onlyDrop ? "src_h_drop" : "src_h") + "</h3>" + (srcs ? '<dl class="srcs">' + srcs + "</dl>" : '<div class="note">' + t("src_none") + "</div>") + "</div>" +
       '<div class="note">' + t("cr_source") + "</div>";
     if (scroll && window.matchMedia("(max-width: 860px)").matches) $("tabItem").scrollIntoView({ block: "start", behavior: "smooth" });
   }
