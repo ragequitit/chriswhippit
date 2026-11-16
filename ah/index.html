@@ -138,6 +138,7 @@ h1 { font-family: var(--display); font-weight: 500; font-size: 36px; margin: 0; 
 .cat .ci { width: 24px; height: 24px; object-fit: contain; flex: none; border-radius: 3px; }
 .cat span { color: var(--grey); font-size: 12.5px; margin-left: auto; padding-left: 8px; }
 .cat span.dim { margin-left: 6px; padding-left: 0; font-size: 12px; }
+.cat em.nm { font-style: normal; flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; } .cat em.nm + span { flex: none; }
 .cat:hover { background: var(--hover); }
 .cat[aria-pressed=true] { background: linear-gradient(#39271A, #21170F); border-left-color: var(--edge); box-shadow: inset 0 0 0 1px rgba(246, 196, 72, .25); color: var(--gold); }
 .cat.sub { margin-left: 18px; height: 30px; font-size: 13.5px; }
@@ -173,34 +174,55 @@ td.nm, .watch td:first-child { text-align: left; white-space: nowrap; max-width:
 .srcs dd .dim { font-size: 12px; }
 .srcs a.wh { color: var(--fg); text-decoration: underline dotted; text-decoration-color: var(--bronze); text-underline-offset: 3px; }
 .srcs a.wh:hover { color: var(--gold); text-decoration-color: var(--gold); }
-/* Armory (Joakim 2026-11-16): spelarens docka som i spelet, med slots runt bilden; guildens roster som tabell. */
+/* Armory (Joakim 2026-11-16): spelarens docka tätt runt figuren som i spelets karaktärsfönster, ryktena bredvid som i
+   spelets ryktesfönster (stapel i ståndpunktens färg), yrkena till höger med kända recept utfällbara. Guild = roster. */
 .armory { padding: 14px; }
 .armory .hint { color: var(--grey); padding: 40px 20px; text-align: center; font-size: 14.5px; }
 .arhead { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 10px; }
 .arhead h2 { font-family: var(--display); font-weight: 500; font-size: 24px; margin: 0; }
 .arhead .sub2 { color: var(--grey); font-size: 14px; }
 .arhead .lnk { float: none; margin-left: auto; }
-.doll { display: grid; grid-template-columns: 52px minmax(0, 1fr) 52px; gap: 10px; align-items: start; justify-items: center; }
-.doll .col { display: grid; gap: 6px; }
-.doll .mid { width: 100%; display: grid; justify-items: center; align-content: start; gap: 6px; }
+.arbody { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 10px 22px; align-items: start; }
+.dollwrap { display: grid; gap: 8px; justify-items: center; }
+.doll { display: grid; grid-template-columns: 40px 232px 40px; gap: 8px; align-items: start; justify-items: center;
+  padding: 10px; border-radius: 6px; background: var(--inset); border: 1px solid var(--line); box-shadow: inset 0 1px 4px rgba(0, 0, 0, .5); }
+.doll .col { display: grid; gap: 4px; }
+.doll .mid { width: 100%; display: grid; justify-items: center; align-content: start; gap: 4px; }
 /* Blizzards figurbild är 1600×1200 med figuren liten mitt i: visas beskuren i en stående ruta, bilden 3× rutans bredd. */
-.doll .picbox { position: relative; width: 100%; max-width: 340px; aspect-ratio: 5 / 6; overflow: hidden; border-radius: 6px; }
+.doll .picbox { position: relative; width: 100%; aspect-ratio: 232 / 300; overflow: hidden; border-radius: 5px; }
 .doll .pic { position: absolute; left: 50%; top: 50%; width: 300%; max-width: none; transform: translate(-47.4%, -57.8%); filter: drop-shadow(0 10px 18px rgba(0, 0, 0, .6)); }   /* figurens mitt (uppmätt) ligger på 47 % / 58 % av bilden */
 .doll .picbox.none { display: grid; place-items: center; }
-.doll .bot { display: flex; gap: 6px; justify-content: center; }
-.slot { width: 48px; height: 48px; border-radius: 5px; border: 1px solid var(--line); background: var(--inset); box-shadow: inset 0 1px 3px rgba(0, 0, 0, .5); position: relative; cursor: default; }
-.slot img { width: 100%; height: 100%; border-radius: 4px; display: block; }
+.doll .bot { display: flex; gap: 4px; justify-content: center; }
+.slot { width: 40px; height: 40px; border-radius: 4px; border: 1px solid var(--line); background: #0b0908; box-shadow: inset 0 1px 3px rgba(0, 0, 0, .6); position: relative; cursor: default; }
+.slot img { width: 100%; height: 100%; border-radius: 3px; display: block; }
 .slot.q2 { border-color: var(--q2); } .slot.q3 { border-color: var(--q3); } .slot.q4 { border-color: var(--q4); } .slot.q5 { border-color: var(--q5); }
-.slot .lv { position: absolute; right: 2px; bottom: 1px; font-size: 10px; color: var(--fg); text-shadow: 0 0 3px #000, 0 0 3px #000; }
-.arfacts { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 8px 14px; margin: 12px 0 0; padding-top: 10px; border-top: 1px solid var(--line); }
+.slot .lv { position: absolute; right: 2px; bottom: 0; font-size: 10px; color: var(--fg); text-shadow: 0 0 3px #000, 0 0 3px #000; }
+.picnote { color: var(--grey); font-size: 12px; text-align: center; max-width: 340px; }
+.arfacts { display: grid; grid-template-columns: repeat(2, minmax(120px, 1fr)); gap: 6px 14px; margin: 0; padding-top: 8px; border-top: 1px solid var(--line); width: 100%; }
 .arfacts dt { color: var(--grey); font-size: 12px; } .arfacts dd { margin: 0; font-size: 15px; font-weight: 600; }
-.pbar { position: relative; height: 8px; border-radius: 4px; background: var(--inset); border: 1px solid var(--line); overflow: hidden; margin-top: 3px; }
+.repwrap h3 { margin: 4px 0 8px; }
+.reps { display: grid; gap: 3px; max-width: 520px; }
+.rep { display: grid; grid-template-columns: minmax(120px, 1fr) 230px; gap: 10px; align-items: center; font-size: 13.5px; }
+.rep .rn { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rbar { position: relative; height: 18px; border-radius: 3px; background: #0b0908; border: 1px solid var(--line); overflow: hidden; }
+.rbar i { position: absolute; inset: 0; width: 0; display: block; opacity: .9; }
+.rbar span { position: absolute; inset: 0; display: grid; place-items: center; font-size: 11.5px; font-weight: 600; color: #fff; text-shadow: 0 0 3px #000, 0 1px 2px #000; }
+.rbar.s0 i, .rbar.s1 i { background: #b5412f; } .rbar.s2 i { background: #b8520a; } .rbar.s3 i { background: #c9a11c; }
+.rbar.s4 i, .rbar.s5 i, .rbar.s6 i, .rbar.s7 i { background: #238a2c; }
+.pbar { position: relative; height: 8px; border-radius: 4px; background: var(--inset); border: 1px solid var(--line); overflow: hidden; margin-top: 3px; display: block; }
 .pbar i { display: block; height: 100%; background: linear-gradient(90deg, #d6a83b, #f6c448); }
-.profs div { margin-bottom: 8px; } .profs .n { display: flex; justify-content: space-between; font-size: 14px; }
-.profs .n small { color: var(--grey); }
-.reps { display: grid; grid-template-columns: 1fr auto; gap: 2px 10px; font-size: 13px; } .reps .dim { text-align: right; }
+.profs { display: grid; gap: 4px; }
+.prof { all: unset; cursor: pointer; display: flex; align-items: center; gap: 10px; padding: 6px 8px; border-radius: 4px; border: 1px solid transparent; }
+.prof:hover { background: var(--hover); } .prof:focus-visible { outline: 2px solid var(--edge); }
+.prof.open { background: var(--sel); border-color: var(--line); }
+.prof .ci { width: 30px; height: 30px; border-radius: 4px; flex: none; }
+.prof .pn { flex: 1 1 auto; min-width: 0; display: grid; gap: 1px; font-size: 14px; }
+.prof .pn small { color: var(--grey); font-size: 12px; }
+.prof .chev { color: var(--grey); font-size: 13px; flex: none; }
+.known { margin: 0 0 6px; }
+.known .craft td.nm { text-align: left; width: 60%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 0; }
+.known .craft td, .known .craft th { padding: 4px 6px; font-size: 13px; }
 .roster td.nm { width: 55%; } .roster a { color: inherit; text-decoration: none; } .roster a:hover { color: var(--gold); }
-.armory .roster-box { max-height: 100%; overflow: auto; }
 .wtip .ln.c { color: var(--grey); font-size: 12px; }
 .reag td, .reag th { padding: 3px 6px; font-size: 13px; }
 .reag td:first-child { text-align: left; max-width: 0; width: 52%; overflow: hidden; text-overflow: ellipsis; }
@@ -309,7 +331,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   .cols { flex: 1 1 auto; min-height: 0; grid-template-rows: minmax(0, 1fr); align-items: stretch; }
   .left, .right { display: flex; flex-direction: column; min-height: 0; }
   .cats { align-self: stretch; min-height: 0; overflow: auto; scrollbar-width: thin; scrollbar-color: var(--edge) var(--inset); }
-  .left .scroll, .right .detail { flex: 1 1 auto; min-height: 0; overflow: auto; scrollbar-width: thin; scrollbar-color: var(--edge) var(--inset); }
+  .left .scroll, .left .armory, .right .detail { flex: 1 1 auto; min-height: 0; overflow: auto; scrollbar-width: thin; scrollbar-color: var(--edge) var(--inset); }
   .right .detail { position: static; align-content: start; }
   .foot { padding-block: 8px 10px; }
 }
@@ -587,10 +609,11 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       col_lvl: "Level", col_lvl_tip: "Requires level", dip_tip: "%1% below the usual price these days (%2)", trend: "Last week",
       rise_tip: "%1% above the usual price these days (%2)", col_pct: "Vs usual", col_pct_s: "Now", col_pct_tip: "Market price now versus the usual market price these days. Red = down, green = up.",
       mode_ar: "Armory", mode_ar_tip: "Look up any player or guild: gear, professions, reputation and guild roster",
-      search_ar: "Player: first and last name, e.g. Alisee Alistar – or a guild name", ar_hint: "Type a player's first and last name (e.g. Alisee Alistar), or a guild name, and press Search.",
+      search_ar: "Player: first and last name – or a guild", ar_hint: "Type a player's first and last name (e.g. Alisee Alistar), or a guild name, and press Search.",
       ar_recent: "Recent", ar_loading: "Looking up…", ar_notfound: "No player or guild with that name. Players show up from level 10, after logging out.",
       ar_fail: "The lookup is not available right now.", ar_off: "The armory is not connected yet.",
-      ar_level: "Level %1 %2 %3", ar_guild: "Guild", ar_ilvl: "Item level", ar_last: "Last seen", ar_mounts: "Mounts", ar_pets: "Pets", ar_members: "Members", ar_faction: "Faction",
+      ar_level: "Level %1 %2 %3", ar_guild: "Guild", ar_player: "Player", ar_picnote: "Picture rendered by Blizzard – it can lag behind the gear or show the wrong character.",
+      ar_craft: "Known recipes", ar_sells: "Sells for", ar_cost: "Cost", ar_profit: "Profit", ar_noprice: "no price", ar_nofr: "Recipe names are not available right now.", ar_ilvl: "Item level", ar_last: "Last seen", ar_mounts: "Mounts", ar_pets: "Pets", ar_members: "Members", ar_faction: "Faction",
       ar_prof: "Professions", ar_prof2: "Secondary", ar_rep: "Reputation", ar_recipes: "%1 recipes known", ar_roster: "Roster", ar_rank: "Rank", ar_noimg: "No picture yet",
       ar_open: "Open in the armory", slot_HEAD: "Head", slot_NECK: "Neck", slot_SHOULDER: "Shoulder", slot_BACK: "Back", slot_CHEST: "Chest", slot_SHIRT: "Shirt", slot_TABARD: "Tabard",
       slot_WRIST: "Wrist", slot_HANDS: "Hands", slot_WAIST: "Waist", slot_LEGS: "Legs", slot_FEET: "Feet", slot_FINGER_1: "Ring", slot_FINGER_2: "Ring", slot_TRINKET_1: "Trinket",
@@ -844,26 +867,62 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     return '<div class="slot ' + qcls(it.q) + '"' + tip + ' title="' + esc(it.name) + '">' + (src ? '<img src="' + src + '" alt="">' : "") + (it.ilvl ? '<span class="lv">' + it.ilvl + "</span>" : "") + "</div>";
   }
   function when2(ms) { if (!ms) return "–"; var d = new Date(ms); return d.getDate() + "/" + (d.getMonth() + 1) + " " + d.toLocaleTimeString(locale(), { hour: "2-digit", minute: "2-digit" }); }
+  // Rykten som i spelets ryktesfönster: namn, stapel i ståndpunktens färg (FACTION_BAR_COLORS) med texten i stapeln.
+  var STANDING = { Hated: 0, Hostile: 1, Unfriendly: 2, Neutral: 3, Friendly: 4, Honored: 5, Revered: 6, Exalted: 7 };
+  var FRX = null, frPromise = null, arOpenProf = 0;   // forever-recept.json: Blizzards recept-id (samma som profilens kända recept)
+  function loadFR() {
+    if (!frPromise) frPromise = fetch(DATA_BASE + "forever-recept.json").then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }).then(function (j) { FRX = j; return j; }).catch(function () { FRX = { recipes: {}, items: {}, profs: {} }; });
+    return frPromise;
+  }
+  function repsHtml(d) {
+    var list = d.reputations.slice().sort(function (a, b) { return (STANDING[b.standing] || 0) - (STANDING[a.standing] || 0) || b.value - a.value; });
+    return list.map(function (r) {
+      var s = STANDING[r.standing] || 0, w = r.max ? Math.round(r.value / r.max * 100) : 0;
+      return '<div class="rep"><span class="rn">' + esc(r.name) + '</span><div class="rbar s' + s + '"><i style="width:' + w + '%"></i><span>' + esc(r.standing) + " " + num(r.value) + " / " + num(r.max) + "</span></div></div>";
+    }).join("") || '<div class="note">–</div>';
+  }
+  // Ett yrke: ikon, namn, skill-stapel, antal kända recept; klick fäller ut recepten med säljpris, kostnad och vinst på
+  // vald marknad (riktpriser ur data.json, handlarvaror till handlarpris). Det är "vad kan den här spelaren crafta med vinst".
+  function profHtml(pr) {
+    var ti = pr.tiers[0] || { skill: 0, max: 0, recipes: [] }, rec = ti.recipes.length, open = arOpenProf === pr.id;
+    var pi = PROF_ICON[pr.name], ic = pi && ASSET_BASE ? '<img class="ci" src="' + ASSET_BASE + "icons/" + pi[0] + '.jpg" alt="" onerror="this.onerror=null;this.src=\'' + ASSET_BASE + "icons/cat-" + pi[1] + '.jpg\'">' : "";
+    var h = '<button class="prof' + (open ? " open" : "") + '" type="button" data-prof="' + pr.id + '" aria-expanded="' + open + '">' + ic + '<span class="pn"><span>' + esc(pr.name) + "</span><small>" + ti.skill + " / " + ti.max + (rec ? " · " + t("ar_recipes", rec) : "") + '</small><span class="pbar"><i style="width:' + (ti.max ? Math.round(ti.skill / ti.max * 100) : 0) + '%"></i></span></span>' + (rec ? '<span class="chev">' + (open ? "▾" : "▸") + "</span>" : "") + "</button>";
+    if (open && rec) h += '<div class="known">' + knownHtml(ti.recipes) + "</div>";
+    return h;
+  }
+  function knownHtml(ids) {
+    if (!FRX) { loadFR().then(function () { if (arData && arData.kind === "character") renderChar(arData); }); return '<div class="note">' + t("ar_loading") + "</div>"; }
+    var rows = ids.map(function (id) {
+      var fr = FRX.recipes[id];
+      if (!fr) return null;
+      var item = fr[2], out = byId[item], sell = out && out.min > 0 ? out.min : 0, cost = 0, miss = false;
+      fr[3].forEach(function (rg) { var p = recPrice(rg[0]); if (!p) miss = true; cost += p * rg[1]; });
+      var profit = sell && !miss ? Math.round(sell * 0.95 - cost) : null;
+      return { id: id, name: fr[0], item: item, q: out ? out.q : -1, sell: sell, cost: cost, miss: miss, profit: profit, cat: fr[4] };
+    }).filter(Boolean).sort(function (a, b) { return (b.profit == null ? -1e12 : b.profit) - (a.profit == null ? -1e12 : a.profit) || a.name.localeCompare(b.name); });
+    if (!rows.length) return '<div class="note">' + t("ar_nofr") + "</div>";
+    return '<table class="steps craft"><thead><tr><th style="text-align:left">' + t("ar_craft") + "</th><th>" + t("ar_sells") + "</th><th>" + t("ar_profit") + '</th></tr></thead><tbody>' + rows.map(function (r) {
+      var tip = r.item && byId[r.item] ? ' data-tip="' + r.item + '"' : "";
+      return "<tr" + tip + '><td class="nm ' + qcls(r.q) + '">' + esc(r.name) + "</td><td>" + (r.sell ? money(r.sell) : '<span class="dim">–</span>') + "</td><td>" +
+        (r.profit == null ? '<span class="dim">' + (r.sell ? t("ar_noprice") : "–") + "</span>" : '<span class="' + (r.profit >= 0 ? "up" : "down") + '">' + (r.profit >= 0 ? "+" : "−") + money(Math.abs(r.profit)) + "</span>") + "</td></tr>";
+    }).join("") + "</tbody></table>";
+  }
   function renderChar(d) {
     var pic = d.media && (d.media["main-raw"] || d.media["main-sd-raw"]);
     var mid = '<div class="arhead"><h2 class="q1">' + esc(d.name + " " + d.surname) + '</h2><span class="sub2">' + t("ar_level", d.level, esc(d.race || ""), esc(d.cls || "")) +
       (d.guild ? ' · <a class="wh" href="#guild=' + esc(d.guild.slug) + '" data-ar="guild" data-slug="' + esc(d.guild.slug) + '">&lt;' + esc(d.guild.name) + "&gt;</a>" : "") + "</span>" +
       '<button class="lnk" type="button" data-copyany="#player=' + esc(d.slug) + '" title="' + t("copy_link") + '">' + t("copy_link") + "</button></div>" +
-      '<div class="doll"><div class="col">' + SLOT_L.map(function (sl) { return slotHtml(d, sl); }).join("") + '</div><div class="mid">' +
+      '<div class="arbody"><div class="dollwrap"><div class="doll"><div class="col">' + SLOT_L.map(function (sl) { return slotHtml(d, sl); }).join("") + '</div><div class="mid">' +
       (pic ? '<div class="picbox"><img class="pic" src="' + esc(pic) + '" alt=""></div>' : '<div class="picbox none hint">' + t("ar_noimg") + "</div>") +
       '<div class="bot">' + SLOT_B.map(function (sl) { return slotHtml(d, sl); }).join("") + "</div></div>" +
       '<div class="col">' + SLOT_R.map(function (sl) { return slotHtml(d, sl); }).join("") + "</div></div>" +
+      '<div class="picnote">' + t("ar_picnote") + "</div>" +
       '<dl class="arfacts"><div><dt>' + t("ar_ilvl") + "</dt><dd>" + d.ilvl + "</dd></div><div><dt>" + t("ar_last") + "</dt><dd>" + when2(d.lastLogin) + "</dd></div>" +
-      "<div><dt>" + t("ar_mounts") + "</dt><dd>" + d.mounts + "</dd></div><div><dt>" + t("ar_pets") + "</dt><dd>" + d.pets + "</dd></div></dl>";
-    var prof = function (list) { return list.map(function (pr) { return pr.tiers.map(function (ti) {
-      var rec = ti.recipes.length;
-      return "<div><div class=\"n\"><span>" + esc(pr.name) + "</span><small>" + ti.skill + " / " + ti.max + (rec ? " · " + t("ar_recipes", rec) : "") + '</small></div><div class="pbar"><i style="width:' + (ti.max ? Math.round(ti.skill / ti.max * 100) : 0) + '%"></i></div></div>';
-    }).join(""); }).join(""); };
-    var reps = d.reputations.slice().sort(function (a, b) { return b.value - a.value; }).slice(0, 12).map(function (r) { return "<span>" + esc(r.name) + '</span><span class="dim">' + esc(r.standing) + " " + num(r.value) + "/" + num(r.max) + "</span>"; }).join("");
+      "<div><dt>" + t("ar_mounts") + "</dt><dd>" + d.mounts + "</dd></div><div><dt>" + t("ar_pets") + "</dt><dd>" + d.pets + "</dd></div></dl></div>" +
+      '<div class="repwrap"><h3>' + t("ar_rep") + '</h3><div class="reps">' + repsHtml(d) + "</div></div></div>";
     var right = '<div class="strip"><h2 class="q1">' + esc(d.name) + "</h2><small>" + esc(d.ruleset || "") + " · " + (d.faction === "ALLIANCE" ? "Alliance" : "Horde") + "</small></div>" +
-      "<div><h3>" + t("ar_prof") + '</h3><div class="profs">' + (prof(d.professions.primary) || '<div class="note">–</div>') + "</div></div>" +
-      "<div><h3>" + t("ar_prof2") + '</h3><div class="profs">' + (prof(d.professions.secondary) || '<div class="note">–</div>') + "</div></div>" +
-      "<div><h3>" + t("ar_rep") + '</h3><div class="reps">' + (reps || "–") + "</div></div>";
+      "<div><h3>" + t("ar_prof") + '</h3><div class="profs">' + (d.professions.primary.map(profHtml).join("") || '<div class="note">–</div>') + "</div></div>" +
+      "<div><h3>" + t("ar_prof2") + '</h3><div class="profs">' + (d.professions.secondary.map(profHtml).join("") || '<div class="note">–</div>') + "</div></div>";
     arShow(mid, right);
   }
   function renderGuild(d) {
@@ -915,7 +974,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     if (mode === "ar") {
       $("cats").innerHTML = "<h2>" + t("ar_recent") + "</h2>" + arRecent.map(function (r) {
         var on = arData && arData.slug === r.slug && ((arData.kind === "character") === (r.kind === "char"));
-        return '<button class="cat" type="button" data-ar="' + r.kind + '" data-slug="' + esc(r.slug) + '" aria-pressed="' + on + '">' + (r.kind === "guild" ? "&lt;" + esc(r.label) + "&gt;" : esc(r.label)) + "</button>";
+        return '<button class="cat" type="button" data-ar="' + r.kind + '" data-slug="' + esc(r.slug) + '" aria-pressed="' + on + '"><em class="nm">' + (r.kind === "guild" ? "&lt;" + esc(r.label) + "&gt;" : esc(r.label)) + "</em><span>" + (r.kind === "guild" ? t("ar_guild") : t("ar_player")) + "</span></button>";
       }).join("");
       $("cats").hidden = false;
       return;
@@ -1498,6 +1557,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       return;
     }
     var cb = e.target.closest(".cat, .catlink");
+    if (cb && cb.hasAttribute("data-ar")) { showTab("item"); arLoad(cb.dataset.ar, cb.dataset.slug); return; }   // Recent i Armory
     if (cb) {
       var nc = +cb.getAttribute("data-cat");
       var ns = cb.hasAttribute("data-sub") ? +cb.getAttribute("data-sub") : -1;
@@ -1532,6 +1592,8 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     }
     var al = e.target.closest("[data-ar]");
     if (al) { e.preventDefault(); e.stopPropagation(); showTab("item"); arLoad(al.dataset.ar, al.dataset.slug); return; }
+    var pb = e.target.closest("[data-prof]");
+    if (pb && arData && arData.kind === "character") { arOpenProf = arOpenProf === +pb.dataset.prof ? 0 : +pb.dataset.prof; renderChar(arData); return; }
     var cr = e.target.closest("[data-copyr]");
     if (cr) {
       e.stopPropagation();
