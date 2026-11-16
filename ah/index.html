@@ -256,6 +256,7 @@ td.nm, .watch td:first-child { text-align: left; white-space: nowrap; max-width:
 .qplayer small { font-size: 11.5px; line-height: 1.35; }
 .qplayer .chip { justify-self: start; padding-left: 0; }
 #list tr.qdone td { opacity: .5; } .qok { color: var(--green); font-weight: 700; font-size: 15px; }
+.wtip .tipy { color: #ffd100; }
 .tag.el { color: #f0a040; border-color: rgba(240, 160, 64, .55); }
 #list tr.bosshd td { text-align: left; padding-top: 14px; padding-bottom: 6px; border-bottom: 1px solid var(--bronze); color: var(--gold); font-family: var(--display); font-size: 14.5px; background: none; cursor: default; }
 #list tr.bosshd .dim { font-family: var(--body); font-size: 12px; }
@@ -1359,7 +1360,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     if (r.hd) return '<tr class="bosshd"><td colspan="5"><b>' + esc(r.boss.name) + '</b> <span class="dim">' + (r.boss.lvl ? t("dg_boss_lvl", r.boss.lvl) : "") + (query ? " · " + esc(r.d.name) : "") + (r.n ? "" : " · " + t("dg_noloot")) + "</span></td></tr>";
     var ah = byId[r.item], m = DG.items[r.item] || ["", -1, 0, 0], q = ah ? ah.q : m[1];
     return '<tr tabindex="0" ' + (ah ? 'data-id="' + r.item + '"' + (r.item === selId ? ' aria-selected="true"' : "") : 'data-dgi="' + r.item + '"') + '><td class="fav">' + (ah ? starHtml(r.item) : "") + '</td><td class="nm">' + (ah ? iconHtml(ah) : "") +
-      '<span class="' + qcls(q) + '"' + (ah ? ' data-tip="' + r.item + '"' : "") + ">" + esc(dgName(r.item)) + "</span>" + (r.mx > 1 ? ' <span class="dim">×' + r.mn + (r.mx > r.mn ? "–" + r.mx : "") + "</span>" : "") +
+      '<span class="' + qcls(q) + '"' + (ah ? ' data-tip="' + r.item + '"' : ' data-dgtip="' + r.item + '"') + ">" + esc(dgName(r.item)) + "</span>" + (r.mx > 1 ? ' <span class="dim">×' + r.mn + (r.mx > r.mn ? "–" + r.mx : "") + "</span>" : "") +
       "</td><td>" + (r.ch >= 10 ? Math.round(r.ch) : r.ch) + "%</td><td>" + (m[3] || DASH) + "</td><td>" + (ah && ah.min > 0 ? money(ah.min) : '<span class="dim">' + t("qu_notah") + "</span>") + "</td></tr>";
   }
   function dgDetail() {
@@ -1580,7 +1581,15 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     if (el) showTip(+el.getAttribute("data-tip"));
     else {
       var ea = e.target && e.target.closest ? e.target.closest("[data-artip]") : null;
-      if (ea && arData && arData.items) {
+      var ed = e.target && e.target.closest ? e.target.closest("[data-dgtip]") : null;
+      if (ed && DG && DG.items[+ed.getAttribute("data-dgtip")]) {   // dungeon-drop som inte finns på AH: tooltip ur 1.12-databasen
+        var di = DG.items[+ed.getAttribute("data-dgtip")];
+        tipId = -1;
+        if (!tipBox) { tipBox = document.createElement("div"); tipBox.className = "wtip"; document.body.appendChild(tipBox); }
+        tipBox.innerHTML = '<div class="ln"><b class="' + qcls(di[1]) + '">' + esc(di[0]) + "</b></div>" + (di[2] ? '<div class="ln c"><span>Item Level ' + di[2] + "</span></div>" : "") +
+          (di[4] || []).map(function (l) { return '<div class="ln"><span' + (l[2] === "g" ? ' class="q2"' : l[2] === "y" ? ' class="tipy"' : "") + ">" + esc(l[0]) + "</span>" + (l[1] ? '<span class="r">' + esc(l[1]) + "</span>" : "") + "</div>"; }).join("");
+        tipBox.hidden = false; placeTip();
+      } else if (ea && arData && arData.items) {
         var it = arData.items[+ea.getAttribute("data-artip")];
         if (it) {
           tipId = -1;
