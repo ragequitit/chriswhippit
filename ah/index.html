@@ -132,8 +132,9 @@ h1 { font-family: var(--display); font-weight: 500; font-size: 36px; margin: 0; 
    tredje nivån utan platta. Vald = gul glöd, hover = blå. (Mått och färger ur Blizzards Blizzard_AuctionHouseCategoriesList.) */
 /* Kategorilistan som i mockupen: rubrik, rader med spelikon, namn och högerställt antal, aktiv rad i varm toning med guldkant. */
 .cats { padding: 8px 6px 10px; display: flex; flex-direction: column; gap: 0; align-self: start; }
+.cats > * { flex-shrink: 0; }   /* långa listor (Quests: 130 zoner) får inte trycka ihop raderna (Joakim 2026-11-16: "det ballar ur") */
 .cats h2 { font-family: var(--display); font-weight: 500; font-size: 17px; letter-spacing: .02em; color: var(--fg); margin: 4px 8px 8px; }
-.cat { all: unset; cursor: pointer; display: flex; align-items: center; gap: 9px; height: 38px; padding: 0 8px 0 10px; margin: 0 0 1px; border-radius: 4px;
+.cat { all: unset; flex-shrink: 0; cursor: pointer; display: flex; align-items: center; gap: 9px; height: 38px; padding: 0 8px 0 10px; margin: 0 0 1px; border-radius: 4px;
   color: var(--fg); font-size: 14.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; border-left: 2px solid transparent; }
 .cat .ci { width: 24px; height: 24px; object-fit: contain; flex: none; border-radius: 3px; }
 .cat span { color: var(--grey); font-size: 12.5px; margin-left: auto; padding-left: 8px; }
@@ -264,6 +265,7 @@ td.nm, .watch td:first-child { text-align: left; white-space: nowrap; max-width:
 td.kat em.nm { font-style: normal; display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 160px; }
 .qtext { font-size: 13.5px; line-height: 1.55; } .qtext p { margin: 0 0 8px; } .qobj b { color: var(--gold); font-weight: 600; }
 .qstate { padding: 6px 10px; border-radius: 4px; font-size: 13.5px; } .qstate.ok { background: rgba(127, 212, 154, .12); color: var(--green); } .qstate.no { background: var(--inset); color: var(--grey); }
+.qchain { margin: 0; padding-left: 22px; font-size: 13.5px; line-height: 1.75; } .qchain .lv { display: inline-block; min-width: 30px; color: var(--grey); font-size: 12px; } .qchain li.cur { color: var(--gold); }
 .bosslist { margin: 0; padding-left: 22px; font-size: 13.5px; line-height: 1.75; }
 .srcs1 { font-size: 13.5px; line-height: 1.75; }
 .known .craft tbody tr { cursor: pointer; } .known .craft tbody tr:hover td { background: var(--hover); }
@@ -685,7 +687,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       rise_tip: "%1% above the usual price these days (%2)", col_pct: "Vs usual", col_pct_s: "Now", col_pct_tip: "Market price now versus the usual market price these days. Red = down, green = up.",
       mode_qu: "Quests", mode_qu_tip: "Every quest in WoW Forever by level and zone, with rewards priced on the auction house", search_qu: "Search quest or zone, e.g. Kobold Camp Cleanup",
       mode_dg: "Dungeons", mode_dg_tip: "Dungeons and raids by level: bosses in order and what they drop, priced on the auction house", search_dg: "Search loot in every dungeon, e.g. Cape of the Brotherhood",
-      qu_h: "Level", qu_lv: "Level %1–%2", qu_unknown: "New in Forever (level unknown)", qu_count: "%1 quests", qu_empty: "No quest matches.", qu_fail: "Could not be loaded.",
+      qu_h: "Level", qu_zones: "Zones", qu_after: "Complete first", qu_during: "While on", qu_skill: "Profession", qu_class: "Class", qu_reqs: "Requirements", qu_chain: "Quest chain (%1)", qu_also: "Also leads to:", qu_lv: "Level %1–%2", qu_unknown: "New in Forever (level unknown)", qu_count: "%1 quests", qu_empty: "No quest matches.", qu_fail: "Could not be loaded.",
       qu_check: "Check a player", qu_nobody: "— nobody —", qu_check_tip: "Look up a player in Armory first, then pick them here to tick off their done quests.", qu_hide: "Hide done (%1)",
       qu_fac_h: "Showing Horde and neutral quests (your market).", qu_fac_a: "Showing Alliance and neutral quests (your market).", qu_done_by: "Done by %1", qu_notdone: "Not done by %1 yet",
       qu_elite: "Elite", qu_est_tip: "Estimated from the zone (new quest in Forever)", qu_both: "Both factions", qu_req: "Requires level", qu_rewards: "Rewards", qu_choose: "choose one",
@@ -1216,10 +1218,47 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     });
   }
   function quMine() { var mf = myFaction(); return quRows.filter(function (r) { return !r.fac || r.fac === mf; }); }
-  function quZones(g) {   // zonerna i en nivågrupp, flest quests först
-    var c = {};
-    quMine().forEach(function (r) { if (r.grp === g) c[r.area] = (c[r.area] || 0) + 1; });
-    return Object.keys(c).map(function (a) { return { area: +a, name: QU.areas[a] || "?", n: c[a] }; }).sort(function (a, b) { return b.n - a.n || a.name.localeCompare(b.name); });
+  // Zon först, sedan nivå (Joakim 2026-11-16, ändrat från nivå först): zonerna i ordning efter sin mediannivå, som en
+  // levelguide (startzoner överst), med nivåspann; zoner utan känd nivå (nya i Forever) sist i bokstavsordning.
+  var quZoneCache = null;
+  function quZoneList() {
+    var key = myFaction() + quRows.length;
+    if (quZoneCache && quZoneCache.key === key) return quZoneCache.list;
+    var z = {};
+    quMine().forEach(function (r) { var o = z[r.area] = z[r.area] || { area: r.area, name: r.zone || "?", n: 0, lv: [], g: [0, 0, 0, 0, 0, 0, 0] }; o.n++; o.g[r.grp]++; if (r.lvl) o.lv.push(r.lvl); });
+    var list = Object.keys(z).map(function (a) {
+      var o = z[a]; o.lv.sort(function (x, y) { return x - y; });
+      o.med = o.lv.length ? o.lv[Math.floor(o.lv.length / 2)] : 0;
+      o.lo = o.lv.length ? o.lv[Math.floor(o.lv.length * 0.1)] : 0; o.hi = o.lv.length ? o.lv[Math.floor(o.lv.length * 0.9)] : 0;   // spann utan udda enstaka quests
+      return o;
+    }).sort(function (a, b) { return (!a.med - !b.med) || a.med - b.med || a.name.localeCompare(b.name); });
+    quZoneCache = { key: key, list: list };
+    return list;
+  }
+  function skillName(id) { return { 171: "Alchemy", 164: "Blacksmithing", 185: "Cooking", 333: "Enchanting", 202: "Engineering", 129: "First Aid", 165: "Leatherworking", 197: "Tailoring", 186: "Mining", 182: "Herbalism", 356: "Fishing", 393: "Skinning" }[id] || "Skill " + id; }
+  function classNames(m) { var n = [], C = [[1, "Warrior"], [2, "Paladin"], [4, "Hunter"], [8, "Rogue"], [16, "Priest"], [64, "Shaman"], [128, "Mage"], [256, "Warlock"], [1024, "Druid"]]; C.forEach(function (c) { if (m & c[0]) n.push(c[1]); }); return n.length && n.length < 9 ? n.join(", ") : ""; }
+  // Ikon för föremål som inte finns på AH: Blizzards ikon via item-icons.json (hamta-item-ikoner.js).
+  var XICON = null, xiconPromise = null;
+  function loadXIcons() {
+    if (!xiconPromise) xiconPromise = fetch(DATA_BASE + "item-icons.json").then(function (r) { return r.ok ? r.json() : {}; }).catch(function () { return {}; }).then(function (j) { XICON = j; return j; });
+    return xiconPromise;
+  }
+  function xIcon(id, q) {
+    var fd = XICON && XICON[id];
+    if (!fd) return "";
+    var src = typeof fd === "number" ? "https://render.worldofwarcraft.com/forever-eu/icons/56/" + fd + ".jpg" : "https://render.worldofwarcraft.com/classic1x-eu/icons/56/" + fd + ".jpg";   // namn = från Classic Era
+    return '<img class="ic ' + qcls(q) + '" src="' + src + '" width="18" height="18" alt="" loading="lazy">';
+  }
+  function quChain(id) {   // hela kedjan: bakåt via föregående, sedan framåt via första nästa
+    var start = id, seen = {}, n = 0;
+    while (QU.quests[start] && QU.quests[start][12] && n++ < 40) { var p = Math.abs(QU.quests[start][12]); if (seen[p] || !QU.quests[p]) break; seen[p] = 1; start = p; }
+    var chain = [start], cur = start; seen = {}; seen[start] = 1;
+    while (QU.quests[cur] && QU.quests[cur][13] && QU.quests[cur][13].length && chain.length < 40) {
+      var nx = QU.quests[cur][13].indexOf(id) >= 0 ? id : QU.quests[cur][13][0];   // gren: följ den som leder till den valda
+      if (seen[nx]) break; seen[nx] = 1; chain.push(nx); cur = nx;
+    }
+    if (chain.indexOf(id) < 0) chain = [id];
+    return chain;
   }
   function quDone(id) { return !!(quPlayer && quPlayer.set && quPlayer.set[id]); }
   function quPlayerOptions() {
@@ -1247,22 +1286,19 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       opts.map(function (o) { return '<option value="' + esc(o.slug) + '"' + (o.slug === cur ? " selected" : "") + ">" + esc(o.label) + "</option>"; }).join("") + "</select>" +
       (quPlayer ? (quPlayer.set ? '<button class="chip' + (quHideDone ? " on" : "") + '" type="button" data-quhide="1" aria-pressed="' + quHideDone + '">' + t("qu_hide", num(quPlayer.n)) + "</button>" : '<span class="dim">' + t("ar_loading") + "</span>") : (opts.length ? "" : '<small class="dim">' + t("qu_check_tip") + "</small>")) +
       '<small class="dim">' + t(myFaction() === "A" ? "qu_fac_a" : "qu_fac_h") + "</small></div>";
-    var mine = quMine(), cnt = [0, 0, 0, 0, 0, 0, 0];
-    mine.forEach(function (r) { cnt[r.grp]++; });
-    h += "<h2>" + t("qu_h") + "</h2>";
-    for (var g = 0; g < 7; g++) {
-      if (!cnt[g]) continue;
-      h += '<button class="cat" type="button" data-cat="' + g + '" aria-pressed="' + (catSel === g && subSel < 0) + '">' + quGroupName(g) + "<span>" + num(cnt[g]) + "</span></button>";
-      if (catSel !== g) continue;
-      quZones(g).forEach(function (z, j) {
-        h += '<button class="cat sub" type="button" data-cat="' + g + '" data-sub="' + j + '" aria-pressed="' + (subSel === j) + '" title="' + esc(z.name) + '"><em class="nm">' + esc(z.name) + "</em><span>" + num(z.n) + "</span></button>";
-      });
-    }
+    h += "<h2>" + t("qu_zones") + "</h2>";
+    var unk = false;
+    quZoneList().forEach(function (z, i) {
+      if (!z.med && !unk) { unk = true; h += '<div class="cath">' + t("qu_unknown") + "</div>"; }
+      h += '<button class="cat" type="button" data-cat="' + i + '" aria-pressed="' + (catSel === i && subSel < 0) + '" title="' + esc(z.name) + '"><em class="nm">' + esc(z.name) + "</em><span>" + (z.med ? (z.lo === z.hi ? z.lo : z.lo + "–" + z.hi) : num(z.n)) + "</span></button>";
+      if (catSel !== i) return;
+      for (var g = 0; g < 7; g++) if (z.g[g]) h += '<button class="cat sub" type="button" data-cat="' + i + '" data-sub="' + g + '" aria-pressed="' + (subSel === g) + '">' + quGroupName(g) + "<span>" + num(z.g[g]) + "</span></button>";
+    });
     return h;
   }
   function quRefresh(q) {
-    var zs = catSel >= 0 && subSel >= 0 ? quZones(catSel)[subSel] : null;
-    view = quMine().filter(function (r) { return (catSel < 0 || r.grp === catSel) && (!zs || r.area === zs.area) && (!q || r.lower.indexOf(q) >= 0 || r.zone.toLowerCase().indexOf(q) >= 0) && !(quHideDone && quDone(r.qid)); });
+    var zs = catSel >= 0 ? quZoneList()[catSel] : null, gs = zs && subSel >= 0 ? subSel : -1;
+    view = quMine().filter(function (r) { return (!zs || r.area === zs.area) && (gs < 0 || r.grp === gs) && (!q || r.lower.indexOf(q) >= 0 || r.zone.toLowerCase().indexOf(q) >= 0) && !(quHideDone && quDone(r.qid)); });
     var ck = sortKey, cd = sortDir;
     view.sort(function (a, b) {
       if (ck === "name") return cd * a.name.localeCompare(b.name);
@@ -1283,7 +1319,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   function quItems(list, choose) {
     return list.map(function (it) {
       var r = byId[it[0]], meta = QU.items[it[0]] || ["Item " + it[0], -1], q = r ? r.q : meta[1];
-      return '<tr><td class="st">' + (r ? starHtml(it[0]) : "") + "</td><td>" + (r ? iconHtml(r) : "") + '<span class="' + qcls(q) + '"' + (r ? ' data-tip="' + it[0] + '"' : "") + ">" + esc(r && r.name ? r.name : meta[0]) + "</span>" +
+      return '<tr><td class="st">' + (r ? starHtml(it[0]) : "") + "</td><td>" + (r && r.ic && ICON_BASE ? iconHtml(r) : xIcon(it[0], q)) + '<span class="' + qcls(q) + '"' + (r ? ' data-tip="' + it[0] + '"' : DG && DG.items[it[0]] ? ' data-dgtip="' + it[0] + '"' : "") + ">" + esc(r && r.name ? r.name : meta[0]) + "</span>" +
         (choose ? ' <span class="tag v">' + t("qu_choose") + "</span>" : "") + "</td><td>" + it[1] + "</td><td>" + (r && r.min > 0 ? money(r.min * it[1]) : '<span class="dim">' + t("qu_notah") + "</span>") + "</td></tr>";
     }).join("");
   }
@@ -1303,12 +1339,26 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     var reps = q[11].map(function (x) { return '<span class="' + (x[1] >= 0 ? "down2" : "up2") + '">' + (x[1] >= 0 ? "+" : "") + num(x[1]) + "</span> " + esc(QU.factions[x[0]] || ""); }).join(" · ");
     var done = quPlayer && quPlayer.set ? '<div class="qstate ' + (quDone(id) ? "ok" : "no") + '">' + (quDone(id) ? "✓ " + t("qu_done_by", esc(quPlayer.name)) : t("qu_notdone", esc(quPlayer.name))) + "</div>" : "";
     var items = q[9].length || q[10].length;
+    // Krav och questkedja (Classic-databasen): föregående quest, yrke, klass; hela kedjan i ordning med bockar.
+    var qlink = function (qid) { var x = QU.quests[qid]; return x ? '<a class="wh" href="#quest=' + qid + '" data-qgo="' + qid + '">' + esc(x[0]) + "</a>" + (quDone(qid) ? ' <span class="qok">✓</span>' : "") : ""; };
+    var req = [];
+    if (q[12] > 0) req.push("<dt>" + t("qu_after") + "</dt><dd>" + qlink(q[12]) + "</dd>");
+    if (q[12] < 0) req.push("<dt>" + t("qu_during") + "</dt><dd>" + qlink(-q[12]) + "</dd>");
+    if (q[14]) req.push("<dt>" + t("qu_skill") + "</dt><dd>" + esc(skillName(q[14][0])) + " " + q[14][1] + "</dd>");
+    if (q[15] && classNames(q[15])) req.push("<dt>" + t("qu_class") + "</dt><dd>" + esc(classNames(q[15])) + "</dd>");
+    var chain = quChain(id), chainHtml = chain.length > 1 ? "<div><h3>" + t("qu_chain", chain.length) + '</h3><ol class="qchain">' + chain.map(function (c) {
+      var x = QU.quests[c];
+      return "<li" + (c === id ? ' class="cur"' : "") + '><span class="lv">' + (x[2] ? (x[4] ? "~" : "") + x[2] : "–") + "</span>" + (c === id ? "<b>" + esc(x[0]) + "</b>" + (quDone(c) ? ' <span class="qok">✓</span>' : "") : qlink(c)) + "</li>";
+    }).join("") + "</ol></div>" : "";
+    var nextOther = (q[13] || []).filter(function (n) { return chain.indexOf(n) < 0; });
+    if (nextOther.length) chainHtml += '<div class="note">' + t("qu_also") + " " + nextOther.map(qlink).join(", ") + "</div>";
     $("detail").innerHTML =
       '<div class="strip"><button class="lnk" type="button" data-copyany="#quest=' + id + '" title="' + t("copy_link") + '">' + t("copy_link") + "</button>" +
       "<h2>" + esc(q[0]) + (q[6] ? ' <span class="tag el">' + t("qu_elite") + "</span>" : "") + "</h2><small>" + esc(QU.areas[q[1]] || "") + " · " + fac + "</small></div>" + done +
       '<dl class="facts"><div><dt>' + t("col_lvl") + "</dt><dd>" + (q[2] ? (q[4] ? "~" : "") + q[2] : "–") + "</dd></div><div><dt>" + t("qu_req") + "</dt><dd>" + (q[3] || "–") + "</dd></div>" +
       "<div><dt>" + t("col_xp") + "</dt><dd>" + (q[7] ? num(q[7]) : "–") + "</dd></div><div><dt>" + t("col_money") + "</dt><dd>" + (q[8] ? money(q[8]) : "–") + "</dd></div>" +
       (reps ? '<div class="wide"><dt>' + t("ar_rep") + "</dt><dd>" + reps + "</dd></div>" : "") + "</dl>" +
+      (req.length ? "<div><h3>" + t("qu_reqs") + '</h3><dl class="srcs">' + req.join("") + "</dl></div>" : "") + chainHtml +
       (items ? "<div><h3>" + t("qu_rewards") + '</h3><div class="scroll"><table class="steps reag"><thead><tr><th></th><th style="text-align:left">' + t("col_item") + "</th><th>" + t("col_qty_s") + "</th><th>" + t("col_min") + "</th></tr></thead><tbody>" + quItems(q[9], false) + quItems(q[10], true) + "</tbody></table></div></div>" : "") +
       '<div><h3>' + t("qu_text") + '</h3><div class="qtext" id="qtext">' + t("ar_loading") + "</div></div>" +
       '<div class="note"><a class="wh" href="https://www.wowhead.com/forever/quest=' + id + '" target="_blank" rel="noopener">' + t("qu_wowhead") + "</a> · " + t("qu_source") + "</div>";
@@ -1359,7 +1409,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   function dgRow(r) {
     if (r.hd) return '<tr class="bosshd"><td colspan="5"><b>' + esc(r.boss.name) + '</b> <span class="dim">' + (r.boss.lvl ? t("dg_boss_lvl", r.boss.lvl) : "") + (query ? " · " + esc(r.d.name) : "") + (r.n ? "" : " · " + t("dg_noloot")) + "</span></td></tr>";
     var ah = byId[r.item], m = DG.items[r.item] || ["", -1, 0, 0], q = ah ? ah.q : m[1];
-    return '<tr tabindex="0" ' + (ah ? 'data-id="' + r.item + '"' + (r.item === selId ? ' aria-selected="true"' : "") : 'data-dgi="' + r.item + '"') + '><td class="fav">' + (ah ? starHtml(r.item) : "") + '</td><td class="nm">' + (ah ? iconHtml(ah) : "") +
+    return '<tr tabindex="0" ' + (ah ? 'data-id="' + r.item + '"' + (r.item === selId ? ' aria-selected="true"' : "") : 'data-dgi="' + r.item + '"') + '><td class="fav">' + (ah ? starHtml(r.item) : "") + '</td><td class="nm">' + (ah && ah.ic && ICON_BASE ? iconHtml(ah) : xIcon(r.item, q)) +
       '<span class="' + qcls(q) + '"' + (ah ? ' data-tip="' + r.item + '"' : ' data-dgtip="' + r.item + '"') + ">" + esc(dgName(r.item)) + "</span>" + (r.mx > 1 ? ' <span class="dim">×' + r.mn + (r.mx > r.mn ? "–" + r.mx : "") + "</span>" : "") +
       "</td><td>" + (r.ch >= 10 ? Math.round(r.ch) : r.ch) + "%</td><td>" + (m[3] || DASH) + "</td><td>" + (ah && ah.min > 0 ? money(ah.min) : '<span class="dim">' + t("qu_notah") + "</span>") + "</td></tr>";
   }
@@ -1471,6 +1521,9 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     refresh();
     drawWatch();
     var hp0 = hashParams();
+    // En länk bestämmer fliken (annars den som sparats): #quest, #dungeon, #player/#guild, #recipe, #item.
+    var hm = hp0.quest ? "qu" : hp0.dungeon ? "dg" : hp0.player || hp0.guild ? "ar" : hp0.recipe ? "cr" : hp0.item ? "ah" : "";
+    if (hm && !keep && mode !== hm && !(hm === "ah" && mode === "tr")) mode = hm;
     if (mode === "qu" || hp0.quest) { mode = "qu"; if (!keep) { sortKey = "lvl"; sortDir = 1; } $("q").placeholder = t("search_qu"); quStart(+hp0.quest || (keep ? selQuest : 0)); return; }
     if (mode === "dg" || hp0.dungeon) { mode = "dg"; $("q").placeholder = t("search_dg"); dgStart(+hp0.dungeon || 0); return; }
     if (mode === "ar" || hp0.player || hp0.guild) {
@@ -2064,6 +2117,8 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       else window.prompt(t("copy_link"), urlR);
       return;
     }
+    var qg = e.target.closest("[data-qgo]");
+    if (qg) { e.preventDefault(); showTab("item"); selectQuest(+qg.dataset.qgo, true); return; }
     var tq = e.target.closest("tbody tr[data-qid]");
     if (tq) { showTab("item"); selectQuest(+tq.dataset.qid, true); return; }
     var tdi = e.target.closest("tbody tr[data-dgi]");
@@ -2116,7 +2171,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   function quStart(want) {
     $("detail").innerHTML = '<div class="note">' + t("ar_loading") + "</div>";
     var saved = ""; try { saved = localStorage.getItem(QU_PKEY) || ""; } catch (e) {}
-    loadQuests().then(function () {
+    Promise.all([loadQuests(), loadXIcons(), loadDungeons().catch(function () {})]).then(function () {
       drawCats(); refresh(); toTop();
       if (saved && !quPlayer) setQuPlayer(saved);
       if (want && QU.quests[want]) { selectQuest(want, true); showTab("item"); } else if (view[0]) selectQuest(view[0].qid, false);
@@ -2124,7 +2179,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   }
   function dgStart(wantMap) {
     $("detail").innerHTML = '<div class="note">' + t("ar_loading") + "</div>";
-    loadDungeons().then(function () {
+    Promise.all([loadDungeons(), loadXIcons()]).then(function () {
       if (wantMap) dgList.forEach(function (d, i) { if (d.map === wantMap) dgSel = i; });
       if (dgSel < 0) dgSel = 0;
       drawCats(); refresh(); toTop(); dgDetail();
