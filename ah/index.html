@@ -233,6 +233,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
 .wtip .moneycopper::after { content: "c"; color: #c7793f; }
 .wtip .moneygold, .wtip .moneysilver, .wtip .moneycopper { margin-right: 3px; }
 .wtip .ah { margin-top: 6px; padding-top: 5px; border-top: 1px solid rgba(255, 255, 255, .15); color: #ffd100; }
+.wtip .ln { display: flex; justify-content: space-between; gap: 14px; } .wtip .ln .r { text-align: right; white-space: nowrap; }
 /* Läget: vanligt auktionshus eller Trading (aktiesidan). Två knappar som sitter ihop. */
 .mode { display: inline-flex; border: 1px solid var(--line); border-radius: 4px; overflow: hidden; }
 .mode button { all: unset; cursor: pointer; height: 32px; padding: 0 14px; font-size: 13px; color: var(--grey); display: inline-flex; align-items: center; gap: 6px; }
@@ -357,7 +358,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       cat_Ammo: "Ammunition", cat_Recipes: "Recept", "cat_Quest Items": "Questföremål", cat_Gems: "Ädelstenar", cat_Miscellaneous: "Diverse",
       search_ph: "Sök vara, t.ex. Silk Cloth", search_aria: "Sök vara", chip_all: "Även varor utan namn (%1)",
       col_item: "Vara", col_min: "Riktpris", col_min_tip: "Priset där varorna faktiskt ligger. Ensamma billiga listningar långt under resten räknas bort. Gear: billigaste priset.",
-      col_qty: "Ute", col_day: "Sålda/dag", col_day_tip: "Uppskattning från goldcap, inte uppmätt i scannen",
+      col_qty: "Ute", col_day: "Sålda/dag", col_day_tip: "Uppskattning ur Blizzards timvisa data: listningar som försvann innan de kunde gå ut",
       col_lvl: "Nivå", col_lvl_tip: "Kräver level", dip_tip: "%1 % under de senaste dagarnas vanliga pris (%2)", trend: "Senaste veckan",
       rise_tip: "%1 % över de senaste dagarnas vanliga pris (%2)", col_pct: "Mot vanligt", col_pct_s: "Nu", col_pct_tip: "Riktpriset nu mot de senaste dagarnas vanliga riktpris. Grönt = billigare, rött = dyrare.",
       mode_ah: "Auktionshus", mode_ah_tip: "Alla varor som i spelets auktionshus", mode_tr: "Trading",
@@ -388,7 +389,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       rd_low: "riktpris %1", rd_qty: "%1 ute",
       rng_3d: "3 d", rng_1w: "Vecka", rng_1m: "Månad", rng_all: "Allt",
       steps: "Prissteg", price: "Pris", qty: "Antal", f_now: "Ute nu", f_max: "Ute (högst i dag)",
-      f_day: "Sålda per dag (uppskattning)", per_scan: "Pris per scan", lg_qty: "Antal ute", hover: "Peka på grafen för en scan.",
+      f_day: "Sålda per dag (uppskattning)", f_sell: "Handlaren ger", per_scan: "Pris per scan", lg_qty: "Antal ute", hover: "Peka på grafen för en scan.",
       dayday: "Morgon och kväll", lg_morning: "Morgon (05–12)", lg_evening: "Kväll (17–24)", dd_hover: "Peka på en dag.", dd_none: "Ingen dag har både morgon- och kvällsscan än.",
       dd_morning: "morgon", dd_evening: "kväll", dd_gain: "köp %1, sälj %2: %3", dd_scans: "%1 scans",
       dayt: "Dygnshandel", day_tip: "Varor som gett minst 10 % vinst mellan morgon och kväll minst 3 dagar den senaste veckan (högst en dag utan). Vinsten är den sämsta dagens.",
@@ -401,7 +402,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       cat_Ammo: "Ammo", cat_Recipes: "Recipes", "cat_Quest Items": "Quest Items", cat_Gems: "Gems", cat_Miscellaneous: "Miscellaneous",
       search_ph: "Search item, e.g. Silk Cloth", search_aria: "Search item", chip_all: "Include unnamed items (%1)",
       col_item: "Item", col_min: "Market price", col_min_tip: "The price the item actually sits at. Lone cheap listings far below the rest are left out. Gear: the cheapest price.",
-      col_qty: "Listed", col_day: "Sold/day", col_day_tip: "Estimate from goldcap, not measured in the scan",
+      col_qty: "Listed", col_day: "Sold/day", col_day_tip: "Estimate from Blizzard's hourly data: listings that vanished before they could expire",
       col_lvl: "Level", col_lvl_tip: "Requires level", dip_tip: "%1% below the usual price these days (%2)", trend: "Last week",
       rise_tip: "%1% above the usual price these days (%2)", col_pct: "Vs usual", col_pct_s: "Now", col_pct_tip: "Market price now versus the usual market price these days. Green = cheaper, red = dearer.",
       mode_ah: "Auction house", mode_ah_tip: "All items, like the in-game auction house", mode_tr: "Trading",
@@ -432,7 +433,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       rd_low: "market price %1", rd_qty: "%1 listed",
       rng_3d: "3 d", rng_1w: "Week", rng_1m: "Month", rng_all: "All",
       steps: "Price steps", price: "Price", qty: "Quantity", f_now: "Listed now", f_max: "Listed (today's high)",
-      f_day: "Sold per day (estimate)", per_scan: "Price per scan", lg_qty: "Listed", hover: "Hover the chart for a scan.",
+      f_day: "Sold per day (estimate)", f_sell: "Vendor pays", per_scan: "Price per scan", lg_qty: "Listed", hover: "Hover the chart for a scan.",
       dayday: "Morning and evening", lg_morning: "Morning (05–12)", lg_evening: "Evening (17–24)", dd_hover: "Hover a day.", dd_none: "No day has both a morning and an evening scan yet.",
       dd_morning: "morning", dd_evening: "evening", dd_gain: "buy %1, sell %2: %3", dd_scans: "%1 scans",
       dayt: "Day trade", day_tip: "Items with at least 10% profit between morning and evening on at least 3 days this week (at most one day without). The profit shown is the worst day's.",
@@ -637,13 +638,14 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       // min = riktpriset (gear: lägsta), lo/loN = billigaste priset och antalet som räknades bort, mh = riktpris per scan
       var o = { id: r[0], name: r[1] || "", q: r[2], min: r[3], qty: r[7] || r[4], exact: r[7] > 0, lo: r[5] || 0, loN: r[6] || 0, day: r[8],
         mh: r[9], qh: r[10], ic: r[12] || "", ci: r[13] == null ? -1 : r[13], si: r[14] == null ? -1 : r[14], ui: r[15] == null ? -1 : r[15],
-        lvl: r[16] || 0, dip: r[17] || 0, tg: r[18] || 0, td: r[19] || 0, us: r[20] || 0, gear: r[21] === 1, bt: Array.isArray(r[22]) ? r[22] : null,
+        lvl: r[16] || 0, dip: r[17] || 0, tg: r[18] || 0, td: r[19] || 0, us: r[20] || 0, gear: r[21] === 1, bt: Array.isArray(r[22]) ? r[22] : null, sp: r[23] || 0,
         lower: (r[1] || "").toLowerCase() };
       o.btg = btClear(o) ? o.bt[2] : 0;   // sortering på bästa tid: bara tydliga mönster
       return o;
     });
     byId = {};
     rows.forEach(function (r) { byId[r.id] = r; });
+    if (sortKey === "day" && !rows.some(function (r) { return r.day > 0; })) sortKey = "qty";   // sålda/dag kommer efter ett dygns timdata
     var cats = d.cats || [];
     catCount = cats.map(function () { return 0; });
     subCount = cats.map(function (c) { return c[1].map(function () { return 0; }); });
@@ -984,6 +986,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       "<div><dt>" + t(r.exact ? "f_now" : "f_max") + "</dt><dd>" + num(r.qty) + "</dd></div>" +
       (r.lvl ? "<div><dt>" + t("col_lvl_tip") + "</dt><dd>" + r.lvl + "</dd></div>" : "") +
       (r.day ? "<div><dt>" + t("f_day") + '</dt><dd><span class="est">' + num(r.day) + "</span></dd></div>" : "") +
+      (r.sp ? "<div><dt>" + t("f_sell") + "</dt><dd>" + money(r.sp) + "</dd></div>" : "") +
       (best ? '<div class="wide"><dt title="' + esc(t("col_best_tip")) + '">' + t("col_best") + "</dt><dd>" + best + "</dd></div>" : "") +
       (r.gear ? '<div class="wide"><dd class="dim">' + t("f_gear") + "</dd></div>" : "");
     $("detail").innerHTML =
