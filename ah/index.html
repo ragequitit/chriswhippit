@@ -72,24 +72,24 @@ body {
 .fa-alliance .top { background: linear-gradient(#17243d, #10151f 70%, #130F0D); }
 .logo { flex: none; width: 80px; height: 80px; object-fit: contain; display: block; }
 .logo:not([src]) { display: none; }
-.title { min-width: 0; flex: 1 1 260px; }
+.title { min-width: 0; flex: 0 1 auto; }
 h1 { font-family: var(--display); font-weight: 500; font-size: 36px; margin: 0; color: var(--gold); letter-spacing: .06em; line-height: 1.1; text-wrap: balance; }
-.sub { color: var(--grey); margin-top: 3px; font-size: 15px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.sub { color: var(--grey); margin-top: 2px; font-size: 18px; letter-spacing: .01em; }
 /* Marknaden: två flippar, Normal/PvP och Horde/Alliance (Joakim 2026-11-16), de fyra husen Blizzard ger för EU. */
-.mkt { display: inline-flex; gap: 8px; vertical-align: middle; margin-left: 4px; }
+.mkt { display: inline-flex; gap: 10px; align-self: center; margin-left: 28px; flex: 0 0 auto; }
 .flip { display: inline-flex; border: 1px solid var(--line); border-radius: 4px; overflow: hidden; }
-.flip button { all: unset; cursor: pointer; height: 26px; padding: 0 9px; font-size: 12.5px; color: var(--grey); display: inline-flex; align-items: center; gap: 6px; }
+.flip button { all: unset; cursor: pointer; height: 34px; padding: 0 14px; font-size: 14.5px; color: var(--grey); display: inline-flex; align-items: center; gap: 7px; }
 .flip button + button { border-left: 1px solid var(--line); }
 .flip button[aria-pressed=true] { color: var(--gold); background: var(--sel); box-shadow: inset 0 -2px 0 var(--edge); }
 .flip button:focus-visible { outline: 2px solid var(--edge); outline-offset: -2px; }
-.flip .fi { width: 18px; height: 18px; object-fit: contain; display: block; }
+.flip .fi { width: 22px; height: 22px; object-fit: contain; display: block; }
 .flip .fi:not([src]) { display: none; }
 /* Sökknappen som i spelets AH: röd platta, guldtext. */
 .wowbtn { height: 36px; padding: 0 22px; border-radius: 5px; cursor: pointer; font: inherit; font-size: 14px; font-weight: 500; color: var(--gold);
   background: linear-gradient(var(--btn-a), var(--btn-b)); border: 1px solid var(--bronze); box-shadow: inset 0 1px 0 rgba(255, 200, 160, .22), inset 0 -2px 0 rgba(0, 0, 0, .35), 0 1px 2px rgba(0, 0, 0, .6); }
 .wowbtn:hover { filter: brightness(1.18); }
 .wowbtn:active { filter: brightness(.9); }
-.scan { flex: 0 1 auto; text-align: right; }
+.scan { flex: 0 1 auto; margin-left: auto; text-align: right; }
 .scan b { display: block; color: var(--gold); font-weight: 600; font-size: 16px; }
 .scan span { color: var(--grey); font-size: 13px; }
 
@@ -186,9 +186,9 @@ tbody tr.exp, tbody tr.exp:hover { background: var(--panel); cursor: default; }
 .watch .x { all: unset; cursor: pointer; color: var(--grey); padding: 0 4px; }
 .watch .x:hover { color: var(--red); }
 .up { color: var(--green); } .down { color: var(--red); }   /* Min lista: upp sedan sparat = grönt, ner = rött (aktiesidan) */
-.strip .star { float: right; font-size: 14px; padding: 2px 0 2px 8px; }
+.strip .star, .strip .lnk { float: right; height: 26px; display: inline-flex; align-items: center; gap: 5px; font-size: 13px; line-height: 1; padding: 0 6px; margin: 1px 0 0 4px; }
 /* Länk till varan: kopierar adressen (#item=…) till urklipp. */
-.lnk { all: unset; cursor: pointer; float: right; color: var(--grey); font-size: 13px; padding: 3px 6px; margin-left: 4px; display: inline-flex; align-items: center; gap: 5px; border-radius: 4px; }
+.lnk { all: unset; cursor: pointer; color: var(--grey); border-radius: 4px; }
 .lnk:hover { color: var(--gold); background: var(--hover); }
 .lnk:focus-visible { outline: 2px solid var(--edge); }
 .lnk svg { width: 15px; height: 15px; }
@@ -215,7 +215,7 @@ td.cic .ci { width: 22px; height: 22px; border-radius: 3px; vertical-align: midd
 h3.row { display: flex; align-items: center; justify-content: space-between; gap: 8px; white-space: nowrap; }
 .range { flex: none; }
 .range button { padding: 1px 7px; font-size: 11px; letter-spacing: 0; text-transform: none; }
-.legend { display: flex; gap: 14px; flex-wrap: wrap; font-size: 12px; color: var(--grey); }
+.legend { display: flex; gap: 14px; flex-wrap: wrap; font-size: 13px; font-weight: 600; color: var(--grey); }
 .legend i { display: inline-block; width: 14px; height: 3px; vertical-align: middle; margin-right: 5px; border-radius: 2px; }
 /* Raden under graferna när man pekar: en liten tabell i stället för en textsträng (Joakim 2026-11-16). */
 .read { min-height: 64px; font-size: 13px; color: var(--grey); }
@@ -266,7 +266,8 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   .cat, .cat.sub, .cat.sub2 { margin-left: 2px; flex: none; }
   .right { order: -1; }
   .detail { position: static; }
-  .scan { text-align: left; flex-basis: 100%; }
+  .scan { text-align: left; flex-basis: 100%; margin-left: 0; }
+  .mkt { margin-left: 0; flex-basis: 100%; }
 }
 @media (max-width: 520px) {
   .hide-s { display: none; }
@@ -325,7 +326,8 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     <img class="logo" id="logo" alt="" width="80" height="80">
     <div class="title">
       <h1 data-t="title">Auktionshuset</h1>
-      <div class="sub">WoW Forever
+      <div class="sub">WoW Forever</div>
+    </div>
         <span class="mkt" role="group" data-t-aria="market_label" aria-label="Marknad">
           <span class="flip" role="group"><button type="button" data-rs="normal" aria-pressed="false">Normal</button><button type="button" data-rs="pvp" aria-pressed="true">PvP</button></span>
           <span class="flip" role="group">
@@ -333,8 +335,6 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
             <button type="button" data-fa="alliance" aria-pressed="false"><img class="fi" data-icon="faction-alliance.png" alt="">Alliance</button>
           </span>
         </span>
-      </div>
-    </div>
     <div class="scan"><b id="scanTime" data-t="loading">Läser in scannen…</b><span id="scanInfo"></span></div>
   </header>
 
@@ -944,7 +944,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     // prisaxel: 0, halva och högsta
     [0, maxP / 2, maxP].forEach(function (p) {
       s += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + y(p) + '" y2="' + y(p) + '" stroke="#2a313b" stroke-width="1"/>' +
-        '<text x="' + (L - 6) + '" y="' + (y(p) + 4) + '" text-anchor="end" font-size="15" fill="#a0a0a0">' + moneyText(p) + "</text>";
+        '<text x="' + (L - 6) + '" y="' + (y(p) + 4) + '" text-anchor="end" font-size="19" font-weight="600" fill="#b9aea1">' + moneyText(p) + "</text>";
     });
     // Tidsaxeln: en tunn linje vid midnatt genom båda panelerna med datum under. I timläget (24 h) i stället var tredje
     // timme med klockslag.
@@ -958,7 +958,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       s += '<line x1="' + mx + '" x2="' + mx + '" y1="' + TOP + '" y2="' + (QY + QH) + '" stroke="#2a313b" stroke-width="1"' + (mid ? ' stroke-dasharray="2 3"' : ' stroke-opacity=".5"') + "/>";
       if (mx - lastX > 40 && mx < W - R - 20) {
         var lbl = hours ? (dd.getHours() < 10 ? "0" : "") + dd.getHours() + ":00" : dd.getDate() + "/" + (dd.getMonth() + 1);
-        s += '<text x="' + (mx + 3) + '" y="' + (H - 4) + '" font-size="15" fill="#a0a0a0">' + lbl + "</text>";
+        s += '<text x="' + (mx + 3) + '" y="' + (H - 4) + '" font-size="19" font-weight="600" fill="#b9aea1">' + lbl + "</text>";
         lastX = mx;
       }
     }
@@ -967,8 +967,8 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     s += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + (QY + QH) + '" y2="' + (QY + QH) + '" stroke="#2a313b" stroke-width="1"/>' +
       '<polygon fill="#7ea2d6" fill-opacity=".18" points="' + x(pts[0]).toFixed(1) + "," + (QY + QH) + " " + qpts + " " + x(pts[pts.length - 1]).toFixed(1) + "," + (QY + QH) + '"/>' +
       '<polyline fill="none" stroke="#7ea2d6" stroke-width="1.5" points="' + qpts + '"/>' +
-      '<text x="' + (L - 6) + '" y="' + (QY + 10) + '" text-anchor="end" font-size="15" fill="#a0a0a0">' + num(maxQ) + "</text>" +
-      '<text x="' + (L - 6) + '" y="' + (QY + QH + 4) + '" text-anchor="end" font-size="15" fill="#a0a0a0">0</text>';
+      '<text x="' + (L - 6) + '" y="' + (QY + 10) + '" text-anchor="end" font-size="19" font-weight="600" fill="#b9aea1">' + num(maxQ) + "</text>" +
+      '<text x="' + (L - 6) + '" y="' + (QY + QH + 4) + '" text-anchor="end" font-size="19" font-weight="600" fill="#b9aea1">0</text>';
     // riktpris
     s += '<polyline fill="none" stroke="#d6a83b" stroke-width="2" points="' + pts.map(function (i) { return x(i).toFixed(1) + "," + y(Hh.rh[i]).toFixed(1); }).join(" ") + '"/>';
     var li = pts[pts.length - 1];
@@ -1020,7 +1020,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     [maxP / 2, maxP].forEach(function (p) {
       var yy = BASE - p / maxP * BH;
       s += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + yy + '" y2="' + yy + '" stroke="#2a313b"/>' +
-        '<text x="' + (L - 6) + '" y="' + (yy + 4) + '" text-anchor="end" font-size="15" fill="#a0a0a0">' + moneyText(p) + "</text>";
+        '<text x="' + (L - 6) + '" y="' + (yy + 4) + '" text-anchor="end" font-size="19" font-weight="600" fill="#b9aea1">' + moneyText(p) + "</text>";
     });
     s += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + BASE + '" y2="' + BASE + '" stroke="#d6a83b" stroke-opacity=".5"/>';
     days.forEach(function (dd, n) {
@@ -1029,7 +1029,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       if (hm) s += '<rect x="' + (cx - bw - 1) + '" y="' + (BASE - hm) + '" width="' + bw + '" height="' + hm + '" fill="#d6a83b" fill-opacity=".9"/>';
       if (he) s += '<rect x="' + (cx + 1) + '" y="' + (BASE - he) + '" width="' + bw + '" height="' + he + '" fill="#a1a1a1" fill-opacity=".9"/>';
       var label = (dd.key % 100) + "/" + Math.floor(dd.key / 100 % 100);
-      s += '<text x="' + cx + '" y="' + (H - 4) + '" text-anchor="middle" font-size="15" fill="#a0a0a0">' + label + "</text>";
+      s += '<text x="' + cx + '" y="' + (H - 4) + '" text-anchor="middle" font-size="19" font-weight="600" fill="#b9aea1">' + label + "</text>";
       s += '<rect class="dhit" data-n="' + n + '" x="' + (x0 + n * gw) + '" y="' + TOP + '" width="' + gw + '" height="' + (BASE - TOP) + '" fill="transparent"/>';
     });
     return s + "</svg>";
