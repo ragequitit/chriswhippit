@@ -385,7 +385,18 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
 }
 @media (max-width: 520px) {
   .hide-s { display: none; }
-  td, th { padding-left: 7px; padding-right: 7px; }
+  /* Telefon (Joakim 2026-11-16: siffrorna gick ihop): tabellen får bredd efter innehållet i stället för lika breda
+     kolumner, siffror bryts aldrig, namnet klipps, och listan kan rullas i sidled om den ändå inte får plats. */
+  #list { table-layout: auto; }
+  td { padding-left: 5px; padding-right: 5px; white-space: nowrap; }
+  th { padding-left: 5px; padding-right: 5px; white-space: normal; line-height: 1.15; }   /* "Market price" får bryta rad */
+  td.nm, #list th.nm { width: auto; max-width: 104px; }
+  td.fav, th.fav { width: 28px; padding-left: 2px; padding-right: 2px; }
+  .coin { width: 10px; height: 10px; }
+  .mode { max-width: 100%; overflow-x: auto; scrollbar-width: none; }
+  .mode button { padding: 0 9px 0 7px; gap: 5px; font-size: 13.5px; white-space: nowrap; height: 36px; }
+  .mode .mi { width: 20px; height: 20px; }
+  .strip { flex-wrap: wrap; }
 }
 @media (prefers-reduced-motion: no-preference) { tbody tr { transition: background .08s; } }
 /* Tooltipen som i spelet: Wowheads text, rensad i build.js. */
