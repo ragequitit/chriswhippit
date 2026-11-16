@@ -5,9 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="description" content="WoW Forever auction house prices, updated every hour: market price, listed, day trade and best time to buy and sell.">
 <link rel="canonical" href="https://www.chriswhippit.com/ah/">
-<link rel="icon" href="/favicon.ico">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="WoW Forever Auction House">
+<meta property="og:title" content="Auction House · WoW Forever">
+<meta property="og:description" content="Live auction house prices for WoW Forever, updated every hour: market price, listed, day trade and the best time to buy and sell.">
+<meta property="og:url" content="https://www.chriswhippit.com/ah/">
+<meta property="og:image" content="https://ragequitit.github.io/ah/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#130F0D">
+<link rel="icon" type="image/png" href="https://ragequitit.github.io/ah/assets/icons/auction-house-logo.png">
 <style>html{color-scheme:dark}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
-<title>Whippit Auktionshuset</title>
+<title>Auction House · WoW Forever</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600&family=Instrument+Sans:wght@400;500;600&display=swap">
 <style>
@@ -57,6 +67,9 @@ body {
 .top { display: flex; align-items: center; gap: 16px; min-height: 92px; padding: 12px 18px; flex-wrap: wrap;
   background: linear-gradient(#2a1e15, #130F0D); border-bottom: 1px solid var(--line); border-radius: 7px 7px 0 0;
   box-shadow: inset 0 1px 0 rgba(229, 180, 106, .10); }
+/* Fraktionston i rubriklisten (Joakim 2026-11-16): Horde-röd eller Alliance-blå, svagt, så hela sidan följer flippen. */
+.fa-horde .top { background: linear-gradient(#3b1a13, #1a100c 70%, #130F0D); }
+.fa-alliance .top { background: linear-gradient(#17243d, #10151f 70%, #130F0D); }
 .logo { flex: none; width: 80px; height: 80px; object-fit: contain; display: block; }
 .logo:not([src]) { display: none; }
 .title { min-width: 0; flex: 1 1 260px; }
@@ -128,7 +141,8 @@ td { padding: 5px 10px; height: 35px; text-align: right; white-space: nowrap; bo
 td.nm, .watch td:first-child { text-align: left; white-space: nowrap; max-width: 0; width: 36%; overflow: hidden; text-overflow: ellipsis; }
 #list { table-layout: fixed; }
 #list th.nm { width: 34%; }
-#list.tr th.nm { width: 28%; }
+#list.tr th.nm { width: 25%; }
+#list.tr th.cic { width: 36px; }
 #list.tr th { letter-spacing: .03em; padding: 8px 8px; }
 #list.tr td { padding: 5px 8px; }
 td.pct { font-size: 13px; }
@@ -173,6 +187,13 @@ tbody tr.exp, tbody tr.exp:hover { background: var(--panel); cursor: default; }
 .watch .x:hover { color: var(--red); }
 .up { color: var(--red); } .down { color: var(--green); }
 .strip .star { float: right; font-size: 14px; padding: 2px 0 2px 8px; }
+/* Länk till varan: kopierar adressen (#item=…) till urklipp. */
+.lnk { all: unset; cursor: pointer; float: right; color: var(--grey); font-size: 13px; padding: 3px 6px; margin-left: 4px; display: inline-flex; align-items: center; gap: 5px; border-radius: 4px; }
+.lnk:hover { color: var(--gold); background: var(--hover); }
+.lnk:focus-visible { outline: 2px solid var(--edge); }
+.lnk svg { width: 15px; height: 15px; }
+td.cic { width: 44px; padding-right: 2px; }
+td.cic .ci { width: 22px; height: 22px; border-radius: 3px; vertical-align: middle; }
 .detail { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 12px); display: grid; gap: 12px; padding: 14px; }
 .strip { margin: -14px -14px 0; padding: 10px 14px; border-top: 1px solid var(--line);
   background: linear-gradient(90deg, rgba(246, 196, 72, .16), rgba(246, 196, 72, .02)); border-radius: 5px 5px 0 0; }
@@ -382,6 +403,8 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     for (var i = 0; i < fi.length; i++) fi[i].src = ASSET_BASE + "icons/" + fi[i].getAttribute("data-icon");
   }
   function applyPanorama(faction) {
+    document.body.classList.toggle("fa-horde", faction !== "alliance");
+    document.body.classList.toggle("fa-alliance", faction === "alliance");
     if (!ASSET_BASE) return;
     var img = faction === "alliance" ? "alliance-stormwind.webp" : "horde-orgrimmar.webp";
     document.body.style.backgroundImage = "linear-gradient(to bottom, rgba(19, 15, 13, 0) 30%, rgba(19, 15, 13, .55) 60%, #130F0D 92%), url(" + ASSET_BASE + "backgrounds/" + img + ")";
@@ -404,7 +427,20 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   // ligger i dagsfiler bredvid: hist/<hus>/<dag>/<id % 100>.json (build.js). Valet sparas i webbläsaren.
   var DATA_BASE = DATA_URL.replace(/data\.json$/, "");
   var MKEY = "whippit-ah-market";
-  var house = (function () { try { var h = +localStorage.getItem(MKEY); return h === 110 || h === 111 || h === 114 ? h : 113; } catch (e) { return 113; } })();
+  // Länk till en vara: #item=4306 (och &m=hus för en annan marknad än EU PvP Horde). Adressen uppdateras när man väljer
+  // en vara, så den går att kopiera, och knappen i rutan kopierar den direkt.
+  function hashParams() {
+    var o = {}, h = location.hash.replace(/^#/, "");
+    h.split("&").forEach(function (kv) { var i = kv.indexOf("="); if (i > 0) o[kv.slice(0, i)] = decodeURIComponent(kv.slice(i + 1)); });
+    return o;
+  }
+  var HP0 = hashParams();
+  var house = (function () {
+    var hm = +HP0.m;
+    if (hm === 110 || hm === 111 || hm === 113 || hm === 114) return hm;
+    try { var h = +localStorage.getItem(MKEY); return h === 110 || h === 111 || h === 114 ? h : 113; } catch (e) { return 113; }
+  })();
+  function itemUrl(id) { return location.origin + location.pathname + "#item=" + id + (house !== 113 ? "&m=" + house : ""); }
   function dataUrl() { return DATA_BASE + (house === 113 ? "data.json" : "data-" + house + ".json"); }
   // Husnummer per ruleset och sida (Blizzards API för EU): PvP Horde 113, PvP Alliance 110, Normal Horde 114, Normal Alliance 111.
   var HOUSES = { pvp: { horde: 113, alliance: 110 }, normal: { horde: 114, alliance: 111 } };
@@ -466,7 +502,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       foot3: "Independent fan site, not affiliated with Blizzard Entertainment. World of Warcraft is a trademark of Blizzard Entertainment, Inc. Auction data from Blizzard's API.",
       scan_at: "Updated %1 at %2", on_ah: "%1 items on the auction house", market_label: "Market", search_btn: "Search", col_fav: "Fav",
       hist_loading: "Loading history…", hist_fail: "The history could not be loaded.", today: "today", item_n: "Item %1",
-      star_add: "Watch this item", star_del: "Remove from my list", star_lbl_add: "Watch", star_lbl_on: "In my list",
+      copy_link: "Copy link", copied: "Link copied", star_add: "Watch this item", star_del: "Remove from my list", star_lbl_add: "Watch", star_lbl_on: "In my list",
       not_listed: "not listed now", remove: "Remove", watch_sub: "Saved in your browser, only you can see it.",
       watch_empty: "Empty so far. Press ☆ next to an item in the list to watch it.",
       update: "Update prices", fetching: "Fetching…", from_scan: "Prices from the scan %1 at %2",
@@ -698,6 +734,12 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     refresh();
     drawWatch();
     if (keep && selId && byId[selId]) { select(selId, false); return; }
+    var want = +hashParams().item;
+    if (!keep && want && byId[want]) {   // länk till en vara: sök fram den och visa den
+      query = byId[want].name.toLowerCase(); $("q").value = byId[want].name; refresh();
+      select(want, true); showTab("item");
+      return;
+    }
     var first = view[0];
     if (first) select(first.id, false);
     if (!keep && watch.length) showTab("watch");   // den som har en lista ser den först
@@ -792,7 +834,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   }
   function expHtml(r) {
     var l = ladder(r, false);
-    return '<tr class="exp"><td colspan="' + (mode === "tr" ? 8 : 7) + '">' + (l.html ? '<div class="ladder">' + l.html + "</div>" : "") + '<div class="note">' + l.note + "</div></td></tr>";
+    return '<tr class="exp"><td colspan="' + (mode === "tr" ? 9 : 7) + '">' + (l.html ? '<div class="ladder">' + l.html + "</div>" : "") + '<div class="note">' + l.note + "</div></td></tr>";
   }
   // Kategorin på raden: klick filtrerar listan på den (underkategorin om varan har en).
   function catCell(r) {
@@ -830,7 +872,8 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     var day = '<td class="hide-s">' + (r.day ? '<span class="est">' + num(r.day) + "</span>" : DASH) + "</td>";
     var tr = '<tr tabindex="0" data-id="' + r.id + '"' + (r.id === selId ? ' aria-selected="true"' : "") + '><td class="fav">' + starHtml(r.id) + '</td><td class="nm">' + name + "</td>";
     if (mode === "tr") {
-      return tr + "<td>" + money(r.min) + '</td><td class="pct">' + pctHtml(r) + '</td><td class="pct hide-s">' + (tradeHtml(r) || DASH) +
+      var c0 = D.cats && D.cats[r.ci], cico = c0 ? catIcon(c0[0]) : "";
+      return tr + '<td class="cic kat" title="' + esc(c0 ? catName(c0[0]) : "") + '">' + (cico || "") + "</td><td>" + money(r.min) + '</td><td class="pct">' + pctHtml(r) + '</td><td class="pct hide-s">' + (tradeHtml(r) || DASH) +
         '</td><td class="pct">' + btHtml(r) + "</td><td>" + num(r.qty) + "</td>" + day + "</tr>";
     }
     return tr + '<td class="kat hide-s">' + catCell(r) + '</td><td class="hide-s">' + (r.lvl ? r.lvl : DASH) + "</td><td>" + money(r.min) +
@@ -839,13 +882,13 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   // Kolumnerna efter läget. [nyckel, text, tips, klass]
   function headHtml() {
     var cols = mode === "tr"
-      ? [["name", "col_item"], ["min", "col_min", "col_min_tip"], ["dip", "col_pct_s", "col_pct_tip"], ["tg", "col_trade", "day_tip", "hide-s"],
+      ? [["name", "col_item"], ["cat", "", null, "cic kat"], ["min", "col_min", "col_min_tip"], ["dip", "col_pct_s", "col_pct_tip"], ["tg", "col_trade", "day_tip", "hide-s"],
          ["btg", "col_best", "col_best_tip"], ["qty", "col_qty"], ["day", "col_day", "col_day_tip", "hide-s"]]
       : [["name", "col_item"], ["cat", "col_cat", null, "kat hide-s"], ["lvl", "col_lvl", "col_lvl_tip", "hide-s"], ["min", "col_min", "col_min_tip"],
          ["qty", "col_qty"], ["day", "col_day", "col_day_tip", "hide-s"]];
     return '<tr><th class="fav">' + t("col_fav") + "</th>" + cols.map(function (c) {
       return "<th" + (c[3] ? ' class="' + c[3] + '"' : c[0] === "name" ? ' class="nm"' : "") + '><button type="button" data-k="' + c[0] + '"' + (c[2] ? ' title="' + esc(t(c[2])) + '"' : "") +
-        (c[0] === sortKey ? ' aria-sort="' + (sortDir > 0 ? "ascending" : "descending") + '"' : "") + ">" + t(c[1]) + "</button></th>";
+        (c[0] === sortKey ? ' aria-sort="' + (sortDir > 0 ? "ascending" : "descending") + '"' : "") + ">" + (c[1] ? t(c[1]) : "") + "</button></th>";
     }).join("") + "</tr>";
   }
   // Lägesknapparna. I Trading sorterar man på kolumnrubrikerna (Nu, Dygn, Bästa tid), inga extra knappar (Joakim 2026-11-16).
@@ -1006,6 +1049,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     selId = id;
     var r = byId[id];
     if (!r) return;
+    try { history.replaceState(null, "", "#item=" + id + (house !== 113 ? "&m=" + house : "")); } catch (e) {}
     var trs = $("rows").children;
     for (var j = 0; j < trs.length; j++) {
       if (+trs[j].dataset.id === id) trs[j].setAttribute("aria-selected", "true"); else trs[j].removeAttribute("aria-selected");
@@ -1023,7 +1067,8 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       (best ? '<div class="wide"><dt title="' + esc(t("col_best_tip")) + '">' + t("col_best") + "</dt><dd>" + best + "</dd></div>" : "") +
       (r.gear ? '<div class="wide"><dd class="dim">' + t("f_gear") + "</dd></div>" : "");
     $("detail").innerHTML =
-      '<div class="strip">' + starHtml(r.id, t(watched(r.id) ? "star_lbl_on" : "star_lbl_add")) + iconHtml(r, true) + '<h2 data-tip="' + r.id + '" class="' + qcls(r.q) + '">' + name + "</h2><small>" + t("item_n", r.id) + "</small></div>" +
+      '<div class="strip">' + starHtml(r.id, t(watched(r.id) ? "star_lbl_on" : "star_lbl_add")) +
+      '<button class="lnk" type="button" data-copy="' + r.id + '" title="' + t("copy_link") + '"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M6.5 9.5l3-3M5 11l-1 1a2.5 2.5 0 01-3.5-3.5l2-2A2.5 2.5 0 016 6M11 5l1-1a2.5 2.5 0 013.5 3.5l-2 2A2.5 2.5 0 0110 10"/></svg>' + t("copy_link") + "</button>" + iconHtml(r, true) + '<h2 data-tip="' + r.id + '" class="' + qcls(r.q) + '">' + name + "</h2><small>" + t("item_n", r.id) + "</small></div>" +
       '<dl class="facts">' + facts + "</dl>" +
       '<div><h3 class="row">' + t("per_scan") + rangeHtml() + '</h3><div id="chartBox"><div class="note">' + t("hist_loading") + "</div></div>" +
       '<div class="legend"><span><i style="background:#d6a83b"></i>' + t("col_min") + '</span><span><i style="background:#7ea2d6"></i>' + t("lg_qty") + "</span></div>" +
@@ -1090,6 +1135,14 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     }
     var st = e.target.closest("[data-star]");
     if (st) { e.stopPropagation(); toggleWatch(+st.dataset.star); return; }
+    var cp = e.target.closest("[data-copy]");
+    if (cp) {
+      e.stopPropagation();
+      var url = itemUrl(+cp.dataset.copy), done = function () { cp.lastChild.textContent = t("copied"); setTimeout(function () { cp.lastChild.textContent = t("copy_link"); }, 1500); };
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(url).then(done, function () { window.prompt(t("copy_link"), url); });
+      else window.prompt(t("copy_link"), url);
+      return;
+    }
     var tr = e.target.closest("tbody tr[data-id]");
     if (tr) {
       var id = +tr.dataset.id;
