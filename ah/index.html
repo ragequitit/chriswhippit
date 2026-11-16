@@ -222,8 +222,10 @@ h3.row { display: flex; align-items: center; justify-content: space-between; gap
 .read b { color: var(--fg); font-weight: 600; }
 .rdh { font-weight: 600; color: var(--fg); margin-bottom: 3px; }
 .rdg { display: grid; grid-template-columns: auto max-content auto; gap: 2px 12px; align-items: baseline; }
-.rdg b { text-align: right; white-space: nowrap; }
+.rdg > span, .rdg b, .rdg small { white-space: nowrap; }
+.rdg b { text-align: right; }
 .rdg small { color: var(--grey); font-size: 12px; }
+.rdg .gain span { white-space: normal; }
 .rdg .sw { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 7px; vertical-align: -1px; }
 .rdg .gain { grid-column: 1 / -1; display: flex; justify-content: space-between; gap: 12px; margin-top: 4px; padding-top: 4px; border-top: 1px solid var(--line); color: var(--fg); }
 .rdg .gain b { font-size: 14px; }
