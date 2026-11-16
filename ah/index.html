@@ -258,7 +258,6 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
 .mode button + button { border-left: 1px solid var(--line); }
 .mode button[aria-pressed=true] { color: var(--gold); background: var(--sel); box-shadow: inset 0 -2px 0 var(--edge); }
 .mode button:focus-visible { outline: 2px solid var(--gold); outline-offset: -2px; }
-.sorts { display: inline-flex; gap: 6px; flex-wrap: wrap; }
 .chip.cheap { color: var(--green); border-color: rgba(127, 212, 154, .5); }
 .chip.cheap[aria-pressed=true] { border-color: var(--green); background: rgba(127, 212, 154, .14); }
 .chip.dear { color: var(--red); border-color: rgba(255, 90, 74, .5); }
@@ -298,13 +297,6 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     <div class="mode" role="group">
       <button type="button" id="modeAh" aria-pressed="true" data-t="mode_ah" data-t-title="mode_ah_tip">Auktionshus</button>
       <button type="button" id="modeTr" aria-pressed="false" data-t="mode_tr" data-t-title="mode_tr_tip">Trading</button>
-    </div>
-    <div class="sorts" id="sorts" hidden>
-      <button class="chip cheap" type="button" data-sort="cheap" aria-pressed="false" data-t="s_cheap" data-t-title="s_cheap_tip">Billigast nu</button>
-      <button class="chip dear" type="button" data-sort="dear" aria-pressed="false" data-t="s_dear" data-t-title="s_dear_tip">Dyrast nu</button>
-      <button class="chip day" type="button" data-sort="day" aria-pressed="false" data-t="s_day" data-t-title="day_tip">Dygnshandel</button>
-      <button class="chip day" type="button" data-sort="best" aria-pressed="false" data-t="s_best" data-t-title="col_best_tip">Bästa tid</button>
-      <button class="chip cheap" type="button" data-sort="vendor" aria-pressed="false" data-t-title="col_vendor_tip">Handlaren ger mer</button>
     </div>
     <button class="chip" id="chipAll" aria-pressed="false" type="button" hidden></button>
     <span class="count" id="count"></span>
@@ -411,13 +403,10 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       rise_tip: "%1 % över de senaste dagarnas vanliga pris (%2)", col_pct: "Mot vanligt", col_pct_s: "Nu", col_pct_tip: "Riktpriset nu mot de senaste dagarnas vanliga riktpris. Grönt = billigare, rött = dyrare.",
       mode_ah: "Auktionshus", mode_ah_tip: "Alla varor som i spelets auktionshus", mode_tr: "Trading",
       mode_tr_tip: "Som en aktiesida: vad som är billigt och dyrt mot vanligt, dygnshandel och bästa tid att köpa och sälja",
-      s_cheap: "Billigast nu", s_cheap_tip: "Störst nedgång mot de senaste dagarnas vanliga pris först",
-      s_dear: "Dyrast nu", s_dear_tip: "Störst uppgång mot de senaste dagarnas vanliga pris först", s_best: "Bästa tid", s_day: "Dygnshandel",
       col_best: "Bästa tid", col_best_tip: "När på dygnet varan brukat vara billigast och dyrast den senaste veckan. Vinsten är efter AH:s 5 %.",
       bt_0: "natten", bt_1: "morgonen", bt_2: "eftermiddagen", bt_3: "kvällen", bs_0: "natt", bs_1: "morg", bs_2: "em", bs_3: "kväll",
       best_txt: "Köp på %1, sälj på %2: +%3 % (%4 av %5 dagar)", best_none: "Ingen tydlig skillnad över dygnet än",
-      s_vendor: "Handlaren ger mer", col_vendor: "Handlaren", col_vendor_tip: "Varor som ligger billigare på AH än vad handlaren betalar: köp och sälj till handlaren. Vinst per styck.",
-      vendor_tip: "Billigast på AH %1, handlaren ger %2", f_gone: "Räknas bort", gone_tip: "Ensamma billiga listningar långt under resten. De räknas inte in i riktpriset, men låg ute vid scannen.",
+      f_gone: "Räknas bort", gone_tip: "Ensamma billiga listningar långt under resten. De räknas inte in i riktpriset, men låg ute vid scannen.",
       gone_tag: "räknas bort", f_usual: "Vanligt pris", f_gear: "Säljs styckvis, som gear och recept: billigaste priset, ingen procent (priserna skiljer i guld).",
       empty: "Ingen vara matchar sökningen.", more: "Visa fler (%1 till)", count: "%1 varor",
       tab_item: "Vara", tab_watch: "Min lista", pick: "Välj en vara i listan.",
@@ -455,13 +444,10 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       rise_tip: "%1% above the usual price these days (%2)", col_pct: "Vs usual", col_pct_s: "Now", col_pct_tip: "Market price now versus the usual market price these days. Green = cheaper, red = dearer.",
       mode_ah: "Auction house", mode_ah_tip: "All items, like the in-game auction house", mode_tr: "Trading",
       mode_tr_tip: "Like a stock site: what is cheap and dear versus usual, day trade and the best time to buy and sell",
-      s_cheap: "Cheapest now", s_cheap_tip: "Biggest drop versus the usual price these days first",
-      s_dear: "Dearest now", s_dear_tip: "Biggest rise versus the usual price these days first", s_best: "Best time", s_day: "Day trade",
       col_best: "Best time", col_best_tip: "When in the day the item has been cheapest and dearest this week. The profit is after the AH's 5%.",
       bt_0: "at night", bt_1: "in the morning", bt_2: "in the afternoon", bt_3: "in the evening", bs_0: "night", bs_1: "morn", bs_2: "aftn", bs_3: "eve",
       best_txt: "Buy %1, sell %2: +%3% (%4 of %5 days)", best_none: "No clear difference over the day yet",
-      s_vendor: "Vendor pays more", col_vendor: "Vendor", col_vendor_tip: "Items cheaper on the AH than what the vendor pays: buy and sell to the vendor. Profit each.",
-      vendor_tip: "Cheapest on the AH %1, vendor pays %2", f_gone: "Left out", gone_tip: "Lone cheap listings far below the rest. They are not part of the market price, but were listed at the scan.",
+      f_gone: "Left out", gone_tip: "Lone cheap listings far below the rest. They are not part of the market price, but were listed at the scan.",
       gone_tag: "left out", f_usual: "Usual price", f_gear: "Sold one by one, like gear and recipes: the cheapest price, no percent (prices differ in gold).",
       empty: "No item matches the search.", more: "Show more (%1 more)", count: "%1 items",
       tab_item: "Item", tab_watch: "My list", pick: "Pick an item in the list.",
@@ -698,8 +684,6 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
         lvl: r[16] || 0, dip: r[17] || 0, tg: r[18] || 0, td: r[19] || 0, us: r[20] || 0, gear: r[21] === 1, bt: Array.isArray(r[22]) ? r[22] : null, sp: r[23] || 0,
         lower: (r[1] || "").toLowerCase() };
       o.btg = btClear(o) ? o.bt[2] : 0;   // sortering på bästa tid: bara tydliga mönster
-      o.cheap = o.lo || o.min;             // billigaste listningen, även en ensam som räknats bort ur riktpriset
-      o.vg = o.sp > 0 && o.cheap > 0 && o.sp > o.cheap ? o.sp - o.cheap : 0;   // handlaren ger mer än AH: vinst per st
       return o;
     });
     byId = {};
@@ -730,7 +714,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     var q = query;
     view = rows.filter(function (r) {
       if (!showAll && !r.name) return false;
-      if (mode === "tr" && sortKey !== "vg" && (r.gear || r.qty < TR_MIN)) return false;
+      if (mode === "tr" && (r.gear || r.qty < TR_MIN)) return false;
       if (catSel >= 0 && r.ci !== catSel) return false;
       if (subSel >= 0 && r.si !== subSel) return false;
       if (sub2Sel >= 0 && r.ui !== sub2Sel) return false;
@@ -743,7 +727,6 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       if (k === "dip") return dir * (a.dip - b.dip) || a.id - b.id;
       if (k === "tg") return dir * (a.tg - b.tg) || a.id - b.id;
       if (k === "btg") return dir * (a.btg - b.btg) || a.id - b.id;
-      if (k === "vg") return dir * (a.vg - b.vg) || a.id - b.id;
       if (k === "cat") {   // kategori, underkategori, sedan namn; okänd kategori sist
         var ac = a.ci < 0 ? 9999 : a.ci, bc = b.ci < 0 ? 9999 : b.ci;
         return dir * (ac - bc || a.si - b.si || a.ui - b.ui) || (a.name || "").localeCompare(b.name || "", "sv");
@@ -849,16 +832,12 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     return '<span class="bt down2" title="' + esc(t("best_txt", t("bt_" + b[0]), t("bt_" + b[1]), b[2], b[3], b[4])) + '">' +
       t("bs_" + b[0]) + "→" + t("bs_" + b[1]) + " +" + b[2] + "%</span>";
   }
-  function vendorHtml(r) {
-    if (!r.vg) return DASH;
-    return '<span class="down2" title="' + esc(t("vendor_tip", moneyText(r.cheap), moneyText(r.sp))) + '">+' + moneyText(r.vg) + "</span>";
-  }
   function rowHtml(r) {
     var name = iconHtml(r) + (r.name ? '<span data-tip="' + r.id + '" class="' + qcls(r.q) + '">' + esc(r.name) + "</span>" : '<span class="dim">' + t("item_n", r.id) + "</span>");
     var day = '<td class="hide-s">' + (r.day ? '<span class="est">' + num(r.day) + "</span>" : DASH) + "</td>";
     var tr = '<tr tabindex="0" data-id="' + r.id + '"' + (r.id === selId ? ' aria-selected="true"' : "") + '><td class="fav">' + starHtml(r.id) + '</td><td class="nm">' + name + "</td>";
     if (mode === "tr") {
-      return tr + "<td>" + money(r.min) + '</td><td class="pct">' + (sortKey === "vg" ? vendorHtml(r) : pctHtml(r)) + '</td><td class="pct hide-s">' + (tradeHtml(r) || DASH) +
+      return tr + "<td>" + money(r.min) + '</td><td class="pct">' + pctHtml(r) + '</td><td class="pct hide-s">' + (tradeHtml(r) || DASH) +
         '</td><td class="pct">' + btHtml(r) + "</td><td>" + num(r.qty) + "</td>" + day + "</tr>";
     }
     return tr + '<td class="kat hide-s">' + catCell(r) + '</td><td class="hide-s">' + (r.lvl ? r.lvl : DASH) + "</td><td>" + money(r.min) +
@@ -867,7 +846,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   // Kolumnerna efter läget. [nyckel, text, tips, klass]
   function headHtml() {
     var cols = mode === "tr"
-      ? [["name", "col_item"], ["min", "col_min", "col_min_tip"], sortKey === "vg" ? ["vg", "col_vendor", "col_vendor_tip"] : ["dip", "col_pct_s", "col_pct_tip"], ["tg", "col_trade", "day_tip", "hide-s"],
+      ? [["name", "col_item"], ["min", "col_min", "col_min_tip"], ["dip", "col_pct_s", "col_pct_tip"], ["tg", "col_trade", "day_tip", "hide-s"],
          ["btg", "col_best", "col_best_tip"], ["qty", "col_qty"], ["day", "col_day", "col_day_tip", "hide-s"]]
       : [["name", "col_item"], ["cat", "col_cat", null, "kat hide-s"], ["lvl", "col_lvl", "col_lvl_tip", "hide-s"], ["min", "col_min", "col_min_tip"],
          ["qty", "col_qty"], ["day", "col_day", "col_day_tip", "hide-s"]];
@@ -876,21 +855,10 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
         (c[0] === sortKey ? ' aria-sort="' + (sortDir > 0 ? "ascending" : "descending") + '"' : "") + ">" + t(c[1]) + "</button></th>";
     }).join("") + "</tr>";
   }
-  // Lägesknapparna och Tradings sorteringsknappar.
-  var SORTS = { cheap: ["dip", -1], dear: ["dip", 1], day: ["tg", -1], best: ["btg", -1], vendor: ["vg", -1] };
+  // Lägesknapparna. I Trading sorterar man på kolumnrubrikerna (Nu, Dygn, Bästa tid), inga extra knappar (Joakim 2026-11-16).
   function drawMode() {
     $("modeAh").setAttribute("aria-pressed", mode === "ah" ? "true" : "false");
     $("modeTr").setAttribute("aria-pressed", mode === "tr" ? "true" : "false");
-    $("sorts").hidden = mode !== "tr";
-    var bs = $("sorts").querySelectorAll("[data-sort]");
-    for (var i = 0; i < bs.length; i++) {
-      var so = SORTS[bs[i].getAttribute("data-sort")];
-      bs[i].setAttribute("aria-pressed", so[0] === sortKey && so[1] === sortDir ? "true" : "false");
-    }
-    var nv = 0;
-    rows.forEach(function (r) { if (r.vg) nv++; });
-    var vb = $("sorts").querySelector('[data-sort="vendor"]');
-    if (vb) vb.textContent = t("s_vendor") + " (" + num(nv) + ")";
   }
   function draw() {
     var html = "";
@@ -1054,7 +1022,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       "<div><dt>" + t(r.exact ? "f_now" : "f_max") + "</dt><dd>" + num(r.qty) + "</dd></div>" +
       (r.lvl ? "<div><dt>" + t("col_lvl_tip") + "</dt><dd>" + r.lvl + "</dd></div>" : "") +
       (r.day ? "<div><dt>" + t("f_day") + '</dt><dd><span class="est">' + num(r.day) + "</span></dd></div>" : "") +
-      (r.sp ? "<div><dt>" + t("f_sell") + "</dt><dd>" + money(r.sp) + (r.vg ? ' <span class="down2">+' + moneyText(r.vg) + "</span>" : "") + "</dd></div>" : "") +
+      (r.sp ? "<div><dt>" + t("f_sell") + "</dt><dd>" + money(r.sp) + "</dd></div>" : "") +
       (best ? '<div class="wide"><dt title="' + esc(t("col_best_tip")) + '">' + t("col_best") + "</dt><dd>" + best + "</dd></div>" : "") +
       (r.gear ? '<div class="wide"><dd class="dim">' + t("f_gear") + "</dd></div>" : "");
     $("detail").innerHTML =
@@ -1167,13 +1135,6 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   }
   $("modeAh").addEventListener("click", function () { setMode("ah"); });
   $("modeTr").addEventListener("click", function () { setMode("tr"); });
-  $("sorts").addEventListener("click", function (e) {
-    var b = e.target.closest("[data-sort]");
-    if (!b) return;
-    var so = SORTS[b.getAttribute("data-sort")];
-    sortKey = so[0]; sortDir = so[1];
-    refresh(); toTop();
-  });
   $("chipAll").addEventListener("click", function () {
     showAll = !showAll;
     this.setAttribute("aria-pressed", showAll ? "true" : "false");
