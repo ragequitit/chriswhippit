@@ -317,6 +317,8 @@ td.nm, .watch td:first-child { text-align: left; white-space: nowrap; max-width:
 .cmppick .cbtn { height: 30px; padding: 0 12px; border-radius: 4px; border: 1px solid var(--edge); background: linear-gradient(#7a1f15, #4a120c); color: #fff; font: inherit; cursor: pointer; }
 .cmpopts { flex-basis: 100%; display: flex; flex-wrap: wrap; gap: 6px; }
 .cmpopt { all: unset; cursor: pointer; padding: 3px 10px; border: 1px solid var(--line); border-radius: 12px; font-size: 13px; } .cmpopt:hover { border-color: var(--edge); color: var(--gold); }
+.cmpclose { all: unset; cursor: pointer; padding: 4px 12px; border: 1px solid var(--bronze); border-radius: 4px; background: var(--inset); color: var(--gold); font-size: 13px; }
+.cmpclose:hover { border-color: var(--edge); background: var(--hover); }
 .cmptop { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 10px; }
 .cmphd { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: start; gap: 12px; margin-bottom: 14px; }
 .cmpcard { display: flex; align-items: center; gap: 10px; min-width: 0; } .cmpcard.b { flex-direction: row-reverse; text-align: right; }
@@ -853,7 +855,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       qa_note: "Color = quest level against the character's level, as in the quest log.", ar_ach: "Achievements", ach_pts: "%1 points", ach_none: "No achievements yet.",
       tal_char: "%1's talents", tal_plan: "Plan your own", tal_left: "%1 points left", tal_lvl: "Requires level %1", tal_reset: "Reset", tal_copy: "Copy %1's", tal_used: "%1 points spent",
       tal_rank: "Rank %1/%2", tal_next: "Next rank:", tal_req_pts: "Requires %1 points in %2 talents", tal_req: "Requires %1 points in %2", tal_hint: "Click: add a point · Right-click: remove.",
-      tal_noicons: "Talent icons come from the game and are still being collected.", tal_nocls: "No talent data for this class.", rep_area: "Area", rep_name: "Name", rep_standing: "Standing", cmp: "Compare", cmp_tip: "Compare with another player side by side", cmp_with: "Compare with", cmp_ph: "First Last", cmp_go: "Compare", cmp_same: "Pick another player", cmp_swap: "Swap", cmp_gear: "Equipment", cmp_score: "Who's ahead", cmp_stats: "Stats, PvP and professions", cmp_note: "Rows where one of you is ahead. Green = more.", cmp_power: "Power", ar_forget: "Remove", ar_forget_tip: "Remove from Recent", ro_seen: "Seen", ro_seen_tip: "Last login (Blizzard)", ro_now: "now", ro_h: "%1 h ago", ro_d: "%1 d ago", ro_only: "Show only %1s", ro_all: "Show all classes", ro_shown: "%1 of %2 members", ar_picnote_tip: "Rendered by Blizzard: it can lag behind the gear or show the wrong character.", st_primary: "Primary Attributes", st_defense: "Defense", st_combat: "Combat", st_ap: "Attack Power", st_sp: "Spell Power", st_parry: "Parry", st_block: "Block", st_rcrit: "Ranged crit",
+      tal_noicons: "Talent icons come from the game and are still being collected.", tal_nocls: "No talent data for this class.", rep_area: "Area", rep_name: "Name", rep_standing: "Standing", cmp: "Compare", cmp_tip: "Compare with another player side by side", cmp_with: "Compare with", cmp_ph: "First Last", cmp_go: "Compare", cmp_same: "Pick another player", cmp_swap: "Swap", cmp_close: "Close comparison", cmp_close_tip: "Back to %1", cmp_gear: "Equipment", cmp_score: "Who's ahead", cmp_stats: "Stats, PvP and professions", cmp_note: "Rows where one of you is ahead. Green = more.", cmp_power: "Power", ar_forget: "Remove", ar_forget_tip: "Remove from Recent", ro_seen: "Seen", ro_seen_tip: "Last login (Blizzard)", ro_now: "now", ro_h: "%1 h ago", ro_d: "%1 d ago", ro_only: "Show only %1s", ro_all: "Show all classes", ro_shown: "%1 of %2 members", ar_picnote_tip: "Rendered by Blizzard: it can lag behind the gear or show the wrong character.", st_primary: "Primary Attributes", st_defense: "Defense", st_combat: "Combat", st_ap: "Attack Power", st_sp: "Spell Power", st_parry: "Parry", st_block: "Block", st_rcrit: "Ranged crit",
       ar_craft: "Known recipes", ar_sells: "Sells for", ar_cost: "Cost", ar_profit: "Profit", ar_noprice: "no price", ar_nofr: "Recipe names are not available right now.", ar_ilvl: "Item level",
       ar_crafters: "Who can craft what", ar_crafters_load: "Loading professions… %1 / %2", ar_crafters_q: "Recipe name, e.g. Bolt of Woolen Cloth", ar_nobody: "Nobody in the guild knows a recipe with that name.",
       ar_nobody_p: "No professions found in the guild.", skill_unknown: "skill requirement unknown", ar_friends: "Friends", ar_recipes_n: "%1 rec.", ar_quests: "Quests done", ar_general: "General", st_health: "Health", st_str: "Strength", st_agi: "Agility", st_sta: "Stamina", st_int: "Intellect", st_spi: "Spirit", st_armor: "Armor", st_crit: "Crit", st_scrit: "Spell crit", st_dodge: "Dodge",
@@ -1303,7 +1305,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       if (my !== arCmpBusy || arData !== a) return;
       arCmpBusy = 0; arCmpPick = false; arCmp = { b: b };
       arRemember("char", b.slug, b.name + " " + b.surname); arRemember("char", a.slug, a.name + " " + a.surname); drawCats();
-      try { history.replaceState(null, "", "#player=" + a.slug + "&vs=" + b.slug); } catch (e) {}
+      try { history.replaceState(null, "", "#player=" + a.slug); } catch (e) {}   // F5 visar spelaren, inte jämförelsen (Joakim 2026-11-17); Copy link ger &vs=
       renderCompare(a, b);
     }).catch(function (e) {
       if (my !== arCmpBusy || arData !== a) return;
@@ -1331,7 +1333,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     var plain = function (lbl, x, y) { return x == null && y == null ? "" : cmpRow(lbl, x, y, x != null ? num(x) : null, y != null ? num(y) : null); };
     var pc = function (lbl, x, y, always) { return !always && !x && !y ? "" : cmpRow(lbl, x || 0, y || 0, pct(x || 0), pct(y || 0), "%"); };
     var samePow = (sa.powerType || "") === (sb.powerType || "");
-    var h = '<div class="cmp"><div class="cmptop"><button class="lnk" type="button" data-cmpclose="1">‹ ' + esc(a.name + " " + a.surname) + '</button><span class="ahbtns">' +
+    var h = '<div class="cmp"><div class="cmptop"><button class="cmpclose" type="button" data-cmpclose="1" title="' + t("cmp_close_tip", esc(a.name + " " + a.surname)) + '">✕ ' + t("cmp_close") + "</button>" + '<span class="ahbtns">' +
       '<button class="lnk" type="button" data-cmpswap="1">⇄ ' + t("cmp_swap") + '</button><button class="lnk" type="button" data-copyany="#player=' + esc(a.slug) + "&vs=" + esc(b.slug) + '" title="' + t("copy_link") + '">' + t("copy_link") + "</button></span></div>" +
       '<div class="cmphd">' + cmpCard(a, "a") + '<span class="vs">VS</span>' + cmpCard(b, "b") + "</div>" +
       '<div class="cmpbody"><div class="cmpcol">' +
@@ -2782,7 +2784,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     }
     if (e.target.closest("[data-cmpswap]") && arData && arCmp) {
       var b0 = arCmp.b; arCmp = { b: arData }; arData = b0; arRec = 0;
-      try { history.replaceState(null, "", "#player=" + arData.slug + "&vs=" + arCmp.b.slug); } catch (e6) {}
+      try { history.replaceState(null, "", "#player=" + arData.slug); } catch (e6) {}
       renderCompare(arData, arCmp.b); drawCats(); return;
     }
     var qz = e.target.closest("[data-arqz]");
@@ -2929,7 +2931,10 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   $("modeAh").addEventListener("click", function () { setMode("ah"); });
   $("modeTr").addEventListener("click", function () { setMode("tr"); });
   $("modeCr").addEventListener("click", function () { setMode("cr"); });
-  $("modeAr").addEventListener("click", function () { setMode("ar"); });
+  $("modeAr").addEventListener("click", function () {
+    if (mode === "ar" && arCmp && arData) { arCmp = null; renderChar(arData); drawCats(); return; }   // Armory-fliken stänger jämförelsen
+    setMode("ar");
+  });
   $("modeQu").addEventListener("click", function () { setMode("qu"); });
   $("modeDg").addEventListener("click", function () { setMode("dg"); });
   document.addEventListener("change", function (e) { if (e.target && e.target.id === "quPlayer") setQuPlayer(e.target.value); });
