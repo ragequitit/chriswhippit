@@ -291,6 +291,12 @@ td.nm, .watch td:first-child { text-align: left; white-space: nowrap; max-width:
 .roster .ri { width: 20px; height: 20px; border-radius: 3px; vertical-align: middle; margin-right: 6px; border: 1px solid #000; }
 .roster .ri.none { display: inline-block; border: 0; }
 .glbl { color: var(--grey); font-size: 13px; letter-spacing: .02em; }
+.roster th.rs button { all: unset; cursor: pointer; } .roster th.rs button:hover { color: var(--fg); }
+.roster th[aria-sort=ascending] button, .roster th[aria-sort=descending] button { color: var(--fg); }
+.rcls { all: unset; cursor: pointer; display: inline-flex; align-items: center; } .rcls:hover span { text-decoration: underline; }
+.rchip { display: flex; align-items: center; gap: 10px; margin: 0 0 8px; font-size: 13px; }
+.rchip .ri { width: 20px; height: 20px; border-radius: 3px; margin-right: 4px; border: 1px solid #000; }
+.rchip .rcls { padding: 3px 9px 3px 4px; border: 1px solid var(--bronze); border-radius: 12px; background: var(--inset); gap: 2px; }
 .arhead .glbl { font-size: 15px; margin-right: -4px; } .roster td.pvp, .roster th.pvp { text-align: left; } .roster a { color: inherit; text-decoration: none; } .roster a:hover { color: var(--gold); }
 /* Quests och Dungeons (Joakim 2026-11-16): nivå först i vänsterspalten, sedan zon/instans. */
 .cat.grp { margin-top: 8px; border-top: 1px solid var(--line); border-radius: 0 0 4px 4px; color: var(--gold); font-family: var(--display); font-size: 13.5px; letter-spacing: .03em; }
@@ -753,7 +759,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       search_ar: "Player: first and last name – or a guild", ar_hint: "Type a player's first and last name (e.g. Alisee Alistar), or a guild name, and press Search.",
       ar_recent: "Recent", ar_loading: "Looking up…", ar_notfound: "No player or guild with that name. Players show up from level 10, after logging out.",
       ar_fail: "The lookup is not available right now.", ar_off: "The armory is not connected yet.",
-      ar_level: "Level %1 %2 %3", ar_guild: "Guild", ar_player: "Player", ar_picnote: "Picture by Blizzard – may be out of date.", ar_picnote_tip: "Rendered by Blizzard: it can lag behind the gear or show the wrong character.", st_primary: "Primary Attributes", st_defense: "Defense", st_combat: "Combat", st_ap: "Attack Power", st_sp: "Spell Power", st_parry: "Parry", st_block: "Block", st_rcrit: "Ranged crit",
+      ar_level: "Level %1 %2 %3", ar_guild: "Guild", ar_player: "Player", ar_picnote: "Picture by Blizzard – may be out of date.", ro_ilvl: "iLvl", ro_only: "Show only %1s", ro_all: "Show all classes", ro_shown: "%1 of %2 members", ar_picnote_tip: "Rendered by Blizzard: it can lag behind the gear or show the wrong character.", st_primary: "Primary Attributes", st_defense: "Defense", st_combat: "Combat", st_ap: "Attack Power", st_sp: "Spell Power", st_parry: "Parry", st_block: "Block", st_rcrit: "Ranged crit",
       ar_craft: "Known recipes", ar_sells: "Sells for", ar_cost: "Cost", ar_profit: "Profit", ar_noprice: "no price", ar_nofr: "Recipe names are not available right now.", ar_ilvl: "Item level",
       ar_crafters: "Who can craft what", ar_crafters_load: "Loading professions… %1 / %2", ar_crafters_q: "Recipe name, e.g. Bolt of Woolen Cloth", ar_nobody: "Nobody in the guild knows a recipe with that name.",
       ar_nobody_p: "No professions found in the guild.", skill_unknown: "skill requirement unknown", ar_friends: "Friends", ar_recipes_n: "%1 rec.", ar_quests: "Quests done", ar_general: "General", st_health: "Health", st_str: "Strength", st_agi: "Agility", st_sta: "Stamina", st_int: "Intellect", st_spi: "Spirit", st_armor: "Armor", st_crit: "Crit", st_scrit: "Spell crit", st_dodge: "Dodge",
@@ -1181,8 +1187,8 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     return '<td class="av">' + (x && x.avatar ? '<img src="' + esc(x.avatar) + '" alt="" loading="lazy">' : '<span class="noav"></span>') + "</td>" +
       '<td class="nm"><a href="#player=' + esc(m.slug) + '" data-ar="char" data-slug="' + esc(m.slug) + '">' + esc(m.name + " " + m.surname) + "</a></td><td>" + m.level + "</td>" +
       '<td class="rc">' + (race ? raceIcon(race, x && x.gender) + "<span>" + esc(race) + "</span>" : dash) + "</td>" +
-      '<td class="rc">' + (cls ? classIcon(cls) + '<span style="color:' + (CLASS_COL[cls] || "inherit") + '">' + esc(cls) + "</span>" : dash) + "</td>" +
-      "<td>" + (m.rank === 0 ? "GM" : m.rank) + '</td><td class="pvp">' + (pv ? rankBadge(d.faction, pv.rank) || '<span class="dim">–</span>' : dash) + "</td><td>" + (pv ? num(pv.hk) : dash) + "</td>";
+      '<td class="rc">' + (cls ? '<button class="rcls" type="button" data-rcls="' + esc(cls) + '" title="' + t(rState.cls === cls ? "ro_all" : "ro_only", cls) + '">' + classIcon(cls) + '<span style="color:' + (CLASS_COL[cls] || "inherit") + '">' + esc(cls) + "</span></button>" : dash) + "</td>" +
+      "<td>" + (m.rank === 0 ? "GM" : m.rank) + "</td><td>" + (x && x.ilvl ? x.ilvl : dash) + '</td><td class="pvp">' + (pv ? rankBadge(d.faction, pv.rank) || '<span class="dim">–</span>' : dash) + "</td><td>" + (pv ? num(pv.hk) : dash) + "</td>";
   }
   function fillMember(d, slug) {
     var x = (crafters[d.slug] || crPart[d.slug] || {})[slug], tr = document.querySelector('tr[data-mrow="' + slug + '"]');
@@ -1190,15 +1196,48 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     var m = d.members.filter(function (mm) { return arSlug(mm.name + " " + mm.surname) === slug; })[0];
     if (m) tr.innerHTML = rosterCells(d, { slug: slug, name: m.name, surname: m.surname, level: m.level, race: m.race, cls: m.cls, rank: m.rank }, x);
   }
-  function renderGuild(d) {
-    var cr = crafters[d.slug] || crPart[d.slug] || {};
-    var rows = d.members.slice().sort(function (a, b) { return b.level - a.level || a.name.localeCompare(b.name); }).map(function (m) {
-      var slug = arSlug(m.name + " " + m.surname);
-      return '<tr data-mrow="' + esc(slug) + '">' + rosterCells(d, { slug: slug, name: m.name, surname: m.surname, level: m.level, race: m.race, cls: m.cls, rank: m.rank }, cr[slug]) + "</tr>";
+  // Sortering och klassfilter (per guild; ny guild = level, inget filter). Saknad data (ännu inte hämtad) hamnar sist.
+  var rState = { slug: "", key: "level", dir: -1, cls: "" };
+  var R_COLS = [["nm", "name", "Name"], ["", "level", "col_lvl"], ["rc", "race", "Race"], ["rc", "cls", "Class"], ["", "rank", "ar_rank"], ["", "ilvl", "ro_ilvl"], ["pvp", "pvp", "col_pvp"], ["", "hk", "col_hk"]];
+  var R_TEXT = { name: 1, race: 1, cls: 1, rank: 1 };   // stigande från början (rank: GM först)
+  function rosterVal(m, x, key) {
+    if (key === "name") return (m.name + " " + m.surname).toLowerCase();
+    if (key === "level") return m.level;
+    if (key === "race") return (m.race || (x && x.race) || "").toLowerCase() || null;
+    if (key === "cls") return (m.cls || (x && x.cls) || "").toLowerCase() || null;
+    if (key === "rank") return m.rank;
+    if (key === "ilvl") return x && x.ilvl ? x.ilvl : null;
+    if (key === "pvp") return x && x.pvp ? x.pvp.rank : null;
+    if (key === "hk") return x && x.pvp ? x.pvp.hk : null;
+    return null;
+  }
+  function rosterHtml(d) {
+    var cr = crafters[d.slug] || crPart[d.slug] || {}, k = rState.key, dir = rState.dir;
+    var list = d.members.map(function (m) { var slug = arSlug(m.name + " " + m.surname); return { m: m, slug: slug, x: cr[slug] }; });
+    if (rState.cls) list = list.filter(function (e) { return (e.m.cls || (e.x && e.x.cls)) === rState.cls; });
+    list.sort(function (a, b) {
+      var va = rosterVal(a.m, a.x, k), vb = rosterVal(b.m, b.x, k);
+      if (va == null || vb == null) { if (va == null && vb != null) return 1; if (vb == null && va != null) return -1; }
+      else if (va !== vb) return (va < vb ? -1 : 1) * dir;
+      return b.m.level - a.m.level || a.m.name.localeCompare(b.m.name);
+    });
+    var rows = list.map(function (e) {
+      return '<tr data-mrow="' + esc(e.slug) + '">' + rosterCells(d, { slug: e.slug, name: e.m.name, surname: e.m.surname, level: e.m.level, race: e.m.race, cls: e.m.cls, rank: e.m.rank }, e.x) + "</tr>";
     }).join("");
+    var head = '<th class="av"></th>' + R_COLS.map(function (c) {
+      var on = k === c[1], lbl = c[2].indexOf("_") > 0 ? t(c[2]) : c[2];
+      return '<th class="' + c[0] + ' rs"' + (c[1] === "hk" ? ' title="Honorable kills"' : c[1] === "ilvl" ? ' title="' + t("ar_ilvl") + '"' : "") + ' aria-sort="' + (on ? (dir > 0 ? "ascending" : "descending") : "none") + '"><button type="button" data-rsort="' + c[1] + '">' + lbl + (on ? (dir > 0 ? " ▴" : " ▾") : "") + "</button></th>";
+    }).join("");
+    var chip = rState.cls ? '<div class="rchip"><button class="rcls on" type="button" data-rcls="' + esc(rState.cls) + '">' + classIcon(rState.cls) + '<span style="color:' + (CLASS_COL[rState.cls] || "inherit") + '">' + esc(rState.cls) + "</span> ✕</button>" +
+      '<span class="dim">' + t("ro_shown", list.length, d.members.length) + "</span></div>" : "";
+    return chip + '<table class="roster"><thead><tr>' + head + "</tr></thead><tbody>" + rows + "</tbody></table>";
+  }
+  function drawRoster(d) { var b = document.querySelector(".roster-box"); if (b) b.innerHTML = rosterHtml(d); }
+  function renderGuild(d) {
+    if (rState.slug !== d.slug) rState = { slug: d.slug, key: "level", dir: -1, cls: "" };
     var mid = '<div class="arhead"><span class="glbl">' + t("ar_guild") + ':</span><h2 class="q1">&lt;' + esc(d.name) + '&gt;</h2><span class="sub2">' + (d.faction === "ALLIANCE" ? "Alliance" : "Horde") + " · " + num(d.count) + " " + t("ar_members").toLowerCase() + "</span>" +
       '<button class="lnk" type="button" data-copyany="#guild=' + esc(d.slug) + '" title="' + t("copy_link") + '">' + t("copy_link") + "</button></div>" +
-      '<div class="roster-box"><table class="roster"><thead><tr><th class="av"></th><th class="nm">Name</th><th>' + t("col_lvl") + '</th><th class="rc">Race</th><th class="rc">Class</th><th>' + t("ar_rank") + '</th><th class="pvp">' + t("col_pvp") + '</th><th title="Honorable kills">' + t("col_hk") + "</th></tr></thead><tbody>" + rows + "</tbody></table></div>";
+      '<div class="roster-box">' + rosterHtml(d) + "</div>";
     var right = '<div class="strip"><h2 class="q1">' + esc(d.name) + "</h2><small>" + t("ar_roster") + "</small></div>" +
       '<dl class="facts"><div><dt>' + t("ar_faction") + "</dt><dd>" + (d.faction === "ALLIANCE" ? "Alliance" : "Horde") + "</dd></div><div><dt>" + t("ar_members") + "</dt><dd>" + num(d.count) + "</dd></div></dl>" +
       '<div id="crafters"></div>';
@@ -1218,7 +1257,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       if (!list.length) return Promise.resolve();
       var x = list.shift();
       return fetch(ARMORY_API + "/profs/" + encodeURIComponent(x.slug)).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; })
-        .then(function (j) { if (j) { out[x.slug] = { m: x.m, profs: j.professions, pvp: j.pvp || null, avatar: j.avatar || null, gender: j.gender || null, race: j.race || "", cls: j.cls || "" }; fillMember(d, x.slug); } done++; var n = box.querySelector(".note"); if (n) n.textContent = t("ar_crafters_load", done, done + list.length); return next(); });
+        .then(function (j) { if (j) { out[x.slug] = { m: x.m, profs: j.professions, pvp: j.pvp || null, avatar: j.avatar || null, ilvl: j.ilvl || 0, gender: j.gender || null, race: j.race || "", cls: j.cls || "" }; fillMember(d, x.slug); } done++; var n = box.querySelector(".note"); if (n) n.textContent = t("ar_crafters_load", done, done + list.length); return next(); });
     };
     Promise.all([loadFR(), next(), next(), next(), next(), next(), next()]).then(function () {
       crafters[d.slug] = out; crBusy[d.slug] = false;
@@ -2258,6 +2297,14 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     if (fb) { e.stopPropagation(); toggleFriend(fb.dataset.friend, fb.dataset.label); return; }
     var sec = e.target.closest("[data-arsec]");
     if (sec) { arSec[sec.dataset.arsec] = !arSec[sec.dataset.arsec]; try { localStorage.setItem(SEC_KEY, JSON.stringify(arSec)); } catch (e2) {} drawCats(); return; }
+    var rs = e.target.closest("[data-rsort]");
+    if (rs && arData && arData.kind === "guild") {
+      var key = rs.dataset.rsort;
+      if (rState.key === key) rState.dir = -rState.dir; else { rState.key = key; rState.dir = R_TEXT[key] ? 1 : -1; }
+      drawRoster(arData); return;
+    }
+    var rc = e.target.closest("[data-rcls]");
+    if (rc && arData && arData.kind === "guild") { rState.cls = rState.cls === rc.dataset.rcls ? "" : rc.dataset.rcls; drawRoster(arData); return; }
     var tg = e.target.closest("[data-artoggle]");
     if (tg && arData && arData.kind === "character") { arOpen[tg.dataset.artoggle] = !arOpen[tg.dataset.artoggle]; renderChar(arData); return; }
     var ab = e.target.closest("[data-arback]");
