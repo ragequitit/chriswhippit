@@ -283,7 +283,15 @@ td.nm, .watch td:first-child { text-align: left; white-space: nowrap; max-width:
 .known { margin: 0 0 6px; }
 .known .craft td.nm { text-align: left; width: 60%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 0; }
 .known .craft td, .known .craft th { padding: 4px 6px; font-size: 13px; }
-.roster td.nm { width: 40%; } .roster td.pvp, .roster th.pvp { text-align: left; } .roster a { color: inherit; text-decoration: none; } .roster a:hover { color: var(--gold); }
+.roster td.nm { width: 26%; min-width: 140px; }
+/* Roster (Joakim 2026-11-17): profilbild framför namnet, ras och klass var för sig med spelets ikoner, PvP och HK alltid. */
+.roster td { height: 40px; }
+.roster .av { width: 40px; padding-right: 0; } .roster td.av img, .roster td.av .noav { display: block; width: 34px; height: 34px; border-radius: 5px; border: 1px solid var(--edge); background: var(--inset); object-fit: cover; }
+.roster .rc { text-align: left; white-space: nowrap; } .roster td.rc { display: table-cell; }
+.roster .ri { width: 20px; height: 20px; border-radius: 3px; vertical-align: middle; margin-right: 6px; border: 1px solid #000; }
+.roster .ri.none { display: inline-block; border: 0; }
+.glbl { color: var(--grey); font-size: 13px; letter-spacing: .02em; }
+.arhead .glbl { font-size: 15px; margin-right: -4px; } .roster td.pvp, .roster th.pvp { text-align: left; } .roster a { color: inherit; text-decoration: none; } .roster a:hover { color: var(--gold); }
 /* Quests och Dungeons (Joakim 2026-11-16): nivå först i vänsterspalten, sedan zon/instans. */
 .cat.grp { margin-top: 8px; border-top: 1px solid var(--line); border-radius: 0 0 4px 4px; color: var(--gold); font-family: var(--display); font-size: 13.5px; letter-spacing: .03em; }
 .cath { color: var(--gold); font-family: var(--display); font-size: 12.5px; letter-spacing: .05em; text-transform: uppercase; padding: 12px 10px 4px; }
@@ -1131,7 +1139,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     // Rubriken (Joakim 2026-11-17): guilden överst, ★ till vänster om namnet, level inom parentes efter, ras och klass under.
     var full = d.name + " " + d.surname, profN = d.professions.primary.length + d.professions.secondary.length;
     var mid = '<div class="arhead2"><div class="ahtop">' +
-      (d.guild ? '<a class="wh gld" href="#guild=' + esc(d.guild.slug) + '" data-ar="guild" data-slug="' + esc(d.guild.slug) + '">&lt;' + esc(d.guild.name) + "&gt;</a>" : "<span></span>") +
+      (d.guild ? '<span class="glbl">' + t("ar_guild") + ':</span> <a class="wh gld" href="#guild=' + esc(d.guild.slug) + '" data-ar="guild" data-slug="' + esc(d.guild.slug) + '">&lt;' + esc(d.guild.name) + "&gt;</a>" : "<span></span>") +
       '<button class="lnk" type="button" data-copyany="#player=' + esc(d.slug) + '" title="' + t("copy_link") + '">' + t("copy_link") + "</button></div>" +
       '<div class="ahname"><button class="star fr" type="button" data-friend="' + esc(d.slug) + '" data-label="' + esc(full) + '" aria-pressed="' + fr + '" title="' + t(fr ? "fr_del" : "fr_add") + '">' + (fr ? "★" : "☆") + "</button>" +
       '<h2 class="q1">' + esc(full) + '</h2><span class="lvl">(' + d.level + ")</span></div>" +
@@ -1160,38 +1168,60 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     }
     arShow(mid, right);
   }
+  // Ras- och klassikoner från Blizzards ikonserver (spelets egna). Forevers Skyborne-raser saknar ikon där: bara namnet.
+  var RACE_IC = { "Human": "human", "Orc": "orc", "Dwarf": "dwarf", "Night Elf": "nightelf", "Undead": "undead", "Tauren": "tauren", "Gnome": "gnome", "Troll": "troll" };
+  var CLASS_COL = { Warrior: "#c69b6d", Paladin: "#f48cba", Hunter: "#aad372", Rogue: "#fff468", Priest: "#ffffff", Shaman: "#0070dd", Mage: "#3fc7eb", Warlock: "#8788ee", Druid: "#ff7c0a" };
+  var RICON = "https://render.worldofwarcraft.com/classic1x-eu/icons/56/";
+  function raceIcon(race, gender) { var k = RACE_IC[race]; return k ? '<img class="ri" src="' + RICON + "achievement_character_" + k + "_" + (gender === "FEMALE" ? "female" : "male") + '.jpg" alt="" loading="lazy">' : '<span class="ri none"></span>'; }
+  function classIcon(cls) { return CLASS_COL[cls] ? '<img class="ri" src="' + RICON + "classicon_" + cls.toLowerCase() + '.jpg" alt="" loading="lazy">' : '<span class="ri none"></span>'; }
+  // En rads celler som fylls i när medlemmens data kommit (profilbild, kön, PvP): ritas om på plats, inte hela tabellen.
+  function rosterCells(d, m, x) {
+    var pv = x && x.pvp, race = m.race || (x && x.race) || "", cls = m.cls || (x && x.cls) || "", wait = !x && crBusy[d.slug];
+    var dash = '<span class="dim">' + (wait ? "…" : "–") + "</span>";
+    return '<td class="av">' + (x && x.avatar ? '<img src="' + esc(x.avatar) + '" alt="" loading="lazy">' : '<span class="noav"></span>') + "</td>" +
+      '<td class="nm"><a href="#player=' + esc(m.slug) + '" data-ar="char" data-slug="' + esc(m.slug) + '">' + esc(m.name + " " + m.surname) + "</a></td><td>" + m.level + "</td>" +
+      '<td class="rc">' + (race ? raceIcon(race, x && x.gender) + "<span>" + esc(race) + "</span>" : dash) + "</td>" +
+      '<td class="rc">' + (cls ? classIcon(cls) + '<span style="color:' + (CLASS_COL[cls] || "inherit") + '">' + esc(cls) + "</span>" : dash) + "</td>" +
+      "<td>" + (m.rank === 0 ? "GM" : m.rank) + '</td><td class="pvp">' + (pv ? rankBadge(d.faction, pv.rank) || '<span class="dim">–</span>' : dash) + "</td><td>" + (pv ? num(pv.hk) : dash) + "</td>";
+  }
+  function fillMember(d, slug) {
+    var x = (crafters[d.slug] || crPart[d.slug] || {})[slug], tr = document.querySelector('tr[data-mrow="' + slug + '"]');
+    if (!tr || !x || !(arData && arData.kind === "guild" && arData.slug === d.slug)) return;
+    var m = d.members.filter(function (mm) { return arSlug(mm.name + " " + mm.surname) === slug; })[0];
+    if (m) tr.innerHTML = rosterCells(d, { slug: slug, name: m.name, surname: m.surname, level: m.level, race: m.race, cls: m.cls, rank: m.rank }, x);
+  }
   function renderGuild(d) {
-    // PvP-rank och honorable kills fylls i när "Who can craft what" hämtat medlemmarna (samma anrop ger pvp-summary).
-    var cr = crafters[d.slug] || null;
+    var cr = crafters[d.slug] || crPart[d.slug] || {};
     var rows = d.members.slice().sort(function (a, b) { return b.level - a.level || a.name.localeCompare(b.name); }).map(function (m) {
-      var slug = arSlug(m.name + " " + m.surname), pv = cr && cr[slug] && cr[slug].pvp;
-      return '<tr><td class="nm"><a href="#player=' + esc(slug) + '" data-ar="char" data-slug="' + esc(slug) + '">' + esc(m.name + " " + m.surname) + "</a></td><td>" + m.level + "</td><td>" + (m.cls ? esc((m.race ? m.race + " " : "") + m.cls) : '<span class="dim">–</span>') + "</td><td>" + (m.rank === 0 ? "GM" : m.rank) +
-        (cr ? '</td><td class="pvp">' + (pv ? rankBadge(d.faction, pv.rank) || '<span class="dim">–</span>' : '<span class="dim">–</span>') + "</td><td>" + (pv ? num(pv.hk) : '<span class="dim">–</span>') : "") + "</td></tr>";
+      var slug = arSlug(m.name + " " + m.surname);
+      return '<tr data-mrow="' + esc(slug) + '">' + rosterCells(d, { slug: slug, name: m.name, surname: m.surname, level: m.level, race: m.race, cls: m.cls, rank: m.rank }, cr[slug]) + "</tr>";
     }).join("");
-    var mid = '<div class="arhead"><h2 class="q1">&lt;' + esc(d.name) + '&gt;</h2><span class="sub2">' + (d.faction === "ALLIANCE" ? "Alliance" : "Horde") + " · " + num(d.count) + " " + t("ar_members").toLowerCase() + "</span>" +
+    var mid = '<div class="arhead"><span class="glbl">' + t("ar_guild") + ':</span><h2 class="q1">&lt;' + esc(d.name) + '&gt;</h2><span class="sub2">' + (d.faction === "ALLIANCE" ? "Alliance" : "Horde") + " · " + num(d.count) + " " + t("ar_members").toLowerCase() + "</span>" +
       '<button class="lnk" type="button" data-copyany="#guild=' + esc(d.slug) + '" title="' + t("copy_link") + '">' + t("copy_link") + "</button></div>" +
-      '<div class="roster-box"><table class="roster"><thead><tr><th class="nm">' + t("col_item").replace(/.*/, "Name") + "</th><th>" + t("col_lvl") + "</th><th>Class</th><th>" + t("ar_rank") + "</th>" + (cr ? '<th class="pvp">' + t("col_pvp") + "</th><th>" + t("col_hk") + "</th>" : "") + "</tr></thead><tbody>" + rows + "</tbody></table></div>";
+      '<div class="roster-box"><table class="roster"><thead><tr><th class="av"></th><th class="nm">Name</th><th>' + t("col_lvl") + '</th><th class="rc">Race</th><th class="rc">Class</th><th>' + t("ar_rank") + '</th><th class="pvp">' + t("col_pvp") + '</th><th title="Honorable kills">' + t("col_hk") + "</th></tr></thead><tbody>" + rows + "</tbody></table></div>";
     var right = '<div class="strip"><h2 class="q1">' + esc(d.name) + "</h2><small>" + t("ar_roster") + "</small></div>" +
       '<dl class="facts"><div><dt>' + t("ar_faction") + "</dt><dd>" + (d.faction === "ALLIANCE" ? "Alliance" : "Horde") + "</dd></div><div><dt>" + t("ar_members") + "</dt><dd>" + num(d.count) + "</dd></div></dl>" +
-      '<div id="crafters">' + (crafters[d.slug] ? "" : '<button class="star all" type="button" data-crafters="1">⚒ ' + t("ar_crafters") + "</button>") + "</div>";
+      '<div id="crafters"></div>';
     arShow(mid, right);
     if (crafters[d.slug]) drawCrafters(d);
+    else if (!crBusy[d.slug]) loadCrafters(d);   // profilbilder, PvP och yrken direkt (Joakim 2026-11-17)
   }
   // Guild: vem kan crafta vad (Joakim 2026-11-16). Yrkena hämtas per medlem (/profs/<slug>, ett Blizzard-anrop var) och
   // recepten slås upp i forever-recept.json. Sök på receptnamn → vilka som kan det, med skill; annars yrke för yrke.
-  var crafters = {}, crQ = "";
+  var crafters = {}, crQ = "", crPart = {}, crBusy = {};
   function loadCrafters(d) {
     var box = $("crafters"); if (!box) return;
     var list = d.members.map(function (m) { return { m: m, slug: arSlug(m.name + " " + m.surname) }; }), done = 0, out = {};
+    crPart[d.slug] = out; crBusy[d.slug] = true;
     box.innerHTML = '<div class="note">' + t("ar_crafters_load", 0, list.length) + "</div>";
     var next = function () {
       if (!list.length) return Promise.resolve();
       var x = list.shift();
       return fetch(ARMORY_API + "/profs/" + encodeURIComponent(x.slug)).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; })
-        .then(function (j) { if (j) out[x.slug] = { m: x.m, profs: j.professions, pvp: j.pvp || null }; done++; var n = box.querySelector(".note"); if (n) n.textContent = t("ar_crafters_load", done, done + list.length); return next(); });
+        .then(function (j) { if (j) { out[x.slug] = { m: x.m, profs: j.professions, pvp: j.pvp || null, avatar: j.avatar || null, gender: j.gender || null, race: j.race || "", cls: j.cls || "" }; fillMember(d, x.slug); } done++; var n = box.querySelector(".note"); if (n) n.textContent = t("ar_crafters_load", done, done + list.length); return next(); });
     };
     Promise.all([loadFR(), next(), next(), next(), next(), next(), next()]).then(function () {
-      crafters[d.slug] = out;
+      crafters[d.slug] = out; crBusy[d.slug] = false;
       if (arData && arData.kind === "guild" && arData.slug === d.slug) renderGuild(d);   // ritar om rostern med PvP-kolumnerna och crafters
     });
   }
