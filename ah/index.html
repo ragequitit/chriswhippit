@@ -727,7 +727,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       vendor_tag: "vendor", missing_n: "No price for %1 reagent(s): the cost is incomplete.", not_on_ah: "The crafted item is not on the auction house right now, so there is no selling price.",
       src_h: "Where to learn it", src_h_drop: "Where it drops", src_trainer: "Trainer", src_vendor: "Vendor", src_drop: "Drops from", src_quest: "Quest reward", src_none: "No known source in the Classic database.",
       limited: "limited stock", more_n: "and %1 more", requires: "requires %1", tier_1: "Apprentice", tier_2: "Journeyman", tier_3: "Expert", tier_4: "Artisan",
-      cr_source: "Recipes, trainer prices and sources from the open Classic database (1.12). Prices from the latest update.",
+      cr_source: "Recipes from Blizzard (WoW Forever); trainer prices and sources from the open Classic database (1.12). Skill levels of new Forever recipes from <a class=\"wh\" href=\"https://www.curseforge.com/projects/1422985\" target=\"_blank\" rel=\"noopener\">AtlasLoot Classic Forever</a> (GPL-2.0) and <a class=\"wh\" href=\"https://warcraft.wiki.gg/wiki/World_of_Warcraft:_Forever\" target=\"_blank\" rel=\"noopener\">Warcraft Wiki</a> (CC BY-SA 4.0). Prices from the latest update.",
       mode_ah: "Auction house", mode_ah_tip: "All items, like the in-game auction house", mode_tr: "Trading",
       mode_tr_tip: "Like a stock site: what is cheap and dear versus usual, day trade and the best time to buy and sell",
       col_best: "Best time", col_best_tip: "When in the day the item has been cheapest and dearest this week. The profit is after the AH's 5%.",
@@ -1032,7 +1032,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       if (!fr) return null;
       var item = fr[2], out = byId[item], sell = out && out.min > 0 ? out.min * (fr[5] || 1) : 0, cost = 0, miss = false;
       fr[3].forEach(function (rg) { var p = recPrice(rg[0]); if (!p) miss = true; cost += p * rg[1]; });
-      var profit = sell && !miss ? Math.round(sell * 0.95 - cost) : null, sk = skillOf[id] || 0;
+      var profit = sell && !miss ? Math.round(sell * 0.95 - cost) : null, sk = skillOf[id] || (RECEPT.skills && RECEPT.skills[id]) || 0;   // skills: förtrollningar, lägerföremål m.m. utanför receptlistan
       return { id: id, name: fr[0], item: item, q: out ? out.q : -1, sell: sell, profit: profit, skill: sk, tier: sk ? tierOf(sk) : 4 };
     }).filter(Boolean).sort(function (a, b) { return a.tier - b.tier || a.skill - b.skill || a.name.localeCompare(b.name); });
     if (!rows.length) return '<div class="note">' + t("ar_nofr") + "</div>";
