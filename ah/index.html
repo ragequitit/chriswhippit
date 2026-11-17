@@ -712,7 +712,6 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     <div class="mode" role="group">
       <button type="button" id="modeAh" aria-pressed="true" data-t-title="mode_ah_tip"><img class="mi" alt="" data-mi="ah"><span data-t="mode_ah">Auktionshus</span></button>
       <button type="button" id="modeTr" aria-pressed="false" data-t-title="mode_tr_tip"><img class="mi" alt="" data-mi="tr"><span data-t="mode_tr">Trading</span></button>
-      <button type="button" id="modeDe" aria-pressed="false" data-t-title="mode_de_tip"><img class="mi" alt="" data-mi="de" onerror="this.style.visibility='hidden'"><span data-t="mode_de">Disenchant</span></button>
       <button type="button" id="modeCr" aria-pressed="false" data-t-title="mode_cr_tip"><img class="mi" alt="" data-mi="cr"><span data-t="mode_cr">Professions</span></button>
       <button type="button" id="modeAr" aria-pressed="false" data-t-title="mode_ar_tip"><img class="mi" alt="" data-mi="ar"><span data-t="mode_ar">Armory</span></button>
       <button type="button" id="modeQu" aria-pressed="false" data-t-title="mode_qu_tip"><img class="mi" alt="" data-mi="qu" onerror="this.style.visibility='hidden'"><span data-t="mode_qu">Quests</span></button>
@@ -918,13 +917,15 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       lb_both: "Both sides", lb_player: "Player", lb_guild: "Guild", lb_n60: "Level 60s", lb_il60: "Item level (60s)", lb_avg: "Avg level", lb_members: "Members", lb_none: "Nobody here yet.", lb_fail: "The leaderboards could not be loaded.",
       lb_note: "Blizzard can only look up a player by name, so the list grows like a snowball: known players → their guild → its members → their guilds, plus the names WhippitPanel notes in the game. Refreshed daily; anyone not seen for 29 days drops out.",
       lb_how: "Click a player or guild to open it in the Armory. Guilds are ranked by level 60 members, then their average item level.",
+      de_watch: "All to My list", de_watch_tip: "Put every item in the list with a profit on My list (click again to remove them)",
+      de_ingame: "In game: WhippitPanel makes the Auctionator list WhippitPanel DE of the best ones, shows DE value in item tooltips and tells you in chat when the AH has one below its disenchant value.",
       mode_de: "Disenchant", mode_de_tip: "Gear on the AH that is worth more as dust, essences and shards than it costs.",
       de_col_ilvl: "iLvl", de_col_buy: "Buy", de_col_val: "DE value", de_col_val_tip: "What the dust, essences and shards are worth on the AH (after the 5 % cut)", de_col_profit: "Profit", de_col_pct: "%",
       de_own_col: "How many times you disenchanted it", de_own_tip: "You disenchanted it %1 times", de_count: "%1 items", de_empty: "Nothing to disenchant with a profit right now.",
       de_skill: "Your enchanting", de_skill_tip: "Only items you can disenchant with this skill", de_q_all: "All", de_q2: "Green", de_q3: "Blue", de_q4: "Epic", de_profit_only: "Profit only",
       de_logs: "Your disenchants so far: %1 (WhippitPanel logs them).", de_how: "Value = what the item gives on average × the AH price of the dust, essences and shards, minus the 5 % AH cut. Random stats don't change what it gives.",
       de_ilvl: "Item level %1", de_skill_need: "Enchanting %1", de_buy: "Buy on the AH", de_value: "Disenchant value", de_profit: "Profit", de_gives: "What it gives", de_mat: "Material", de_chance: "Chance", de_each: "Price each", de_each_x: "each", de_worth: "Worth",
-      de_src_db: "Odds from the Classic database: your own disenchants take over once you have logged a few.", de_src_item: "From your %1 disenchants of this item.", de_src_group: "From your %1 disenchants of items like this (same quality and level band).",
+      de_src_db: "Odds from the Classic database: your own disenchants take over once you have logged a few.", de_src_item: "From your %1 disenchants of this item.", de_src_group: "Odds from the Classic database weighed together with your %1 disenchants of items like this (same quality and level band).",
       de_noprice: "not on the AH", de_missing: "A material has no AH price right now, so the value is too low.", de_cut: "Deposits and the time to relist are not counted.",
       lb_first60: "First to 60", lb_act: "Activity", lb_reached: "Reached 60", lb_before: "before %1", lb_first60_note: "Date = first time the catalog saw the player at level 60. Everyone already 60 when the catalog started (%1) shows as \"before\".",
       act_title: "Players seen per hour", act_none: "No hours logged yet: WhippitPanel counts the players it sees each hour you are online.", act_days: "%1 days", act_day: "Day", act_players: "Players seen",
@@ -2365,7 +2366,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     if (mode === "dg") { $("cats").innerHTML = DG ? dgCats() : ""; $("cats").hidden = false; return; }
     if (mode === "hu") { $("cats").innerHTML = HU ? huCats() : ""; $("cats").hidden = false; return; }
     if (mode === "co") { $("cats").innerHTML = CO ? coCats() : ""; $("cats").hidden = false; return; }
-    if (mode === "de") { $("cats").innerHTML = DEX ? deCats() : ""; $("cats").hidden = false; return; }
+    if (mode === "de") { $("cats").innerHTML = '<button class="cat lbbtn" type="button" data-gotr="1"><em class="nm">‹ Trading</em></button>' + (DEX ? deCats() : ""); $("cats").hidden = false; return; }
     if (mode === "ar") {
       $("cats").innerHTML = '<button class="cat lbbtn" type="button" data-lb="' + (arLb || "ilvl") + '" aria-pressed="' + !!arLb + '"><img class="ci" src="' + RICON + 'inv_misc_trophy_argent.jpg" alt=""><em class="nm">' + t("lb") + "</em><span>" + (KAT ? num(KAT.players.length) : "") + "</span></button>" + arSection("friends", t("ar_friends"), arFriends) + arSection("recent", t("ar_recent"), arRecent);
       $("cats").hidden = false;
@@ -2409,8 +2410,8 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
         });
       });
     });
-    $("cats").innerHTML = "<h2>" + t("cats_h") + "</h2>" + html;
-    $("cats").hidden = cats.length === 0;
+    $("cats").innerHTML = (mode === "tr" ? '<button class="cat lbbtn" type="button" data-gode="1"><img class="ci" src="' + RICON + 'inv_enchant_disenchant.jpg" alt=""><em class="nm">' + t("mode_de") + "</em><span>›</span></button>" : "") + "<h2>" + t("cats_h") + "</h2>" + html;
+    $("cats").hidden = cats.length === 0 && mode !== "tr";
   }
 
   // Raden överst och knappen för namnlösa varor (ritas om vid språkbyte).
@@ -2751,14 +2752,13 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   // Lägesknapparna. I Trading sorterar man på kolumnrubrikerna (Nu, Dygn, Bästa tid), inga extra knappar (Joakim 2026-11-16).
   function drawMode() {
     $("modeAh").setAttribute("aria-pressed", mode === "ah" ? "true" : "false");
-    $("modeTr").setAttribute("aria-pressed", mode === "tr" ? "true" : "false");
+    $("modeTr").setAttribute("aria-pressed", mode === "tr" || mode === "de" ? "true" : "false");
     $("modeCr").setAttribute("aria-pressed", mode === "cr" ? "true" : "false");
     $("modeAr").setAttribute("aria-pressed", mode === "ar" ? "true" : "false");
     $("modeQu").setAttribute("aria-pressed", mode === "qu" ? "true" : "false");
     $("modeDg").setAttribute("aria-pressed", mode === "dg" ? "true" : "false");
     $("modeHu").setAttribute("aria-pressed", mode === "hu" ? "true" : "false");
     $("modeCo").setAttribute("aria-pressed", mode === "co" ? "true" : "false");
-    $("modeDe").setAttribute("aria-pressed", mode === "de" ? "true" : "false");
   }
   function draw() {
     var html = "";
@@ -3050,8 +3050,11 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     if (e.target.closest("[data-humap]") && mode === "hu" && HU) { huMapOn = !huMapOn; drawCats(); if (huMapOn) { showTab("item"); huMapView(); } else if (huSel) huDetail(huSel); return; }
     var hmc = e.target.closest("[data-humapc]");
     if (hmc && HU) { huMapCont = +hmc.dataset.humapc; huMapView(); return; }
+    if (e.target.closest("[data-gode]") && mode === "tr") { setMode("de"); return; }
+    if (e.target.closest("[data-gotr]") && mode === "de") { setMode("tr"); return; }
     var deq = e.target.closest("[data-deq]");
     if (deq && mode === "de") { deQ = +deq.dataset.deq; drawCats(); refresh(); toTop(); return; }
+    if (e.target.closest("[data-dewatch]") && mode === "de") { toggleWatchAll(view.filter(function (x) { return x.profit > 0; }).map(function (x) { return x.de; })); showTab("watch"); return; }
     if (e.target.closest("[data-deprofit]") && mode === "de") { deProfit = !deProfit; drawCats(); refresh(); toTop(); return; }
     var tde = e.target.closest("tbody tr[data-de]");
     if (tde) { showTab("item"); deDetail(+tde.dataset.de); return; }
@@ -3577,20 +3580,10 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   function loadDe() {
     if (!dePromise) dePromise = Promise.all([fetch(DATA_BASE + "disenchant.json").then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }),
       fetch(DATA_BASE + "delog.json", { cache: "no-store" }).then(function (r) { return r.ok ? r.json() : { n: 0, items: {} }; }).catch(function () { return { n: 0, items: {} }; })])
-      .then(function (a) { DEX = a[0]; DEL = a[1]; deGroupLogs(); return a; }).catch(function (e) { dePromise = null; throw e; });
+      .then(function (a) { DEX = a[0]; DEL = a[1]; return a; }).catch(function (e) { dePromise = null; throw e; });
     return dePromise;
   }
-  var DE_GL = {};   // grupp → [antal, { material: [gånger, antal] }] summerat ur loggen
-  function deGroupLogs() {
-    DE_GL = {};
-    Object.keys(DEL.items || {}).forEach(function (id) {
-      var it = DEX.items[id], e = DEL.items[id];
-      if (!it) return;
-      var g = DE_GL[it[0]] = DE_GL[it[0]] || [0, {}];
-      g[0] += e[0];
-      Object.keys(e[1]).forEach(function (m) { var x = g[1][m] = g[1][m] || [0, 0]; x[0] += e[1][m][0]; x[1] += e[1][m][1]; });
-    });
-  }
+  var DE_K = 20;   // så många databas-försök de egna loggarna vägs mot
   function deSkillFor(ilvl, q) {   // enchanting som krävs (Classic: efter itemlevel; epics och blå högre upp kräver mer)
     if (ilvl <= 20) return 1; if (ilvl <= 25) return 25; if (ilvl <= 30) return 50; if (ilvl <= 35) return 75; if (ilvl <= 40) return 100;
     if (ilvl <= 45) return 125; if (ilvl <= 50) return 150; if (ilvl <= 55) return 175; if (ilvl <= 60) return 200; if (ilvl <= 65) return 225; return 250;
@@ -3600,14 +3593,18 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   function deOutcome(id) {
     var it = DEX.items[id];
     if (!it) return null;
-    var own = DEL.items[id], grp = DE_GL[it[0]], rows = [], src = "db", n = 0, base = null;
-    if (own && own[0] >= 3) { base = own; src = "item"; } else if (grp && grp[0] >= 5) { base = grp; src = "group"; }
-    if (base) {
-      n = base[0];
-      Object.keys(base[1]).forEach(function (m) { var x = base[1][m]; rows.push([+m, x[1] / n, x[0] / n, x[1] / Math.max(1, x[0])]); });
-    } else {
-      (DEX.groups[it[0]] || []).forEach(function (g) { rows.push([g[0], g[1] * g[2], g[1], g[2]]); });
-    }
+    // Egna utfall vägs ihop med databasen (inte byts ut: shards har 5 % chans, fem försök säger nästan inget):
+    // (egna + K × databasens) / (antal + K), samma i addonet (Disenchant.lua) och de-lista.js.
+    var own = DEL.items[id], grp = (DEL.groups || {})[it[0]], rows = [], n = grp ? grp[0] : 0, src = n ? "group" : "db", K = DE_K, db = {};
+    (DEX.groups[it[0]] || []).forEach(function (g) { db[g[0]] = g; });
+    var mats = {};
+    Object.keys(db).forEach(function (m) { mats[m] = 1; });
+    if (grp) Object.keys(grp[1]).forEach(function (m) { mats[m] = 1; });
+    Object.keys(mats).forEach(function (m) {
+      var d = db[m], o = grp && grp[1][m], hits = o ? o[0] : 0, qty = o ? o[1] : 0;
+      var chance = (hits + K * (d ? d[1] : 0)) / (n + K), expect = (qty + K * (d ? d[1] * d[2] : 0)) / (n + K);
+      if (expect > 0) rows.push([+m, expect, chance, chance > 0 ? expect / chance : 0]);
+    });
     var val = 0, missing = false;
     rows.forEach(function (r) { var p = deMatPrice(r[0]); if (!p) missing = true; r.push(p); val += r[1] * p; });
     return { rows: rows.sort(function (a, b) { return b[1] * b[4] - a[1] * a[4]; }), value: Math.round(val * .95), src: src, n: n, own: own ? own[0] : 0, missing: missing, q: it[1], ilvl: it[2] };
@@ -3617,6 +3614,8 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     return '<div class="hufil"><label class="hulvl" title="' + t("de_skill_tip") + '"><span>' + t("de_skill") + '</span><input id="deskill" type="number" min="1" max="300" inputmode="numeric" value="' + (deSkill || "") + '" placeholder="1–300"></label>' +
       '<div class="huchips">' + chip(0, t("de_q_all")) + chip(2, '<span class="q2">' + t("de_q2") + "</span>") + chip(3, '<span class="q3">' + t("de_q3") + "</span>") + chip(4, '<span class="q4">' + t("de_q4") + "</span>") + "</div>" +
       '<button type="button" class="huchip' + (deProfit ? " on" : "") + '" data-deprofit="1" aria-pressed="' + deProfit + '">' + t("de_profit_only") + "</button></div>" +
+      '<div class="hufil"><button type="button" class="huchip" data-dewatch="1" title="' + t("de_watch_tip") + '">★ ' + t("de_watch") + "</button></div>" +
+      '<div class="note">' + t("de_ingame") + "</div>" +
       '<div class="note">' + t("de_logs", num(DEL.n || 0)) + "</div>" + '<div class="note">' + t("de_how") + "</div>";
   }
   function deRefresh(q) {
@@ -3900,7 +3899,6 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   $("modeDg").addEventListener("click", function () { setMode("dg"); });
   $("modeHu").addEventListener("click", function () { setMode("hu"); });
   $("modeCo").addEventListener("click", function () { setMode("co"); });
-  $("modeDe").addEventListener("click", function () { setMode("de"); });
   document.addEventListener("change", function (e) { if (e.target && e.target.id === "quPlayer") setQuPlayer(e.target.value); });
   $("head").addEventListener("click", function (e) {
     var b = e.target.closest("button");
