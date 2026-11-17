@@ -168,6 +168,7 @@ h1 { font-family: var(--display); font-weight: 500; font-size: 36px; margin: 0; 
 .lbt td { padding: 5px 8px; border-bottom: 1px solid rgba(255, 255, 255, .04); white-space: nowrap; } .lbt td.nm { overflow: hidden; text-overflow: ellipsis; max-width: 0; width: 45%; } .lbt td.nm a { text-decoration: none; } .lbt td.nm a:hover { text-decoration: underline; }
 .lbt .ri { width: 18px; height: 18px; vertical-align: -4px; margin-right: 6px; border-radius: 3px; } .lbn { color: var(--grey); width: 28px; } .lbn.top1 { color: #ffd100; font-weight: 700; } .lbn.top2 { color: #d6dee8; font-weight: 700; } .lbn.top3 { color: #e0a060; font-weight: 700; }
 .lbbtn .ci { width: 20px; height: 20px; border-radius: 3px; margin-right: 6px; }
+.actwrap { display: grid; gap: 8px; } .actwrap h3 { margin: 4px 0 0; color: var(--gold); font-size: 14px; } .actsvg { width: 100%; max-width: 620px; height: auto; } .actsvg text { fill: var(--grey); font-size: 10px; }
 .upbig { all: unset; box-sizing: border-box; cursor: pointer; display: flex; align-items: center; gap: 12px; width: 100%; margin: 10px 0 6px; padding: 10px 12px; border: 1px solid var(--edge); border-radius: 6px; background: linear-gradient(180deg, rgba(240, 192, 64, .13), rgba(240, 192, 64, .03)); }
 .upbig:hover, .upbig:focus-visible { background: linear-gradient(180deg, rgba(240, 192, 64, .22), rgba(240, 192, 64, .06)); }
 .upbig img { width: 40px; height: 40px; border-radius: 4px; border: 1px solid #000; box-shadow: 0 0 0 1px var(--bronze); flex: none; } .upbig span { display: grid; gap: 2px; } .upbig b { color: var(--gold); font-size: 15px; } .upbig small { color: var(--grey); font-size: 12.5px; }
@@ -711,6 +712,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     <div class="mode" role="group">
       <button type="button" id="modeAh" aria-pressed="true" data-t-title="mode_ah_tip"><img class="mi" alt="" data-mi="ah"><span data-t="mode_ah">Auktionshus</span></button>
       <button type="button" id="modeTr" aria-pressed="false" data-t-title="mode_tr_tip"><img class="mi" alt="" data-mi="tr"><span data-t="mode_tr">Trading</span></button>
+      <button type="button" id="modeDe" aria-pressed="false" data-t-title="mode_de_tip"><img class="mi" alt="" data-mi="de" onerror="this.style.visibility='hidden'"><span data-t="mode_de">Disenchant</span></button>
       <button type="button" id="modeCr" aria-pressed="false" data-t-title="mode_cr_tip"><img class="mi" alt="" data-mi="cr"><span data-t="mode_cr">Professions</span></button>
       <button type="button" id="modeAr" aria-pressed="false" data-t-title="mode_ar_tip"><img class="mi" alt="" data-mi="ar"><span data-t="mode_ar">Armory</span></button>
       <button type="button" id="modeQu" aria-pressed="false" data-t-title="mode_qu_tip"><img class="mi" alt="" data-mi="qu" onerror="this.style.visibility='hidden'"><span data-t="mode_qu">Quests</span></button>
@@ -760,7 +762,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   // mot vanligt, dygnshandel och bästa tid. Trading visar bara stapelbart med minst TR_MIN ute (gear och tunna varor svänger
   // i guld, där säger procent ingenting). Sparas i webbläsaren.
   var MKEY = "whippit-ah-mode", TR_MIN = 20;
-  var mode = (function () { try { var m = localStorage.getItem(MKEY); return m === "tr" || m === "cr" || m === "ar" || m === "qu" || m === "dg" || m === "hu" || m === "co" ? m : "ah"; } catch (e) { return "ah"; } })();
+  var mode = (function () { try { var m = localStorage.getItem(MKEY); return m === "tr" || m === "cr" || m === "ar" || m === "qu" || m === "dg" || m === "hu" || m === "co" || m === "de" ? m : "ah"; } catch (e) { return "ah"; } })();
   if (mode === "tr") { sortKey = "dip"; sortDir = -1; }
   var BT_MIN = 3;   // bästa tid räknas som tydlig vid minst 3 % vinst efter AH:s andel och plus minst 6 av 10 dagar
   function btClear(r) { return !!(r.bt && r.bt[2] >= BT_MIN && r.bt[3] * 10 >= r.bt[4] * 6); }
@@ -916,6 +918,17 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       lb_both: "Both sides", lb_player: "Player", lb_guild: "Guild", lb_n60: "Level 60s", lb_il60: "Item level (60s)", lb_avg: "Avg level", lb_members: "Members", lb_none: "Nobody here yet.", lb_fail: "The leaderboards could not be loaded.",
       lb_note: "Blizzard can only look up a player by name, so the list grows like a snowball: known players → their guild → its members → their guilds, plus the names WhippitPanel notes in the game. Refreshed daily; anyone not seen for 29 days drops out.",
       lb_how: "Click a player or guild to open it in the Armory. Guilds are ranked by level 60 members, then their average item level.",
+      mode_de: "Disenchant", mode_de_tip: "Gear on the AH that is worth more as dust, essences and shards than it costs.",
+      de_col_ilvl: "iLvl", de_col_buy: "Buy", de_col_val: "DE value", de_col_val_tip: "What the dust, essences and shards are worth on the AH (after the 5 % cut)", de_col_profit: "Profit", de_col_pct: "%",
+      de_own_col: "How many times you disenchanted it", de_own_tip: "You disenchanted it %1 times", de_count: "%1 items", de_empty: "Nothing to disenchant with a profit right now.",
+      de_skill: "Your enchanting", de_skill_tip: "Only items you can disenchant with this skill", de_q_all: "All", de_q2: "Green", de_q3: "Blue", de_q4: "Epic", de_profit_only: "Profit only",
+      de_logs: "Your disenchants so far: %1 (WhippitPanel logs them).", de_how: "Value = what the item gives on average × the AH price of the dust, essences and shards, minus the 5 % AH cut. Random stats don't change what it gives.",
+      de_ilvl: "Item level %1", de_skill_need: "Enchanting %1", de_buy: "Buy on the AH", de_value: "Disenchant value", de_profit: "Profit", de_gives: "What it gives", de_mat: "Material", de_chance: "Chance", de_each: "Price each", de_each_x: "each", de_worth: "Worth",
+      de_src_db: "Odds from the Classic database: your own disenchants take over once you have logged a few.", de_src_item: "From your %1 disenchants of this item.", de_src_group: "From your %1 disenchants of items like this (same quality and level band).",
+      de_noprice: "not on the AH", de_missing: "A material has no AH price right now, so the value is too low.", de_cut: "Deposits and the time to relist are not counted.",
+      lb_first60: "First to 60", lb_act: "Activity", lb_reached: "Reached 60", lb_before: "before %1", lb_first60_note: "Date = first time the catalog saw the player at level 60. Everyone already 60 when the catalog started (%1) shows as \"before\".",
+      act_title: "Players seen per hour", act_none: "No hours logged yet: WhippitPanel counts the players it sees each hour you are online.", act_days: "%1 days", act_day: "Day", act_players: "Players seen",
+      act_note: "Average number of different players WhippitPanel saw per clock hour, only hours when Whippit was online. Busy zones and cities give more.",
       ar_qunknown: "This quest is not in the Classic quest database (new on Forever?).",
       mode_co: "Collections", mode_co_tip: "Mounts, companions, toys and titles on Forever: where they come from and what they cost.", search_co: "Search mount, pet, toy, title, NPC or zone",
       co_kinds: "Collections", co_k_mounts: "Mounts", co_k_pets: "Companions", co_k_toys: "Toys", co_k_titles: "Titles", co_k1_mounts: "Mount", co_k1_pets: "Companion", co_k1_toys: "Toy", co_k1_titles: "Title",
@@ -2352,6 +2365,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     if (mode === "dg") { $("cats").innerHTML = DG ? dgCats() : ""; $("cats").hidden = false; return; }
     if (mode === "hu") { $("cats").innerHTML = HU ? huCats() : ""; $("cats").hidden = false; return; }
     if (mode === "co") { $("cats").innerHTML = CO ? coCats() : ""; $("cats").hidden = false; return; }
+    if (mode === "de") { $("cats").innerHTML = DEX ? deCats() : ""; $("cats").hidden = false; return; }
     if (mode === "ar") {
       $("cats").innerHTML = '<button class="cat lbbtn" type="button" data-lb="' + (arLb || "ilvl") + '" aria-pressed="' + !!arLb + '"><img class="ci" src="' + RICON + 'inv_misc_trophy_argent.jpg" alt=""><em class="nm">' + t("lb") + "</em><span>" + (KAT ? num(KAT.players.length) : "") + "</span></button>" + arSection("friends", t("ar_friends"), arFriends) + arSection("recent", t("ar_recent"), arRecent);
       $("cats").hidden = false;
@@ -2457,10 +2471,11 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     drawWatch();
     var hp0 = hashParams();
     // En länk bestämmer fliken (annars den som sparats): #quest, #dungeon, #player/#guild, #recipe, #item.
-    var hm = hp0.col ? "co" : hp0.beast ? "hu" : hp0.quest ? "qu" : hp0.dungeon ? "dg" : hp0.player || hp0.guild || hp0.top ? "ar" : hp0.recipe ? "cr" : hp0.item ? "ah" : "";
+    var hm = hp0.de ? "de" : hp0.col ? "co" : hp0.beast ? "hu" : hp0.quest ? "qu" : hp0.dungeon ? "dg" : hp0.player || hp0.guild || hp0.top ? "ar" : hp0.recipe ? "cr" : hp0.item ? "ah" : "";
     var wantI = byId[+hp0.item];
     if (hm && !keep && mode !== hm && !(hm === "ah" && mode === "tr" && (!wantI || (!wantI.gear && wantI.qty >= TR_MIN)))) { if (fromNav) resetModeState(hm); mode = hm; drawCats(); refresh(); }   // trädet ritades för den sparade fliken
     if (mode === "qu" || (!keep && hp0.quest)) { mode = "qu"; if (!keep) { sortKey = "lvl"; sortDir = 1; } $("q").placeholder = t("search_qu"); quStart(+hp0.quest || (keep ? selQuest : 0)); return; }
+    if (mode === "de" || (!keep && hp0.de)) { mode = "de"; if (!keep) { sortKey = "profit"; sortDir = -1; } $("q").placeholder = t("search_ph"); deStart(+hp0.de || (keep ? deSel : 0)); return; }
     if (mode === "co" || (!keep && hp0.col)) { mode = "co"; if (!keep) { sortKey = "name"; sortDir = 1; } $("q").placeholder = t("search_co"); coStart(hp0.col || (keep ? coSel : "")); return; }
     if (mode === "hu" || (!keep && hp0.beast)) { mode = "hu"; if (!keep) { sortKey = "lvl"; sortDir = huLvl ? -1 : 1; } $("q").placeholder = t("search_hu"); huStart(+hp0.beast || (keep ? huSel : 0)); return; }
     if (mode === "dg" || (!keep && hp0.dungeon)) { mode = "dg"; $("q").placeholder = t("search_dg"); dgStart(+hp0.dungeon || 0); return; }
@@ -2502,6 +2517,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     if (mode === "dg") { if (DG) dgRefresh(q); else { view = []; shown = 0; } draw(); return; }
     if (mode === "hu") { if (HU) huRefresh(q); else { view = []; shown = 0; } draw(); if (HU && huMapOn) huMapView(); return; }
     if (mode === "co") { if (CO) coRefresh(q); else { view = []; shown = 0; } draw(); return; }
+    if (mode === "de") { if (DEX) deRefresh(q); else { view = []; shown = 0; } draw(); return; }
     if (mode === "cr") {
       var pid = catSel >= 0 && profList[catSel] ? profList[catSel].id : 0;
       var tier = subSel >= 1 ? TIERS[subSel - 1] : null;
@@ -2690,6 +2706,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     if (mode === "dg") return dgRow(r);
     if (mode === "hu") return huRow(r);
     if (mode === "co") return coRow(r);
+    if (mode === "de") return deRow(r);
     if (mode === "cr") {
       return '<tr tabindex="0" data-rid="' + r.rid + '"' + (r.rid === selRec ? ' aria-selected="true"' : "") + '><td class="fav"></td><td class="nm">' + recName(r) + "</td><td>" + (r.skill || DASH) +
         "</td><td>" + (r.cost ? money(r.cost) + (r.miss ? '<span class="dim" title="' + esc(t("missing_n", r.miss)) + '"> ?</span>' : "") : DASH) + "</td><td>" + (r.sell ? money(r.sell) : DASH) +
@@ -2710,6 +2727,8 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   function headHtml() {
     var cols = mode === "qu"
       ? [["name", "col_quest"], ["lvl", "col_lvl"], ["zone", "col_zone", null, "kat hide-s"], ["xp", "col_xp"], ["money", "col_money", null, "hide-s"], ["best", "col_reward", "col_reward_tip"]]
+      : mode === "de"
+      ? [["name", "col_item"], ["lvl", "de_col_ilvl"], ["min", "de_col_buy"], ["val", "de_col_val", "de_col_val_tip", "hide-s"], ["profit", "de_col_profit"], ["pct", "de_col_pct", null, "hide-s"]]
       : mode === "co"
       ? [["name", "co_col_name"], ["src", "co_col_src"], ["where", "co_col_where", null, "kat hide-s"], ["req", "co_col_req", null, "hide-s"], ["price", "co_col_price", "co_col_price_tip"]]
       : mode === "hu"
@@ -2723,7 +2742,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
          ["btg", "col_best", "col_best_tip"], ["qty", "col_qty"], ["day", "col_day", "col_day_tip", "hide-s dcol"]]
       : [["name", "col_item"], ["cat", "col_cat", null, "kat hide-s"], ["lvl", "col_lvl", "col_lvl_tip", "hide-s"], ["min", "col_min", "col_min_tip"],
          ["qty", "col_qty"], ["day", "col_day", "col_day_tip", "hide-s dcol"]];
-    return '<tr><th class="fav">' + (mode === "hu" ? "" : mode === "co" ? (coOwner() ? "✓" : "") : mode === "qu" ? (quPlayer && quPlayer.set ? "✓" : "") : t("col_fav")) + "</th>" + cols.map(function (c) {
+    return '<tr><th class="fav">' + (mode === "hu" ? "" : mode === "de" ? '<span title="' + t("de_own_col") + '">#</span>' : mode === "co" ? (coOwner() ? "✓" : "") : mode === "qu" ? (quPlayer && quPlayer.set ? "✓" : "") : t("col_fav")) + "</th>" + cols.map(function (c) {
       if (mode === "dg") return "<th" + (c[3] ? ' class="' + c[3] + '"' : c[0] === "name" ? ' class="nm"' : "") + (c[2] ? ' title="' + esc(t(c[2])) + '"' : "") + ">" + (c[1] ? t(c[1]) : "") + "</th>";
       return "<th" + (c[3] ? ' class="' + c[3] + '"' : c[0] === "name" ? ' class="nm"' : "") + '><button type="button" data-k="' + c[0] + '"' + (c[2] ? ' title="' + esc(t(c[2])) + '"' : "") +
         (c[0] === sortKey ? ' aria-sort="' + (sortDir > 0 ? "ascending" : "descending") + '"' : "") + ">" + (c[1] ? t(c[1]) : "") + "</button></th>";
@@ -2739,6 +2758,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     $("modeDg").setAttribute("aria-pressed", mode === "dg" ? "true" : "false");
     $("modeHu").setAttribute("aria-pressed", mode === "hu" ? "true" : "false");
     $("modeCo").setAttribute("aria-pressed", mode === "co" ? "true" : "false");
+    $("modeDe").setAttribute("aria-pressed", mode === "de" ? "true" : "false");
   }
   function draw() {
     var html = "";
@@ -2746,12 +2766,12 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     $("rows").innerHTML = html;
     $("empty").hidden = view.length > 0;
     document.querySelector(".left .scroll").classList.toggle("noitems", view.length === 0);
-    $("empty").textContent = t(mode === "co" ? "co_empty" : mode === "hu" ? "hu_empty" : mode === "cr" ? "cr_empty" : mode === "qu" ? "qu_empty" : mode === "dg" ? (query || dgSel >= 0 ? "dg_empty" : "dg_pick") : "empty");
+    $("empty").textContent = t(mode === "de" ? "de_empty" : mode === "co" ? "co_empty" : mode === "hu" ? "hu_empty" : mode === "cr" ? "cr_empty" : mode === "qu" ? "qu_empty" : mode === "dg" ? (query || dgSel >= 0 ? "dg_empty" : "dg_pick") : "empty");
     $("more").hidden = shown >= view.length;
     $("more").textContent = t("more", num(view.length - shown));
-    $("count").textContent = t(mode === "co" ? "co_count" : mode === "hu" ? "hu_count" : mode === "cr" ? "cr_count" : mode === "qu" ? "qu_count" : mode === "dg" ? "dg_count" : "count", num(mode === "dg" ? view.filter(function (x) { return !x.hd && !x.sub; }).length : view.length));
+    $("count").textContent = t(mode === "de" ? "de_count" : mode === "co" ? "co_count" : mode === "hu" ? "hu_count" : mode === "cr" ? "cr_count" : mode === "qu" ? "qu_count" : mode === "dg" ? "dg_count" : "count", num(mode === "dg" ? view.filter(function (x) { return !x.hd && !x.sub; }).length : view.length));
     $("head").innerHTML = mode === "ar" ? "" : headHtml();
-    $("list").className = mode === "tr" || mode === "cr" || mode === "qu" || mode === "dg" || mode === "hu" || mode === "co" ? mode : "";
+    $("list").className = mode === "tr" || mode === "cr" || mode === "qu" || mode === "dg" || mode === "hu" || mode === "co" || mode === "de" ? mode : "";
     var ar = mode === "ar";
     $("armory").hidden = !ar;
     document.querySelector(".left .scroll").hidden = ar;
@@ -3030,6 +3050,11 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     if (e.target.closest("[data-humap]") && mode === "hu" && HU) { huMapOn = !huMapOn; drawCats(); if (huMapOn) { showTab("item"); huMapView(); } else if (huSel) huDetail(huSel); return; }
     var hmc = e.target.closest("[data-humapc]");
     if (hmc && HU) { huMapCont = +hmc.dataset.humapc; huMapView(); return; }
+    var deq = e.target.closest("[data-deq]");
+    if (deq && mode === "de") { deQ = +deq.dataset.deq; drawCats(); refresh(); toTop(); return; }
+    if (e.target.closest("[data-deprofit]") && mode === "de") { deProfit = !deProfit; drawCats(); refresh(); toTop(); return; }
+    var tde = e.target.closest("tbody tr[data-de]");
+    if (tde) { showTab("item"); deDetail(+tde.dataset.de); return; }
     var cok = e.target.closest("[data-cokind]");
     if (cok && mode === "co") { coKind = cok.dataset.cokind; coSrc = ""; if (sortKey === "req" && coKind === "titles") sortKey = "name"; drawCats(); refresh(); toTop(); if (view[0]) coDetail(CO_LETTER[coKind] + view[0].co.id); return; }
     var cos = e.target.closest("[data-cosrc]");
@@ -3205,7 +3230,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   $("tabWatch").addEventListener("click", function () { showTab("watch"); });
   document.addEventListener("keydown", function (e) {
     if (e.key !== "Enter" && e.key !== " ") return;
-    if (e.target.tagName === "TR" && !e.target.dataset.id && (e.target.dataset.qid || e.target.dataset.rid || e.target.dataset.dgi || e.target.dataset.arrec || e.target.dataset.hu || e.target.dataset.co)) { e.preventDefault(); e.target.click(); return; }
+    if (e.target.tagName === "TR" && !e.target.dataset.id && (e.target.dataset.qid || e.target.dataset.rid || e.target.dataset.dgi || e.target.dataset.arrec || e.target.dataset.hu || e.target.dataset.co || e.target.dataset.de)) { e.preventDefault(); e.target.click(); return; }
     if (e.target.tagName !== "TR" || !e.target.dataset.id) return;
     e.preventDefault();
     var kid = +e.target.dataset.id;
@@ -3497,7 +3522,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   // hittats via snöbollen (kända spelare → guild → roster → nya guilder) och addonets spelarnamn. Bara det katalogen känner
   // till räknas, så listan växer för varje dag. Länk #top=<lista>. ----
   var KAT = null, katPromise = null, arLb = "", lbFa = "";
-  var LB = [["ilvl", "il", "lb_ilvl"], ["level", "lv", "lb_level"], ["hk", "hk", "lb_hk"], ["rank", "rk", "lb_rank"], ["ach", "ap", "lb_ach"], ["guilds", "", "lb_guilds"]];
+  var LB = [["ilvl", "il", "lb_ilvl"], ["level", "lv", "lb_level"], ["hk", "hk", "lb_hk"], ["rank", "rk", "lb_rank"], ["ach", "ap", "lb_ach"], ["guilds", "", "lb_guilds"], ["first60", "t60", "lb_first60"], ["act", "", "lb_act"]];
   function loadKat() {
     if (!katPromise) katPromise = fetch(DATA_BASE + "katalog.json", { cache: "no-store" }).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }).then(function (j) { KAT = j; return j; })
       .catch(function (e) { katPromise = null; throw e; });
@@ -3513,7 +3538,17 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     var fa = function (k, lbl) { return '<button type="button" class="huchip' + (lbFa === k ? " on" : "") + '" data-lbfa="' + k + '" aria-pressed="' + (lbFa === k) + '">' + lbl + "</button>"; };
     var h = '<div class="lbwrap"><div class="lbhead"><h2>' + t("lb") + "</h2><small>" + t("lb_sub", num(KAT.players.length), num(KAT.guilds.length), when2(KAT.t)) + "</small></div>" +
       '<div class="huchips">' + tabs + '</div><div class="huchips">' + fa("", t("lb_both")) + fa("HORDE", "Horde") + fa("ALLIANCE", "Alliance") + "</div>";
-    if (def[0] === "guilds") {
+    if (def[0] === "act") {
+      h += actHtml();
+    } else if (def[0] === "first60") {
+      var f6 = KAT.players.filter(function (p) { return faOk(p) && p.t60 > 0; }).sort(function (a, b) { return (a.t60 - b.t60) || (b.il - a.il); }).slice(0, 100), st = KAT.start || 0;
+      h += '<table class="lbt"><thead><tr><th>#</th><th class="nm">' + t("lb_player") + '</th><th class="hide-s">' + t("lb_guild") + "</th><th>" + t("lb_reached") + "</th></tr></thead><tbody>" +
+        f6.map(function (p, i) {
+          var full = p.n + (p.sn ? " " + p.sn : ""), before = st && p.t60 <= st;
+          return '<tr><td class="lbn' + (i < 3 && !before ? " top" + (i + 1) : "") + '">' + (i + 1) + '</td><td class="nm">' + classIcon(p.c) + '<a href="#player=' + esc(p.s) + '" data-ar="char" data-slug="' + esc(p.s) + '" style="color:' + (CLASS_COL[p.c] || "inherit") + '">' + esc(full) + "</a></td>" +
+            '<td class="hide-s">' + (p.g ? '<a class="dim" href="#guild=' + esc(p.g) + '" data-ar="guild" data-slug="' + esc(p.g) + '">&lt;' + esc(p.gn) + "&gt;</a>" : "") + "</td><td>" + (before ? '<span class="dim">' + t("lb_before", when2(st)) + "</span>" : "<b>" + when2(p.t60) + "</b>") + "</td></tr>";
+        }).join("") + "</tbody></table>" + '<div class="note">' + t("lb_first60_note", when2(st)) + "</div>";
+    } else if (def[0] === "guilds") {
       var gl = KAT.guilds.filter(faOk).sort(function (a, b) { return (b.n60 - a.n60) || (b.il60 - a.il60) || (b.avg - a.avg); }).slice(0, 50);
       h += '<table class="lbt"><thead><tr><th>#</th><th class="nm">' + t("lb_guild") + "</th><th>" + t("lb_n60") + '</th><th class="hide-s">' + t("lb_il60") + "</th><th>" + t("lb_avg") + '</th><th class="hide-s">' + t("lb_members") + "</th></tr></thead><tbody>" +
         gl.map(function (g, i) {
@@ -3532,6 +3567,140 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     }
     h += '<div class="note">' + t("lb_note") + "</div></div>";
     arShow(h, '<div class="strip"><h2>' + t("lb") + "</h2><small>" + t(def[2]) + '</small></div><div class="note">' + t("lb_how") + "</div>");
+  }
+  // ---- Disenchant (Joakim 2026-11-17: "vad som är värt att disenchanta på AH för att få essence som är värt mer"):
+  // varje rustning/vapen på AH som går att disenchanta, köppris mot värdet av det den ger. Vad den ger: Classic-databasen
+  // (disenchant.json, hamta-disenchant.js) och Joakims egna disenchants (delog.json ur addonets Disenchant.lua) – har
+  // föremålet eller dess grupp (samma kvalitet och itemlevel-band) loggats tillräckligt används loggen. Materialens pris =
+  // riktpriset på AH minus 5 % AH-avgift när de säljs. Länk #de=<id>. ----
+  var DEX = null, DEL = null, dePromise = null, deSel = 0, deQ = 0, deProfit = true, deSkill = (function () { try { var v = +localStorage.getItem("whippit-ah-deskill"); return v > 0 && v <= 300 ? v : 0; } catch (e) { return 0; } })();
+  function loadDe() {
+    if (!dePromise) dePromise = Promise.all([fetch(DATA_BASE + "disenchant.json").then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }),
+      fetch(DATA_BASE + "delog.json", { cache: "no-store" }).then(function (r) { return r.ok ? r.json() : { n: 0, items: {} }; }).catch(function () { return { n: 0, items: {} }; })])
+      .then(function (a) { DEX = a[0]; DEL = a[1]; deGroupLogs(); return a; }).catch(function (e) { dePromise = null; throw e; });
+    return dePromise;
+  }
+  var DE_GL = {};   // grupp → [antal, { material: [gånger, antal] }] summerat ur loggen
+  function deGroupLogs() {
+    DE_GL = {};
+    Object.keys(DEL.items || {}).forEach(function (id) {
+      var it = DEX.items[id], e = DEL.items[id];
+      if (!it) return;
+      var g = DE_GL[it[0]] = DE_GL[it[0]] || [0, {}];
+      g[0] += e[0];
+      Object.keys(e[1]).forEach(function (m) { var x = g[1][m] = g[1][m] || [0, 0]; x[0] += e[1][m][0]; x[1] += e[1][m][1]; });
+    });
+  }
+  function deSkillFor(ilvl, q) {   // enchanting som krävs (Classic: efter itemlevel; epics och blå högre upp kräver mer)
+    if (ilvl <= 20) return 1; if (ilvl <= 25) return 25; if (ilvl <= 30) return 50; if (ilvl <= 35) return 75; if (ilvl <= 40) return 100;
+    if (ilvl <= 45) return 125; if (ilvl <= 50) return 150; if (ilvl <= 55) return 175; if (ilvl <= 60) return 200; if (ilvl <= 65) return 225; return 250;
+  }
+  function deMatPrice(m) { var r = byId[m]; return r && r.min > 0 ? r.min : 0; }
+  // Utfallet: [[material, väntat antal per disenchant, källa "log"/"db", chans, snitt]] och totalvärdet efter AH-avgiften.
+  function deOutcome(id) {
+    var it = DEX.items[id];
+    if (!it) return null;
+    var own = DEL.items[id], grp = DE_GL[it[0]], rows = [], src = "db", n = 0, base = null;
+    if (own && own[0] >= 3) { base = own; src = "item"; } else if (grp && grp[0] >= 5) { base = grp; src = "group"; }
+    if (base) {
+      n = base[0];
+      Object.keys(base[1]).forEach(function (m) { var x = base[1][m]; rows.push([+m, x[1] / n, x[0] / n, x[1] / Math.max(1, x[0])]); });
+    } else {
+      (DEX.groups[it[0]] || []).forEach(function (g) { rows.push([g[0], g[1] * g[2], g[1], g[2]]); });
+    }
+    var val = 0, missing = false;
+    rows.forEach(function (r) { var p = deMatPrice(r[0]); if (!p) missing = true; r.push(p); val += r[1] * p; });
+    return { rows: rows.sort(function (a, b) { return b[1] * b[4] - a[1] * a[4]; }), value: Math.round(val * .95), src: src, n: n, own: own ? own[0] : 0, missing: missing, q: it[1], ilvl: it[2] };
+  }
+  function deCats() {
+    var chip = function (q, lbl) { return '<button type="button" class="huchip' + (deQ === q ? " on" : "") + '" data-deq="' + q + '" aria-pressed="' + (deQ === q) + '">' + lbl + "</button>"; };
+    return '<div class="hufil"><label class="hulvl" title="' + t("de_skill_tip") + '"><span>' + t("de_skill") + '</span><input id="deskill" type="number" min="1" max="300" inputmode="numeric" value="' + (deSkill || "") + '" placeholder="1–300"></label>' +
+      '<div class="huchips">' + chip(0, t("de_q_all")) + chip(2, '<span class="q2">' + t("de_q2") + "</span>") + chip(3, '<span class="q3">' + t("de_q3") + "</span>") + chip(4, '<span class="q4">' + t("de_q4") + "</span>") + "</div>" +
+      '<button type="button" class="huchip' + (deProfit ? " on" : "") + '" data-deprofit="1" aria-pressed="' + deProfit + '">' + t("de_profit_only") + "</button></div>" +
+      '<div class="note">' + t("de_logs", num(DEL.n || 0)) + "</div>" + '<div class="note">' + t("de_how") + "</div>";
+  }
+  function deRefresh(q) {
+    view = [];
+    Object.keys(DEX.items).forEach(function (id) {
+      var r = byId[id];
+      if (!r || !(r.qty > 0) || !(r.min > 0)) return;
+      var it = DEX.items[id];
+      if (deQ && it[1] !== deQ) return;
+      if (deSkill && deSkillFor(it[2], it[1]) > deSkill) return;
+      if (q && r.lower.indexOf(q) < 0) return;
+      var o = deOutcome(id);
+      if (!o || !o.value) return;
+      var profit = o.value - r.min;
+      if (deProfit && profit <= 0) return;
+      view.push({ de: +id, r: r, o: o, profit: profit });
+    });
+    var k = sortKey, dir = sortDir;
+    view.sort(function (a, b) {
+      var d = k === "name" ? a.r.name.localeCompare(b.r.name) : k === "lvl" ? a.o.ilvl - b.o.ilvl : k === "min" ? a.r.min - b.r.min : k === "val" ? a.o.value - b.o.value : k === "pct" ? a.profit / a.r.min - b.profit / b.r.min : a.profit - b.profit;
+      return d * dir || b.profit - a.profit;
+    });
+    shown = Math.min(PAGE, view.length);
+  }
+  function deRow(x) {
+    var r = x.r, o = x.o;
+    return '<tr tabindex="0" data-de="' + x.de + '"' + (x.de === deSel ? ' aria-selected="true"' : "") + '><td class="fav">' + (o.own ? '<span class="pos" title="' + t("de_own_tip", o.own) + '">' + o.own + "</span>" : "") + "</td>" +
+      '<td class="nm">' + iconHtml(r) + '<span class="' + qcls(r.q) + '" data-tip="' + r.id + '">' + esc(r.name) + "</span></td><td>" + o.ilvl + "</td><td>" + money(r.min) + "</td>" +
+      '<td class="hide-s">' + money(o.value) + (o.src !== "db" ? ' <small class="pos" title="' + t("de_src_" + o.src, o.n) + '">●</small>' : "") + "</td>" +
+      '<td class="' + (x.profit > 0 ? "pos" : "neg") + '">' + (x.profit > 0 ? "" : "−") + money(Math.abs(x.profit)) + '</td><td class="hide-s">' + Math.round(x.profit / r.min * 100) + " %</td></tr>";
+  }
+  function deDetail(id) {
+    var r = byId[id], o = DEX && deOutcome(id);
+    if (!r || !o) { $("detail").innerHTML = '<div class="note">' + t("de_empty") + "</div>"; return; }
+    deSel = id;
+    var trs = $("rows").children;
+    for (var j = 0; j < trs.length; j++) { if (+trs[j].dataset.de === id) trs[j].setAttribute("aria-selected", "true"); else trs[j].removeAttribute("aria-selected"); }
+    setHash("#de=" + id);
+    var profit = o.value - r.min;
+    $("detail").scrollTop = 0;
+    $("detail").innerHTML = '<div class="strip"><button class="lnk" type="button" data-copyany="#de=' + id + '" title="' + t("copy_link") + '">' + t("copy_link") + "</button>" +
+      '<h2 class="' + qcls(r.q) + '">' + iconHtml(r, true) + " " + esc(r.name) + "</h2><small>" + t("de_ilvl", o.ilvl) + " · " + t("de_skill_need", deSkillFor(o.ilvl, o.q)) + "</small></div>" +
+      '<dl class="facts"><div><dt>' + t("de_buy") + "</dt><dd>" + money(r.min) + "</dd></div><div><dt>" + t("de_value") + "</dt><dd>" + money(o.value) + "</dd></div>" +
+      "<div><dt>" + t("de_profit") + '</dt><dd class="' + (profit > 0 ? "pos" : "neg") + '">' + (profit > 0 ? "+" : "−") + money(Math.abs(profit)) + "</dd></div></dl>" +
+      "<div><h3>" + t("de_gives") + '</h3><table class="steps reag degive"><thead><tr><th style="text-align:left">' + t("de_mat") + "</th><th>" + t("de_chance") + "</th><th>" + t("de_worth") + "</th></tr></thead><tbody>" +
+      o.rows.map(function (x) {
+        var m = byId[x[0]], nm = m ? m.name : (DEX.mats[x[0]] || "#" + x[0]);
+        return '<tr><td style="text-align:left">' + (m ? iconHtml(m) : "") + '<span class="' + (m ? qcls(m.q) : "q1") + '"' + (m ? ' data-tip="' + x[0] + '"' : "") + ">" + esc(nm) + "</span> " + '<span class="dim">× ' + (Math.round(x[3] * 10) / 10) + "</span><br><small class=\"dim\">" + (x[4] ? t("de_each_x") + " " + money(x[4]) : t("de_noprice")) + "</small></td><td>" + Math.round(x[2] * 100) + " %</td><td>" + money(x[1] * x[4]) + "</td></tr>";
+      }).join("") + "</tbody></table></div>" +
+      '<div class="note">' + t("de_src_" + o.src, o.n) + (o.own ? " · " + t("de_own_tip", o.own) : "") + "</div>" + (o.missing ? '<div class="note warn">' + t("de_missing") + "</div>" : "") +
+      '<div class="note">' + t("de_cut") + "</div>";
+  }
+  function deStart(want) {
+    $("detail").innerHTML = '<div class="note">' + t("ar_loading") + "</div>";
+    loadDe().then(function () {
+      if (mode !== "de") return;
+      drawCats(); refresh(); toTop();
+      var w = want || deSel;
+      if (w && byId[w] && DEX.items[w]) { deDetail(w); if (want) showTab("item"); } else if (view[0]) deDetail(view[0].de);
+    }).catch(function () { $("detail").innerHTML = '<div class="note">' + t("qu_fail") + "</div>"; });
+  }
+  // Aktivitet (Joakim 2026-11-17: "kurva över när servern är fullast, timme för timme"): activity.json ur addonets
+  // spelarnamn – olika spelare WhippitPanel såg per klocktimme medan Joakim var inloggad.
+  var ACT = null, actPromise = null;
+  function loadAct() {
+    if (!actPromise) actPromise = fetch(DATA_BASE + "activity.json", { cache: "no-store" }).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }).then(function (j) { ACT = j; return j; }).catch(function (e) { actPromise = null; throw e; });
+    return actPromise;
+  }
+  function actHtml() {
+    if (!ACT) { loadAct().then(function () { if (mode === "ar" && arLb === "act") lbShow(); }).catch(function () {}); return '<div class="note">' + t("ar_loading") + "</div>"; }
+    var sum = [], cnt = [];
+    for (var h = 0; h < 24; h++) { sum[h] = 0; cnt[h] = 0; }
+    Object.keys(ACT.hours || {}).forEach(function (k) { var h2 = +k.slice(11, 13); if (h2 >= 0 && h2 < 24) { sum[h2] += ACT.hours[k]; cnt[h2]++; } });
+    var avg = sum.map(function (s, i) { return cnt[i] ? s / cnt[i] : 0; }), max = Math.max.apply(null, avg.concat([1]));
+    if (!Object.keys(ACT.hours || {}).length) return '<div class="note">' + t("act_none") + "</div>";
+    var W = 24 * 22, H = 150, bars = avg.map(function (v, i) {
+      var bh = Math.round(v / max * (H - 30));
+      return '<g><rect x="' + (i * 22 + 3) + '" y="' + (H - 18 - bh) + '" width="16" height="' + Math.max(bh, cnt[i] ? 2 : 0) + '" rx="2" fill="' + (cnt[i] ? "#f0c040" : "#3a3024") + '"><title>' + String(i).padStart(2, "0") + ":00 · " + Math.round(v) + " · " + t("act_days", cnt[i]) + "</title></rect>" +
+        (i % 3 === 0 ? '<text x="' + (i * 22 + 11) + '" y="' + (H - 4) + '" text-anchor="middle">' + String(i).padStart(2, "0") + "</text>" : "") + "</g>";
+    }).join("");
+    var days = Object.keys(ACT.days || {}).sort().reverse().slice(0, 14);
+    return '<div class="actwrap"><h3>' + t("act_title") + '</h3><svg class="actsvg" viewBox="0 0 ' + W + " " + H + '" role="img" aria-label="' + t("act_title") + '">' + bars + "</svg>" +
+      '<div class="note">' + t("act_note") + "</div>" +
+      (days.length ? '<table class="lbt"><thead><tr><th class="nm">' + t("act_day") + "</th><th>" + t("act_players") + "</th></tr></thead><tbody>" + days.map(function (d) { return '<tr><td class="nm">' + esc(d) + "</td><td><b>" + num(ACT.days[d]) + "</b></td></tr>"; }).join("") + "</tbody></table>" : "") + "</div>";
   }
   // ---- Collections (Joakim 2026-11-17): mounts, husdjur, toys och titlar på Forever (collections.json, hamta-samlingar.js):
   // Blizzards listor och bilder, var de fås ur Classic-databasen (säljare och plats, drop med chans, quest). Pris från AH
@@ -3697,11 +3866,12 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     mode = m;
     try { localStorage.setItem(MKEY, m); } catch (e) { /* gäller tills sidan stängs */ }
     resetModeState(m);
-    $("q").placeholder = t(m === "cr" ? "search_rc" : m === "ar" ? "search_ar" : m === "qu" ? "search_qu" : m === "dg" ? "search_dg" : m === "hu" ? "search_hu" : m === "co" ? "search_co" : "search_ph");
+    $("q").placeholder = t(m === "cr" ? "search_rc" : m === "ar" ? "search_ar" : m === "qu" ? "search_qu" : m === "dg" ? "search_dg" : m === "hu" ? "search_hu" : m === "co" ? "search_co" : m === "de" ? "search_ph" : "search_ph");
     if (m === "qu") { quStart(selQuest || 0, true); return; }
     if (m === "dg") { dgStart(0); return; }
     if (m === "hu") { sortKey = "lvl"; sortDir = huLvl ? -1 : 1; huStart(huSel); return; }
     if (m === "co") { sortKey = "name"; sortDir = 1; coStart(0); return; }
+    if (m === "de") { sortKey = "profit"; sortDir = -1; deStart(0); return; }
     if (m === "ar") {
       drawCats(); refresh();
       if (arLb) { lbShow(); setHash("#top=" + arLb); }
@@ -3730,6 +3900,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   $("modeDg").addEventListener("click", function () { setMode("dg"); });
   $("modeHu").addEventListener("click", function () { setMode("hu"); });
   $("modeCo").addEventListener("click", function () { setMode("co"); });
+  $("modeDe").addEventListener("click", function () { setMode("de"); });
   document.addEventListener("change", function (e) { if (e.target && e.target.id === "quPlayer") setQuPlayer(e.target.value); });
   $("head").addEventListener("click", function (e) {
     var b = e.target.closest("button");
@@ -3752,6 +3923,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   document.addEventListener("click", function (e) { if (!$("mktPop").hidden && !e.target.closest("#mkt")) mktOpen(false); });
   // Jämförelsens ruta: Enter eller knappen jämför med namnet i rutan.
   document.addEventListener("input", function (e) {
+    if (e.target && e.target.id === "deskill") { var dv = parseInt(e.target.value, 10); deSkill = dv >= 1 && dv <= 300 ? dv : 0; try { localStorage.setItem("whippit-ah-deskill", String(deSkill)); } catch (e3) {} refresh(); }
     if (e.target && e.target.id === "hulvl") { var v = parseInt(e.target.value, 10); huLvl = v >= 1 && v <= 60 ? v : 0; try { localStorage.setItem(HU_LKEY, String(huLvl)); } catch (e2) {} if (sortKey === "lvl") sortDir = huLvl ? -1 : 1; refresh(); }
   });
   document.addEventListener("change", function (e) { if (e.target && e.target.id === "hulvl" && mode === "hu") drawCats(); });
