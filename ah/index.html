@@ -149,6 +149,39 @@ h1 { font-family: var(--display); font-weight: 500; font-size: 36px; margin: 0; 
 #list.hu th.nm { width: 34%; } #list.hu td.nm { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 0; }
 #list.hu .hic { width: 22px; height: 22px; border-radius: 3px; vertical-align: middle; margin-right: 7px; border: 1px solid #000; }
 .hurare { color: #c0c8d0; text-shadow: 0 0 6px rgba(200, 210, 220, .8); }
+/* Rare-djur: silverram som spelets rare-porträtt, silvervitt namn (Joakim 2026-11-17). */
+#list.hu .hic.rare, .hufr img.rare, .strip h2 .ci.rare { border: 1px solid #f2f6fa; box-shadow: 0 0 0 1px #59626c, 0 0 0 3px #b9c3cd, 0 0 9px 2px rgba(214, 226, 238, .55); }
+.hurn { color: #dfe7ef; text-shadow: 0 0 5px rgba(200, 214, 228, .45); }
+/* Upgrade gear i Armory (Joakim 2026-11-17). */
+/* Collections (Joakim 2026-11-17). */
+#list.co th.nm { width: 34%; } #list.co td.nm { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 0; }
+.coic { width: 22px; height: 22px; border-radius: 3px; vertical-align: middle; margin-right: 7px; border: 1px solid #000; object-fit: cover; display: inline-block; } .coic.m { object-position: 50% 30%; background: #1a1410; }
+.coic.none { background: var(--inset); } .coic.ttl { text-align: center; line-height: 20px; color: var(--gold); background: var(--inset); font-size: 12px; } .strip h2 .coic { width: 28px; height: 28px; }
+.cosrc { display: inline-block; padding: 1px 7px; border-radius: 9px; font-size: 11.5px; font-weight: 600; border: 1px solid; white-space: nowrap; }
+.cosrc.s-vendor { color: #d8c48a; border-color: rgba(216, 196, 138, .45); } .cosrc.s-drop { color: #ff8a7a; border-color: rgba(255, 138, 122, .45); } .cosrc.s-quest { color: #ffd100; border-color: rgba(255, 209, 0, .4); }
+.cosrc.s-class { color: #8fb8ff; border-color: rgba(143, 184, 255, .45); } .cosrc.s-pvp { color: #c0c8d0; border-color: rgba(192, 200, 208, .45); } .cosrc.s-forever { color: #a335ee; border-color: rgba(163, 53, 238, .5); } .cosrc.s-other { color: var(--grey); border-color: var(--line); }
+.cobig { margin: 4px 0 8px; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; background: radial-gradient(ellipse at 50% 60%, #3a2c1c, #0d0a08 70%); display: flex; justify-content: center; } .cobig img { max-width: 100%; max-height: 260px; display: block; }
+.coitem { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+/* Topplistor (Joakim 2026-11-17). */
+.lbwrap { display: grid; gap: 8px; padding: 4px 2px; } .lbhead h2 { margin: 0; color: var(--gold); } .lbhead small { color: var(--grey); }
+.lbt { width: 100%; border-collapse: collapse; font-size: 13.5px; } .lbt th { text-align: left; color: var(--gold); font-size: 11.5px; text-transform: uppercase; letter-spacing: .04em; padding: 6px 8px; border-bottom: 1px solid var(--line); }
+.lbt td { padding: 5px 8px; border-bottom: 1px solid rgba(255, 255, 255, .04); white-space: nowrap; } .lbt td.nm { overflow: hidden; text-overflow: ellipsis; max-width: 0; width: 45%; } .lbt td.nm a { text-decoration: none; } .lbt td.nm a:hover { text-decoration: underline; }
+.lbt .ri { width: 18px; height: 18px; vertical-align: -4px; margin-right: 6px; border-radius: 3px; } .lbn { color: var(--grey); width: 28px; } .lbn.top1 { color: #ffd100; font-weight: 700; } .lbn.top2 { color: #d6dee8; font-weight: 700; } .lbn.top3 { color: #e0a060; font-weight: 700; }
+.lbbtn .ci { width: 20px; height: 20px; border-radius: 3px; margin-right: 6px; }
+.upbig { all: unset; box-sizing: border-box; cursor: pointer; display: flex; align-items: center; gap: 12px; width: 100%; margin: 10px 0 6px; padding: 10px 12px; border: 1px solid var(--edge); border-radius: 6px; background: linear-gradient(180deg, rgba(240, 192, 64, .13), rgba(240, 192, 64, .03)); }
+.upbig:hover, .upbig:focus-visible { background: linear-gradient(180deg, rgba(240, 192, 64, .22), rgba(240, 192, 64, .06)); }
+.upbig img { width: 40px; height: 40px; border-radius: 4px; border: 1px solid #000; box-shadow: 0 0 0 1px var(--bronze); flex: none; } .upbig span { display: grid; gap: 2px; } .upbig b { color: var(--gold); font-size: 15px; } .upbig small { color: var(--grey); font-size: 12.5px; }
+.uptot { display: flex; gap: 8px; margin: 8px 0; } .uptot > div { flex: 1 1 0; min-width: 0; padding: 8px 10px; border: 1px solid var(--line); border-radius: 6px; background: var(--inset); display: grid; gap: 2px; } .uptot small { color: var(--grey); font-size: 12px; } .uptot b { font-size: 17px; white-space: nowrap; }
+.uplist { display: grid; gap: 6px; } .uprow { padding: 6px 8px 7px; border: 1px solid var(--line); border-radius: 6px; background: rgba(255, 255, 255, .015); }
+.upslot { display: flex; gap: 8px; align-items: baseline; font-size: 12px; margin-bottom: 3px; min-width: 0; } .upslot span { color: var(--gold); text-transform: uppercase; letter-spacing: .04em; font-size: 11px; flex: none; } .upslot em { font-style: normal; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; opacity: .75; min-width: 0; }
+.upnew { display: flex; align-items: center; gap: 9px; text-decoration: none; color: var(--fg); padding: 3px 4px; border-radius: 4px; } .upnew:hover { background: var(--hover); }
+.upnew img, .upnoi { width: 32px; height: 32px; border-radius: 4px; border: 1px solid #000; flex: none; } .upnm { display: grid; min-width: 0; flex: 1 1 auto; } .upnm b { font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.upnm small { font-size: 12px; line-height: 1.35; } .upnm .pos { color: #4ade4a; } .upnm .neg { color: #ff7a6a; } .upp { flex: none; font-size: 13px; white-space: nowrap; }
+.upalt { font-size: 11px; color: var(--grey); margin: 4px 0 0 4px; text-transform: uppercase; letter-spacing: .04em; } .note.warn { color: #ffb84a; }
+.humap { position: relative; margin: 6px 0 4px; } .humap canvas { display: block; margin: 0 auto; border-radius: 6px; border: 1px solid var(--line); box-shadow: inset 0 0 30px rgba(0, 0, 0, .6); }
+.humaptip { position: absolute; z-index: 3; pointer-events: none; white-space: nowrap; padding: 4px 8px; border-radius: 4px; background: rgba(8, 6, 5, .94); border: 1px solid var(--edge); font-size: 12.5px; }
+.humaplg { display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; font-size: 12px; color: var(--grey); } .humaplg i { display: inline-block; width: 9px; height: 9px; margin-right: 5px; vertical-align: -1px; border: 1px solid #000; border-radius: 50%; }
+.humaplg i.lr { background: #e3e9ef; border-radius: 0; transform: rotate(45deg) scale(.85); } .humaplg i.le { background: #40c040; } .humaplg i.ln { background: #f0c040; }
 .hurole { display: inline-block; padding: 1px 7px; border-radius: 9px; font-size: 11.5px; font-weight: 600; border: 1px solid; }
 .hurole.r-tank { color: #8fb8ff; border-color: rgba(143, 184, 255, .45); } .hurole.r-dps { color: #ff8a7a; border-color: rgba(255, 138, 122, .45); } .hurole.r-allround { color: #d8c48a; border-color: rgba(216, 196, 138, .45); }
 .hufil { display: grid; gap: 8px; padding: 4px 6px 8px; }
@@ -683,6 +716,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       <button type="button" id="modeQu" aria-pressed="false" data-t-title="mode_qu_tip"><img class="mi" alt="" data-mi="qu" onerror="this.style.visibility='hidden'"><span data-t="mode_qu">Quests</span></button>
       <button type="button" id="modeDg" aria-pressed="false" data-t-title="mode_dg_tip"><img class="mi" alt="" data-mi="dg" onerror="this.style.visibility='hidden'"><span data-t="mode_dg">Dungeons</span></button>
       <button type="button" id="modeHu" aria-pressed="false" data-t-title="mode_hu_tip"><img class="mi" alt="" data-mi="hu" onerror="this.style.visibility='hidden'"><span data-t="mode_hu">Hunter pets</span></button>
+      <button type="button" id="modeCo" aria-pressed="false" data-t-title="mode_co_tip"><img class="mi" alt="" data-mi="co" onerror="this.style.visibility='hidden'"><span data-t="mode_co">Collections</span></button>
     </div>
     <span class="count" id="count"></span>
   </div>
@@ -726,7 +760,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   // mot vanligt, dygnshandel och bästa tid. Trading visar bara stapelbart med minst TR_MIN ute (gear och tunna varor svänger
   // i guld, där säger procent ingenting). Sparas i webbläsaren.
   var MKEY = "whippit-ah-mode", TR_MIN = 20;
-  var mode = (function () { try { var m = localStorage.getItem(MKEY); return m === "tr" || m === "cr" || m === "ar" || m === "qu" || m === "dg" || m === "hu" ? m : "ah"; } catch (e) { return "ah"; } })();
+  var mode = (function () { try { var m = localStorage.getItem(MKEY); return m === "tr" || m === "cr" || m === "ar" || m === "qu" || m === "dg" || m === "hu" || m === "co" ? m : "ah"; } catch (e) { return "ah"; } })();
   if (mode === "tr") { sortKey = "dip"; sortDir = -1; }
   var BT_MIN = 3;   // bästa tid räknas som tydlig vid minst 3 % vinst efter AH:s andel och plus minst 6 av 10 dagar
   function btClear(r) { return !!(r.bt && r.bt[2] >= BT_MIN && r.bt[3] * 10 >= r.bt[4] * 6); }
@@ -788,6 +822,26 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     h.split("&").forEach(function (kv) { var i = kv.indexOf("="); if (i > 0) o[kv.slice(0, i)] = decodeURIComponent(kv.slice(i + 1)); });
     return o;
   }
+  // Historik (Joakim 2026-11-17: mus 4/5 hoppade ut från sidan): varje nytt val (vara, recept, quest, djur, spelare …)
+  // blir ett steg i webbläsarens historik, bakåt/framåt ritar om sidan från adressen. Samma adress = inget nytt steg;
+  // medan ett bakåt-steg ritas om skrivs adressen bara över.
+  // navRestoring: sidan ritar själv (start, bakåt/framåt) och skriver bara över adressen; första klick eller tangent
+  // stänger av det (även val som kommer efter en laddning, t.ex. arLoad). navSkip: ett mellansteg som inte ska synas.
+  var navRestoring = true, navSkip = false;
+  function sameHash(a, b) { try { return decodeURIComponent(a) === decodeURIComponent(b); } catch (e) { return a === b; } }   // å/ä/ö i adressen är %-kodade
+  function setHash(h) {
+    if (navSkip) return;
+    try {
+      if (sameHash(location.hash, h)) return;
+      if (navRestoring || !location.hash || location.hash === "#") history.replaceState(null, "", h); else history.pushState(null, "", h);
+    } catch (e) {}
+  }
+  ["pointerdown", "keydown"].forEach(function (ev) { document.addEventListener(ev, function () { navRestoring = false; }, true); });
+  window.addEventListener("popstate", function () {
+    if (!D) return;
+    navRestoring = true;
+    arCmp = null; arCmpPick = false; load(D, false, true);
+  });
   var HP0 = hashParams();
   var house = (function () {
     var hm = +HP0.m;
@@ -858,6 +912,27 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       hu_hp: "Health", hu_dmg: "Damage", hu_armor: "Armor", hu_diet: "Diet", hu_learn: "Abilities the family can learn", hu_uses: "Uses in the wild", hu_where: "Where it lives", hu_inst: "dungeon", hu_spawns: "%1 spawns in the database",
       hu_speed_note: "A tamed pet keeps its attack speed: 1.0–1.3 is fast, 2.0 is normal. Health, damage and armor come from the family.",
       hu_src: "Classic database (cmangos, GPL). Zones and map positions from the game client via WhippitPanel.",
+      lb: "Leaderboards", lb_sub: "%1 players and %2 guilds found so far · %3", lb_ilvl: "Item level", lb_level: "Level", lb_hk: "Honorable kills", lb_rank: "PvP rank", lb_ach: "Achievement points", lb_guilds: "Guilds",
+      lb_both: "Both sides", lb_player: "Player", lb_guild: "Guild", lb_n60: "Level 60s", lb_il60: "Item level (60s)", lb_avg: "Avg level", lb_members: "Members", lb_none: "Nobody here yet.", lb_fail: "The leaderboards could not be loaded.",
+      lb_note: "Blizzard can only look up a player by name, so the list grows like a snowball: known players → their guild → its members → their guilds, plus the names WhippitPanel notes in the game. Refreshed daily; anyone not seen for 29 days drops out.",
+      lb_how: "Click a player or guild to open it in the Armory. Guilds are ranked by level 60 members, then their average item level.",
+      ar_qunknown: "This quest is not in the Classic quest database (new on Forever?).",
+      mode_co: "Collections", mode_co_tip: "Mounts, companions, toys and titles on Forever: where they come from and what they cost.", search_co: "Search mount, pet, toy, title, NPC or zone",
+      co_kinds: "Collections", co_k_mounts: "Mounts", co_k_pets: "Companions", co_k_toys: "Toys", co_k_titles: "Titles", co_k1_mounts: "Mount", co_k1_pets: "Companion", co_k1_toys: "Toy", co_k1_titles: "Title",
+      co_from: "Where from", co_s_all: "All", co_s_vendor: "Vendor", co_s_drop: "Drop", co_s_quest: "Quest", co_s_class: "Class", co_s_pvp: "PvP rank", co_s_other: "Other", co_s_forever: "New on Forever",
+      co_missing: "%1 is missing", co_side: "Only %1 and both", co_owner: "%1 has %2 of %3 mounts (from the Armory).", co_have: "Owned", co_have_by: "%1 has it",
+      co_col_name: "Name", co_col_src: "Source", co_col_where: "Where", co_col_req: "Requires", co_col_price: "Price", co_col_price_tip: "Lowest price on the AH, otherwise the vendor price", co_ah: "AH", co_vendor: "vendor",
+      co_count: "%1 shown", co_empty: "Nothing matches.", co_item: "Item", co_open_ah: "Open on the AH", co_where: "Where to get it", co_price_ah: "On the AH", co_price_vendor: "Vendor price", co_pvprank: "PvP rank %1",
+      co_forever: "New on Forever: not in the Classic database, so the source is unknown here.", co_nosrc: "No known source in the Classic database.",
+      co_src_note: "Names and pictures: Blizzard (WoW Forever). Sources: the Classic database (cmangos, GPL), place = nearest graveyard or the dungeon.",
+      up_btn: "Upgrade gear", up_short: "Upgrades", up_btn_sub: "Better items on the auction house right now, with prices", up_title: "Upgrades from the AH", up_prices: "prices from %1",
+      up_side: "Your character is on the other side: switch the auction house at the top right to see the right prices.", up_none: "No upgrade on the AH right now for this level and class.",
+      up_all: "All %1 upgrades", up_cheap_all: "With the cheaper picks", up_alt: "Cheaper", up_empty: "Empty slot", up_fx: "effect", up_nocls: "No upgrade profile for this class.",
+      up_rest: "Nothing better on the AH for: %1.", up_est_tip: "Random stats: the AH has every suffix under one item. The numbers are an estimate for the suffix in the name.",
+      up_how: "Score = the item's stats weighted for the class (a simple leveling profile, not a simulation), compared with what is worn now. Same armor type rules as the game: mail from 40 for hunters and shamans, plate from 40. Prices are the lowest on the AH in the last scan. Click an item for its price history.",
+      hu_map: "Map", hu_map_tip: "Show the beasts in the list on a map", hu_map_title: "Where they are", hu_map_sub: "%1 beasts on this continent", hu_map_lvl: "up to level %1",
+      hu_map_rare: "Rare", hu_map_elite: "Elite", hu_map_beast: "Beast", hu_map_none: "No beast in the list lives here.", hu_zone_wait_short: "zone names soon",
+      hu_map_note: "Hover a point for the name, click to open the beast. The land is drawn from every spawn in the Classic database, place names from the graveyards.",
       hu_for: "Pets for you", hu_for_sub: "tameable around level %1", hu_near: "near you", hu_near_tip: "In a zone where this hunter has quests right now",
       hu_for_note: "Up to the hunter's level, rares and fast attackers first. Blizzard doesn't share where a character is, so the zones of the quests in progress count as 'near'.",
       mode_dg: "Dungeons", mode_dg_tip: "Dungeons and raids by level: bosses in order and what they drop, priced on the auction house", search_dg: "Search loot in every dungeon, e.g. Cape of the Brotherhood",
@@ -1123,23 +1198,25 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     if (!ARMORY_API) { arShow('<div class="hint">' + t("ar_off") + "</div>", ""); return; }
     var my = ++arToken;
     arShow('<div class="hint">' + t("ar_loading") + "</div>", "");
-    fetch(ARMORY_API + "/" + kind + "/" + encodeURIComponent(slug) + "?v=3").then(function (r) {
+    fetch(ARMORY_API + "/" + kind + "/" + encodeURIComponent(slug) + "?v=4").then(function (r) {
       if (r.status === 404) throw new Error("404");
       if (!r.ok) throw new Error("fail");
       return r.json();
     }).then(function (d) {
-      if (my !== arToken) return;
+      if (my !== arToken || mode !== "ar") return;
       if (!arData || arData.slug !== d.slug) { arRec = 0; arOpenProf = 0; crQ = ""; }   // ny spelare/guild: högerpanelen visar yrkena igen, inget yrke utfällt
-      if (!arData || arData.slug !== d.slug) { talPlan = null; arQz = {}; }
-      arData = d; arCmp = null; arCmpPick = false; arCmpErr = ""; arCmpBusy = 0;
+      if (!arData || arData.slug !== d.slug) { talPlan = null; arQz = {}; if (!arKeepSub) { arQuest = 0; arUpg = false; } }
+      arKeepSub = false;
+      arData = d; arCmp = null; arCmpPick = false; arCmpErr = ""; arCmpBusy = 0; arLb = "";
       if (d.kind === "character") renderChar(d); else renderGuild(d);
       var vs = d.kind === "character" && arVs; arVs = "";
       if (vs) { arCmpPick = true; arCompare(vs); }
       arRemember(d.kind === "character" ? "char" : "guild", d.slug, d.kind === "character" ? d.name + " " + d.surname : d.name);
       drawCats();
-      try { history.replaceState(null, "", "#" + (d.kind === "character" ? "player" : "guild") + "=" + d.slug); } catch (e) {}
+      setHash(d.kind === "character" ? arHash() : "#guild=" + d.slug);
     }).catch(function (e) {
       if (my !== arToken) return;
+      arKeepSub = false;
       if (e.message === "404" && onMiss) onMiss(); else if (e.message === "404") arShow('<div class="hint">' + t("ar_notfound") + "</div>", ""); else { console.error("armory", e); arShow('<div class="hint">' + t("ar_fail") + "</div>", ""); }
     });
   }
@@ -1233,6 +1310,10 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     }).join(""));
   }
   var arRec = 0;   // recept som visas i högerpanelen (0 = yrkena)
+  // Quest ur "Quests in progress" i högerpanelen (Joakim 2026-11-17: spelaren ska inte tappas bort). arKeepSub: adressen
+  // (#player=…&aq=…&up=1) bestämmer panelen, nollställ den inte när spelaren laddas.
+  var arQuest = 0, arKeepSub = false;
+  function arHash() { return "#player=" + (arData ? arData.slug : "") + (arQuest ? "&aq=" + arQuest : "") + (arUpg ? "&up=1" : ""); }
   // Kända recept, grupperade per skill-nivå (1–74, 75–149, 150–224, 225–300; skill ur recept.json, okänd sist), i skill-
   // ordning inom gruppen, med säljpris och vinst på vald marknad. Klick → receptrutan i högerpanelen (som en vara i AH).
   function knownHtml(ids) {
@@ -1310,7 +1391,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   // PvP, yrken och reputation sida vid sida. Det bästa värdet i varje rad är grönt med skillnaden bredvid.
   // Länk: #player=a&vs=b. arCmp = { b: spelare B } när vyn är öppen; arCmpPick = rutan där man väljer B.
   var arCmp = null, arCmpPick = false, arCmpBusy = 0, arCmpErr = "";
-  function arRedraw() { if (arData && arData.kind === "character") { if (arCmp) renderCompare(arData, arCmp.b); else renderChar(arData); } }
+  function arRedraw() { if (mode !== "ar") return; if (arData && arData.kind === "character") { if (arCmp) renderCompare(arData, arCmp.b); else renderChar(arData); } }
   function cmpPickHtml(d) {
     var seen = {}, opts = [];
     arFriends.concat(arRecent.filter(function (r) { return r.kind === "char"; })).forEach(function (r) { if (r.slug !== d.slug && !seen[r.slug] && opts.length < 12) { seen[r.slug] = 1; opts.push(r); } });
@@ -1324,7 +1405,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     if (slug === arData.slug) { arCmpErr = t("cmp_same"); arRedraw(); return; }
     var my = ++arCmpBusy, a = arData;
     arCmpErr = ""; arRedraw();
-    fetch(ARMORY_API + "/char/" + encodeURIComponent(slug) + "?v=3").then(function (r) {
+    fetch(ARMORY_API + "/char/" + encodeURIComponent(slug) + "?v=4").then(function (r) {
       if (r.status === 404) throw new Error("404");
       if (!r.ok) throw new Error("fail");
       return r.json();
@@ -1332,7 +1413,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       if (my !== arCmpBusy || arData !== a) return;
       arCmpBusy = 0; arCmpPick = false; arCmp = { b: b };
       arRemember("char", b.slug, b.name + " " + b.surname); arRemember("char", a.slug, a.name + " " + a.surname); drawCats();
-      try { history.replaceState(null, "", "#player=" + a.slug); } catch (e) {}   // F5 visar spelaren, inte jämförelsen (Joakim 2026-11-17); Copy link ger &vs=
+      setHash(arHash());   // F5 visar spelaren, inte jämförelsen (Joakim 2026-11-17); Copy link ger &vs=
       renderCompare(a, b);
     }).catch(function (e) {
       if (my !== arCmpBusy || arData !== a) return;
@@ -1555,7 +1636,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     var full = d.name + " " + d.surname, profN = d.professions.primary.length + d.professions.secondary.length;
     var mid = '<div class="arhead2"><div class="ahtop">' +
       (d.guild ? '<span class="glbl">' + t("ar_guild") + ':</span> <a class="wh gld" href="#guild=' + esc(d.guild.slug) + '" data-ar="guild" data-slug="' + esc(d.guild.slug) + '">&lt;' + esc(d.guild.name) + "&gt;</a>" : "<span></span>") +
-      '<span class="ahbtns"><button class="lnk" type="button" data-cmp="1" aria-expanded="' + arCmpPick + '" title="' + t("cmp_tip") + '">⇄ ' + t("cmp") + '</button><button class="lnk" type="button" data-copyany="#player=' + esc(d.slug) + '" title="' + t("copy_link") + '">' + t("copy_link") + "</button></span></div>" +
+      '<span class="ahbtns"><button class="lnk" type="button" data-upg="1" title="' + t("up_btn_sub") + '">⬆ ' + t("up_short") + '</button><button class="lnk" type="button" data-cmp="1" aria-expanded="' + arCmpPick + '" title="' + t("cmp_tip") + '">⇄ ' + t("cmp") + '</button><button class="lnk" type="button" data-copyany="#player=' + esc(d.slug) + '" title="' + t("copy_link") + '">' + t("copy_link") + "</button></span></div>" +
       '<div class="ahname"><button class="star fr" type="button" data-friend="' + esc(d.slug) + '" data-label="' + esc(full) + '" aria-pressed="' + fr + '" title="' + t(fr ? "fr_del" : "fr_add") + '">' + (fr ? "★" : "☆") + "</button>" +
       '<h2 class="q1">' + esc(full) + '</h2><span class="lvl">(' + d.level + ")</span></div>" +
       '<div class="ahsub">' + esc(((d.race || "") + " " + (d.cls || "")).trim()) +
@@ -1578,10 +1659,204 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       var row = null;
       crRows.forEach(function (x) { if (x.rid === arRec) row = x; });
       right = '<button class="lnk back" type="button" data-arback="1">‹ ' + esc(d.name + " " + d.surname) + "</button>" + (row ? recipeHtml(row) + '<div class="h3row"><button class="lnk" type="button" data-gorec="' + arRec + '">' + t("ar_open_cr") + "</button></div>" : '<div class="note">' + t("ar_nofr") + "</div>");
+    } else if (arQuest) {
+      right = '<div class="note">' + t("ar_loading") + "</div>";
+    } else if (arUpg) {
+      right = upPanel(d);
     } else {
-      right = '<div class="strip"><h2 class="q1">' + esc(d.name) + "</h2><small>" + esc(d.ruleset || "") + " · " + (d.faction === "ALLIANCE" ? "Alliance" : "Horde") + "</small></div>" + '<div class="note">' + t("ar_pick") + "</div>";
+      right = '<div class="strip"><h2 class="q1">' + esc(d.name) + "</h2><small>" + esc(d.ruleset || "") + " · " + (d.faction === "ALLIANCE" ? "Alliance" : "Horde") + "</small></div>" +
+        '<button class="upbig" type="button" data-upg="1"><img src="' + RICON + 'inv_misc_coin_02.jpg" alt=""><span><b>' + t("up_btn") + "</b><small>" + t("up_btn_sub") + "</small></span></button>" +
+        '<div class="note">' + t("ar_pick") + "</div>";
     }
     arShow(mid, right);
+    if (arQuest && !arRec) {
+      var aq = arQuest;
+      loadQuests().then(function () {
+        if (arQuest !== aq || arData !== d || arCmp || mode !== "ar") return;
+        if (QU.quests[aq]) selectQuest(aq, false, true);
+        else $("detail").innerHTML = '<button class="lnk back" type="button" data-aqback="1">‹ ' + esc(d.name + " " + d.surname) + '</button><div class="note">' + t("ar_qunknown") + "</div>";
+      }).catch(function () {});
+    }
+  }
+  // Upgrade gear (Joakim 2026-11-17): bättre föremål från AH:t för karaktären du tittar på, per plats, med pris och summa.
+  // gear.json (build.js) har plats, typ, nivåkrav och stats ur spelets tooltip för allt på AH. Poäng = stats gånger en
+  // vikt per klass (en enkel levelprofil, inte en simulering); det som sitter på räknas ur Armory (stats, rustning, dps,
+  // Equip-rader). Föremål med slumpade stats (… of the Monkey) har samma id för alla varianter: deras stats uppskattas ur
+  // median för gröna föremål på samma plats och level, i klassens bästa suffix, och märks ≈.
+  var GEAR = null, gearPromise = null, arUpg = false;
+  function loadGear() {
+    if (!gearPromise) gearPromise = fetch(DATA_BASE + "gear.json").then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }).then(function (j) { GEAR = j; return j; })
+      .catch(function (e) { gearPromise = null; throw e; });
+    return gearPromise;
+  }
+  var UP_W = {
+    Warrior: { str: 1, agi: .7, sta: .55, ap: .5, crit: 14, hit: 10, def: .3, dodge: 5, parry: 5, block: 3, blockv: .15, armor: .01, dps: 3.5, rdps: .4 },
+    Paladin: { str: 1, int: .55, sta: .55, agi: .45, spi: .15, sp: .6, heal: .35, crit: 10, hit: 8, scrit: 6, mp5: 1, armor: .01, dps: 3, blockv: .1 },
+    Hunter: { agi: 1, int: .3, sta: .45, str: .1, spi: .1, ap: .4, rap: .5, crit: 14, hit: 12, rhit: 12, mp5: .6, armor: .006, dps: .3, rdps: 5 },
+    Rogue: { agi: 1, str: .55, sta: .4, ap: .5, crit: 14, hit: 14, armor: .006, dps: 3.5, rdps: .4 },
+    Priest: { int: .8, spi: .75, sta: .6, sp: .9, heal: .7, scrit: 10, shit: 8, mp5: 1.5, armor: .004, wand: 3, school: { shadow: 1, holy: 1 } },
+    Shaman: { str: .75, int: .8, agi: .5, sta: .55, spi: .2, sp: .8, heal: .45, crit: 10, scrit: 8, mp5: 1.2, ap: .35, armor: .008, dps: 2.5, blockv: .08, school: { nature: 1, fire: 1, frost: 1 } },
+    Mage: { int: .9, spi: .4, sta: .6, sp: 1, scrit: 12, shit: 12, mp5: 1, armor: .004, wand: 3, school: { fire: 1, frost: 1, arcane: 1 } },
+    Warlock: { int: .6, spi: .35, sta: .9, sp: 1, scrit: 8, shit: 12, mp5: .8, armor: .004, wand: 3, school: { shadow: 1, fire: 1 } },
+    Druid: { str: .55, agi: .6, int: .75, spi: .45, sta: .55, sp: .7, heal: .5, crit: 8, scrit: 8, mp5: 1.2, ap: .3, armor: .008, dps: .6, school: { nature: 1, arcane: 1 } },
+  };
+  // Klassens bästa suffix för föremål med slumpade stats (två stats, hälften var).
+  var UP_SUF = { Warrior: ["of the Bear", "str", "sta"], Paladin: ["of the Bear", "str", "sta"], Hunter: ["of the Monkey", "agi", "sta"], Rogue: ["of the Monkey", "agi", "sta"],
+    Priest: ["of the Owl", "int", "spi"], Shaman: ["of the Eagle", "sta", "int"], Mage: ["of the Eagle", "sta", "int"], Warlock: ["of the Eagle", "sta", "int"], Druid: ["of the Eagle", "sta", "int"] };
+  var UP_ARM = { Cloth: 1, Miscellaneous: 1, Leather: "WPHRSD", Mail: "WP", Plate: "WP", Shields: "WPS" };   // bokstäver = klasser; Mail från 40 för H/S, Plate från 40
+  var UP_WEAP = {
+    Warrior: "One-Handed Axes|Two-Handed Axes|One-Handed Maces|Two-Handed Maces|One-Handed Swords|Two-Handed Swords|Polearms|Staves|Daggers|Fist Weapons|Bows|Guns|Crossbows|Thrown",
+    Paladin: "One-Handed Axes|Two-Handed Axes|One-Handed Maces|Two-Handed Maces|One-Handed Swords|Two-Handed Swords|Polearms",
+    Hunter: "One-Handed Axes|Two-Handed Axes|One-Handed Swords|Two-Handed Swords|Polearms|Staves|Daggers|Fist Weapons|Bows|Guns|Crossbows",
+    Rogue: "Daggers|Fist Weapons|One-Handed Swords|One-Handed Maces|Bows|Guns|Crossbows|Thrown",
+    Priest: "One-Handed Maces|Staves|Daggers|Wands", Mage: "Staves|One-Handed Swords|Daggers|Wands", Warlock: "Staves|One-Handed Swords|Daggers|Wands",
+    Shaman: "One-Handed Axes|Two-Handed Axes|One-Handed Maces|Two-Handed Maces|Staves|Daggers|Fist Weapons",
+    Druid: "Staves|One-Handed Maces|Two-Handed Maces|Daggers|Fist Weapons",
+  };
+  var UP_LETTER = { Warrior: "W", Paladin: "P", Hunter: "H", Rogue: "R", Shaman: "S", Druid: "D" };
+  function upCanUse(cls, lvl, g) {
+    var sub = g[1];
+    if (UP_WEAP[cls] && /Axes|Maces|Swords|Polearms|Staves|Daggers|Fist|Bows|Guns|Crossbows|Thrown|Wands|Fishing/.test(sub)) return ("|" + UP_WEAP[cls] + "|").indexOf("|" + sub + "|") >= 0;
+    var a = UP_ARM[sub];
+    if (a === 1) return true;
+    if (!a) return /Miscellaneous|Idols|Totems|Librams/.test(sub) ? false : true;
+    var L = UP_LETTER[cls] || "x";   // klasser utan bokstav (präst, mage, warlock) bär bara tyg
+    if (a.indexOf(L) < 0) { if (sub === "Mail" && (L === "H" || L === "S") && lvl >= 40) return true; return false; }
+    if (sub === "Plate" && lvl < 40) return false;
+    return true;
+  }
+  // En "Equip:"-rad till stats. Samma regler som equipStat i build.js, håll dem lika.
+  function upEquipStat(e, add) {
+    var m;
+    if ((m = /healing done by up to (\d+) and damage done by up to (\d+)/i.exec(e))) { add("heal", +m[1]); add("sp", +m[2]); }
+    else if ((m = /damage and healing done by magical spells and effects by up to (\d+)/i.exec(e))) add("sp", +m[1]);
+    else if ((m = /healing done by (?:magical )?spells and effects by up to (\d+)/i.exec(e))) add("heal", +m[1]);
+    else if ((m = /damage done by magical spells and effects by up to (\d+)/i.exec(e))) add("sp", +m[1]);
+    else if ((m = /damage done by (Shadow|Fire|Frost|Nature|Arcane|Holy) spells and effects by up to (\d+)/i.exec(e))) add("sp_" + m[1].toLowerCase(), +m[2]);
+    else if ((m = /critical strike with spells by ([\d.]+)%/i.exec(e))) add("scrit", +m[1]);
+    else if ((m = /critical strike by ([\d.]+)%/i.exec(e))) add("crit", +m[1]);
+    else if ((m = /chance to hit with spells by ([\d.]+)%/i.exec(e))) add("shit", +m[1]);
+    else if ((m = /chance to hit with ranged weapons by ([\d.]+)%/i.exec(e))) add("rhit", +m[1]);
+    else if ((m = /chance to hit by ([\d.]+)%/i.exec(e))) add("hit", +m[1]);
+    else if ((m = /^\+(\d+) ranged Attack Power\.?$/i.exec(e))) add("rap", +m[1]);
+    else if ((m = /^\+(\d+) Attack Power\.?$/i.exec(e))) add("ap", +m[1]);
+    else if ((m = /Restores (\d+) Mana per 5 sec/i.exec(e))) add("mp5", +m[1]);
+    else if ((m = /Increased Defense \+(\d+)/i.exec(e))) add("def", +m[1]);
+    else if ((m = /chance to Dodge an attack by ([\d.]+)%/i.exec(e))) add("dodge", +m[1]);
+    else if ((m = /chance to Parry an attack by ([\d.]+)%/i.exec(e))) add("parry", +m[1]);
+    else if ((m = /chance to Block attacks with a shield by ([\d.]+)%/i.exec(e))) add("block", +m[1]);
+    else if ((m = /Block Value of your shield by (\d+)/i.exec(e))) add("blockv", +m[1]);
+    else add("fx", 1);
+  }
+  var UP_PRIM = { Strength: "str", Agility: "agi", Stamina: "sta", Intellect: "int", Spirit: "spi" };
+  function upWorn(it) {   // det som sitter på, ur Armory
+    var s = {}, add = function (k, v) { s[k] = (s[k] || 0) + v; }, m;
+    (it.stats || []).forEach(function (x) { if ((m = /^\+(\d+) (Strength|Agility|Stamina|Intellect|Spirit)$/.exec(x))) add(UP_PRIM[m[2]], +m[1]); });
+    if ((m = /(\d+) Armor/.exec(it.armor || ""))) add("armor", +m[1]);
+    if (it.weapon && (m = /([\d.]+)/.exec(it.weapon.dps || ""))) add("dps", +m[1]);
+    (it.equip || []).forEach(function (x) { upEquipStat(x.replace(/^Equip:\s*/, ""), add); });
+    return s;
+  }
+  function upHasSkill(d, need) {   // "Engineering:150": yrket med minst den nivån; "?" = krav sidan inte kan se
+    var p = need.split(":"), ok = false;
+    if (p.length < 2) return false;
+    d.professions.primary.concat(d.professions.secondary).forEach(function (x) {
+      if (x.name !== p[0]) return;
+      (x.tiers || []).forEach(function (ti) { if (ti.skill >= +p[1]) ok = true; });
+    });
+    return ok;
+  }
+  function upKind(inv) { return /RANGED|THROWN/.test(inv) ? "rng" : /2HWEAPON|^WEAPON$|WEAPONMAINHAND/.test(inv) ? "mh" : /WEAPONOFFHAND|SHIELD|HOLDABLE/.test(inv) ? "oh" : "arm"; }
+  function upScore(s, W, kind, sub) {
+    var v = 0;
+    ["str", "agi", "sta", "int", "spi", "ap", "rap", "sp", "heal", "crit", "scrit", "hit", "shit", "rhit", "mp5", "def", "dodge", "parry", "block", "blockv"].forEach(function (k) { v += (s[k] || 0) * (W[k] || 0); });
+    Object.keys(s).forEach(function (k) { if (k.indexOf("sp_") === 0) v += s[k] * (W.sp || 0) * (W.school && W.school[k.slice(3)] ? .9 : .3); });
+    v += (s.armor || 0) * (W.armor || 0);
+    if (s.dps) v += s.dps * (kind === "rng" ? (sub === "Wands" ? W.wand || 0 : W.rdps || 0) : kind === "oh" ? (W.dps || 0) * .5 : (W.dps || 0));
+    return v;
+  }
+  // Varje plats: vad som sitter där, bästa uppgraderingen på AH (störst poängökning) och ett billigare alternativ.
+  var UP_SLOTS = ["HEAD", "NECK", "SHOULDER", "BACK", "CHEST", "WRIST", "HANDS", "WAIST", "LEGS", "FEET", "FINGER_1", "FINGER_2", "TRINKET_1", "TRINKET_2", "MAIN_HAND", "OFF_HAND", "RANGED"];
+  var UP_INV = { HEAD: "HEAD", NECK: "NECK", SHOULDER: "SHOULDER", BACK: "CLOAK", CHEST: "CHEST|ROBE", WRIST: "WRIST", HANDS: "HAND", WAIST: "WAIST", LEGS: "LEGS", FEET: "FEET",
+    FINGER_1: "FINGER", FINGER_2: "FINGER", TRINKET_1: "TRINKET", TRINKET_2: "TRINKET", RANGED: "RANGED|RANGEDRIGHT|THROWN" };
+  function upList(d) {
+    var W = UP_W[d.cls], suf = UP_SUF[d.cls];
+    if (!W || !GEAR) return [];
+    var worn = {}, used = {}, out = [];
+    d.items.forEach(function (x) { worn[x.slot] = x; used[x.id] = 1; });   // det som redan sitter på (även i andra ringplatsen) föreslås inte
+    var mhInv = worn.MAIN_HAND ? (worn.MAIN_HAND.inv || "").replace("TWOHWEAPON", "2HWEAPON") : "";
+    var dw = (d.cls === "Rogue" || ((d.cls === "Warrior" || d.cls === "Hunter") && d.level >= 20));
+    UP_SLOTS.forEach(function (slot) {
+      var cur = worn[slot], invs;
+      if (slot === "MAIN_HAND") invs = mhInv === "2HWEAPON" ? "2HWEAPON" : mhInv ? "WEAPON|WEAPONMAINHAND" : "2HWEAPON|WEAPON|WEAPONMAINHAND";
+      else if (slot === "OFF_HAND") {
+        if (mhInv === "2HWEAPON") return;
+        var oi = cur ? (cur.inv || "") : "";
+        invs = oi === "SHIELD" ? "SHIELD" : oi === "HOLDABLE" ? "HOLDABLE" : /WEAPON/.test(oi) ? "WEAPON|WEAPONOFFHAND" : ["SHIELD", "HOLDABLE", dw ? "WEAPON|WEAPONOFFHAND" : ""].filter(Boolean).join("|");
+      } else invs = UP_INV[slot];
+      var re = new RegExp("^(" + invs + ")$"), curS = cur ? upScore(upWorn(cur), W, upKind((cur.inv || "").replace("TWOHWEAPON", "2HWEAPON")), cur.sub) : 0;
+      var cands = [];
+      Object.keys(GEAR.items).forEach(function (id) {
+        var g = GEAR.items[id], r = byId[id];
+        if (!re.test(g[0]) || g[2] > d.level || !r || !(r.qty > 0) || !(r.min > 0) || used[id] || (cur && +id === cur.id)) return;
+        if (!upCanUse(d.cls, d.level, g)) return;
+        if (g[6] && ("," + g[6] + ",").indexOf("," + d.cls + ",") < 0) return;   // "Classes: Mage, Priest"
+        if (g[5] && !upHasSkill(d, g[5])) return;   // yrke (ingenjörsglasögon) eller annat krav
+        var st = g[3], est = false;
+        if (g[4]) {   // slumpade stats: uppskatta klassens suffix
+          var pts = Math.round((GEAR.rb[g[0]] || .25) * (g[2] + 5)), s2 = {};
+          Object.keys(st).forEach(function (k) { s2[k] = st[k]; });
+          s2[suf[1]] = (s2[suf[1]] || 0) + Math.ceil(pts / 2); s2[suf[2]] = (s2[suf[2]] || 0) + Math.floor(pts / 2);
+          st = s2; est = true;
+        }
+        var sc = upScore(st, W, upKind(g[0]), g[1]);
+        if (sc > curS + Math.max(1.5, curS * .06)) cands.push({ id: +id, r: r, g: g, st: st, est: est, gain: sc - curS, price: r.min });
+      });
+      if (!cands.length) { out.push({ slot: slot, cur: cur, best: null }); return; }
+      cands.sort(function (a, b) { return b.gain - a.gain || a.price - b.price; });
+      var best = cands[0], cheap = null;
+      cands.forEach(function (c) { if (c !== best && c.price <= best.price * .5 && c.gain >= best.gain * .5 && (!cheap || c.gain / c.price > cheap.gain / cheap.price)) cheap = c; });
+      used[best.id] = 1; if (cheap) used[cheap.id] = 1;
+      out.push({ slot: slot, cur: cur, curS: curS, best: best, cheap: cheap });
+    });
+    return out;
+  }
+  var UP_SHOW = ["str", "agi", "sta", "int", "spi", "sp", "sp_shadow", "sp_fire", "sp_frost", "sp_arcane", "sp_nature", "sp_holy", "heal", "ap", "rap", "crit", "hit", "scrit", "shit", "mp5", "def", "dodge", "dps", "armor"];
+  var UP_LBL = { str: "Str", agi: "Agi", sta: "Sta", int: "Int", spi: "Spi", sp: "Spell", sp_shadow: "Shadow", sp_fire: "Fire", sp_frost: "Frost", sp_arcane: "Arcane", sp_nature: "Nature", sp_holy: "Holy", dodge: "Dodge %", heal: "Heal", ap: "AP", rap: "RAP", crit: "Crit %", hit: "Hit %", scrit: "Spell crit %", shit: "Spell hit %", mp5: "MP5", def: "Def", dps: "DPS", armor: "Armor" };
+  function upDiff(c, cur) {   // "+4 Agi +3 Sta −20 Armor" mot det som sitter på
+    var a = c.st, b = cur ? upWorn(cur) : {}, parts = [];
+    UP_SHOW.forEach(function (k) {
+      var dlt = Math.round(((a[k] || 0) - (b[k] || 0)) * 10) / 10;
+      if (!dlt || (k === "armor" && Math.abs(dlt) < 10)) return;
+      parts.push('<span class="' + (dlt > 0 ? "pos" : "neg") + '">' + (dlt > 0 ? "+" : "−") + Math.abs(dlt) + " " + UP_LBL[k] + "</span>");
+    });
+    return parts.slice(0, 6).join(" ");
+  }
+  function upItem(c, cur, cls) {
+    var r = c.r;
+    return '<a class="upnew" href="#item=' + c.id + '" data-upgo="' + c.id + '">' + (r.ic && ICON_BASE ? '<img class="' + qcls(r.q) + '" src="' + ICON_BASE + r.ic + '.jpg" alt="" data-tip="' + c.id + '">' : '<span class="upnoi"></span>') +
+      '<span class="upnm"><b class="' + qcls(r.q) + '">' + esc(r.name) + (c.est ? " " + esc(UP_SUF[cls][0]) : "") + "</b><small>" + (c.est ? '<span class="dim" title="' + t("up_est_tip") + '">≈ </span>' : "") + upDiff(c, cur) + (c.g[3].fx ? ' <span class="dim">+ ' + t("up_fx") + "</span>" : "") + "</small></span>" +
+      '<span class="upp">' + money(c.price) + "</span></a>";
+  }
+  function upPanel(d) {
+    var back = '<button class="lnk back" type="button" data-upback="1">‹ ' + esc(d.name + " " + d.surname) + "</button>";
+    if (!UP_W[d.cls]) return back + '<div class="note">' + t("up_nocls") + "</div>";
+    if (!GEAR) { loadGear().then(function () { arRedraw(); }).catch(function () { arUpg = false; arRedraw(); }); return back + '<div class="note">' + t("ar_loading") + "</div>"; }
+    var l = upList(d), got = l.filter(function (x) { return x.best; }), tot = 0, totC = 0;
+    got.forEach(function (x) { tot += x.best.price; totC += (x.cheap || x.best).price; });
+    var hp = houseParts(house), mine = (d.faction === "ALLIANCE" ? "alliance" : "horde") === hp[1];
+    var h = back + '<div class="strip"><h2>' + t("up_title") + "</h2><small>" + t("col_lvl") + " " + d.level + " " + esc(d.cls) + " · " + t("up_prices", (hp[1] === "alliance" ? "Alliance" : "Horde") + " " + (hp[0] === "pvp" ? "PvP" : "Normal")) + "</small></div>" +
+      (mine ? "" : '<div class="note warn">' + t("up_side") + "</div>");
+    if (!got.length) return h + '<div class="note">' + t("up_none") + "</div>" + '<div class="note">' + t("up_how") + "</div>";
+    h += '<div class="uptot"><div><small>' + t("up_all", got.length) + "</small><b>" + money(tot) + "</b></div>" + (totC < tot ? "<div><small>" + t("up_cheap_all") + "</small><b>" + money(totC) + "</b></div>" : "") + "</div>";
+    h += '<div class="uplist">' + l.map(function (x) {
+      if (!x.best) return "";
+      var cur = x.cur;
+      return '<div class="uprow"><div class="upslot"><span>' + esc(t("slot_" + x.slot)) + "</span>" + (cur ? '<em class="' + qcls(cur.q) + '">' + esc(cur.name) + "</em>" : '<em class="dim">' + t("up_empty") + "</em>") + "</div>" +
+        upItem(x.best, cur, d.cls) + (x.cheap ? '<div class="upalt">' + t("up_alt") + "</div>" + upItem(x.cheap, cur, d.cls) : "") + "</div>";
+    }).join("") + "</div>";
+    var none = l.filter(function (x) { return !x.best; }).map(function (x) { return t("slot_" + x.slot); });
+    return h + (none.length ? '<div class="note">' + t("up_rest", none.join(", ")) + "</div>" : "") + '<div class="note">' + t("up_how") + "</div>";
   }
   // Ras- och klassikoner från Blizzards ikonserver (spelets egna). Forevers Skyborne-raser saknar ikon där: bara namnet.
   var RACE_IC = { "Human": "human", "Orc": "orc", "Dwarf": "dwarf", "Night Elf": "nightelf", "Undead": "undead", "Tauren": "tauren", "Gnome": "gnome", "Troll": "troll" };
@@ -1908,11 +2183,11 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     if (quText[k]) return then(quText[k][id]);
     fetch(DATA_BASE + "quest-text/" + k + ".json").then(function (r) { return r.ok ? r.json() : {}; }).catch(function () { return {}; }).then(function (j) { quText[k] = j; then(j[id]); });
   }
-  function selectQuest(id, scroll) {
+  function selectQuest(id, scroll, inAr) {   // inAr: i Armorys högerpanel, med tillbaka till spelaren
     var q = QU && QU.quests[id];
     if (!q) return;
     selQuest = id;
-    try { history.replaceState(null, "", "#quest=" + id); } catch (e) {}
+    if (!inAr) setHash("#quest=" + id);
     var trs = $("rows").children;
     for (var j = 0; j < trs.length; j++) { if (+trs[j].dataset.qid === id) trs[j].setAttribute("aria-selected", "true"); else trs[j].removeAttribute("aria-selected"); }
     var fac = q[5] === "H" ? "Horde" : q[5] === "A" ? "Alliance" : t("qu_both");
@@ -1932,7 +2207,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     }).join("") + "</ol></div>" : "";
     var nextOther = (q[13] || []).filter(function (n) { return chain.indexOf(n) < 0; });
     if (nextOther.length) chainHtml += '<div class="note">' + t("qu_also") + " " + nextOther.map(qlink).join(", ") + "</div>";
-    $("detail").innerHTML =
+    $("detail").innerHTML = (inAr && arData ? '<button class="lnk back" type="button" data-aqback="1">‹ ' + esc(arData.name + " " + arData.surname) + "</button>" : "") +
       '<div class="strip"><button class="lnk" type="button" data-copyany="#quest=' + id + '" title="' + t("copy_link") + '">' + t("copy_link") + "</button>" +
       "<h2>" + esc(q[0]) + (q[6] ? ' <span class="tag el">' + t("qu_elite") + "</span>" : "") + "</h2><small>" + esc(QU.areas[q[1]] || "") + " · " + fac + "</small></div>" + done +
       '<dl class="facts"><div><dt>' + t("col_lvl") + "</dt><dd>" + (q[2] ? (q[4] ? "~" : "") + q[2] : "–") + "</dd></div><div><dt>" + t("qu_req") + "</dt><dd>" + (q[3] || "–") + "</dd></div>" +
@@ -2039,7 +2314,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   function dgDetail() {
     var d = dgList[dgSel];
     if (!d) { $("detail").innerHTML = '<div class="note">' + t("dg_pick") + "</div>"; return; }
-    try { history.replaceState(null, "", "#dungeon=" + d.map); } catch (e) {}
+    setHash("#dungeon=" + d.map);
     var ah = 0;
     d.bosses.forEach(function (b) { b.loot.forEach(function (l) { if (byId[l[0]] && byId[l[0]].min > 0) ah++; }); });
     $("detail").innerHTML = '<div class="strip"><button class="lnk" type="button" data-copyany="#dungeon=' + d.map + '" title="' + t("copy_link") + '">' + t("copy_link") + "</button><h2>" + esc(d.name) + "</h2><small>" +
@@ -2076,8 +2351,9 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     if (mode === "qu") { $("cats").innerHTML = QU ? quCats() : ""; $("cats").hidden = false; return; }
     if (mode === "dg") { $("cats").innerHTML = DG ? dgCats() : ""; $("cats").hidden = false; return; }
     if (mode === "hu") { $("cats").innerHTML = HU ? huCats() : ""; $("cats").hidden = false; return; }
+    if (mode === "co") { $("cats").innerHTML = CO ? coCats() : ""; $("cats").hidden = false; return; }
     if (mode === "ar") {
-      $("cats").innerHTML = arSection("friends", t("ar_friends"), arFriends) + arSection("recent", t("ar_recent"), arRecent);
+      $("cats").innerHTML = '<button class="cat lbbtn" type="button" data-lb="' + (arLb || "ilvl") + '" aria-pressed="' + !!arLb + '"><img class="ci" src="' + RICON + 'inv_misc_trophy_argent.jpg" alt=""><em class="nm">' + t("lb") + "</em><span>" + (KAT ? num(KAT.players.length) : "") + "</span></button>" + arSection("friends", t("ar_friends"), arFriends) + arSection("recent", t("ar_recent"), arRecent);
       $("cats").hidden = false;
       return;
     }
@@ -2146,7 +2422,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       if (r.si >= 0 && r.ui >= 0 && sub2Count[r.ci][r.si] && sub2Count[r.ci][r.si][r.ui] != null) sub2Count[r.ci][r.si][r.ui]++;
     });
   }
-  function load(d, keep) {
+  function load(d, keep, fromNav) {   // fromNav: bakåt/framåt i webbläsaren
     // Quests: vald zon följer med vid fraktionsbyte (catSel är ett index i fraktionens zonlista; listan byts).
     var quOld = mode === "qu" && catSel >= 0 && quZoneCache ? quZoneCache.list[catSel] : null;
     var quKey = quOld ? quEntryKey(quOld) : null, quSubArea = quOld && quOld.zones && subSel >= 0 && quOld.zones[subSel] ? quOld.zones[subSel].area : null;
@@ -2181,20 +2457,25 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     drawWatch();
     var hp0 = hashParams();
     // En länk bestämmer fliken (annars den som sparats): #quest, #dungeon, #player/#guild, #recipe, #item.
-    var hm = hp0.beast ? "hu" : hp0.quest ? "qu" : hp0.dungeon ? "dg" : hp0.player || hp0.guild ? "ar" : hp0.recipe ? "cr" : hp0.item ? "ah" : "";
+    var hm = hp0.col ? "co" : hp0.beast ? "hu" : hp0.quest ? "qu" : hp0.dungeon ? "dg" : hp0.player || hp0.guild || hp0.top ? "ar" : hp0.recipe ? "cr" : hp0.item ? "ah" : "";
     var wantI = byId[+hp0.item];
-    if (hm && !keep && mode !== hm && !(hm === "ah" && mode === "tr" && (!wantI || (!wantI.gear && wantI.qty >= TR_MIN)))) { mode = hm; drawCats(); refresh(); }   // trädet ritades för den sparade fliken
-    if (mode === "qu" || hp0.quest) { mode = "qu"; if (!keep) { sortKey = "lvl"; sortDir = 1; } $("q").placeholder = t("search_qu"); quStart(+hp0.quest || (keep ? selQuest : 0)); return; }
-    if (mode === "hu" || hp0.beast) { mode = "hu"; if (!keep) { sortKey = "lvl"; sortDir = huLvl ? -1 : 1; } $("q").placeholder = t("search_hu"); huStart(+hp0.beast || (keep ? huSel : 0)); return; }
-    if (mode === "dg" || hp0.dungeon) { mode = "dg"; $("q").placeholder = t("search_dg"); dgStart(+hp0.dungeon || 0); return; }
-    if (mode === "ar" || hp0.player || hp0.guild) {
+    if (hm && !keep && mode !== hm && !(hm === "ah" && mode === "tr" && (!wantI || (!wantI.gear && wantI.qty >= TR_MIN)))) { if (fromNav) resetModeState(hm); mode = hm; drawCats(); refresh(); }   // trädet ritades för den sparade fliken
+    if (mode === "qu" || (!keep && hp0.quest)) { mode = "qu"; if (!keep) { sortKey = "lvl"; sortDir = 1; } $("q").placeholder = t("search_qu"); quStart(+hp0.quest || (keep ? selQuest : 0)); return; }
+    if (mode === "co" || (!keep && hp0.col)) { mode = "co"; if (!keep) { sortKey = "name"; sortDir = 1; } $("q").placeholder = t("search_co"); coStart(hp0.col || (keep ? coSel : "")); return; }
+    if (mode === "hu" || (!keep && hp0.beast)) { mode = "hu"; if (!keep) { sortKey = "lvl"; sortDir = huLvl ? -1 : 1; } $("q").placeholder = t("search_hu"); huStart(+hp0.beast || (keep ? huSel : 0)); return; }
+    if (mode === "dg" || (!keep && hp0.dungeon)) { mode = "dg"; $("q").placeholder = t("search_dg"); dgStart(+hp0.dungeon || 0); return; }
+    if (mode === "ar" || (!keep && (hp0.player || hp0.guild || hp0.top))) {
       mode = "ar"; $("q").placeholder = t("search_ar");
       drawCats(); refresh();
-      if (hp0.player) { arVs = hp0.vs || ""; arLoad("char", hp0.player); } else if (hp0.guild) arLoad("guild", hp0.guild);
+      if (hp0.top && !keep) { arLb = hp0.top; drawCats(); lbShow(); return; }
+      if (keep && arLb) { lbShow(); return; }
+      if (keep && arData) { arRedraw(); return; }
+      arLb = "";
+      if (hp0.player) { arVs = hp0.vs || ""; arKeepSub = true; arQuest = +hp0.aq || 0; arUpg = hp0.up === "1"; arRec = 0; arLoad("char", hp0.player); } else if (hp0.guild) arLoad("guild", hp0.guild);
       else if (arRecent[0]) arLoad(arRecent[0].kind, arRecent[0].slug); else arShow('<div class="hint">' + t("ar_hint") + "</div>", "");
       return;
     }
-    if (mode === "cr" || hashParams().recipe) {   // Crafting: recepten laddas först, sedan listan och rutan
+    if (mode === "cr" || (!keep && hashParams().recipe)) {   // Crafting: recepten laddas först, sedan listan och rutan
       mode = "cr"; if (!keep) { sortKey = "profit"; sortDir = -1; } $("q").placeholder = t("search_rc");
       var wantR = +hashParams().recipe;
       loadRecept().then(function () { buildCr(); drawCats(); refresh(); if (wantR) { selectRecipe(wantR, true); showTab("item"); } else if (keep && selRec) selectRecipe(selRec, false); else if (view[0]) selectRecipe(view[0].rid, false); })
@@ -2203,6 +2484,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     }
     if (keep && selId && byId[selId]) { select(selId, false); return; }
     var want = +hashParams().item;
+    if (fromNav && want && byId[want]) { select(want, true); return; }   // bakåt/framåt: visa varan, rör inte sökningen
     if (!keep && want && byId[want]) {   // länk till en vara: sök fram den och visa den
       query = byId[want].name.toLowerCase(); $("q").value = byId[want].name; refresh();
       select(want, true); showTab("item");
@@ -2218,7 +2500,8 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     if (mode === "ar") { view = []; shown = 0; draw(); return; }
     if (mode === "qu") { if (QU) quRefresh(q); else { view = []; shown = 0; } draw(); return; }
     if (mode === "dg") { if (DG) dgRefresh(q); else { view = []; shown = 0; } draw(); return; }
-    if (mode === "hu") { if (HU) huRefresh(q); else { view = []; shown = 0; } draw(); return; }
+    if (mode === "hu") { if (HU) huRefresh(q); else { view = []; shown = 0; } draw(); if (HU && huMapOn) huMapView(); return; }
+    if (mode === "co") { if (CO) coRefresh(q); else { view = []; shown = 0; } draw(); return; }
     if (mode === "cr") {
       var pid = catSel >= 0 && profList[catSel] ? profList[catSel].id : 0;
       var tier = subSel >= 1 ? TIERS[subSel - 1] : null;
@@ -2406,6 +2689,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     if (mode === "qu") return quRow(r);
     if (mode === "dg") return dgRow(r);
     if (mode === "hu") return huRow(r);
+    if (mode === "co") return coRow(r);
     if (mode === "cr") {
       return '<tr tabindex="0" data-rid="' + r.rid + '"' + (r.rid === selRec ? ' aria-selected="true"' : "") + '><td class="fav"></td><td class="nm">' + recName(r) + "</td><td>" + (r.skill || DASH) +
         "</td><td>" + (r.cost ? money(r.cost) + (r.miss ? '<span class="dim" title="' + esc(t("missing_n", r.miss)) + '"> ?</span>' : "") : DASH) + "</td><td>" + (r.sell ? money(r.sell) : DASH) +
@@ -2426,6 +2710,8 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   function headHtml() {
     var cols = mode === "qu"
       ? [["name", "col_quest"], ["lvl", "col_lvl"], ["zone", "col_zone", null, "kat hide-s"], ["xp", "col_xp"], ["money", "col_money", null, "hide-s"], ["best", "col_reward", "col_reward_tip"]]
+      : mode === "co"
+      ? [["name", "co_col_name"], ["src", "co_col_src"], ["where", "co_col_where", null, "kat hide-s"], ["req", "co_col_req", null, "hide-s"], ["price", "co_col_price", "co_col_price_tip"]]
       : mode === "hu"
       ? [["name", "hu_col_name"], ["lvl", "col_lvl"], ["fam", "hu_col_fam", null, "kat hide-s"], ["role", "hu_col_role"], ["speed", "hu_col_speed", "hu_col_speed_tip"], ["zone", "hu_col_zone", null, "kat"]]
       : mode === "dg"
@@ -2437,7 +2723,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
          ["btg", "col_best", "col_best_tip"], ["qty", "col_qty"], ["day", "col_day", "col_day_tip", "hide-s dcol"]]
       : [["name", "col_item"], ["cat", "col_cat", null, "kat hide-s"], ["lvl", "col_lvl", "col_lvl_tip", "hide-s"], ["min", "col_min", "col_min_tip"],
          ["qty", "col_qty"], ["day", "col_day", "col_day_tip", "hide-s dcol"]];
-    return '<tr><th class="fav">' + (mode === "hu" ? "" : mode === "qu" ? (quPlayer && quPlayer.set ? "✓" : "") : t("col_fav")) + "</th>" + cols.map(function (c) {
+    return '<tr><th class="fav">' + (mode === "hu" ? "" : mode === "co" ? (coOwner() ? "✓" : "") : mode === "qu" ? (quPlayer && quPlayer.set ? "✓" : "") : t("col_fav")) + "</th>" + cols.map(function (c) {
       if (mode === "dg") return "<th" + (c[3] ? ' class="' + c[3] + '"' : c[0] === "name" ? ' class="nm"' : "") + (c[2] ? ' title="' + esc(t(c[2])) + '"' : "") + ">" + (c[1] ? t(c[1]) : "") + "</th>";
       return "<th" + (c[3] ? ' class="' + c[3] + '"' : c[0] === "name" ? ' class="nm"' : "") + '><button type="button" data-k="' + c[0] + '"' + (c[2] ? ' title="' + esc(t(c[2])) + '"' : "") +
         (c[0] === sortKey ? ' aria-sort="' + (sortDir > 0 ? "ascending" : "descending") + '"' : "") + ">" + (c[1] ? t(c[1]) : "") + "</button></th>";
@@ -2452,6 +2738,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     $("modeQu").setAttribute("aria-pressed", mode === "qu" ? "true" : "false");
     $("modeDg").setAttribute("aria-pressed", mode === "dg" ? "true" : "false");
     $("modeHu").setAttribute("aria-pressed", mode === "hu" ? "true" : "false");
+    $("modeCo").setAttribute("aria-pressed", mode === "co" ? "true" : "false");
   }
   function draw() {
     var html = "";
@@ -2459,12 +2746,12 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     $("rows").innerHTML = html;
     $("empty").hidden = view.length > 0;
     document.querySelector(".left .scroll").classList.toggle("noitems", view.length === 0);
-    $("empty").textContent = t(mode === "hu" ? "hu_empty" : mode === "cr" ? "cr_empty" : mode === "qu" ? "qu_empty" : mode === "dg" ? (query || dgSel >= 0 ? "dg_empty" : "dg_pick") : "empty");
+    $("empty").textContent = t(mode === "co" ? "co_empty" : mode === "hu" ? "hu_empty" : mode === "cr" ? "cr_empty" : mode === "qu" ? "qu_empty" : mode === "dg" ? (query || dgSel >= 0 ? "dg_empty" : "dg_pick") : "empty");
     $("more").hidden = shown >= view.length;
     $("more").textContent = t("more", num(view.length - shown));
-    $("count").textContent = t(mode === "hu" ? "hu_count" : mode === "cr" ? "cr_count" : mode === "qu" ? "qu_count" : mode === "dg" ? "dg_count" : "count", num(mode === "dg" ? view.filter(function (x) { return !x.hd && !x.sub; }).length : view.length));
+    $("count").textContent = t(mode === "co" ? "co_count" : mode === "hu" ? "hu_count" : mode === "cr" ? "cr_count" : mode === "qu" ? "qu_count" : mode === "dg" ? "dg_count" : "count", num(mode === "dg" ? view.filter(function (x) { return !x.hd && !x.sub; }).length : view.length));
     $("head").innerHTML = mode === "ar" ? "" : headHtml();
-    $("list").className = mode === "tr" || mode === "cr" || mode === "qu" || mode === "dg" || mode === "hu" ? mode : "";
+    $("list").className = mode === "tr" || mode === "cr" || mode === "qu" || mode === "dg" || mode === "hu" || mode === "co" ? mode : "";
     var ar = mode === "ar";
     $("armory").hidden = !ar;
     document.querySelector(".left .scroll").hidden = ar;
@@ -2653,7 +2940,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     crRows.forEach(function (x) { if (x.rid === rid) r = x; });
     if (!r) return;
     selRec = rid;
-    try { history.replaceState(null, "", "#recipe=" + rid + (house !== 113 ? "&m=" + house : "")); } catch (e) {}
+    setHash("#recipe=" + rid + (house !== 113 ? "&m=" + house : ""));
     var trs = $("rows").children;
     for (var j = 0; j < trs.length; j++) { if (+trs[j].dataset.rid === rid) trs[j].setAttribute("aria-selected", "true"); else trs[j].removeAttribute("aria-selected"); }
     $("detail").innerHTML = recipeHtml(r);
@@ -2664,7 +2951,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     selId = id;
     var r = byId[id];
     if (!r) return;
-    if (mode !== "dg" && mode !== "qu") { try { history.replaceState(null, "", "#item=" + id + (house !== 113 ? "&m=" + house : "")); } catch (e) {} }
+    if (mode !== "dg" && mode !== "qu") setHash("#item=" + id + (house !== 113 ? "&m=" + house : ""));
     var trs = $("rows").children;
     for (var j = 0; j < trs.length; j++) {
       if (+trs[j].dataset.id === id) trs[j].setAttribute("aria-selected", "true"); else trs[j].removeAttribute("aria-selected");
@@ -2732,16 +3019,28 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       if (selId) select(selId, false);
       return;
     }
+    var lbb = e.target.closest("[data-lb]");
+    if (lbb && mode === "ar") { arLb = lbb.dataset.lb; drawCats(); lbShow(); setHash("#top=" + arLb); showTab("item"); return; }
     var cb = e.target.closest(".cat, .catlink");
     var hf = e.target.closest("[data-hufam]");
     if (hf && mode === "hu") { huFam = +hf.dataset.hufam; drawCats(); refresh(); toTop(); return; }
     var hr = e.target.closest("[data-hurole]");
     if (hr && mode === "hu") { huRole = hr.dataset.hurole; drawCats(); refresh(); toTop(); return; }
     if (e.target.closest("[data-hurare]") && mode === "hu") { huRare = !huRare; drawCats(); refresh(); toTop(); return; }
+    if (e.target.closest("[data-humap]") && mode === "hu" && HU) { huMapOn = !huMapOn; drawCats(); if (huMapOn) { showTab("item"); huMapView(); } else if (huSel) huDetail(huSel); return; }
+    var hmc = e.target.closest("[data-humapc]");
+    if (hmc && HU) { huMapCont = +hmc.dataset.humapc; huMapView(); return; }
+    var cok = e.target.closest("[data-cokind]");
+    if (cok && mode === "co") { coKind = cok.dataset.cokind; coSrc = ""; if (sortKey === "req" && coKind === "titles") sortKey = "name"; drawCats(); refresh(); toTop(); if (view[0]) coDetail(CO_LETTER[coKind] + view[0].co.id); return; }
+    var cos = e.target.closest("[data-cosrc]");
+    if (cos && mode === "co") { coSrc = cos.dataset.cosrc; drawCats(); refresh(); toTop(); return; }
+    if (e.target.closest("[data-coside]") && mode === "co") { coSide = !coSide; drawCats(); refresh(); toTop(); return; }
+    var tco = e.target.closest("tbody tr[data-co]");
+    if (tco) { showTab("item"); coDetail(tco.dataset.co); return; }
     var thu = e.target.closest("tbody tr[data-hu]");
-    if (thu) { showTab("item"); huDetail(+thu.dataset.hu); return; }
+    if (thu) { showTab("item"); if (huMapOn) { huMapOn = false; drawCats(); } huDetail(+thu.dataset.hu); return; }
     var gb = e.target.closest("[data-gobeast]");
-    if (gb) { e.preventDefault(); huSel = +gb.dataset.gobeast; if (mode !== "hu") setMode("hu"); else huDetail(huSel); showTab("item"); return; }
+    if (gb) { e.preventDefault(); huSel = +gb.dataset.gobeast; if (huMapOn) { huMapOn = false; if (mode === "hu") drawCats(); } if (mode !== "hu") setMode("hu"); else huDetail(huSel); showTab("item"); return; }
     var dgb = e.target.closest("[data-dg]");
     if (dgb) { dgSel = +dgb.dataset.dg; query = ""; $("q").value = ""; drawCats(); refresh(); toTop(); dgDetail(); showTab("item"); return; }
     if (cb && cb.hasAttribute("data-ar")) { showTab("item"); arLoad(cb.dataset.ar, cb.dataset.slug); return; }   // Friends/Recent i Armory
@@ -2791,7 +3090,9 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     }
     if (arForget) { arForget = null; drawCats(); }
     var al = e.target.closest("[data-ar]");
-    if (al) { e.preventDefault(); e.stopPropagation(); showTab("item"); arLoad(al.dataset.ar, al.dataset.slug); return; }
+    if (al) { e.preventDefault(); e.stopPropagation(); showTab("item"); arLb = ""; arLoad(al.dataset.ar, al.dataset.slug); return; }
+    var lbf = e.target.closest("[data-lbfa]");
+    if (lbf && mode === "ar") { lbFa = lbf.dataset.lbfa; lbShow(); return; }
     var pb = e.target.closest("[data-prof]");
     if (pb && arData && arData.kind === "character") { arOpenProf = arOpenProf === +pb.dataset.prof ? 0 : +pb.dataset.prof; renderChar(arData); return; }
     var fb = e.target.closest("[data-friend]");
@@ -2822,18 +3123,21 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     if (co) { arCompare(co.dataset.cmpslug); return; }
     if (e.target.closest("[data-cmpclose]") && arData) {
       arCmp = null; renderChar(arData); drawCats();
-      try { history.replaceState(null, "", "#player=" + arData.slug); } catch (e5) {}
+      setHash(arHash());
       return;
     }
     if (e.target.closest("[data-cmpswap]") && arData && arCmp) {
       var b0 = arCmp.b; arCmp = { b: arData }; arData = b0; arRec = 0;
-      try { history.replaceState(null, "", "#player=" + arData.slug); } catch (e6) {}
+      setHash(arHash());
       renderCompare(arData, arCmp.b); drawCats(); return;
     }
     var qz = e.target.closest("[data-arqz]");
     if (qz && arData && arData.kind === "character") { arQz[qz.dataset.arqz] = !arQz[qz.dataset.arqz]; arRedraw(); return; }
     var gq = e.target.closest("[data-goquest]");
+    // I Armory: questet i högerpanelen, spelaren ligger kvar (Joakim 2026-11-17). Annars Quests-fliken.
+    if (gq && mode === "ar" && arData && arData.kind === "character") { e.preventDefault(); arQuest = +gq.dataset.goquest; arRec = 0; renderChar(arData); setHash(arHash()); showTab("item"); $("detail").scrollTop = 0; return; }
     if (gq) { e.preventDefault(); var gqid = +gq.dataset.goquest; selQuest = gqid; if (mode !== "qu") setMode("qu"); else selectQuest(gqid, true); showTab("item"); return; }
+    if (e.target.closest("[data-aqback]") && arData && arData.kind === "character") { arQuest = 0; renderChar(arData); setHash(arHash()); return; }
     var tm = e.target.closest("[data-talmode]");
     if (tm && arData && arData.kind === "character") {
       if (tm.dataset.talmode === "plan") {
@@ -2851,6 +3155,10 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     if (tg && arData && arData.kind === "character") { arOpen[tg.dataset.artoggle] = !arOpen[tg.dataset.artoggle]; arRedraw(); return; }
     var ab = e.target.closest("[data-arback]");
     if (ab && arData && arData.kind === "character") { arRec = 0; renderChar(arData); return; }
+    if (e.target.closest("[data-upg]") && arData && arData.kind === "character") { arUpg = true; arRec = 0; arQuest = 0; renderChar(arData); setHash(arHash()); showTab("item"); $("detail").scrollTop = 0; return; }
+    if (e.target.closest("[data-upback]") && arData && arData.kind === "character") { arUpg = false; renderChar(arData); setHash(arHash()); return; }
+    var ug = e.target.closest("[data-upgo]");   // uppgradering → varan i Auction house-fliken (pris, historik, säljare)
+    if (ug) { e.preventDefault(); var uid = +ug.dataset.upgo; navSkip = true; try { setMode("ah"); } finally { navSkip = false; } select(uid, true); showTab("item"); return; }
     var ar2 = e.target.closest("[data-arrec]");   // känt recept i Armory → receptrutan i högerpanelen
     if (ar2 && arData && arData.kind === "character") { arRec = +ar2.dataset.arrec; $("detail").innerHTML = '<div class="note">' + t("cr_loading") + "</div>"; loadRecept().then(function () { arRedraw(); }); return; }
     var gr = e.target.closest("[data-gorec]");   // recept → samma recept i Professions (samma Blizzard-id)
@@ -2872,6 +3180,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       return;
     }
     var qg = e.target.closest("[data-qgo]");
+    if (qg && mode === "ar" && arQuest && arData) { e.preventDefault(); arQuest = +qg.dataset.qgo; selectQuest(arQuest, false, true); setHash(arHash()); $("detail").scrollTop = 0; return; }
     if (qg) { e.preventDefault(); showTab("item"); selectQuest(+qg.dataset.qgo, true); return; }
     var tq = e.target.closest("tbody tr[data-qid]");
     if (tq) { showTab("item"); selectQuest(+tq.dataset.qid, true); return; }
@@ -2896,7 +3205,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   $("tabWatch").addEventListener("click", function () { showTab("watch"); });
   document.addEventListener("keydown", function (e) {
     if (e.key !== "Enter" && e.key !== " ") return;
-    if (e.target.tagName === "TR" && !e.target.dataset.id && (e.target.dataset.qid || e.target.dataset.rid || e.target.dataset.dgi || e.target.dataset.arrec || e.target.dataset.hu)) { e.preventDefault(); e.target.click(); return; }
+    if (e.target.tagName === "TR" && !e.target.dataset.id && (e.target.dataset.qid || e.target.dataset.rid || e.target.dataset.dgi || e.target.dataset.arrec || e.target.dataset.hu || e.target.dataset.co)) { e.preventDefault(); e.target.click(); return; }
     if (e.target.tagName !== "TR" || !e.target.dataset.id) return;
     e.preventDefault();
     var kid = +e.target.dataset.id;
@@ -2931,6 +3240,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     $("detail").innerHTML = '<div class="note">' + t("ar_loading") + "</div>";
     var saved = ""; try { saved = localStorage.getItem(QU_PKEY) || ""; } catch (e) {}
     Promise.all([loadQuests(), loadXIcons(), loadDungeons().catch(function () {})]).then(function () {
+      if (mode !== "qu") return;
       drawCats(); refresh(); toTop();
       if (saved && !quPlayer) setQuPlayer(saved);
       if (want && QU.quests[want] && (!restore || view.some(function (r) { return r.qid === want; }))) { selectQuest(want, !restore); if (!restore) showTab("item"); } else if (view[0]) selectQuest(view[0].qid, false);
@@ -2941,6 +3251,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   // mat, rare/elite och var de står (zon och koordinat ur spelet via addonets NpcZones.lua). Filter: din level (du kan
   // tämja upp till din egen), roll, bara rares, familj. Länk #beast=<id>.
   var HU = null, huPromise = null, huSel = 0, huFam = 0, huRole = "", huRare = false, HU_LKEY = "whippit-ah-hulvl";
+  var huMapOn = false, huMapCont = -1;   // kartan över filtrerade djur i högra rutan; kontinent -1 = den med flest djur
   var huLvl = (function () { try { var v = +localStorage.getItem(HU_LKEY); return v > 0 && v <= 60 ? v : 0; } catch (e) { return 0; } })();
   var HU_RANK = { 1: "Elite", 2: "Rare Elite", 3: "Boss", 4: "Rare" };
   var HU_FAMIC = { 1: "wolf", 2: "cat", 3: "spider", 4: "bear", 5: "boar", 6: "crocolisk", 7: "vulture", 8: "crab", 9: "gorilla", 11: "raptor", 12: "tallstrider", 20: "scorpid", 21: "turtle", 24: "bat", 25: "hyena", 26: "owl", 27: "windserpent" };
@@ -2970,7 +3281,8 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     var role = function (k, lbl) { return '<button type="button" class="huchip' + (huRole === k ? " on" : "") + '" data-hurole="' + k + '" aria-pressed="' + (huRole === k) + '">' + lbl + "</button>"; };
     var h = '<div class="hufil"><label class="hulvl" title="' + t("hu_lvl_tip") + '"><span>' + t("hu_lvl") + '</span><input id="hulvl" type="number" min="1" max="60" inputmode="numeric" value="' + (huLvl || "") + '" placeholder="1–60"></label>' +
       '<div class="huchips">' + role("", t("hu_any")) + role("tank", t("hu_r_tank")) + role("dps", t("hu_r_dps")) + role("allround", t("hu_r_allround")) + "</div>" +
-      '<button type="button" class="huchip rare' + (huRare ? " on" : "") + '" data-hurare="1" aria-pressed="' + huRare + '">◆ ' + t("hu_rare") + "</button></div>" +
+      '<div class="huchips"><button type="button" class="huchip rare' + (huRare ? " on" : "") + '" data-hurare="1" aria-pressed="' + huRare + '">◆ ' + t("hu_rare") + "</button>" +
+      '<button type="button" class="huchip' + (huMapOn ? " on" : "") + '" data-humap="1" aria-pressed="' + huMapOn + '" title="' + t("hu_map_tip") + '">⌖ ' + t("hu_map") + "</button></div></div>" +
       '<div class="cath">' + t("hu_fams") + "</div>" +
       '<button class="cat" type="button" data-hufam="0" aria-pressed="' + !huFam + '"><em class="nm">' + t("hu_all") + "</em><span>" + all + "</span></button>";
     Object.keys(HU.families).map(Number).sort(function (a, b) { return HU.families[a].name.localeCompare(HU.families[b].name); }).forEach(function (f) {
@@ -3001,7 +3313,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   function huRow(r) {
     var b = r.hu, f = HU.families[b.fam] || {}, rare = huIsRare(b);
     return '<tr tabindex="0" data-hu="' + b.id + '"' + (b.id === huSel ? ' aria-selected="true"' : "") + '><td class="fav">' + (rare ? '<span class="hurare" title="' + HU_RANK[b.rank] + '">◆</span>' : "") + "</td>" +
-      '<td class="nm"><img class="hic" src="' + huFamIcon(b.fam) + '" alt="" loading="lazy"><span class="' + (rare ? "q3" : b.rank === 1 ? "q2" : "q1") + '">' + esc(b.name) + "</span>" + (b.rank ? ' <small class="dim">' + HU_RANK[b.rank] + "</small>" : "") + "</td>" +
+      '<td class="nm"><img class="hic' + (rare ? " rare" : "") + '" src="' + huFamIcon(b.fam) + '" alt="" loading="lazy"><span class="' + (rare ? "hurn" : b.rank === 1 ? "q2" : "q1") + '">' + esc(b.name) + "</span>" + (b.rank ? ' <small class="dim">' + HU_RANK[b.rank] + "</small>" : "") + "</td>" +
       "<td>" + b.min + (b.max > b.min ? "–" + b.max : "") + '</td><td class="kat hide-s">' + esc(b.family) + '</td><td><span class="hurole r-' + (f.role || "") + '">' + t("hu_r_" + (f.role || "allround")) + "</span></td>" +
       "<td" + (b.speed <= 1.5 ? ' class="pos"' : "") + ">" + b.speed.toFixed(1) + '</td><td class="kat">' + esc(huZoneText(b)) + "</td></tr>";
   }
@@ -3011,13 +3323,13 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     huSel = id;
     var trs = $("rows").children;
     for (var j = 0; j < trs.length; j++) { if (+trs[j].dataset.hu === id) trs[j].setAttribute("aria-selected", "true"); else trs[j].removeAttribute("aria-selected"); }
-    try { history.replaceState(null, "", "#beast=" + id); } catch (e) {}
-    var f = HU.families[b.fam] || {}, rare = huIsRare(b), pc = function (v) { return Math.round(v * 100) + "%"; };
+    setHash("#beast=" + id);
+    var f = HU.families[b.fam] || {}, rare = huIsRare(b), hasPts = !!(b.pts && b.pts.length), pc = function (v) { return Math.round(v * 100) + "%"; };
     var where = (b.zones || []).map(function (z) { return "<li><b>" + esc(z.zone) + '</b> <span class="dim">' + z.pts.slice(0, 4).map(function (p2) { return p2[0] + ", " + p2[1]; }).join(" · ") + "</span></li>"; }).join("") +
       (b.inst || []).map(function (x) { return "<li><b>" + esc(x[0]) + '</b> <span class="dim">' + t("hu_inst") + "</span></li>"; }).join("");
     $("detail").scrollTop = 0;
     $("detail").innerHTML = '<div class="strip"><button class="lnk" type="button" data-copyany="#beast=' + b.id + '" title="' + t("copy_link") + '">' + t("copy_link") + "</button>" +
-      '<h2 class="' + (rare ? "q3" : b.rank === 1 ? "q2" : "q1") + '"><img class="ci" src="' + huFamIcon(b.fam) + '" alt=""> ' + esc(b.name) + "</h2><small>" + esc(b.family) + " · " + t("col_lvl") + " " + b.min + (b.max > b.min ? "–" + b.max : "") + (b.rank ? " · " + HU_RANK[b.rank] : "") + "</small></div>" +
+      '<h2 class="' + (rare ? "hurn" : b.rank === 1 ? "q2" : "q1") + '"><img class="ci' + (rare ? " rare" : "") + '" src="' + huFamIcon(b.fam) + '" alt=""> ' + esc(b.name) + "</h2><small>" + esc(b.family) + " · " + t("col_lvl") + " " + b.min + (b.max > b.min ? "–" + b.max : "") + (b.rank ? " · " + HU_RANK[b.rank] : "") + "</small></div>" +
       '<dl class="facts"><div><dt>' + t("hu_col_role") + '</dt><dd><span class="hurole r-' + (f.role || "") + '">' + t("hu_r_" + (f.role || "allround")) + "</span></dd></div>" +
       "<div><dt>" + t("hu_col_speed") + "</dt><dd" + (b.speed <= 1.5 ? ' class="pos"' : "") + ">" + b.speed.toFixed(1) + " s</dd></div>" +
       "<div><dt>" + t("hu_hp") + "</dt><dd>" + pc(f.hp || 1) + "</dd></div><div><dt>" + t("hu_dmg") + "</dt><dd>" + pc(f.dmg || 1) + "</dd></div><div><dt>" + t("hu_armor") + "</dt><dd>" + pc(f.armor || 1) + "</dd></div>" +
@@ -3025,14 +3337,137 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       '<div class="note">' + t("hu_speed_note") + "</div>" +
       "<div><h3>" + t("hu_learn") + '</h3><div class="huab">' + (f.ab || []).map(function (a) { return "<span>" + esc(a) + "</span>"; }).join("") + "</div></div>" +
       (b.uses && b.uses.length ? "<div><h3>" + t("hu_uses") + '</h3><div class="huab">' + b.uses.map(function (a) { return '<span class="u">' + esc(a) + "</span>"; }).join("") + "</div></div>" : "") +
-      "<div><h3>" + t("hu_where") + "</h3>" + (where ? '<ul class="huwhere">' + where + "</ul>" : '<div class="note">' + t(HU.zonesFromGame ? "hu_nowhere" : "hu_zone_wait_long") + "</div>") + '<div class="dim">' + t("hu_spawns", b.spawns) + "</div></div>" +
+      "<div><h3>" + t("hu_where") + "</h3>" + (where ? '<ul class="huwhere">' + where + "</ul>" : hasPts ? "" : '<div class="note">' + t(HU.zonesFromGame ? "hu_nowhere" : "hu_zone_wait_long") + "</div>") +
+      (hasPts ? '<div class="humap sm"><canvas></canvas><div class="humaptip" hidden></div></div>' : "") + '<div class="dim">' + t("hu_spawns", b.spawns) + (hasPts && !HU.zonesFromGame ? " · " + t("hu_zone_wait_short") : "") + "</div></div>" +
       '<div class="note">' + t("hu_src") + "</div>";
+    if (hasPts) huBeastMap(b);
+  }
+  // Karta (Joakim 2026-11-17: "silverram och en karta över var de står"). Kontinentens form ur databasens alla spawns
+  // (hunter.json maps: en bit per ruta om cell yards), ortnamn från kyrkogårdarna, djurens platser som världskoordinater
+  // (pts: [karta, x, y, antal]). Världen: x pekar norrut, y västerut.
+  var HU_LAND = {};
+  function huLand(m) {
+    if (HU_LAND[m]) return HU_LAND[m];
+    // Fyra pixlar per ruta och en rund fläck per landruta: mjuk kust i stället för trappsteg när kartan zoomas.
+    var M = HU.maps[m], bin = atob(M.bits), cv = document.createElement("canvas"), S = 4;
+    cv.width = M.w * S; cv.height = M.h * S;
+    var cx = cv.getContext("2d");
+    cx.fillStyle = "#56462e";
+    cx.beginPath();
+    for (var i = 0; i < M.w * M.h; i++) {
+      if (!(bin.charCodeAt(i >> 3) & (128 >> (i & 7)))) continue;
+      var x = (i % M.w + 0.5) * S, y = (Math.floor(i / M.w) + 0.5) * S;
+      cx.moveTo(x + S * 1.5, y); cx.arc(x, y, S * 1.5, 0, 7);
+    }
+    cx.fill();
+    cv.scale = S;
+    return (HU_LAND[m] = cv);
+  }
+  // Rita kontinent m: vw = utsnitt {x0, x1, y0, y1} i världskoordinater, pts = [{x, y, n, b}], one = ett enskilt djur.
+  function huPaint(cv, m, vw, pts, big, one) {
+    var M = HU.maps[m], dpr = window.devicePixelRatio || 1;
+    var aspect = (vw.x1 - vw.x0) / (vw.y1 - vw.y0);   // höjd delat med bredd
+    var W = Math.max(220, cv.parentNode.clientWidth || 320), H = W * aspect, maxH = big ? 640 : 300;
+    if (H > maxH) { H = maxH; W = H / aspect; }
+    cv.style.width = Math.round(W) + "px"; cv.style.height = Math.round(H) + "px";
+    cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
+    var c = cv.getContext("2d");
+    c.setTransform(dpr, 0, 0, dpr, 0, 0);
+    c.fillStyle = "#0c1316"; c.fillRect(0, 0, W, H);
+    c.imageSmoothingEnabled = true;
+    var land = huLand(m), ls = land.scale / M.cell;
+    c.drawImage(land, (M.y1 - vw.y1) * ls, (M.x1 - vw.x1) * ls, (vw.y1 - vw.y0) * ls, (vw.x1 - vw.x0) * ls, 0, 0, W, H);
+    var px = function (y) { return (vw.y1 - y) / (vw.y1 - vw.y0) * W; }, py = function (x) { return (vw.x1 - x) / (vw.x1 - vw.x0) * H; };
+    var hit = [];
+    pts.slice().sort(function (a, b2) { return huIsRare(a.b) - huIsRare(b2.b); }).forEach(function (p) {
+      var x = px(p.y), y = py(p.x), b = p.b;
+      hit.push({ x: x, y: y, b: b });
+      c.lineWidth = 1.2; c.strokeStyle = "#000";
+      if (one) {
+        var r = 4 + Math.min(5, Math.sqrt(p.n));
+        c.fillStyle = huIsRare(b) ? "rgba(226,233,240,.25)" : "rgba(240,192,64,.22)";
+        c.beginPath(); c.arc(x, y, r + 5, 0, 7); c.fill();
+        c.fillStyle = huIsRare(b) ? "#e3e9ef" : "#f0c040";
+        c.beginPath(); c.arc(x, y, r, 0, 7); c.fill(); c.stroke();
+      } else if (huIsRare(b)) {
+        c.fillStyle = "#e3e9ef";
+        c.beginPath(); c.moveTo(x, y - 6); c.lineTo(x + 5, y); c.lineTo(x, y + 6); c.lineTo(x - 5, y); c.closePath(); c.fill(); c.stroke();
+      } else {
+        c.fillStyle = b.rank === 1 ? "#40c040" : "rgba(240,192,64,.85)";
+        c.lineWidth = .8;
+        c.beginPath(); c.arc(x, y, b.rank === 1 ? 3.2 : 2.3, 0, 7); c.fill(); c.stroke();
+      }
+    });
+    // Ortnamnen överst, med mörk kant så de syns över prickarna.
+    c.font = "600 " + (big ? 10.5 : 11) + "px system-ui, sans-serif"; c.textAlign = "center"; c.textBaseline = "middle";
+    c.lineWidth = 3; c.strokeStyle = "rgba(10,8,6,.8)"; c.lineJoin = "round";
+    M.labels.forEach(function (l) {
+      var x = px(l[2]), y = py(l[1]);
+      if (x < 20 || x > W - 20 || y < 8 || y > H - 8) return;
+      c.strokeText(l[0], x, y);
+      c.fillStyle = "rgba(232,214,170,.8)"; c.fillText(l[0], x, y);
+    });
+    cv._hit = hit;
+    if (one) return;
+    var tip = cv.parentNode.querySelector(".humaptip");
+    var near = function (ev) {
+      var r = cv.getBoundingClientRect(), mx = ev.clientX - r.left, my = ev.clientY - r.top, best = null, bd = 100;
+      hit.forEach(function (h) { var d2 = (h.x - mx) * (h.x - mx) + (h.y - my) * (h.y - my); if (d2 < bd) { bd = d2; best = h; } });
+      return best;
+    };
+    cv.onmousemove = function (ev) {
+      var h = near(ev);
+      cv.style.cursor = h ? "pointer" : "default";
+      if (!h) { tip.hidden = true; return; }
+      tip.hidden = false;
+      tip.innerHTML = '<b class="' + (huIsRare(h.b) ? "hurn" : h.b.rank === 1 ? "q2" : "q1") + '">' + esc(h.b.name) + "</b> " + h.b.min + (h.b.max > h.b.min ? "–" + h.b.max : "") + " · " + esc(h.b.family) + (h.b.rank ? " · " + HU_RANK[h.b.rank] : "");
+      tip.style.left = Math.min(h.x + cv.offsetLeft + 10, cv.parentNode.clientWidth - tip.offsetWidth - 4) + "px";
+      tip.style.top = (h.y + cv.offsetTop - 30) + "px";
+    };
+    cv.onmouseleave = function () { tip.hidden = true; };
+    cv.onclick = function (ev) { var h = near(ev); if (h) { huMapOn = false; drawCats(); huDetail(h.b.id); } };
+  }
+  // Ett djurs karta: utsnitt runt dess platser (minst 4 200 yards), kontinenten med flest spawns.
+  function huBeastMap(b) {
+    var cv = $("detail").querySelector(".humap canvas");
+    if (!cv) return;
+    var by = [0, 0];
+    b.pts.forEach(function (p) { by[p[0]] += p[3]; });
+    var m = by[1] > by[0] ? 1 : 0, M = HU.maps[m], pts = b.pts.filter(function (p) { return p[0] === m; });
+    var x0 = Math.min.apply(null, pts.map(function (p) { return p[1]; })), x1 = Math.max.apply(null, pts.map(function (p) { return p[1]; }));
+    var y0 = Math.min.apply(null, pts.map(function (p) { return p[2]; })), y1 = Math.max.apply(null, pts.map(function (p) { return p[2]; }));
+    var ext = Math.max(4200, (x1 - x0) * 1.35, (y1 - y0) * 1.35), cx = (x0 + x1) / 2, cy = (y0 + y1) / 2;
+    var ex = Math.min(ext, M.x1 - M.x0), ey = Math.min(ext, M.y1 - M.y0);
+    var vx0 = Math.max(M.x0, Math.min(M.x1 - ex, cx - ex / 2)), vy0 = Math.max(M.y0, Math.min(M.y1 - ey, cy - ey / 2));
+    huPaint(cv, m, { x0: vx0, x1: vx0 + ex, y0: vy0, y1: vy0 + ey }, pts.map(function (p) { return { x: p[1], y: p[2], n: p[3], b: b }; }), false, true);
+  }
+  // Översiktskartan: alla djur i listan (samma filter: level, roll, rares, familj, sökning) på en kontinent.
+  function huMapView() {
+    var per = [{}, {}], cntB = [0, 0];
+    view.forEach(function (r) { (r.hu.pts || []).forEach(function (p) { if (!per[p[0]][r.hu.id]) { per[p[0]][r.hu.id] = 1; cntB[p[0]]++; } }); });
+    var m = huMapCont >= 0 ? huMapCont : (cntB[1] >= cntB[0] ? 1 : 0), M = HU.maps[m], pts = [];
+    view.forEach(function (r) { (r.hu.pts || []).forEach(function (p) { if (p[0] === m) pts.push({ x: p[1], y: p[2], n: p[3], b: r.hu }); }); });
+    var tab = function (k) { return '<button type="button" class="huchip' + (k === m ? " on" : "") + '" data-humapc="' + k + '" aria-pressed="' + (k === m) + '">' + esc(HU.maps[k].name) + " <span class=\"dim\">" + cntB[k] + "</span></button>"; };
+    var fil = [huLvl ? t("hu_map_lvl", huLvl) : "", huRare ? t("hu_rare") : "", huRole ? t("hu_r_" + huRole) : "", huFam && HU.families[huFam] ? HU.families[huFam].name : ""].filter(Boolean).join(" · ");
+    $("detail").innerHTML = '<div class="strip"><h2>' + t("hu_map_title") + "</h2><small>" + t("hu_map_sub", cntB[m]) + (fil ? " · " + esc(fil) : "") + "</small></div>" +
+      '<div class="huchips">' + tab(1) + tab(0) + "</div>" +
+      (pts.length ? "" : '<div class="note">' + t("hu_map_none") + "</div>") +
+      '<div class="humap"><canvas></canvas><div class="humaptip" hidden></div></div>' +
+      '<div class="humaplg"><span><i class="lr"></i>' + t("hu_map_rare") + '</span><span><i class="le"></i>' + t("hu_map_elite") + '</span><span><i class="ln"></i>' + t("hu_map_beast") + "</span></div>" +
+      '<div class="note">' + t("hu_map_note") + "</div>";
+    huPaint($("detail").querySelector(".humap canvas"), m, { x0: M.x0, x1: M.x1, y0: M.y0, y1: M.y1 }, pts, true, false);
   }
   function huStart(want) {
     $("detail").innerHTML = '<div class="note">' + t("ar_loading") + "</div>";
     loadHunter().then(function () {
+      if (mode !== "hu") return;
+      // Två anrop innan datan kommit (sidan laddar data.json två gånger): det andra ska inte byta bort djuret från länken.
+      var w = want || huSel;
+      if (want && huMapOn) huMapOn = false;
       drawCats(); refresh(); toTop();
-      if (want && HU.beasts.some(function (b) { return b.id === want; })) { huDetail(want); showTab("item"); } else if (view[0]) huDetail(view[0].hu.id);
+      if (huMapOn) huMapView();
+      else if (w && HU.beasts.some(function (b) { return b.id === w; })) { huDetail(w); if (want) showTab("item"); }
+      else if (view[0]) huDetail(view[0].hu.id);
     }).catch(function () { $("detail").innerHTML = '<div class="note">' + t("qu_fail") + "</div>"; });
   }
   // Armory: "Pets for you" för hunters – djur upp till huntens level (inom 8 levlar), rares och snabba först, helst i
@@ -3055,32 +3490,222 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     var l = huForChar(d);
     return h + '<div class="hufor">' + l.map(function (x) {
       var b = x.b;
-      return '<a href="#beast=' + b.id + '" data-gobeast="' + b.id + '" class="hufr"><img src="' + huFamIcon(b.fam) + '" alt=""><span><b class="' + (huIsRare(b) ? "q3" : "q1") + '">' + esc(b.name) + "</b><small>" + b.min + (b.max > b.min ? "–" + b.max : "") + " · " + esc(b.family) + " · " + b.speed.toFixed(1) + " s · " + esc(huZoneText(b)) + "</small></span>" + (x.near ? '<em title="' + t("hu_near_tip") + '">' + t("hu_near") + "</em>" : "") + "</a>";
+      return '<a href="#beast=' + b.id + '" data-gobeast="' + b.id + '" class="hufr"><img' + (huIsRare(b) ? ' class="rare"' : "") + ' src="' + huFamIcon(b.fam) + '" alt=""><span><b class="' + (huIsRare(b) ? "hurn" : "q1") + '">' + esc(b.name) + "</b><small>" + b.min + (b.max > b.min ? "–" + b.max : "") + " · " + esc(b.family) + " · " + b.speed.toFixed(1) + " s · " + esc(huZoneText(b)) + "</small></span>" + (x.near ? '<em title="' + t("hu_near_tip") + '">' + t("hu_near") + "</em>" : "") + "</a>";
     }).join("") + '<div class="note">' + t("hu_for_note") + "</div></div>";
+  }
+  // ---- Topplistor i Armory (Joakim 2026-11-17): katalog.json (hamta-katalog.js, varje dygn) = spelare och guilder som
+  // hittats via snöbollen (kända spelare → guild → roster → nya guilder) och addonets spelarnamn. Bara det katalogen känner
+  // till räknas, så listan växer för varje dag. Länk #top=<lista>. ----
+  var KAT = null, katPromise = null, arLb = "", lbFa = "";
+  var LB = [["ilvl", "il", "lb_ilvl"], ["level", "lv", "lb_level"], ["hk", "hk", "lb_hk"], ["rank", "rk", "lb_rank"], ["ach", "ap", "lb_ach"], ["guilds", "", "lb_guilds"]];
+  function loadKat() {
+    if (!katPromise) katPromise = fetch(DATA_BASE + "katalog.json", { cache: "no-store" }).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }).then(function (j) { KAT = j; return j; })
+      .catch(function (e) { katPromise = null; throw e; });
+    return katPromise;
+  }
+  function lbShow() {
+    if (!KAT) { arShow('<div class="hint">' + t("ar_loading") + "</div>", ""); loadKat().then(function () { if (mode === "ar" && arLb) { drawCats(); lbShow(); } }).catch(function () { arShow('<div class="hint">' + t("lb_fail") + "</div>", ""); }); return; }
+    var def = LB.filter(function (b) { return b[0] === arLb; })[0] || LB[0];
+    var faOk = function (x) { return !lbFa || x.fa === lbFa; };
+    var tabs = LB.filter(function (b) { return !b[1] || KAT.players.some(function (p) { return p[b[1]] > 0; }); }).map(function (b) {
+      return '<button type="button" class="huchip' + (b === def ? " on" : "") + '" data-lb="' + b[0] + '" aria-pressed="' + (b === def) + '">' + t(b[2]) + "</button>";
+    }).join("");
+    var fa = function (k, lbl) { return '<button type="button" class="huchip' + (lbFa === k ? " on" : "") + '" data-lbfa="' + k + '" aria-pressed="' + (lbFa === k) + '">' + lbl + "</button>"; };
+    var h = '<div class="lbwrap"><div class="lbhead"><h2>' + t("lb") + "</h2><small>" + t("lb_sub", num(KAT.players.length), num(KAT.guilds.length), when2(KAT.t)) + "</small></div>" +
+      '<div class="huchips">' + tabs + '</div><div class="huchips">' + fa("", t("lb_both")) + fa("HORDE", "Horde") + fa("ALLIANCE", "Alliance") + "</div>";
+    if (def[0] === "guilds") {
+      var gl = KAT.guilds.filter(faOk).sort(function (a, b) { return (b.n60 - a.n60) || (b.il60 - a.il60) || (b.avg - a.avg); }).slice(0, 50);
+      h += '<table class="lbt"><thead><tr><th>#</th><th class="nm">' + t("lb_guild") + "</th><th>" + t("lb_n60") + '</th><th class="hide-s">' + t("lb_il60") + "</th><th>" + t("lb_avg") + '</th><th class="hide-s">' + t("lb_members") + "</th></tr></thead><tbody>" +
+        gl.map(function (g, i) {
+          return '<tr><td class="lbn">' + (i + 1) + '</td><td class="nm"><a href="#guild=' + esc(g.s) + '" data-ar="guild" data-slug="' + esc(g.s) + '">&lt;' + esc(g.name) + '&gt;</a> <small class="dim">' + (g.fa === "ALLIANCE" ? "A" : "H") + "</small></td><td><b>" + g.n60 + '</b></td><td class="hide-s">' + (g.il60 || "–") + "</td><td>" + g.avg + '</td><td class="hide-s">' + g.n + "</td></tr>";
+        }).join("") + "</tbody></table>";
+    } else {
+      var k = def[1];
+      var pl = KAT.players.filter(function (p) { return faOk(p) && p[k] > 0; }).sort(function (a, b) { return (b[k] - a[k]) || (b.lv - a.lv) || (b.il - a.il); }).slice(0, 100);
+      h += '<table class="lbt"><thead><tr><th>#</th><th class="nm">' + t("lb_player") + "</th><th>" + t("col_lvl") + '</th><th class="hide-s">' + t("lb_guild") + "</th><th>" + t(def[2]) + "</th></tr></thead><tbody>" +
+        pl.map(function (p, i) {
+          var full = p.n + (p.sn ? " " + p.sn : "");
+          return '<tr><td class="lbn' + (i < 3 ? " top" + (i + 1) : "") + '">' + (i + 1) + '</td><td class="nm">' + classIcon(p.c) + '<a href="#player=' + esc(p.s) + '" data-ar="char" data-slug="' + esc(p.s) + '" style="color:' + (CLASS_COL[p.c] || "inherit") + '">' + esc(full) + "</a></td>" +
+            "<td>" + p.lv + '</td><td class="hide-s">' + (p.g ? '<a class="dim" href="#guild=' + esc(p.g) + '" data-ar="guild" data-slug="' + esc(p.g) + '">&lt;' + esc(p.gn) + "&gt;</a>" : "") + "</td><td><b>" +
+            (k === "rk" ? rankBadge(p.fa, p.rk) || p.rk : num(p[k])) + "</b></td></tr>";
+        }).join("") + "</tbody></table>" + (pl.length ? "" : '<div class="note">' + t("lb_none") + "</div>");
+    }
+    h += '<div class="note">' + t("lb_note") + "</div></div>";
+    arShow(h, '<div class="strip"><h2>' + t("lb") + "</h2><small>" + t(def[2]) + '</small></div><div class="note">' + t("lb_how") + "</div>");
+  }
+  // ---- Collections (Joakim 2026-11-17): mounts, husdjur, toys och titlar på Forever (collections.json, hamta-samlingar.js):
+  // Blizzards listor och bilder, var de fås ur Classic-databasen (säljare och plats, drop med chans, quest). Pris från AH
+  // när föremålet säljs där, annars säljarens pris. ✓ = spelaren som är öppen i Armory har mounten. Länk #col=m<id>. ----
+  var CO = null, coPromise = null, coKind = "mounts", coSrc = "", coSide = false, coSel = "";
+  var CO_LETTER = { mounts: "m", pets: "p", toys: "t", titles: "x" }, CO_KIND = { m: "mounts", p: "pets", t: "toys", x: "titles" };
+  var CO_PVP = /^(Private|Corporal|Sergeant|Master Sergeant|Sergeant Major|Knight|Knight-Lieutenant|Knight-Captain|Knight-Champion|Lieutenant Commander|Commander|Marshal|Field Marshal|Grand Marshal|Scout|Grunt|Senior Sergeant|First Sergeant|Stone Guard|Blood Guard|Legionnaire|Centurion|Champion|Lieutenant General|General|Warlord|High Warlord)$/;
+  function loadCo() {
+    if (!coPromise) coPromise = fetch(DATA_BASE + "collections.json").then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }).then(function (j) {
+      j.titles = j.titles.filter(function (x) { return !/\[DNT\]|Test/.test(x.name); });
+      CO = j; return j;
+    }).catch(function (e) { coPromise = null; throw e; });
+    return coPromise;
+  }
+  function coOwner() { return arData && arData.kind === "character" && arData.mountList ? arData : null; }
+  function coOwned(x) { var o = coOwner(); return !!(o && coKind === "mounts" && o.mountList.some(function (m) { return m.id === x.id; })); }
+  // Var den fås: vendor / drop / quest / class / pvp / forever (finns inte i Classic-databasen) / other.
+  function coSrcKind(x) {
+    if (coKind === "titles") return x.src === "Quest" ? "quest" : CO_PVP.test(x.name) ? "pvp" : x.src ? "other" : "forever";
+    if (x.cls) return "class";
+    var s = x.item && x.item.src || [];
+    if (s.length) return s[0].k;
+    if (x.item && x.item.pvp) return "pvp";
+    return coKind === "toys" || x.item ? "other" : "forever";   // finns föremålet i Classic-databasen men ingen källa: Other
+  }
+  function coWhere(x) {
+    if (coKind === "titles") return (x.srcItems || []).join(", ");
+    if (x.cls) return x.cls;
+    var s = x.item && x.item.src && x.item.src[0];
+    if (!s) return x.desc || "";
+    return s.k === "vendor" ? s.npc + (s.where ? " · " + s.where : "") : s.k === "drop" ? s.npc + (s.where ? " · " + s.where : "") : s.title;
+  }
+  function coPrice(x) {   // [koppar, "ah" | "vendor"]
+    var it = x.item;
+    if (!it) return [0, ""];
+    var r = byId[it.id];
+    if (r && r.qty > 0 && r.min > 0) return [r.min, "ah"];
+    if (it.price && it.src && it.src.some(function (s) { return s.k === "vendor"; })) return [it.price, "vendor"];
+    return [0, ""];
+  }
+  function coIcon(x) {
+    if (coKind === "mounts") return x.img ? '<img class="coic m" src="' + esc(x.img) + '" alt="" loading="lazy">' : '<span class="coic none"></span>';
+    if (coKind === "titles") return '<span class="coic ttl">✦</span>';
+    var r = x.item && byId[x.item.id];
+    var src = x.icon || (r && r.ic && ICON_BASE ? ICON_BASE + r.ic + ".jpg" : "");
+    return src ? '<img class="coic" src="' + esc(src) + '" alt="" loading="lazy">' : '<span class="coic none"></span>';
+  }
+  function coOk(x, kind) {
+    if (coSrc && (coSrc === "missing" ? coOwned(x) : coSrcKind(x) !== coSrc)) return false;
+    if (coSide && x.faction && x.faction !== (houseParts(house)[1] === "alliance" ? "ALLIANCE" : "HORDE")) return false;
+    return true;
+  }
+  function coCats() {
+    var h = '<div class="cath">' + t("co_kinds") + "</div>";
+    ["mounts", "pets", "toys", "titles"].forEach(function (k) {
+      h += '<button class="cat" type="button" data-cokind="' + k + '" aria-pressed="' + (coKind === k) + '"><em class="nm">' + t("co_k_" + k) + "</em><span>" + CO[k].length + "</span></button>";
+    });
+    var cnt = {}, all = 0;
+    CO[coKind].forEach(function (x) { if (coSide && x.faction && x.faction !== (houseParts(house)[1] === "alliance" ? "ALLIANCE" : "HORDE")) return; var k = coSrcKind(x); cnt[k] = (cnt[k] || 0) + 1; all++; });
+    var chip = function (k, lbl, n) { return '<button type="button" class="huchip' + (coSrc === k ? " on" : "") + '" data-cosrc="' + k + '" aria-pressed="' + (coSrc === k) + '">' + lbl + (n != null ? ' <span class="dim">' + n + "</span>" : "") + "</button>"; };
+    h += '<div class="cath">' + t("co_from") + '</div><div class="hufil"><div class="huchips">' + chip("", t("co_s_all"), all);
+    ["vendor", "drop", "quest", "class", "pvp", "other", "forever"].forEach(function (k) { if (cnt[k]) h += chip(k, t("co_s_" + k), cnt[k]); });
+    if (coOwner() && coKind === "mounts") h += chip("missing", t("co_missing", esc(coOwner().name)));
+    h += "</div>" + (coKind !== "titles" ? '<button type="button" class="huchip' + (coSide ? " on" : "") + '" data-coside="1" aria-pressed="' + coSide + '">' + t("co_side", houseParts(house)[1] === "alliance" ? "Alliance" : "Horde") + "</button>" : "") + "</div>";
+    if (coOwner() && coKind === "mounts") {
+      var o = coOwner(), have = CO.mounts.filter(function (x) { return coOwned(x); }).length;
+      h += '<div class="note">' + t("co_owner", esc(o.name), have, CO.mounts.length) + "</div>";
+    }
+    return h;
+  }
+  function coRefresh(q) {
+    view = CO[coKind].filter(function (x) {
+      if (!coOk(x)) return false;
+      if (!q) return true;
+      return x.name.toLowerCase().indexOf(q) >= 0 || coWhere(x).toLowerCase().indexOf(q) >= 0 || (x.item && x.item.name.toLowerCase().indexOf(q) >= 0);
+    }).map(function (x) { return { co: x }; });
+    var k = sortKey, dir = sortDir;
+    view.sort(function (a, b) {
+      var x = a.co, y = b.co, d = 0;
+      if (k === "src") d = t("co_s_" + coSrcKind(x)).localeCompare(t("co_s_" + coSrcKind(y)));
+      else if (k === "where") d = coWhere(x).localeCompare(coWhere(y));
+      else if (k === "req") d = ((x.item && x.item.req) || 0) - ((y.item && y.item.req) || 0);
+      else if (k === "price") { var pa = coPrice(x)[0], pb = coPrice(y)[0]; if (!pa !== !pb) return pa ? -1 : 1; d = pa - pb; }   // utan pris alltid sist
+      else d = x.name.localeCompare(y.name);
+      return d * dir || x.name.localeCompare(y.name);
+    });
+    shown = Math.min(PAGE, view.length);
+  }
+  function coRow(r) {
+    var x = r.co, sk = coSrcKind(x), p = coPrice(x), key = CO_LETTER[coKind] + x.id;
+    return '<tr tabindex="0" data-co="' + key + '"' + (key === coSel ? ' aria-selected="true"' : "") + '><td class="fav">' + (coOwned(x) ? '<span class="pos" title="' + t("co_have") + '">✓</span>' : "") + "</td>" +
+      '<td class="nm">' + coIcon(x) + '<span class="' + (x.item ? qcls(x.item.q) : "q1") + '">' + esc(x.name) + "</span></td>" +
+      '<td><span class="cosrc s-' + sk + '">' + t("co_s_" + sk) + '</span></td><td class="kat hide-s">' + esc(coWhere(x)) + '</td><td class="hide-s">' + (x.item && x.item.req ? x.item.req : "") + "</td>" +
+      "<td>" + (p[0] ? money(p[0]) + ' <small class="dim">' + t(p[1] === "ah" ? "co_ah" : "co_vendor") + "</small>" : "") + "</td></tr>";
+  }
+  function coFind(key) {
+    var k = CO_KIND[(key || "").charAt(0)], id = +(key || "").slice(1), hit = null;
+    if (!k) return null;
+    CO[k].forEach(function (x) { if (x.id === id) hit = x; });
+    return hit ? { kind: k, x: hit } : null;
+  }
+  function coDetail(key) {
+    var f = coFind(key);
+    if (!f) { $("detail").innerHTML = '<div class="note">' + t("co_empty") + "</div>"; return; }
+    coSel = key;
+    var x = f.x, it = x.item, sk = coSrcKind(x), p = coPrice(x);
+    var trs = $("rows").children;
+    for (var j = 0; j < trs.length; j++) { if (trs[j].dataset.co === key) trs[j].setAttribute("aria-selected", "true"); else trs[j].removeAttribute("aria-selected"); }
+    setHash("#col=" + key);
+    var src = (it && it.src || []).map(function (s) {
+      if (s.k === "vendor") return "<li><b>" + t("co_s_vendor") + "</b> " + esc(s.npc) + (s.sub ? ' <span class="dim">&lt;' + esc(s.sub) + "&gt;</span>" : "") + (s.where ? " · " + esc(s.where) : "") + "</li>";
+      if (s.k === "drop") return "<li><b>" + t("co_s_drop") + "</b> " + esc(s.npc) + ' <span class="dim">' + t("col_lvl") + " " + s.lvl + (s.rank ? " · " + (HU_RANK[s.rank] || "") : "") + "</span>" + (s.chance ? ' · <span class="pos">' + s.chance + " %</span>" : "") + (s.where ? " · " + esc(s.where) : "") + "</li>";
+      return "<li><b>" + t("co_s_quest") + "</b> " + (QU && QU.quests[s.id] ? '<a class="wh" href="#quest=' + s.id + '" data-goquest="' + s.id + '">' + esc(s.title) + "</a>" : esc(s.title)) + (s.lvl ? ' <span class="dim">' + t("col_lvl") + " " + s.lvl + "</span>" : "") + "</li>";
+    }).join("");
+    if (f.kind === "titles") src = (x.srcItems || []).map(function (n) { return "<li><b>" + t("co_s_" + sk) + "</b> " + esc(n) + "</li>"; }).join("");
+    var req = [];
+    if (it && it.req) req.push(t("col_lvl") + " " + it.req);
+    if (it && it.skill) req.push(esc(it.skill));
+    if (it && it.rep) req.push(esc(it.rep));
+    if (it && it.pvp) req.push(t("co_pvprank", it.pvp - 4));   // databasens värde: rang + 4 (Knight-Lieutenant/Blood Guard = 15)
+    if (x.cls) req.push(esc(x.cls));
+    var big = f.kind === "mounts" && x.img ? '<div class="cobig"><img src="' + esc(x.img) + '" alt=""></div>' : "";
+    var r = it && byId[it.id];
+    $("detail").scrollTop = 0;
+    $("detail").innerHTML = '<div class="strip"><button class="lnk" type="button" data-copyany="#col=' + key + '" title="' + t("copy_link") + '">' + t("copy_link") + "</button>" +
+      "<h2>" + (f.kind !== "mounts" ? coIcon(x) + " " : "") + esc(f.kind === "titles" ? x.male.replace("{name}", "<name>") : x.name) + "</h2><small>" + t("co_k1_" + f.kind) +
+      (x.faction ? " · " + (x.faction === "ALLIANCE" ? "Alliance" : "Horde") : "") + (x.type ? " · " + esc(x.type) : "") + (coOwned(x) ? ' · <span class="pos">✓ ' + t("co_have_by", esc(coOwner().name)) + "</span>" : "") + "</small></div>" + big +
+      '<dl class="facts"><div><dt>' + t("co_col_src") + '</dt><dd><span class="cosrc s-' + sk + '">' + t("co_s_" + sk) + "</span></dd></div>" +
+      (req.length ? "<div><dt>" + t("co_col_req") + "</dt><dd>" + req.join(" · ") + "</dd></div>" : "") +
+      (p[0] ? "<div><dt>" + t(p[1] === "ah" ? "co_price_ah" : "co_price_vendor") + "</dt><dd>" + money(p[0]) + "</dd></div>" : "") + "</dl>" +
+      (it ? "<div><h3>" + t("co_item") + '</h3><div class="coitem"><span class="' + qcls(it.q) + '"' + (r ? ' data-tip="' + it.id + '"' : "") + ">" + esc(it.name) + "</span>" + (r ? ' <button class="lnk" type="button" data-upgo="' + it.id + '">' + t("co_open_ah") + "</button>" : "") + "</div></div>" : "") +
+      (src ? "<div><h3>" + t("co_where") + '</h3><ul class="huwhere">' + src + "</ul></div>" : '<div class="note">' + t(sk === "forever" ? "co_forever" : "co_nosrc") + "</div>") +
+      (x.desc && f.kind !== "titles" ? '<div class="note">' + esc(x.desc) + "</div>" : "") +
+      '<div class="note">' + t("co_src_note") + "</div>";
+  }
+  function coStart(want) {
+    $("detail").innerHTML = '<div class="note">' + t("ar_loading") + "</div>";
+    loadCo().then(function () {
+      if (mode !== "co") return;   // bytt flik medan filen laddades (eller bakåt i historiken)
+      var f = want ? coFind(want) : null;
+      if (f) coKind = f.kind;
+      drawCats(); refresh(); toTop();
+      if (f) { coDetail(want); showTab("item"); } else if (view[0]) coDetail(CO_LETTER[coKind] + view[0].co.id);
+    }).catch(function () { $("detail").innerHTML = '<div class="note">' + t("qu_fail") + "</div>"; });
   }
   function dgStart(wantMap) {
     $("detail").innerHTML = '<div class="note">' + t("ar_loading") + "</div>";
     Promise.all([loadDungeons(), loadXIcons()]).then(function () {
+      if (mode !== "dg") return;
       if (wantMap) dgList.forEach(function (d, i) { if (d.map === wantMap) dgSel = i; });
       if (dgSel < 0) dgSel = 0;
       drawCats(); refresh(); toTop(); dgDetail();
     }).catch(function () { $("detail").innerHTML = '<div class="note">' + t("qu_fail") + "</div>"; });
   }
-  function setMode(m) {
-    if (m === mode) return;
-    mode = m;
-    try { localStorage.setItem(MKEY, m); } catch (e) { /* gäller tills sidan stängs */ }
+  function resetModeState(m) {   // ny flik: egen sortering, inga kvarglömda filter från förra fliken
     if (m === "tr") { sortKey = "dip"; sortDir = -1; } else if (m === "cr") { sortKey = "profit"; sortDir = -1; } else if (m === "qu") { sortKey = "lvl"; sortDir = 1; } else { sortKey = "day"; sortDir = -1; }
     openId = null;
     catSel = -1; subSel = -1; sub2Sel = -1;   // kategorierna och yrkena är olika listor
     query = ""; $("q").value = "";
-    $("q").placeholder = t(m === "cr" ? "search_rc" : m === "ar" ? "search_ar" : m === "qu" ? "search_qu" : m === "dg" ? "search_dg" : m === "hu" ? "search_hu" : "search_ph");
+  }
+  function setMode(m) {
+    if (m === mode) return;
+    mode = m;
+    try { localStorage.setItem(MKEY, m); } catch (e) { /* gäller tills sidan stängs */ }
+    resetModeState(m);
+    $("q").placeholder = t(m === "cr" ? "search_rc" : m === "ar" ? "search_ar" : m === "qu" ? "search_qu" : m === "dg" ? "search_dg" : m === "hu" ? "search_hu" : m === "co" ? "search_co" : "search_ph");
     if (m === "qu") { quStart(selQuest || 0, true); return; }
     if (m === "dg") { dgStart(0); return; }
     if (m === "hu") { sortKey = "lvl"; sortDir = huLvl ? -1 : 1; huStart(huSel); return; }
+    if (m === "co") { sortKey = "name"; sortDir = 1; coStart(0); return; }
     if (m === "ar") {
       drawCats(); refresh();
-      if (arData) { if (arData.kind === "character") renderChar(arData); else renderGuild(arData); }
+      if (arLb) { lbShow(); setHash("#top=" + arLb); }
+      else if (arData) { if (arData.kind === "character") renderChar(arData); else renderGuild(arData); setHash(arData.kind === "character" ? arHash() : "#guild=" + arData.slug); }
       else if (arRecent[0]) arLoad(arRecent[0].kind, arRecent[0].slug);
       else arShow('<div class="hint">' + t("ar_hint") + "</div>", "");
       return;
@@ -3104,6 +3729,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   $("modeQu").addEventListener("click", function () { setMode("qu"); });
   $("modeDg").addEventListener("click", function () { setMode("dg"); });
   $("modeHu").addEventListener("click", function () { setMode("hu"); });
+  $("modeCo").addEventListener("click", function () { setMode("co"); });
   document.addEventListener("change", function (e) { if (e.target && e.target.id === "quPlayer") setQuPlayer(e.target.value); });
   $("head").addEventListener("click", function (e) {
     var b = e.target.closest("button");
