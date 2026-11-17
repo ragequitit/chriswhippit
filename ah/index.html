@@ -66,9 +66,9 @@ body {
   box-shadow: inset 0 0 0 1px var(--line), 0 14px 36px rgba(0, 0, 0, .42); }
 /* Frostat sidhuvud (Joakim 2026-11-16): panoramat skymtar suddigt bakom, med fraktionstonen ovanpå och en toning som
    blir tät nedåt mot panelen. Fönstret är genomskinligt bara här; .bar, .cols och .foot bär panelfärgen. */
-.top { display: flex; align-items: center; gap: 16px; min-height: 104px; padding: 14px 18px; flex-wrap: wrap;
+.top { position: relative; z-index: 5; display: flex; align-items: center; gap: 16px; min-height: 104px; padding: 14px 18px; flex-wrap: wrap;
   background: linear-gradient(rgba(42, 30, 21, .55), rgba(21, 18, 16, .92)); border-bottom: 1px solid var(--line); border-radius: 7px 7px 0 0;
-  box-shadow: inset 0 1px 0 rgba(229, 180, 106, .10); -webkit-backdrop-filter: blur(10px) saturate(1.15); backdrop-filter: blur(10px) saturate(1.15); }
+  box-shadow: inset 0 1px 0 rgba(229, 180, 106, .10); -webkit-backdrop-filter: blur(10px) saturate(1.15); backdrop-filter: blur(10px) saturate(1.15); }   /* z-index: marknadsväljaren ska ligga över flikarnas ikoner (filter på .mi gör egna lager; Joakim 2026-11-17) */
 .win > :not(.top) { background: var(--panel); }
 /* Fraktionston i rubriklisten (Joakim 2026-11-16): Horde-röd eller Alliance-blå, svagt, så hela sidan följer flippen. */
 .fa-horde .top { background: linear-gradient(rgba(59, 26, 19, .5), rgba(26, 16, 12, .85) 70%, rgba(21, 18, 16, .95)); }
@@ -167,6 +167,7 @@ h1 { font-family: var(--display); font-weight: 500; font-size: 36px; margin: 0; 
 .lbt { width: 100%; border-collapse: collapse; font-size: 13.5px; } .lbt th { text-align: left; color: var(--gold); font-size: 11.5px; text-transform: uppercase; letter-spacing: .04em; padding: 6px 8px; border-bottom: 1px solid var(--line); }
 .lbt td { padding: 5px 8px; border-bottom: 1px solid rgba(255, 255, 255, .04); white-space: nowrap; } .lbt td.nm { overflow: hidden; text-overflow: ellipsis; max-width: 0; width: 45%; } .lbt td.nm a { text-decoration: none; } .lbt td.nm a:hover { text-decoration: underline; }
 .lbt .ri { width: 18px; height: 18px; vertical-align: -4px; margin-right: 6px; border-radius: 3px; } .lbn { color: var(--grey); width: 28px; } .lbn.top1 { color: #ffd100; font-weight: 700; } .lbn.top2 { color: #d6dee8; font-weight: 700; } .lbn.top3 { color: #e0a060; font-weight: 700; }
+.lbsep { width: 1px; align-self: stretch; background: var(--line); margin: 0 4px; }
 .lbbtn .ci { width: 20px; height: 20px; border-radius: 3px; margin-right: 6px; }
 .actwrap { display: grid; gap: 8px; } .actwrap h3 { margin: 4px 0 0; color: var(--gold); font-size: 14px; } .actsvg { width: 100%; max-width: 620px; height: auto; } .actsvg text { fill: var(--grey); font-size: 10px; }
 .upbig { all: unset; box-sizing: border-box; cursor: pointer; display: flex; align-items: center; gap: 12px; width: 100%; margin: 10px 0 6px; padding: 10px 12px; border: 1px solid var(--edge); border-radius: 6px; background: linear-gradient(180deg, rgba(240, 192, 64, .13), rgba(240, 192, 64, .03)); }
@@ -914,6 +915,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       hu_speed_note: "A tamed pet keeps its attack speed: 1.0–1.3 is fast, 2.0 is normal. Health, damage and armor come from the family.",
       hu_src: "Classic database (cmangos, GPL). Zones and map positions from the game client via WhippitPanel.",
       lb: "Leaderboards", lb_sub: "%1 players and %2 guilds found so far · %3", lb_ilvl: "Item level", lb_level: "Level", lb_hk: "Honorable kills", lb_rank: "PvP rank", lb_ach: "Achievement points", lb_guilds: "Guilds",
+      lb_rs_auto: "%1 (your AH)", lb_rs_all: "All realms", lb_rs_partial: "Some players are still being sorted into PvP or Normal; they show under All realms until the next update.",
       lb_both: "Both sides", lb_player: "Player", lb_guild: "Guild", lb_n60: "Level 60s", lb_il60: "Item level (60s)", lb_avg: "Avg level", lb_members: "Members", lb_none: "Nobody here yet.", lb_fail: "The leaderboards could not be loaded.",
       lb_note: "Blizzard can only look up a player by name, so the list grows like a snowball: known players → their guild → its members → their guilds, plus the names WhippitPanel notes in the game. Refreshed daily; anyone not seen for 29 days drops out.",
       lb_how: "Click a player or guild to open it in the Armory. Guilds are ranked by level 60 members, then their average item level.",
@@ -3119,6 +3121,8 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     if (arForget) { arForget = null; drawCats(); }
     var al = e.target.closest("[data-ar]");
     if (al) { e.preventDefault(); e.stopPropagation(); showTab("item"); arLb = ""; arLoad(al.dataset.ar, al.dataset.slug); return; }
+    var lbr = e.target.closest("[data-lbrs]");
+    if (lbr && mode === "ar") { lbRs = lbr.dataset.lbrs; lbShow(); return; }
     var lbf = e.target.closest("[data-lbfa]");
     if (lbf && mode === "ar") { lbFa = lbf.dataset.lbfa; lbShow(); return; }
     var pb = e.target.closest("[data-prof]");
@@ -3525,6 +3529,10 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   // hittats via snöbollen (kända spelare → guild → roster → nya guilder) och addonets spelarnamn. Bara det katalogen känner
   // till räknas, så listan växer för varje dag. Länk #top=<lista>. ----
   var KAT = null, katPromise = null, arLb = "", lbFa = "";
+  // Ruleset (Joakim 2026-11-17): Blizzards API har alla Forever-spelare, PvP och Normal i samma katalog. "" = följer vald
+  // AH-marknad (PvP eller Normal), "all" = båda. Guildens ruleset = det flest kända medlemmar har.
+  var lbRs = "";
+  function lbRuleset() { return lbRs === "all" ? "" : lbRs || houseParts(house)[0]; }
   var LB = [["ilvl", "il", "lb_ilvl"], ["level", "lv", "lb_level"], ["hk", "hk", "lb_hk"], ["rank", "rk", "lb_rank"], ["ach", "ap", "lb_ach"], ["guilds", "", "lb_guilds"], ["first60", "t60", "lb_first60"], ["act", "", "lb_act"]];
   function loadKat() {
     if (!katPromise) katPromise = fetch(DATA_BASE + "katalog.json", { cache: "no-store" }).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }).then(function (j) { KAT = j; return j; })
@@ -3534,13 +3542,19 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   function lbShow() {
     if (!KAT) { arShow('<div class="hint">' + t("ar_loading") + "</div>", ""); loadKat().then(function () { if (mode === "ar" && arLb) { drawCats(); lbShow(); } }).catch(function () { arShow('<div class="hint">' + t("lb_fail") + "</div>", ""); }); return; }
     var def = LB.filter(function (b) { return b[0] === arLb; })[0] || LB[0];
-    var faOk = function (x) { return !lbFa || x.fa === lbFa; };
+    var rs = lbRuleset(), gRs = {};
+    if (rs) { var cnt = {}; KAT.players.forEach(function (p) { if (p.g && p.rs) { var c = cnt[p.g] = cnt[p.g] || { pvp: 0, normal: 0 }; c[p.rs]++; } }); Object.keys(cnt).forEach(function (g) { gRs[g] = cnt[g].pvp >= cnt[g].normal ? "pvp" : "normal"; }); }
+    var faOk = function (x) { return (!lbFa || x.fa === lbFa) && (!rs || (x.rs || gRs[x.s] || gRs[x.g] || "") === rs); };
     var tabs = LB.filter(function (b) { return !b[1] || KAT.players.some(function (p) { return p[b[1]] > 0; }); }).map(function (b) {
       return '<button type="button" class="huchip' + (b === def ? " on" : "") + '" data-lb="' + b[0] + '" aria-pressed="' + (b === def) + '">' + t(b[2]) + "</button>";
     }).join("");
     var fa = function (k, lbl) { return '<button type="button" class="huchip' + (lbFa === k ? " on" : "") + '" data-lbfa="' + k + '" aria-pressed="' + (lbFa === k) + '">' + lbl + "</button>"; };
-    var h = '<div class="lbwrap"><div class="lbhead"><h2>' + t("lb") + "</h2><small>" + t("lb_sub", num(KAT.players.length), num(KAT.guilds.length), when2(KAT.t)) + "</small></div>" +
-      '<div class="huchips">' + tabs + '</div><div class="huchips">' + fa("", t("lb_both")) + fa("HORDE", "Horde") + fa("ALLIANCE", "Alliance") + "</div>";
+    var rsb = function (k, lbl) { var on = (lbRs || "") === k; return '<button type="button" class="huchip' + (on ? " on" : "") + '" data-lbrs="' + k + '" aria-pressed="' + on + '">' + lbl + "</button>"; };
+    var np = KAT.players.filter(faOk).length, ng = KAT.guilds.filter(faOk).length;
+    var h = '<div class="lbwrap"><div class="lbhead"><h2>' + t("lb") + "</h2><small>" + t("lb_sub", num(np), num(ng), when2(KAT.t)) + "</small></div>" +
+      '<div class="huchips">' + tabs + '</div><div class="huchips">' + fa("", t("lb_both")) + fa("HORDE", "Horde") + fa("ALLIANCE", "Alliance") + '<span class="lbsep"></span>' +
+      rsb("", t("lb_rs_auto", houseParts(house)[0] === "pvp" ? "PvP" : "Normal")) + rsb(houseParts(house)[0] === "pvp" ? "normal" : "pvp", houseParts(house)[0] === "pvp" ? "Normal" : "PvP") + rsb("all", t("lb_rs_all")) + "</div>" +
+      (KAT.players.some(function (p) { return !p.rs; }) && rs ? '<div class="note">' + t("lb_rs_partial") + "</div>" : "");
     if (def[0] === "act") {
       h += actHtml();
     } else if (def[0] === "first60") {
