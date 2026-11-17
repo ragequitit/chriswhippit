@@ -267,7 +267,7 @@ td.nm, .watch td:first-child { text-align: left; white-space: nowrap; max-width:
 .arfacts dt { color: var(--grey); font-size: 12px; } .arfacts dd { margin: 0; font-size: 15px; font-weight: 600; }
 .repwrap h3 { margin: 4px 0 8px; }
 .reps { display: grid; gap: 3px; max-width: 520px; }
-.rep { display: grid; grid-template-columns: minmax(120px, 1fr) 230px; gap: 10px; align-items: center; font-size: 13.5px; }
+.rep { display: grid; grid-template-columns: minmax(90px, 1fr) minmax(120px, 230px); gap: 10px; align-items: center; font-size: 13.5px; }
 .rep .rn { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .rbar { position: relative; height: 18px; border-radius: 3px; background: #0b0908; border: 1px solid var(--line); overflow: hidden; }
 .rbar i { position: absolute; inset: 0; width: 0; display: block; opacity: .9; }
@@ -454,6 +454,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   html, body { height: 100%; }
   body { display: flex; flex-direction: column; }
   .win { flex: 1 1 auto; min-height: 0; width: 100%; display: flex; flex-direction: column; }
+  .win > .top, .win > .bar, .win > .foot { flex: none; }   /* sidhuvudet får inte krympa när innehållet växer (Joakim 2026-11-17: strecket under emblemet hoppade) */
   .cols { flex: 1 1 auto; min-height: 0; grid-template-rows: minmax(0, 1fr); align-items: stretch; }
   .left, .right { display: flex; flex-direction: column; min-height: 0; }
   .cats { align-self: stretch; min-height: 0; overflow: auto; scrollbar-width: thin; scrollbar-color: var(--edge) var(--inset); }
