@@ -149,6 +149,10 @@ h1 { font-family: var(--display); font-weight: 500; font-size: 36px; margin: 0; 
 .cat:hover { background: var(--hover); }
 .cat[aria-pressed=true] { background: linear-gradient(#39271A, #21170F); border-left-color: var(--edge); box-shadow: inset 0 0 0 1px rgba(246, 196, 72, .25); color: var(--gold); }
 .cat.sub { margin-left: 18px; height: 30px; font-size: 13.5px; }
+.recrow { display: flex; align-items: center; gap: 4px; } .recrow .cat.sub { flex: 1 1 auto; min-width: 0; }
+.recx { all: unset; cursor: pointer; flex: none; width: 20px; height: 20px; display: grid; place-items: center; border-radius: 4px; color: #ff5a4a; font-size: 12px; opacity: .45; }
+.recrow:hover .recx, .recx:focus-visible { opacity: 1; } .recx:hover { background: rgba(255, 90, 74, .15); }
+.recx.ok { width: auto; padding: 0 8px; opacity: 1; color: #fff; background: #a3271c; border: 1px solid #ff5a4a; font-size: 12px; }
 .cat.sub2 { margin-left: 34px; height: 26px; font-size: 13px; color: var(--grey); border-left: 1px solid var(--line); border-radius: 0; }
 .cat.sub2[aria-pressed=true] { color: var(--gold); background: var(--sel); border-left-color: var(--edge); box-shadow: none; }
 .cat:focus-visible, .catlink:focus-visible { outline: 2px solid var(--edge); outline-offset: -2px; }
@@ -290,9 +294,15 @@ td.nm, .watch td:first-child { text-align: left; white-space: nowrap; max-width:
 .roster .rc { text-align: left; white-space: nowrap; } .roster td.rc { display: table-cell; }
 .roster .ri { width: 20px; height: 20px; border-radius: 3px; vertical-align: middle; margin-right: 6px; border: 1px solid #000; }
 .roster .ri.none { display: inline-block; border: 0; }
+.wtip .mtip { display: grid; gap: 6px; justify-items: center; } .wtip .mtip img { width: 300px; height: 300px; object-fit: cover; border-radius: 6px; } .wtip .mtip b { color: var(--gold); }
+.mount[data-mountimg] img { cursor: zoom-in; }
 .glbl { color: var(--grey); font-size: 13px; letter-spacing: .02em; }
 .roster th.rs button { all: unset; cursor: pointer; } .roster th.rs button:hover { color: var(--fg); }
 .roster th[aria-sort=ascending] button, .roster th[aria-sort=descending] button { color: var(--fg); }
+.roster .rfr { color: var(--gold); margin-right: 5px; }
+.roster td.seen { white-space: nowrap; color: var(--grey); } .roster th.seen { text-align: left; }
+.ondot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #4ade4a; box-shadow: 0 0 6px #4ade4a; margin-right: 6px; vertical-align: middle; }
+.crbtn { margin-top: 14px; }
 .rcls { all: unset; cursor: pointer; display: inline-flex; align-items: center; } .rcls:hover span { text-decoration: underline; }
 .rchip { display: flex; align-items: center; gap: 10px; margin: 0 0 8px; font-size: 13px; }
 .rchip .ri { width: 20px; height: 20px; border-radius: 3px; margin-right: 4px; border: 1px solid #000; }
@@ -759,7 +769,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       search_ar: "Player: first and last name – or a guild", ar_hint: "Type a player's first and last name (e.g. Alisee Alistar), or a guild name, and press Search.",
       ar_recent: "Recent", ar_loading: "Looking up…", ar_notfound: "No player or guild with that name. Players show up from level 10, after logging out.",
       ar_fail: "The lookup is not available right now.", ar_off: "The armory is not connected yet.",
-      ar_level: "Level %1 %2 %3", ar_guild: "Guild", ar_player: "Player", ar_picnote: "Picture by Blizzard – may be out of date.", ro_ilvl: "iLvl", ro_only: "Show only %1s", ro_all: "Show all classes", ro_shown: "%1 of %2 members", ar_picnote_tip: "Rendered by Blizzard: it can lag behind the gear or show the wrong character.", st_primary: "Primary Attributes", st_defense: "Defense", st_combat: "Combat", st_ap: "Attack Power", st_sp: "Spell Power", st_parry: "Parry", st_block: "Block", st_rcrit: "Ranged crit",
+      ar_level: "Level %1 %2 %3", ar_guild: "Guild", ar_player: "Player", ar_picnote: "Picture by Blizzard – may be out of date.", ro_ilvl: "iLvl", ar_forget: "Remove", ar_forget_tip: "Remove from Recent", ro_seen: "Seen", ro_seen_tip: "Last login (Blizzard)", ro_now: "now", ro_h: "%1 h ago", ro_d: "%1 d ago", ro_only: "Show only %1s", ro_all: "Show all classes", ro_shown: "%1 of %2 members", ar_picnote_tip: "Rendered by Blizzard: it can lag behind the gear or show the wrong character.", st_primary: "Primary Attributes", st_defense: "Defense", st_combat: "Combat", st_ap: "Attack Power", st_sp: "Spell Power", st_parry: "Parry", st_block: "Block", st_rcrit: "Ranged crit",
       ar_craft: "Known recipes", ar_sells: "Sells for", ar_cost: "Cost", ar_profit: "Profit", ar_noprice: "no price", ar_nofr: "Recipe names are not available right now.", ar_ilvl: "Item level",
       ar_crafters: "Who can craft what", ar_crafters_load: "Loading professions… %1 / %2", ar_crafters_q: "Recipe name, e.g. Bolt of Woolen Cloth", ar_nobody: "Nobody in the guild knows a recipe with that name.",
       ar_nobody_p: "No professions found in the guild.", skill_unknown: "skill requirement unknown", ar_friends: "Friends", ar_recipes_n: "%1 rec.", ar_quests: "Quests done", ar_general: "General", st_health: "Health", st_str: "Strength", st_agi: "Agility", st_sta: "Stamina", st_int: "Intellect", st_spi: "Spirit", st_armor: "Armor", st_crit: "Crit", st_scrit: "Spell crit", st_dodge: "Dodge",
@@ -1062,11 +1072,17 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     drawCats();
     if (arData && arData.kind === "character") renderChar(arData);
   }
+  var arForget = null;   // "kind:slug" för raden i Recent som väntar på bekräftelse
   function arSection(key, title, items) {
     var closed = !!arSec[key];
     return '<button class="cat hd" type="button" data-arsec="' + key + '" aria-expanded="' + !closed + '"><em class="nm">' + title + "</em><span>" + (items.length ? items.length + " " : "") + (closed ? "▸" : "▾") + "</span></button>" + (closed ? "" : items.map(function (r) {
       var on = arData && arData.slug === r.slug && ((arData.kind === "character") === (r.kind !== "guild"));
-      return '<button class="cat sub" type="button" data-ar="' + (r.kind === "guild" ? "guild" : "char") + '" data-slug="' + esc(r.slug) + '" aria-pressed="' + on + '"><em class="nm">' + (r.kind === "guild" ? "&lt;" + esc(r.label) + "&gt;" : esc(r.label)) + "</em>" + (key === "recent" ? "<span>" + (r.kind === "guild" ? t("ar_guild") : t("ar_player")) + "</span>" : "") + "</button>";
+      var btn = '<button class="cat sub" type="button" data-ar="' + (r.kind === "guild" ? "guild" : "char") + '" data-slug="' + esc(r.slug) + '" aria-pressed="' + on + '"><em class="nm">' + (r.kind === "guild" ? "&lt;" + esc(r.label) + "&gt;" : esc(r.label)) + "</em>" + (key === "recent" ? "<span>" + (r.kind === "guild" ? t("ar_guild") : t("ar_player")) + "</span>" : "") + "</button>";
+      if (key !== "recent") return btn;
+      var id = (r.kind === "guild" ? "guild" : "char") + ":" + r.slug;
+      return '<div class="recrow">' + btn + (arForget === id
+        ? '<button class="recx ok" type="button" data-arforgetok="' + esc(id) + '" title="' + t("ar_forget_tip") + '">' + t("ar_forget") + "</button>"
+        : '<button class="recx" type="button" data-arforget="' + esc(id) + '" title="' + t("ar_forget_tip") + '" aria-label="' + t("ar_forget_tip") + '">✕</button>') + "</div>";
     }).join(""));
   }
   var arRec = 0;   // recept som visas i högerpanelen (0 = yrkena)
@@ -1137,7 +1153,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     var ml = d.mountList || [];
     if (!ml.length) return "";
     return arToggle("mounts", t("ar_mounts"), ml.length) + (arOpen.mounts ? '<div class="mounts">' + ml.map(function (m) {
-      return '<div class="mount">' + (m.img ? '<img src="' + esc(m.img) + '" alt="" loading="lazy">' : '<span class="noimg"></span>') + "<span>" + esc(m.name) + "</span></div>";
+      return '<div class="mount"' + (m.img ? ' data-mountimg="' + esc(m.img) + '" data-mountname="' + esc(m.name) + '"' : "") + '>' + (m.img ? '<img src="' + esc(m.img) + '" alt="" loading="lazy">' : '<span class="noimg"></span>') + "<span>" + esc(m.name) + "</span></div>";
     }).join("") + "</div>" : "");
   }
   function renderChar(d) {
@@ -1185,10 +1201,18 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     var pv = x && x.pvp, race = m.race || (x && x.race) || "", cls = m.cls || (x && x.cls) || "", wait = !x && crBusy[d.slug];
     var dash = '<span class="dim">' + (wait ? "…" : "–") + "</span>";
     return '<td class="av">' + (x && x.avatar ? '<img src="' + esc(x.avatar) + '" alt="" loading="lazy">' : '<span class="noav"></span>') + "</td>" +
-      '<td class="nm"><a href="#player=' + esc(m.slug) + '" data-ar="char" data-slug="' + esc(m.slug) + '">' + esc(m.name + " " + m.surname) + "</a></td><td>" + m.level + "</td>" +
+      '<td class="nm">' + (isFriend(m.slug) ? '<span class="rfr" title="' + t("ar_friends") + '">★</span>' : "") + '<a href="#player=' + esc(m.slug) + '" data-ar="char" data-slug="' + esc(m.slug) + '">' + esc(m.name + " " + m.surname) + "</a></td><td>" + m.level + "</td>" +
       '<td class="rc">' + (race ? raceIcon(race, x && x.gender) + "<span>" + esc(race) + "</span>" : dash) + "</td>" +
       '<td class="rc">' + (cls ? '<button class="rcls" type="button" data-rcls="' + esc(cls) + '" title="' + t(rState.cls === cls ? "ro_all" : "ro_only", cls) + '">' + classIcon(cls) + '<span style="color:' + (CLASS_COL[cls] || "inherit") + '">' + esc(cls) + "</span></button>" : dash) + "</td>" +
-      "<td>" + (m.rank === 0 ? "GM" : m.rank) + "</td><td>" + (x && x.ilvl ? x.ilvl : dash) + '</td><td class="pvp">' + (pv ? rankBadge(d.faction, pv.rank) || '<span class="dim">–</span>' : dash) + "</td><td>" + (pv ? num(pv.hk) : dash) + "</td>";
+      "<td>" + (m.rank === 0 ? "GM" : m.rank) + "</td><td>" + (x && x.ilvl ? x.ilvl : dash) + '</td><td class="pvp">' + (pv ? rankBadge(d.faction, pv.rank) || '<span class="dim">–</span>' : dash) + "</td><td>" + (pv ? num(pv.hk) : dash) + '</td><td class="seen">' + (x && x.lastLogin ? seenHtml(x.lastLogin) : dash) + "</td>";
+  }
+  // Senast inloggad som "nyss" (grön punkt, inom en timme), "3 h", "2 d" (Blizzards senaste inloggning; tooltip = datum och tid).
+  function seenHtml(ms) {
+    var min = Math.max(0, (Date.now() - ms) / 60000), txt;
+    if (min < 60) txt = '<span class="ondot"></span>' + t("ro_now");
+    else if (min < 60 * 24) txt = t("ro_h", Math.floor(min / 60));
+    else txt = t("ro_d", Math.floor(min / 1440));
+    return '<span title="' + esc(when2(ms)) + '">' + txt + "</span>";
   }
   function fillMember(d, slug) {
     var x = (crafters[d.slug] || crPart[d.slug] || {})[slug], tr = document.querySelector('tr[data-mrow="' + slug + '"]');
@@ -1198,7 +1222,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   }
   // Sortering och klassfilter (per guild; ny guild = level, inget filter). Saknad data (ännu inte hämtad) hamnar sist.
   var rState = { slug: "", key: "level", dir: -1, cls: "" };
-  var R_COLS = [["nm", "name", "Name"], ["", "level", "col_lvl"], ["rc", "race", "Race"], ["rc", "cls", "Class"], ["", "rank", "ar_rank"], ["", "ilvl", "ro_ilvl"], ["pvp", "pvp", "col_pvp"], ["", "hk", "col_hk"]];
+  var R_COLS = [["nm", "name", "Name"], ["", "level", "col_lvl"], ["rc", "race", "Race"], ["rc", "cls", "Class"], ["", "rank", "ar_rank"], ["", "ilvl", "ro_ilvl"], ["pvp", "pvp", "col_pvp"], ["", "hk", "col_hk"], ["seen", "seen", "ro_seen"]];
   var R_TEXT = { name: 1, race: 1, cls: 1, rank: 1 };   // stigande från början (rank: GM först)
   function rosterVal(m, x, key) {
     if (key === "name") return (m.name + " " + m.surname).toLowerCase();
@@ -1209,6 +1233,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     if (key === "ilvl") return x && x.ilvl ? x.ilvl : null;
     if (key === "pvp") return x && x.pvp ? x.pvp.rank : null;
     if (key === "hk") return x && x.pvp ? x.pvp.hk : null;
+    if (key === "seen") return x && x.lastLogin ? x.lastLogin : null;
     return null;
   }
   function rosterHtml(d) {
@@ -1226,7 +1251,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     }).join("");
     var head = '<th class="av"></th>' + R_COLS.map(function (c) {
       var on = k === c[1], lbl = c[2].indexOf("_") > 0 ? t(c[2]) : c[2];
-      return '<th class="' + c[0] + ' rs"' + (c[1] === "hk" ? ' title="Honorable kills"' : c[1] === "ilvl" ? ' title="' + t("ar_ilvl") + '"' : "") + ' aria-sort="' + (on ? (dir > 0 ? "ascending" : "descending") : "none") + '"><button type="button" data-rsort="' + c[1] + '">' + lbl + (on ? (dir > 0 ? " ▴" : " ▾") : "") + "</button></th>";
+      return '<th class="' + c[0] + ' rs"' + (c[1] === "hk" ? ' title="Honorable kills"' : c[1] === "seen" ? ' title="' + t("ro_seen_tip") + '"' : c[1] === "ilvl" ? ' title="' + t("ar_ilvl") + '"' : "") + ' aria-sort="' + (on ? (dir > 0 ? "ascending" : "descending") : "none") + '"><button type="button" data-rsort="' + c[1] + '">' + lbl + (on ? (dir > 0 ? " ▴" : " ▾") : "") + "</button></th>";
     }).join("");
     var chip = rState.cls ? '<div class="rchip"><button class="rcls on" type="button" data-rcls="' + esc(rState.cls) + '">' + classIcon(rState.cls) + '<span style="color:' + (CLASS_COL[rState.cls] || "inherit") + '">' + esc(rState.cls) + "</span> ✕</button>" +
       '<span class="dim">' + t("ro_shown", list.length, d.members.length) + "</span></div>" : "";
@@ -1247,17 +1272,21 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   }
   // Guild: vem kan crafta vad (Joakim 2026-11-16). Yrkena hämtas per medlem (/profs/<slug>, ett Blizzard-anrop var) och
   // recepten slås upp i forever-recept.json. Sök på receptnamn → vilka som kan det, med skill; annars yrke för yrke.
-  var crafters = {}, crQ = "", crPart = {}, crBusy = {};
+  var crafters = {}, crQ = "", crPart = {}, crBusy = {}, crOpen = false;
+  // "Who can craft what" fälls ut och ihop med knappen (Joakim 2026-11-17: gick inte att få bort); datan hämtas ändå direkt.
+  function craftBtn() {
+    return '<button class="prof rephd crbtn" type="button" data-crafters="1" aria-expanded="' + crOpen + '"><span class="pn"><span>⚒ ' + t("ar_crafters") + '</span></span><span class="chev">' + (crOpen ? "▾" : "▸") + "</span></button>";
+  }
   function loadCrafters(d) {
     var box = $("crafters"); if (!box) return;
     var list = d.members.map(function (m) { return { m: m, slug: arSlug(m.name + " " + m.surname) }; }), done = 0, out = {};
     crPart[d.slug] = out; crBusy[d.slug] = true;
-    box.innerHTML = '<div class="note">' + t("ar_crafters_load", 0, list.length) + "</div>";
+    box.innerHTML = craftBtn() + '<div class="note">' + t("ar_crafters_load", 0, list.length) + "</div>";
     var next = function () {
       if (!list.length) return Promise.resolve();
       var x = list.shift();
-      return fetch(ARMORY_API + "/profs/" + encodeURIComponent(x.slug)).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; })
-        .then(function (j) { if (j) { out[x.slug] = { m: x.m, profs: j.professions, pvp: j.pvp || null, avatar: j.avatar || null, ilvl: j.ilvl || 0, gender: j.gender || null, race: j.race || "", cls: j.cls || "" }; fillMember(d, x.slug); } done++; var n = box.querySelector(".note"); if (n) n.textContent = t("ar_crafters_load", done, done + list.length); return next(); });
+      return fetch(ARMORY_API + "/profs/" + encodeURIComponent(x.slug) + "?v=2").then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; })
+        .then(function (j) { if (j) { out[x.slug] = { m: x.m, profs: j.professions, pvp: j.pvp || null, avatar: j.avatar || null, ilvl: j.ilvl || 0, lastLogin: j.lastLogin || 0, gender: j.gender || null, race: j.race || "", cls: j.cls || "" }; fillMember(d, x.slug); } done++; var n = box.querySelector(".note"); if (n) n.textContent = t("ar_crafters_load", done, done + list.length); return next(); });
     };
     Promise.all([loadFR(), next(), next(), next(), next(), next(), next()]).then(function () {
       crafters[d.slug] = out; crBusy[d.slug] = false;
@@ -1266,7 +1295,8 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   }
   function drawCrafters(d) {
     var box = $("crafters"), data = crafters[d.slug]; if (!box || !data) return;
-    var q = crQ.trim().toLowerCase(), h = '<div class="h3row"><h3>' + t("ar_crafters") + '</h3></div><input type="search" id="crq" class="crq" placeholder="' + t("ar_crafters_q") + '" value="' + esc(crQ) + '" autocomplete="off">';
+    if (!crOpen) { box.innerHTML = craftBtn(); return; }
+    var q = crQ.trim().toLowerCase(), h = craftBtn() + '<input type="search" id="crq" class="crq" placeholder="' + t("ar_crafters_q") + '" value="' + esc(crQ) + '" autocomplete="off">';
     if (q.length >= 2 && FRX) {
       var who = {};   // receptId -> [{namn, skill}]
       Object.keys(data).forEach(function (slug) { data[slug].profs.forEach(function (p) { p.recipes.forEach(function (id) { var fr = FRX.recipes[id]; if (fr && fr[0].toLowerCase().indexOf(q) >= 0) (who[id] = who[id] || []).push({ slug: slug, name: data[slug].m.name, skill: p.skill, prof: p.name }); }); }); });
@@ -1834,6 +1864,15 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     var el = e.target && e.target.closest ? e.target.closest("[data-tip]") : null;
     if (el) showTip(+el.getAttribute("data-tip"));
     else {
+      // Mount i Armory: stor bild i tooltip-rutan (Joakim 2026-11-17: "så man ser den bättre").
+      var em = e.target && e.target.closest ? e.target.closest("[data-mountimg]") : null;
+      if (em) {
+        tipId = -1;
+        if (!tipBox) { tipBox = document.createElement("div"); tipBox.className = "wtip"; document.body.appendChild(tipBox); }
+        tipBox.innerHTML = "<div class=\"mtip\"><img src=\"" + esc(em.getAttribute("data-mountimg")) + "\" alt=\"\"><b>" + esc(em.getAttribute("data-mountname") || "") + "</b></div>";
+        tipBox.hidden = false; placeTip();
+        return;
+      }
       var ea = e.target && e.target.closest ? e.target.closest("[data-artip]") : null;
       var ed = e.target && e.target.closest ? e.target.closest("[data-dgtip]") : null;
       if (ed && DG && DG.items[+ed.getAttribute("data-dgtip")]) {   // dungeon-drop som inte finns på AH: tooltip ur 1.12-databasen
@@ -2289,6 +2328,16 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(urlA).then(doneA, function () { window.prompt(t("copy_link"), urlA); }); else window.prompt(t("copy_link"), urlA);
       return;
     }
+    var fx = e.target.closest("[data-arforget]"), fok = e.target.closest("[data-arforgetok]");
+    if (fx) { e.stopPropagation(); arForget = fx.dataset.arforget; drawCats(); return; }
+    if (fok) {
+      e.stopPropagation();
+      var parts = fok.dataset.arforgetok.split(":"), kind = parts[0] === "guild" ? "guild" : "char", slugF = parts.slice(1).join(":");
+      arRecent = arRecent.filter(function (r) { return !((r.kind === "guild" ? "guild" : "char") === kind && r.slug === slugF); });
+      try { localStorage.setItem(AR_KEY, JSON.stringify(arRecent)); } catch (e3) {}
+      arForget = null; drawCats(); return;
+    }
+    if (arForget) { arForget = null; drawCats(); }
     var al = e.target.closest("[data-ar]");
     if (al) { e.preventDefault(); e.stopPropagation(); showTab("item"); arLoad(al.dataset.ar, al.dataset.slug); return; }
     var pb = e.target.closest("[data-prof]");
@@ -2314,7 +2363,12 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     var gr = e.target.closest("[data-gorec]");   // recept → samma recept i Professions (samma Blizzard-id)
     if (gr) { var gid = +gr.dataset.gorec; setMode("cr"); loadRecept().then(function () { selectRecipe(gid, true); }); return; }
     var gc = e.target.closest("[data-crafters]");
-    if (gc && arData && arData.kind === "guild") { loadCrafters(arData); return; }
+    if (gc && arData && arData.kind === "guild") {
+      crOpen = !crOpen;
+      if (crafters[arData.slug]) drawCrafters(arData);
+      else { var bx = $("crafters"), old = bx && bx.querySelector(".crbtn"); if (old) old.outerHTML = craftBtn(); }
+      return;
+    }
     var cr = e.target.closest("[data-copyr]");
     if (cr) {
       e.stopPropagation();
