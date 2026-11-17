@@ -143,6 +143,39 @@ h1 { font-family: var(--display); font-weight: 500; font-size: 36px; margin: 0; 
 .cat.hd { font-family: var(--display); font-size: 15px; letter-spacing: .04em; text-transform: uppercase; color: var(--gold); height: 34px; margin-top: 4px; }
 .cat.hd:hover { background: var(--hover); } .cat.hd span { color: var(--grey); font-family: var(--body, inherit); text-transform: none; letter-spacing: 0; }
 .arhead .star.fr { font-size: 20px; padding: 0 2px; margin-left: -6px; }
+.prof.rephd.arow { min-height: 46px; box-sizing: border-box; padding: 6px 10px; }
+.prof.rephd.arow .ci { width: 32px; height: 32px; border: 1px solid #000; box-shadow: 0 0 0 1px var(--bronze); }
+.prof.rephd.arow .pn small { font-family: var(--body); text-transform: none; letter-spacing: 0; }
+.qalist { display: grid; gap: 2px; margin: 2px 0 6px; }
+.qaz { all: unset; cursor: pointer; display: flex; align-items: center; gap: 8px; padding: 5px 8px; border-radius: 4px; font-size: 13.5px; }
+.qaz:hover { background: var(--hover); } .qaz b { color: var(--gold); font-weight: 600; flex: 1 1 auto; } .qaz span:last-child { color: var(--grey); font-size: 12.5px; } .qaz .chev { color: var(--grey); width: 10px; }
+.qaq { display: grid; gap: 1px; padding: 0 0 4px 26px; }
+.qaq a { text-decoration: none; font-size: 13.5px; padding: 2px 6px; border-radius: 3px; } .qaq a:hover { background: var(--hover); text-decoration: underline; }
+.qaq .ql { display: inline-block; min-width: 38px; }
+.qd-red { color: #ff2020; } .qd-orange { color: #ff8040; } .qd-yellow { color: #ffd200; } .qd-green { color: #40c040; } .qd-gray { color: #9d9d9d; }
+.achlist { display: grid; gap: 4px; margin: 2px 0 6px; }
+.achcat { color: var(--gold); font-family: var(--display); font-size: 13px; margin: 6px 0 0; border-bottom: 1px solid var(--line); padding-bottom: 2px; }
+.ach { display: grid; grid-template-columns: 36px minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 6px 8px; border: 1px solid var(--line); border-radius: 5px; background: var(--inset); }
+.ach img, .ach .noimg { width: 36px; height: 36px; border-radius: 4px; border: 1px solid #000; } .ach b { display: block; font-size: 13.5px; } .ach small { color: var(--grey); font-size: 12px; }
+.achr { display: grid; justify-items: end; gap: 2px; } .achp { display: inline-grid; place-items: center; min-width: 26px; height: 26px; border-radius: 50%; background: radial-gradient(#6b4b16, #2a1d0a); border: 1px solid var(--edge); color: var(--gold); font-weight: 700; font-size: 12px; }
+.talpanel { margin-top: 14px; border: 1px solid var(--bronze); border-radius: 7px; background: linear-gradient(#1a130d, #0f0b08); padding: 10px 12px; }
+.talhd { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 16px; margin-bottom: 10px; }
+.taltabs { display: flex; gap: 6px; } .tab2 { all: unset; cursor: pointer; padding: 5px 12px; border: 1px solid var(--line); border-radius: 4px; font-size: 13px; color: var(--grey); }
+.tab2[aria-pressed=true] { color: var(--gold); border-color: var(--edge); background: var(--sel); } .tab2:hover { color: var(--fg); }
+.talinfo { display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: center; font-size: 13px; color: var(--grey); } .talinfo span:first-child { color: var(--gold); font-weight: 600; }
+.ttrees { display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; }
+.ttree { border: 1px solid var(--line); border-radius: 6px; background: radial-gradient(ellipse at top, rgba(120, 90, 50, .18), rgba(0, 0, 0, .35)); padding: 8px 10px 10px; }
+.tth { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; font-family: var(--display); color: var(--gold); } .tth span { color: var(--fg); font-family: var(--body); font-weight: 700; }
+.ttg { position: relative; }
+.tn { all: unset; box-sizing: border-box; position: absolute; width: 46px; height: 46px; border-radius: 5px; border: 2px solid #555; background: #000; cursor: default; }
+.tn img { width: 100%; height: 100%; border-radius: 3px; display: block; }
+.tn b { position: absolute; right: -6px; bottom: -6px; min-width: 22px; padding: 0 3px; height: 15px; line-height: 15px; border-radius: 3px; background: #000; border: 1px solid #333; font-size: 10.5px; text-align: center; color: #9d9d9d; }
+.tn.lock img { filter: grayscale(1) brightness(.45); } .tn.lock { border-color: #333; }
+.tn.open { border-color: #3a3a3a; } .tn.open b { color: #40c040; }
+.tn.part { border-color: #40c040; box-shadow: 0 0 6px rgba(64, 192, 64, .5); } .tn.part b { color: #40c040; }
+.tn.max { border-color: #ffd200; box-shadow: 0 0 7px rgba(255, 210, 0, .55); } .tn.max b { color: #ffd200; }
+.tn.pl { cursor: pointer; } .tn.pl:hover { filter: brightness(1.2); }
+.tarw { position: absolute; background: #3a3a3a; } .tarw.on { background: #ffd200; } .tarw.v { width: 4px; } .tarw.h { height: 4px; }
 .prof.rephd { border: 1px solid var(--line); background: var(--inset); margin-bottom: 4px; } .prof.rephd .pn > span:first-child { font-family: var(--display); letter-spacing: .04em; text-transform: uppercase; font-size: 13.5px; color: var(--gold); }
 .lnk.back { margin-right: auto; }
 .strip.rec { margin-top: 0; }
@@ -816,7 +849,11 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       search_ar: "Player: first and last name – or a guild", ar_hint: "Type a player's first and last name (e.g. Alisee Alistar), or a guild name, and press Search.",
       ar_recent: "Recent", ar_loading: "Looking up…", ar_notfound: "No player or guild with that name. Players show up from level 10, after logging out.",
       ar_fail: "The lookup is not available right now.", ar_off: "The armory is not connected yet.",
-      ar_level: "Level %1 %2 %3", ar_guild: "Guild", ar_player: "Player", ar_picnote: "Picture by Blizzard – may be out of date.", ro_ilvl: "iLvl", rep_area: "Area", rep_name: "Name", rep_standing: "Standing", cmp: "Compare", cmp_tip: "Compare with another player side by side", cmp_with: "Compare with", cmp_ph: "First Last", cmp_go: "Compare", cmp_same: "Pick another player", cmp_swap: "Swap", cmp_gear: "Equipment", cmp_score: "Who's ahead", cmp_stats: "Stats, PvP and professions", cmp_note: "Rows where one of you is ahead. Green = more.", cmp_power: "Power", ar_forget: "Remove", ar_forget_tip: "Remove from Recent", ro_seen: "Seen", ro_seen_tip: "Last login (Blizzard)", ro_now: "now", ro_h: "%1 h ago", ro_d: "%1 d ago", ro_only: "Show only %1s", ro_all: "Show all classes", ro_shown: "%1 of %2 members", ar_picnote_tip: "Rendered by Blizzard: it can lag behind the gear or show the wrong character.", st_primary: "Primary Attributes", st_defense: "Defense", st_combat: "Combat", st_ap: "Attack Power", st_sp: "Spell Power", st_parry: "Parry", st_block: "Block", st_rcrit: "Ranged crit",
+      ar_level: "Level %1 %2 %3", ar_guild: "Guild", ar_player: "Player", ar_picnote: "Picture by Blizzard – may be out of date.", ro_ilvl: "iLvl", ar_tal: "Talents", ar_qa: "Quests in progress", qa_zones: "in %1 zones", qa_none: "No quests in the quest log.", qa_other: "Other", qa_est: "Level estimated (new in Forever)",
+      qa_note: "Color = quest level against the character's level, as in the quest log.", ar_ach: "Achievements", ach_pts: "%1 points", ach_none: "No achievements yet.",
+      tal_char: "%1's talents", tal_plan: "Plan your own", tal_left: "%1 points left", tal_lvl: "Requires level %1", tal_reset: "Reset", tal_copy: "Copy %1's", tal_used: "%1 points spent",
+      tal_rank: "Rank %1/%2", tal_next: "Next rank:", tal_req_pts: "Requires %1 points in %2 talents", tal_req: "Requires %1 points in %2", tal_hint: "Click: add a point · Right-click: remove.",
+      tal_noicons: "Talent icons come from the game and are still being collected.", tal_nocls: "No talent data for this class.", rep_area: "Area", rep_name: "Name", rep_standing: "Standing", cmp: "Compare", cmp_tip: "Compare with another player side by side", cmp_with: "Compare with", cmp_ph: "First Last", cmp_go: "Compare", cmp_same: "Pick another player", cmp_swap: "Swap", cmp_gear: "Equipment", cmp_score: "Who's ahead", cmp_stats: "Stats, PvP and professions", cmp_note: "Rows where one of you is ahead. Green = more.", cmp_power: "Power", ar_forget: "Remove", ar_forget_tip: "Remove from Recent", ro_seen: "Seen", ro_seen_tip: "Last login (Blizzard)", ro_now: "now", ro_h: "%1 h ago", ro_d: "%1 d ago", ro_only: "Show only %1s", ro_all: "Show all classes", ro_shown: "%1 of %2 members", ar_picnote_tip: "Rendered by Blizzard: it can lag behind the gear or show the wrong character.", st_primary: "Primary Attributes", st_defense: "Defense", st_combat: "Combat", st_ap: "Attack Power", st_sp: "Spell Power", st_parry: "Parry", st_block: "Block", st_rcrit: "Ranged crit",
       ar_craft: "Known recipes", ar_sells: "Sells for", ar_cost: "Cost", ar_profit: "Profit", ar_noprice: "no price", ar_nofr: "Recipe names are not available right now.", ar_ilvl: "Item level",
       ar_crafters: "Who can craft what", ar_crafters_load: "Loading professions… %1 / %2", ar_crafters_q: "Recipe name, e.g. Bolt of Woolen Cloth", ar_nobody: "Nobody in the guild knows a recipe with that name.",
       ar_nobody_p: "No professions found in the guild.", skill_unknown: "skill requirement unknown", ar_friends: "Friends", ar_recipes_n: "%1 rec.", ar_quests: "Quests done", ar_general: "General", st_health: "Health", st_str: "Strength", st_agi: "Agility", st_sta: "Stamina", st_int: "Intellect", st_spi: "Spirit", st_armor: "Armor", st_crit: "Crit", st_scrit: "Spell crit", st_dodge: "Dodge",
@@ -1057,13 +1094,14 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     if (!ARMORY_API) { arShow('<div class="hint">' + t("ar_off") + "</div>", ""); return; }
     var my = ++arToken;
     arShow('<div class="hint">' + t("ar_loading") + "</div>", "");
-    fetch(ARMORY_API + "/" + kind + "/" + encodeURIComponent(slug)).then(function (r) {
+    fetch(ARMORY_API + "/" + kind + "/" + encodeURIComponent(slug) + "?v=3").then(function (r) {
       if (r.status === 404) throw new Error("404");
       if (!r.ok) throw new Error("fail");
       return r.json();
     }).then(function (d) {
       if (my !== arToken) return;
       if (!arData || arData.slug !== d.slug) { arRec = 0; arOpenProf = 0; crQ = ""; }   // ny spelare/guild: högerpanelen visar yrkena igen, inget yrke utfällt
+      if (!arData || arData.slug !== d.slug) { talPlan = null; arQz = {}; }
       arData = d; arCmp = null; arCmpPick = false; arCmpErr = ""; arCmpBusy = 0;
       if (d.kind === "character") renderChar(d); else renderGuild(d);
       var vs = d.kind === "character" && arVs; arVs = "";
@@ -1197,11 +1235,14 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   function rankName(faction, r) { var a = PVP_RANKS[faction === "ALLIANCE" ? "ALLIANCE" : "HORDE"]; return r > 0 && a[r] ? a[r] : ""; }
   function rankBadge(faction, r) { var n = rankName(faction, r); return n ? '<span class="rank r' + r + '" title="' + t("pvp_rank_n", r) + '"><b>' + r + "</b> " + esc(n) + "</span>" : ""; }
   // Fällbara rader i Armory (Joakim 2026-11-17: "klickar man på ... så fälls rutan ut"); stängda från början.
-  var arOpen = { rep: false, prof: false, stats: false, mounts: false };
+  var arOpen = { talents: false, quests: false, ach: false, rep: false, prof: false, stats: false, mounts: false };
+  // Ikon per rad (spelets ikoner hos Blizzard), så raderna blir en kolumn att läsa uppifrån och ner.
+  var AR_ROW_IC = { talents: "ability_marksmanship", quests: "inv_misc_note_01", ach: "achievement_general", rep: "inv_misc_tabardpvp_01", prof: "trade_blacksmithing", stats: "inv_misc_book_11", mounts: "ability_mount_blackdirewolf" };
   function pct(v) { return v == null ? "–" : (Math.round(v * 100) / 100) + "%"; }
-  function arToggle(key, title, n) {
-    var open = arOpen[key];
-    return '<button class="prof rephd" type="button" data-artoggle="' + key + '" aria-expanded="' + open + '"><span class="pn"><span>' + title + (n != null ? " (" + n + ")" : "") + '</span></span><span class="chev">' + (open ? "▾" : "▸") + "</span></button>";
+  function arToggle(key, title, n, sub) {
+    var open = arOpen[key], ic = AR_ROW_IC[key];
+    return '<button class="prof rephd arow' + (open ? " open" : "") + '" type="button" data-artoggle="' + key + '" aria-expanded="' + open + '">' + (ic ? '<img class="ci" src="' + RICON + ic + '.jpg" alt="" loading="lazy">' : "") +
+      '<span class="pn"><span>' + title + (n != null ? " (" + n + ")" : "") + "</span>" + (sub ? "<small>" + sub + "</small>" : "") + '</span><span class="chev">' + (open ? "▾" : "▸") + "</span></button>";
   }
   // Siffrorna till höger om dockan, som spelets karaktärsfönster: rubrikband och rader, grönt när buffat över grundvärdet.
   function statsPanel(d) {
@@ -1254,7 +1295,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     if (slug === arData.slug) { arCmpErr = t("cmp_same"); arRedraw(); return; }
     var my = ++arCmpBusy, a = arData;
     arCmpErr = ""; arRedraw();
-    fetch(ARMORY_API + "/char/" + encodeURIComponent(slug)).then(function (r) {
+    fetch(ARMORY_API + "/char/" + encodeURIComponent(slug) + "?v=3").then(function (r) {
       if (r.status === 404) throw new Error("404");
       if (!r.ok) throw new Error("fail");
       return r.json();
@@ -1341,6 +1382,144 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       '<div class="note">' + t("cmp_note") + "</div>";
     arShow(h, right);
   }
+  // Pågående quests (Joakim 2026-11-17): zonerna som rader, klick fäller ut zonens quests. Färgen som i questloggen:
+  // questens level mot karaktärens (röd ≥ +5, orange +3–4, gul ±2, grön, grå = ger ingen XP). Level ur quests.json.
+  var arQz = {};
+  function qDiff(q, pl) {
+    var d = q - pl;
+    if (d >= 5) return "qd-red";
+    if (d >= 3) return "qd-orange";
+    if (d >= -2) return "qd-yellow";
+    var gray = pl <= 5 ? 0 : pl <= 39 ? pl - 5 - Math.floor(pl / 10) : pl - 1 - Math.floor(pl / 5);
+    return q > gray ? "qd-green" : "qd-gray";
+  }
+  function questsActiveSection(d) {
+    var qa = d.questsActive || [];
+    var zones = {}, order = [];
+    if (QU) qa.forEach(function (x) {
+      var q = QU.quests[x[0]], z = q ? QU.areas[q[1]] || "?" : t("qa_other");
+      if (!zones[z]) { zones[z] = []; order.push(z); }
+      zones[z].push({ id: x[0], name: q ? q[0] : x[1], lvl: q ? q[2] : 0, est: q ? q[4] : 0, elite: q ? q[6] : 0, known: !!q });
+    });
+    var h = arToggle("quests", t("ar_qa"), qa.length, QU && order.length ? t("qa_zones", order.length) : null);
+    if (!arOpen.quests) return h;
+    if (!qa.length) return h + '<div class="note">' + t("qa_none") + "</div>";
+    if (!QU) { loadQuests().then(function () { arRedraw(); }).catch(function () {}); return h + '<div class="note">' + t("ar_loading") + "</div>"; }
+    var avg = function (z) { var l = zones[z].filter(function (q) { return q.lvl; }); return l.length ? l.reduce(function (s2, q) { return s2 + q.lvl; }, 0) / l.length : 99; };
+    order.sort(function (a, b) { return avg(a) - avg(b) || a.localeCompare(b); });
+    return h + '<div class="qalist">' + order.map(function (z) {
+      var open = !!arQz[z], list = zones[z].slice().sort(function (a, b) { return a.lvl - b.lvl || a.name.localeCompare(b.name); });
+      return '<button class="qaz' + (open ? " open" : "") + '" type="button" data-arqz="' + esc(z) + '" aria-expanded="' + open + '"><span class="chev">' + (open ? "▾" : "▸") + "</span><b>" + esc(z) + "</b><span>" + list.length + "</span></button>" +
+        (open ? '<div class="qaq">' + list.map(function (q) {
+          return '<a href="#quest=' + q.id + '" data-goquest="' + q.id + '" class="' + (q.lvl ? qDiff(q.lvl, d.level) : "qd-yellow") + '"><span class="ql">' + (q.lvl ? "[" + q.lvl + (q.elite ? "+" : "") + "]" : "[?]") + "</span> " + esc(q.name) + (q.est ? ' <small class="dim" title="' + t("qa_est") + '">~</small>' : "") + "</a>";
+        }).join("") + "</div>" : "");
+    }).join("") + '<div class="note">' + t("qa_note") + "</div></div>";
+  }
+  // Achievements: de klara, per kategori, med spelets ikon, beskrivning, poäng och datum.
+  function achSection(d) {
+    var l = d.achievementList || [];
+    var h = arToggle("ach", t("ar_ach"), d.achTotal != null ? d.achTotal : l.length, d.achPoints ? t("ach_pts", num(d.achPoints)) : null);
+    if (!arOpen.ach) return h;
+    if (!l.length) return h + '<div class="note">' + t("ach_none") + "</div>";
+    var cats = {}, order = [];
+    l.slice().sort(function (a, b) { return b.t - a.t; }).forEach(function (a) { var c = a.cat || "–"; if (!cats[c]) { cats[c] = []; order.push(c); } cats[c].push(a); });
+    return h + '<div class="achlist">' + order.map(function (c) {
+      return '<div class="achcat">' + esc(c) + "</div>" + cats[c].map(function (a) {
+        var dt = new Date(a.t);
+        return '<div class="ach">' + (a.icon ? '<img src="https://render.worldofwarcraft.com/forever-eu/icons/56/' + a.icon + '.jpg" alt="" loading="lazy">' : '<span class="noimg"></span>') +
+          "<div><b>" + esc(a.name) + "</b>" + (a.desc ? "<small>" + esc(a.desc) + "</small>" : "") + '</div><div class="achr">' + (a.pts ? '<span class="achp">' + a.pts + "</span>" : "") + "<small>" + dt.getDate() + "/" + (dt.getMonth() + 1) + " " + dt.getFullYear() + "</small></div></div>";
+      }).join("");
+    }).join("") + "</div>";
+  }
+  // Talanger (Joakim 2026-11-17): tre träd bredvid varandra som i spelet (talents.json ur Blizzards talent-tree:
+  // rad, kolumn, rangtexter, krav). Ikoner ur spelet (addonets SpellIcons.lua) när de finns, annars ett frågetecken.
+  // Planeraren: 51 poäng (level 10–60), rad n kräver 5 × (n − 1) poäng i trädet, en pil kräver full rang i talangen
+  // ovanför. Vänsterklick lägger, högerklick (eller shift-klick) tar bort. Sparas per klass i webbläsaren.
+  var TAL = null, talPromise = null, TAL_MAX = 51, TAL_KEY = "whippit-ah-talplan-";
+  var talPlan = null;   // { slug, cls, ranks: { talangId: rang } } när planeraren är öppen för spelaren
+  function loadTal() {
+    if (!talPromise) talPromise = fetch(DATA_BASE + "talents.json").then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }).then(function (j) { TAL = j; return j; });
+    return talPromise;
+  }
+  function talClass(name) { var out = null; if (TAL) Object.keys(TAL.classes).forEach(function (k) { if (TAL.classes[k].name === name) out = { id: k, c: TAL.classes[k] }; }); return out; }
+  function talHave(d) { var have = {}; (d.talents || []).forEach(function (sp) { sp.list.forEach(function (x) { have[x[0]] = x[1]; }); }); return have; }
+  function talSpent(tr, ranks, belowRow) { var n = 0; tr.nodes.forEach(function (x) { if (belowRow == null || x.row < belowRow) n += ranks[x.id] || 0; }); return n; }
+  function talTotal(c, ranks) { var n = 0; c.trees.forEach(function (tr) { n += talSpent(tr, ranks); }); return n; }
+  function talById(c, id) { var out = null; c.trees.forEach(function (tr, ti) { tr.nodes.forEach(function (x) { if (x.id === id) out = { n: x, tr: tr, ti: ti }; }); }); return out; }
+  function talOpenFor(tr, n, ranks) {   // får en poäng läggas här (utöver rangtaket)?
+    if (talSpent(tr, ranks) < (n.row - 1) * 5) return false;
+    return n.req.every(function (rid) { var r = null; tr.nodes.forEach(function (x) { if (x.id === rid) r = x; }); return !r || (ranks[rid] || 0) >= r.max; });
+  }
+  function talCanRemove(c, id, ranks) {   // tas en poäng bort: håller resten av trädet?
+    var f = talById(c, id); if (!f || !(ranks[id] > 0)) return false;
+    var r2 = {}; Object.keys(ranks).forEach(function (k) { r2[k] = ranks[k]; }); r2[id]--;
+    return f.tr.nodes.every(function (x) {
+      if (!(r2[x.id] > 0)) return true;
+      if (talSpent(f.tr, r2, x.row) < (x.row - 1) * 5) return false;
+      return x.req.every(function (rid) { var r = null; f.tr.nodes.forEach(function (y) { if (y.id === rid) r = y; }); return !r || (r2[rid] || 0) >= r.max; });
+    });
+  }
+  function talSummary(d) { return (d.talents || []).map(function (sp) { return sp.list.reduce(function (s2, x) { return s2 + x[1]; }, 0); }).join(" / "); }
+  function talentsRow(d) { return arToggle("talents", t("ar_tal"), null, (d.talents || []).length ? talSummary(d) : null); }
+  function talTreeHtml(tr, ti, ranks, plan) {
+    var CW = 54, RH = 54, spent = talSpent(tr, ranks), pos = {};
+    tr.nodes.forEach(function (n) { pos[n.id] = n; });
+    var arrows = "";
+    tr.nodes.forEach(function (n) {
+      n.req.forEach(function (rid) {
+        var r = pos[rid]; if (!r) return;
+        var ok = (ranks[rid] || 0) >= r.max, cls = "tarw" + (ok ? " on" : "");
+        if (r.col === n.col) arrows += '<i class="' + cls + ' v" style="left:' + (r.col * CW + 21) + "px;top:" + ((r.row - 1) * RH + 42) + "px;height:" + ((n.row - r.row) * RH - 44) + 'px"></i>';
+        else if (r.row === n.row) arrows += '<i class="' + cls + ' h" style="left:' + (Math.min(r.col, n.col) * CW + 42) + "px;top:" + ((r.row - 1) * RH + 20) + "px;width:" + (Math.abs(n.col - r.col) * CW - 44) + 'px"></i>';
+        else arrows += '<i class="' + cls + ' h" style="left:' + (Math.min(r.col, n.col) * CW + 42) + "px;top:" + ((r.row - 1) * RH + 20) + "px;width:" + (Math.abs(n.col - r.col) * CW - 21) + 'px"></i>' +
+          '<i class="' + cls + ' v" style="left:' + (n.col * CW + 21) + "px;top:" + ((r.row - 1) * RH + 22) + "px;height:" + ((n.row - r.row) * RH - 24) + 'px"></i>';
+      });
+    });
+    var nodes = tr.nodes.map(function (n) {
+      var rk = ranks[n.id] || 0, open = talOpenFor(tr, n, ranks), st = rk >= n.max ? "max" : rk > 0 ? "part" : open ? "open" : "lock";
+      var src = n.icon ? "https://render.worldofwarcraft.com/forever-eu/icons/56/" + n.icon + ".jpg" : RICON + "inv_misc_questionmark.jpg";
+      return '<button type="button" class="tn ' + st + (plan ? " pl" : "") + '" data-tal="' + n.id + '" style="left:' + n.col * CW + "px;top:" + (n.row - 1) * RH + 'px"><img src="' + src + '" alt="" loading="lazy"><b>' + rk + "/" + n.max + "</b></button>";
+    }).join("");
+    return '<div class="ttree"><div class="tth"><b>' + esc(tr.spec) + "</b><span>" + spent + '</span></div><div class="ttg" style="width:' + (4 * CW - 8) + "px;height:" + (7 * RH - 8) + 'px">' + arrows + nodes + "</div></div>";
+  }
+  function talPanel(d) {
+    if (!arOpen.talents) return "";
+    if (!TAL) { loadTal().then(function () { arRedraw(); }).catch(function () {}); return '<div class="talpanel"><div class="note">' + t("ar_loading") + "</div></div>"; }
+    var tc = talClass(d.cls);
+    if (!tc) return '<div class="talpanel"><div class="note">' + t("tal_nocls") + "</div></div>";
+    var plan = !!(talPlan && talPlan.slug === d.slug && talPlan.cls === tc.id), have = talHave(d), ranks = plan ? talPlan.ranks : have;
+    var used = talTotal(tc.c, ranks), noIc = tc.c.trees.some(function (tr) { return tr.nodes.some(function (n) { return !n.icon; }); });
+    var head = '<div class="talhd"><div class="taltabs"><button type="button" class="tab2" data-talmode="char" aria-pressed="' + !plan + '">' + t("tal_char", esc(d.name)) + '</button><button type="button" class="tab2" data-talmode="plan" aria-pressed="' + plan + '">' + t("tal_plan") + "</button></div>" +
+      '<div class="talinfo">' + (plan ? "<span>" + t("tal_left", TAL_MAX - used) + "</span><span>" + t("tal_lvl", used ? used + 9 : 10) + '</span><button type="button" class="lnk" data-talreset="1">' + t("tal_reset") + '</button><button type="button" class="lnk" data-talcopy="1">' + t("tal_copy", esc(d.name)) + "</button>"
+        : "<span>" + t("tal_used", used) + "</span>") + "</div></div>";
+    return '<div class="talpanel cls-' + esc((d.cls || "").toLowerCase()) + '">' + head + '<div class="ttrees">' + tc.c.trees.map(function (tr, ti) { return talTreeHtml(tr, ti, ranks, plan); }).join("") + "</div>" +
+      '<div class="note">' + (plan ? t("tal_hint") + " " : "") + (noIc ? t("tal_noicons") : "") + "</div></div>";
+  }
+  function talSave(cid, ranks) { try { localStorage.setItem(TAL_KEY + cid, JSON.stringify(ranks)); } catch (e) {} }
+  function talTip(id) {
+    var d = arData; if (!d || !TAL) return "";
+    var tc = talClass(d.cls); if (!tc) return "";
+    var f = talById(tc.c, id); if (!f) return "";
+    var plan = !!(talPlan && talPlan.slug === d.slug), ranks = plan ? talPlan.ranks : talHave(d), rk = ranks[id] || 0, n = f.n;
+    var h = '<div class="ln"><b class="q1">' + esc(n.name) + '</b></div><div class="ln"><span>' + t("tal_rank", rk, n.max) + "</span></div>";
+    if (n.cast) h += '<div class="ln"><span>' + esc(n.cast) + "</span></div>";
+    var need = (n.row - 1) * 5, spent = talSpent(f.tr, ranks);
+    if (spent < need) h += '<div class="ln"><span class="neg">' + t("tal_req_pts", need, esc(f.tr.spec)) + "</span></div>";
+    n.req.forEach(function (rid) { var r = talById(tc.c, rid); if (r && (ranks[rid] || 0) < r.n.max) h += '<div class="ln"><span class="neg">' + t("tal_req", r.n.max, esc(r.n.name)) + "</span></div>"; });
+    h += '<div class="ln"><span class="tipy">' + esc(n.desc[Math.max(0, rk - 1)] || "") + "</span></div>";
+    if (rk > 0 && rk < n.max) h += '<div class="ln"><span>' + t("tal_next") + '</span></div><div class="ln"><span class="tipy">' + esc(n.desc[rk] || "") + "</span></div>";
+    if (plan) h += '<div class="ln"><span class="dim">' + t("tal_hint") + "</span></div>";
+    return h;
+  }
+  function talClick(id, remove) {
+    var d = arData; if (!d || !TAL || !talPlan || talPlan.slug !== d.slug) return;
+    var tc = talClass(d.cls), f = tc && talById(tc.c, id); if (!f) return;
+    var r = talPlan.ranks, rk = r[id] || 0;
+    if (remove) { if (talCanRemove(tc.c, id, r)) { r[id] = rk - 1; if (!r[id]) delete r[id]; } else return; }
+    else { if (rk >= f.n.max || talTotal(tc.c, r) >= TAL_MAX || !talOpenFor(f.tr, f.n, r)) return; r[id] = rk + 1; }
+    talSave(tc.id, r); arRedraw();
+    var tip = talTip(id); if (tip && tipBox && !tipBox.hidden) { tipBox.innerHTML = tip; placeTip(); }
+  }
   function renderChar(d) {
     var pic = d.media && (d.media["main-raw"] || d.media["main-sd-raw"]), fr = isFriend(d.slug);
     // Rubriken (Joakim 2026-11-17): guilden överst, ★ till vänster om namnet, level inom parentes efter, ras och klass under.
@@ -1359,12 +1538,12 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       '<div class="bot">' + SLOT_B.map(function (sl) { return slotHtml(d, sl); }).join("") + "</div></div>" +
       '<div class="col">' + SLOT_R.map(function (sl) { return slotHtml(d, sl); }).join("") + "</div></div>" +
       '<div class="picnote" title="' + t("ar_picnote_tip") + '">' + t("ar_picnote") + "</div></div>" + statsPanel(d) + "</div>" +
-      '<div class="arside">' +
+      '<div class="arside">' + talentsRow(d) + questsActiveSection(d) + achSection(d) +
       arToggle("rep", t("ar_rep"), d.reputations.length) + (arOpen.rep ? '<div class="reps">' + repsHtml(d) + "</div>" : "") +
       arToggle("prof", t("ar_prof"), profN) + (arOpen.prof ? '<div class="profsec"><h4>' + t("ar_prof") + '</h4><div class="profs">' + (d.professions.primary.map(profHtml).join("") || '<div class="note">–</div>') + "</div>" +
         "<h4>" + t("ar_prof2") + '</h4><div class="profs">' + (d.professions.secondary.map(profHtml).join("") || '<div class="note">–</div>') + "</div></div>" : "") +
       statsSection(d) + mountsSection(d) +
-      "</div></div>";
+      "</div></div>" + talPanel(d);
     var right;
     if (arRec) {
       var row = null;
@@ -2093,6 +2272,11 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
         tipBox.hidden = false; placeTip();
         return;
       }
+      var etl = e.target && e.target.closest ? e.target.closest("[data-tal]") : null;
+      if (etl) {
+        var th = talTip(+etl.dataset.tal);
+        if (th) { tipId = -1; if (!tipBox) { tipBox = document.createElement("div"); tipBox.className = "wtip"; document.body.appendChild(tipBox); } tipBox.innerHTML = th; tipBox.hidden = false; placeTip(); return; }
+      }
       var ea = e.target && e.target.closest ? e.target.closest("[data-artip]") : null;
       var ed = e.target && e.target.closest ? e.target.closest("[data-dgtip]") : null;
       if (ed && DG && DG.items[+ed.getAttribute("data-dgtip")]) {   // dungeon-drop som inte finns på AH: tooltip ur 1.12-databasen
@@ -2601,6 +2785,23 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       try { history.replaceState(null, "", "#player=" + arData.slug + "&vs=" + arCmp.b.slug); } catch (e6) {}
       renderCompare(arData, arCmp.b); drawCats(); return;
     }
+    var qz = e.target.closest("[data-arqz]");
+    if (qz && arData && arData.kind === "character") { arQz[qz.dataset.arqz] = !arQz[qz.dataset.arqz]; arRedraw(); return; }
+    var gq = e.target.closest("[data-goquest]");
+    if (gq) { e.preventDefault(); var gqid = +gq.dataset.goquest; selQuest = gqid; if (mode !== "qu") setMode("qu"); else selectQuest(gqid, true); showTab("item"); return; }
+    var tm = e.target.closest("[data-talmode]");
+    if (tm && arData && arData.kind === "character") {
+      if (tm.dataset.talmode === "plan") {
+        var tcm = talClass(arData.cls), saved = null;
+        try { saved = tcm ? JSON.parse(localStorage.getItem(TAL_KEY + tcm.id) || "null") : null; } catch (e7) { saved = null; }
+        if (tcm) talPlan = { slug: arData.slug, cls: tcm.id, ranks: saved && typeof saved === "object" ? saved : talHave(arData) };
+      } else talPlan = null;
+      arRedraw(); return;
+    }
+    if (e.target.closest("[data-talreset]") && talPlan) { talPlan.ranks = {}; talSave(talPlan.cls, talPlan.ranks); arRedraw(); return; }
+    if (e.target.closest("[data-talcopy]") && talPlan && arData) { talPlan.ranks = talHave(arData); talSave(talPlan.cls, talPlan.ranks); arRedraw(); return; }
+    var tnb = e.target.closest("[data-tal]");
+    if (tnb) { talClick(+tnb.dataset.tal, e.shiftKey); return; }
     var tg = e.target.closest("[data-artoggle]");
     if (tg && arData && arData.kind === "character") { arOpen[tg.dataset.artoggle] = !arOpen[tg.dataset.artoggle]; arRedraw(); return; }
     var ab = e.target.closest("[data-arback]");
@@ -2643,6 +2844,10 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     }
   });
   $("tabItem").addEventListener("click", function () { showTab("item"); });
+  document.addEventListener("contextmenu", function (e) {
+    var tnb = e.target.closest && e.target.closest("[data-tal]");
+    if (tnb && talPlan) { e.preventDefault(); talClick(+tnb.dataset.tal, true); }
+  });
   $("tabWatch").addEventListener("click", function () { showTab("watch"); });
   document.addEventListener("keydown", function (e) {
     if (e.key !== "Enter" && e.key !== " ") return;
