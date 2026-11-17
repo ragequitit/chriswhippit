@@ -146,6 +146,23 @@ h1 { font-family: var(--display); font-weight: 500; font-size: 36px; margin: 0; 
 .prof.rephd.arow { min-height: 46px; box-sizing: border-box; padding: 6px 10px; }
 .prof.rephd.arow .ci { width: 32px; height: 32px; border: 1px solid #000; box-shadow: 0 0 0 1px var(--bronze); }
 .prof.rephd.arow .pn small { font-family: var(--body); text-transform: none; letter-spacing: 0; }
+#list.hu th.nm { width: 34%; } #list.hu td.nm { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 0; }
+#list.hu .hic { width: 22px; height: 22px; border-radius: 3px; vertical-align: middle; margin-right: 7px; border: 1px solid #000; }
+.hurare { color: #c0c8d0; text-shadow: 0 0 6px rgba(200, 210, 220, .8); }
+.hurole { display: inline-block; padding: 1px 7px; border-radius: 9px; font-size: 11.5px; font-weight: 600; border: 1px solid; }
+.hurole.r-tank { color: #8fb8ff; border-color: rgba(143, 184, 255, .45); } .hurole.r-dps { color: #ff8a7a; border-color: rgba(255, 138, 122, .45); } .hurole.r-allround { color: #d8c48a; border-color: rgba(216, 196, 138, .45); }
+.hufil { display: grid; gap: 8px; padding: 4px 6px 8px; }
+.hulvl { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 13px; color: var(--gold); }
+.hulvl input { width: 70px; height: 28px; padding: 0 8px; border-radius: 4px; border: 1px solid var(--line); background: #0b0908; color: var(--fg); font: inherit; }
+.huchips { display: flex; flex-wrap: wrap; gap: 4px; }
+.huchip { all: unset; cursor: pointer; padding: 3px 9px; border: 1px solid var(--line); border-radius: 12px; font-size: 12px; color: var(--grey); }
+.huchip:hover { color: var(--fg); } .huchip.on { color: var(--gold); border-color: var(--edge); background: var(--sel); } .huchip.rare { justify-self: start; }
+.huab { display: flex; flex-wrap: wrap; gap: 5px; } .huab span { padding: 3px 9px; border-radius: 4px; background: var(--inset); border: 1px solid var(--line); font-size: 12.5px; } .huab span.u { color: var(--grey); }
+.huwhere { margin: 0; padding-left: 18px; display: grid; gap: 3px; font-size: 13.5px; }
+.hufor { display: grid; gap: 3px; margin: 2px 0 6px; }
+.hufr { display: flex; align-items: center; gap: 9px; padding: 5px 8px; border-radius: 4px; text-decoration: none; color: var(--fg); } .hufr:hover { background: var(--hover); }
+.hufr img { width: 28px; height: 28px; border-radius: 4px; border: 1px solid #000; flex: none; } .hufr span { display: grid; min-width: 0; flex: 1 1 auto; } .hufr small { color: var(--grey); font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.hufr em { font-style: normal; font-size: 11px; color: #40c040; border: 1px solid rgba(64, 192, 64, .5); border-radius: 9px; padding: 0 6px; flex: none; }
 .qalist { display: grid; gap: 2px; margin: 2px 0 6px; }
 .qaz { all: unset; cursor: pointer; display: flex; align-items: center; gap: 8px; padding: 5px 8px; border-radius: 4px; font-size: 13.5px; }
 .qaz:hover { background: var(--hover); } .qaz b { color: var(--gold); font-weight: 600; flex: 1 1 auto; } .qaz span:last-child { color: var(--grey); font-size: 12.5px; } .qaz .chev { color: var(--grey); width: 10px; }
@@ -665,6 +682,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       <button type="button" id="modeAr" aria-pressed="false" data-t-title="mode_ar_tip"><img class="mi" alt="" data-mi="ar"><span data-t="mode_ar">Armory</span></button>
       <button type="button" id="modeQu" aria-pressed="false" data-t-title="mode_qu_tip"><img class="mi" alt="" data-mi="qu" onerror="this.style.visibility='hidden'"><span data-t="mode_qu">Quests</span></button>
       <button type="button" id="modeDg" aria-pressed="false" data-t-title="mode_dg_tip"><img class="mi" alt="" data-mi="dg" onerror="this.style.visibility='hidden'"><span data-t="mode_dg">Dungeons</span></button>
+      <button type="button" id="modeHu" aria-pressed="false" data-t-title="mode_hu_tip"><img class="mi" alt="" data-mi="hu" onerror="this.style.visibility='hidden'"><span data-t="mode_hu">Hunter pets</span></button>
     </div>
     <span class="count" id="count"></span>
   </div>
@@ -708,7 +726,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   // mot vanligt, dygnshandel och bästa tid. Trading visar bara stapelbart med minst TR_MIN ute (gear och tunna varor svänger
   // i guld, där säger procent ingenting). Sparas i webbläsaren.
   var MKEY = "whippit-ah-mode", TR_MIN = 20;
-  var mode = (function () { try { var m = localStorage.getItem(MKEY); return m === "tr" || m === "cr" || m === "ar" || m === "qu" || m === "dg" ? m : "ah"; } catch (e) { return "ah"; } })();
+  var mode = (function () { try { var m = localStorage.getItem(MKEY); return m === "tr" || m === "cr" || m === "ar" || m === "qu" || m === "dg" || m === "hu" ? m : "ah"; } catch (e) { return "ah"; } })();
   if (mode === "tr") { sortKey = "dip"; sortDir = -1; }
   var BT_MIN = 3;   // bästa tid räknas som tydlig vid minst 3 % vinst efter AH:s andel och plus minst 6 av 10 dagar
   function btClear(r) { return !!(r.bt && r.bt[2] >= BT_MIN && r.bt[3] * 10 >= r.bt[4] * 6); }
@@ -833,6 +851,15 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       col_lvl: "Level", col_lvl_tip: "Requires level", dip_tip: "%1% below the usual price these days (%2)", trend: "Last week",
       rise_tip: "%1% above the usual price these days (%2)", col_pct: "Vs usual", col_pct_s: "Now", col_pct_tip: "Market price now versus the usual market price these days. Red = down, green = up.",
       mode_qu: "Quests", mode_qu_tip: "Every quest in WoW Forever by level and zone, with rewards priced on the auction house", search_qu: "Search quest or zone, e.g. Kobold Camp Cleanup",
+      mode_hu: "Hunter pets", mode_hu_tip: "Every tameable beast: level, family, role, attack speed, abilities and where it lives.", search_hu: "Search beast, family or zone",
+      hu_lvl: "Your level", hu_lvl_tip: "You can tame beasts up to your own level.", hu_any: "Any role", hu_r_tank: "Tank", hu_r_dps: "DPS", hu_r_allround: "Allround", hu_rare: "Rares only", hu_fams: "Families", hu_all: "All families",
+      hu_col_name: "Beast", hu_col_fam: "Family", hu_col_role: "Role", hu_col_speed: "Speed", hu_col_speed_tip: "Attack speed in seconds. A tamed pet keeps it – lower is faster.", hu_col_zone: "Where",
+      hu_zone_wait: "zones soon", hu_zone_wait_long: "Zones are being read from the game and show up soon.", hu_nowhere: "No known spawn in the open world.", hu_count: "%1 beasts", hu_empty: "No beast matches.",
+      hu_hp: "Health", hu_dmg: "Damage", hu_armor: "Armor", hu_diet: "Diet", hu_learn: "Abilities the family can learn", hu_uses: "Uses in the wild", hu_where: "Where it lives", hu_inst: "dungeon", hu_spawns: "%1 spawns in the database",
+      hu_speed_note: "A tamed pet keeps its attack speed: 1.0–1.3 is fast, 2.0 is normal. Health, damage and armor come from the family.",
+      hu_src: "Classic database (cmangos, GPL). Zones and map positions from the game client via WhippitPanel.",
+      hu_for: "Pets for you", hu_for_sub: "tameable around level %1", hu_near: "near you", hu_near_tip: "In a zone where this hunter has quests right now",
+      hu_for_note: "Up to the hunter's level, rares and fast attackers first. Blizzard doesn't share where a character is, so the zones of the quests in progress count as 'near'.",
       mode_dg: "Dungeons", mode_dg_tip: "Dungeons and raids by level: bosses in order and what they drop, priced on the auction house", search_dg: "Search loot in every dungeon, e.g. Cape of the Brotherhood",
       qu_h: "Level", qu_zones: "Zones", qu_g_dungeons: "Dungeons & raids", qu_g_other: "Other (1–2 quests)", qu_after: "Complete first", qu_during: "While on", qu_skill: "Profession", qu_class: "Class", qu_reqs: "Requirements", qu_chain: "Quest chain (%1)", qu_also: "Also leads to:", qu_lv: "Level %1–%2", qu_unknown: "New in Forever (level unknown)", qu_count: "%1 quests", qu_empty: "No quest matches.", qu_fail: "Could not be loaded.",
       qu_check: "Check a player", qu_nobody: "— nobody —", qu_check_tip: "Look up a player in Armory first, then pick them here to tick off their done quests.", qu_hide: "Hide done (%1)",
@@ -1237,9 +1264,9 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   function rankName(faction, r) { var a = PVP_RANKS[faction === "ALLIANCE" ? "ALLIANCE" : "HORDE"]; return r > 0 && a[r] ? a[r] : ""; }
   function rankBadge(faction, r) { var n = rankName(faction, r); return n ? '<span class="rank r' + r + '" title="' + t("pvp_rank_n", r) + '"><b>' + r + "</b> " + esc(n) + "</span>" : ""; }
   // Fällbara rader i Armory (Joakim 2026-11-17: "klickar man på ... så fälls rutan ut"); stängda från början.
-  var arOpen = { talents: false, quests: false, ach: false, rep: false, prof: false, stats: false, mounts: false };
+  var arOpen = { hpets: false, talents: false, quests: false, ach: false, rep: false, prof: false, stats: false, mounts: false };
   // Ikon per rad (spelets ikoner hos Blizzard), så raderna blir en kolumn att läsa uppifrån och ner.
-  var AR_ROW_IC = { talents: "ability_marksmanship", quests: "inv_misc_note_01", ach: "achievement_general", rep: "inv_misc_tabardpvp_01", prof: "trade_blacksmithing", stats: "inv_misc_book_11", mounts: "ability_mount_blackdirewolf" };
+  var AR_ROW_IC = { hpets: "ability_hunter_beasttaming", talents: "ability_marksmanship", quests: "inv_misc_note_01", ach: "achievement_general", rep: "inv_misc_tabardpvp_01", prof: "trade_blacksmithing", stats: "inv_misc_book_11", mounts: "ability_mount_blackdirewolf" };
   function pct(v) { return v == null ? "–" : (Math.round(v * 100) / 100) + "%"; }
   function arToggle(key, title, n, sub) {
     var open = arOpen[key], ic = AR_ROW_IC[key];
@@ -1540,7 +1567,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       '<div class="bot">' + SLOT_B.map(function (sl) { return slotHtml(d, sl); }).join("") + "</div></div>" +
       '<div class="col">' + SLOT_R.map(function (sl) { return slotHtml(d, sl); }).join("") + "</div></div>" +
       '<div class="picnote" title="' + t("ar_picnote_tip") + '">' + t("ar_picnote") + "</div></div>" + statsPanel(d) + "</div>" +
-      '<div class="arside">' + talentsRow(d) + questsActiveSection(d) + achSection(d) +
+      '<div class="arside">' + huArmorySection(d) + talentsRow(d) + questsActiveSection(d) + achSection(d) +
       arToggle("rep", t("ar_rep"), d.reputations.length) + (arOpen.rep ? '<div class="reps">' + repsHtml(d) + "</div>" : "") +
       arToggle("prof", t("ar_prof"), profN) + (arOpen.prof ? '<div class="profsec"><h4>' + t("ar_prof") + '</h4><div class="profs">' + (d.professions.primary.map(profHtml).join("") || '<div class="note">–</div>') + "</div>" +
         "<h4>" + t("ar_prof2") + '</h4><div class="profs">' + (d.professions.secondary.map(profHtml).join("") || '<div class="note">–</div>') + "</div></div>" : "") +
@@ -2048,6 +2075,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   function drawCats() {
     if (mode === "qu") { $("cats").innerHTML = QU ? quCats() : ""; $("cats").hidden = false; return; }
     if (mode === "dg") { $("cats").innerHTML = DG ? dgCats() : ""; $("cats").hidden = false; return; }
+    if (mode === "hu") { $("cats").innerHTML = HU ? huCats() : ""; $("cats").hidden = false; return; }
     if (mode === "ar") {
       $("cats").innerHTML = arSection("friends", t("ar_friends"), arFriends) + arSection("recent", t("ar_recent"), arRecent);
       $("cats").hidden = false;
@@ -2153,10 +2181,11 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     drawWatch();
     var hp0 = hashParams();
     // En länk bestämmer fliken (annars den som sparats): #quest, #dungeon, #player/#guild, #recipe, #item.
-    var hm = hp0.quest ? "qu" : hp0.dungeon ? "dg" : hp0.player || hp0.guild ? "ar" : hp0.recipe ? "cr" : hp0.item ? "ah" : "";
+    var hm = hp0.beast ? "hu" : hp0.quest ? "qu" : hp0.dungeon ? "dg" : hp0.player || hp0.guild ? "ar" : hp0.recipe ? "cr" : hp0.item ? "ah" : "";
     var wantI = byId[+hp0.item];
     if (hm && !keep && mode !== hm && !(hm === "ah" && mode === "tr" && (!wantI || (!wantI.gear && wantI.qty >= TR_MIN)))) { mode = hm; drawCats(); refresh(); }   // trädet ritades för den sparade fliken
     if (mode === "qu" || hp0.quest) { mode = "qu"; if (!keep) { sortKey = "lvl"; sortDir = 1; } $("q").placeholder = t("search_qu"); quStart(+hp0.quest || (keep ? selQuest : 0)); return; }
+    if (mode === "hu" || hp0.beast) { mode = "hu"; if (!keep) { sortKey = "lvl"; sortDir = huLvl ? -1 : 1; } $("q").placeholder = t("search_hu"); huStart(+hp0.beast || (keep ? huSel : 0)); return; }
     if (mode === "dg" || hp0.dungeon) { mode = "dg"; $("q").placeholder = t("search_dg"); dgStart(+hp0.dungeon || 0); return; }
     if (mode === "ar" || hp0.player || hp0.guild) {
       mode = "ar"; $("q").placeholder = t("search_ar");
@@ -2189,6 +2218,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     if (mode === "ar") { view = []; shown = 0; draw(); return; }
     if (mode === "qu") { if (QU) quRefresh(q); else { view = []; shown = 0; } draw(); return; }
     if (mode === "dg") { if (DG) dgRefresh(q); else { view = []; shown = 0; } draw(); return; }
+    if (mode === "hu") { if (HU) huRefresh(q); else { view = []; shown = 0; } draw(); return; }
     if (mode === "cr") {
       var pid = catSel >= 0 && profList[catSel] ? profList[catSel].id : 0;
       var tier = subSel >= 1 ? TIERS[subSel - 1] : null;
@@ -2375,6 +2405,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   function rowHtml(r) {
     if (mode === "qu") return quRow(r);
     if (mode === "dg") return dgRow(r);
+    if (mode === "hu") return huRow(r);
     if (mode === "cr") {
       return '<tr tabindex="0" data-rid="' + r.rid + '"' + (r.rid === selRec ? ' aria-selected="true"' : "") + '><td class="fav"></td><td class="nm">' + recName(r) + "</td><td>" + (r.skill || DASH) +
         "</td><td>" + (r.cost ? money(r.cost) + (r.miss ? '<span class="dim" title="' + esc(t("missing_n", r.miss)) + '"> ?</span>' : "") : DASH) + "</td><td>" + (r.sell ? money(r.sell) : DASH) +
@@ -2395,6 +2426,8 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   function headHtml() {
     var cols = mode === "qu"
       ? [["name", "col_quest"], ["lvl", "col_lvl"], ["zone", "col_zone", null, "kat hide-s"], ["xp", "col_xp"], ["money", "col_money", null, "hide-s"], ["best", "col_reward", "col_reward_tip"]]
+      : mode === "hu"
+      ? [["name", "hu_col_name"], ["lvl", "col_lvl"], ["fam", "hu_col_fam", null, "kat hide-s"], ["role", "hu_col_role"], ["speed", "hu_col_speed", "hu_col_speed_tip"], ["zone", "hu_col_zone", null, "kat"]]
       : mode === "dg"
       ? [["name", "col_item"], ["ch", "col_drop", "col_drop_tip"], ["rl", "col_lvl", "col_lvl_tip"], ["min", "col_min", "col_min_tip"]]
       : mode === "cr"
@@ -2404,7 +2437,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
          ["btg", "col_best", "col_best_tip"], ["qty", "col_qty"], ["day", "col_day", "col_day_tip", "hide-s dcol"]]
       : [["name", "col_item"], ["cat", "col_cat", null, "kat hide-s"], ["lvl", "col_lvl", "col_lvl_tip", "hide-s"], ["min", "col_min", "col_min_tip"],
          ["qty", "col_qty"], ["day", "col_day", "col_day_tip", "hide-s dcol"]];
-    return '<tr><th class="fav">' + (mode === "qu" ? (quPlayer && quPlayer.set ? "✓" : "") : t("col_fav")) + "</th>" + cols.map(function (c) {
+    return '<tr><th class="fav">' + (mode === "hu" ? "" : mode === "qu" ? (quPlayer && quPlayer.set ? "✓" : "") : t("col_fav")) + "</th>" + cols.map(function (c) {
       if (mode === "dg") return "<th" + (c[3] ? ' class="' + c[3] + '"' : c[0] === "name" ? ' class="nm"' : "") + (c[2] ? ' title="' + esc(t(c[2])) + '"' : "") + ">" + (c[1] ? t(c[1]) : "") + "</th>";
       return "<th" + (c[3] ? ' class="' + c[3] + '"' : c[0] === "name" ? ' class="nm"' : "") + '><button type="button" data-k="' + c[0] + '"' + (c[2] ? ' title="' + esc(t(c[2])) + '"' : "") +
         (c[0] === sortKey ? ' aria-sort="' + (sortDir > 0 ? "ascending" : "descending") + '"' : "") + ">" + (c[1] ? t(c[1]) : "") + "</button></th>";
@@ -2418,6 +2451,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     $("modeAr").setAttribute("aria-pressed", mode === "ar" ? "true" : "false");
     $("modeQu").setAttribute("aria-pressed", mode === "qu" ? "true" : "false");
     $("modeDg").setAttribute("aria-pressed", mode === "dg" ? "true" : "false");
+    $("modeHu").setAttribute("aria-pressed", mode === "hu" ? "true" : "false");
   }
   function draw() {
     var html = "";
@@ -2425,12 +2459,12 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     $("rows").innerHTML = html;
     $("empty").hidden = view.length > 0;
     document.querySelector(".left .scroll").classList.toggle("noitems", view.length === 0);
-    $("empty").textContent = t(mode === "cr" ? "cr_empty" : mode === "qu" ? "qu_empty" : mode === "dg" ? (query || dgSel >= 0 ? "dg_empty" : "dg_pick") : "empty");
+    $("empty").textContent = t(mode === "hu" ? "hu_empty" : mode === "cr" ? "cr_empty" : mode === "qu" ? "qu_empty" : mode === "dg" ? (query || dgSel >= 0 ? "dg_empty" : "dg_pick") : "empty");
     $("more").hidden = shown >= view.length;
     $("more").textContent = t("more", num(view.length - shown));
-    $("count").textContent = t(mode === "cr" ? "cr_count" : mode === "qu" ? "qu_count" : mode === "dg" ? "dg_count" : "count", num(mode === "dg" ? view.filter(function (x) { return !x.hd && !x.sub; }).length : view.length));
+    $("count").textContent = t(mode === "hu" ? "hu_count" : mode === "cr" ? "cr_count" : mode === "qu" ? "qu_count" : mode === "dg" ? "dg_count" : "count", num(mode === "dg" ? view.filter(function (x) { return !x.hd && !x.sub; }).length : view.length));
     $("head").innerHTML = mode === "ar" ? "" : headHtml();
-    $("list").className = mode === "tr" || mode === "cr" || mode === "qu" || mode === "dg" ? mode : "";
+    $("list").className = mode === "tr" || mode === "cr" || mode === "qu" || mode === "dg" || mode === "hu" ? mode : "";
     var ar = mode === "ar";
     $("armory").hidden = !ar;
     document.querySelector(".left .scroll").hidden = ar;
@@ -2699,6 +2733,15 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       return;
     }
     var cb = e.target.closest(".cat, .catlink");
+    var hf = e.target.closest("[data-hufam]");
+    if (hf && mode === "hu") { huFam = +hf.dataset.hufam; drawCats(); refresh(); toTop(); return; }
+    var hr = e.target.closest("[data-hurole]");
+    if (hr && mode === "hu") { huRole = hr.dataset.hurole; drawCats(); refresh(); toTop(); return; }
+    if (e.target.closest("[data-hurare]") && mode === "hu") { huRare = !huRare; drawCats(); refresh(); toTop(); return; }
+    var thu = e.target.closest("tbody tr[data-hu]");
+    if (thu) { showTab("item"); huDetail(+thu.dataset.hu); return; }
+    var gb = e.target.closest("[data-gobeast]");
+    if (gb) { e.preventDefault(); huSel = +gb.dataset.gobeast; if (mode !== "hu") setMode("hu"); else huDetail(huSel); showTab("item"); return; }
     var dgb = e.target.closest("[data-dg]");
     if (dgb) { dgSel = +dgb.dataset.dg; query = ""; $("q").value = ""; drawCats(); refresh(); toTop(); dgDetail(); showTab("item"); return; }
     if (cb && cb.hasAttribute("data-ar")) { showTab("item"); arLoad(cb.dataset.ar, cb.dataset.slug); return; }   // Friends/Recent i Armory
@@ -2853,7 +2896,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   $("tabWatch").addEventListener("click", function () { showTab("watch"); });
   document.addEventListener("keydown", function (e) {
     if (e.key !== "Enter" && e.key !== " ") return;
-    if (e.target.tagName === "TR" && !e.target.dataset.id && (e.target.dataset.qid || e.target.dataset.rid || e.target.dataset.dgi || e.target.dataset.arrec)) { e.preventDefault(); e.target.click(); return; }
+    if (e.target.tagName === "TR" && !e.target.dataset.id && (e.target.dataset.qid || e.target.dataset.rid || e.target.dataset.dgi || e.target.dataset.arrec || e.target.dataset.hu)) { e.preventDefault(); e.target.click(); return; }
     if (e.target.tagName !== "TR" || !e.target.dataset.id) return;
     e.preventDefault();
     var kid = +e.target.dataset.id;
@@ -2893,6 +2936,128 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       if (want && QU.quests[want] && (!restore || view.some(function (r) { return r.qid === want; }))) { selectQuest(want, !restore); if (!restore) showTab("item"); } else if (view[0]) selectQuest(view[0].qid, false);
     }).catch(function () { $("detail").innerHTML = '<div class="note">' + t("qu_fail") + "</div>"; });
   }
+  // Hunter pets (Joakim 2026-11-17): alla tämjbara djur ur den öppna Classic-databasen (hunter.json, hamta-djurplatser.js):
+  // level, familj, roll (familjens liv/skada/rustning), attackhastighet (följer med när djuret tämjs), förmågor att lära,
+  // mat, rare/elite och var de står (zon och koordinat ur spelet via addonets NpcZones.lua). Filter: din level (du kan
+  // tämja upp till din egen), roll, bara rares, familj. Länk #beast=<id>.
+  var HU = null, huPromise = null, huSel = 0, huFam = 0, huRole = "", huRare = false, HU_LKEY = "whippit-ah-hulvl";
+  var huLvl = (function () { try { var v = +localStorage.getItem(HU_LKEY); return v > 0 && v <= 60 ? v : 0; } catch (e) { return 0; } })();
+  var HU_RANK = { 1: "Elite", 2: "Rare Elite", 3: "Boss", 4: "Rare" };
+  var HU_FAMIC = { 1: "wolf", 2: "cat", 3: "spider", 4: "bear", 5: "boar", 6: "crocolisk", 7: "vulture", 8: "crab", 9: "gorilla", 11: "raptor", 12: "tallstrider", 20: "scorpid", 21: "turtle", 24: "bat", 25: "hyena", 26: "owl", 27: "windserpent" };
+  function loadHunter() {
+    if (!huPromise) huPromise = fetch(DATA_BASE + "hunter.json").then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }).then(function (j) { HU = j; return j; });
+    return huPromise;
+  }
+  function huFamIcon(fam) { return RICON + "ability_hunter_pet_" + (HU_FAMIC[fam] || "wolf") + ".jpg"; }
+  function huIsRare(b) { return b.rank === 2 || b.rank === 4; }
+  function huOk(b, skipFam) {
+    if (huLvl && b.min > huLvl) return false;
+    if (huRole && HU.families[b.fam] && HU.families[b.fam].role !== huRole) return false;
+    if (huRare && !huIsRare(b)) return false;
+    if (!skipFam && huFam && b.fam !== huFam) return false;
+    return true;
+  }
+  function huZones(b) { return (b.zones || []).map(function (z) { return z.zone; }); }
+  function huZoneText(b) {
+    var z = huZones(b);
+    if (z.length) return z.slice(0, 2).join(", ") + (z.length > 2 ? " +" + (z.length - 2) : "");
+    if (b.inst && b.inst.length) return b.inst.map(function (x) { return x[0]; }).join(", ");
+    return HU.zonesFromGame ? "–" : t("hu_zone_wait");
+  }
+  function huCats() {
+    var cnt = {}, all = 0;
+    HU.beasts.forEach(function (b) { if (!huOk(b, true)) return; cnt[b.fam] = (cnt[b.fam] || 0) + 1; all++; });
+    var role = function (k, lbl) { return '<button type="button" class="huchip' + (huRole === k ? " on" : "") + '" data-hurole="' + k + '" aria-pressed="' + (huRole === k) + '">' + lbl + "</button>"; };
+    var h = '<div class="hufil"><label class="hulvl" title="' + t("hu_lvl_tip") + '"><span>' + t("hu_lvl") + '</span><input id="hulvl" type="number" min="1" max="60" inputmode="numeric" value="' + (huLvl || "") + '" placeholder="1–60"></label>' +
+      '<div class="huchips">' + role("", t("hu_any")) + role("tank", t("hu_r_tank")) + role("dps", t("hu_r_dps")) + role("allround", t("hu_r_allround")) + "</div>" +
+      '<button type="button" class="huchip rare' + (huRare ? " on" : "") + '" data-hurare="1" aria-pressed="' + huRare + '">◆ ' + t("hu_rare") + "</button></div>" +
+      '<div class="cath">' + t("hu_fams") + "</div>" +
+      '<button class="cat" type="button" data-hufam="0" aria-pressed="' + !huFam + '"><em class="nm">' + t("hu_all") + "</em><span>" + all + "</span></button>";
+    Object.keys(HU.families).map(Number).sort(function (a, b) { return HU.families[a].name.localeCompare(HU.families[b].name); }).forEach(function (f) {
+      if (!cnt[f]) return;
+      h += '<button class="cat" type="button" data-hufam="' + f + '" aria-pressed="' + (huFam === f) + '"><img class="ci" src="' + huFamIcon(f) + '" alt="" loading="lazy"><em class="nm">' + esc(HU.families[f].name) + "</em><span>" + cnt[f] + "</span></button>";
+    });
+    return h;
+  }
+  function huRefresh(q) {
+    view = HU.beasts.filter(function (b) {
+      if (!huOk(b)) return false;
+      if (!q) return true;
+      return b.name.toLowerCase().indexOf(q) >= 0 || b.family.toLowerCase().indexOf(q) >= 0 || huZones(b).some(function (z) { return z.toLowerCase().indexOf(q) >= 0; });
+    }).map(function (b) { return { hu: b }; });
+    var k = sortKey, dir = sortDir, role = function (b) { return (HU.families[b.fam] || {}).role || ""; };
+    view.sort(function (x, y) {
+      var a = x.hu, b = y.hu, d = 0;
+      if (k === "name") d = a.name.localeCompare(b.name);
+      else if (k === "fam") d = a.family.localeCompare(b.family);
+      else if (k === "role") d = role(a).localeCompare(role(b));
+      else if (k === "speed") d = a.speed - b.speed;
+      else if (k === "zone") d = huZoneText(a).localeCompare(huZoneText(b));
+      else d = (a.max - b.max) || (a.min - b.min);
+      return d * dir || (huIsRare(b) - huIsRare(a)) || a.name.localeCompare(b.name);
+    });
+    shown = Math.min(PAGE, view.length);
+  }
+  function huRow(r) {
+    var b = r.hu, f = HU.families[b.fam] || {}, rare = huIsRare(b);
+    return '<tr tabindex="0" data-hu="' + b.id + '"' + (b.id === huSel ? ' aria-selected="true"' : "") + '><td class="fav">' + (rare ? '<span class="hurare" title="' + HU_RANK[b.rank] + '">◆</span>' : "") + "</td>" +
+      '<td class="nm"><img class="hic" src="' + huFamIcon(b.fam) + '" alt="" loading="lazy"><span class="' + (rare ? "q3" : b.rank === 1 ? "q2" : "q1") + '">' + esc(b.name) + "</span>" + (b.rank ? ' <small class="dim">' + HU_RANK[b.rank] + "</small>" : "") + "</td>" +
+      "<td>" + b.min + (b.max > b.min ? "–" + b.max : "") + '</td><td class="kat hide-s">' + esc(b.family) + '</td><td><span class="hurole r-' + (f.role || "") + '">' + t("hu_r_" + (f.role || "allround")) + "</span></td>" +
+      "<td" + (b.speed <= 1.5 ? ' class="pos"' : "") + ">" + b.speed.toFixed(1) + '</td><td class="kat">' + esc(huZoneText(b)) + "</td></tr>";
+  }
+  function huDetail(id) {
+    var b = null; HU.beasts.forEach(function (x) { if (x.id === id) b = x; });
+    if (!b) { $("detail").innerHTML = '<div class="note">' + t("hu_empty") + "</div>"; return; }
+    huSel = id;
+    var trs = $("rows").children;
+    for (var j = 0; j < trs.length; j++) { if (+trs[j].dataset.hu === id) trs[j].setAttribute("aria-selected", "true"); else trs[j].removeAttribute("aria-selected"); }
+    try { history.replaceState(null, "", "#beast=" + id); } catch (e) {}
+    var f = HU.families[b.fam] || {}, rare = huIsRare(b), pc = function (v) { return Math.round(v * 100) + "%"; };
+    var where = (b.zones || []).map(function (z) { return "<li><b>" + esc(z.zone) + '</b> <span class="dim">' + z.pts.slice(0, 4).map(function (p2) { return p2[0] + ", " + p2[1]; }).join(" · ") + "</span></li>"; }).join("") +
+      (b.inst || []).map(function (x) { return "<li><b>" + esc(x[0]) + '</b> <span class="dim">' + t("hu_inst") + "</span></li>"; }).join("");
+    $("detail").scrollTop = 0;
+    $("detail").innerHTML = '<div class="strip"><button class="lnk" type="button" data-copyany="#beast=' + b.id + '" title="' + t("copy_link") + '">' + t("copy_link") + "</button>" +
+      '<h2 class="' + (rare ? "q3" : b.rank === 1 ? "q2" : "q1") + '"><img class="ci" src="' + huFamIcon(b.fam) + '" alt=""> ' + esc(b.name) + "</h2><small>" + esc(b.family) + " · " + t("col_lvl") + " " + b.min + (b.max > b.min ? "–" + b.max : "") + (b.rank ? " · " + HU_RANK[b.rank] : "") + "</small></div>" +
+      '<dl class="facts"><div><dt>' + t("hu_col_role") + '</dt><dd><span class="hurole r-' + (f.role || "") + '">' + t("hu_r_" + (f.role || "allround")) + "</span></dd></div>" +
+      "<div><dt>" + t("hu_col_speed") + "</dt><dd" + (b.speed <= 1.5 ? ' class="pos"' : "") + ">" + b.speed.toFixed(1) + " s</dd></div>" +
+      "<div><dt>" + t("hu_hp") + "</dt><dd>" + pc(f.hp || 1) + "</dd></div><div><dt>" + t("hu_dmg") + "</dt><dd>" + pc(f.dmg || 1) + "</dd></div><div><dt>" + t("hu_armor") + "</dt><dd>" + pc(f.armor || 1) + "</dd></div>" +
+      "<div><dt>" + t("hu_diet") + "</dt><dd>" + esc((f.diet || []).join(", ")) + "</dd></div></dl>" +
+      '<div class="note">' + t("hu_speed_note") + "</div>" +
+      "<div><h3>" + t("hu_learn") + '</h3><div class="huab">' + (f.ab || []).map(function (a) { return "<span>" + esc(a) + "</span>"; }).join("") + "</div></div>" +
+      (b.uses && b.uses.length ? "<div><h3>" + t("hu_uses") + '</h3><div class="huab">' + b.uses.map(function (a) { return '<span class="u">' + esc(a) + "</span>"; }).join("") + "</div></div>" : "") +
+      "<div><h3>" + t("hu_where") + "</h3>" + (where ? '<ul class="huwhere">' + where + "</ul>" : '<div class="note">' + t(HU.zonesFromGame ? "hu_nowhere" : "hu_zone_wait_long") + "</div>") + '<div class="dim">' + t("hu_spawns", b.spawns) + "</div></div>" +
+      '<div class="note">' + t("hu_src") + "</div>";
+  }
+  function huStart(want) {
+    $("detail").innerHTML = '<div class="note">' + t("ar_loading") + "</div>";
+    loadHunter().then(function () {
+      drawCats(); refresh(); toTop();
+      if (want && HU.beasts.some(function (b) { return b.id === want; })) { huDetail(want); showTab("item"); } else if (view[0]) huDetail(view[0].hu.id);
+    }).catch(function () { $("detail").innerHTML = '<div class="note">' + t("qu_fail") + "</div>"; });
+  }
+  // Armory: "Pets for you" för hunters – djur upp till huntens level (inom 8 levlar), rares och snabba först, helst i
+  // zonerna där huntern har pågående quests (Blizzard sparar inte var karaktären står).
+  function huForChar(d) {
+    if (!HU || d.cls !== "Hunter") return [];
+    var qz = {};
+    if (QU) (d.questsActive || []).forEach(function (x) { var q = QU.quests[x[0]]; if (q && QU.areas[q[1]]) qz[QU.areas[q[1]]] = 1; });
+    return HU.beasts.filter(function (b) { return b.min <= d.level && b.max >= d.level - 8 && !(b.inst && b.inst.length && !(b.zones || []).length); }).map(function (b) {
+      var near = huZones(b).some(function (z) { return qz[z]; });
+      return { b: b, near: near, score: (near ? 100 : 0) + (huIsRare(b) ? 30 : 0) + (2.2 - b.speed) * 20 + b.max };
+    }).sort(function (a, c) { return c.score - a.score; }).slice(0, 8);
+  }
+  function huArmorySection(d) {
+    if (d.cls !== "Hunter") return "";
+    var h = arToggle("hpets", t("hu_for"), null, t("hu_for_sub", d.level));
+    if (!arOpen.hpets) return h;
+    if (!HU) { loadHunter().then(function () { arRedraw(); }).catch(function () {}); return h + '<div class="note">' + t("ar_loading") + "</div>"; }
+    if (!QU) loadQuests().then(function () { arRedraw(); }).catch(function () {});
+    var l = huForChar(d);
+    return h + '<div class="hufor">' + l.map(function (x) {
+      var b = x.b;
+      return '<a href="#beast=' + b.id + '" data-gobeast="' + b.id + '" class="hufr"><img src="' + huFamIcon(b.fam) + '" alt=""><span><b class="' + (huIsRare(b) ? "q3" : "q1") + '">' + esc(b.name) + "</b><small>" + b.min + (b.max > b.min ? "–" + b.max : "") + " · " + esc(b.family) + " · " + b.speed.toFixed(1) + " s · " + esc(huZoneText(b)) + "</small></span>" + (x.near ? '<em title="' + t("hu_near_tip") + '">' + t("hu_near") + "</em>" : "") + "</a>";
+    }).join("") + '<div class="note">' + t("hu_for_note") + "</div></div>";
+  }
   function dgStart(wantMap) {
     $("detail").innerHTML = '<div class="note">' + t("ar_loading") + "</div>";
     Promise.all([loadDungeons(), loadXIcons()]).then(function () {
@@ -2909,9 +3074,10 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     openId = null;
     catSel = -1; subSel = -1; sub2Sel = -1;   // kategorierna och yrkena är olika listor
     query = ""; $("q").value = "";
-    $("q").placeholder = t(m === "cr" ? "search_rc" : m === "ar" ? "search_ar" : m === "qu" ? "search_qu" : m === "dg" ? "search_dg" : "search_ph");
+    $("q").placeholder = t(m === "cr" ? "search_rc" : m === "ar" ? "search_ar" : m === "qu" ? "search_qu" : m === "dg" ? "search_dg" : m === "hu" ? "search_hu" : "search_ph");
     if (m === "qu") { quStart(selQuest || 0, true); return; }
     if (m === "dg") { dgStart(0); return; }
+    if (m === "hu") { sortKey = "lvl"; sortDir = huLvl ? -1 : 1; huStart(huSel); return; }
     if (m === "ar") {
       drawCats(); refresh();
       if (arData) { if (arData.kind === "character") renderChar(arData); else renderGuild(arData); }
@@ -2937,13 +3103,14 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   });
   $("modeQu").addEventListener("click", function () { setMode("qu"); });
   $("modeDg").addEventListener("click", function () { setMode("dg"); });
+  $("modeHu").addEventListener("click", function () { setMode("hu"); });
   document.addEventListener("change", function (e) { if (e.target && e.target.id === "quPlayer") setQuPlayer(e.target.value); });
   $("head").addEventListener("click", function (e) {
     var b = e.target.closest("button");
     if (!b) return;
     var k = b.dataset.k;
     if (mode === "dg") return;   // Dungeons sorteras per boss, inte på rubrikerna
-    if (k === sortKey) sortDir = -sortDir; else { sortKey = k; sortDir = k === "name" || k === "min" || k === "cat" || k === "lvl" ? 1 : -1; }
+    if (k === sortKey) sortDir = -sortDir; else { sortKey = k; sortDir = k === "name" || k === "min" || k === "cat" || k === "lvl" || k === "speed" || k === "fam" || k === "role" || k === "zone" ? 1 : -1; }
     refresh(); toTop();
   });
 
@@ -2958,6 +3125,10 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   $("mktBtn").addEventListener("click", function () { mktOpen($("mktPop").hidden); });
   document.addEventListener("click", function (e) { if (!$("mktPop").hidden && !e.target.closest("#mkt")) mktOpen(false); });
   // Jämförelsens ruta: Enter eller knappen jämför med namnet i rutan.
+  document.addEventListener("input", function (e) {
+    if (e.target && e.target.id === "hulvl") { var v = parseInt(e.target.value, 10); huLvl = v >= 1 && v <= 60 ? v : 0; try { localStorage.setItem(HU_LKEY, String(huLvl)); } catch (e2) {} if (sortKey === "lvl") sortDir = huLvl ? -1 : 1; refresh(); }
+  });
+  document.addEventListener("change", function (e) { if (e.target && e.target.id === "hulvl" && mode === "hu") drawCats(); });
   document.addEventListener("submit", function (e) { if (e.target && e.target.matches && e.target.matches("[data-cmpform]")) { e.preventDefault(); var q = $("cmpq"); arCompare(q ? q.value : ""); } });
   document.addEventListener("keydown", function (e) { if (e.key === "Escape" && !$("mktPop").hidden) { mktOpen(false); $("mktBtn").focus(); } });
   $("mktPop").addEventListener("click", function (e) {   // panelen ligger kvar: fraktion och servertyp kan bytas i samma öppning
