@@ -190,6 +190,41 @@ td.nm, .watch td:first-child { text-align: left; white-space: nowrap; max-width:
 .arhead .sub2 { color: var(--grey); font-size: 14px; }
 .arhead .lnk { float: none; margin-left: auto; }
 .arbody { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 10px 22px; align-items: start; }
+/* Armory-spelaren (Joakim 2026-11-17): rubrik i tre rader, dockan + stats sida vid sida som spelets karaktärsfönster,
+   fällbara rader bredvid (brett) eller under (smalt). Dockan står kvar när raderna rullar, bara när de står bredvid. */
+.arhead2 { display: grid; gap: 2px; margin-bottom: 12px; }
+.arhead2 .ahtop { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 18px; }
+.arhead2 .gld { font-size: 13.5px; color: var(--gold); text-decoration: none; }
+.arhead2 .gld:hover { text-decoration: underline; }
+.arhead2 .lnk { float: none; }
+.arhead2 .ahname { display: flex; align-items: baseline; gap: 6px; }
+.arhead2 .ahname .star.fr { font-size: 20px; padding: 0 2px; margin: 0; align-self: center; }
+.arhead2 h2 { font-family: var(--display); font-weight: 500; font-size: 24px; margin: 0; }
+.arhead2 .lvl { color: var(--grey); font-size: 17px; }
+.arhead2 .ahsub { color: var(--grey); font-size: 14px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.arhead2 .hk b { color: var(--gold); }
+.arbody2 { container-type: inline-size; display: flex; flex-wrap: wrap; gap: 14px 22px; align-items: flex-start; }
+.charframe { display: flex; gap: 12px; align-items: flex-start; flex: none; }
+.charframe .doll { grid-template-columns: 40px 200px 40px; }   /* smalare bildruta så raderna får plats bredvid */
+.dollcol { display: grid; gap: 6px; justify-items: center; }
+.dollcol .picnote { max-width: 300px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 11.5px; }
+.arbody2 .arside { flex: 1 1 280px; min-width: 260px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 6px; align-content: start; }
+.arbody2 .arside .prof.rephd { margin-bottom: 0; }
+.profsec h4 { margin: 8px 0 4px; font-family: var(--display); font-weight: 500; font-size: 12.5px; letter-spacing: .04em; text-transform: uppercase; color: var(--gold); }
+@container (min-width: 800px) { .charframe { position: sticky; top: 0; } }
+.arbody2 .arside table.craft { width: 100%; font-size: 12.5px; }   /* kända recept i den smala kolumnen */
+.arbody2 .arside .craft th, .arbody2 .arside .craft td { padding-left: 4px; padding-right: 4px; }
+.arbody2 .arside .craft td.nm, .arbody2 .arside .craft th { white-space: normal; }
+.picbox .ilvl { position: absolute; top: 6px; right: 6px; display: grid; justify-items: end; line-height: 1.1; text-shadow: 0 1px 3px #000; }
+.picbox .ilvl small { color: var(--grey); font-size: 10.5px; } .picbox .ilvl b { color: var(--gold); font-size: 18px; }
+.cstats { width: 180px; border: 1px solid var(--line); border-radius: 6px; background: var(--inset); box-shadow: inset 0 1px 4px rgba(0, 0, 0, .5); padding: 4px 0 6px; font-size: 13px; }
+.cstats .csh { margin: 6px 6px 3px; padding: 3px 8px; text-align: center; font-family: var(--display); font-size: 12.5px; letter-spacing: .03em; color: var(--gold);
+  background: linear-gradient(#3a2a16, #221709); border: 1px solid var(--bronze); border-radius: 4px; }
+.cstats .csh:first-child { margin-top: 2px; }
+.cstats .csr { display: flex; justify-content: space-between; gap: 8px; padding: 1px 12px; }
+.cstats .csr span { color: var(--gold); } .cstats .csr b { font-weight: 600; color: var(--fg); }
+.cstats .csr b.up { color: #4ade4a; } .cstats .csr b.down { color: #ff5a4a; }
+@media (max-width: 600px) { .charframe { flex-wrap: wrap; justify-content: center; width: 100%; } .cstats { width: 100%; } .dollcol { width: 100%; } .charframe .doll { width: 100%; box-sizing: border-box; grid-template-columns: 40px minmax(0, 1fr) 40px; padding: 6px; gap: 4px; } .dollcol .picnote { max-width: 100%; } .arbody2 .arside { min-width: 0; flex-basis: 100%; } }
 .arside { min-width: 0; } .arside h3 { margin: 12px 0 6px; }
 .dollwrap { position: sticky; top: 0; max-height: calc(100vh - 236px); overflow-y: auto; scrollbar-width: thin; scrollbar-color: var(--edge) var(--inset); padding-right: 4px; }   /* dockan står kvar medan yrkena rullar (Joakim 2026-11-16); rullar själv om kortet är högre än rutan */
 .dollwrap h3 { margin: 12px 0 6px; width: 100%; }
@@ -710,7 +745,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       search_ar: "Player: first and last name – or a guild", ar_hint: "Type a player's first and last name (e.g. Alisee Alistar), or a guild name, and press Search.",
       ar_recent: "Recent", ar_loading: "Looking up…", ar_notfound: "No player or guild with that name. Players show up from level 10, after logging out.",
       ar_fail: "The lookup is not available right now.", ar_off: "The armory is not connected yet.",
-      ar_level: "Level %1 %2 %3", ar_guild: "Guild", ar_player: "Player", ar_picnote: "Picture rendered by Blizzard – it can lag behind the gear or show the wrong character.",
+      ar_level: "Level %1 %2 %3", ar_guild: "Guild", ar_player: "Player", ar_picnote: "Picture by Blizzard – may be out of date.", ar_picnote_tip: "Rendered by Blizzard: it can lag behind the gear or show the wrong character.", st_primary: "Primary Attributes", st_defense: "Defense", st_combat: "Combat", st_ap: "Attack Power", st_sp: "Spell Power", st_parry: "Parry", st_block: "Block", st_rcrit: "Ranged crit",
       ar_craft: "Known recipes", ar_sells: "Sells for", ar_cost: "Cost", ar_profit: "Profit", ar_noprice: "no price", ar_nofr: "Recipe names are not available right now.", ar_ilvl: "Item level",
       ar_crafters: "Who can craft what", ar_crafters_load: "Loading professions… %1 / %2", ar_crafters_q: "Recipe name, e.g. Bolt of Woolen Cloth", ar_nobody: "Nobody in the guild knows a recipe with that name.",
       ar_nobody_p: "No professions found in the guild.", skill_unknown: "skill requirement unknown", ar_friends: "Friends", ar_recipes_n: "%1 rec.", ar_quests: "Quests done", ar_general: "General", st_health: "Health", st_str: "Strength", st_agi: "Agility", st_sta: "Stamina", st_int: "Intellect", st_spi: "Spirit", st_armor: "Armor", st_crit: "Crit", st_scrit: "Spell crit", st_dodge: "Dodge",
@@ -1020,7 +1055,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       return '<button class="cat sub" type="button" data-ar="' + (r.kind === "guild" ? "guild" : "char") + '" data-slug="' + esc(r.slug) + '" aria-pressed="' + on + '"><em class="nm">' + (r.kind === "guild" ? "&lt;" + esc(r.label) + "&gt;" : esc(r.label)) + "</em>" + (key === "recent" ? "<span>" + (r.kind === "guild" ? t("ar_guild") : t("ar_player")) + "</span>" : "") + "</button>";
     }).join(""));
   }
-  var arRepOpen = false, arRec = 0;   // ryktesraden utfälld; recept som visas i högerpanelen (0 = yrkena)
+  var arRec = 0;   // recept som visas i högerpanelen (0 = yrkena)
   // Kända recept, grupperade per skill-nivå (1–74, 75–149, 150–224, 225–300; skill ur recept.json, okänd sist), i skill-
   // ordning inom gruppen, med säljpris och vinst på vald marknad. Klick → receptrutan i högerpanelen (som en vara i AH).
   function knownHtml(ids) {
@@ -1051,51 +1086,69 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     HORDE: ["", "Scout", "Grunt", "Sergeant", "Senior Sergeant", "First Sergeant", "Stone Guard", "Blood Guard", "Legionnaire", "Centurion", "Champion", "Lieutenant General", "General", "Warlord", "High Warlord"] };
   function rankName(faction, r) { var a = PVP_RANKS[faction === "ALLIANCE" ? "ALLIANCE" : "HORDE"]; return r > 0 && a[r] ? a[r] : ""; }
   function rankBadge(faction, r) { var n = rankName(faction, r); return n ? '<span class="rank r' + r + '" title="' + t("pvp_rank_n", r) + '"><b>' + r + "</b> " + esc(n) + "</span>" : ""; }
-  var STAT_PICK = ["Total kills", "Total deaths", "Quests completed", "Total Honorable Kills", "Fish caught", "Flight paths taken", "Number of times hearthed", "Food eaten", "Total 5-player dungeons entered", "Creature type killed the most"];
-  var arStatsOpen = false;
+  // Fällbara rader i Armory (Joakim 2026-11-17: "klickar man på ... så fälls rutan ut"); stängda från början.
+  var arOpen = { rep: false, prof: false, stats: false, mounts: false };
   function pct(v) { return v == null ? "–" : (Math.round(v * 100) / 100) + "%"; }
-  function cardHtml(d) {
-    var s = d.stats, h = "";
-    if (s) {
-      var row = function (lbl, v, sub) { return "<div><dt>" + lbl + "</dt><dd>" + v + (sub ? ' <small class="dim">' + sub + "</small>" : "") + "</dd></div>"; };
-      var attr = function (lbl, a) { return a ? row(lbl, num(a.eff), a.eff !== a.base ? "(" + num(a.base) + ")" : "") : ""; };
-      h += "<h3>" + t("ar_general") + '</h3><dl class="arfacts stats">' + row(t("st_health"), num(s.health)) + row(esc(s.powerType || "Power"), num(s.power)) +
-        attr(t("st_str"), s.str) + attr(t("st_agi"), s.agi) + attr(t("st_sta"), s.sta) + attr(t("st_int"), s.int) + attr(t("st_spi"), s.spi) +
-        row(t("st_armor"), num(s.armor || 0)) + row(t("st_crit"), pct(s.meleeCrit)) + row(t("st_scrit"), pct(s.spellCrit)) + (s.dodge ? row(t("st_dodge"), pct(s.dodge)) : "") + "</dl>";
-    }
-    if (d.pvp) h += "<h3>" + t("ar_pvp") + '</h3><div class="arpvp">' + (rankBadge(d.faction, d.pvp.rank) || '<span class="dim">' + t("pvp_norank") + "</span>") + '<span class="hk"><b>' + num(d.pvp.hk) + "</b> " + t("pvp_hk") + "</span></div>";
-    if (d.mountList && d.mountList.length) h += "<h3>" + t("ar_mounts") + " (" + d.mountList.length + ')</h3><div class="mounts">' + d.mountList.map(function (m) {
+  function arToggle(key, title, n) {
+    var open = arOpen[key];
+    return '<button class="prof rephd" type="button" data-artoggle="' + key + '" aria-expanded="' + open + '"><span class="pn"><span>' + title + (n != null ? " (" + n + ")" : "") + '</span></span><span class="chev">' + (open ? "▾" : "▸") + "</span></button>";
+  }
+  // Siffrorna till höger om dockan, som spelets karaktärsfönster: rubrikband och rader, grönt när buffat över grundvärdet.
+  function statsPanel(d) {
+    var s = d.stats;
+    if (!s) return "";
+    var row = function (lbl, v, cls) { return v == null || v === "" ? "" : '<div class="csr"><span>' + lbl + ':</span><b' + (cls ? ' class="' + cls + '"' : "") + ">" + v + "</b></div>"; };
+    var attr = function (lbl, a) { return a ? row(lbl, num(a.eff), a.eff > a.base ? "up" : a.eff < a.base ? "down" : "") : ""; };
+    var n = function (v) { return typeof v === "number" ? num(v) : (v && typeof v.effective === "number" ? num(v.effective) : null); };
+    var hd = function (txt) { return '<div class="csh">' + txt + "</div>"; };
+    return '<div class="cstats">' + hd(t("ar_general")) + row(t("st_health"), num(s.health)) + row(esc(s.powerType || "Power"), num(s.power)) +
+      hd(t("st_primary")) + attr(t("st_str"), s.str) + attr(t("st_agi"), s.agi) + attr(t("st_sta"), s.sta) + attr(t("st_int"), s.int) + attr(t("st_spi"), s.spi) +
+      hd(t("st_defense")) + row(t("st_armor"), num(s.armor || 0)) + (s.dodge ? row(t("st_dodge"), pct(s.dodge)) : "") + (s.parry ? row(t("st_parry"), pct(s.parry)) : "") + (s.block ? row(t("st_block"), pct(s.block)) : "") +
+      hd(t("st_combat")) + row(t("st_ap"), n(s.attackPower)) + row(t("st_crit"), pct(s.meleeCrit)) + (s.rangedCrit ? row(t("st_rcrit"), pct(s.rangedCrit)) : "") +
+      row(t("st_sp"), n(s.spellPower)) + row(t("st_scrit"), pct(s.spellCrit)) + "</div>";
+  }
+  // Statistics: gjorda quests och pets först (flyttade från under dockan), sedan spelets statistik per kategori.
+  function statsSection(d) {
+    var list = d.statList || [];
+    var n = list.length + 2;
+    var h = arToggle("stats", t("ar_stats"), n);
+    if (!arOpen.stats) return h;
+    var line = function (lbl, v) { return "<div><span>" + lbl + "</span><b>" + v + "</b></div>"; };
+    var all = {};
+    list.forEach(function (x) { (all[x[0]] = all[x[0]] || []).push(x); });
+    return h + '<div class="statlist">' + line(t("ar_quests"), num((d.quests || []).length)) + line(t("ar_pets"), num(d.pets || 0)) +
+      Object.keys(all).map(function (cat) { return '<div class="scat">' + esc(cat) + "</div>" + all[cat].map(function (x) { return "<div><span>" + esc(x[1]) + (x[3] ? ' <small class="dim">' + esc(x[3]) + "</small>" : "") + "</span><b>" + num(x[2]) + "</b></div>"; }).join(""); }).join("") + "</div>";
+  }
+  function mountsSection(d) {
+    var ml = d.mountList || [];
+    if (!ml.length) return "";
+    return arToggle("mounts", t("ar_mounts"), ml.length) + (arOpen.mounts ? '<div class="mounts">' + ml.map(function (m) {
       return '<div class="mount">' + (m.img ? '<img src="' + esc(m.img) + '" alt="" loading="lazy">' : '<span class="noimg"></span>') + "<span>" + esc(m.name) + "</span></div>";
-    }).join("") + "</div>";
-    if (d.statList && d.statList.length) {
-      var pick = STAT_PICK.map(function (n) { return d.statList.find(function (x) { return x[1] === n; }); }).filter(Boolean);
-      var all = {};
-      d.statList.forEach(function (x) { (all[x[0]] = all[x[0]] || []).push(x); });
-      h += '<button class="prof rephd" type="button" data-statstoggle="1" aria-expanded="' + arStatsOpen + '"><span class="pn"><span>' + t("ar_stats") + " (" + d.statList.length + ')</span></span><span class="chev">' + (arStatsOpen ? "▾" : "▸") + "</span></button>" +
-        '<div class="statlist">' + (arStatsOpen ? Object.keys(all).map(function (cat) { return '<div class="scat">' + esc(cat) + "</div>" + all[cat].map(function (x) { return "<div><span>" + esc(x[1]) + (x[3] ? ' <small class="dim">' + esc(x[3]) + "</small>" : "") + "</span><b>" + num(x[2]) + "</b></div>"; }).join(""); }).join("")
-          : pick.map(function (x) { return "<div><span>" + esc(x[1]) + (x[3] ? ' <small class="dim">' + esc(x[3]) + "</small>" : "") + "</span><b>" + num(x[2]) + "</b></div>"; }).join("")) + "</div>";
-    }
-    return h;
+    }).join("") + "</div>" : "");
   }
   function renderChar(d) {
     var pic = d.media && (d.media["main-raw"] || d.media["main-sd-raw"]), fr = isFriend(d.slug);
-    var mid = '<div class="arhead"><h2 class="q1">' + esc(d.name + " " + d.surname) + '</h2><button class="star fr" type="button" data-friend="' + esc(d.slug) + '" data-label="' + esc(d.name + " " + d.surname) + '" aria-pressed="' + fr + '" title="' + t(fr ? "fr_del" : "fr_add") + '">' + (fr ? "★" : "☆") + "</button>" +
-      '<span class="sub2">' + t("ar_level", d.level, esc(d.race || ""), esc(d.cls || "")) +
-      (d.guild ? ' · <a class="wh" href="#guild=' + esc(d.guild.slug) + '" data-ar="guild" data-slug="' + esc(d.guild.slug) + '">&lt;' + esc(d.guild.name) + "&gt;</a>" : "") + "</span>" +
+    // Rubriken (Joakim 2026-11-17): guilden överst, ★ till vänster om namnet, level inom parentes efter, ras och klass under.
+    var full = d.name + " " + d.surname, profN = d.professions.primary.length + d.professions.secondary.length;
+    var mid = '<div class="arhead2"><div class="ahtop">' +
+      (d.guild ? '<a class="wh gld" href="#guild=' + esc(d.guild.slug) + '" data-ar="guild" data-slug="' + esc(d.guild.slug) + '">&lt;' + esc(d.guild.name) + "&gt;</a>" : "<span></span>") +
       '<button class="lnk" type="button" data-copyany="#player=' + esc(d.slug) + '" title="' + t("copy_link") + '">' + t("copy_link") + "</button></div>" +
-      // Vänster: dockan. Höger (i samma ruta): ryktesraden och yrkena. Högerpanelen (#detail) = valt recept, som i AH.
-      '<div class="arbody"><div class="dollwrap"><div class="doll"><div class="col">' + SLOT_L.map(function (sl) { return slotHtml(d, sl); }).join("") + '</div><div class="mid">' +
-      (pic ? '<div class="picbox"><img class="pic" src="' + esc(pic) + '" alt=""></div>' : '<div class="picbox none hint">' + t("ar_noimg") + "</div>") +
+      '<div class="ahname"><button class="star fr" type="button" data-friend="' + esc(d.slug) + '" data-label="' + esc(full) + '" aria-pressed="' + fr + '" title="' + t(fr ? "fr_del" : "fr_add") + '">' + (fr ? "★" : "☆") + "</button>" +
+      '<h2 class="q1">' + esc(full) + '</h2><span class="lvl">(' + d.level + ")</span></div>" +
+      '<div class="ahsub">' + esc(((d.race || "") + " " + (d.cls || "")).trim()) +
+      (d.pvp ? " · " + (rankBadge(d.faction, d.pvp.rank) || '<span class="dim">' + t("pvp_norank") + "</span>") + ' <span class="hk"><b>' + num(d.pvp.hk) + "</b> " + t("pvp_hk") + "</span>" : "") + "</div></div>" +
+      // Dockan med item level i bildrutan, stats till höger (som i spelet), raderna bredvid eller under när det är smalt.
+      '<div class="arbody2"><div class="charframe"><div class="dollcol"><div class="doll"><div class="col">' + SLOT_L.map(function (sl) { return slotHtml(d, sl); }).join("") + '</div><div class="mid">' +
+      (pic ? '<div class="picbox"><img class="pic" src="' + esc(pic) + '" alt="">' : '<div class="picbox none hint">' + t("ar_noimg")) +
+      '<div class="ilvl"><small>' + t("ar_ilvl") + "</small><b>" + d.ilvl + "</b></div></div>" +
       '<div class="bot">' + SLOT_B.map(function (sl) { return slotHtml(d, sl); }).join("") + "</div></div>" +
       '<div class="col">' + SLOT_R.map(function (sl) { return slotHtml(d, sl); }).join("") + "</div></div>" +
-      '<div class="picnote">' + t("ar_picnote") + "</div>" +
-      '<dl class="arfacts"><div><dt>' + t("ar_ilvl") + "</dt><dd>" + d.ilvl + "</dd></div><div><dt>" + t("ar_last") + "</dt><dd>" + when2(d.lastLogin) + "</dd></div>" +
-      "<div><dt>" + t("ar_quests") + "</dt><dd>" + num((d.quests || []).length) + "</dd></div><div><dt>" + t("ar_pets") + "</dt><dd>" + d.pets + "</dd></div></dl>" + cardHtml(d) + "</div>" +
+      '<div class="picnote" title="' + t("ar_picnote_tip") + '">' + t("ar_picnote") + "</div></div>" + statsPanel(d) + "</div>" +
       '<div class="arside">' +
-      '<button class="prof rephd" type="button" data-reptoggle="1" aria-expanded="' + arRepOpen + '"><span class="pn"><span>' + t("ar_rep") + " (" + d.reputations.length + ')</span></span><span class="chev">' + (arRepOpen ? "▾" : "▸") + "</span></button>" +
-      (arRepOpen ? '<div class="reps">' + repsHtml(d) + "</div>" : "") +
-      "<h3>" + t("ar_prof") + '</h3><div class="profs">' + (d.professions.primary.map(profHtml).join("") || '<div class="note">–</div>') + "</div>" +
-      "<h3>" + t("ar_prof2") + '</h3><div class="profs">' + (d.professions.secondary.map(profHtml).join("") || '<div class="note">–</div>') + "</div>" +
+      arToggle("rep", t("ar_rep"), d.reputations.length) + (arOpen.rep ? '<div class="reps">' + repsHtml(d) + "</div>" : "") +
+      arToggle("prof", t("ar_prof"), profN) + (arOpen.prof ? '<div class="profsec"><h4>' + t("ar_prof") + '</h4><div class="profs">' + (d.professions.primary.map(profHtml).join("") || '<div class="note">–</div>') + "</div>" +
+        "<h4>" + t("ar_prof2") + '</h4><div class="profs">' + (d.professions.secondary.map(profHtml).join("") || '<div class="note">–</div>') + "</div></div>" : "") +
+      statsSection(d) + mountsSection(d) +
       "</div></div>";
     var right;
     if (arRec) {
@@ -2175,10 +2228,8 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     if (fb) { e.stopPropagation(); toggleFriend(fb.dataset.friend, fb.dataset.label); return; }
     var sec = e.target.closest("[data-arsec]");
     if (sec) { arSec[sec.dataset.arsec] = !arSec[sec.dataset.arsec]; try { localStorage.setItem(SEC_KEY, JSON.stringify(arSec)); } catch (e2) {} drawCats(); return; }
-    var rt = e.target.closest("[data-reptoggle]");
-    if (rt && arData && arData.kind === "character") { arRepOpen = !arRepOpen; renderChar(arData); return; }
-    var stt = e.target.closest("[data-statstoggle]");
-    if (stt && arData && arData.kind === "character") { arStatsOpen = !arStatsOpen; renderChar(arData); return; }
+    var tg = e.target.closest("[data-artoggle]");
+    if (tg && arData && arData.kind === "character") { arOpen[tg.dataset.artoggle] = !arOpen[tg.dataset.artoggle]; renderChar(arData); return; }
     var ab = e.target.closest("[data-arback]");
     if (ab && arData && arData.kind === "character") { arRec = 0; renderChar(arData); return; }
     var ar2 = e.target.closest("[data-arrec]");   // känt recept i Armory → receptrutan i högerpanelen
