@@ -167,6 +167,10 @@ h1 { font-family: var(--display); font-weight: 500; font-size: 36px; margin: 0; 
 .lbt { width: 100%; border-collapse: collapse; font-size: 13.5px; } .lbt th { text-align: left; color: var(--gold); font-size: 11.5px; text-transform: uppercase; letter-spacing: .04em; padding: 6px 8px; border-bottom: 1px solid var(--line); }
 .lbt td { padding: 5px 8px; border-bottom: 1px solid rgba(255, 255, 255, .04); white-space: nowrap; } .lbt td.nm { overflow: hidden; text-overflow: ellipsis; max-width: 0; width: 45%; } .lbt td.nm a { text-decoration: none; } .lbt td.nm a:hover { text-decoration: underline; }
 .lbt .ri { width: 18px; height: 18px; vertical-align: -4px; margin-right: 6px; border-radius: 3px; } .lbn { color: var(--grey); width: 28px; } .lbn.top1 { color: #ffd100; font-weight: 700; } .lbn.top2 { color: #d6dee8; font-weight: 700; } .lbn.top3 { color: #e0a060; font-weight: 700; }
+.lbmeter { display: grid; grid-template-columns: auto minmax(60px, 1fr) auto; gap: 10px; align-items: center; font-size: 12.5px; color: var(--grey); }
+.lbmeter b { color: var(--fg); } .lbmeter .h b { color: #ff6b5a; } .lbmeter .a b { color: #5aa0ff; }
+.lbmeter .lbbar { display: flex; height: 8px; border-radius: 4px; overflow: hidden; background: var(--inset); border: 1px solid var(--line); }
+.lbmeter .hb { background: linear-gradient(#c8392b, #8f2219); } .lbmeter .ab { background: linear-gradient(#3b7fd6, #234f8f); min-width: 2px; }
 .lbsep { width: 1px; align-self: stretch; background: var(--line); margin: 0 4px; }
 .lbbtn .ci { width: 20px; height: 20px; border-radius: 3px; margin-right: 6px; }
 .actwrap { display: grid; gap: 8px; } .actwrap h3 { margin: 4px 0 0; color: var(--gold); font-size: 14px; } .actsvg { width: 100%; max-width: 620px; height: auto; } .actsvg text { fill: var(--grey); font-size: 10px; }
@@ -915,6 +919,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       hu_speed_note: "A tamed pet keeps its attack speed: 1.0–1.3 is fast, 2.0 is normal. Health, damage and armor come from the family.",
       hu_src: "Classic database (cmangos, GPL). Zones and map positions from the game client via WhippitPanel.",
       lb: "Leaderboards", lb_sub: "%1 players and %2 guilds found so far · %3", lb_ilvl: "Item level", lb_level: "Level", lb_hk: "Honorable kills", lb_rank: "PvP rank", lb_ach: "Achievement points", lb_guilds: "Guilds",
+      lb_meter_tip: "How many Horde and Alliance players the catalog has found on this realm type. Alliance grows with enemy nameplates on (Ctrl+V) and battlegrounds.",
       lb_rs_auto: "%1 (your AH)", lb_rs_all: "All realms", lb_rs_partial: "Some players are still being sorted into PvP or Normal; they show under All realms until the next update.",
       lb_both: "Both sides", lb_player: "Player", lb_guild: "Guild", lb_n60: "Level 60s", lb_il60: "Item level (60s)", lb_avg: "Avg level", lb_members: "Members", lb_none: "Nobody here yet.", lb_fail: "The leaderboards could not be loaded.",
       lb_note: "Blizzard can only look up a player by name, so the list grows like a snowball: known players → their guild → its members → their guilds, plus the names WhippitPanel notes in the game. Refreshed daily; anyone not seen for 29 days drops out.",
@@ -3533,7 +3538,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   // AH-marknad (PvP eller Normal), "all" = båda. Guildens ruleset = det flest kända medlemmar har.
   var lbRs = "";
   function lbRuleset() { return lbRs === "all" ? "" : lbRs || houseParts(house)[0]; }
-  var LB = [["ilvl", "il", "lb_ilvl"], ["level", "lv", "lb_level"], ["hk", "hk", "lb_hk"], ["rank", "rk", "lb_rank"], ["ach", "ap", "lb_ach"], ["guilds", "", "lb_guilds"], ["first60", "t60", "lb_first60"], ["act", "", "lb_act"]];
+  var LB = [["ilvl", "il", "lb_ilvl"], ["hk", "hk", "lb_hk"], ["rank", "rk", "lb_rank"], ["ach", "ap", "lb_ach"], ["guilds", "", "lb_guilds"], ["first60", "t60", "lb_first60"], ["act", "", "lb_act"]];
   function loadKat() {
     if (!katPromise) katPromise = fetch(DATA_BASE + "katalog.json", { cache: "no-store" }).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }).then(function (j) { KAT = j; return j; })
       .catch(function (e) { katPromise = null; throw e; });
@@ -3551,7 +3556,11 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     var fa = function (k, lbl) { return '<button type="button" class="huchip' + (lbFa === k ? " on" : "") + '" data-lbfa="' + k + '" aria-pressed="' + (lbFa === k) + '">' + lbl + "</button>"; };
     var rsb = function (k, lbl) { var on = (lbRs || "") === k; return '<button type="button" class="huchip' + (on ? " on" : "") + '" data-lbrs="' + k + '" aria-pressed="' + on + '">' + lbl + "</button>"; };
     var np = KAT.players.filter(faOk).length, ng = KAT.guilds.filter(faOk).length;
-    var h = '<div class="lbwrap"><div class="lbhead"><h2>' + t("lb") + "</h2><small>" + t("lb_sub", num(np), num(ng), when2(KAT.t)) + "</small></div>" +
+    var rsOk = function (x) { return !rs || (x.rs || gRs[x.g] || "") === rs; }, nh = 0, na = 0;
+    KAT.players.forEach(function (p) { if (!rsOk(p)) return; if (p.fa === "HORDE") nh++; else if (p.fa === "ALLIANCE") na++; });
+    var pa = nh + na ? na / (nh + na) * 100 : 0;
+    var meter = nh + na ? '<div class="lbmeter" title="' + t("lb_meter_tip") + '"><span class="h">Horde <b>' + num(nh) + '</b></span><div class="lbbar"><i class="hb" style="width:' + (100 - pa).toFixed(1) + '%"></i><i class="ab" style="width:' + pa.toFixed(1) + '%"></i></div><span class="a"><b>' + num(na) + "</b> Alliance · " + (pa < 1 && pa > 0 ? pa.toFixed(1) : Math.round(pa)) + " %</span></div>" : "";
+    var h = '<div class="lbwrap"><div class="lbhead"><h2>' + t("lb") + "</h2><small>" + t("lb_sub", num(np), num(ng), when2(KAT.t)) + "</small></div>" + meter +
       '<div class="huchips">' + tabs + '</div><div class="huchips">' + fa("", t("lb_both")) + fa("HORDE", "Horde") + fa("ALLIANCE", "Alliance") + '<span class="lbsep"></span>' +
       rsb("", t("lb_rs_auto", houseParts(house)[0] === "pvp" ? "PvP" : "Normal")) + rsb(houseParts(house)[0] === "pvp" ? "normal" : "pvp", houseParts(house)[0] === "pvp" ? "Normal" : "PvP") + rsb("all", t("lb_rs_all")) + "</div>" +
       (KAT.players.some(function (p) { return !p.rs; }) && rs ? '<div class="note">' + t("lb_rs_partial") + "</div>" : "");
