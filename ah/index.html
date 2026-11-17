@@ -171,6 +171,10 @@ h1 { font-family: var(--display); font-weight: 500; font-size: 36px; margin: 0; 
 .lbmeter b { color: var(--fg); } .lbmeter .h b { color: #ff6b5a; } .lbmeter .a b { color: #5aa0ff; }
 .lbmeter .lbbar { display: flex; height: 8px; border-radius: 4px; overflow: hidden; background: var(--inset); border: 1px solid var(--line); }
 .lbmeter .hb { background: linear-gradient(#c8392b, #8f2219); } .lbmeter .ab { background: linear-gradient(#3b7fd6, #234f8f); min-width: 2px; }
+.lbcls { display: grid; gap: 8px; } .lbc { display: grid; grid-template-columns: minmax(130px, 34%) 1fr; grid-template-rows: auto auto; column-gap: 12px; row-gap: 3px; align-items: center; }
+.lbc .nm { grid-row: span 2; display: flex; align-items: center; gap: 6px; min-width: 0; } .lbc .nm .ri { width: 22px; height: 22px; border-radius: 3px; } .lbc .nm small { color: var(--grey); margin-left: auto; white-space: nowrap; }
+.lbcb { display: flex; align-items: center; gap: 6px; height: 10px; font-size: 11.5px; } .lbcb i { height: 8px; border-radius: 3px; min-width: 2px; } .lbcb em { font-style: normal; color: var(--grey); }
+.lbcb .hb { background: linear-gradient(#c8392b, #8f2219); } .lbcb .ab { background: linear-gradient(#3b7fd6, #234f8f); }
 .lbsep { width: 1px; align-self: stretch; background: var(--line); margin: 0 4px; }
 .lbbtn .ci { width: 20px; height: 20px; border-radius: 3px; margin-right: 6px; }
 .actwrap { display: grid; gap: 8px; } .actwrap h3 { margin: 4px 0 0; color: var(--gold); font-size: 14px; } .actsvg { width: 100%; max-width: 620px; height: auto; } .actsvg text { fill: var(--grey); font-size: 10px; }
@@ -919,6 +923,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       hu_speed_note: "A tamed pet keeps its attack speed: 1.0–1.3 is fast, 2.0 is normal. Health, damage and armor come from the family.",
       hu_src: "Classic database (cmangos, GPL). Zones and map positions from the game client via WhippitPanel.",
       lb: "Leaderboards", lb_sub: "%1 players and %2 guilds found so far · %3", lb_ilvl: "Item level", lb_level: "Level", lb_hk: "Honorable kills", lb_rank: "PvP rank", lb_ach: "Achievement points", lb_guilds: "Guilds",
+      lb_cls: "Classes", lb_only60: "Only level 60", lb_cls_note: "%1 players with a known class. Top bar = Horde, bottom bar = Alliance, on the same scale.",
       lb_meter_tip: "How many Horde and Alliance players the catalog has found on this realm type. Alliance grows with enemy nameplates on (Ctrl+V) and battlegrounds.",
       lb_rs_auto: "%1 (your AH)", lb_rs_all: "All realms", lb_rs_partial: "Some players are still being sorted into PvP or Normal; they show under All realms until the next update.",
       lb_both: "Both sides", lb_player: "Player", lb_guild: "Guild", lb_n60: "Level 60s", lb_il60: "Item level (60s)", lb_avg: "Avg level", lb_members: "Members", lb_none: "Nobody here yet.", lb_fail: "The leaderboards could not be loaded.",
@@ -3126,6 +3131,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     if (arForget) { arForget = null; drawCats(); }
     var al = e.target.closest("[data-ar]");
     if (al) { e.preventDefault(); e.stopPropagation(); showTab("item"); arLb = ""; arLoad(al.dataset.ar, al.dataset.slug); return; }
+    if (e.target.closest("[data-lb60]") && mode === "ar") { lb60 = !lb60; lbShow(); return; }
     var lbr = e.target.closest("[data-lbrs]");
     if (lbr && mode === "ar") { lbRs = lbr.dataset.lbrs; lbShow(); return; }
     var lbf = e.target.closest("[data-lbfa]");
@@ -3536,9 +3542,9 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   var KAT = null, katPromise = null, arLb = "", lbFa = "";
   // Ruleset (Joakim 2026-11-17): Blizzards API har alla Forever-spelare, PvP och Normal i samma katalog. "" = följer vald
   // AH-marknad (PvP eller Normal), "all" = båda. Guildens ruleset = det flest kända medlemmar har.
-  var lbRs = "";
+  var lbRs = "", lb60 = false;
   function lbRuleset() { return lbRs === "all" ? "" : lbRs || houseParts(house)[0]; }
-  var LB = [["ilvl", "il", "lb_ilvl"], ["hk", "hk", "lb_hk"], ["rank", "rk", "lb_rank"], ["ach", "ap", "lb_ach"], ["guilds", "", "lb_guilds"], ["first60", "t60", "lb_first60"], ["act", "", "lb_act"]];
+  var LB = [["ilvl", "il", "lb_ilvl"], ["hk", "hk", "lb_hk"], ["rank", "rk", "lb_rank"], ["ach", "ap", "lb_ach"], ["guilds", "", "lb_guilds"], ["first60", "t60", "lb_first60"], ["cls", "", "lb_cls"], ["act", "", "lb_act"]];
   function loadKat() {
     if (!katPromise) katPromise = fetch(DATA_BASE + "katalog.json", { cache: "no-store" }).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }).then(function (j) { KAT = j; return j; })
       .catch(function (e) { katPromise = null; throw e; });
@@ -3564,7 +3570,24 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       '<div class="huchips">' + tabs + '</div><div class="huchips">' + fa("", t("lb_both")) + fa("HORDE", "Horde") + fa("ALLIANCE", "Alliance") + '<span class="lbsep"></span>' +
       rsb("", t("lb_rs_auto", houseParts(house)[0] === "pvp" ? "PvP" : "Normal")) + rsb(houseParts(house)[0] === "pvp" ? "normal" : "pvp", houseParts(house)[0] === "pvp" ? "Normal" : "PvP") + rsb("all", t("lb_rs_all")) + "</div>" +
       (KAT.players.some(function (p) { return !p.rs; }) && rs ? '<div class="note">' + t("lb_rs_partial") + "</div>" : "");
-    if (def[0] === "act") {
+    if (def[0] === "cls") {
+      var cc = {}, tot = 0;
+      KAT.players.forEach(function (p) {
+        if (!rsOk(p) || !p.c || (lb60 && p.lv < 60)) return;
+        var e = cc[p.c] = cc[p.c] || { h: 0, a: 0 };
+        if (p.fa === "HORDE") e.h++; else if (p.fa === "ALLIANCE") e.a++; else return;
+        tot++;
+      });
+      var cls = Object.keys(cc).sort(function (x, y) { return (cc[y].h + cc[y].a) - (cc[x].h + cc[x].a); });
+      var mx = Math.max.apply(null, cls.map(function (k) { return Math.max(cc[k].h, cc[k].a); }).concat([1]));
+      h += '<div class="huchips"><button type="button" class="huchip' + (lb60 ? " on" : "") + '" data-lb60="1" aria-pressed="' + lb60 + '">' + t("lb_only60") + "</button></div>" +
+        '<div class="lbcls">' + cls.map(function (k) {
+          var e = cc[k], n = e.h + e.a;
+          return '<div class="lbc"><span class="nm">' + classIcon(k) + '<b style="color:' + (CLASS_COL[k] || "inherit") + '">' + esc(k) + '</b><small>' + num(n) + " · " + (tot ? Math.round(n / tot * 100) : 0) + ' %</small></span>' +
+            '<div class="lbcb"><i class="hb" style="width:' + (e.h / mx * 100).toFixed(1) + '%"></i><em>' + num(e.h) + '</em></div>' +
+            '<div class="lbcb"><i class="ab" style="width:' + (e.a / mx * 100).toFixed(1) + '%"></i><em>' + num(e.a) + "</em></div></div>";
+        }).join("") + "</div>" + '<div class="note">' + t("lb_cls_note", num(tot)) + "</div>";
+    } else if (def[0] === "act") {
       h += actHtml();
     } else if (def[0] === "first60") {
       var f6 = KAT.players.filter(function (p) { return faOk(p) && p.t60 > 0; }).sort(function (a, b) { return (a.t60 - b.t60) || (b.il - a.il); }).slice(0, 100), st = KAT.start || 0;
