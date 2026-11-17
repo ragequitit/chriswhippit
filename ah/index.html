@@ -222,7 +222,7 @@ td.nm, .watch td:first-child { text-align: left; white-space: nowrap; max-width:
 .picbox .ilvl { position: absolute; top: 6px; right: 6px; display: grid; justify-items: end; line-height: 1.1; text-shadow: 0 1px 3px #000; }
 .picbox .ilvl small { color: var(--grey); font-size: 10.5px; } .picbox .ilvl b { color: var(--gold); font-size: 18px; }
 .cstats { width: 180px; border: 1px solid var(--line); border-radius: 6px; background: var(--inset); box-shadow: inset 0 1px 4px rgba(0, 0, 0, .5); padding: 4px 0 6px; font-size: 13px; }
-.cstats .csh { margin: 6px 6px 3px; padding: 3px 8px; text-align: center; font-family: var(--display); font-size: 12.5px; letter-spacing: .03em; color: var(--gold);
+.cstats .csh, .cmpcol .csh { margin: 6px 6px 3px; padding: 3px 8px; text-align: center; font-family: var(--display); font-size: 12.5px; letter-spacing: .03em; color: var(--gold);
   background: linear-gradient(#3a2a16, #221709); border: 1px solid var(--bronze); border-radius: 4px; }
 .cstats .csh:first-child { margin-top: 2px; }
 .cstats .csr { display: flex; justify-content: space-between; gap: 8px; padding: 1px 12px; }
@@ -269,6 +269,38 @@ td.nm, .watch td:first-child { text-align: left; white-space: nowrap; max-width:
 .reps { display: grid; gap: 3px; max-width: 520px; }
 .rep { display: grid; grid-template-columns: minmax(90px, 1fr) minmax(120px, 230px); gap: 10px; align-items: center; font-size: 13.5px; }
 .rep .rn { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rephead { margin-bottom: 2px; } .rephead span { display: flex; gap: 10px; }
+.rsb { all: unset; cursor: pointer; color: var(--grey); font-size: 12px; letter-spacing: .03em; text-transform: uppercase; }
+.rsb:hover { color: var(--fg); } .rsb.on { color: var(--gold); }
+.repgrp { color: var(--gold); font-family: var(--display); font-size: 13px; margin: 8px 0 2px; border-bottom: 1px solid var(--line); padding-bottom: 2px; }
+.rbar.none { opacity: .4; } .rbar.none span { color: var(--grey); }
+.ahbtns { display: flex; gap: 14px; align-items: center; }
+.cmppick { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 0 0 12px; padding: 10px 12px; border: 1px solid var(--bronze); border-radius: 6px; background: var(--inset); }
+.cmppick b { color: var(--gold); font-family: var(--display); font-weight: 500; }
+.cmppick input { flex: 1 1 160px; min-width: 0; height: 30px; padding: 0 9px; border-radius: 4px; border: 1px solid var(--line); background: #0b0908; color: var(--fg); font: inherit; }
+.cmppick .cbtn { height: 30px; padding: 0 12px; border-radius: 4px; border: 1px solid var(--edge); background: linear-gradient(#7a1f15, #4a120c); color: #fff; font: inherit; cursor: pointer; }
+.cmpopts { flex-basis: 100%; display: flex; flex-wrap: wrap; gap: 6px; }
+.cmpopt { all: unset; cursor: pointer; padding: 3px 10px; border: 1px solid var(--line); border-radius: 12px; font-size: 13px; } .cmpopt:hover { border-color: var(--edge); color: var(--gold); }
+.cmptop { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 10px; }
+.cmphd { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: 12px; margin-bottom: 14px; }
+.cmpcard { display: flex; align-items: center; gap: 10px; min-width: 0; } .cmpcard.b { flex-direction: row-reverse; text-align: right; }
+.cmpcard .cav { width: 52px; height: 52px; border-radius: 6px; border: 1px solid var(--edge); flex: none; background: var(--inset); object-fit: cover; }
+.cmpcard .cnm { font-family: var(--display); font-size: 20px; color: var(--fg); text-decoration: none; } .cmpcard .cnm:hover { text-decoration: underline; }
+.cmpcard .lvl { color: var(--grey); } .cmpcard .csub { color: var(--grey); font-size: 13px; }
+.cmphd .vs { font-family: var(--display); color: var(--gold); font-size: 22px; text-shadow: 0 0 10px rgba(255, 180, 60, .4); }
+.cmpbody { display: grid; grid-template-columns: repeat(auto-fit, minmax(330px, 1fr)); gap: 6px 22px; align-items: start; }
+.cmpcol { display: grid; gap: 2px; min-width: 0; }
+.cmpcol .csh.cmph { margin: 10px 0 4px; } .cmpcol .csh.cmph:first-child { margin-top: 0; }
+.crow { display: grid; grid-template-columns: minmax(0, 1fr) minmax(90px, auto) minmax(0, 1fr); align-items: center; gap: 10px; padding: 2px 4px; border-radius: 3px; font-size: 13.5px; }
+.crow:hover { background: var(--hover); }
+.crow .cl { text-align: center; color: var(--grey); font-size: 12.5px; }
+.crow .ca, .crow .cb { display: flex; align-items: center; gap: 6px; min-width: 0; } .crow .ca { justify-content: flex-end; }
+.crow .cwin b { color: #4ade4a; } .crow .cdiff { color: #4ade4a; font-size: 11px; opacity: .8; }
+.crow.gear .slot { width: 30px; height: 30px; flex: none; } .crow.gear .slot .lv { display: none; }
+.crow.crep .rbar { flex: 1 1 auto; max-width: 150px; height: 16px; } .crow.crep .rbar span { font-size: 10.5px; }
+.crow.crep .cwin .rbar { box-shadow: 0 0 0 1px #4ade4a; }
+.repsorts { display: flex; gap: 10px; justify-content: center; margin: 2px 0 4px; }
+@media (max-width: 600px) { .cmpbody { grid-template-columns: minmax(0, 1fr); } .crow { grid-template-columns: minmax(0, 1fr) 76px minmax(0, 1fr); gap: 6px; } .cmpcard .cnm { font-size: 16px; } .cmpcard .cav { width: 40px; height: 40px; } }
 .rbar { position: relative; height: 18px; border-radius: 3px; background: #0b0908; border: 1px solid var(--line); overflow: hidden; }
 .rbar i { position: absolute; inset: 0; width: 0; display: block; opacity: .9; }
 .rbar span { position: absolute; inset: 0; display: grid; place-items: center; font-size: 11.5px; font-weight: 600; color: #fff; text-shadow: 0 0 3px #000, 0 1px 2px #000; }
@@ -770,7 +802,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       search_ar: "Player: first and last name – or a guild", ar_hint: "Type a player's first and last name (e.g. Alisee Alistar), or a guild name, and press Search.",
       ar_recent: "Recent", ar_loading: "Looking up…", ar_notfound: "No player or guild with that name. Players show up from level 10, after logging out.",
       ar_fail: "The lookup is not available right now.", ar_off: "The armory is not connected yet.",
-      ar_level: "Level %1 %2 %3", ar_guild: "Guild", ar_player: "Player", ar_picnote: "Picture by Blizzard – may be out of date.", ro_ilvl: "iLvl", ar_forget: "Remove", ar_forget_tip: "Remove from Recent", ro_seen: "Seen", ro_seen_tip: "Last login (Blizzard)", ro_now: "now", ro_h: "%1 h ago", ro_d: "%1 d ago", ro_only: "Show only %1s", ro_all: "Show all classes", ro_shown: "%1 of %2 members", ar_picnote_tip: "Rendered by Blizzard: it can lag behind the gear or show the wrong character.", st_primary: "Primary Attributes", st_defense: "Defense", st_combat: "Combat", st_ap: "Attack Power", st_sp: "Spell Power", st_parry: "Parry", st_block: "Block", st_rcrit: "Ranged crit",
+      ar_level: "Level %1 %2 %3", ar_guild: "Guild", ar_player: "Player", ar_picnote: "Picture by Blizzard – may be out of date.", ro_ilvl: "iLvl", rep_area: "Area", rep_name: "Name", rep_standing: "Standing", cmp: "Compare", cmp_tip: "Compare with another player side by side", cmp_with: "Compare with", cmp_ph: "First Last", cmp_go: "Compare", cmp_same: "Pick another player", cmp_swap: "Swap", cmp_gear: "Equipment", cmp_power: "Power", ar_forget: "Remove", ar_forget_tip: "Remove from Recent", ro_seen: "Seen", ro_seen_tip: "Last login (Blizzard)", ro_now: "now", ro_h: "%1 h ago", ro_d: "%1 d ago", ro_only: "Show only %1s", ro_all: "Show all classes", ro_shown: "%1 of %2 members", ar_picnote_tip: "Rendered by Blizzard: it can lag behind the gear or show the wrong character.", st_primary: "Primary Attributes", st_defense: "Defense", st_combat: "Combat", st_ap: "Attack Power", st_sp: "Spell Power", st_parry: "Parry", st_block: "Block", st_rcrit: "Ranged crit",
       ar_craft: "Known recipes", ar_sells: "Sells for", ar_cost: "Cost", ar_profit: "Profit", ar_noprice: "no price", ar_nofr: "Recipe names are not available right now.", ar_ilvl: "Item level",
       ar_crafters: "Who can craft what", ar_crafters_load: "Loading professions… %1 / %2", ar_crafters_q: "Recipe name, e.g. Bolt of Woolen Cloth", ar_nobody: "Nobody in the guild knows a recipe with that name.",
       ar_nobody_p: "No professions found in the guild.", skill_unknown: "skill requirement unknown", ar_friends: "Friends", ar_recipes_n: "%1 rec.", ar_quests: "Quests done", ar_general: "General", st_health: "Health", st_str: "Strength", st_agi: "Agility", st_sta: "Stamina", st_int: "Intellect", st_spi: "Spirit", st_armor: "Armor", st_crit: "Crit", st_scrit: "Spell crit", st_dodge: "Dodge",
@@ -987,7 +1019,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   var ARMORY_API = location.hostname === "localhost" ? "http://localhost:8767" : "https://whippit-armory.discord-tjanst.workers.dev";   // Cloudflare Worker (armory/worker.js), driftsatt 2026-11-16
   var AR_KEY = "whippit-ah-armory";
   var arRecent = (function () { try { var a = JSON.parse(localStorage.getItem(AR_KEY) || "[]"); return Array.isArray(a) ? a : []; } catch (e) { return []; } })();
-  var arData = null, arToken = 0;
+  var arData = null, arToken = 0, arVs = "";   // arVs: spelare B ur länken #player=a&vs=b
   var SLOT_L = ["HEAD", "NECK", "SHOULDER", "BACK", "CHEST", "SHIRT", "TABARD", "WRIST"], SLOT_R = ["HANDS", "WAIST", "LEGS", "FEET", "FINGER_1", "FINGER_2", "TRINKET_1", "TRINKET_2"], SLOT_B = ["MAIN_HAND", "OFF_HAND", "RANGED"];
   function arRemember(kind, slug, label) {
     arRecent = arRecent.filter(function (r) { return !(r.kind === kind && r.slug === slug); });
@@ -1016,8 +1048,10 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     }).then(function (d) {
       if (my !== arToken) return;
       if (!arData || arData.slug !== d.slug) arRec = 0;   // ny spelare: högerpanelen visar yrkena igen
-      arData = d;
+      arData = d; arCmp = null; arCmpPick = false; arCmpErr = ""; arCmpBusy = 0;
       if (d.kind === "character") renderChar(d); else renderGuild(d);
+      var vs = d.kind === "character" && arVs; arVs = "";
+      if (vs) { arCmpPick = true; arCompare(vs); }
       arRemember(d.kind === "character" ? "char" : "guild", d.slug, d.kind === "character" ? d.name + " " + d.surname : d.name);
       drawCats();
       try { history.replaceState(null, "", "#" + (d.kind === "character" ? "player" : "guild") + "=" + d.slug); } catch (e) {}
@@ -1046,12 +1080,41 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     if (!frPromise) frPromise = fetch(DATA_BASE + "forever-recept.json").then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }).then(function (j) { FRX = j; return j; }).catch(function () { FRX = { recipes: {}, items: {}, profs: {} }; });
     return frPromise;
   }
+  // Rubrikerna som i spelets ryktesfönster (Blizzards reputation-faction: Horde, Alliance, ... Forces, Steamwheedle Cartel;
+  // fraktioner utan rubrik = Other). Sorteringen väljs med rubrikraden över listan och sparas (Joakim 2026-11-17).
+  var REP_GROUP = {"The Defilers":"Horde Forces","Frostwolf Clan":"Horde Forces","Warsong Outriders":"Horde Forces","Darkspear Raiders":"Horde Forces","The League of Arathor":"Alliance Forces","Stormpike Guard":"Alliance Forces","Silverwing Sentinels":"Alliance Forces","Theramore Expeditionary Force":"Alliance Forces","Undercity":"Horde","Orgrimmar":"Horde","Thunder Bluff":"Horde","Darkspear Trolls":"Horde","Booty Bay":"Steamwheedle Cartel","Gadgetzan":"Steamwheedle Cartel","Ratchet":"Steamwheedle Cartel","Everlook":"Steamwheedle Cartel","Powderfuse":"Steamwheedle Cartel","Ironforge":"Alliance","Gnomeregan Exiles":"Alliance","Darnassus":"Alliance","Stormwind":"Alliance"};
+  var REP_KEY = "whippit-ah-repsort";
+  var repSort = (function () { try { var o = JSON.parse(localStorage.getItem(REP_KEY) || "null"); if (o && /^(area|name|standing)$/.test(o.k)) return { k: o.k, dir: o.dir === 1 ? 1 : -1 }; } catch (e) {} return { k: "standing", dir: -1 }; })();
+  function repGroups(fa) { return (fa === "ALLIANCE" ? ["Alliance", "Alliance Forces", "Horde", "Horde Forces"] : ["Horde", "Horde Forces", "Alliance", "Alliance Forces"]).concat(["Steamwheedle Cartel", "Other"]); }
+  function repRank(r) { return r ? (STANDING[r.standing] || 0) * 1e6 + (r.value || 0) : -1; }
+  function repBar(r, short) {
+    if (!r) return '<div class="rbar none"><span>–</span></div>';
+    var sv = STANDING[r.standing] || 0, w = r.max ? Math.round(r.value / r.max * 100) : 0;
+    return '<div class="rbar s' + sv + '"' + (short ? ' title="' + esc(r.standing + " " + num(r.value) + " / " + num(r.max)) + '"' : "") + '><i style="width:' + w + '%"></i><span>' + esc(r.standing) + (short ? "" : " " + num(r.value) + " / " + num(r.max)) + "</span></div>";
+  }
+  function repSortBtn(key, lbl) {
+    var on = repSort.k === key;
+    return '<button type="button" class="rsb' + (on ? " on" : "") + '" data-repsort="' + key + '" aria-pressed="' + on + '">' + lbl + (on && key !== "area" ? (repSort.dir > 0 ? " ▴" : " ▾") : "") + "</button>";
+  }
+  // names = fraktionsnamnen, rank(namn) = värdet som sorteras på Standing. Ger [[rubrik eller null, [namn...]], ...].
+  function repOrder(names, rank, fa) {
+    var k = repSort.k, dir = repSort.dir, abc = function (a, b) { return a.localeCompare(b); };
+    if (k === "area") {
+      return repGroups(fa).map(function (g) { return [g, names.filter(function (n) { return (REP_GROUP[n] || "Other") === g; }).sort(abc)]; }).filter(function (x) { return x[1].length; });
+    }
+    var l = names.slice().sort(k === "name" ? function (a, b) { return abc(a, b) * dir; } : function (a, b) { return (rank(a) - rank(b)) * dir || abc(a, b); });
+    return [[null, l]];
+  }
   function repsHtml(d) {
-    var list = d.reputations.slice().sort(function (a, b) { return (STANDING[b.standing] || 0) - (STANDING[a.standing] || 0) || b.value - a.value; });
-    return list.map(function (r) {
-      var s = STANDING[r.standing] || 0, w = r.max ? Math.round(r.value / r.max * 100) : 0;
-      return '<div class="rep"><span class="rn">' + esc(r.name) + '</span><div class="rbar s' + s + '"><i style="width:' + w + '%"></i><span>' + esc(r.standing) + " " + num(r.value) + " / " + num(r.max) + "</span></div></div>";
-    }).join("") || '<div class="note">–</div>';
+    if (!d.reputations.length) return '<div class="note">–</div>';
+    var by = {};
+    d.reputations.forEach(function (r) { by[r.name] = r; });
+    var h = '<div class="rep rephead"><span>' + repSortBtn("area", t("rep_area")) + repSortBtn("name", t("rep_name")) + "</span><span>" + repSortBtn("standing", t("rep_standing")) + "</span></div>";
+    repOrder(Object.keys(by), function (n) { return repRank(by[n]); }, d.faction).forEach(function (g) {
+      if (g[0]) h += '<div class="repgrp">' + esc(g[0]) + "</div>";
+      h += g[1].map(function (n) { return '<div class="rep"><span class="rn">' + esc(n) + "</span>" + repBar(by[n]) + "</div>"; }).join("");
+    });
+    return h;
   }
   // Ett yrke: ikon, namn, skill-stapel, antal kända recept; klick fäller ut recepten med säljpris, kostnad och vinst på
   // vald marknad (riktpriser ur data.json, handlarvaror till handlarpris). Det är "vad kan den här spelaren crafta med vinst".
@@ -1157,17 +1220,114 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       return '<div class="mount"' + (m.img ? ' data-mountimg="' + esc(m.img) + '" data-mountname="' + esc(m.name) + '"' : "") + '>' + (m.img ? '<img src="' + esc(m.img) + '" alt="" loading="lazy">' : '<span class="noimg"></span>') + "<span>" + esc(m.name) + "</span></div>";
     }).join("") + "</div>" : "");
   }
+  // Jämför två spelare (Joakim 2026-11-17, "du mot en vän före en duell"): stats, item level, utrustning per plats,
+  // PvP, yrken och reputation sida vid sida. Det bästa värdet i varje rad är grönt med skillnaden bredvid.
+  // Länk: #player=a&vs=b. arCmp = { b: spelare B } när vyn är öppen; arCmpPick = rutan där man väljer B.
+  var arCmp = null, arCmpPick = false, arCmpBusy = 0, arCmpErr = "";
+  function arRedraw() { if (arData && arData.kind === "character") { if (arCmp) renderCompare(arData, arCmp.b); else renderChar(arData); } }
+  function cmpPickHtml(d) {
+    var seen = {}, opts = [];
+    arFriends.concat(arRecent.filter(function (r) { return r.kind === "char"; })).forEach(function (r) { if (r.slug !== d.slug && !seen[r.slug] && opts.length < 12) { seen[r.slug] = 1; opts.push(r); } });
+    return '<form class="cmppick" data-cmpform="1"><b>' + t("cmp_with") + '</b><input id="cmpq" type="text" autocomplete="off" spellcheck="false" placeholder="' + t("cmp_ph") + '"><button class="cbtn" type="submit">' + t("cmp_go") + "</button>" +
+      (arCmpBusy ? '<span class="dim">' + t("ar_loading") + "</span>" : arCmpErr ? '<span class="neg">' + esc(arCmpErr) + "</span>" : "") +
+      (opts.length ? '<div class="cmpopts">' + opts.map(function (r) { return '<button type="button" class="cmpopt" data-cmpslug="' + esc(r.slug) + '">' + (isFriend(r.slug) ? "★ " : "") + esc(r.label) + "</button>"; }).join("") + "</div>" : "") + "</form>";
+  }
+  function arCompare(slug) {
+    slug = arSlug(slug || "");
+    if (!slug || !arData || arData.kind !== "character") return;
+    if (slug === arData.slug) { arCmpErr = t("cmp_same"); arRedraw(); return; }
+    var my = ++arCmpBusy, a = arData;
+    arCmpErr = ""; arRedraw();
+    fetch(ARMORY_API + "/char/" + encodeURIComponent(slug)).then(function (r) {
+      if (r.status === 404) throw new Error("404");
+      if (!r.ok) throw new Error("fail");
+      return r.json();
+    }).then(function (b) {
+      if (my !== arCmpBusy || arData !== a) return;
+      arCmpBusy = 0; arCmpPick = false; arCmp = { b: b };
+      arRemember("char", b.slug, b.name + " " + b.surname); drawCats();
+      try { history.replaceState(null, "", "#player=" + a.slug + "&vs=" + b.slug); } catch (e) {}
+      renderCompare(a, b);
+    }).catch(function (e) {
+      if (my !== arCmpBusy) return;
+      arCmpBusy = 0; arCmpErr = t(e.message === "404" ? "ar_notfound" : "ar_fail"); arRedraw();
+    });
+  }
+  function cmpCard(d, side) {
+    var av = d.media && d.media.avatar, cls = d.cls || "";
+    return '<div class="cmpcard ' + side + '">' + (av ? '<img class="cav" src="' + esc(av) + '" alt="">' : '<span class="cav none"></span>') +
+      '<div><a class="cnm" href="#player=' + esc(d.slug) + '" data-ar="char" data-slug="' + esc(d.slug) + '">' + esc(d.name + " " + d.surname) + '</a> <span class="lvl">(' + d.level + ")</span>" +
+      '<div class="csub">' + esc(d.race || "") + ' <span style="color:' + (CLASS_COL[cls] || "inherit") + '">' + esc(cls) + "</span></div>" +
+      (d.guild ? '<div class="csub">&lt;' + esc(d.guild.name) + "&gt;</div>" : "") + "</div></div>";
+  }
+  // En rad: A-värdet, rubriken i mitten, B-värdet. va/vb är tal (eller null), fa/fb texten som visas.
+  function cmpRow(lbl, va, vb, fa, fb, unit) {
+    var win = va != null && vb != null && va !== vb ? (va > vb ? "a" : "b") : "";
+    var diff = win ? Math.round(Math.abs(va - vb) * 100) / 100 : 0, dl = win ? ' <small class="cdiff">+' + (unit ? Math.round(diff * 10) / 10 + unit : num(diff)) + "</small>" : "";
+    return '<div class="crow"><span class="ca' + (win === "a" ? " cwin" : "") + '">' + (win === "a" ? dl : "") + "<b>" + (fa == null ? "–" : fa) + '</b></span><span class="cl">' + lbl + '</span><span class="cb' + (win === "b" ? " cwin" : "") + '"><b>' + (fb == null ? "–" : fb) + "</b>" + (win === "b" ? dl : "") + "</span></div>";
+  }
+  function cmpHead(txt) { return '<div class="csh cmph">' + txt + "</div>"; }
+  function renderCompare(a, b) {
+    var sa = a.stats || {}, sb = b.stats || {};
+    var nv = function (v) { return typeof v === "number" ? v : v && typeof v.effective === "number" ? v.effective : null; };
+    var attr = function (lbl, k) { var x = sa[k] && sa[k].eff, y = sb[k] && sb[k].eff; return x == null && y == null ? "" : cmpRow(lbl, x, y, x != null ? num(x) : null, y != null ? num(y) : null); };
+    var plain = function (lbl, x, y) { return x == null && y == null ? "" : cmpRow(lbl, x, y, x != null ? num(x) : null, y != null ? num(y) : null); };
+    var pc = function (lbl, x, y, always) { return !always && !x && !y ? "" : cmpRow(lbl, x || 0, y || 0, pct(x || 0), pct(y || 0), "%"); };
+    var samePow = (sa.powerType || "") === (sb.powerType || "");
+    var h = '<div class="cmp"><div class="cmptop"><button class="lnk" type="button" data-cmpclose="1">‹ ' + esc(a.name + " " + a.surname) + '</button><span class="ahbtns">' +
+      '<button class="lnk" type="button" data-cmpswap="1">⇄ ' + t("cmp_swap") + '</button><button class="lnk" type="button" data-copyany="#player=' + esc(a.slug) + "&vs=" + esc(b.slug) + '" title="' + t("copy_link") + '">' + t("copy_link") + "</button></span></div>" +
+      '<div class="cmphd">' + cmpCard(a, "a") + '<span class="vs">VS</span>' + cmpCard(b, "b") + "</div>" +
+      '<div class="cmpbody"><div class="cmpcol">' +
+      cmpHead(t("ar_general")) + cmpRow(t("ar_ilvl"), a.ilvl || 0, b.ilvl || 0, a.ilvl || 0, b.ilvl || 0) + cmpRow(t("col_lvl"), a.level, b.level, a.level, b.level) +
+      plain(t("st_health"), sa.health, sb.health) +
+      (samePow ? plain(esc(sa.powerType || "Power"), sa.power, sb.power) : cmpRow(t("cmp_power"), null, null, sa.power != null ? num(sa.power) + " " + esc(sa.powerType || "") : null, sb.power != null ? num(sb.power) + " " + esc(sb.powerType || "") : null)) +
+      cmpHead(t("st_primary")) + attr(t("st_str"), "str") + attr(t("st_agi"), "agi") + attr(t("st_sta"), "sta") + attr(t("st_int"), "int") + attr(t("st_spi"), "spi") +
+      cmpHead(t("st_defense")) + plain(t("st_armor"), sa.armor || 0, sb.armor || 0) + pc(t("st_dodge"), sa.dodge, sb.dodge) + pc(t("st_parry"), sa.parry, sb.parry) + pc(t("st_block"), sa.block, sb.block) +
+      cmpHead(t("st_combat")) + plain(t("st_ap"), nv(sa.attackPower), nv(sb.attackPower)) + pc(t("st_crit"), sa.meleeCrit, sb.meleeCrit, true) + pc(t("st_rcrit"), sa.rangedCrit, sb.rangedCrit) +
+      plain(t("st_sp"), nv(sa.spellPower), nv(sb.spellPower)) + pc(t("st_scrit"), sa.spellCrit, sb.spellCrit, true) +
+      cmpHead(t("ar_pvp")) + cmpRow(t("col_pvp"), a.pvp ? a.pvp.rank : 0, b.pvp ? b.pvp.rank : 0, a.pvp && a.pvp.rank ? rankBadge(a.faction, a.pvp.rank) : "–", b.pvp && b.pvp.rank ? rankBadge(b.faction, b.pvp.rank) : "–") +
+      cmpRow(t("col_hk"), a.pvp ? a.pvp.hk : 0, b.pvp ? b.pvp.hk : 0, num(a.pvp ? a.pvp.hk : 0), num(b.pvp ? b.pvp.hk : 0));
+    // yrken: alla som någon av dem har, skill mot skill
+    var pa = {}, pb = {}, pn = [];
+    [[a, pa], [b, pb]].forEach(function (x) { x[0].professions.primary.concat(x[0].professions.secondary).forEach(function (pr) { var ti = pr.tiers[0] || { skill: 0 }; x[1][pr.name] = ti.skill; if (pn.indexOf(pr.name) < 0) pn.push(pr.name); }); });
+    if (pn.length) h += cmpHead(t("ar_prof")) + pn.sort().map(function (n) { return cmpRow(esc(n), pa[n] != null ? pa[n] : null, pb[n] != null ? pb[n] : null, pa[n], pb[n]); }).join("");
+    h += '</div><div class="cmpcol">';
+    // utrustning plats för plats: ikon och item level, högst level grön
+    var slotOf = function (d, sl) { var it = null; d.items.forEach(function (x) { if (x.slot === sl) it = x; }); return it; };
+    h += cmpHead(t("cmp_gear")) + SLOT_L.concat(SLOT_R, SLOT_B).map(function (sl) {
+      var ia = slotOf(a, sl), ib = slotOf(b, sl);
+      if (!ia && !ib) return "";
+      var la = ia ? ia.ilvl : null, lb = ib ? ib.ilvl : null, win = la != null && lb != null && la !== lb ? (la > lb ? "a" : "b") : la != null && lb == null ? "a" : lb != null && la == null ? "b" : "";
+      return '<div class="crow gear"><span class="ca' + (win === "a" ? " cwin" : "") + '"><b>' + (la != null ? la : "–") + "</b>" + slotHtml(a, sl) + '</span><span class="cl">' + esc(t("slot_" + sl)) + '</span><span class="cb' + (win === "b" ? " cwin" : "") + '" data-cmpb="1">' + slotHtml(b, sl) + "<b>" + (lb != null ? lb : "–") + "</b></span></div>";
+    }).join("");
+    // reputation: samma sortering som på spelarsidan, A:s stapel till vänster och B:s till höger
+    var ra = {}, rb = {}, rn = [];
+    a.reputations.forEach(function (r) { ra[r.name] = r; rn.push(r.name); });
+    b.reputations.forEach(function (r) { rb[r.name] = r; if (!ra[r.name]) rn.push(r.name); });
+    if (rn.length) {
+      h += cmpHead(t("ar_rep")) + '<div class="repsorts">' + repSortBtn("area", t("rep_area")) + repSortBtn("name", t("rep_name")) + repSortBtn("standing", t("rep_standing")) + "</div>";
+      repOrder(rn, function (n) { return Math.max(repRank(ra[n]), repRank(rb[n])); }, a.faction).forEach(function (g) {
+        if (g[0]) h += '<div class="repgrp">' + esc(g[0]) + "</div>";
+        h += g[1].map(function (n) {
+          var x = repRank(ra[n]), y = repRank(rb[n]), win = x !== y && x >= 0 && y >= 0 ? (x > y ? "a" : "b") : "";
+          return '<div class="crow crep"><span class="ca' + (win === "a" ? " cwin" : "") + '">' + repBar(ra[n], true) + '</span><span class="cl">' + esc(n) + '</span><span class="cb' + (win === "b" ? " cwin" : "") + '">' + repBar(rb[n], true) + "</span></div>";
+        }).join("");
+      });
+    }
+    h += "</div></div></div>";
+    arShow(h, null);
+  }
   function renderChar(d) {
     var pic = d.media && (d.media["main-raw"] || d.media["main-sd-raw"]), fr = isFriend(d.slug);
     // Rubriken (Joakim 2026-11-17): guilden överst, ★ till vänster om namnet, level inom parentes efter, ras och klass under.
     var full = d.name + " " + d.surname, profN = d.professions.primary.length + d.professions.secondary.length;
     var mid = '<div class="arhead2"><div class="ahtop">' +
       (d.guild ? '<span class="glbl">' + t("ar_guild") + ':</span> <a class="wh gld" href="#guild=' + esc(d.guild.slug) + '" data-ar="guild" data-slug="' + esc(d.guild.slug) + '">&lt;' + esc(d.guild.name) + "&gt;</a>" : "<span></span>") +
-      '<button class="lnk" type="button" data-copyany="#player=' + esc(d.slug) + '" title="' + t("copy_link") + '">' + t("copy_link") + "</button></div>" +
+      '<span class="ahbtns"><button class="lnk" type="button" data-cmp="1" aria-expanded="' + arCmpPick + '" title="' + t("cmp_tip") + '">⇄ ' + t("cmp") + '</button><button class="lnk" type="button" data-copyany="#player=' + esc(d.slug) + '" title="' + t("copy_link") + '">' + t("copy_link") + "</button></span></div>" +
       '<div class="ahname"><button class="star fr" type="button" data-friend="' + esc(d.slug) + '" data-label="' + esc(full) + '" aria-pressed="' + fr + '" title="' + t(fr ? "fr_del" : "fr_add") + '">' + (fr ? "★" : "☆") + "</button>" +
       '<h2 class="q1">' + esc(full) + '</h2><span class="lvl">(' + d.level + ")</span></div>" +
       '<div class="ahsub">' + esc(((d.race || "") + " " + (d.cls || "")).trim()) +
-      (d.pvp ? " · " + (rankBadge(d.faction, d.pvp.rank) || '<span class="dim">' + t("pvp_norank") + "</span>") + ' <span class="hk"><b>' + num(d.pvp.hk) + "</b> " + t("pvp_hk") + "</span>" : "") + "</div></div>" +
+      (d.pvp ? " · " + (rankBadge(d.faction, d.pvp.rank) || '<span class="dim">' + t("pvp_norank") + "</span>") + ' <span class="hk"><b>' + num(d.pvp.hk) + "</b> " + t("pvp_hk") + "</span>" : "") + "</div></div>" + (arCmpPick ? cmpPickHtml(d) : "") +
       // Dockan med item level i bildrutan, stats till höger (som i spelet), raderna bredvid eller under när det är smalt.
       '<div class="arbody2"><div class="charframe"><div class="dollcol"><div class="doll"><div class="col">' + SLOT_L.map(function (sl) { return slotHtml(d, sl); }).join("") + '</div><div class="mid">' +
       (pic ? '<div class="picbox"><img class="pic" src="' + esc(pic) + '" alt="">' : '<div class="picbox none hint">' + t("ar_noimg")) +
@@ -1761,7 +1921,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     if (mode === "ar" || hp0.player || hp0.guild) {
       mode = "ar"; $("q").placeholder = t("search_ar");
       drawCats(); refresh();
-      if (hp0.player) arLoad("char", hp0.player); else if (hp0.guild) arLoad("guild", hp0.guild);
+      if (hp0.player) { arVs = hp0.vs || ""; arLoad("char", hp0.player); } else if (hp0.guild) arLoad("guild", hp0.guild);
       else if (arRecent[0]) arLoad(arRecent[0].kind, arRecent[0].slug); else arShow('<div class="hint">' + t("ar_hint") + "</div>", "");
       return;
     }
@@ -1884,7 +2044,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
           (di[4] || []).map(function (l) { return '<div class="ln"><span' + (l[2] === "g" ? ' class="q2"' : l[2] === "y" ? ' class="tipy"' : "") + ">" + esc(l[0]) + "</span>" + (l[1] ? '<span class="r">' + esc(l[1]) + "</span>" : "") + "</div>"; }).join("");
         tipBox.hidden = false; placeTip();
       } else if (ea && arData && arData.items) {
-        var it = arData.items[+ea.getAttribute("data-artip")];
+        var it = (ea.closest("[data-cmpb]") && arCmp ? arCmp.b : arData).items[+ea.getAttribute("data-artip")];
         if (it) {
           tipId = -1;
           if (!tipBox) { tipBox = document.createElement("div"); tipBox.className = "wtip"; document.body.appendChild(tipBox); }
@@ -2355,8 +2515,32 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     }
     var rc = e.target.closest("[data-rcls]");
     if (rc && arData && arData.kind === "guild") { rState.cls = rState.cls === rc.dataset.rcls ? "" : rc.dataset.rcls; drawRoster(arData); return; }
+    var rsb = e.target.closest("[data-repsort]");
+    if (rsb && arData && arData.kind === "character") {
+      var rk = rsb.dataset.repsort;
+      if (rk === "area") repSort = { k: "area", dir: 1 }; else if (repSort.k === rk) repSort.dir = -repSort.dir; else repSort = { k: rk, dir: rk === "name" ? 1 : -1 };
+      try { localStorage.setItem(REP_KEY, JSON.stringify(repSort)); } catch (e4) {}
+      arRedraw(); return;
+    }
+    if (e.target.closest("[data-cmp]") && arData && arData.kind === "character") {
+      arCmpPick = !arCmpPick; arCmpErr = ""; renderChar(arData);
+      if (arCmpPick) { var cq = $("cmpq"); if (cq) cq.focus(); }
+      return;
+    }
+    var co = e.target.closest("[data-cmpslug]");
+    if (co) { arCompare(co.dataset.cmpslug); return; }
+    if (e.target.closest("[data-cmpclose]") && arData) {
+      arCmp = null; renderChar(arData);
+      try { history.replaceState(null, "", "#player=" + arData.slug); } catch (e5) {}
+      return;
+    }
+    if (e.target.closest("[data-cmpswap]") && arData && arCmp) {
+      var b0 = arCmp.b; arCmp = { b: arData }; arData = b0; arRec = 0;
+      try { history.replaceState(null, "", "#player=" + arData.slug + "&vs=" + arCmp.b.slug); } catch (e6) {}
+      renderCompare(arData, arCmp.b); return;
+    }
     var tg = e.target.closest("[data-artoggle]");
-    if (tg && arData && arData.kind === "character") { arOpen[tg.dataset.artoggle] = !arOpen[tg.dataset.artoggle]; renderChar(arData); return; }
+    if (tg && arData && arData.kind === "character") { arOpen[tg.dataset.artoggle] = !arOpen[tg.dataset.artoggle]; arRedraw(); return; }
     var ab = e.target.closest("[data-arback]");
     if (ab && arData && arData.kind === "character") { arRec = 0; renderChar(arData); return; }
     var ar2 = e.target.closest("[data-arrec]");   // känt recept i Armory → receptrutan i högerpanelen
@@ -2499,6 +2683,8 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   applyPanorama(houseParts(house)[1]);
   $("mktBtn").addEventListener("click", function () { mktOpen($("mktPop").hidden); });
   document.addEventListener("click", function (e) { if (!$("mktPop").hidden && !e.target.closest("#mkt")) mktOpen(false); });
+  // Jämförelsens ruta: Enter eller knappen jämför med namnet i rutan.
+  document.addEventListener("submit", function (e) { if (e.target && e.target.matches && e.target.matches("[data-cmpform]")) { e.preventDefault(); var q = $("cmpq"); arCompare(q ? q.value : ""); } });
   document.addEventListener("keydown", function (e) { if (e.key === "Escape" && !$("mktPop").hidden) { mktOpen(false); $("mktBtn").focus(); } });
   $("mktPop").addEventListener("click", function (e) {   // panelen ligger kvar: fraktion och servertyp kan bytas i samma öppning
     var b = e.target.closest("button");
