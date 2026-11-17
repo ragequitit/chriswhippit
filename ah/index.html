@@ -344,13 +344,13 @@ td.nm, .watch td:first-child { text-align: left; white-space: nowrap; max-width:
 .craft tr.tierhd td { text-align: left; color: var(--gold); font-family: var(--display); font-size: 12.5px; letter-spacing: .04em; text-transform: uppercase; padding-top: 8px; border-bottom: 1px solid var(--line); background: none; }
 .craft tbody tr[aria-selected=true] td { background: var(--sel); }
 .dollwrap { display: grid; gap: 8px; justify-items: center; }
-.doll { display: grid; grid-template-columns: 40px 232px 40px; gap: 8px; align-items: start; justify-items: center;
+.doll { display: grid; grid-template-columns: 40px 232px 40px; gap: 8px; align-items: stretch; justify-items: center;   /* mitten lika hög som sidokolumnerna: vapnen på samma rad som nedersta platsen (som i spelet, Joakim 2026-11-17) */
   padding: 10px; border-radius: 6px; background: var(--inset); border: 1px solid var(--line); box-shadow: inset 0 1px 4px rgba(0, 0, 0, .5); }
 .doll .col { display: grid; gap: 4px; }
-.doll .mid { width: 100%; display: grid; justify-items: center; align-content: start; gap: 4px; }
+.doll .mid { width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: space-between; gap: 4px; }
 /* Blizzards figurbild är 1600×1200 med figuren liten mitt i: visas beskuren i en stående ruta, bilden 3× rutans bredd. */
-.doll .picbox { position: relative; width: 100%; aspect-ratio: 232 / 300; overflow: hidden; border-radius: 5px; }
-.doll .pic { position: absolute; left: 50%; top: 50%; width: 300%; max-width: none; transform: translate(-47.4%, -57.8%); filter: drop-shadow(0 10px 18px rgba(0, 0, 0, .6)); }   /* figurens mitt (uppmätt) ligger på 47 % / 58 % av bilden */
+.doll .picbox { position: relative; width: 100%; flex: 1 1 auto; min-height: 240px; overflow: hidden; border-radius: 5px; }
+.doll .pic { position: absolute; left: 50%; top: 50%; width: 340%; max-width: none; transform: translate(-47.4%, -54.3%); filter: drop-shadow(0 10px 18px rgba(0, 0, 0, .6)); }   /* figurens mitt (uppmätt) ligger på 47 % / 58 % av bilden */
 .doll .picbox.none { display: grid; place-items: center; }
 .doll .bot { display: flex; gap: 4px; justify-content: center; }
 .slot { width: 40px; height: 40px; border-radius: 4px; border: 1px solid var(--line); background: #0b0908; box-shadow: inset 0 1px 3px rgba(0, 0, 0, .6); position: relative; cursor: default; }
