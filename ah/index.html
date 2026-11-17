@@ -586,7 +586,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   .left, .right { display: flex; flex-direction: column; min-height: 0; }
   .cats { align-self: stretch; min-height: 0; overflow: auto; scrollbar-width: thin; scrollbar-color: var(--edge) var(--inset); }
   .left .scroll, .left .armory, .right .detail { flex: 1 1 auto; min-height: 0; overflow: auto; scrollbar-width: thin; scrollbar-color: var(--edge) var(--inset); }
-  .cats, .left .scroll, .left .armory, .right .detail { position: relative; scrollbar-gutter: stable; }   /* buggsvep 2026-11-17: .sr-spannen läckte ut och sidan blev rullbar; rullisten flyttade innehållet */
+  .cats, .left .scroll, .left .armory, .right .detail { position: relative; top: auto; scrollbar-gutter: stable; }   /* buggsvep 2026-11-17: .sr-spannen läckte ut och sidan blev rullbar; rullisten flyttade innehållet */
   .right .detail { align-content: start; }
   .left .scroll.noitems { flex: none; }   /* tom lista: meddelandet direkt under rubriken, inte 570 px ner */
   .foot { padding-block: 8px 10px; }
@@ -608,7 +608,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   .cats h2 { display: none; }
   .cat, .cat.sub, .cat.sub2 { margin-left: 2px; flex: none; }
   .right { order: -1; }
-  .detail, .scroll, .cats, .armory { position: relative; }   /* .sr-texten i priserna får inte läcka ut (sidan blev 7 px bredare) */
+  .detail, .scroll, .cats, .armory { position: relative; top: auto; }   /* .sr-texten i priserna får inte läcka ut (sidan blev 7 px bredare) */
   .home { flex-basis: 100%; }
   .mkt { margin-left: 0; }
   .scan { text-align: right; flex: 1 1 auto; }
