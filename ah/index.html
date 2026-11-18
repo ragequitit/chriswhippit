@@ -225,6 +225,12 @@ body[data-mode=hu] .facts dd { font-size: 15px; }
 .lbmeter b { color: var(--fg); } .lbmeter .h b { color: #ff6b5a; } .lbmeter .a b { color: #5aa0ff; }
 .lbmeter .lbbar { display: flex; height: 8px; border-radius: 4px; overflow: hidden; background: var(--inset); border: 1px solid var(--line); }
 .lbmeter .hb { background: linear-gradient(#c8392b, #8f2219); } .lbmeter .ab { background: linear-gradient(#3b7fd6, #234f8f); min-width: 2px; }
+.ekoh { margin: 6px 0 16px; } .ekoh h3 { margin-bottom: 8px; }
+.ekog { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; }
+.ekoc { padding: 10px 12px; border: 1px solid var(--line); border-radius: 6px; background: var(--inset); display: grid; gap: 4px; }
+.ekoc > b { font-family: var(--display); font-size: 15px; color: var(--gold); } .ekoc.fa-alliance > b { color: #7ea2d6; } .ekoc.fa-blackwater > b { color: #c9c9c9; }
+.ekov { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; font-size: 12.5px; color: var(--grey); } .ekov em { font-style: normal; font-size: 16px; font-weight: 600; color: var(--fg); } .ekov em.pos { color: #6fdc6f; } .ekov em.neg { color: #e06060; }
+.ekos { width: 100%; height: 40px; margin-top: 4px; } .ekos polyline { fill: none; stroke: var(--gold); stroke-width: 2; vector-effect: non-scaling-stroke; }
 .lbcls { display: grid; gap: 8px; } .lbc { display: grid; grid-template-columns: minmax(130px, 34%) 1fr; grid-template-rows: auto auto; column-gap: 12px; row-gap: 3px; align-items: center; }
 .lbc .nm { grid-row: span 2; display: flex; align-items: center; gap: 6px; min-width: 0; } .lbc .nm .ri { width: 22px; height: 22px; border-radius: 3px; } .lbc .nm small { color: var(--grey); margin-left: auto; white-space: nowrap; }
 .lbcb { display: flex; align-items: center; gap: 6px; height: 10px; font-size: 11.5px; } .lbcb i { height: 8px; border-radius: 3px; min-width: 2px; } .lbcb em { font-style: normal; color: var(--grey); }
@@ -1321,6 +1327,11 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
       hu_hp: "Health", hu_dmg: "Damage", hu_armor: "Armor", hu_diet: "Diet", hu_learn: "Abilities the family can learn", hu_uses: "Uses in the wild", hu_where: "Where it lives", hu_inst: "dungeon", hu_spawns: "%1 spawns in the database",
       m3_btn: "3D", m3_pic: "Picture", m3_tip: "Rotate the model: drag with the mouse", m3_fail: "No 3D model",
       hu_speed_note: "A tamed pet keeps its attack speed: 1.0–1.3 is fast, 2.0 is normal. Health, damage and armor come from the family.",
+      eko_h: "Gold on the auction house", eko_listed: "Listed right now", eko_day: "Sold per day", eko_week: "vs 7 days ago", eko_days: "%1 days of data", eko_loading: "Loading…",
+      eko_note: "Listed = market price × quantity on the auction house right now. Sold per day = estimated sales × market price. Real gold on the server cannot be measured; the auction house is the best proxy.",
+      lb_att: "Raid ready", lb_att_sub: "Guilds by level 60s attuned for Molten Core, Onyxia and Blackwing Lair", lb_att_all: "All three", lb_att_n: "60s checked", lb_att_none: "No level 60s checked yet – the catalog fetches completed quests once a day.",
+      lb_att_note: "Counts level 60s whose completed quests the catalog has fetched. Naxxramas is not counted: it needs Argent Dawn reputation, not a quest.",
+      lb_rep: "Reputation", lb_rep_sub: "Players by reputation", lb_rep_ex: "Most Exalted", lb_rep_exn: "exalted", lb_rep_note: "Reputation is fetched for level 60s once a week; the list grows as the catalog gets to everyone.",
       lb: "Leaderboards", lb_server: "Server stats", lb_sub: "%1 players and %2 guilds found so far · %3", lb_ilvl: "Item level", lb_level: "Level", lb_hk: "Honorable kills", lb_rank: "PvP rank", lb_ach: "Achievement points", lb_guilds: "Guilds",
       lb_cls: "Classes", lb_only60: "Only level 60", lb_cls_note: "%1 players with a known class. Top bar = Horde, bottom bar = Alliance, on the same scale.",
       lb_meter_tip: "How many Horde and Alliance players the catalog has found on this realm type. Alliance grows with enemy nameplates on (Ctrl+V) and battlegrounds.",
@@ -4381,6 +4392,8 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
     var al = e.target.closest("[data-ar]");
     if (al) { e.preventDefault(); e.stopPropagation(); showTab("item"); arLb = ""; arLoad(al.dataset.ar, al.dataset.slug); return; }
     if (e.target.closest("[data-lb60]") && mode === "ar") { lb60 = !lb60; lbShow(); return; }
+    var lbrp = e.target.closest("[data-lbrep]");
+    if (lbrp && mode === "ar") { lbRep = lbrp.dataset.lbrep; lbShow(); return; }
     var lbr = e.target.closest("[data-lbrs]");
     if (lbr && mode === "ar") { lbRs = lbr.dataset.lbrs; lbShow(); return; }
     var lbf = e.target.closest("[data-lbfa]");
@@ -4932,8 +4945,11 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
   // "First to 60" borttagen ur listan (Joakim 2026-11-18); koden för #top=first60 finns kvar.
   // [nyckel, fält, text, grupp]: b = topplistor, s = serverstatistik (Joakim 2026-11-18: klasser är inte en topplista;
   // Activity borttagen helt – den byggde bara på timmarna Joakim själv var online; koden för #top=act finns kvar).
-  var LB = [["ilvl", "il", "lb_ilvl", "b"], ["hk", "hk", "lb_hk", "b"], ["rank", "rk", "lb_rank", "b"], ["ach", "ap", "lb_ach", "b"], ["guilds", "", "lb_guilds", "b"], ["cls", "", "lb_cls", "s"]];
-  var LB_ICON = { ilvl: "inv_misc_trophy_argent", hk: "ability_rogue_ambush", rank: "inv_bannerpvp_01", ach: "achievement_general", guilds: "inv_misc_tabard_01", cls: "inv_misc_map02" };
+  var LB = [["ilvl", "il", "lb_ilvl", "b"], ["hk", "hk", "lb_hk", "b"], ["rank", "rk", "lb_rank", "b"], ["ach", "ap", "lb_ach", "b"], ["guilds", "", "lb_guilds", "b"], ["att", "", "lb_att", "b"], ["rep", "", "lb_rep", "b"], ["cls", "", "lb_cls", "s"]];
+  var lbRep = "";   // vald fraktion i Reputation-listan ("" = flest Exalted)
+  var LB_REPF = ["Timbermaw Hold", "Zandalar Tribe", "Argent Dawn", "Cenarion Circle", "Thorium Brotherhood", "Hydraxian Waterlords", "Brood of Nozdormu", "Wintersaber Trainers", "Darkmoon Faire", "Bloodsail Buccaneers"];
+  var LB_STAND = ["Hated", "Hostile", "Unfriendly", "Neutral", "Friendly", "Honored", "Revered", "Exalted"];
+  var LB_ICON = { att: "inv_misc_key_10", rep: "inv_misc_tabardpvp_01", ilvl: "inv_misc_trophy_argent", hk: "ability_rogue_ambush", rank: "inv_bannerpvp_01", ach: "achievement_general", guilds: "inv_misc_tabard_01", cls: "inv_misc_map02" };
   function lbCats() {
     return "<h2>" + t("lb") + "</h2>" + LB.map(function (b) {
       return '<button class="cat" type="button" data-lb="' + b[0] + '" aria-pressed="' + (b[0] === arLb) + '"><img class="ci" src="' + RICON + (LB_ICON[b[0]] || "inv_misc_questionmark") + '.jpg" alt="" onerror="this.style.visibility=\'hidden\'"><em class="nm">' + t(b[3] === "s" ? "lb_server" : b[2]) + "</em></button>";
@@ -4946,6 +4962,33 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
       .catch(function (e) { katPromise = null; throw e; });
     return katPromise;
   }
+  // Guld i omlopp (Joakim 2026-11-18): ekonomi.json { houses: { hus: [[dag, ute (koppar), omsättning/dygn, listningar, varor]] } }.
+  var EKO = null, ekoP = null;
+  function ekoLoad() {
+    if (!ekoP) ekoP = fetch(DATA_BASE + "ekonomi.json", { cache: "no-cache" }).then(function (r) { return r.ok ? r.json() : { houses: {} }; }).then(function (j) { EKO = j; return j; }).catch(function () { EKO = { houses: {} }; return EKO; });
+    return ekoP;
+  }
+  function gold(c) { c = Math.round(c / 1e4); return c >= 1e6 ? (c / 1e6).toFixed(2) + "M" : c >= 1e5 ? Math.round(c / 1e3) + "k" : num(c); }
+  function ekoHtml() {
+    if (!EKO) { ekoLoad().then(function () { if (mode === "ar" && arLb === "cls") lbShow(); }); return '<div class="ekoh"><h3>' + t("eko_h") + '</h3><div class="note">' + t("eko_loading") + "</div></div>"; }
+    var hp = houseParts(house) || ["pvp", "horde", "eu"], rs = hp[0] in MK_RS ? hp[0] : "pvp";
+    var cards = ["horde", "alliance", "blackwater"].map(function (fa) {
+      var k = mkKey(hp[2], rs, fa), d = EKO.houses[k] || EKO.houses[String(k)] || [];
+      if (!d.length) return "";
+      var last = d[d.length - 1], ago = null;
+      for (var i = d.length - 1; i >= 0; i--) if (d[i][0] <= dayShift(last[0], -7)) { ago = d[i]; break; }
+      var ch = ago && ago[2] > 0 ? Math.round((last[2] - ago[2]) / ago[2] * 100) : null;
+      var ser = d.slice(-14).map(function (p) { return p[2]; }), mx = Math.max.apply(null, ser) || 1;
+      var pts = ser.map(function (v, i) { return (ser.length > 1 ? i / (ser.length - 1) * 100 : 50).toFixed(1) + "," + (36 - v / mx * 32).toFixed(1); }).join(" ");
+      var nm = fa === "horde" ? "Horde" : fa === "alliance" ? "Alliance" : "Blackwater";
+      return '<div class="ekoc fa-' + fa + '"><b>' + nm + '</b><div class="ekov"><span>' + t("eko_listed") + "</span><em>" + gold(last[1]) + ' <i class="coin g"></i></em></div>' +
+        '<div class="ekov"><span>' + t("eko_day") + "</span><em>" + gold(last[2]) + ' <i class="coin g"></i></em></div>' +
+        (ch !== null ? '<div class="ekov"><span>' + t("eko_week") + '</span><em class="' + (ch > 0 ? "pos" : ch < 0 ? "neg" : "") + '">' + (ch > 0 ? "+" : "") + ch + " %</em></div>" : "") +
+        '<svg class="ekos" viewBox="0 0 100 40" preserveAspectRatio="none"><polyline points="' + pts + '"/></svg><small class="dim">' + num(last[3]) + " listings · " + t("eko_days", d.length) + "</small></div>";
+    }).join("");
+    return '<div class="ekoh"><h3>' + t("eko_h") + '</h3><div class="ekog">' + (cards || '<div class="note">–</div>') + '</div><div class="note">' + t("eko_note") + "</div></div>";
+  }
+  function dayShift(day, n) { var d = new Date(day + "T00:00:00Z"); d.setUTCDate(d.getUTCDate() + n); return d.toISOString().slice(0, 10); }
   function lbShow() {
     ++arToken; arKeepSub = false;   // topplistan visas: ett sent spelarsvar får inte skriva över den (granskning 2026-11-18)
     if (!KAT) { arShow('<div class="hint">' + t("ar_loading") + "</div>", ""); loadKat().then(function () { if (mode === "ar" && arLb) { drawCats(); lbShow(); } }).catch(function () { if (mode === "ar" && arLb) arShow('<div class="hint">' + t("lb_fail") + "</div>", ""); }); return; }
@@ -4968,6 +5011,7 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
       rsb("", t("lb_rs_auto", houseParts(house)[0] === "pvp" ? "PvP" : "Normal")) + rsb(houseParts(house)[0] === "pvp" ? "normal" : "pvp", houseParts(house)[0] === "pvp" ? "Normal" : "PvP") + rsb("all", t("lb_rs_all")) + "</div>" +
       (KAT.players.some(function (p) { return !p.rs; }) && rs ? '<div class="note">' + t("lb_rs_partial") + "</div>" : "");
     if (def[0] === "cls") {
+      h += ekoHtml();
       var cc = {}, tot = 0;
       KAT.players.forEach(function (p) {
         if (!rsOk(p) || !p.c || (lb60 && p.lv < 60)) return;
@@ -4997,6 +5041,32 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
             '<td class="hide-s">' + (p.g ? '<a class="dim" href="#guild=' + esc(p.g) + '" data-ar="guild" data-slug="' + esc(p.g) + '">&lt;' + esc(p.gn) + "&gt;</a>" : "") + "</td><td>" + (before ? '<span class="dim">' + t("lb_before", when2(st)) + "</span>" : "<b>" + when2(p.t60) + "</b>") + "</td></tr>";
         }).join("") + "</tbody></table>" + (f6.length ? "" : '<div class="note">' + t("lb_first60_none") + "</div>") +
         '<div class="note">' + t("lb_first60_note2", when2(st), num(nBefore)) + "</div>";
+    } else if (def[0] === "att") {
+      var gA = {};
+      KAT.players.forEach(function (p) {
+        if (!faOk(p) || p.lv < 60 || p.attT == null || !p.g) return;
+        var g = gA[p.g] = gA[p.g] || { s: p.g, n: p.gn || p.g, fa: p.fa, n60: 0, mc: 0, ony: 0, bwl: 0, all: 0 };
+        g.n60++; if (p.att & 1) g.mc++; if (p.att & 2) g.ony++; if (p.att & 4) g.bwl++; if ((p.att & 7) === 7) g.all++;
+      });
+      var ga = Object.keys(gA).map(function (k) { return gA[k]; }).sort(function (a, b) { return (b.all - a.all) || (b.mc + b.ony + b.bwl) - (a.mc + a.ony + a.bwl) || b.n60 - a.n60; }).slice(0, 50);
+      h += '<table class="lbt"><thead><tr><th>#</th><th class="nm">' + t("lb_guild") + "</th><th>MC</th><th>Ony</th><th>BWL</th><th>" + t("lb_att_all") + '</th><th class="hide-s">' + t("lb_att_n") + "</th></tr></thead><tbody>" +
+        ga.map(function (g, i) {
+          var c = function (v) { return "<td>" + (v ? "<b>" + v + "</b>" : '<span class="dim">0</span>') + "</td>"; };
+          return '<tr><td class="lbn' + (i < 3 ? " top" + (i + 1) : "") + '">' + (i + 1) + '</td><td class="nm"><a href="#guild=' + esc(g.s) + '" data-ar="guild" data-slug="' + esc(g.s) + '">&lt;' + esc(g.n) + '&gt;</a> <small class="dim">' + (g.fa === "ALLIANCE" ? "A" : "H") + "</small></td>" + c(g.mc) + c(g.ony) + c(g.bwl) + c(g.all) + '<td class="hide-s">' + g.n60 + "</td></tr>";
+        }).join("") + "</tbody></table>" + (ga.length ? "" : '<div class="note">' + t("lb_att_none") + "</div>") + '<div class="note">' + t("lb_att_note") + "</div>";
+    } else if (def[0] === "rep") {
+      var rchip = function (k, lbl) { return '<button type="button" class="huchip' + (lbRep === k ? " on" : "") + '" data-lbrep="' + k + '" aria-pressed="' + (lbRep === k) + '">' + lbl + "</button>"; };
+      h += '<div class="huchips">' + rchip("", t("lb_rep_ex")) + LB_REPF.map(function (n) { return rchip(n, n); }).join("") + "</div>";
+      var rp = KAT.players.filter(function (p) { return faOk(p) && p.rep && (lbRep ? p.rep.f && p.rep.f[lbRep] : p.rep.ex > 0); });
+      if (lbRep) rp.sort(function (a, b) { var x = a.rep.f[lbRep], y = b.rep.f[lbRep]; return (y[0] - x[0]) || (y[1] - x[1]) || b.lv - a.lv; });
+      else rp.sort(function (a, b) { return (b.rep.ex - a.rep.ex) || b.il - a.il; });
+      rp = rp.slice(0, 100);
+      h += '<table class="lbt"><thead><tr><th>#</th><th class="nm">' + t("lb_player") + '</th><th class="hide-s">' + t("lb_guild") + "</th><th>" + (lbRep ? esc(lbRep) : t("lb_rep_ex")) + "</th></tr></thead><tbody>" +
+        rp.map(function (p, i) {
+          var full = p.n + (p.sn ? " " + p.sn : ""), v = lbRep ? p.rep.f[lbRep] : null;
+          return '<tr><td class="lbn' + (i < 3 ? " top" + (i + 1) : "") + '">' + (i + 1) + '</td><td class="nm">' + (i < 3 ? drk(false, true, classIcon(p.c)) : classIcon(p.c)) + '<a href="#player=' + esc(p.s) + '" data-ar="char" data-slug="' + esc(p.s) + '" style="color:' + (CLASS_COL[p.c] || "inherit") + '">' + esc(full) + "</a></td>" +
+            '<td class="hide-s">' + (p.g ? '<a class="dim" href="#guild=' + esc(p.g) + '" data-ar="guild" data-slug="' + esc(p.g) + '">&lt;' + esc(p.gn) + "&gt;</a>" : "") + "</td><td>" + (v ? "<b>" + LB_STAND[v[0]] + "</b> <small class=\"dim\">" + num(v[1]) + "</small>" : "<b>" + p.rep.ex + "</b> " + t("lb_rep_exn")) + "</td></tr>";
+        }).join("") + "</tbody></table>" + (rp.length ? "" : '<div class="note">' + t("lb_att_none") + "</div>") + '<div class="note">' + t("lb_rep_note") + "</div>";
     } else if (def[0] === "guilds") {
       var gl = KAT.guilds.filter(faOk).sort(function (a, b) { return (b.n60 - a.n60) || (b.il60 - a.il60) || (b.avg - a.avg); }).slice(0, 50);
       h += '<table class="lbt"><thead><tr><th>#</th><th class="nm">' + t("lb_guild") + "</th><th>" + t("lb_n60") + '</th><th class="hide-s">' + t("lb_il60") + "</th><th>" + t("lb_avg") + '</th><th class="hide-s">' + t("lb_members") + "</th></tr></thead><tbody>" +
