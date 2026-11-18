@@ -255,8 +255,8 @@ h1 { font-family: var(--display); font-weight: 500; font-size: 36px; margin: 0; 
 .qmtxl line { stroke: #e8d9a8; stroke-width: 1.2; stroke-dasharray: 3 3; vector-effect: non-scaling-stroke; opacity: .45; }
 .qmtx { position: absolute; z-index: 2; transform: translate(-50%, -50%); font: 700 11px/1 system-ui, sans-serif; width: 15px; height: 15px; display: grid; place-items: center;
   border-radius: 4px; border: 1px solid #000; cursor: copy; box-shadow: 0 0 4px rgba(0, 0, 0, .8); color: #fff; }
-.portr { height: 180px; border-radius: 6px; overflow: hidden; border: 1px solid var(--edge); background: radial-gradient(ellipse at 50% 60%, #2a2219, #0e0b08 70%); box-shadow: inset 0 0 30px rgba(0, 0, 0, .7); }
-.portr img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 50% 52%; transform: scale(1.35); mix-blend-mode: lighten; }
+.portr { height: 230px; border-radius: 6px; overflow: hidden; border: 1px solid var(--edge); background: radial-gradient(ellipse at 50% 60%, #2a2219, #0e0b08 70%); box-shadow: inset 0 0 30px rgba(0, 0, 0, .7); }
+.portr img { display: block; width: 100%; height: 100%; object-fit: contain; mix-blend-mode: lighten; -webkit-mask-image: radial-gradient(closest-side, #000 72%, transparent 100%); mask-image: radial-gradient(closest-side, #000 72%, transparent 100%); }   /* hela bilden: kvadratisk med djuret i mitten (Joakim 2026-11-18: beskuren slättlöpare) */
 .portr { position: relative; }
 .portr canvas { position: absolute; inset: 0; width: 100% !important; height: 100% !important; display: block; cursor: grab; touch-action: pan-y; }
 .portr canvas:active { cursor: grabbing; }
@@ -2590,7 +2590,8 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   // assets/models/<displayId>.glb, bara Stand-animationen). three.js laddas från jsDelivr först vid första klick. En visare
   // åt gången; den stängs när rutan byts ut. Valet (3D eller bild) sparas så nästa djur öppnas likadant.
   var M3 = { lib: null, cur: null, KEY: "ah3d" };
-  function m3Pref() { try { return localStorage.getItem(M3.KEY) === "1"; } catch (e) { return false; } }
+  // 3D är standard (Joakim 2026-11-18: bilderna är olika inramade, platta djur blir pyttesmå); "Picture" sparas som val.
+  function m3Pref() { try { return localStorage.getItem(M3.KEY) !== "0"; } catch (e) { return true; } }
   function m3SetPref(on) { try { localStorage.setItem(M3.KEY, on ? "1" : "0"); } catch (e) {} }
   window.m3NoPic = function (img) {
     var box = img.parentNode;
