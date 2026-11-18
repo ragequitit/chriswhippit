@@ -206,6 +206,32 @@ h1 { font-family: var(--display); font-weight: 500; font-size: 36px; margin: 0; 
 .huzbig .huz { transform: scale(1.4); } .huzbig .huz.r { transform: rotate(45deg) scale(1.4); } .huzbig .huz:hover { transform: scale(2); } .huzbig .huz.r:hover { transform: rotate(45deg) scale(2); }
 .huzbig .huz.one { transform: none; } .huzbig .huz.one.r { transform: rotate(45deg); }
 .huzcap { text-align: center; font-size: 12.5px; color: var(--grey); }
+.qmpoly { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.qmpoly polygon { fill-opacity: .2; stroke-opacity: .75; stroke-width: .25; vector-effect: non-scaling-stroke; }
+.qmpoly.hurt polyline { fill: none; stroke: #f2f6fa; stroke-width: 2.5; stroke-dasharray: 6 4; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+.qmpoly.hurt polyline.bg { stroke: #1a1208; stroke-width: 5; stroke-dasharray: none; opacity: .75; }
+.qmk { position: absolute; width: 8px; height: 8px; margin: -5px 0 0 -5px; border-radius: 50%; border: 1px solid #000; background: var(--c, #f0c040); cursor: copy; box-shadow: 0 0 4px rgba(0, 0, 0, .7); }
+.qmk.o { --c: #ffd84a; width: 11px; height: 11px; margin: -6.5px 0 0 -6.5px; cursor: pointer; box-shadow: 0 0 0 3px rgba(255, 216, 74, .3), 0 0 6px rgba(0, 0, 0, .8); }
+.qmk:hover { transform: scale(1.6); z-index: 4; }
+.qmq { position: absolute; z-index: 3; transform: translate(-50%, -60%); font: 900 19px/1 Georgia, serif; color: #ffd100; cursor: copy;
+  text-shadow: 0 0 2px #000, 0 0 2px #000, 1px 1px 0 #000, -1px -1px 0 #000, 0 0 8px rgba(255, 209, 0, .6); }
+.qmq.e { color: #ffd100; } .qmq.sm { font-size: 15px; cursor: pointer; } .qmq.dn { color: #9a9a9a; text-shadow: 0 0 2px #000, 1px 1px 0 #000; font-size: 12px; z-index: 2; }
+.qmq.dg { color: #c58cff; font-size: 22px; text-shadow: 0 0 2px #000, 0 0 2px #000, 0 0 10px rgba(197, 140, 255, .9); }
+.qmq:hover { transform: translate(-50%, -60%) scale(1.3); z-index: 5; }
+.qmq.in, .qmk.in { position: static; display: inline-block; transform: none; margin: 0 6px 0 0; vertical-align: -1px; }
+.qmk.in { width: 9px; height: 9px; } .qmq.in { font-size: 16px; } .qmq.in.sm { font-size: 14px; }
+.huzbig .qmk { transform: scale(1.3); } .huzbig .qmq { font-size: 24px; }
+.qmleg { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 8px; font-size: 13px; }
+.qmleg ul { list-style: none; margin: 3px 0 0 18px; padding: 0; display: grid; gap: 2px; }
+.qmleg ul li { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.qmc { all: unset; cursor: copy; font: 12px/1.4 ui-monospace, Consolas, monospace; color: #ffd100; padding: 0 6px; border: 1px solid var(--line); border-radius: 10px; background: var(--inset); }
+.qmc:hover, .qmc:focus-visible { border-color: #ffd100; } .qmc small { color: var(--grey); font-family: inherit; }
+.qmleg1 { font-size: 13px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.qmarbtn { margin-bottom: 6px; }
+.qmzsel { font: inherit; font-size: 12px; color: var(--fg); background: var(--inset); border: 1px solid var(--line); border-radius: 12px; padding: 2px 8px; }
+.qmtoast { position: fixed; left: 50%; bottom: 24px; z-index: 60; transform: translate(-50%, 20px); opacity: 0; pointer-events: none; transition: opacity .15s, transform .15s;
+  padding: 8px 14px; border-radius: 6px; background: rgba(8, 6, 5, .95); border: 1px solid #ffd100; color: var(--fg); font-size: 13px; max-width: calc(100vw - 32px); }
+.qmtoast.on { opacity: 1; transform: translate(-50%, 0); }
 .huz { position: absolute; width: 7px; height: 7px; margin: -4.5px 0 0 -4.5px; border-radius: 50%; border: 1px solid #000; background: #f0c040; cursor: pointer; }
 .huz.e { width: 9px; height: 9px; margin: -5.5px 0 0 -5.5px; background: #40c040; }
 .huz.r { width: 10px; height: 10px; margin: -6px 0 0 -6px; border-radius: 1px; background: #e3e9ef; transform: rotate(45deg); box-shadow: 0 0 6px rgba(227, 233, 239, .9); z-index: 2; }
@@ -865,6 +891,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   window.addEventListener("popstate", function () {
     if (!D) return;
     navRestoring = true;
+    huZBigClose();   // stora zonkartan hör till steget man lämnar (granskning 2026-11-18)
     arCmp = null; arCmpPick = false; load(D, false, true);
   });
   var HP0 = hashParams();
@@ -893,6 +920,17 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   }
   function mktOpen(open) { $("mktPop").hidden = !open; $("mktBtn").setAttribute("aria-expanded", open ? "true" : "false"); }
   var histCache = {};
+  // data.json per hus i minnet (granskning 2026-11-18): byte fram och tillbaka hämtar inte 2 MB igen inom 10 minuter.
+  // Kommer en nyare scan för huset tas dess dagsfiler från den senaste kända dagen och framåt bort ur histCache.
+  var dataCache = {}, DATA_TTL = 600000;
+  function gotData(h, d) {
+    var old = dataCache[h];
+    if (old && d.t > old.d.t && old.d.days && old.d.days.length) {
+      var last = old.d.days[old.d.days.length - 1];
+      Object.keys(histCache).forEach(function (k) { var p = k.split("/"); if (+p[0] === h && +p[1] >= last) delete histCache[k]; });
+    }
+    dataCache[h] = { t: Date.now(), d: d };
+  }
   function histFile(day, b) {
     var k = house + "/" + day + "/" + b;
     if (!histCache[k]) histCache[k] = fetch(DATA_BASE + "hist/" + k + ".json").then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; });
@@ -954,7 +992,9 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       de_ilvl: "Item level %1", de_skill_need: "Enchanting %1", de_buy: "Buy on the AH", de_value: "Disenchant value", de_profit: "Profit", de_gives: "What it gives", de_mat: "Material", de_chance: "Chance", de_each: "Price each", de_each_x: "each", de_worth: "Worth",
       de_src_db: "Odds from the Classic database: your own disenchants take over once you have logged a few.", de_src_item: "From your %1 disenchants of this item.", de_src_group: "Odds from the Classic database weighed together with your %1 disenchants of items like this (same quality and level band).",
       de_noprice: "not on the AH", de_missing: "A material has no AH price right now, so the value is too low.", de_cut: "Deposits and the time to relist are not counted.",
-      lb_first60: "First to 60", lb_act: "Activity", lb_reached: "Reached 60", lb_before: "before %1", lb_first60_note: "Date = first time the catalog saw the player at level 60. Everyone already 60 when the catalog started (%1) shows as \"before\".",
+      lb_first60: "First to 60", lb_act: "Activity", lb_reached: "Reached 60", lb_before: "before %1", lb_first60_none: "Nobody has reached 60 since the catalog started yet. New 60s show up here the day the catalog sees them ding.",
+      lb_first60_note2: "Date = the first time the catalog saw the player at 60 after seeing them below 60. %2 players were already 60 when the catalog first saw them (since %1) and are not ranked.",
+      lb_first60_note: "Date = first time the catalog saw the player at level 60. Everyone already 60 when the catalog started (%1) shows as \"before\".",
       act_title: "Players seen per hour", act_none: "No hours logged yet: WhippitPanel counts the players it sees each hour you are online.", act_days: "%1 days", act_day: "Day", act_players: "Players seen",
       act_note: "Average number of different players WhippitPanel saw per clock hour, only hours when Whippit was online. Busy zones and cities give more.",
       ar_qunknown: "This quest is not in the Classic quest database (new on Forever?).",
@@ -972,7 +1012,18 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       up_rest: "Nothing better on the AH for: %1.", up_est_tip: "Random stats: the AH has every suffix under one item. The numbers are an estimate for the suffix in the name.",
       up_how: "Score = the item's stats weighted for the class (a simple leveling profile, not a simulation), compared with what is worn now. Same armor type rules as the game: mail from 40 for hunters and shamans, plate from 40. Prices are the lowest on the AH in the last scan. Click an item for its price history.",
       hu_map: "Map", hu_map_tip: "Show the beasts in the list on a map", hu_map_title: "Where they are", hu_map_sub: "%1 beasts on this continent", hu_map_lvl: "up to level %1",
-      hu_map_rare: "Rare", hu_map_elite: "Elite", hu_map_beast: "Beast", hu_map_none: "No beast in the list lives here.", hu_map_zsub: "%1 beasts in %2", hu_map_close: "click outside or Esc to close", hu_map_big: "Click the map to open it large",
+      hu_map_rare: "Rare", hu_map_elite: "Elite", hu_map_beast: "Beast", hu_map_none: "No beast in the list lives here.", hu_map_zsub: "%1 beasts in %2", hu_route: "The line is the shortest round between its spawn points.",
+      qm_where: "Where to go", qm_giver: "Quest giver", qm_turnin: "Turn in", qm_kill: "Kill", qm_use: "Use", qm_get: "Get", qm_start_item: "Starts from",
+      qm_vendor: "vendor", qm_object: "object", qm_inst: "in %1", qm_more: "+%1 more places", qm_nosrc: "No place in the database (new or changed in Forever).",
+      qm_none: "No map for this quest: it is new or changed in Forever and not in the Classic database.", qm_copied: "Copied:", qm_click_copy: "click to copy /way",
+      qm_copy_tip: "Copy %1 for TomTom or another waypoint addon",
+      qm_note: "Click a point or a coordinate to copy it as /way (TomTom and most waypoint addons). Shaded areas are the game's own quest areas. Places from the Classic database (cmangos, GPL), maps from the game client.",
+      qm_map_tip: "Show the quests in the list on the map", qm_ov_title: "Quests on the map", qm_ov_sub: "%1 quests in the list", qm_ov_none: "None of these quests has a place on a map.",
+      qm_ov_note: "! = where the quest starts (grey = done by the chosen player). Click an ! to open the quest. Same filters as the list.", qm_open: "click to open",
+      qm_lg_avail: "Can take", qm_zone_pick: "Pick a zone", qm_zone_more: "All %1 zones…", qm_lg_done: "Done", qm_lg_obj: "Active quest goal", qm_lg_turnin: "Turn in", qm_ar_btn: "Show on map",
+      qm_ar_title: "Quests on the map", qm_ar_sub: "%1 active · %2 you can take now",
+      qm_ar_note: "Active quests show their goal and where to turn in. ! = quests this character can take now: right faction, class and level, earlier quest in the chain done, not grey. Profession quests are left out. Click a mark to open the quest.",
+      dg_entrance: "Entrance", dg_entrance_note: "The meeting stone at the entrance. Click to copy /way.", hu_map_close: "click outside or Esc to close", hu_map_big: "Click the map to open it large",
       hu_map_znote: "The game's own zone maps. Hover a point for the name, click it to open the beast. Zones with the most beasts in the list come first.", hu_zone_wait_short: "zone names soon",
       hu_map_note: "Hover a point for the name, click to open the beast. The land is drawn from every spawn in the Classic database, place names from the graveyards.",
       hu_for: "Pets for you", hu_for_sub: "tameable around level %1", hu_near: "near you", hu_near_tip: "In a zone where this hunter has quests right now",
@@ -1088,7 +1139,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     if (watched(id)) watch = watch.filter(function (w) { return w.id !== id; });
     else { var r = byId[id]; if (!r) return; watch.push({ id: id, name: r.name, p: r.min }); }
     saveWatch();
-    draw();
+    starSync(id);   // bara stjärnan i listan, inte hela tabellen (granskning 2026-11-18)
     drawWatch();
     if (selId === id) select(id, false);
     if (mode === "cr" && selRec) selectRecipe(selRec, false);   // stjärnorna i receptets reagenstabell
@@ -1106,6 +1157,11 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     var on = watched(id), tip = t(on ? "star_del" : "star_add");
     return '<button class="star" type="button" data-star="' + id + '" aria-pressed="' + on + '" title="' + tip +
       '" aria-label="' + tip + '">' + (on ? "★" : "☆") + (label ? " " + label : "") + "</button>";
+  }
+  // Listans stjärnor (alltid utan text) byts på plats (granskning 2026-11-18).
+  function starSync(id) {
+    var bs = $("rows").querySelectorAll('[data-star="' + id + '"]');
+    for (var i = 0; i < bs.length; i++) bs[i].outerHTML = starHtml(id);
   }
   function showTab(which) {
     $("tabItem").setAttribute("aria-pressed", which === "item" ? "true" : "false");
@@ -1164,13 +1220,17 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   function update() {
     var b = $("update");
     if (b) { b.disabled = true; b.textContent = t("fetching"); }
-    var before = D ? D.t : 0, tok = ++dataSeq;
-    fetch(dataUrl(), { cache: "no-store" }).then(function (r) {
+    var before = D ? D.t : 0, tok = ++dataSeq, hh = house;
+    // no-cache: webbläsaren frågar servern men får 304 utan ny data (granskning 2026-11-18)
+    fetch(dataUrl(), { cache: "no-cache" }).then(function (r) {
       if (!r.ok) throw new Error(r.status);
       return r.json();
     }).then(function (d) {
+      var c = dataCache[hh], same = !!(D && c && c.d === D && d.t === D.t);
+      if (!same) gotData(hh, d); else c.t = Date.now();
       if (tok !== dataSeq) { drawWatch(); return; }
       lastUpdate = { key: d.t > before ? "new_scan" : "no_new", t: d.t };
+      if (same) { drawWatch(); return; }   // ingen ny scan: inget att rita om (granskning 2026-11-18)
       load(d, !!D);
     }).catch(function () {
       if (tok !== dataSeq) return;
@@ -1236,18 +1296,34 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     arLoad(first, slug, function () { arLoad(second, slug, function () { arShow('<div class="hint">' + t("ar_notfound") + "</div>", ""); }); });
   }
   function arShow(mid, right) { $("armory").innerHTML = mid; if (right != null) $("detail").innerHTML = right; }
+  // /char/ delas av arLoad, arCompare och setQuPlayer (granskning 2026-11-18): samma spelare inom 10 minuter hämtas inte
+  // igen (bakåt/framåt, jämförelse, Quests). Fel (även 404) sparas inte.
+  var charCache = {};
+  function charFetch(slug) {
+    var c = charCache[slug];
+    if (c && Date.now() - c.t < 600000) return c.p;
+    var p = fetch(ARMORY_API + "/char/" + encodeURIComponent(slug) + "?v=4").then(function (r) {
+      if (r.status === 404) throw new Error("404");
+      if (!r.ok) throw new Error("fail");
+      return r.json();
+    });
+    charCache[slug] = { t: Date.now(), p: p };
+    p.catch(function () { if (charCache[slug] && charCache[slug].p === p) delete charCache[slug]; });
+    return p;
+  }
   function arLoad(kind, slug, onMiss) {
     if (!ARMORY_API) { arShow('<div class="hint">' + t("ar_off") + "</div>", ""); return; }
     var my = ++arToken;
     arShow('<div class="hint">' + t("ar_loading") + "</div>", "");
-    fetch(ARMORY_API + "/" + kind + "/" + encodeURIComponent(slug) + "?v=4").then(function (r) {
+    (kind === "char" ? charFetch(slug) : fetch(ARMORY_API + "/" + kind + "/" + encodeURIComponent(slug) + "?v=4").then(function (r) {
       if (r.status === 404) throw new Error("404");
       if (!r.ok) throw new Error("fail");
       return r.json();
-    }).then(function (d) {
-      if (my !== arToken || mode !== "ar") return;
+    })).then(function (d) {
+      if (my !== arToken) return;
+      if (mode !== "ar") { arKeepSub = false; return; }   // bytt flik: adressens panelval gäller inte längre (granskning 2026-11-18)
       if (!arData || arData.slug !== d.slug) { arRec = 0; arOpenProf = 0; crQ = ""; }   // ny spelare/guild: högerpanelen visar yrkena igen, inget yrke utfällt
-      if (!arData || arData.slug !== d.slug) { talPlan = null; arQz = {}; if (!arKeepSub) { arQuest = 0; arUpg = false; } }
+      if (!arData || arData.slug !== d.slug) { talPlan = null; arQz = {}; arQMap = false; if (!arKeepSub) { arQuest = 0; arUpg = false; } }
       arKeepSub = false;
       arData = d; arCmp = null; arCmpPick = false; arCmpErr = ""; arCmpBusy = 0; arLb = "";
       if (d.kind === "character") renderChar(d); else renderGuild(d);
@@ -1259,6 +1335,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     }).catch(function (e) {
       if (my !== arToken) return;
       arKeepSub = false;
+      if (mode !== "ar") return;   // sent fel efter flikbyte ritar inget (granskning 2026-11-18)
       if (e.message === "404" && onMiss) onMiss(); else if (e.message === "404") arShow('<div class="hint">' + t("ar_notfound") + "</div>", ""); else { console.error("armory", e); arShow('<div class="hint">' + t("ar_fail") + "</div>", ""); }
     });
   }
@@ -1354,7 +1431,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   var arRec = 0;   // recept som visas i högerpanelen (0 = yrkena)
   // Quest ur "Quests in progress" i högerpanelen (Joakim 2026-11-17: spelaren ska inte tappas bort). arKeepSub: adressen
   // (#player=…&aq=…&up=1) bestämmer panelen, nollställ den inte när spelaren laddas.
-  var arQuest = 0, arKeepSub = false;
+  var arQuest = 0, arKeepSub = false, arQMap = false;
   function arHash() { return "#player=" + (arData ? arData.slug : "") + (arQuest ? "&aq=" + arQuest : "") + (arUpg ? "&up=1" : ""); }
   // Kända recept, grupperade per skill-nivå (1–74, 75–149, 150–224, 225–300; skill ur recept.json, okänd sist), i skill-
   // ordning inom gruppen, med säljpris och vinst på vald marknad. Klick → receptrutan i högerpanelen (som en vara i AH).
@@ -1447,19 +1524,17 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     if (slug === arData.slug) { arCmpErr = t("cmp_same"); arRedraw(); return; }
     var my = ++arCmpBusy, a = arData;
     arCmpErr = ""; arRedraw();
-    fetch(ARMORY_API + "/char/" + encodeURIComponent(slug) + "?v=4").then(function (r) {
-      if (r.status === 404) throw new Error("404");
-      if (!r.ok) throw new Error("fail");
-      return r.json();
-    }).then(function (b) {
+    charFetch(slug).then(function (b) {
       if (my !== arCmpBusy || arData !== a) return;
+      if (mode !== "ar") { arCmpBusy = 0; return; }   // bytt flik: ingen jämförelse eller adress (granskning 2026-11-18)
       arCmpBusy = 0; arCmpPick = false; arCmp = { b: b };
       arRemember("char", b.slug, b.name + " " + b.surname); arRemember("char", a.slug, a.name + " " + a.surname); drawCats();
       setHash(arHash());   // F5 visar spelaren, inte jämförelsen (Joakim 2026-11-17); Copy link ger &vs=
       renderCompare(a, b);
     }).catch(function (e) {
       if (my !== arCmpBusy || arData !== a) return;
-      arCmpBusy = 0; arCmpErr = t(e.message === "404" ? "ar_notfound" : "ar_fail"); arRedraw();
+      arCmpBusy = 0; if (mode !== "ar") return;   // (granskning 2026-11-18)
+      arCmpErr = t(e.message === "404" ? "ar_notfound" : "ar_fail"); arRedraw();
     });
   }
   function cmpCard(d, side) {
@@ -1559,7 +1634,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     if (!QU) { loadQuests().then(function () { arRedraw(); }).catch(function () {}); return h + '<div class="note">' + t("ar_loading") + "</div>"; }
     var avg = function (z) { var l = zones[z].filter(function (q) { return q.lvl; }); return l.length ? l.reduce(function (s2, q) { return s2 + q.lvl; }, 0) / l.length : 99; };
     order.sort(function (a, b) { return avg(a) - avg(b) || a.localeCompare(b); });
-    return h + '<div class="qalist">' + order.map(function (z) {
+    return h + '<div class="qalist"><button class="chip qmarbtn" type="button" data-armap="1">' + t("qm_ar_btn") + "</button>" + order.map(function (z) {
       var open = !!arQz[z], list = zones[z].slice().sort(function (a, b) { return a.lvl - b.lvl || a.name.localeCompare(b.name); });
       return '<button class="qaz' + (open ? " open" : "") + '" type="button" data-arqz="' + esc(z) + '" aria-expanded="' + open + '"><span class="chev">' + (open ? "▾" : "▸") + "</span><b>" + esc(z) + "</b><span>" + list.length + "</span></button>" +
         (open ? '<div class="qaq">' + list.map(function (q) {
@@ -1590,7 +1665,8 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   var TAL = null, talPromise = null, TAL_MAX = 51, TAL_KEY = "whippit-ah-talplan-";
   var talPlan = null;   // { slug, cls, ranks: { talangId: rang } } när planeraren är öppen för spelaren
   function loadTal() {
-    if (!talPromise) talPromise = fetch(DATA_BASE + "talents.json").then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }).then(function (j) { TAL = j; return j; });
+    if (!talPromise) talPromise = fetch(DATA_BASE + "talents.json").then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }).then(function (j) { TAL = j; return j; })
+      .catch(function (e) { talPromise = null; throw e; });   // fel sparas inte, nästa försök hämtar igen (granskning 2026-11-18)
     return talPromise;
   }
   function talClass(name) { var out = null; if (TAL) Object.keys(TAL.classes).forEach(function (k) { if (TAL.classes[k].name === name) out = { id: k, c: TAL.classes[k] }; }); return out; }
@@ -1705,12 +1781,15 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       right = '<div class="note">' + t("ar_loading") + "</div>";
     } else if (arUpg) {
       right = upPanel(d);
+    } else if (arQMap) {
+      right = '<div class="note">' + t("ar_loading") + "</div>";
     } else {
       right = '<div class="strip"><h2 class="q1">' + esc(d.name) + "</h2><small>" + esc(d.ruleset || "") + " · " + (d.faction === "ALLIANCE" ? "Alliance" : "Horde") + "</small></div>" +
         '<button class="upbig" type="button" data-upg="1"><img src="' + RICON + 'inv_misc_coin_02.jpg" alt=""><span><b>' + t("up_btn") + "</b><small>" + t("up_btn_sub") + "</small></span></button>" +
         '<div class="note">' + t("ar_pick") + "</div>";
     }
     arShow(mid, right);
+    if (arQMap && !arRec && !arQuest && !arUpg) qmArView(d);
     if (arQuest && !arRec) {
       var aq = arQuest;
       loadQuests().then(function () {
@@ -1821,9 +1900,19 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   var UP_SLOTS = ["HEAD", "NECK", "SHOULDER", "BACK", "CHEST", "WRIST", "HANDS", "WAIST", "LEGS", "FEET", "FINGER_1", "FINGER_2", "TRINKET_1", "TRINKET_2", "MAIN_HAND", "OFF_HAND", "RANGED"];
   var UP_INV = { HEAD: "HEAD", NECK: "NECK", SHOULDER: "SHOULDER", BACK: "CLOAK", CHEST: "CHEST|ROBE", WRIST: "WRIST", HANDS: "HAND", WAIST: "WAIST", LEGS: "LEGS", FEET: "FEET",
     FINGER_1: "FINGER", FINGER_2: "FINGER", TRINKET_1: "TRINKET", TRINKET_2: "TRINKET", RANGED: "RANGED|RANGEDRIGHT|THROWN" };
+  // Svaret sparas per spelare, marknad och scan (granskning 2026-11-18): varje klick i Armory ritar om panelen, och att gå
+  // igenom alla föremål × 17 platser varje gång är onödigt. d måste vara samma objekt (ny hämtning = ny utrustning).
+  var upCache = {};
   function upList(d) {
     var W = UP_W[d.cls], suf = UP_SUF[d.cls];
     if (!W || !GEAR) return [];
+    var ck = d.slug + "|" + house + "|" + (D ? D.t : 0), hit = upCache[ck];
+    if (hit && hit.d === d) return hit.out;
+    var out = upListCalc(d, W, suf);
+    upCache[ck] = { d: d, out: out };
+    return out;
+  }
+  function upListCalc(d, W, suf) {
     var worn = {}, used = {}, out = [];
     d.items.forEach(function (x) { worn[x.slot] = x; used[x.id] = 1; });   // det som redan sitter på (även i andra ringplatsen) föreslås inte
     var mhInv = worn.MAIN_HAND ? (worn.MAIN_HAND.inv || "").replace("TWOHWEAPON", "2HWEAPON") : "";
@@ -2000,7 +2089,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     };
     Promise.all([loadFR(), next(), next(), next(), next(), next(), next()]).then(function () {
       crafters[d.slug] = out; crBusy[d.slug] = false;
-      if (arData && arData.kind === "guild" && arData.slug === d.slug) renderGuild(d);   // ritar om rostern med PvP-kolumnerna och crafters
+      if (mode === "ar" && arData && arData.kind === "guild" && arData.slug === d.slug) renderGuild(d);   // ritar om rostern med PvP-kolumnerna och crafters; bara i Armory (granskning 2026-11-18)
     });
   }
   function drawCrafters(d) {
@@ -2040,7 +2129,8 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     Engineering: ["yrke-engineering", "ammo"], "First Aid": ["yrke-first-aid", "consumables"], Leatherworking: ["yrke-leatherworking", "armor"], Tailoring: ["yrke-tailoring", "containers"], Mining: ["yrke-mining", "trade-goods"],
     Herbalism: ["yrke-herbalism", "trade-goods"], Fishing: ["yrke-fishing", "trade-goods"], Skinning: ["yrke-skinning", "trade-goods"] };
   function loadRecept() {
-    if (!recPromise) recPromise = fetch(DATA_BASE + "recept.json").then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }).then(function (j) { RECEPT = j; buildCr(); return j; });
+    if (!recPromise) recPromise = fetch(DATA_BASE + "recept.json").then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }).then(function (j) { RECEPT = j; buildCr(); return j; })
+      .catch(function (e) { recPromise = null; throw e; });   // (granskning 2026-11-18)
     return recPromise;
   }
   function recPrice(id) {   // pris per styck för en reagens: riktpriset på AH, annars handlarens pris, annars 0
@@ -2077,7 +2167,8 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   function quGroupName(g) { return g < 6 ? t("qu_lv", QU_LV[g][0], QU_LV[g][1]) : t("qu_unknown"); }
   function myFaction() { return houseParts(house)[1] === "alliance" ? "A" : "H"; }
   function loadQuests() {
-    if (!quPromise) quPromise = fetch(DATA_BASE + "quests.json").then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }).then(function (j) { QU = j; return j; });
+    if (!quPromise) quPromise = fetch(DATA_BASE + "quests.json").then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }).then(function (j) { QU = j; return j; })
+      .catch(function (e) { quPromise = null; throw e; });   // (granskning 2026-11-18)
     return quPromise.then(function (j) { buildQu(); return j; });
   }
   function buildQu() {   // priserna beror på marknaden, så raderna byggs om när datan laddas om
@@ -2166,17 +2257,20 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       if (!quPlayer || quPlayer.slug !== slug) return;
       var s = {}; (d.quests || []).forEach(function (id) { s[id] = 1; });
       quPlayer = { slug: slug, name: d.name + " " + d.surname, set: s, n: (d.quests || []).length };
+      if (mode !== "qu") return;   // spelaren sparas, men listan ritas bara i Quests (granskning 2026-11-18)
       drawCats(); refresh(); if (selQuest) selectQuest(selQuest, false);
     };
     if (arData && arData.kind === "character" && arData.slug === slug && arData.quests) { use(arData); return; }
-    fetch(ARMORY_API + "/char/" + encodeURIComponent(slug)).then(function (r) { return r.ok ? r.json() : null; }).then(function (d) { if (d) use(d); else { quPlayer = null; drawCats(); } }).catch(function () { quPlayer = null; drawCats(); });
+    // Samma hämtning som Armory, med ?v=4 och den delade cachen (granskning 2026-11-18).
+    charFetch(slug).then(use).catch(function () { if (!quPlayer || quPlayer.slug !== slug) return; quPlayer = null; if (mode === "qu") drawCats(); });
   }
   function quCats() {
     var opts = quPlayerOptions(), cur = quPlayer ? quPlayer.slug : "";
     var h = '<div class="qplayer"><label for="quPlayer">' + t("qu_check") + '</label><select id="quPlayer"><option value="">' + t("qu_nobody") + "</option>" +
       opts.map(function (o) { return '<option value="' + esc(o.slug) + '"' + (o.slug === cur ? " selected" : "") + ">" + esc(o.label) + "</option>"; }).join("") + "</select>" +
       (quPlayer ? (quPlayer.set ? '<button class="chip' + (quHideDone ? " on" : "") + '" type="button" data-quhide="1" aria-pressed="' + quHideDone + '">' + t("qu_hide", num(quPlayer.n)) + "</button>" : '<span class="dim">' + t("ar_loading") + "</span>") : (opts.length ? "" : '<small class="dim">' + t("qu_check_tip") + "</small>")) +
-      '<small class="dim">' + t(myFaction() === "A" ? "qu_fac_a" : "qu_fac_h") + "</small></div>";
+      '<small class="dim">' + t(myFaction() === "A" ? "qu_fac_a" : "qu_fac_h") + "</small>" +
+      '<button class="chip' + (qmOv ? " on" : "") + '" type="button" data-qmov="1" aria-pressed="' + qmOv + '" title="' + t("qm_map_tip") + '">+ ' + t("hu_map") + "</button></div>";
     h += "<h2>" + t("qu_zones") + "</h2>";
     quZoneList().forEach(function (e, i) {
       if (e.group) {   // samlad rubrik: zonerna som underkategori
@@ -2256,6 +2350,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       "<div><dt>" + t("col_xp") + "</dt><dd>" + (q[7] ? num(q[7]) : "–") + "</dd></div><div><dt>" + t("col_money") + "</dt><dd>" + (q[8] ? money(q[8]) : "–") + "</dd></div>" +
       (reps ? '<div class="wide"><dt>' + t("ar_rep") + "</dt><dd>" + reps + "</dd></div>" : "") + "</dl>" +
       (req.length ? "<div><h3>" + t("qu_reqs") + '</h3><dl class="srcs">' + req.join("") + "</dl></div>" : "") + chainHtml +
+      "<div><h3>" + t("qm_where") + '</h3><div id="qmap" class="qmwrap"><div class="note">' + t("ar_loading") + "</div></div></div>" +
       (items ? "<div><h3>" + t("qu_rewards") + '</h3><div class="scroll"><table class="steps reag"><thead><tr><th></th><th style="text-align:left">' + t("col_item") + "</th><th>" + t("col_qty_s") + "</th><th>" + t("col_min") + "</th></tr></thead><tbody>" + quItems(q[9], false) + quItems(q[10], true) + "</tbody></table></div></div>" : "") +
       '<div><h3>' + t("qu_text") + '</h3><div class="qtext" id="qtext">' + t("ar_loading") + "</div></div>" +
       '<div class="note"><a class="wh" href="https://www.wowhead.com/forever/quest=' + id + '" target="_blank" rel="noopener">' + t("qu_wowhead") + "</a> · " + t("qu_source") + "</div>";
@@ -2264,7 +2359,165 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       var fmt = function (s) { return esc(s || "").replace(/\{name\}/g, "&lt;name&gt;").replace(/\r?\n/g, "<br>"); };
       el.innerHTML = tx ? (tx[1] ? '<p class="qobj"><b>' + t("qu_obj") + "</b> " + fmt(tx[1]) + "</p>" : "") + (tx[0] ? "<p>" + fmt(tx[0]) + "</p>" : "") : '<span class="dim">–</span>';
     });
+    qmLoad(id).then(function (r) { var el = $("qmap"); if (!el || selQuest !== id) return; el.innerHTML = qmHtml(id, r); });
     if (scroll && window.matchMedia("(max-width: 1100px)").matches) $("tabItem").scrollIntoView({ block: "start", behavior: "smooth" });
+  }
+
+  // ---- Questkartan (Joakim 2026-11-18: "när man går in på en quest så får man karta och vart man hittar det", plus
+  // koordinater att kopiera till waypoint-addonet med ett tryck). Data: questmap/<id % 50>.json (hamta-questplatser.js,
+  // cmangos classic-db), spelets egna zonkartor. ! = ger questen, ? = lämna in, färgade prickar = målen, ytor = spelets
+  // questområden. Koordinaterna kopieras som "/way Zon x y" (TomTom-formatet, som de flesta waypoint-addons läser).
+  var QM = {}, QMIX = null, qmIxP = null, qmCur = null, qmZone = "", qmOv = false, qmOvZone = "";
+  var QM_COL = ["#ff6b5a", "#5aa0ff", "#7ad35a", "#d48cff", "#ffb347", "#4fd6cf", "#ff8ad8", "#e2e2e2"];
+  function qmLoad(id) {
+    var k = id % 50;
+    if (!QM[k]) QM[k] = fetch(DATA_BASE + "questmap/" + k + ".json").then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }).catch(function () { QM[k] = null; return {}; });
+    return Promise.all([QM[k], loadZmap()]).then(function (a) { return a[0][id] || null; });
+  }
+  function qmIndex() {
+    if (!qmIxP) qmIxP = Promise.all([fetch(DATA_BASE + "questmap/index.json").then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }), loadZmap()])
+      .then(function (a) { QMIX = a[0]; return QMIX; }).catch(function (e) { qmIxP = null; throw e; });
+    return qmIxP;
+  }
+  function qmWay(z, x, y) { return "/way " + z + " " + x + " " + y; }
+  function qmChip(p, cur) {
+    var w = qmWay(p[0], p[1], p[2]);
+    return '<button type="button" class="qmc" data-way="' + esc(w) + '" title="' + esc(t("qm_copy_tip", w)) + '">' + p[1] + ", " + p[2] + (p[0] !== cur ? " <small>" + esc(p[0]) + "</small>" : "") + "</button>";
+  }
+  function qmCopyFallback(v) { var ta = document.createElement("textarea"); ta.value = v; ta.style.position = "fixed"; ta.style.opacity = "0"; document.body.appendChild(ta); ta.select(); try { document.execCommand("copy"); } catch (e) {} ta.remove(); }
+  function qmCopy(v) {
+    var done = function () {
+      var o = document.querySelector(".qmtoast");
+      if (!o) { o = document.createElement("div"); o.className = "qmtoast"; o.setAttribute("role", "status"); document.body.appendChild(o); }
+      o.textContent = t("qm_copied") + " " + v; o.classList.add("on");
+      clearTimeout(qmCopy.tm); qmCopy.tm = setTimeout(function () { o.classList.remove("on"); }, 1800);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(v).then(done, function () { qmCopyFallback(v); done(); });
+    else { qmCopyFallback(v); done(); }
+  }
+  function qmParts(r) {
+    var P = [];
+    (r.s || []).forEach(function (e) { P.push({ k: "s", ents: [e] }); });
+    if (r.si) P.push({ k: "si", col: QM_COL[7], ents: r.si[2], tot: r.si[3], name: r.si[1] });
+    (r.o || []).forEach(function (o, i) { P.push({ k: "o", t: o[0], col: QM_COL[i % 7], ents: o[4], tot: o[5], name: o[2], cnt: o[3] }); });
+    (r.e || []).forEach(function (e) { P.push({ k: "e", ents: [e] }); });
+    return P;
+  }
+  function qmHtml(id, r) {
+    if (!r) return '<div class="note">' + t("qm_none") + "</div>";
+    var P = qmParts(r), cnt = {}, add = function (z, w) { if (huHasZ(z)) cnt[z] = (cnt[z] || 0) + w; };
+    P.forEach(function (p) { p.ents.forEach(function (e) { e[4].forEach(function (pt) { add(pt[0], p.k === "s" || p.k === "e" ? 1 : 3); }); }); });
+    (r.p || []).forEach(function (pp) { add(pp[1], 2); });
+    var zones = Object.keys(cnt).sort(function (a, b) { return cnt[b] - cnt[a] || a.localeCompare(b); });
+    if (!qmCur || qmCur.id !== id) qmZone = "";
+    qmCur = { id: id, r: r };
+    var zs = zones.indexOf(qmZone) >= 0 ? qmZone : zones[0] || "", h = "";
+    if (zones.length > 1) h += '<div class="huchips">' + zones.map(function (z) { return '<button type="button" class="huchip' + (z === zs ? " on" : "") + '" data-qmz="' + esc(z) + '" aria-pressed="' + (z === zs) + '">' + esc(z) + "</button>"; }).join("") + "</div>";
+    if (zs) {
+      // Spelets questområden: målindex 0–3 = döda/använda i ordning, 4–7 = föremålen, −1 = inlämningen.
+      var kIdx = [], iIdx = [];
+      (r.o || []).forEach(function (o, i) { (o[0] === "i" ? iIdx : kIdx).push(i); });
+      var pcol = function (oi) { if (oi < 0) return "#f5d76e"; var i = oi < 4 ? kIdx[oi] : iIdx[oi - 4]; return i == null ? "#f5d76e" : QM_COL[i % 7]; };
+      var svg = (r.p || []).filter(function (pp) { return pp[1] === zs; }).map(function (pp) {
+        var c = pcol(pp[0]);
+        return '<polygon points="' + pp[2].map(function (q) { return q[0] + "," + q[1]; }).join(" ") + '" style="fill:' + c + ";stroke:" + c + '"/>';
+      }).join("");
+      var mk = "", top = "";
+      P.forEach(function (p) {
+        p.ents.forEach(function (e) {
+          e[4].forEach(function (pt) {
+            if (pt[0] !== zs) return;
+            var way = esc(qmWay(pt[0], pt[1], pt[2])), tip = esc(e[2] + " · " + pt[1] + ", " + pt[2] + " · " + t("qm_click_copy"));
+            var pos = "left:" + pt[1] + "%;top:" + pt[2] + "%";
+            if (p.k === "s" || p.k === "e") top += '<b class="qmq ' + p.k + '" style="' + pos + '" data-way="' + way + '" title="' + tip + '">' + (p.k === "s" ? "!" : "?") + "</b>";
+            else mk += '<i class="qmk" style="' + pos + ";--c:" + p.col + '" data-way="' + way + '" title="' + tip + '"></i>';
+          });
+        });
+      });
+      h += '<div class="huzm qmap"><img src="' + huZUrl(zs) + '" alt="' + esc(zs) + '" width="1002" height="668" decoding="async">' +
+        (svg ? '<svg class="qmpoly" viewBox="0 0 100 100" preserveAspectRatio="none">' + svg + "</svg>" : "") + mk + top + "</div>";
+    }
+    var verb = { k: "qm_kill", u: "qm_use", i: "qm_get" };
+    var line = function (e, chance) {
+      return "<li><span>" + esc(e[2]) + (e[0] === 2 ? ' <small class="dim">' + t("qm_vendor") + "</small>" : e[0] === 1 ? ' <small class="dim">' + t("qm_object") + "</small>" : "") +
+        (chance && e[3] ? ' <span class="dim">' + e[3] + " %</span>" : "") + "</span>" + (e[4][0] ? qmChip(e[4][0], zs) : "") +
+        e[5].map(function (x) { return ' <span class="tag v">' + esc(t("qm_inst", x[0])) + "</span>"; }).join("") + "</li>";
+    };
+    h += '<ul class="qmleg">' + P.map(function (p) {
+      if (p.k === "s" || p.k === "e") return '<li class="qmrow"><b class="qmq ' + p.k + ' in">' + (p.k === "s" ? "!" : "?") + "</b>" + t(p.k === "s" ? "qm_giver" : "qm_turnin") + "<ul>" + p.ents.map(function (e) { return line(e, false); }).join("") + "</ul></li>";
+      var head = '<i class="qmk in" style="--c:' + p.col + '"></i>' + t(p.k === "si" ? "qm_start_item" : verb[p.t]) + " <b>" + esc(p.name) + "</b>" + (p.cnt > 1 ? " ×" + p.cnt : "");
+      var body = p.ents.length ? "<ul>" + p.ents.map(function (e) { return line(e, p.k === "si" || p.t === "i"); }).join("") + "</ul>" + (p.tot > p.ents.length ? '<div class="dim">' + t("qm_more", p.tot - p.ents.length) + "</div>" : "") : '<div class="dim">' + t("qm_nosrc") + "</div>";
+      return '<li class="qmrow">' + head + body + "</li>";
+    }).join("") + "</ul>" + '<div class="note">' + t("qm_note") + "</div>";
+    return h;
+  }
+  // Översiktskarta: items = [{id, a}] där a = "s" (kan tas: gult !), "d" (klar: grått !), "o" (pågående: målet ● och ?).
+  function qmOverview(items, zoneSel) {
+    var Z = QMIX.z, cnt = {}, mk = {}, n = { s: 0, d: 0, o: 0 };
+    items.forEach(function (it) {
+      var q = QMIX.q[it.id], qq = QU && QU.quests[it.id];
+      if (!q) return;
+      var tip = esc((qq ? "[" + (qq[2] || "?") + "] " + qq[0] : "#" + it.id) + " · " + t("qm_open"));
+      var put = function (o, html, w) {
+        if (q[o] < 0) return false;
+        var z = Z[q[o]];
+        if (!huHasZ(z)) return false;
+        cnt[z] = (cnt[z] || 0) + w;
+        (mk[z] = mk[z] || []).push(html.replace("%P", "left:" + q[o + 1] + "%;top:" + q[o + 2] + "%").replace("%T", tip));
+        return true;
+      };
+      var ok = it.a === "o" ? put(3, '<i class="qmk o" style="%P" data-goquest="' + it.id + '" title="%T"></i>', 5) | put(6, '<b class="qmq e sm" style="%P" data-goquest="' + it.id + '" title="%T">?</b>', 1)
+        : put(0, '<b class="qmq s sm' + (it.a === "d" ? " dn" : "") + '" style="%P" data-goquest="' + it.id + '" title="%T">!</b>', it.a === "d" ? 0.2 : 1);
+      if (ok) n[it.a]++;
+    });
+    var zones = Object.keys(cnt).sort(function (a, b) { return cnt[b] - cnt[a] || a.localeCompare(b); });
+    var zs = zones.indexOf(zoneSel) >= 0 ? zoneSel : zones[0] || "";
+    if (!zs) return '<div class="note">' + t("qm_ov_none") + "</div>";
+    // Grå (klara) först, sedan gula, pågående överst.
+    var L = mk[zs].slice().sort(function (a, b) { return (b.indexOf(" dn") >= 0) - (a.indexOf(" dn") >= 0) || (a.indexOf("qmk o") >= 0) - (b.indexOf("qmk o") >= 0); });
+    // Många zoner (hela listan): de fem största som knappar, alla i en lista bredvid, så kartan inte trycks ned.
+    var chip = function (z) { return '<button type="button" class="huchip' + (z === zs ? " on" : "") + '" data-qmoz="' + esc(z) + '" aria-pressed="' + (z === zs) + '">' + esc(z) + ' <span class="dim">' + Math.round(cnt[z]) + "</span></button>"; };
+    var few = zones.length > 7 ? zones.slice(0, 5) : zones;
+    if (few.indexOf(zs) < 0) few = few.concat([zs]);
+    return '<div class="huchips">' + few.map(chip).join("") + (zones.length > few.length ? '<select class="qmzsel" data-qmozsel="1" aria-label="' + t("qm_zone_pick") + '"><option value="">' + t("qm_zone_more", zones.length) + "</option>" +
+      zones.slice().sort(function (a, b) { return a.localeCompare(b); }).map(function (z) { return '<option value="' + esc(z) + '"' + (z === zs ? " selected" : "") + ">" + esc(z) + " (" + Math.round(cnt[z]) + ")</option>"; }).join("") + "</select>" : "") + "</div>" +
+      '<div class="huzm qmap"><img src="' + huZUrl(zs) + '" alt="' + esc(zs) + '" width="1002" height="668" decoding="async">' + L.join("") + "</div>" +
+      '<div class="humaplg">' + (n.s ? '<span><b class="qmq s in sm">!</b>' + t("qm_lg_avail") + "</span>" : "") + (n.d ? '<span><b class="qmq s dn in sm">!</b>' + t("qm_lg_done") + "</span>" : "") +
+      (n.o ? '<span><i class="qmk o in"></i>' + t("qm_lg_obj") + '</span><span><b class="qmq e in sm">?</b>' + t("qm_lg_turnin") + "</span>" : "") + "</div>";
+  }
+  function qmOvView() {
+    if (!QMIX) $("detail").innerHTML = '<div class="note">' + t("ar_loading") + "</div>";
+    qmIndex().then(function () {
+      if (mode !== "qu" || !qmOv) return;
+      var items = view.map(function (r) { return { id: r.qid, a: quDone(r.qid) ? "d" : "s" }; });
+      $("detail").innerHTML = '<div class="strip"><h2>' + t("qm_ov_title") + "</h2><small>" + t("qm_ov_sub", num(items.length)) + "</small></div>" + qmOverview(items, qmOvZone) + '<div class="note">' + t("qm_ov_note") + "</div>";
+    }).catch(function () { if (mode === "qu" && qmOv) $("detail").innerHTML = '<div class="note">' + t("qu_fail") + "</div>"; });
+  }
+  // Armory: karaktärens pågående quests (mål och inlämning) och de quests den kan ta nu (rätt fraktion, klass och
+  // level, föregående quest klar, inte grå, inte gjord) som ! på kartan, som Questie i spelet.
+  function qmArView(d) {
+    Promise.all([qmIndex(), loadQuests()]).then(function () {
+      if (mode !== "ar" || arData !== d || !arQMap || arQuest || arRec || arUpg || arCmp) return;
+      var act = {}, done = {}, items = [], fac = d.faction === "ALLIANCE" ? "A" : "H";
+      var CB = { Warrior: 1, Paladin: 2, Hunter: 4, Rogue: 8, Priest: 16, Shaman: 64, Mage: 128, Warlock: 256, Druid: 1024 }, cb = CB[d.cls] || 0;
+      (d.questsActive || []).forEach(function (x) { act[x[0]] = 1; items.push({ id: x[0], a: "o" }); });
+      (d.quests || []).forEach(function (id) { done[id] = 1; });
+      Object.keys(QMIX.q).forEach(function (k) {
+        var id = +k, q = QU.quests[id];
+        if (!q || act[id] || done[id]) return;
+        if (q[5] && q[5] !== fac) return;
+        if (q[3] > d.level || (q[2] && (q[2] > d.level + 3 || qDiff(q[2], d.level) === "qd-gray"))) return;
+        if (q[15] && cb && !(q[15] & cb)) return;
+        if (q[14]) return;   // yrkesquests: kräver yrke som profilen inte visar säkert
+        if (q[12] > 0 && !done[q[12]]) return;
+        if (q[12] < 0 && !act[-q[12]]) return;
+        items.push({ id: id, a: "s" });
+      });
+      var nA = items.filter(function (x) { return x.a === "s"; }).length;
+      $("detail").innerHTML = '<button class="lnk back" type="button" data-armapx="1">‹ ' + esc(d.name + " " + d.surname) + "</button>" +
+        '<div class="strip"><h2>' + t("qm_ar_title") + "</h2><small>" + t("qm_ar_sub", (d.questsActive || []).length, num(nA)) + "</small></div>" +
+        qmOverview(items, qmOvZone) + '<div class="note">' + t("qm_ar_note") + "</div>";
+    }).catch(function () { if (mode === "ar" && arQMap) $("detail").innerHTML = '<div class="note">' + t("qu_fail") + "</div>"; });
   }
 
   // ---- Dungeons (Joakim 2026-11-16): instanserna ur den öppna Classic-databasen (dungeons.json, dungeon-db.js, 1.12):
@@ -2303,7 +2556,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     }).then(function (j) {
       dgList = j.dungeons.slice().sort(function (a, b) { return (a.raid - b.raid) || (a.raid ? DG_RAID_ORDER.indexOf(a.map) - DG_RAID_ORDER.indexOf(b.map) : a.min - b.min || a.name.localeCompare(b.name)); });
       return j;
-    });
+    }).catch(function (e) { dgPromise = null; throw e; });   // (granskning 2026-11-18)
     return dgPromise;
   }
   function dgCats() {
@@ -2343,7 +2596,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
         loot.forEach(function (l) { view.push({ id: byId[l[0]] ? l[0] : undefined, item: l[0], ch: l[1], mn: l[2], mx: l[3], d: d, boss: b, cl: !!(fl || al.length) }); });
       });
     });
-    shown = view.length;
+    shown = Math.min(PAGE, view.length);   // sida för sida som övriga lägen; draw() och visa fler klarar boss- och rubrikraderna (granskning 2026-11-18)
   }
   function dgRow(r) {
     if (r.sub) return '<tr class="fvhd' + (r.sub === "cl" ? " cl" : r.sub === "al" ? " al" : "") + '"><td colspan="5">' + (r.sub === "fv" ? t("dg_fv", r.kills) : r.sub === "al" ? t(r.fresh ? "dg_al_new" : "dg_al") : t("dg_cl")) + "</td></tr>";
@@ -2364,9 +2617,19 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       '<dl class="facts"><div><dt>' + t("col_lvl") + "</dt><dd>" + d.min + "–" + d.max + "</dd></div><div><dt>" + t("dg_bosses") + "</dt><dd>" + d.bosses.length + "</dd></div>" +
       "<div><dt>" + t("dg_players") + "</dt><dd>" + d.players + "</dd></div><div><dt>" + t("dg_onah") + "</dt><dd>" + ah + "</dd></div>" +
       '<div class="wide"><dt>' + t("dg_logged") + "</dt><dd>" + t("dg_logged_n", d.bosses.filter(function (b) { return FL[b.id]; }).length, d.bosses.length) + "</dd></div></dl>" +
+      '<div id="dgmap"></div>' +
       "<div><h3>" + t("dg_bosses") + '</h3><ol class="bosslist">' + d.bosses.map(function (b) { return "<li>" + esc(b.name) + ' <span class="dim">' + (b.lvl ? t("dg_boss_lvl", b.lvl) : "") + "</span></li>"; }).join("") + "</ol></div>" +
       (AL ? '<div class="note">' + t("dg_al_src") + ' <a class="wh" href="' + esc(AL.url) + '" target="_blank" rel="noopener">AtlasLoot Classic Forever</a> (' + esc(AL.license) + ")</div>" : "") +
       '<div class="note">' + t(d.forever ? "dg_source_fv" : "dg_source") + "</div>";
+    var dmap = d.map;
+    qmIndex().then(function () {
+      var el = $("dgmap"), p = QMIX.dg && QMIX.dg[dmap];
+      if (!el || mode !== "dg" || !dgList[dgSel] || dgList[dgSel].map !== dmap || !p || !huHasZ(QMIX.z[p[0]])) return;
+      var z = QMIX.z[p[0]], w = qmWay(z, p[1], p[2]);
+      el.innerHTML = "<h3>" + t("dg_entrance") + '</h3><div class="huzm qmap"><img src="' + huZUrl(z) + '" alt="' + esc(z) + '" width="1002" height="668" decoding="async">' +
+        '<b class="qmq dg" style="left:' + p[1] + "%;top:" + p[2] + '%" data-way="' + esc(w) + '" title="' + esc(t("dg_entrance") + " · " + t("qm_click_copy")) + '">◈</b></div>' +
+        '<div class="qmleg1">' + esc(z) + " " + qmChip([z, p[1], p[2]], z) + ' <span class="dim">' + t("dg_entrance_note") + "</span></div>";
+    }).catch(function () {});
   }
   function dgItemDetail(id) {   // föremål som inte finns på AH: bara fakta och var det droppar
     var m = DG.items[id] || (FLN[id] ? [FLN[id][0], FLN[id][1], 0, 0] : ["Item " + id, -1, 0, 0]), from = [], fv = false;
@@ -2503,11 +2766,12 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     var hm = hp0.de ? "de" : hp0.col ? "co" : hp0.beast ? "hu" : hp0.quest ? "qu" : hp0.dungeon ? "dg" : hp0.player || hp0.guild || hp0.top ? "ar" : hp0.recipe ? "cr" : hp0.item ? "ah" : "";
     var wantI = byId[+hp0.item];
     if (hm && !keep && mode !== hm && !(hm === "ah" && mode === "tr" && (!wantI || (!wantI.gear && wantI.qty >= TR_MIN)))) { if (fromNav) resetModeState(hm); mode = hm; drawCats(); refresh(); }   // trädet ritades för den sparade fliken
-    if (mode === "qu" || (!keep && hp0.quest)) { mode = "qu"; if (!keep) { sortKey = "lvl"; sortDir = 1; } $("q").placeholder = t("search_qu"); quStart(+hp0.quest || (keep ? selQuest : 0)); return; }
-    if (mode === "de" || (!keep && hp0.de)) { mode = "de"; if (!keep) { sortKey = "profit"; sortDir = -1; } $("q").placeholder = t("search_ph"); deStart(+hp0.de || (keep ? deSel : 0)); return; }
-    if (mode === "co" || (!keep && hp0.col)) { mode = "co"; if (!keep) { sortKey = "name"; sortDir = 1; } $("q").placeholder = t("search_co"); coStart(hp0.col || (keep ? coSel : "")); return; }
-    if (mode === "hu" || (!keep && hp0.beast)) { mode = "hu"; if (!keep) { sortKey = "lvl"; sortDir = huLvl ? -1 : 1; } $("q").placeholder = t("search_hu"); huStart(+hp0.beast || (keep ? huSel : 0)); return; }
-    if (mode === "dg" || (!keep && hp0.dungeon)) { mode = "dg"; $("q").placeholder = t("search_dg"); dgStart(+hp0.dungeon || 0); return; }
+    // keep (ny scan eller annan marknad): lägesvyerna visar inte "Loading" och rullar inte upp, de ritar om listan (granskning 2026-11-18)
+    if (mode === "qu" || (!keep && hp0.quest)) { mode = "qu"; if (!keep) { sortKey = "lvl"; sortDir = 1; } $("q").placeholder = t("search_qu"); quStart(+hp0.quest || (keep ? selQuest : 0), false, keep); return; }
+    if (mode === "de" || (!keep && hp0.de)) { mode = "de"; if (!keep) { sortKey = "profit"; sortDir = -1; } $("q").placeholder = t("search_ph"); deStart(+hp0.de || (keep ? deSel : 0), keep); return; }
+    if (mode === "co" || (!keep && hp0.col)) { mode = "co"; if (!keep) { sortKey = "name"; sortDir = 1; } $("q").placeholder = t("search_co"); coStart(hp0.col || (keep ? coSel : ""), keep); return; }
+    if (mode === "hu" || (!keep && hp0.beast)) { mode = "hu"; if (!keep) { sortKey = "lvl"; sortDir = huLvl ? -1 : 1; } $("q").placeholder = t("search_hu"); huStart(+hp0.beast || (keep ? huSel : 0), keep); return; }
+    if (mode === "dg" || (!keep && hp0.dungeon)) { mode = "dg"; $("q").placeholder = t("search_dg"); dgStart(+hp0.dungeon || 0, keep); return; }
     if (mode === "ar" || (!keep && (hp0.player || hp0.guild || hp0.top))) {
       mode = "ar"; $("q").placeholder = t("search_ar");
       drawCats(); refresh();
@@ -2522,8 +2786,8 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     if (mode === "cr" || (!keep && hashParams().recipe)) {   // Crafting: recepten laddas först, sedan listan och rutan
       mode = "cr"; if (!keep) { sortKey = "profit"; sortDir = -1; } $("q").placeholder = t("search_rc");
       var wantR = +hashParams().recipe;
-      loadRecept().then(function () { buildCr(); drawCats(); refresh(); if (wantR) { selectRecipe(wantR, true); showTab("item"); } else if (keep && selRec) selectRecipe(selRec, false); else if (view[0]) selectRecipe(view[0].rid, false); })
-        .catch(function () { $("detail").innerHTML = '<div class="note">' + t("cr_fail") + "</div>"; });
+      loadRecept().then(function () { buildCr(); if (mode !== "cr") return; drawCats(); refresh(); if (wantR) { selectRecipe(wantR, true); showTab("item"); } else if (keep && selRec) selectRecipe(selRec, false); else if (view[0]) selectRecipe(view[0].rid, false); })
+        .catch(function () { if (mode === "cr") $("detail").innerHTML = '<div class="note">' + t("cr_fail") + "</div>"; });   // bytt flik under laddningen: rita inget (granskning 2026-11-18)
       return;
     }
     if (keep && selId && byId[selId]) { select(selId, false); return; }
@@ -2542,7 +2806,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   function refresh() {
     var q = query;
     if (mode === "ar") { view = []; shown = 0; draw(); return; }
-    if (mode === "qu") { if (QU) quRefresh(q); else { view = []; shown = 0; } draw(); return; }
+    if (mode === "qu") { if (QU) quRefresh(q); else { view = []; shown = 0; } draw(); if (QU && qmOv) qmOvView(); return; }
     if (mode === "dg") { if (DG) dgRefresh(q); else { view = []; shown = 0; } draw(); return; }
     if (mode === "hu") { if (HU) huRefresh(q); else { view = []; shown = 0; } draw(); if (HU && huMapOn) huMapView(); return; }
     if (mode === "co") { if (CO) coRefresh(q); else { view = []; shown = 0; } draw(); return; }
@@ -2788,15 +3052,44 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     $("modeHu").setAttribute("aria-pressed", mode === "hu" ? "true" : "false");
     $("modeCo").setAttribute("aria-pressed", mode === "co" ? "true" : "false");
   }
+  // Raden i: själva raden och, i AH/Trading, de utfällda prisstegen under den.
+  function rowFull(i) { return rowHtml(view[i]) + ((mode === "ah" || mode === "tr") && view[i].id === openId ? expHtml(view[i]) : ""); }
+  function drawMoreBtn() {   // Dungeons: räkna bara föremålen, inte boss- och rubrikraderna (granskning 2026-11-18)
+    var left = mode === "dg" ? view.slice(shown).filter(function (x) { return !x.hd && !x.sub; }).length : view.length - shown;
+    $("more").hidden = shown >= view.length;
+    $("more").textContent = t("more", num(left));
+  }
+  // Vad som senast ritades i #rows (granskning 2026-11-18): visa fler lägger bara till de nya raderna när listan, läget
+  // och sorteringen är desamma; annars en hel draw().
+  var drawn = null;
+  function drawMore() {
+    var from = shown;
+    shown = Math.min(view.length, shown + PAGE);
+    if (shown === from) return;
+    if (mode === "ar" || !drawn || drawn.view !== view || drawn.mode !== mode || drawn.n !== from || drawn.sk !== sortKey || drawn.sd !== sortDir) { draw(); return; }
+    var html = "";
+    for (var i = from; i < shown; i++) html += rowFull(i);
+    $("rows").insertAdjacentHTML("beforeend", html);
+    drawn.n = shown;
+    drawMoreBtn();
+  }
+  // Utfällningen under en rad byts på plats i stället för att hela tabellen ritas om (granskning 2026-11-18).
+  function syncExp() {
+    var old = $("rows").querySelector("tr.exp");
+    if (old) old.remove();
+    if (openId == null || (mode !== "ah" && mode !== "tr") || !byId[openId]) return;
+    var tr = $("rows").querySelector('tr[data-id="' + openId + '"]');
+    if (tr) tr.insertAdjacentHTML("afterend", expHtml(byId[openId]));
+  }
   function draw() {
     var html = "";
-    for (var i = 0; i < shown; i++) { html += rowHtml(view[i]); if ((mode === "ah" || mode === "tr") && view[i].id === openId) html += expHtml(view[i]); }
+    for (var i = 0; i < shown; i++) html += rowFull(i);
     $("rows").innerHTML = html;
+    drawn = { view: view, mode: mode, n: shown, sk: sortKey, sd: sortDir };
     $("empty").hidden = view.length > 0;
     document.querySelector(".left .scroll").classList.toggle("noitems", view.length === 0);
     $("empty").textContent = t(mode === "de" ? "de_empty" : mode === "co" ? "co_empty" : mode === "hu" ? "hu_empty" : mode === "cr" ? "cr_empty" : mode === "qu" ? "qu_empty" : mode === "dg" ? (query || dgSel >= 0 ? "dg_empty" : "dg_pick") : "empty");
-    $("more").hidden = shown >= view.length;
-    $("more").textContent = t("more", num(view.length - shown));
+    drawMoreBtn();
     $("count").textContent = t(mode === "de" ? "de_count" : mode === "co" ? "co_count" : mode === "hu" ? "hu_count" : mode === "cr" ? "cr_count" : mode === "qu" ? "qu_count" : mode === "dg" ? "dg_count" : "count", num(mode === "dg" ? view.filter(function (x) { return !x.hd && !x.sub; }).length : view.length));
     $("head").innerHTML = mode === "ar" ? "" : headHtml();
     $("list").className = mode === "tr" || mode === "cr" || mode === "qu" || mode === "dg" || mode === "hu" || mode === "co" || mode === "de" ? mode : "";
@@ -3077,16 +3370,25 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     if (e.target.closest("[data-hurare]") && mode === "hu") { huRare = !huRare; drawCats(); refresh(); toTop(); return; }
     if (e.target.closest("[data-humap]") && mode === "hu" && HU) { huMapOn = !huMapOn; drawCats(); if (huMapOn) { showTab("item"); huMapView(); } else if (huSel) huDetail(huSel); return; }
     var hmc = e.target.closest("[data-humapc]");
-    if (hmc && HU) { huMapCont = +hmc.dataset.humapc; huMapZone = ""; huMapView(); return; }
+    if (hmc && HU && mode === "hu") { huMapCont = +hmc.dataset.humapc; huMapZone = ""; huMapView(); return; }   // kartklicken bara i Hunter pets (granskning 2026-11-18)
     var hmz = e.target.closest("[data-humapz]");
-    if (hmz && HU) { huMapZone = hmz.dataset.humapz; huMapView(); return; }
+    if (hmz && HU && mode === "hu") { huMapZone = hmz.dataset.humapz; huMapView(); return; }
+    var wy = e.target.closest("[data-way]");
+    if (wy) { e.preventDefault(); qmCopy(wy.dataset.way); return; }
+    var qmz = e.target.closest("[data-qmz]");
+    if (qmz && qmCur) { qmZone = qmz.dataset.qmz; var qme = $("qmap"); if (qme) qme.innerHTML = qmHtml(qmCur.id, qmCur.r); return; }
+    var qmoz = e.target.closest("[data-qmoz]");
+    if (qmoz) { qmOvZone = qmoz.dataset.qmoz; if (mode === "qu" && qmOv) qmOvView(); else if (mode === "ar" && arQMap && arData) qmArView(arData); return; }
+    if (e.target.closest("[data-qmov]") && mode === "qu" && QU) { qmOv = !qmOv; drawCats(); if (qmOv) { showTab("item"); qmOvView(); } else if (selQuest) selectQuest(selQuest, false); return; }
+    if (e.target.closest("[data-armap]") && mode === "ar" && arData && arData.kind === "character") { arQMap = true; arQuest = 0; arUpg = false; arRec = 0; renderChar(arData); setHash(arHash()); showTab("item"); return; }
+    if (e.target.closest("[data-armapx]") && mode === "ar" && arData && arData.kind === "character") { arQMap = false; renderChar(arData); return; }
     var hpk = e.target.closest("[data-hupick]");
-    if (hpk && HU) { huZBigClose(); huMapOn = false; drawCats(); huDetail(+hpk.dataset.hupick); showTab("item"); return; }
-    if (e.target.closest(".huzbig")) { huZBigClose(); return; }
+    if (hpk && HU && mode === "hu") { huZBigClose(); huMapOn = false; drawCats(); huDetail(+hpk.dataset.hupick); showTab("item"); return; }
+    if (e.target.closest(".huzbig")) { huZBigClose(); if (!e.target.closest("[data-goquest]")) return; }
     var hzm = e.target.closest(".huzm");
-    if (hzm && HU) { huZBig(hzm); return; }
+    if (hzm && hzm.closest(".right") && !e.target.closest("[data-goquest]")) { huZBig(hzm); return; }
     var hzb = e.target.closest("[data-huz]");
-    if (hzb && HU && huSel) {
+    if (hzb && HU && huSel && mode === "hu") {
       var hb = null; HU.beasts.forEach(function (x) { if (x.id === huSel) hb = x; });
       var hw = $("detail").querySelector(".huzwrap");
       if (hb && hw) { huBz = { id: hb.id, i: +hzb.dataset.huz }; hw.innerHTML = huBeastZones(hb); }
@@ -3209,7 +3511,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     var gq = e.target.closest("[data-goquest]");
     // I Armory: questet i högerpanelen, spelaren ligger kvar (Joakim 2026-11-17). Annars Quests-fliken.
     if (gq && mode === "ar" && arData && arData.kind === "character") { e.preventDefault(); arQuest = +gq.dataset.goquest; arRec = 0; renderChar(arData); setHash(arHash()); showTab("item"); $("detail").scrollTop = 0; return; }
-    if (gq) { e.preventDefault(); var gqid = +gq.dataset.goquest; selQuest = gqid; if (mode !== "qu") setMode("qu"); else selectQuest(gqid, true); showTab("item"); return; }
+    if (gq) { e.preventDefault(); var gqid = +gq.dataset.goquest; selQuest = gqid; if (qmOv) { qmOv = false; if (mode === "qu") drawCats(); } if (mode !== "qu") setMode("qu"); else selectQuest(gqid, true); showTab("item"); return; }
     if (e.target.closest("[data-aqback]") && arData && arData.kind === "character") { arQuest = 0; renderChar(arData); setHash(arHash()); return; }
     var tm = e.target.closest("[data-talmode]");
     if (tm && arData && arData.kind === "character") {
@@ -3235,7 +3537,8 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     var ar2 = e.target.closest("[data-arrec]");   // känt recept i Armory → receptrutan i högerpanelen
     if (ar2 && arData && arData.kind === "character") { arRec = +ar2.dataset.arrec; $("detail").innerHTML = '<div class="note">' + t("cr_loading") + "</div>"; loadRecept().then(function () { arRedraw(); }); return; }
     var gr = e.target.closest("[data-gorec]");   // recept → samma recept i Professions (samma Blizzard-id)
-    if (gr) { var gid = +gr.dataset.gorec; setMode("cr"); loadRecept().then(function () { selectRecipe(gid, true); }); return; }
+    // selRec före setMode: receptet blir ett eget historiksteg, som gobeast/goquest (granskning 2026-11-18)
+    if (gr) { var gid = +gr.dataset.gorec; selRec = gid; setMode("cr"); loadRecept().then(function () { if (mode === "cr") selectRecipe(gid, true); }); return; }
     var gc = e.target.closest("[data-crafters]");
     if (gc && arData && arData.kind === "guild") {
       crOpen = !crOpen;
@@ -3256,7 +3559,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     if (qg && mode === "ar" && arQuest && arData) { e.preventDefault(); arQuest = +qg.dataset.qgo; selectQuest(arQuest, false, true); setHash(arHash()); $("detail").scrollTop = 0; return; }
     if (qg) { e.preventDefault(); showTab("item"); selectQuest(+qg.dataset.qgo, true); return; }
     var tq = e.target.closest("tbody tr[data-qid]");
-    if (tq) { showTab("item"); selectQuest(+tq.dataset.qid, true); return; }
+    if (tq) { showTab("item"); if (qmOv) { qmOv = false; drawCats(); } selectQuest(+tq.dataset.qid, true); return; }
     var tdi = e.target.closest("tbody tr[data-dgi]");
     if (tdi) { showTab("item"); dgItemDetail(+tdi.dataset.dgi); return; }
     var qh = e.target.closest("[data-quhide]");
@@ -3266,8 +3569,10 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     var tr = e.target.closest("tbody tr[data-id]");
     if (tr) {
       var id = +tr.dataset.id;
-      if (tr.parentNode.id === "rows") openId = openId === id ? null : id;   // listan: fäll ut eller ihop
-      showTab("item"); select(id, true); draw();
+      var inList = tr.parentNode.id === "rows";
+      if (inList) openId = openId === id ? null : id;   // listan: fäll ut eller ihop
+      // select() sätter aria-selected; bara utfällningen byts, tabellen ritas inte om (granskning 2026-11-18)
+      showTab("item"); select(id, true); if (inList) syncExp();
     }
   });
   $("tabItem").addEventListener("click", function () { showTab("item"); });
@@ -3282,42 +3587,48 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     if (e.target.tagName !== "TR" || !e.target.dataset.id) return;
     e.preventDefault();
     var kid = +e.target.dataset.id;
-    if (e.target.parentNode.id === "rows") openId = openId === kid ? null : kid;
-    showTab("item"); select(kid, true); draw();
-    var again = document.querySelector('#rows tr[data-id="' + kid + '"]');
-    if (again) again.focus();
+    var inList = e.target.parentNode.id === "rows";
+    if (inList) openId = openId === kid ? null : kid;
+    showTab("item"); select(kid, true); if (inList) syncExp();   // raden ligger kvar, fokus med den (granskning 2026-11-18)
   });
-  $("more").addEventListener("click", function () { shown = Math.min(view.length, shown + PAGE); draw(); });
+  $("more").addEventListener("click", function () { drawMore(); });
   // Listan rullar i sin egen ram: nära slutet läggs fler varor till av sig själva (knappen finns kvar).
   var listBox = document.querySelector(".left .scroll");
   listBox.addEventListener("scroll", function () {
-    if (shown < view.length && listBox.scrollTop + listBox.clientHeight > listBox.scrollHeight - 240) {
-      shown = Math.min(view.length, shown + PAGE);
-      draw();
-    }
+    if (shown < view.length && listBox.scrollTop + listBox.clientHeight > listBox.scrollHeight - 240) drawMore();   // bara de nya raderna (granskning 2026-11-18)
   });
-  $("q").addEventListener("input", function () { if (mode === "ar") return; query = this.value.trim().toLowerCase(); refresh(); });
+  // Sökrutan filtrerar 130 ms efter sista tangenten (granskning 2026-11-18); värdet läses när filtret körs.
+  var qTimer = 0;
+  function qFlush() { clearTimeout(qTimer); qTimer = 0; }
+  $("q").addEventListener("input", function () {
+    if (mode === "ar") return;
+    qFlush();
+    qTimer = setTimeout(function () { qTimer = 0; if (mode === "ar") return; query = $("q").value.trim().toLowerCase(); refresh(); }, 130);
+  });
   function toTop() { var lb = document.querySelector(".left .scroll"); if (lb) lb.scrollTop = 0; }
   // Hem (Joakim 2026-11-16): medaljongen eller rubriken = som Search med tom ruta: ingen sökning, ingen kategori, överst,
   // och de senaste uppgifterna hämtas.
   $("home").addEventListener("click", function (e) {
     e.preventDefault();
-    query = ""; $("q").value = "";
+    qFlush(); query = ""; $("q").value = "";
     catSel = -1; subSel = -1; sub2Sel = -1;
     openId = null;
     if (D) { drawCats(); refresh(); }
     toTop(); window.scrollTo(0, 0);
     update();
   });
-  function quStart(want, restore) {
-    $("detail").innerHTML = '<div class="note">' + t("ar_loading") + "</div>";
+  // keep: ny data i samma läge (granskning 2026-11-18): ingen "Loading", ingen rullning upp, ingen flikväxling; questet
+  // ritas om med de nya priserna, kartöversikten ligger kvar om den är öppen.
+  function quStart(want, restore, keep) {
+    if (!keep) $("detail").innerHTML = '<div class="note">' + t("ar_loading") + "</div>";
     var saved = ""; try { saved = localStorage.getItem(QU_PKEY) || ""; } catch (e) {}
     Promise.all([loadQuests(), loadXIcons(), loadDungeons().catch(function () {})]).then(function () {
       if (mode !== "qu") return;
-      drawCats(); refresh(); toTop();
+      drawCats(); refresh(); if (!keep) toTop();
       if (saved && !quPlayer) setQuPlayer(saved);
-      if (want && QU.quests[want] && (!restore || view.some(function (r) { return r.qid === want; }))) { selectQuest(want, !restore); if (!restore) showTab("item"); } else if (view[0]) selectQuest(view[0].qid, false);
-    }).catch(function () { $("detail").innerHTML = '<div class="note">' + t("qu_fail") + "</div>"; });
+      if (keep && qmOv) return;
+      if (want && QU.quests[want] && (!restore || view.some(function (r) { return r.qid === want; }))) { selectQuest(want, !restore && !keep); if (!restore && !keep) showTab("item"); } else if (view[0]) selectQuest(view[0].qid, false);
+    }).catch(function () { if (mode === "qu") $("detail").innerHTML = '<div class="note">' + t("qu_fail") + "</div>"; });
   }
   // Hunter pets (Joakim 2026-11-17): alla tämjbara djur ur den öppna Classic-databasen (hunter.json, hamta-djurplatser.js):
   // level, familj, roll (familjens liv/skada/rustning), attackhastighet (följer med när djuret tämjs), förmågor att lära,
@@ -3332,16 +3643,32 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     if (!huPromise) huPromise = Promise.all([
       fetch(DATA_BASE + "hunter.json").then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }),
       // Zon -> kontinent (0 Eastern Kingdoms, 1 Kalimdor) för de zoner som har en kartbild. Saknas filen visas den ritade kartan.
-      fetch(DATA_BASE + "assets/maps/kartor-index.json").then(function (r) { return r.ok ? r.json() : {}; }).catch(function () { return {}; })
-    ]).then(function (a) { HU = a[0]; ZMAP = a[1] || {}; return HU; });
+      loadZmap()
+    ]).then(function (a) { HU = a[0]; return HU; }).catch(function (e) { huPromise = null; throw e; });   // (granskning 2026-11-18)
     return huPromise;
+  }
+  var zmapP = null;
+  function loadZmap() {
+    if (!zmapP) zmapP = fetch(DATA_BASE + "assets/maps/kartor-index.json").then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+      .then(function (j) { ZMAP = j || {}; return ZMAP; }).catch(function () { zmapP = null; return ZMAP; });
+    return zmapP;
   }
   function huHasZ(z) { return Object.prototype.hasOwnProperty.call(ZMAP, z); }
   function huZUrl(z) { return DATA_BASE + "assets/maps/" + z.toLowerCase().replace(/[^a-z0-9]/g, "") + ".webp"; }
   function huTitle(b) { return b.name + " " + b.min + (b.max > b.min ? "–" + b.max : "") + " · " + b.family + (b.rank ? " · " + HU_RANK[b.rank] : ""); }
   // En zonkarta med prickar: dots = [{x, y (zonprocent), b}]; one = ett enskilt djur (stora prickar, inget klick).
-  function huZoneHtml(zone, dots, one) {
-    return '<div class="huzm"><img src="' + huZUrl(zone) + '" alt="' + esc(zone) + '" width="1002" height="668" decoding="async">' +
+  function huRoute(pts) {
+    var left = pts.slice(1), path = [pts[0]], pl;
+    while (left.length) {
+      var c = path[path.length - 1], bi = 0, bd = 1e9;
+      left.forEach(function (p, i) { var d2 = (p[0] - c[0]) * (p[0] - c[0]) + (p[1] - c[1]) * (p[1] - c[1]); if (d2 < bd) { bd = d2; bi = i; } });
+      path.push(left.splice(bi, 1)[0]);
+    }
+    pl = path.map(function (p) { return p[0] + "," + p[1]; }).join(" ");
+    return '<svg class="qmpoly hurt" viewBox="0 0 100 100" preserveAspectRatio="none"><polyline class="bg" points="' + pl + '"/><polyline points="' + pl + '"/></svg>';
+  }
+  function huZoneHtml(zone, dots, one, extra) {
+    return '<div class="huzm"><img src="' + huZUrl(zone) + '" alt="' + esc(zone) + '" width="1002" height="668" decoding="async">' + (extra || "") +
       dots.slice().sort(function (a, b2) { return huIsRare(a.b) - huIsRare(b2.b); }).map(function (d) {
         var b = d.b, k = huIsRare(b) ? "r" : b.rank === 1 ? "e" : "n";
         return '<i class="huz ' + k + (one ? " one" : "") + '" style="left:' + d.x + "%;top:" + d.y + '%"' + (one ? ' title="' + esc(zone + " " + d.x + ", " + d.y) + '"' : ' data-hupick="' + b.id + '" title="' + esc(huTitle(b)) + '"') + "></i>";
@@ -3354,7 +3681,8 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     if (huBz.id !== b.id) huBz = { id: b.id, i: 0 };
     var i = Math.min(huBz.i, zs.length - 1);
     return (zs.length > 1 ? '<div class="huchips">' + zs.map(function (z, k) { return '<button type="button" class="huchip' + (k === i ? " on" : "") + '" data-huz="' + k + '" aria-pressed="' + (k === i) + '">' + esc(z.zone) + ' <span class="dim">' + z.n + "</span></button>"; }).join("") + "</div>" : "") +
-      huZoneHtml(zs[i].zone, zs[i].pts.map(function (p) { return { x: p[0], y: p[1], b: b }; }), true) + '<div class="dim">' + t("hu_map_big") + "</div>";
+      huZoneHtml(zs[i].zone, zs[i].pts.map(function (p) { return { x: p[0], y: p[1], b: b }; }), true, huIsRare(b) && zs[i].pts.length > 1 ? huRoute(zs[i].pts) : "") +
+      '<div class="dim">' + (huIsRare(b) && zs[i].pts.length > 1 ? t("hu_route") + " " : "") + t("hu_map_big") + "</div>";
   }
   function huFamIcon(fam) { return RICON + "ability_hunter_pet_" + (HU_FAMIC[fam] || "wolf") + ".jpg"; }
   function huIsRare(b) { return b.rank === 2 || b.rank === 4; }
@@ -3589,18 +3917,23 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   }
   function huZBigClose() { var o = document.querySelector(".huzbig"); if (o) o.remove(); }
   document.addEventListener("keydown", function (e) { if (e.key === "Escape") huZBigClose(); });
-  function huStart(want) {
-    $("detail").innerHTML = '<div class="note">' + t("ar_loading") + "</div>";
+  document.addEventListener("change", function (e) {
+    if (!e.target.matches || !e.target.matches("[data-qmozsel]") || !e.target.value) return;
+    qmOvZone = e.target.value;
+    if (mode === "qu" && qmOv) qmOvView(); else if (mode === "ar" && arQMap && arData) qmArView(arData);
+  });
+  function huStart(want, keep) {   // keep: ny data, ingen "Loading"/rullning/flikväxling (granskning 2026-11-18)
+    if (!keep) $("detail").innerHTML = '<div class="note">' + t("ar_loading") + "</div>";
     loadHunter().then(function () {
       if (mode !== "hu") return;
       // Två anrop innan datan kommit (sidan laddar data.json två gånger): det andra ska inte byta bort djuret från länken.
       var w = want || huSel;
-      if (want && huMapOn) huMapOn = false;
-      drawCats(); refresh(); toTop();
+      if (want && huMapOn && !keep) huMapOn = false;
+      drawCats(); refresh(); if (!keep) toTop();
       if (huMapOn) huMapView();
-      else if (w && HU.beasts.some(function (b) { return b.id === w; })) { huDetail(w); if (want) showTab("item"); }
+      else if (w && HU.beasts.some(function (b) { return b.id === w; })) { huDetail(w); if (want && !keep) showTab("item"); }
       else if (view[0]) huDetail(view[0].hu.id);
-    }).catch(function () { $("detail").innerHTML = '<div class="note">' + t("qu_fail") + "</div>"; });
+    }).catch(function () { if (mode === "hu") $("detail").innerHTML = '<div class="note">' + t("qu_fail") + "</div>"; });
   }
   // Armory: "Pets for you" för hunters – djur upp till huntens level (inom 8 levlar), rares och snabba först, helst i
   // zonerna där huntern har pågående quests (Blizzard sparar inte var karaktären står).
@@ -3635,12 +3968,14 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   function lbRuleset() { return lbRs === "all" ? "" : lbRs || houseParts(house)[0]; }
   var LB = [["ilvl", "il", "lb_ilvl"], ["hk", "hk", "lb_hk"], ["rank", "rk", "lb_rank"], ["ach", "ap", "lb_ach"], ["guilds", "", "lb_guilds"], ["first60", "t60", "lb_first60"], ["cls", "", "lb_cls"], ["act", "", "lb_act"]];
   function loadKat() {
-    if (!katPromise) katPromise = fetch(DATA_BASE + "katalog.json", { cache: "no-store" }).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }).then(function (j) { KAT = j; return j; })
+    // katalog.json: vanlig cache räcker, filen byts en gång per dygn (granskning 2026-11-18)
+    if (!katPromise) katPromise = fetch(DATA_BASE + "katalog.json").then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }).then(function (j) { KAT = j; return j; })
       .catch(function (e) { katPromise = null; throw e; });
     return katPromise;
   }
   function lbShow() {
-    if (!KAT) { arShow('<div class="hint">' + t("ar_loading") + "</div>", ""); loadKat().then(function () { if (mode === "ar" && arLb) { drawCats(); lbShow(); } }).catch(function () { arShow('<div class="hint">' + t("lb_fail") + "</div>", ""); }); return; }
+    ++arToken; arKeepSub = false;   // topplistan visas: ett sent spelarsvar får inte skriva över den (granskning 2026-11-18)
+    if (!KAT) { arShow('<div class="hint">' + t("ar_loading") + "</div>", ""); loadKat().then(function () { if (mode === "ar" && arLb) { drawCats(); lbShow(); } }).catch(function () { if (mode === "ar" && arLb) arShow('<div class="hint">' + t("lb_fail") + "</div>", ""); }); return; }
     var def = LB.filter(function (b) { return b[0] === arLb; })[0] || LB[0];
     var rs = lbRuleset(), gRs = {};
     if (rs) { var cnt = {}; KAT.players.forEach(function (p) { if (p.g && p.rs) { var c = cnt[p.g] = cnt[p.g] || { pvp: 0, normal: 0 }; c[p.rs]++; } }); Object.keys(cnt).forEach(function (g) { gRs[g] = cnt[g].pvp >= cnt[g].normal ? "pvp" : "normal"; }); }
@@ -3679,13 +4014,16 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     } else if (def[0] === "act") {
       h += actHtml();
     } else if (def[0] === "first60") {
-      var f6 = KAT.players.filter(function (p) { return faOk(p) && p.t60 > 0; }).sort(function (a, b) { return (a.t60 - b.t60) || (b.il - a.il); }).slice(0, 100), st = KAT.start || 0;
+      var st = KAT.start || 0, nBefore = 0;
+      var f6 = KAT.players.filter(function (p) { if (!faOk(p) || !(p.t60 > 0)) return false; if (st && p.t60 <= st) { nBefore++; return false; } return true; })
+        .sort(function (a, b) { return (a.t60 - b.t60) || (b.il - a.il); }).slice(0, 100);
       h += '<table class="lbt"><thead><tr><th>#</th><th class="nm">' + t("lb_player") + '</th><th class="hide-s">' + t("lb_guild") + "</th><th>" + t("lb_reached") + "</th></tr></thead><tbody>" +
         f6.map(function (p, i) {
           var full = p.n + (p.sn ? " " + p.sn : ""), before = st && p.t60 <= st;
           return '<tr><td class="lbn' + (i < 3 && !before ? " top" + (i + 1) : "") + '">' + (i + 1) + '</td><td class="nm">' + classIcon(p.c) + '<a href="#player=' + esc(p.s) + '" data-ar="char" data-slug="' + esc(p.s) + '" style="color:' + (CLASS_COL[p.c] || "inherit") + '">' + esc(full) + "</a></td>" +
             '<td class="hide-s">' + (p.g ? '<a class="dim" href="#guild=' + esc(p.g) + '" data-ar="guild" data-slug="' + esc(p.g) + '">&lt;' + esc(p.gn) + "&gt;</a>" : "") + "</td><td>" + (before ? '<span class="dim">' + t("lb_before", when2(st)) + "</span>" : "<b>" + when2(p.t60) + "</b>") + "</td></tr>";
-        }).join("") + "</tbody></table>" + '<div class="note">' + t("lb_first60_note", when2(st)) + "</div>";
+        }).join("") + "</tbody></table>" + (f6.length ? "" : '<div class="note">' + t("lb_first60_none") + "</div>") +
+        '<div class="note">' + t("lb_first60_note2", when2(st), num(nBefore)) + "</div>";
     } else if (def[0] === "guilds") {
       var gl = KAT.guilds.filter(faOk).sort(function (a, b) { return (b.n60 - a.n60) || (b.il60 - a.il60) || (b.avg - a.avg); }).slice(0, 50);
       h += '<table class="lbt"><thead><tr><th>#</th><th class="nm">' + t("lb_guild") + "</th><th>" + t("lb_n60") + '</th><th class="hide-s">' + t("lb_il60") + "</th><th>" + t("lb_avg") + '</th><th class="hide-s">' + t("lb_members") + "</th></tr></thead><tbody>" +
@@ -3803,14 +4141,14 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       '<div class="note">' + t("de_src_" + o.src, o.n) + (o.own ? " · " + t("de_own_tip", o.own) : "") + "</div>" + (o.missing ? '<div class="note warn">' + t("de_missing") + "</div>" : "") +
       '<div class="note">' + t("de_cut") + "</div>";
   }
-  function deStart(want) {
-    $("detail").innerHTML = '<div class="note">' + t("ar_loading") + "</div>";
+  function deStart(want, keep) {   // keep: ny data, ingen "Loading"/rullning/flikväxling (granskning 2026-11-18)
+    if (!keep) $("detail").innerHTML = '<div class="note">' + t("ar_loading") + "</div>";
     loadDe().then(function () {
       if (mode !== "de") return;
-      drawCats(); refresh(); toTop();
+      drawCats(); refresh(); if (!keep) toTop();
       var w = want || deSel;
-      if (w && byId[w] && DEX.items[w]) { deDetail(w); if (want) showTab("item"); } else if (view[0]) deDetail(view[0].de);
-    }).catch(function () { $("detail").innerHTML = '<div class="note">' + t("qu_fail") + "</div>"; });
+      if (w && byId[w] && DEX.items[w]) { deDetail(w); if (want && !keep) showTab("item"); } else if (view[0]) deDetail(view[0].de);
+    }).catch(function () { if (mode === "de") $("detail").innerHTML = '<div class="note">' + t("qu_fail") + "</div>"; });
   }
   // Aktivitet (Joakim 2026-11-17: "kurva över när servern är fullast, timme för timme"): activity.json ur addonets
   // spelarnamn – olika spelare WhippitPanel såg per klocktimme medan Joakim var inloggad.
@@ -3970,33 +4308,34 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       (x.desc && f.kind !== "titles" ? '<div class="note">' + esc(x.desc) + "</div>" : "") +
       '<div class="note">' + t("co_src_note") + "</div>";
   }
-  function coStart(want) {
-    $("detail").innerHTML = '<div class="note">' + t("ar_loading") + "</div>";
+  function coStart(want, keep) {   // keep: ny data, ingen "Loading"/rullning/flikväxling (granskning 2026-11-18)
+    if (!keep) $("detail").innerHTML = '<div class="note">' + t("ar_loading") + "</div>";
     loadCo().then(function () {
       if (mode !== "co") return;   // bytt flik medan filen laddades (eller bakåt i historiken)
       var f = want ? coFind(want) : null;
       if (f) coKind = f.kind;
-      drawCats(); refresh(); toTop();
-      if (f) { coDetail(want); showTab("item"); } else if (view[0]) coDetail(CO_LETTER[coKind] + view[0].co.id);
-    }).catch(function () { $("detail").innerHTML = '<div class="note">' + t("qu_fail") + "</div>"; });
+      drawCats(); refresh(); if (!keep) toTop();
+      if (f) { coDetail(want); if (!keep) showTab("item"); } else if (view[0]) coDetail(CO_LETTER[coKind] + view[0].co.id);
+    }).catch(function () { if (mode === "co") $("detail").innerHTML = '<div class="note">' + t("qu_fail") + "</div>"; });
   }
-  function dgStart(wantMap) {
-    $("detail").innerHTML = '<div class="note">' + t("ar_loading") + "</div>";
+  function dgStart(wantMap, keep) {   // keep: som ovan (granskning 2026-11-18)
+    if (!keep) $("detail").innerHTML = '<div class="note">' + t("ar_loading") + "</div>";
     Promise.all([loadDungeons(), loadXIcons()]).then(function () {
       if (mode !== "dg") return;
       if (wantMap) dgList.forEach(function (d, i) { if (d.map === wantMap) dgSel = i; });
       if (dgSel < 0) dgSel = 0;
-      drawCats(); refresh(); toTop(); dgDetail();
-    }).catch(function () { $("detail").innerHTML = '<div class="note">' + t("qu_fail") + "</div>"; });
+      drawCats(); refresh(); if (!keep) toTop(); dgDetail();
+    }).catch(function () { if (mode === "dg") $("detail").innerHTML = '<div class="note">' + t("qu_fail") + "</div>"; });
   }
   function resetModeState(m) {   // ny flik: egen sortering, inga kvarglömda filter från förra fliken
     if (m === "tr") { sortKey = "dip"; sortDir = -1; } else if (m === "cr") { sortKey = "profit"; sortDir = -1; } else if (m === "qu") { sortKey = "lvl"; sortDir = 1; } else { sortKey = "day"; sortDir = -1; }
     openId = null;
     catSel = -1; subSel = -1; sub2Sel = -1;   // kategorierna och yrkena är olika listor
-    query = ""; $("q").value = "";
+    qFlush(); query = ""; $("q").value = "";   // väntande sökning från förra fliken stryks (granskning 2026-11-18)
   }
   function setMode(m) {
     if (m === mode) return;
+    huZBigClose();   // stora zonkartan hör till fliken man lämnar (granskning 2026-11-18)
     mode = m;
     try { localStorage.setItem(MKEY, m); } catch (e) { /* gäller tills sidan stängs */ }
     resetModeState(m);
@@ -4007,6 +4346,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     if (m === "co") { sortKey = "name"; sortDir = 1; coStart(0); return; }
     if (m === "de") { sortKey = "profit"; sortDir = -1; deStart(0); return; }
     if (m === "ar") {
+      arCmp = null; arCmpPick = false;   // en gammal jämförelse ska inte dyka upp igen (granskning 2026-11-18)
       drawCats(); refresh();
       if (arLb) { lbShow(); setHash("#top=" + arLb); }
       else if (arData) { if (arData.kind === "character") renderChar(arData); else renderGuild(arData); setHash(arData.kind === "character" ? arHash() : "#guild=" + arData.slug); }
@@ -4016,8 +4356,8 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     }
     if (m === "cr") {
       $("detail").innerHTML = '<div class="note">' + t("cr_loading") + "</div>";
-      loadRecept().then(function () { drawCats(); refresh(); toTop(); if (selRec && crRows.some(function (r) { return r.rid === selRec; })) selectRecipe(selRec, false); else if (view[0]) selectRecipe(view[0].rid, false); })
-        .catch(function () { $("detail").innerHTML = '<div class="note">' + t("cr_fail") + "</div>"; });
+      loadRecept().then(function () { if (mode !== "cr") return; drawCats(); refresh(); toTop(); if (selRec && crRows.some(function (r) { return r.rid === selRec; })) selectRecipe(selRec, false); else if (view[0]) selectRecipe(view[0].rid, false); })
+        .catch(function () { if (mode === "cr") $("detail").innerHTML = '<div class="note">' + t("cr_fail") + "</div>"; });   // bytt flik under laddningen: rita inget (granskning 2026-11-18)
       return;
     }
     drawCats(); refresh(); toTop();
@@ -4073,22 +4413,25 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     drawMarket();
     try { localStorage.setItem(MARKET_KEY, String(house)); } catch (e2) {}
     lastUpdate = null;
-    var tok = ++dataSeq;
-    fetch(dataUrl(), { cache: "no-store" }).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
-      .then(function (d) { if (tok === dataSeq) load(d, !!D); }).catch(function () { if (tok === dataSeq) showError(); });
+    var tok = ++dataSeq, hh = house, c = dataCache[hh];
+    // Huset i minnet om det hämtades för mindre än 10 minuter sedan, annars no-cache (304 om filen inte ändrats) (granskning 2026-11-18)
+    if (c && Date.now() - c.t < DATA_TTL) { load(c.d, !!D); return; }
+    fetch(dataUrl(), { cache: "no-cache" }).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+      .then(function (d) { gotData(hh, d); if (tok === dataSeq) load(d, !!D); }).catch(function () { if (tok === dataSeq) showError(); });
   });
-  // Sökknappen (som i spelets AH): söker på det som står i rutan, även tomt = hela AH, och hämtar samtidigt de senaste
-  // uppgifterna (Joakim 2026-11-16: den som inte tryckt på flera timmar ska få nytt när den trycker).
+  // Sökknappen (som i spelets AH): söker på det som står i rutan, även tomt = hela AH. Den hämtar inte data.json
+  // (granskning 2026-11-18: Enter i sökrutan laddade om 2 MB varje gång); Hem och Update prices hämtar nytt.
   $("qbtn").addEventListener("click", function () {
+    qFlush();
     if (mode === "ar") { $("q").blur(); showTab("item"); arLookup($("q").value); return; }
-    query = $("q").value.trim().toLowerCase(); refresh(); $("q").blur(); update();
+    query = $("q").value.trim().toLowerCase(); refresh(); $("q").blur();
   });
   $("q").addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); $("qbtn").click(); } });
-  var tok0 = ++dataSeq;
+  var tok0 = ++dataSeq, house0 = house;
   fetch(dataUrl()).then(function (r) {
     if (!r.ok) throw new Error(r.status);
     return r.json();
-  }).then(function (d) { if (tok0 === dataSeq) load(d); }).catch(function () {
+  }).then(function (d) { gotData(house0, d); if (tok0 === dataSeq) load(d); }).catch(function () {   // sparas per hus (granskning 2026-11-18)
     failed = true;
     showError();
   });
