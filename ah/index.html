@@ -20,7 +20,8 @@
 <title>Auction House</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.min.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600&family=Instrument+Sans:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600&family=Instrument+Sans:wght@400;500;600&family=Young+Serif&display=swap">
+<script>try { if (localStorage.getItem("wow-site-appearance") === "atlas") document.documentElement.setAttribute("data-appearance", "atlas"); } catch (e) {}</script>
 <style>
 /* Layout: en ram som spelets AH-fönster: titelremsa med myntmedaljong, sökrad, varulistan till vänster och den valda
    varan (nyckeltal, graf, prissteg) till höger; på mobil hamnar varan ovanför listan. Ett enda mörkt utseende, med flit:
@@ -762,6 +763,65 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
 .gone .m, .ladder .gone span:first-child { text-decoration: line-through; text-decoration-color: rgba(255, 255, 255, .35); }
 .tag { font-size: 11px; color: var(--grey); border: 1px solid var(--line); border-radius: 3px; padding: 0 4px; margin-left: 6px; text-decoration: none; display: inline-block; }
 .bt { font-size: 13px; }
+
+/* ===== Utseendeväljaren (båda lägena) ===== */
+.appsel { display: flex; flex-direction: column; gap: 3px; margin-left: auto; align-self: center; }
+.appsel + .mkt { margin-left: 12px; }
+.applbl { font-size: 11.5px; color: var(--grey); padding-left: 2px; }
+.appseg { display: inline-flex; height: 38px; border: 1px solid var(--line); border-radius: 5px; background: var(--inset); padding: 2px; gap: 2px; }
+.appseg button { all: unset; box-sizing: border-box; cursor: pointer; padding: 0 14px; border-radius: 4px; font-size: 14px; color: var(--grey); display: inline-flex; align-items: center; }
+.appseg button:hover { color: var(--fg); background: var(--hover); }
+.appseg button[aria-checked=true] { color: #fff6e6; background: var(--btn-a); box-shadow: inset 0 -2px 0 var(--edge); }
+.appseg button:focus-visible { outline: 2px solid var(--edge); outline-offset: 1px; }
+.t-atlas, .alogo, .mode .ai, .sect { display: none; }
+
+/* ===== Azeroth Atlas ===== */
+:root[data-appearance=atlas] {
+  --bg: #101620; --panel: #151E29; --inset: #101923; --alt: #1C2732; --line: #465563; --bronze: #A4773F;
+  --fg: #EEE9DE; --grey: #B4BFCA; --gold: #ECC178; --edge: #43DAD1;
+  --hover: #22333F; --sel: rgba(67, 218, 209, .12); --btn-a: #24465A; --btn-b: #16283A;
+  --display: "Young Serif", Georgia, "Times New Roman", serif;
+}
+[data-appearance=atlas] .t-orig, [data-appearance=atlas] #logo, [data-appearance=atlas] .mode .mi { display: none; }
+[data-appearance=atlas] .t-atlas { display: inline; }
+[data-appearance=atlas] .alogo { display: block; flex: none; width: 80px; height: 64px; object-fit: contain; }
+[data-appearance=atlas] .alogo:not([src]) { display: none; }
+[data-appearance=atlas] .title h1 { font-family: var(--display); font-weight: 400; text-transform: none; letter-spacing: 0; color: #F2EADB; }
+[data-appearance=atlas] .appseg button[aria-checked=true] { color: #EEF8F7; background: linear-gradient(#1C4850, #18343F); box-shadow: inset 0 -2px 0 var(--edge); }
+/* Huvudflikarna: egen rad överst i .bar, sedan rubriken och sökfältet under. */
+[data-appearance=atlas] .bar { padding: 0 18px 12px; row-gap: 14px; }
+[data-appearance=atlas] .mode { order: -1; flex: 1 0 100%; display: flex; justify-content: space-between; margin: 0 -18px; padding: 0 18px; border-bottom: 1px solid var(--line); border-top: 1px solid var(--line); background: rgba(16, 22, 32, .55); }
+[data-appearance=atlas] .mode button { height: 56px; padding: 0 14px; gap: 8px; font-size: 15px; font-weight: 600; color: var(--fg); position: relative; }
+[data-appearance=atlas] .mode button + button::before { content: ""; position: absolute; left: 0; top: 18px; bottom: 18px; width: 1px; background: var(--line); }
+[data-appearance=atlas] .mode .ai { display: block; width: 32px; height: 32px; object-fit: contain; }
+[data-appearance=atlas] .mode .ai:not([src]) { visibility: hidden; }
+[data-appearance=atlas] .mode button:hover { background: var(--hover); }
+[data-appearance=atlas] .mode button[aria-pressed=true] { color: #F4FBFA; background: linear-gradient(#1C4850, #18343F); box-shadow: inset 0 -3px 0 var(--edge), inset 0 -8px 16px rgb(67 218 209 / .08); }
+[data-appearance=atlas] .mode button[aria-pressed=true]::before, [data-appearance=atlas] .mode button[aria-pressed=true] + button::before { display: none; }
+[data-appearance=atlas] .mode button:focus-visible { outline: 2px solid var(--edge); outline-offset: -2px; }
+[data-appearance=atlas] .sect { display: block; order: 0; margin: 0 8px 0 0; font: 400 28px/1.1 var(--display); color: var(--gold); white-space: nowrap; }
+[data-appearance=atlas] .bar #q { order: 1; flex: 0 1 640px; height: 40px; background-color: var(--inset); }
+[data-appearance=atlas] .bar #qbtn { order: 2; background: linear-gradient(#ECC178, #C9953F); color: #1B1408; border-color: #8A6A2C; }
+[data-appearance=atlas] .bar .count { order: 3; margin-left: auto; }
+[data-appearance=atlas] .win { border-color: var(--bronze); }
+[data-appearance=atlas] .cats .cat[aria-pressed=true], [data-appearance=atlas] tr[aria-selected=true] td:first-child { box-shadow: inset 3px 0 0 var(--edge); }
+[data-appearance=atlas] .fa-horde .top, [data-appearance=atlas] .fa-alliance .top { background: linear-gradient(90deg, rgba(16, 22, 32, .96) 0%, rgba(16, 22, 32, .82) 45%, rgba(16, 22, 32, .55)); }
+@media (max-width: 1180px) {
+  [data-appearance=atlas] .mode { justify-content: flex-start; overflow-x: auto; scrollbar-width: none; gap: 2px; }
+  [data-appearance=atlas] .mode button { padding: 0 8px; gap: 6px; font-size: 13.5px; white-space: nowrap; flex: none; }
+  [data-appearance=atlas] .mode .ai { width: 26px; height: 26px; }
+  [data-appearance=atlas] .mode button + button::before { display: none; }
+}
+@media (max-width: 760px) {
+  .appsel { margin-left: 0; order: 2; }
+  .appsel + .mkt { margin-left: 8px; order: 3; }
+  .appseg { height: 44px; } .appseg button { padding: 0 12px; }
+  [data-appearance=atlas] .mode button { height: 48px; }
+  [data-appearance=atlas] .mode .ai { width: 26px; height: 26px; }
+  [data-appearance=atlas] .sect { font-size: 22px; flex: 1 0 100%; }
+  [data-appearance=atlas] .bar #q { flex: 1 1 100%; }
+  [data-appearance=atlas] .bar #qbtn { order: 2; }
+}
 </style>
 </head>
 <body>
@@ -770,11 +830,19 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   <header class="top">
     <a class="home" id="home" href="#" data-t-title="home_tip" title="">
     <img class="logo" id="logo" alt="" width="80" height="80">
+    <img class="alogo" id="alogo" alt="" width="80" height="64">
     <div class="title">
-      <h1 data-t="title">Auktionshuset</h1>
+      <h1><span class="t-orig" data-t="title">Auktionshuset</span><span class="t-atlas">Azeroth Atlas</span></h1>
       <div class="sub">WoW Forever</div>
     </div>
     </a>
+    <div class="appsel" role="radiogroup" aria-labelledby="appLbl">
+      <span class="applbl" id="appLbl" data-t="style_lbl">Style</span>
+      <div class="appseg">
+        <button type="button" role="radio" data-app="original" aria-checked="true" tabindex="0" data-t="style_orig">Original</button>
+        <button type="button" role="radio" data-app="atlas" aria-checked="false" tabindex="-1" data-t="style_atlas">Atlas</button>
+      </div>
+    </div>
     <div class="mkt" id="mkt">
       <button type="button" class="mbtn" id="mktBtn" aria-haspopup="true" aria-expanded="false" data-t-title="market_label" title="">
         <img class="fi" id="mktIcon" data-icon="faction-horde.png" alt=""><span id="mktFa">Horde</span><span class="dot">·</span><span class="rt" id="mktRs">PvP</span>
@@ -795,17 +863,18 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   </header>
 
   <div class="bar">
+    <h2 class="sect" id="sect"></h2>
     <input type="search" id="q" data-t-ph="search_ph" data-t-aria="search_aria" placeholder="Sök vara, t.ex. Silk Cloth" autocomplete="off" aria-label="Sök vara">
     <button class="wowbtn" id="qbtn" type="button" data-t="search_btn">Sök</button>
     <div class="mode" role="group">
-      <button type="button" id="modeAh" aria-pressed="true" data-t-title="mode_ah_tip"><img class="mi" alt="" data-mi="ah"><span data-t="mode_ah">Auktionshus</span></button>
-      <button type="button" id="modeTr" aria-pressed="false" data-t-title="mode_tr_tip"><img class="mi" alt="" data-mi="tr"><span data-t="mode_tr">Trading</span></button>
-      <button type="button" id="modeCr" aria-pressed="false" data-t-title="mode_cr_tip"><img class="mi" alt="" data-mi="cr"><span data-t="mode_cr">Professions</span></button>
-      <button type="button" id="modeAr" aria-pressed="false" data-t-title="mode_ar_tip"><img class="mi" alt="" data-mi="ar"><span data-t="mode_ar">Armory</span></button>
-      <button type="button" id="modeQu" aria-pressed="false" data-t-title="mode_qu_tip"><img class="mi" alt="" data-mi="qu" onerror="this.style.visibility='hidden'"><span data-t="mode_qu">Quests</span></button>
-      <button type="button" id="modeDg" aria-pressed="false" data-t-title="mode_dg_tip"><img class="mi" alt="" data-mi="dg" onerror="this.style.visibility='hidden'"><span data-t="mode_dg">Dungeons</span></button>
-      <button type="button" id="modeHu" aria-pressed="false" data-t-title="mode_hu_tip"><img class="mi" alt="" data-mi="hu" onerror="this.style.visibility='hidden'"><span data-t="mode_hu">Hunter pets</span></button>
-      <button type="button" id="modeCo" aria-pressed="false" data-t-title="mode_co_tip"><img class="mi" alt="" data-mi="co" onerror="this.style.visibility='hidden'"><span data-t="mode_co">Collections</span></button>
+      <button type="button" id="modeAh" aria-pressed="true" data-t-title="mode_ah_tip"><img class="ai" alt="" width="32" height="32" data-ai="nav-auction-house"><img class="mi" alt="" data-mi="ah"><span data-t="mode_ah">Auktionshus</span></button>
+      <button type="button" id="modeTr" aria-pressed="false" data-t-title="mode_tr_tip"><img class="ai" alt="" width="32" height="32" data-ai="nav-trading"><img class="mi" alt="" data-mi="tr"><span data-t="mode_tr">Trading</span></button>
+      <button type="button" id="modeCr" aria-pressed="false" data-t-title="mode_cr_tip"><img class="ai" alt="" width="32" height="32" data-ai="nav-professions"><img class="mi" alt="" data-mi="cr"><span data-t="mode_cr">Professions</span></button>
+      <button type="button" id="modeAr" aria-pressed="false" data-t-title="mode_ar_tip"><img class="ai" alt="" width="32" height="32" data-ai="nav-armory"><img class="mi" alt="" data-mi="ar"><span data-t="mode_ar">Armory</span></button>
+      <button type="button" id="modeQu" aria-pressed="false" data-t-title="mode_qu_tip"><img class="ai" alt="" width="32" height="32" data-ai="nav-quests"><img class="mi" alt="" data-mi="qu" onerror="this.style.visibility='hidden'"><span data-t="mode_qu">Quests</span></button>
+      <button type="button" id="modeDg" aria-pressed="false" data-t-title="mode_dg_tip"><img class="ai" alt="" width="32" height="32" data-ai="nav-dungeons"><img class="mi" alt="" data-mi="dg" onerror="this.style.visibility='hidden'"><span data-t="mode_dg">Dungeons</span></button>
+      <button type="button" id="modeHu" aria-pressed="false" data-t-title="mode_hu_tip"><img class="ai" alt="" width="32" height="32" data-ai="nav-hunter-pets"><img class="mi" alt="" data-mi="hu" onerror="this.style.visibility='hidden'"><span data-t="mode_hu">Hunter pets</span></button>
+      <button type="button" id="modeCo" aria-pressed="false" data-t-title="mode_co_tip"><img class="ai" alt="" width="32" height="32" data-ai="nav-collections"><img class="mi" alt="" data-mi="co" onerror="this.style.visibility='hidden'"><span data-t="mode_co">Collections</span></button>
     </div>
     <span class="count" id="count"></span>
   </div>
@@ -879,12 +948,36 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     for (var i = 0; i < fi.length; i++) fi[i].src = ASSET_BASE + "icons/" + fi[i].getAttribute("data-icon");
     ["horde-orgrimmar", "alliance-stormwind"].forEach(function (n) { var im = new Image(); im.src = ASSET_BASE + "backgrounds/" + n + ".webp"; });   // förladdas: bytet ska inte hacka
   }
+  var APP_KEY = "wow-site-appearance";
+  function appIs() { return document.documentElement.getAttribute("data-appearance") === "atlas" ? "atlas" : "original"; }
+  function appSet(v, save) {
+    v = v === "atlas" ? "atlas" : "original";
+    if (v === "atlas") document.documentElement.setAttribute("data-appearance", "atlas"); else document.documentElement.removeAttribute("data-appearance");
+    if (save) { try { localStorage.setItem(APP_KEY, v); } catch (e) { /* gäller tills sidan stängs */ } }
+    Array.prototype.forEach.call(document.querySelectorAll("[data-app]"), function (b) { var on = b.getAttribute("data-app") === v; b.setAttribute("aria-checked", on ? "true" : "false"); b.tabIndex = on ? 0 : -1; });
+    if (v === "atlas" && ASSET_BASE) {   // Atlas-bilderna hämtas först när Atlas används
+      if (!$("alogo").src) $("alogo").src = ASSET_BASE + "icons/logo-atlas-book.png";
+      Array.prototype.forEach.call(document.querySelectorAll("img[data-ai]"), function (im) { if (!im.src) im.src = ASSET_BASE + "icons/" + im.getAttribute("data-ai") + ".png"; });
+    }
+    applyPanorama(document.body.classList.contains("fa-alliance") ? "alliance" : "horde");
+  }
+  Array.prototype.forEach.call(document.querySelectorAll("[data-app]"), function (b) {
+    b.addEventListener("click", function () { appSet(b.getAttribute("data-app"), true); });
+    b.addEventListener("keydown", function (e) {   // radiogrupp: pilarna byter och flyttar fokus
+      if (["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].indexOf(e.key) < 0) return;
+      e.preventDefault();
+      var v = appIs() === "atlas" ? "original" : "atlas";
+      appSet(v, true);
+      document.querySelector('[data-app="' + v + '"]').focus();
+    });
+  });
   function applyPanorama(faction) {
     document.body.classList.toggle("fa-horde", faction !== "alliance");
     document.body.classList.toggle("fa-alliance", faction === "alliance");
     if (!ASSET_BASE) return;
     var img = faction === "alliance" ? "alliance-stormwind.webp" : "horde-orgrimmar.webp";
-    document.body.style.backgroundImage = "linear-gradient(to bottom, rgba(19, 15, 13, 0) 30%, rgba(19, 15, 13, .55) 60%, #130F0D 92%), url(" + ASSET_BASE + "backgrounds/" + img + ")";
+    var c = appIs() === "atlas" ? "16, 22, 32" : "19, 15, 13";   // tonas mot lägets grundfärg
+    document.body.style.backgroundImage = "linear-gradient(to bottom, rgba(" + c + ", 0) 30%, rgba(" + c + ", .55) 60%, rgb(" + c + ") 92%), url(" + ASSET_BASE + "backgrounds/" + img + ")";
   }
   var dataSeq = 0;               // löpnummer för data.json-hämtningar: bara den senast påbörjade får ritas
   var openId = null;              // raden som är utfälld i listan (de tio lägsta prisstegen)
@@ -1124,6 +1217,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       src_h: "Where to learn it", src_h_drop: "Where it drops", src_trainer: "Trainer", src_vendor: "Vendor", src_drop: "Drops from", src_quest: "Quest reward", src_none: "No known source in the Classic database.",
       limited: "limited stock", more_n: "and %1 more", requires: "requires %1", tier_1: "Apprentice", tier_2: "Journeyman", tier_3: "Expert", tier_4: "Artisan",
       cr_source: "Recipes from Blizzard (WoW Forever); trainer prices and sources from the open Classic database (1.12). Skill levels of new Forever recipes from <a class=\"wh\" href=\"https://www.curseforge.com/projects/1422985\" target=\"_blank\" rel=\"noopener\">AtlasLoot Classic Forever</a> (GPL-2.0) and <a class=\"wh\" href=\"https://warcraft.wiki.gg/wiki/World_of_Warcraft:_Forever\" target=\"_blank\" rel=\"noopener\">Warcraft Wiki</a> (CC BY-SA 4.0). Prices from the latest update.",
+      style_lbl: "Style", style_orig: "Original", style_atlas: "Atlas",
       mode_ah: "Auction house", mode_ah_tip: "All items, like the in-game auction house", mode_tr: "Trading",
       mode_tr_tip: "Like a stock site: what is cheap and dear versus usual, day trade and the best time to buy and sell",
       col_best: "Best time", col_best_tip: "When in the day the item has been cheapest and dearest this week. The profit is after the AH's 5%.",
@@ -2579,11 +2673,11 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     $("detail").scrollTop = 0;
     $("detail").innerHTML = '<div id="npcbox" style="display:contents"><div class="note">' + t("ar_loading") + "</div></div>";   // contents: rutans rutnät och strip-kanterna gäller
     var put = function (html) { var el = $("npcbox"); if (el && npcSel === id) el.innerHTML = html; };
-    npcLoad(id).then(function (n) { npcCur = { id: id, n: n }; put(npcHtml(id, n)); }, function () { put('<div class="note">' + t("npc_fail") + "</div>"); });
+    npcLoad(id).then(function (n) { npcCur = { id: id, n: n }; put(npcHtml(id, n)); if (npcSel === id) m3Auto(); }, function () { put('<div class="note">' + t("npc_fail") + "</div>"); });
   }
-  function portraitHtml(disp, rare, m3) {
+  function portraitHtml(disp, rare, m3, img) {
     if (!(disp > 0)) return "";
-    return '<div class="portr' + (rare ? " rare" : "") + '"' + (m3 ? ' data-m3="' + disp + '"' : "") + '><img src="https://render.worldofwarcraft.com/eu/npcs/zoom/creature-display-' + disp + '.jpg" alt="" loading="lazy" decoding="async" onerror="m3NoPic(this)">' +
+    return '<div class="portr' + (rare ? " rare" : "") + '"' + (m3 ? ' data-m3="' + disp + '"' : "") + '><img src="' + (img ? esc(img) : "https://render.worldofwarcraft.com/eu/npcs/zoom/creature-display-" + disp + ".jpg") + '" alt="" loading="lazy" decoding="async" onerror="m3NoPic(this)">' +
       (m3 ? '<button class="p3d" type="button" data-m3b title="' + t("m3_tip") + '">' + t("m3_btn") + "</button>" : "") + "</div>";
   }
   // 3D (Joakim 2026-11-18: "3D-modellerna på djuren"): modellen från spelklienten via wow.export (modeller/krymp.js,
@@ -2615,6 +2709,11 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     c.r.dispose();
     if (c.r.domElement.parentNode) c.r.domElement.remove();
     if (c.box) { c.box.classList.remove("on3d"); var b = c.box.querySelector(".p3d"); if (b) b.textContent = t("m3_btn"); }
+  }
+  // Efter att en detaljruta ritats: 3D direkt om valet är 3D och modellen finns, annars stängs en gammal visare.
+  function m3Auto() {
+    var pb = m3Pref() && $("detail").querySelector(".portr[data-m3]");
+    if (pb) m3Start(pb); else m3Stop();
   }
   function m3Start(box) {
     var disp = +box.dataset.m3;
@@ -2681,7 +2780,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     var roles = NPC_FLAGS.filter(function (f) { return n[5] & f[0]; }).map(function (f) { return "<span>" + t(f[1]) + "</span>"; }).join("");
     var h = '<div class="strip"><button class="lnk" type="button" data-copyany="#npc=' + id + '" title="' + t("copy_link") + '">' + t("copy_link") + "</button>" +
       "<h2>" + esc(n[0]) + (n[4] && HU_RANK[n[4]] ? ' <span class="tag el">' + HU_RANK[n[4]] + "</span>" : "") + "</h2><small>" +
-      [n[1] ? "&lt;" + esc(n[1]) + "&gt;" : "", lv ? t("col_lvl") + " " + lv : ""].filter(Boolean).join(" · ") + "</small></div>" + portraitHtml(n[11], n[4] === 2 || n[4] === 4) +
+      [n[1] ? "&lt;" + esc(n[1]) + "&gt;" : "", lv ? t("col_lvl") + " " + lv : ""].filter(Boolean).join(" · ") + "</small></div>" + portraitHtml(n[11], n[4] === 2 || n[4] === 4, n[12]) +
       (roles ? '<div class="huab">' + roles + "</div>" : "");
     // Kartan: zonerna med kartbild (platser och gångvägar), flest platser först, flikar när de är flera.
     var cnt = {}, add = function (z, w) { if (huHasZ(z)) cnt[z] = (cnt[z] || 0) + w; };
@@ -3312,6 +3411,8 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     $("modeDg").setAttribute("aria-pressed", mode === "dg" ? "true" : "false");
     $("modeHu").setAttribute("aria-pressed", mode === "hu" ? "true" : "false");
     $("modeCo").setAttribute("aria-pressed", mode === "co" ? "true" : "false");
+    $("sect").textContent = t(mode === "de" ? "mode_tr" : "mode_" + mode);
+    $("q").setAttribute("aria-label", t(mode === "cr" ? "search_rc" : mode === "ar" ? "search_ar" : mode === "qu" ? "search_qu" : mode === "dg" ? "search_dg" : mode === "hu" ? "search_hu" : mode === "co" ? "search_co" : "search_ph"));
   }
   // Raden i: själva raden och, i AH/Trading, de utfällda prisstegen under den.
   function rowFull(i) { return rowHtml(view[i]) + ((mode === "ah" || mode === "tr") && view[i].id === openId ? expHtml(view[i]) : ""); }
@@ -4047,8 +4148,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       (zmap ? '<div class="huzwrap">' + zmap + "</div>" : "") +
       (hasPts ? '<div class="humap sm"><canvas></canvas><div class="humaptip" hidden></div></div>' : "") + '<div class="dim">' + t("hu_spawns", b.spawns) + (hasPts && !HU.zonesFromGame ? " · " + t("hu_zone_wait_short") : "") + "</div></div>";   // källraden i About (Joakim 2026-11-18)
     if (hasPts) huBeastMap(b);
-    var pb = b.m3 && m3Pref() && $("detail").querySelector(".portr[data-m3]");
-    if (pb) m3Start(pb); else m3Stop();
+    m3Auto();
   }
   // Karta (Joakim 2026-11-17: "silverram och en karta över var de står"). Kontinentens form ur databasens alla spawns
   // (hunter.json maps: en bit per ruta om cell yards), ortnamn från kyrkogårdarna, djurens platser som världskoordinater
@@ -4591,7 +4691,8 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     if (it && it.rep) req.push(esc(it.rep));
     if (it && it.pvp) req.push(t("co_pvprank", it.pvp - 4));   // databasens värde: rang + 4 (Knight-Lieutenant/Blood Guard = 15)
     if (x.cls) req.push(esc(x.cls));
-    var big = f.kind === "mounts" && x.img ? '<div class="cobig"><img src="' + esc(x.img) + '" alt=""></div>' : "";
+    var mdisp = f.kind === "mounts" && x.img ? +((x.img.match(/display-(\d+)/) || [])[1] || 0) : 0;
+    var big = !(f.kind === "mounts" && x.img) ? "" : mdisp ? portraitHtml(mdisp, false, x.m3, x.img) : '<div class="cobig"><img src="' + esc(x.img) + '" alt=""></div>';
     var r = it && byId[it.id];
     $("detail").scrollTop = 0;
     $("detail").innerHTML = '<div class="strip"><button class="lnk" type="button" data-copyany="#col=' + key + '" title="' + t("copy_link") + '">' + t("copy_link") + "</button>" +
@@ -4604,6 +4705,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       (src ? "<div><h3>" + t("co_where") + '</h3><ul class="huwhere">' + src + "</ul></div>" : '<div class="note">' + t(sk === "forever" ? "co_forever" : "co_nosrc") + "</div>") +
       (x.desc && f.kind !== "titles" ? '<div class="note">' + esc(x.desc) + "</div>" : "") +
       '<div class="note">' + t("co_place") + "</div>";   // källorna i About, kvar: hur platsen väljs (Joakim 2026-11-18)
+    m3Auto();
   }
   function coStart(want, keep) {   // keep: ny data, ingen "Loading"/rullning/flikväxling (granskning 2026-11-18)
     if (!keep) $("detail").innerHTML = '<div class="note">' + t("ar_loading") + "</div>";
@@ -4689,6 +4791,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   applyStatic();
   applyAssets();
   applyPanorama(houseParts(house)[1]);
+  appSet(appIs(), false);   // valknapparna och Atlas-bilderna efter det sparade valet
   $("mktBtn").addEventListener("click", function () { mktOpen($("mktPop").hidden); });
   document.addEventListener("click", function (e) { if (!$("mktPop").hidden && !e.target.closest("#mkt")) mktOpen(false); });
   // Jämförelsens ruta: Enter eller knappen jämför med namnet i rutan.
