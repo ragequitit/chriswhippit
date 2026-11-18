@@ -4876,7 +4876,8 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
   // AH-marknad (PvP eller Normal), "all" = båda. Guildens ruleset = det flest kända medlemmar har.
   var lbRs = "", lb60 = false;
   function lbRuleset() { var r = houseParts(house)[0]; return lbRs === "all" ? "" : lbRs || (r === "pvp" || r === "normal" ? r : ""); }   // RP-marknader: topplistorna (bara PvP/Normal i katalogen) visar alla
-  var LB = [["ilvl", "il", "lb_ilvl"], ["hk", "hk", "lb_hk"], ["rank", "rk", "lb_rank"], ["ach", "ap", "lb_ach"], ["guilds", "", "lb_guilds"], ["first60", "t60", "lb_first60"], ["cls", "", "lb_cls"], ["act", "", "lb_act"]];
+  // "First to 60" borttagen ur listan (Joakim 2026-11-18); koden för #top=first60 finns kvar.
+  var LB = [["ilvl", "il", "lb_ilvl"], ["hk", "hk", "lb_hk"], ["rank", "rk", "lb_rank"], ["ach", "ap", "lb_ach"], ["guilds", "", "lb_guilds"], ["cls", "", "lb_cls"], ["act", "", "lb_act"]];
   function loadKat() {
     // katalog.json: vanlig cache räcker, filen byts en gång per dygn (granskning 2026-11-18)
     if (!katPromise) katPromise = fetch(DATA_BASE + "katalog.json").then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }).then(function (j) { KAT = j; return j; })
