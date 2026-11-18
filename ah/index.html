@@ -198,6 +198,21 @@ h1 { font-family: var(--display); font-weight: 500; font-size: 36px; margin: 0; 
 .hulvl { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 13px; color: var(--gold); }
 .hulvl input { width: 70px; height: 28px; padding: 0 8px; border-radius: 4px; border: 1px solid var(--line); background: #0b0908; color: var(--fg); font: inherit; }
 .huchips { display: flex; flex-wrap: wrap; gap: 4px; }
+.huzwrap { display: grid; gap: 6px; margin-top: 6px; }
+.huzm { position: relative; margin: 6px 0 4px; line-height: 0; border-radius: 6px; overflow: hidden; border: 1px solid var(--edge); box-shadow: 0 2px 10px rgba(0, 0, 0, .5); }
+.huzm img { display: block; width: 100%; height: auto; } .right .huzm { cursor: zoom-in; }
+.huzbig { position: fixed; inset: 0; z-index: 50; display: grid; place-content: center; gap: 8px; padding: 16px; background: rgba(4, 3, 2, .82); cursor: zoom-out; }
+.huzbig .huzm { width: min(1002px, calc(100vw - 32px), calc((100vh - 70px) * 1.5)); margin: 0; }
+.huzbig .huz { transform: scale(1.4); } .huzbig .huz.r { transform: rotate(45deg) scale(1.4); } .huzbig .huz:hover { transform: scale(2); } .huzbig .huz.r:hover { transform: rotate(45deg) scale(2); }
+.huzbig .huz.one { transform: none; } .huzbig .huz.one.r { transform: rotate(45deg); }
+.huzcap { text-align: center; font-size: 12.5px; color: var(--grey); }
+.huz { position: absolute; width: 7px; height: 7px; margin: -4.5px 0 0 -4.5px; border-radius: 50%; border: 1px solid #000; background: #f0c040; cursor: pointer; }
+.huz.e { width: 9px; height: 9px; margin: -5.5px 0 0 -5.5px; background: #40c040; }
+.huz.r { width: 10px; height: 10px; margin: -6px 0 0 -6px; border-radius: 1px; background: #e3e9ef; transform: rotate(45deg); box-shadow: 0 0 6px rgba(227, 233, 239, .9); z-index: 2; }
+.huz:hover { transform: scale(1.7); z-index: 3; } .huz.r:hover { transform: rotate(45deg) scale(1.7); }
+.huz.one { width: 13px; height: 13px; margin: -7.5px 0 0 -7.5px; cursor: default; box-shadow: 0 0 0 4px rgba(240, 192, 64, .32), 0 0 8px rgba(0, 0, 0, .8); }
+.huz.one.r { box-shadow: 0 0 0 4px rgba(227, 233, 239, .4), 0 0 10px rgba(227, 233, 239, .8); }
+.huz.one:hover { transform: none; } .huz.one.r:hover { transform: rotate(45deg); }
 .huchip { all: unset; cursor: pointer; padding: 3px 9px; border: 1px solid var(--line); border-radius: 12px; font-size: 12px; color: var(--grey); }
 .huchip:hover { color: var(--fg); } .huchip.on { color: var(--gold); border-color: var(--edge); background: var(--sel); } .huchip.rare { justify-self: start; }
 .huab { display: flex; flex-wrap: wrap; gap: 5px; } .huab span { padding: 3px 9px; border-radius: 4px; background: var(--inset); border: 1px solid var(--line); font-size: 12.5px; } .huab span.u { color: var(--grey); }
@@ -957,7 +972,8 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       up_rest: "Nothing better on the AH for: %1.", up_est_tip: "Random stats: the AH has every suffix under one item. The numbers are an estimate for the suffix in the name.",
       up_how: "Score = the item's stats weighted for the class (a simple leveling profile, not a simulation), compared with what is worn now. Same armor type rules as the game: mail from 40 for hunters and shamans, plate from 40. Prices are the lowest on the AH in the last scan. Click an item for its price history.",
       hu_map: "Map", hu_map_tip: "Show the beasts in the list on a map", hu_map_title: "Where they are", hu_map_sub: "%1 beasts on this continent", hu_map_lvl: "up to level %1",
-      hu_map_rare: "Rare", hu_map_elite: "Elite", hu_map_beast: "Beast", hu_map_none: "No beast in the list lives here.", hu_zone_wait_short: "zone names soon",
+      hu_map_rare: "Rare", hu_map_elite: "Elite", hu_map_beast: "Beast", hu_map_none: "No beast in the list lives here.", hu_map_zsub: "%1 beasts in %2", hu_map_close: "click outside or Esc to close", hu_map_big: "Click the map to open it large",
+      hu_map_znote: "The game's own zone maps. Hover a point for the name, click it to open the beast. Zones with the most beasts in the list come first.", hu_zone_wait_short: "zone names soon",
       hu_map_note: "Hover a point for the name, click to open the beast. The land is drawn from every spawn in the Classic database, place names from the graveyards.",
       hu_for: "Pets for you", hu_for_sub: "tameable around level %1", hu_near: "near you", hu_near_tip: "In a zone where this hunter has quests right now",
       hu_for_note: "Up to the hunter's level, rares and fast attackers first. Blizzard doesn't share where a character is, so the zones of the quests in progress count as 'near'.",
@@ -3061,7 +3077,21 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     if (e.target.closest("[data-hurare]") && mode === "hu") { huRare = !huRare; drawCats(); refresh(); toTop(); return; }
     if (e.target.closest("[data-humap]") && mode === "hu" && HU) { huMapOn = !huMapOn; drawCats(); if (huMapOn) { showTab("item"); huMapView(); } else if (huSel) huDetail(huSel); return; }
     var hmc = e.target.closest("[data-humapc]");
-    if (hmc && HU) { huMapCont = +hmc.dataset.humapc; huMapView(); return; }
+    if (hmc && HU) { huMapCont = +hmc.dataset.humapc; huMapZone = ""; huMapView(); return; }
+    var hmz = e.target.closest("[data-humapz]");
+    if (hmz && HU) { huMapZone = hmz.dataset.humapz; huMapView(); return; }
+    var hpk = e.target.closest("[data-hupick]");
+    if (hpk && HU) { huZBigClose(); huMapOn = false; drawCats(); huDetail(+hpk.dataset.hupick); showTab("item"); return; }
+    if (e.target.closest(".huzbig")) { huZBigClose(); return; }
+    var hzm = e.target.closest(".huzm");
+    if (hzm && HU) { huZBig(hzm); return; }
+    var hzb = e.target.closest("[data-huz]");
+    if (hzb && HU && huSel) {
+      var hb = null; HU.beasts.forEach(function (x) { if (x.id === huSel) hb = x; });
+      var hw = $("detail").querySelector(".huzwrap");
+      if (hb && hw) { huBz = { id: hb.id, i: +hzb.dataset.huz }; hw.innerHTML = huBeastZones(hb); }
+      return;
+    }
     if (e.target.closest("[data-gode]") && mode === "tr") { setMode("de"); return; }
     if (e.target.closest("[data-gotr]") && mode === "de") { setMode("tr"); return; }
     var deq = e.target.closest("[data-deq]");
@@ -3294,13 +3324,37 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   // mat, rare/elite och var de står (zon och koordinat ur spelet via addonets NpcZones.lua). Filter: din level (du kan
   // tämja upp till din egen), roll, bara rares, familj. Länk #beast=<id>.
   var HU = null, huPromise = null, huSel = 0, huFam = 0, huRole = "", huRare = false, HU_LKEY = "whippit-ah-hulvl";
-  var huMapOn = false, huMapCont = -1;   // kartan över filtrerade djur i högra rutan; kontinent -1 = den med flest djur
+  var huMapOn = false, huMapCont = -1, huMapZone = "", huBz = { id: 0, i: 0 }, ZMAP = {};   // kartan över filtrerade djur i högra rutan; kontinent -1 = den med flest djur
   var huLvl = (function () { try { var v = +localStorage.getItem(HU_LKEY); return v > 0 && v <= 60 ? v : 0; } catch (e) { return 0; } })();
   var HU_RANK = { 1: "Elite", 2: "Rare Elite", 3: "Boss", 4: "Rare" };
   var HU_FAMIC = { 1: "wolf", 2: "cat", 3: "spider", 4: "bear", 5: "boar", 6: "crocolisk", 7: "vulture", 8: "crab", 9: "gorilla", 11: "raptor", 12: "tallstrider", 20: "scorpid", 21: "turtle", 24: "bat", 25: "hyena", 26: "owl", 27: "windserpent" };
   function loadHunter() {
-    if (!huPromise) huPromise = fetch(DATA_BASE + "hunter.json").then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }).then(function (j) { HU = j; return j; });
+    if (!huPromise) huPromise = Promise.all([
+      fetch(DATA_BASE + "hunter.json").then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }),
+      // Zon -> kontinent (0 Eastern Kingdoms, 1 Kalimdor) för de zoner som har en kartbild. Saknas filen visas den ritade kartan.
+      fetch(DATA_BASE + "assets/maps/kartor-index.json").then(function (r) { return r.ok ? r.json() : {}; }).catch(function () { return {}; })
+    ]).then(function (a) { HU = a[0]; ZMAP = a[1] || {}; return HU; });
     return huPromise;
+  }
+  function huHasZ(z) { return Object.prototype.hasOwnProperty.call(ZMAP, z); }
+  function huZUrl(z) { return DATA_BASE + "assets/maps/" + z.toLowerCase().replace(/[^a-z0-9]/g, "") + ".webp"; }
+  function huTitle(b) { return b.name + " " + b.min + (b.max > b.min ? "–" + b.max : "") + " · " + b.family + (b.rank ? " · " + HU_RANK[b.rank] : ""); }
+  // En zonkarta med prickar: dots = [{x, y (zonprocent), b}]; one = ett enskilt djur (stora prickar, inget klick).
+  function huZoneHtml(zone, dots, one) {
+    return '<div class="huzm"><img src="' + huZUrl(zone) + '" alt="' + esc(zone) + '" width="1002" height="668" decoding="async">' +
+      dots.slice().sort(function (a, b2) { return huIsRare(a.b) - huIsRare(b2.b); }).map(function (d) {
+        var b = d.b, k = huIsRare(b) ? "r" : b.rank === 1 ? "e" : "n";
+        return '<i class="huz ' + k + (one ? " one" : "") + '" style="left:' + d.x + "%;top:" + d.y + '%"' + (one ? ' title="' + esc(zone + " " + d.x + ", " + d.y) + '"' : ' data-hupick="' + b.id + '" title="' + esc(huTitle(b)) + '"') + "></i>";
+      }).join("") + "</div>";
+  }
+  // Ett djurs zoner med kartbild: flikar när det finns flera, kartan för den valda.
+  function huBeastZones(b) {
+    var zs = (b.zones || []).filter(function (z) { return huHasZ(z.zone); });
+    if (!zs.length) return "";
+    if (huBz.id !== b.id) huBz = { id: b.id, i: 0 };
+    var i = Math.min(huBz.i, zs.length - 1);
+    return (zs.length > 1 ? '<div class="huchips">' + zs.map(function (z, k) { return '<button type="button" class="huchip' + (k === i ? " on" : "") + '" data-huz="' + k + '" aria-pressed="' + (k === i) + '">' + esc(z.zone) + ' <span class="dim">' + z.n + "</span></button>"; }).join("") + "</div>" : "") +
+      huZoneHtml(zs[i].zone, zs[i].pts.map(function (p) { return { x: p[0], y: p[1], b: b }; }), true) + '<div class="dim">' + t("hu_map_big") + "</div>";
   }
   function huFamIcon(fam) { return RICON + "ability_hunter_pet_" + (HU_FAMIC[fam] || "wolf") + ".jpg"; }
   function huIsRare(b) { return b.rank === 2 || b.rank === 4; }
@@ -3367,7 +3421,8 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     var trs = $("rows").children;
     for (var j = 0; j < trs.length; j++) { if (+trs[j].dataset.hu === id) trs[j].setAttribute("aria-selected", "true"); else trs[j].removeAttribute("aria-selected"); }
     setHash("#beast=" + id);
-    var f = HU.families[b.fam] || {}, rare = huIsRare(b), hasPts = !!(b.pts && b.pts.length), pc = function (v) { return Math.round(v * 100) + "%"; };
+    var zmap = huBeastZones(b);
+    var f = HU.families[b.fam] || {}, rare = huIsRare(b), hasPts = !zmap && !!(b.pts && b.pts.length), pc = function (v) { return Math.round(v * 100) + "%"; };
     var where = (b.zones || []).map(function (z) { return "<li><b>" + esc(z.zone) + '</b> <span class="dim">' + z.pts.slice(0, 4).map(function (p2) { return p2[0] + ", " + p2[1]; }).join(" · ") + "</span></li>"; }).join("") +
       (b.inst || []).map(function (x) { return "<li><b>" + esc(x[0]) + '</b> <span class="dim">' + t("hu_inst") + "</span></li>"; }).join("");
     $("detail").scrollTop = 0;
@@ -3381,6 +3436,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       "<div><h3>" + t("hu_learn") + '</h3><div class="huab">' + (f.ab || []).map(function (a) { return "<span>" + esc(a) + "</span>"; }).join("") + "</div></div>" +
       (b.uses && b.uses.length ? "<div><h3>" + t("hu_uses") + '</h3><div class="huab">' + b.uses.map(function (a) { return '<span class="u">' + esc(a) + "</span>"; }).join("") + "</div></div>" : "") +
       "<div><h3>" + t("hu_where") + "</h3>" + (where ? '<ul class="huwhere">' + where + "</ul>" : hasPts ? "" : '<div class="note">' + t(HU.zonesFromGame ? "hu_nowhere" : "hu_zone_wait_long") + "</div>") +
+      (zmap ? '<div class="huzwrap">' + zmap + "</div>" : "") +
       (hasPts ? '<div class="humap sm"><canvas></canvas><div class="humaptip" hidden></div></div>' : "") + '<div class="dim">' + t("hu_spawns", b.spawns) + (hasPts && !HU.zonesFromGame ? " · " + t("hu_zone_wait_short") : "") + "</div></div>" +
       '<div class="note">' + t("hu_src") + "</div>";
     if (hasPts) huBeastMap(b);
@@ -3486,6 +3542,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   }
   // Översiktskartan: alla djur i listan (samma filter: level, roll, rares, familj, sökning) på en kontinent.
   function huMapView() {
+    if (Object.keys(ZMAP).length) return huZoneView();
     var per = [{}, {}], cntB = [0, 0];
     view.forEach(function (r) { (r.hu.pts || []).forEach(function (p) { if (!per[p[0]][r.hu.id]) { per[p[0]][r.hu.id] = 1; cntB[p[0]]++; } }); });
     var m = huMapCont >= 0 ? huMapCont : (cntB[1] >= cntB[0] ? 1 : 0), M = HU.maps[m], pts = [];
@@ -3500,6 +3557,38 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       '<div class="note">' + t("hu_map_note") + "</div>";
     huPaint($("detail").querySelector(".humap canvas"), m, { x0: M.x0, x1: M.x1, y0: M.y0, y1: M.y1 }, pts, true, false);
   }
+  function huZoneView() {
+    var dots = {}, cnt = {}, cntB = [0, 0];
+    view.forEach(function (r) {
+      (r.hu.zones || []).forEach(function (z) {
+        if (!huHasZ(z.zone)) return;
+        var L = dots[z.zone] = dots[z.zone] || [];
+        z.pts.forEach(function (p) { L.push({ x: p[0], y: p[1], b: r.hu }); });
+        cnt[z.zone] = (cnt[z.zone] || 0) + 1;
+        if (ZMAP[z.zone] >= 0) cntB[ZMAP[z.zone]]++;
+      });
+    });
+    var m = huMapCont >= 0 ? huMapCont : (cntB[1] >= cntB[0] ? 1 : 0);
+    var zones = Object.keys(cnt).filter(function (z) { return ZMAP[z] === m; }).sort(function (a, b) { return cnt[b] - cnt[a] || a.localeCompare(b); });
+    var zs = zones.indexOf(huMapZone) >= 0 ? huMapZone : zones[0] || "";
+    var tab = function (k) { return '<button type="button" class="huchip' + (k === m ? " on" : "") + '" data-humapc="' + k + '" aria-pressed="' + (k === m) + '">' + esc(HU.maps[k].name) + ' <span class="dim">' + cntB[k] + "</span></button>"; };
+    var fil = [huLvl ? t("hu_map_lvl", huLvl) : "", huRare ? t("hu_rare") : "", huRole ? t("hu_r_" + huRole) : "", huFam && HU.families[huFam] ? HU.families[huFam].name : ""].filter(Boolean).join(" · ");
+    $("detail").innerHTML = '<div class="strip"><h2>' + t("hu_map_title") + "</h2><small>" + (zs ? t("hu_map_zsub", cnt[zs], esc(zs)) : t("hu_map_sub", 0)) + (fil ? " · " + esc(fil) : "") + "</small></div>" +
+      '<div class="huchips">' + tab(1) + tab(0) + "</div>" +
+      (zones.length ? '<div class="huchips huzones">' + zones.map(function (z) { return '<button type="button" class="huchip' + (z === zs ? " on" : "") + '" data-humapz="' + esc(z) + '" aria-pressed="' + (z === zs) + '">' + esc(z) + ' <span class="dim">' + cnt[z] + "</span></button>"; }).join("") + "</div>" : "") +
+      (zs ? huZoneHtml(zs, dots[zs], false) : '<div class="note">' + t("hu_map_none") + "</div>") +
+      '<div class="humaplg"><span><i class="lr"></i>' + t("hu_map_rare") + '</span><span><i class="le"></i>' + t("hu_map_elite") + '</span><span><i class="ln"></i>' + t("hu_map_beast") + "</span></div>" +
+      '<div class="note">' + t("hu_map_znote") + " " + t("hu_map_big") + ".</div>";
+  }
+  function huZBig(el) {
+    huZBigClose();
+    var o = document.createElement("div");
+    o.className = "huzbig"; o.setAttribute("role", "dialog"); o.setAttribute("aria-label", el.querySelector("img").alt);
+    o.innerHTML = '<div class="huzm">' + el.innerHTML + '</div><div class="huzcap">' + esc(el.querySelector("img").alt) + " · " + t("hu_map_close") + "</div>";
+    document.body.appendChild(o);
+  }
+  function huZBigClose() { var o = document.querySelector(".huzbig"); if (o) o.remove(); }
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape") huZBigClose(); });
   function huStart(want) {
     $("detail").innerHTML = '<div class="note">' + t("ar_loading") + "</div>";
     loadHunter().then(function () {
