@@ -179,6 +179,7 @@ h1 { font-family: var(--display); font-weight: 500; font-size: 36px; margin: 0; 
 .lbcb .hb { background: linear-gradient(#c8392b, #8f2219); } .lbcb .ab { background: linear-gradient(#3b7fd6, #234f8f); }
 .lbsep { width: 1px; align-self: stretch; background: var(--line); margin: 0 4px; }
 .lbbtn .ci { width: 20px; height: 20px; border-radius: 3px; margin-right: 6px; }
+.lbbtn[data-gode] { margin-top: 10px; border-top: 1px solid var(--line); padding-top: 8px; }
 .actwrap { display: grid; gap: 8px; } .actwrap h3 { margin: 4px 0 0; color: var(--gold); font-size: 14px; } .actsvg { width: 100%; max-width: 620px; height: auto; } .actsvg text { fill: var(--grey); font-size: 10px; }
 .upbig { all: unset; box-sizing: border-box; cursor: pointer; display: flex; align-items: center; gap: 12px; width: 100%; margin: 10px 0 6px; padding: 10px 12px; border: 1px solid var(--edge); border-radius: 6px; background: linear-gradient(180deg, rgba(240, 192, 64, .13), rgba(240, 192, 64, .03)); }
 .upbig:hover, .upbig:focus-visible { background: linear-gradient(180deg, rgba(240, 192, 64, .22), rgba(240, 192, 64, .06)); }
@@ -765,11 +766,11 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
 .bt { font-size: 13px; }
 
 /* ===== Utseendeväljaren (båda lägena) ===== */
-.appsel { display: flex; flex-direction: column; gap: 3px; margin-left: auto; align-self: center; }
+.appsel { position: relative; display: flex; margin-left: auto; align-self: center; }   /* etiketten ovanför utan att flytta knapparna: de står i linje med Horde · PvP */
 .appsel + .mkt { margin-left: 12px; }
-.applbl { font-size: 11.5px; color: var(--grey); padding-left: 2px; }
-.appseg { display: inline-flex; height: 38px; border: 1px solid var(--line); border-radius: 5px; background: var(--inset); padding: 2px; gap: 2px; }
-.appseg button { all: unset; box-sizing: border-box; cursor: pointer; padding: 0 14px; border-radius: 4px; font-size: 14px; color: var(--grey); display: inline-flex; align-items: center; }
+.applbl { position: absolute; left: 2px; bottom: 100%; margin-bottom: 3px; font-size: 11.5px; color: var(--grey); white-space: nowrap; }
+.appseg { display: inline-flex; height: 40px; border: 1px solid var(--line); border-radius: 0; background: var(--inset); padding: 2px; gap: 2px; box-sizing: border-box; }   /* fyrkantigt (Joakim 2026-11-18: rundat ser AI ut) */
+.appseg button { all: unset; box-sizing: border-box; cursor: pointer; padding: 0 14px; border-radius: 0; font-size: 14px; color: var(--grey); display: inline-flex; align-items: center; }
 .appseg button:hover { color: var(--fg); background: var(--hover); }
 .appseg button[aria-checked=true] { color: #fff6e6; background: var(--btn-a); box-shadow: inset 0 -2px 0 var(--edge); }
 .appseg button:focus-visible { outline: 2px solid var(--edge); outline-offset: 1px; }
@@ -3080,7 +3081,8 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
         });
       });
     });
-    $("cats").innerHTML = (mode === "tr" ? '<button class="cat lbbtn" type="button" data-gode="1"><img class="ci" src="' + RICON + 'inv_enchant_disenchant.jpg" alt=""><em class="nm">' + t("mode_de") + "</em><span>›</span></button>" : "") + "<h2>" + t("cats_h") + "</h2>" + html;
+    // Disenchant sist, under kategorierna (Joakim 2026-11-18)
+    $("cats").innerHTML = "<h2>" + t("cats_h") + "</h2>" + html + (mode === "tr" ? '<button class="cat lbbtn" type="button" data-gode="1"><img class="ci" src="' + RICON + 'inv_enchant_disenchant.jpg" alt=""><em class="nm">' + t("mode_de") + "</em><span>›</span></button>" : "");
     $("cats").hidden = cats.length === 0 && mode !== "tr";
   }
 
