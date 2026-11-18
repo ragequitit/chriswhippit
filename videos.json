@@ -1,19 +1,12 @@
 {
- "t": "2026-11-17T19:47:04.864Z",
+ "t": "2026-11-18T10:40:00.110Z",
  "videos": [
   {
-   "id": "f5YKZLTEAhY",
-   "title": "BOOSTAR ÖVER STUPET i RV There Yet? med UfoSXM",
+   "id": "CZJIMzrNqWo",
+   "title": "Vi bygger om ALLT i Waterpark Simulator med UfoSXM",
    "channel": "ChrisWhippit",
    "handle": "@chriswhippit",
-   "at": "2026-11-17T05:30:16Z"
-  },
-  {
-   "id": "KSfbpS_QyV0",
-   "title": "QUICK CHARGE-BOKEN i Minecraft med Mammaspelar och Pappaspelar",
-   "channel": "Whippit",
-   "handle": "@whippitextra",
-   "at": "2026-11-15T05:30:21Z"
+   "at": "2026-11-18T05:30:10Z"
   },
   {
    "id": "SqIvYKu7S4g",
@@ -21,6 +14,13 @@
    "channel": "ChrisWhippit",
    "handle": "@chriswhippit",
    "at": "2026-11-16T05:30:30Z"
+  },
+  {
+   "id": "f5YKZLTEAhY",
+   "title": "BOOSTAR ÖVER STUPET i RV There Yet? med UfoSXM",
+   "channel": "ChrisWhippit",
+   "handle": "@chriswhippit",
+   "at": "2026-11-17T05:30:16Z"
   },
   {
    "id": "9XSzCQFFMyc",
@@ -544,9 +544,9 @@
  },
  "media": {
   "chriswhippit": {
-   "views": 244353000,
-   "avgViews": 6000,
-   "avgSample": 9,
+   "views": 244362000,
+   "avgViews": 5800,
+   "avgSample": 10,
    "uploads30": 50
   },
   "whippitsson": {
@@ -556,16 +556,16 @@
    "uploads30": 0
   },
   "figgwhipp": {
-   "views": 97258000,
+   "views": 97259000,
    "avgViews": 0,
    "avgSample": 0,
    "uploads30": 0
   },
   "whippitextra": {
-   "views": 306000,
+   "views": 307000,
    "avgViews": 2700,
    "avgSample": 19,
-   "uploads30": 48
+   "uploads30": 47
   }
  }
 }
