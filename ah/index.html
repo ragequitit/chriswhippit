@@ -3288,7 +3288,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     drawWatch();
     var hp0 = hashParams();
     // En länk bestämmer fliken (annars den som sparats): #quest, #dungeon, #player/#guild, #recipe, #item.
-    var hm = hp0.fx ? "fx" : hp0.de ? "de" : hp0.col ? "co" : hp0.beast ? "hu" : hp0.quest || hp0.npc ? "qu" : hp0.dungeon ? "dg" : hp0.player || hp0.guild || hp0.top ? "ar" : hp0.recipe ? "cr" : hp0.item ? "ah" : "";
+    var hm = /^(ah|tr|cr|ar|qu|dg|hu|co)$/.test(hp0.tab || "") ? hp0.tab : hp0.fx ? "fx" : hp0.de ? "de" : hp0.col ? "co" : hp0.beast ? "hu" : hp0.quest || hp0.npc ? "qu" : hp0.dungeon ? "dg" : hp0.player || hp0.guild || hp0.top ? "ar" : hp0.recipe ? "cr" : hp0.item ? "ah" : "";
     var wantI = byId[+hp0.item];
     if (hm && !keep && mode !== hm && !(hm === "ah" && mode === "tr" && (!wantI || (!wantI.gear && wantI.qty >= TR_MIN)))) { if (fromNav) resetModeState(hm); mode = hm; drawCats(); refresh(); }   // trädet ritades för den sparade fliken
     // keep (ny scan eller annan marknad): lägesvyerna visar inte "Loading" och rullar inte upp, de ritar om listan (granskning 2026-11-18)
@@ -4980,6 +4980,16 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     }
     return h;
   }
+  // Mountens miljö (Joakim 2026-11-18: "bakgrunder till mounts också"): rasen mounten hör till, efter namnet; annars fraktionen.
+  var CO_BG = [["zulian tiger|razzashi|raptor|ravasaur|turtle", "troll"], ["stormpike| ram$|spectral bear", "dwarf"], ["mechanostrider|battlestrider", "gnome"],
+    ["skeletal|deathcharger|forsaken|dreadsteed|felsteed", "scourge"], ["wolf|howler|qiraji", "orc"], ["kodo", "tauren"],
+    ["saber|tiger|stag|galestrider|prideclaw", "nightelf"], ["horse|stallion|mare|steed|palomino|pinto|charger|warhorse", "human"]];
+  function coBg(x) {
+    var n = (x.name || "").toLowerCase(), r = "";
+    for (var i = 0; i < CO_BG.length && !r; i++) if (new RegExp(CO_BG[i][0]).test(n)) r = CO_BG[i][1];
+    if (!r) r = x.faction === "HORDE" ? "orc" : x.faction === "ALLIANCE" ? "human" : "";
+    return r ? ASSET_BASE + "backgrounds/dress-" + r + ".webp" : "";
+  }
   function coRefresh(q) {
     view = CO[coKind].filter(function (x) {
       if (!coOk(x)) return false;
@@ -5032,7 +5042,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     if (it && it.pvp) req.push(t("co_pvprank", it.pvp - 4));   // databasens värde: rang + 4 (Knight-Lieutenant/Blood Guard = 15)
     if (x.cls) req.push(esc(x.cls));
     var mdisp = f.kind === "mounts" && x.img ? +((x.img.match(/display-(\d+)/) || [])[1] || 0) : 0;
-    var big = !(f.kind === "mounts" && x.img) ? "" : mdisp ? portraitHtml(mdisp, false, x.m3, x.img) : '<div class="cobig"><img src="' + esc(x.img) + '" alt=""></div>';
+    var big = !(f.kind === "mounts" && x.img) ? "" : mdisp ? portraitHtml(mdisp, false, x.m3, x.img, coBg(x)) : '<div class="cobig"><img src="' + esc(x.img) + '" alt=""></div>';
     var r = it && byId[it.id];
     $("detail").scrollTop = 0;
     $("detail").innerHTML = '<div class="strip"><button class="lnk" type="button" data-copyany="#col=' + key + '" title="' + t("copy_link") + '">' + t("copy_link") + "</button>" +
@@ -5103,6 +5113,32 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     drawCats(); refresh(); toTop();
     if (view[0]) select(view[0].id, false);
   }
+  // Mittenklick och Ctrl+klick (Joakim 2026-11-18: "så är det på andra sidor"): flikarna och listraderna är knappar, inte
+  // länkar, så sidan räknar själv ut adressen (#tab=hu, #beast=…) och öppnar den i en ny flik. Riktiga länkar sköter webbläsaren.
+  function navHashFor(el) {
+    if (!el || !el.closest || el.closest("a[href]")) return "";
+    var mk = house !== 113 ? "&m=" + house : "", x;
+    if ((x = el.closest(".mode > button[id^=mode]"))) return "#tab=" + x.id.slice(4).toLowerCase() + mk;
+    if ((x = el.closest("tr[data-hu]"))) return "#beast=" + x.dataset.hu;
+    if ((x = el.closest("tr[data-co]"))) return "#col=" + x.dataset.co;
+    if ((x = el.closest("tr[data-fx]"))) return "#fx=" + x.dataset.fx + (x.dataset.fxg ? "&g=" + x.dataset.fxg : "") + mk;
+    if ((x = el.closest("tr[data-de]"))) return "#de=" + x.dataset.de + mk;
+    if ((x = el.closest("tr[data-qid]"))) return "#quest=" + x.dataset.qid;
+    if ((x = el.closest("tr[data-rid]"))) return "#recipe=" + x.dataset.rid + mk;
+    if ((x = el.closest("tr[data-id]"))) return "#item=" + x.dataset.id + mk;
+    if ((x = el.closest("button[data-ar][data-slug]"))) return (x.dataset.ar === "guild" ? "#guild=" : "#player=") + x.dataset.slug;
+    return "";
+  }
+  function navOpen(e) {
+    var h = navHashFor(e.target);
+    if (!h) return false;
+    e.preventDefault(); e.stopPropagation();
+    window.open(location.pathname + location.search + h, "_blank", "noopener");
+    return true;
+  }
+  document.addEventListener("mousedown", function (e) { if (e.button === 1 && navHashFor(e.target)) e.preventDefault(); });   // ingen rullningsikon
+  document.addEventListener("auxclick", function (e) { if (e.button === 1) navOpen(e); });
+  document.addEventListener("click", function (e) { if (e.button === 0 && (e.ctrlKey || e.metaKey)) navOpen(e); }, true);
   $("modeAh").addEventListener("click", function () { setMode("ah"); });
   $("modeTr").addEventListener("click", function () { setMode("tr"); });
   $("modeCr").addEventListener("click", function () { setMode("cr"); });
