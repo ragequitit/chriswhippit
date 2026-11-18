@@ -19,6 +19,7 @@
 <style>html{color-scheme:dark}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 <title>Auction House</title>
 <meta name="claude:viewport-fit-sides" content="cover">
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.min.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600&family=Instrument+Sans:wght@400;500;600&display=swap">
 <style>
 /* Layout: en ram som spelets AH-fönster: titelremsa med myntmedaljong, sökrad, varulistan till vänster och den valda
@@ -256,6 +257,15 @@ h1 { font-family: var(--display); font-weight: 500; font-size: 36px; margin: 0; 
   border-radius: 4px; border: 1px solid #000; cursor: copy; box-shadow: 0 0 4px rgba(0, 0, 0, .8); color: #fff; }
 .portr { height: 180px; border-radius: 6px; overflow: hidden; border: 1px solid var(--edge); background: radial-gradient(ellipse at 50% 60%, #2a2219, #0e0b08 70%); box-shadow: inset 0 0 30px rgba(0, 0, 0, .7); }
 .portr img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 50% 52%; transform: scale(1.35); mix-blend-mode: lighten; }
+.portr { position: relative; }
+.portr canvas { position: absolute; inset: 0; width: 100% !important; height: 100% !important; display: block; cursor: grab; touch-action: pan-y; }
+.portr canvas:active { cursor: grabbing; }
+.portr.on3d { height: 250px; }
+.portr.on3d img { visibility: hidden; }
+.p3d { position: absolute; top: 6px; right: 6px; z-index: 2; font: 600 12px/1 Cinzel, serif; letter-spacing: .04em; color: #f4d58a; background: rgba(14, 11, 8, .78); border: 1px solid #8a6a2c; border-radius: 4px; padding: 5px 8px; cursor: pointer; }
+.p3d:hover { border-color: #f4d58a; color: #fff1c4; }
+.portr.ld::after { content: ""; position: absolute; left: 50%; top: 50%; width: 22px; height: 22px; margin: -11px; border: 2px solid rgba(244, 213, 138, .25); border-top-color: #f4d58a; border-radius: 50%; animation: p3spin .8s linear infinite; }
+@keyframes p3spin { to { transform: rotate(360deg); } }
 .portr.rare { border-color: #c0c8d0; box-shadow: 0 0 10px rgba(200, 214, 228, .35), inset 0 0 30px rgba(0, 0, 0, .7); }
 .qmtx.fH { background: #a3271c; } .qmtx.fA { background: #2a5fa8; } .qmtx.fB { background: #a07a1e; }
 .qmtx:hover { transform: translate(-50%, -50%) scale(1.4); z-index: 5; }
@@ -1021,6 +1031,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       hu_col_name: "Beast", hu_col_fam: "Family", hu_col_role: "Role", hu_col_speed: "Speed", hu_col_speed_tip: "Attack speed in seconds. A tamed pet keeps it – lower is faster.", hu_col_zone: "Where",
       hu_zone_wait: "zones soon", hu_zone_wait_long: "Zones are being read from the game and show up soon.", hu_nowhere: "No known spawn in the open world.", hu_count: "%1 beasts", hu_empty: "No beast matches.",
       hu_hp: "Health", hu_dmg: "Damage", hu_armor: "Armor", hu_diet: "Diet", hu_learn: "Abilities the family can learn", hu_uses: "Uses in the wild", hu_where: "Where it lives", hu_inst: "dungeon", hu_spawns: "%1 spawns in the database",
+      m3_btn: "3D", m3_pic: "Picture", m3_tip: "Rotate the model: drag with the mouse", m3_fail: "No 3D model",
       hu_speed_note: "A tamed pet keeps its attack speed: 1.0–1.3 is fast, 2.0 is normal. Health, damage and armor come from the family.",
       lb: "Leaderboards", lb_sub: "%1 players and %2 guilds found so far · %3", lb_ilvl: "Item level", lb_level: "Level", lb_hk: "Honorable kills", lb_rank: "PvP rank", lb_ach: "Achievement points", lb_guilds: "Guilds",
       lb_cls: "Classes", lb_only60: "Only level 60", lb_cls_note: "%1 players with a known class. Top bar = Horde, bottom bar = Alliance, on the same scale.",
@@ -2570,9 +2581,98 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     var put = function (html) { var el = $("npcbox"); if (el && npcSel === id) el.innerHTML = html; };
     npcLoad(id).then(function (n) { npcCur = { id: id, n: n }; put(npcHtml(id, n)); }, function () { put('<div class="note">' + t("npc_fail") + "</div>"); });
   }
-  function portraitHtml(disp, rare) {
+  function portraitHtml(disp, rare, m3) {
     if (!(disp > 0)) return "";
-    return '<div class="portr' + (rare ? " rare" : "") + '"><img src="https://render.worldofwarcraft.com/eu/npcs/zoom/creature-display-' + disp + '.jpg" alt="" loading="lazy" decoding="async" onerror="this.parentNode.remove()"></div>';
+    return '<div class="portr' + (rare ? " rare" : "") + '"' + (m3 ? ' data-m3="' + disp + '"' : "") + '><img src="https://render.worldofwarcraft.com/eu/npcs/zoom/creature-display-' + disp + '.jpg" alt="" loading="lazy" decoding="async" onerror="m3NoPic(this)">' +
+      (m3 ? '<button class="p3d" type="button" data-m3b title="' + t("m3_tip") + '">' + t("m3_btn") + "</button>" : "") + "</div>";
+  }
+  // 3D (Joakim 2026-11-18: "3D-modellerna på djuren"): modellen från spelklienten via wow.export (modeller/krymp.js,
+  // assets/models/<displayId>.glb, bara Stand-animationen). three.js laddas från jsDelivr först vid första klick. En visare
+  // åt gången; den stängs när rutan byts ut. Valet (3D eller bild) sparas så nästa djur öppnas likadant.
+  var M3 = { lib: null, cur: null, KEY: "ah3d" };
+  function m3Pref() { try { return localStorage.getItem(M3.KEY) === "1"; } catch (e) { return false; } }
+  function m3SetPref(on) { try { localStorage.setItem(M3.KEY, on ? "1" : "0"); } catch (e) {} }
+  window.m3NoPic = function (img) {
+    var box = img.parentNode;
+    if (box && box.dataset.m3) { img.remove(); m3Start(box); } else if (box) box.remove();
+  };
+  function m3Lib() {
+    if (!M3.lib) M3.lib = Promise.all([import("three"), import("three/addons/loaders/GLTFLoader.js"), import("three/addons/controls/OrbitControls.js"), import("three/addons/libs/meshopt_decoder.module.js")])
+      .then(function (m) { return { T: m[0], GL: m[1].GLTFLoader, OC: m[2].OrbitControls, MD: m[3].MeshoptDecoder }; }, function (e) { M3.lib = null; throw e; });
+    return M3.lib;
+  }
+  function m3Stop() {
+    var c = M3.cur; if (!c) return;
+    M3.cur = null;
+    cancelAnimationFrame(c.raf);
+    if (c.ro) c.ro.disconnect();
+    c.ctl.dispose();
+    c.scene.traverse(function (o) {
+      if (o.geometry) o.geometry.dispose();
+      [].concat(o.material || []).forEach(function (mt) { for (var k in mt) if (mt[k] && mt[k].isTexture) mt[k].dispose(); mt.dispose(); });
+    });
+    c.r.dispose();
+    if (c.r.domElement.parentNode) c.r.domElement.remove();
+    if (c.box) { c.box.classList.remove("on3d"); var b = c.box.querySelector(".p3d"); if (b) b.textContent = t("m3_btn"); }
+  }
+  function m3Start(box) {
+    var disp = +box.dataset.m3;
+    if (!(disp > 0)) return;
+    m3Stop();
+    box.classList.add("on3d", "ld");
+    var btn = box.querySelector(".p3d"); if (btn) btn.textContent = t("m3_pic");
+    var run = M3.run = {};
+    m3Lib().then(function (L) {
+      return new Promise(function (res, rej) { new L.GL().setMeshoptDecoder(L.MD).load(DATA_BASE + "assets/models/" + disp + ".glb", res, undefined, rej); }).then(function (g) {
+        if (M3.run !== run || !box.isConnected || !box.classList.contains("on3d")) return;
+        var T = L.T, W = box.clientWidth || 300, H = box.clientHeight || 180;
+        var r = new T.WebGLRenderer({ antialias: true, alpha: true, powerPreference: "low-power" });
+        r.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+        r.setSize(W, H, false);
+        r.outputColorSpace = T.SRGBColorSpace;
+        var scene = new T.Scene();
+        scene.add(new T.HemisphereLight(0xfff1dc, 0x2a2018, 1.5));
+        var sun = new T.DirectionalLight(0xfff4e6, 1.7); sun.position.set(2, 4, 3); scene.add(sun);
+        var o = g.scene;
+        o.traverse(function (x) { if (x.isMesh) { x.frustumCulled = false; [].concat(x.material || []).forEach(function (mt) { mt.side = T.DoubleSide; }); } });
+        scene.add(o);
+        var mix = g.animations.length ? new T.AnimationMixer(o) : null;
+        if (mix) { mix.clipAction(g.animations[0]).play(); mix.update(0); }
+        o.updateMatrixWorld(true);
+        var bb = new T.Box3().setFromObject(o, true), sz = bb.getSize(new T.Vector3()), ctr = bb.getCenter(new T.Vector3());
+        var cam = new T.PerspectiveCamera(28, W / H, 0.01, 2000);
+        // Hela djuret i bild oavsett höjd/bredd: avstånd ur största måttet mot den smalaste synvinkeln.
+        var fov = T.MathUtils.degToRad(28), fit = Math.max(sz.y / (2 * Math.tan(fov / 2)), Math.max(sz.x, sz.z) / (2 * Math.tan(fov / 2) * (W / H)));
+        var dist = fit * 0.92 + Math.max(sz.x, sz.z) * 0.3;
+        cam.position.set(ctr.x + dist * 0.75, ctr.y + sz.y * 0.25, ctr.z + dist * 0.66);
+        var ctl = new L.OC(cam, r.domElement);
+        ctl.target.copy(ctr); ctl.enableZoom = false; ctl.enablePan = false; ctl.enableDamping = true;
+        ctl.autoRotate = true; ctl.autoRotateSpeed = 1.6; ctl.minPolarAngle = 0.35; ctl.maxPolarAngle = 1.75;
+        ctl.update();
+        box.appendChild(r.domElement);
+        box.classList.remove("ld");
+        var clock = new T.Clock();
+        var cur = M3.cur = { r: r, scene: scene, ctl: ctl, box: box, raf: 0, ro: null };
+        if (window.ResizeObserver) {
+          cur.ro = new ResizeObserver(function () { var w = box.clientWidth, h = box.clientHeight; if (w && h) { r.setSize(w, h, false); cam.aspect = w / h; cam.updateProjectionMatrix(); } });
+          cur.ro.observe(box);
+        }
+        (function tick() {
+          if (M3.cur !== cur) return;
+          if (!box.isConnected) { m3Stop(); return; }
+          cur.raf = requestAnimationFrame(tick);
+          var dt = Math.min(clock.getDelta(), 0.1);
+          if (mix) mix.update(dt);
+          ctl.update();
+          r.render(scene, cam);
+        })();
+      });
+    }).catch(function () {
+      if (M3.run !== run) return;
+      box.classList.remove("on3d", "ld");
+      var b = box.querySelector(".p3d"); if (b) { b.textContent = t("m3_fail"); b.disabled = true; }
+      if (!box.querySelector("img")) box.remove();
+    });
   }
   function npcHtml(id, n) {
     if (!n) return '<div class="note">' + t("npc_none") + "</div>";
@@ -3514,6 +3614,12 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   document.addEventListener("click", function (e) {
     // About (Joakim 2026-11-18): länken i foten öppnar, klick utanför rutan stänger
     if (e.target.closest("[data-about]")) { e.preventDefault(); aboutOpen(); return; }
+    var m3b = e.target.closest("[data-m3b]");
+    if (m3b) {
+      var pbox = m3b.closest(".portr");
+      if (pbox.classList.contains("on3d")) { M3.run = null; m3Stop(); pbox.classList.remove("ld", "on3d"); m3b.textContent = t("m3_btn"); m3SetPref(false); } else { m3SetPref(true); m3Start(pbox); }
+      return;
+    }
     if (e.target.closest(".about")) { if (!e.target.closest(".aboutbox") || e.target.closest("[data-aboutx]")) aboutClose(); return; }
     var rg = e.target.closest("[data-range]");
     if (rg) {
@@ -3928,7 +4034,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       (b.inst || []).map(function (x) { return "<li><b>" + esc(x[0]) + '</b> <span class="dim">' + t("hu_inst") + "</span></li>"; }).join("");
     $("detail").scrollTop = 0;
     $("detail").innerHTML = '<div class="strip"><button class="lnk" type="button" data-copyany="#beast=' + b.id + '" title="' + t("copy_link") + '">' + t("copy_link") + "</button>" +
-      '<h2 class="' + (rare ? "hurn" : b.rank === 1 ? "q2" : "q1") + '"><img class="ci' + (rare ? " rare" : "") + '" src="' + huFamIcon(b.fam) + '" alt=""> ' + esc(b.name) + "</h2><small>" + esc(b.family) + " · " + t("col_lvl") + " " + b.min + (b.max > b.min ? "–" + b.max : "") + (b.rank ? " · " + HU_RANK[b.rank] : "") + "</small></div>" + portraitHtml(b.disp, rare) +
+      '<h2 class="' + (rare ? "hurn" : b.rank === 1 ? "q2" : "q1") + '"><img class="ci' + (rare ? " rare" : "") + '" src="' + huFamIcon(b.fam) + '" alt=""> ' + esc(b.name) + "</h2><small>" + esc(b.family) + " · " + t("col_lvl") + " " + b.min + (b.max > b.min ? "–" + b.max : "") + (b.rank ? " · " + HU_RANK[b.rank] : "") + "</small></div>" + portraitHtml(b.disp, rare, b.m3) +
       '<dl class="facts"><div><dt>' + t("hu_col_role") + '</dt><dd><span class="hurole r-' + (f.role || "") + '">' + t("hu_r_" + (f.role || "allround")) + "</span></dd></div>" +
       "<div><dt>" + t("hu_col_speed") + "</dt><dd" + (b.speed <= 1.5 ? ' class="pos"' : "") + ">" + b.speed.toFixed(1) + " s</dd></div>" +
       "<div><dt>" + t("hu_hp") + "</dt><dd>" + pc(f.hp || 1) + "</dd></div><div><dt>" + t("hu_dmg") + "</dt><dd>" + pc(f.dmg || 1) + "</dd></div><div><dt>" + t("hu_armor") + "</dt><dd>" + pc(f.armor || 1) + "</dd></div>" +
@@ -3940,6 +4046,8 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       (zmap ? '<div class="huzwrap">' + zmap + "</div>" : "") +
       (hasPts ? '<div class="humap sm"><canvas></canvas><div class="humaptip" hidden></div></div>' : "") + '<div class="dim">' + t("hu_spawns", b.spawns) + (hasPts && !HU.zonesFromGame ? " · " + t("hu_zone_wait_short") : "") + "</div></div>";   // källraden i About (Joakim 2026-11-18)
     if (hasPts) huBeastMap(b);
+    var pb = b.m3 && m3Pref() && $("detail").querySelector(".portr[data-m3]");
+    if (pb) m3Start(pb); else m3Stop();
   }
   // Karta (Joakim 2026-11-17: "silverram och en karta över var de står"). Kontinentens form ur databasens alla spawns
   // (hunter.json maps: en bit per ruta om cell yards), ortnamn från kyrkogårdarna, djurens platser som världskoordinater
