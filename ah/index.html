@@ -5065,7 +5065,7 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
     } else if (def[0] === "gath") {
       // Undermenyerna är Blizzards egna statistikrader (Herbs gathered, Mining nodes mined, Items disenchanted …), de vanligaste först
       var gk = {};
-      KAT.players.forEach(function (p) { if (faOk(p) && p.gath) Object.keys(p.gath).forEach(function (k) { gk[k] = (gk[k] || 0) + 1; }); });
+      KAT.players.forEach(function (p) { if (faOk(p) && p.gath) Object.keys(p.gath).forEach(function (k) { if (!/^Professions /.test(k)) gk[k] = (gk[k] || 0) + 1; }); });   // "Professions learned" är bara antal yrken
       var gkeys = Object.keys(gk).sort(function (a, b) { return gk[b] - gk[a]; }).slice(0, 12);
       if (gkeys.indexOf(lbGath) < 0) lbGath = gkeys[0] || "";
       h += '<div class="huchips">' + gkeys.map(function (k) { return '<button type="button" class="huchip' + (lbGath === k ? " on" : "") + '" data-lbgath="' + esc(k) + '" aria-pressed="' + (lbGath === k) + '">' + esc(k) + "</button>"; }).join("") + "</div>";
