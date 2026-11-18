@@ -340,6 +340,10 @@ body[data-mode=hu] .facts dd { font-size: 15px; }
 .srct td:last-child { text-align: right; white-space: nowrap; padding-right: 0; }
 .srcl { margin: 0; padding-left: 18px; font-size: 13px; } .srcl li { margin: 2px 0; }
 .srcsum { font-size: 12.5px; color: var(--grey); margin: 4px 0; }
+.srct.skin th { font-size: 11px; color: var(--grey); text-align: right; font-weight: 500; padding: 0 0 4px; } .srct.skin th:first-child { text-align: left; }
+.srct.skin td:nth-child(2) { text-align: right; white-space: nowrap; }
+.bosslist a { color: inherit; text-decoration: none; border-bottom: 1px dotted var(--grey); } .bosslist a:hover { color: var(--gold); }
+#list tr.bosshd[data-dgboss] { cursor: pointer; } #list tr.bosshd[data-dgboss]:hover b { color: #fff; }
 .huz.r { width: 10px; height: 10px; margin: -6px 0 0 -6px; border-radius: 1px; background: #e3e9ef; transform: rotate(45deg); box-shadow: 0 0 6px rgba(227, 233, 239, .9); z-index: 2; }
 .huz:hover { transform: scale(1.7); z-index: 3; } .huz.r:hover { transform: rotate(45deg) scale(1.7); }
 .huz.one { width: 13px; height: 13px; margin: -7.5px 0 0 -7.5px; cursor: default; box-shadow: 0 0 0 4px rgba(240, 192, 64, .32), 0 0 8px rgba(0, 0, 0, .8); }
@@ -924,7 +928,8 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
 [data-appearance=atlas] .portr.on3d { background: radial-gradient(ellipse at 50% 60%, #1E2E3C, #0A1018 70%); }
 /* Miljön bakom 3D-djuret (provrumsbilden för zonen), lite mörkare nedtill så djuret syns mot marken */
 .portr.on3d.hasbg, [data-appearance=atlas] .portr.on3d.hasbg { background: #1f1f1f; }
-.portr.on3d.hasbg::before { content: ""; position: absolute; inset: -8px; background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, .35)), var(--pbg) center 78% / cover no-repeat; filter: blur(1.5px); }   /* uppskalad bild: lite oskärpa som djupskärpa */
+.portr.banner { height: 150px; }
+.portr.on3d.hasbg::before, .portr.banner.hasbg::before { content: ""; position: absolute; inset: -8px; background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, .35)), var(--pbg) center 78% / cover no-repeat; filter: blur(1.5px); }   /* uppskalad bild: lite oskärpa som djupskärpa */
 [data-appearance=atlas] .p3d { color: #CFF6F3; background: rgba(10, 18, 26, .8); border-color: #3F6C78; }
 [data-appearance=atlas] .p3d:hover { color: #fff; border-color: var(--edge); }
 [data-appearance=atlas] .ttree { background: radial-gradient(ellipse at top, rgba(67, 140, 160, .16), rgba(0, 0, 0, .35)); }
@@ -1387,6 +1392,8 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
       it_skin: "Skinned from", it_pick: "Pickpocketed from", it_vendor: "Sold by", it_vendor_lim: "limited stock", it_in: "Found in", it_used: "Reagent for",
       it_made: "Created by", it_node_sum: "%1 in the world · %2 chance", it_inst: "Also in:", it_none: "No known source in the Classic database.",
       it_notah: "Not on the auction house right now", it_db: "Places and chances from the Classic database (cmangos), not Forever's own spawns.",
+      hu_skin: "Skinning", hu_skin_note: "What skinning the beast gives, from the Classic database. Price is the auction house market price.", hu_skin_chance: "Chance", hu_skin_price: "Market price",
+      dg_boss_loot: "Loot", dg_back: "‹ Back to the dungeon", dg_boss_noloot: "No loot of its own in the Classic database.",
       gs_ph: "Search everything: items, recipes, quests, NPCs, beasts, players…", gs_all: "All", gs_k_item: "Items", gs_k_rec: "Recipes", gs_k_quest: "Quests",
       gs_k_npc: "NPCs", gs_k_beast: "Beasts", gs_k_col: "Collections", gs_k_dg: "Dungeons", gs_k_pl: "Players", gs_k_gl: "Guilds", gs_none: "Nothing found",
       gs_ar: "Look up “%1” in the Armory", gs_ar_g: "Look up the guild “%1”", gs_more: "Show all %1", gs_loading: "Loading…",
@@ -3177,15 +3184,37 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
   }
   function dgRow(r) {
     if (r.sub) return '<tr class="fvhd' + (r.sub === "cl" ? " cl" : r.sub === "al" ? " al" : "") + '"><td colspan="5">' + (r.sub === "fv" ? t("dg_fv", r.kills) : r.sub === "al" ? t(r.fresh ? "dg_al_new" : "dg_al") : t("dg_cl")) + "</td></tr>";
-    if (r.hd) return '<tr class="bosshd"><td colspan="5"><b>' + esc(r.boss.name) + '</b> <span class="dim">' + (r.boss.lvl ? t("dg_boss_lvl", r.boss.lvl) : "") + (query ? " · " + esc(r.d.name) : "") + (r.n ? "" : " · " + t("dg_noloot")) + "</span></td></tr>";
+    if (r.hd) return '<tr class="bosshd" data-dgboss="' + r.boss.id + '" data-dgmap="' + r.d.map + '"><td colspan="5"><b>' + esc(r.boss.name) + '</b> <span class="dim">' + (r.boss.lvl ? t("dg_boss_lvl", r.boss.lvl) : "") + (query ? " · " + esc(r.d.name) : "") + (r.n ? "" : " · " + t("dg_noloot")) + "</span></td></tr>";
     var ah = byId[r.item], m = DG.items[r.item] || ["", FLN[r.item] ? FLN[r.item][1] : -1, 0, 0], q = ah ? ah.q : hasGameTip(r.item) ? GQ[r.item] : m[1];
     return '<tr tabindex="0"' + (r.cl ? ' class="clrow"' : "") + ' ' + (ah ? 'data-id="' + r.item + '"' + (r.item === selId ? ' aria-selected="true"' : "") : 'data-dgi="' + r.item + '"') + '><td class="fav">' + (ah ? starHtml(r.item) : "") + '</td><td class="nm">' + (ah && ah.ic && ICON_BASE ? iconHtml(ah) : xIcon(r.item, q)) +
       '<span class="' + qcls(q) + '"' + (ah || hasGameTip(r.item) ? ' data-tip="' + r.item + '"' : ' data-dgtip="' + r.item + '"') + ">" + esc(dgName(r.item)) + "</span>" + (r.mx > 1 ? ' <span class="dim">×' + r.mn + (r.mx > r.mn ? "–" + r.mx : "") + "</span>" : "") +
       "</td><td" + (r.fv ? ' title="' + esc(t("dg_fv_tip", r.seen)) + '"' : "") + ">" + (r.al ? '<span class="dim" title="' + esc(t("dg_al_tip")) + '">–</span>' : r.fv && r.den < 3 ? r.seen + "/" + r.den : (r.ch >= 10 ? Math.round(r.ch) : r.ch) + "%") + "</td><td>" + (m[3] || DASH) + "</td><td>" + (ah && ah.min > 0 ? money(ah.min) : '<span class="dim">' + t("qu_notah") + "</span>") + "</td></tr>";
   }
+  // Bossen i rutan (Joakim 2026-11-18: dungeonens laddningsbild bakom 3D-modellen, som djuren): porträtt, loot med AH-pris.
+  var DG_BG = { "Blackfathom Deeps": "blackfathom-deeps", "Blackrock Depths": "blackrock-depths", "Blackrock Spire": "blackrock-spire", "Dire Maul": "dire-maul", "Maraudon": "maraudon", "Scarlet Monastery": "scarlet-monastery",
+    "Razorfen Downs": "razorfen-downs", "Razorfen Kraul": "razorfen-kraul", "Shadowfang Keep": "shadowfang-keep", "Sunken Temple": "sunken-temple", "Uldaman": "uldaman", "Wailing Caverns": "wailing-caverns", "Zul'Farrak": "zulfarrak", "Zul'Gurub": "zulgurub",
+    "The Deadmines": "deadmines", "The Stockade": "stockade", "Gnomeregan": "gnomeregan", "Scholomance": "scholomance", "Ragefire Chasm": "ragefire-chasm", "Molten Core": "molten-core", "Naxxramas": "naxxramas", "Ruins of Ahn'Qiraj": "ahnqiraj-20", "Temple of Ahn'Qiraj": "ahnqiraj-40",
+    "Onyxia's Lair": "onyxia", "Stratholme": "stratholme", "Blackwing Lair": "blackwing-lair" };
+  var DG_BG_OK = null;   // vilka bilder som finns (assets/backgrounds/dg-index.json), null = okänt: alla antas finnas
+  function dgBg(d) { var k = DG_BG[d.name]; return k && (!DG_BG_OK || DG_BG_OK[k]) ? ASSET_BASE + "backgrounds/dg-" + k + ".webp" : ""; }
+  function dgBossDetail(d, b) {
+    setHash("#dungeon=" + d.map + "&boss=" + b.id);
+    $("detail").scrollTop = 0;
+    var loot = b.loot.map(function (l) {
+      var r = byId[l[0]], m = DG.items[l[0]] || ["Item " + l[0], 1], q = r ? r.q : hasGameTip(l[0]) ? GQ[l[0]] : m[1];
+      return "<tr><td>" + (r ? iconHtml(r) : xIcon(l[0], q)) + '<span class="' + qcls(q) + '"' + (r || hasGameTip(l[0]) ? ' data-tip="' + l[0] + '"' : ' data-dgtip="' + l[0] + '"') + ">" + esc(r && r.name ? r.name : m[0]) + "</span></td><td>" + (l[1] >= 10 ? Math.round(l[1]) : l[1]) + " %</td><td>" + (r && r.min > 0 ? money(r.min) : DASH) + "</td></tr>";
+    }).join("");
+    $("detail").innerHTML = '<div class="strip"><button class="lnk" type="button" data-copyany="#dungeon=' + d.map + "&boss=" + b.id + '" title="' + t("copy_link") + '">' + t("copy_link") + "</button><h2>" + esc(b.name) + "</h2><small>" +
+      esc(d.name) + (b.lvl ? " · " + t("dg_boss_lvl", b.lvl) : "") + "</small></div>" +
+      (b.m3 ? portraitHtml(b.disp, false, b.m3, "", dgBg(d)) : dgBg(d) ? '<div class="portr hasbg banner" style="--pbg:url(' + esc(dgBg(d)) + ')"></div>' : "") +   // utan modell: bara dungeonbilden
+      '<div><button class="lnk" type="button" data-dg="' + dgSel + '">' + t("dg_back") + "</button></div>" +
+      "<div><h3>" + t("dg_boss_loot") + "</h3>" + (loot ? '<table class="srct skin"><thead><tr><th></th><th>' + t("hu_skin_chance") + "</th><th>" + t("hu_skin_price") + "</th></tr></thead><tbody>" + loot + "</tbody></table>" : '<div class="note">' + t("dg_boss_noloot") + "</div>") + "</div>";
+    m3Auto();
+  }
   function dgDetail() {
     var d = dgList[dgSel];
     if (!d) { $("detail").innerHTML = '<div class="note">' + t("dg_pick") + "</div>"; return; }
+    if (navRestoring) { var hb = +hashParams().boss, bb = null; d.bosses.forEach(function (x) { if (x.id === hb) bb = x; }); if (bb) { dgBossDetail(d, bb); return; } }
     setHash("#dungeon=" + d.map);
     var ah = 0;
     d.bosses.forEach(function (b) { b.loot.forEach(function (l) { if (byId[l[0]] && byId[l[0]].min > 0) ah++; }); });
@@ -3195,7 +3224,7 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
       "<div><dt>" + t("dg_players") + "</dt><dd>" + d.players + "</dd></div><div><dt>" + t("dg_onah") + "</dt><dd>" + ah + "</dd></div>" +
       '<div class="wide"><dt>' + t("dg_logged") + "</dt><dd>" + t("dg_logged_n", d.bosses.filter(function (b) { return FL[b.id]; }).length, d.bosses.length) + "</dd></div></dl>" +
       '<div id="dgmap"></div>' +
-      "<div><h3>" + t("dg_bosses") + '</h3><ol class="bosslist">' + d.bosses.map(function (b) { return "<li>" + esc(b.name) + ' <span class="dim">' + (b.lvl ? t("dg_boss_lvl", b.lvl) : "") + "</span></li>"; }).join("") + "</ol></div>";   // källraderna (AtlasLoot, Classic-databasen) flyttade till About (Joakim 2026-11-18)
+      "<div><h3>" + t("dg_bosses") + '</h3><ol class="bosslist">' + d.bosses.map(function (b) { return '<li><a href="#dungeon=' + d.map + "&boss=" + b.id + '" data-dgboss="' + b.id + '" data-dgmap="' + d.map + '">' + esc(b.name) + '</a> <span class="dim">' + (b.lvl ? t("dg_boss_lvl", b.lvl) : "") + "</span></li>"; }).join("") + "</ol></div>";   // källraderna (AtlasLoot, Classic-databasen) flyttade till About (Joakim 2026-11-18)
     var dmap = d.map;
     qmIndex().then(function () {
       var el = $("dgmap"), L = QMIX.dg && QMIX.dg[dmap];
@@ -4360,6 +4389,15 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
     if (qg) { e.preventDefault(); showTab("item"); selectQuest(+qg.dataset.qgo, true); return; }
     var tq = e.target.closest("tbody tr[data-qid]");
     if (tq) { showTab("item"); if (qmOv) { qmOv = false; drawCats(); } selectQuest(+tq.dataset.qid, true); return; }
+    var dgb = e.target.closest("[data-dgboss]");
+    if (dgb && DG) {
+      e.preventDefault();
+      var bmap = +dgb.dataset.dgmap, bid = +dgb.dataset.dgboss, bd = null, bb2 = null;
+      dgList.forEach(function (x, i) { if (x.map === bmap) { bd = x; if (dgSel !== i) { dgSel = i; drawCats(); } } });
+      if (bd) bd.bosses.forEach(function (x) { if (x.id === bid) bb2 = x; });
+      if (bb2) { showTab("item"); dgBossDetail(bd, bb2); }
+      return;
+    }
     var tdi = e.target.closest("tbody tr[data-dgi]");
     if (tdi) { showTab("item"); dgItemDetail(+tdi.dataset.dgi); return; }
     var qh = e.target.closest("[data-quhide]");
@@ -4491,6 +4529,16 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
       '<div class="dim">' + (huIsRare(b) && zs[i].pts.length > 1 ? t("hu_route") + " " : "") + t("hu_map_big") + "</div>";
   }
   function drk(rare, elite, img) { return rare ? '<span class="drk s">' + img + "</span>" : elite ? '<span class="drk g">' + img + "</span>" : img; }
+  // Skinning (hamta-skinning.js via build.js): b.skin = [[item, chans %, min, max]], namn för föremål utanför AH i HU.skinItems.
+  function huSkinHtml(b) {
+    if (!b.skin || !b.skin.length) return "";
+    var rows = b.skin.map(function (l) {
+      var r = byId[l[0]], m = (HU.skinItems && HU.skinItems[l[0]]) || ["Item " + l[0], 1], q = r ? r.q : m[1], nm = r && r.name ? r.name : m[0];
+      var n = l[3] > l[2] ? l[2] + "–" + l[3] : l[2] > 1 ? String(l[2]) : "";
+      return "<tr><td>" + (r ? iconHtml(r) : xIcon(l[0], q)) + '<a class="wh" href="#item=' + l[0] + '" data-upgo="' + l[0] + '"><span class="' + qcls(q) + '" data-tip="' + l[0] + '">' + esc(nm) + "</span></a>" + (n ? ' <span class="dim">×' + n + "</span>" : "") + "</td><td>" + (l[1] >= 10 ? Math.round(l[1]) : l[1]) + " %</td><td>" + (r && r.min > 0 ? money(r.min) : DASH) + "</td></tr>";
+    }).join("");
+    return "<div><h3>" + t("hu_skin") + '</h3><table class="srct skin"><thead><tr><th></th><th>' + t("hu_skin_chance") + "</th><th>" + t("hu_skin_price") + "</th></tr></thead><tbody>" + rows + "</tbody></table></div>";
+  }
   function huFamIcon(fam) { return RICON + "ability_hunter_pet_" + (HU_FAMIC[fam] || "wolf") + ".jpg"; }
   function huIsRare(b) { return b.rank === 2 || b.rank === 4; }
   function huOk(b, skipFam) {
@@ -4571,6 +4619,7 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
       '<div class="note">' + t("hu_speed_note") + "</div>" +
       "<div><h3>" + t("hu_learn") + '</h3><div class="huab">' + (f.ab || []).map(function (a) { return "<span>" + esc(a) + "</span>"; }).join("") + "</div></div>" +
       (b.uses && b.uses.length ? "<div><h3>" + t("hu_uses") + '</h3><div class="huab">' + b.uses.map(function (a) { return '<span class="u">' + esc(a) + "</span>"; }).join("") + "</div></div>" : "") +
+      huSkinHtml(b) +
       "<div><h3>" + t("hu_where") + "</h3>" + (where ? '<ul class="huwhere">' + where + "</ul>" : hasPts ? "" : '<div class="note">' + t(HU.zonesFromGame ? "hu_nowhere" : "hu_zone_wait_long") + "</div>") +
       (zmap ? '<div class="huzwrap">' + zmap + "</div>" : "") +
       (hasPts ? '<div class="humap sm"><canvas></canvas><div class="humaptip" hidden></div></div>' : "") + '<div class="dim">' + t("hu_spawns", b.spawns) + (hasPts && !HU.zonesFromGame ? " · " + t("hu_zone_wait_short") : "") + "</div></div>";   // källraden i About (Joakim 2026-11-18)
@@ -5369,6 +5418,7 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
     var mk = house !== 113 ? "&m=" + house : "", x;
     if ((x = el.closest(".mode > button[id^=mode]"))) return "#tab=" + x.id.slice(4).toLowerCase() + mk;
     if ((x = el.closest("tr[data-hu]"))) return "#beast=" + x.dataset.hu;
+    if ((x = el.closest("tr[data-dgboss]"))) return "#dungeon=" + x.dataset.dgmap + "&boss=" + x.dataset.dgboss;
     if ((x = el.closest("tr[data-co]"))) return "#col=" + x.dataset.co;
     if ((x = el.closest("tr[data-fx]"))) return "#fx=" + x.dataset.fx + (x.dataset.fxg ? "&g=" + x.dataset.fxg : "") + mk;
     if ((x = el.closest("tr[data-de]"))) return "#de=" + x.dataset.de + mk;
