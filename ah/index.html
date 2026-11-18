@@ -1029,6 +1029,7 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
       <button type="button" id="modeTr" aria-pressed="false" data-t-title="mode_tr_tip"><img class="ai" alt="" width="32" height="32" data-ai="nav-trading"><img class="mi" alt="" data-mi="tr"><span data-t="mode_tr">Trading</span></button>
       <button type="button" id="modeCr" aria-pressed="false" data-t-title="mode_cr_tip"><img class="ai" alt="" width="32" height="32" data-ai="nav-professions"><img class="mi" alt="" data-mi="cr"><span data-t="mode_cr">Professions</span></button>
       <button type="button" id="modeAr" aria-pressed="false" data-t-title="mode_ar_tip"><img class="ai" alt="" width="32" height="32" data-ai="nav-armory"><img class="mi" alt="" data-mi="ar"><span data-t="mode_ar">Armory</span></button>
+      <button type="button" id="modeLb" aria-pressed="false" data-t-title="mode_lb_tip"><img class="ai" alt="" width="32" height="32" data-ai="nav-leaderboards"><img class="mi" alt="" data-mi="ar"><span data-t="mode_lb">Leaderboards</span></button>
       <button type="button" id="modeQu" aria-pressed="false" data-t-title="mode_qu_tip"><img class="ai" alt="" width="32" height="32" data-ai="nav-quests"><img class="mi" alt="" data-mi="qu" onerror="this.style.visibility='hidden'"><span data-t="mode_qu">Quests</span></button>
       <button type="button" id="modeDg" aria-pressed="false" data-t-title="mode_dg_tip"><img class="ai" alt="" width="32" height="32" data-ai="nav-dungeons"><img class="mi" alt="" data-mi="dg" onerror="this.style.visibility='hidden'"><span data-t="mode_dg">Dungeons</span></button>
       <button type="button" id="modeHu" aria-pressed="false" data-t-title="mode_hu_tip"><img class="ai" alt="" width="32" height="32" data-ai="nav-hunter-pets"><img class="mi" alt="" data-mi="hu" onerror="this.style.visibility='hidden'"><span data-t="mode_hu">Hunter pets</span></button>
@@ -1392,7 +1393,7 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
       dg_fv: "Seen in Forever · %1 kills logged", dg_cl: "Classic 1.12 list (may be outdated in Forever)", dg_fv_tip: "Seen in %1 of the logged kills", dg_logged: "Logged in Forever", dg_logged_n: "%1 of %2 bosses",
       dg_lv: "Level %1", dg_raids: "Raids", dg_count: "%1 drops", dg_empty: "No drop matches the search.", dg_pick: "Pick a dungeon on the left.", dg_boss_lvl: "level %1", dg_noloot: "no listed loot",
       dg_raid: "Raid · %1 players", dg_party: "Dungeon · 5 players", dg_bosses: "Bosses", dg_players: "Players", dg_onah: "Drops on the AH", dg_ilvl: "Item level", dg_dropsfrom: "Drops from",
-      mode_ar: "Armory", mode_ar_tip: "Look up any player or guild: gear, professions, reputation and guild roster",
+      mode_lb: "Leaderboards", mode_lb_tip: "Top players and guilds in the catalog: item level, honorable kills, PvP rank, achievements", mode_ar: "Armory", mode_ar_tip: "Look up any player or guild: gear, professions, reputation and guild roster",
       search_ar: "Player: first and last name – or a guild", ar_hint: "Type a player's first and last name (e.g. Alisee Alistar), or a guild name, and press Search.",
       ar_recent: "Recent", ar_loading: "Looking up…", ar_notfound: "No player or guild with that name. Players show up from level 10, after logging out.",
       ar_fail: "The lookup is not available right now.", ar_off: "The armory is not connected yet.",
@@ -3306,8 +3307,8 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
     if (mode === "de") { $("cats").innerHTML = '<button class="cat lbbtn" type="button" data-gotr="1"><em class="nm">‹ Trading</em></button>' + (DEX ? deCats() : ""); $("cats").hidden = false; return; }
     if (mode === "fx") { $("cats").innerHTML = '<button class="cat lbbtn" type="button" data-gotr="1"><em class="nm">‹ Trading</em></button>' + fxCats(); $("cats").hidden = false; return; }
     if (mode === "ar") {
-      $("cats").innerHTML = '<button class="cat lbbtn" type="button" data-lb="' + (lbGroup(arLb) === "b" ? arLb : "ilvl") + '" aria-pressed="' + (lbGroup(arLb) === "b") + '"><img class="ci" src="' + RICON + 'inv_misc_trophy_argent.jpg" alt=""><em class="nm">' + t("lb") + "</em><span>" + (KAT ? num(KAT.players.length) : "") + "</span></button>" +
-        '<button class="cat lbbtn" type="button" data-lb="cls" aria-pressed="' + (lbGroup(arLb) === "s") + '"><img class="ci" src="' + RICON + 'inv_misc_map02.jpg" alt=""><em class="nm">' + t("lb_server") + "</em><span>" + (KAT ? num(KAT.guilds.length) : "") + "</span></button>" + arSection("friends", t("ar_friends"), arFriends) + arSection("recent", t("ar_recent"), arRecent);
+      if (arLb) { $("cats").innerHTML = lbCats(); $("cats").hidden = false; return; }
+      $("cats").innerHTML = arSection("friends", t("ar_friends"), arFriends) + arSection("recent", t("ar_recent"), arRecent);
       $("cats").hidden = false;
       return;
     }
@@ -3413,6 +3414,7 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
     drawWatch();
     var hp0 = hashParams();
     // En länk bestämmer fliken (annars den som sparats): #quest, #dungeon, #player/#guild, #recipe, #item.
+    if (hp0.tab === "lb") { hp0.top = lbGroup(arLb) ? arLb : "ilvl"; delete hp0.tab; }
     var hm = /^(ah|tr|cr|ar|qu|dg|hu|co)$/.test(hp0.tab || "") ? hp0.tab : hp0.fx ? "fx" : hp0.de ? "de" : hp0.col ? "co" : hp0.beast ? "hu" : hp0.quest || hp0.npc ? "qu" : hp0.dungeon ? "dg" : hp0.player || hp0.guild || hp0.top ? "ar" : hp0.recipe ? "cr" : hp0.item ? "ah" : "";
     var wantI = byId[+hp0.item];
     if (hm && !keep && mode !== hm && !(hm === "ah" && mode === "tr" && (!wantI || (!wantI.gear && wantI.qty >= TR_MIN)))) { if (fromNav) resetModeState(hm); mode = hm; drawCats(); refresh(); }   // trädet ritades för den sparade fliken
@@ -3426,7 +3428,7 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
     if (mode === "ar" || (!keep && (hp0.player || hp0.guild || hp0.top))) {
       mode = "ar"; $("q").placeholder = t("search_ar");
       drawCats(); refresh();
-      if (hp0.top && !keep) { arLb = hp0.top; drawCats(); lbShow(); return; }
+      if (hp0.top && !keep) { arLb = hp0.top; drawMode(); drawCats(); lbShow(); return; }
       if (keep && arLb) { lbShow(); return; }
       if (keep && arData) { arRedraw(); return; }
       arLb = "";
@@ -3707,12 +3709,13 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
     $("modeAh").setAttribute("aria-pressed", mode === "ah" ? "true" : "false");
     $("modeTr").setAttribute("aria-pressed", mode === "tr" || mode === "de" || mode === "fx" ? "true" : "false");
     $("modeCr").setAttribute("aria-pressed", mode === "cr" ? "true" : "false");
-    $("modeAr").setAttribute("aria-pressed", mode === "ar" ? "true" : "false");
+    $("modeAr").setAttribute("aria-pressed", mode === "ar" && !arLb ? "true" : "false");
+    $("modeLb").setAttribute("aria-pressed", mode === "ar" && arLb ? "true" : "false");
     $("modeQu").setAttribute("aria-pressed", mode === "qu" ? "true" : "false");
     $("modeDg").setAttribute("aria-pressed", mode === "dg" ? "true" : "false");
     $("modeHu").setAttribute("aria-pressed", mode === "hu" ? "true" : "false");
     $("modeCo").setAttribute("aria-pressed", mode === "co" ? "true" : "false");
-    $("sect").textContent = t(mode === "de" || mode === "fx" ? "mode_tr" : "mode_" + mode);
+    $("sect").textContent = t(mode === "de" || mode === "fx" ? "mode_tr" : mode === "ar" && arLb ? "mode_lb" : "mode_" + mode);
     $("q").setAttribute("aria-label", t(mode === "cr" ? "search_rc" : mode === "ar" ? "search_ar" : mode === "qu" ? "search_qu" : mode === "dg" ? "search_dg" : mode === "hu" ? "search_hu" : mode === "co" ? "search_co" : "search_ph"));
   }
   // Raden i: själva raden och, i AH/Trading, de utfällda prisstegen under den.
@@ -4208,7 +4211,7 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
       return;
     }
     var lbb = e.target.closest("[data-lb]");
-    if (lbb && mode === "ar") { arLb = lbb.dataset.lb; drawCats(); lbShow(); setHash("#top=" + arLb); showTab("item"); return; }
+    if (lbb && mode === "ar") { arLb = lbb.dataset.lb; drawMode(); drawCats(); lbShow(); setHash("#top=" + arLb); showTab("item"); return; }
     var cb = e.target.closest(".cat, .catlink");
     var hf = e.target.closest("[data-hufam]");
     if (hf && mode === "hu") { huFam = +hf.dataset.hufam; drawCats(); refresh(); toTop(); return; }
@@ -4887,6 +4890,12 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
   // [nyckel, fält, text, grupp]: b = topplistor, s = serverstatistik (Joakim 2026-11-18: klasser är inte en topplista;
   // Activity borttagen helt – den byggde bara på timmarna Joakim själv var online; koden för #top=act finns kvar).
   var LB = [["ilvl", "il", "lb_ilvl", "b"], ["hk", "hk", "lb_hk", "b"], ["rank", "rk", "lb_rank", "b"], ["ach", "ap", "lb_ach", "b"], ["guilds", "", "lb_guilds", "b"], ["cls", "", "lb_cls", "s"]];
+  var LB_ICON = { ilvl: "inv_misc_trophy_argent", hk: "ability_rogue_ambush", rank: "inv_bannerpvp_01", ach: "achievement_general", guilds: "inv_misc_tabard_01", cls: "inv_misc_map02" };
+  function lbCats() {
+    return "<h2>" + t("lb") + "</h2>" + LB.map(function (b) {
+      return '<button class="cat" type="button" data-lb="' + b[0] + '" aria-pressed="' + (b[0] === arLb) + '"><img class="ci" src="' + RICON + (LB_ICON[b[0]] || "inv_misc_questionmark") + '.jpg" alt="" onerror="this.style.visibility=\'hidden\'"><em class="nm">' + t(b[3] === "s" ? "lb_server" : b[2]) + "</em></button>";
+    }).join("") + (KAT ? '<div class="dim" style="padding:8px 10px;font-size:12px">' + num(KAT.players.length) + " " + t("gs_k_pl").toLowerCase() + " · " + num(KAT.guilds.length) + " " + t("gs_k_gl").toLowerCase() + "</div>" : "");
+  }
   function lbGroup(k) { var d = LB.filter(function (b) { return b[0] === k; })[0]; return d ? d[3] : ""; }
   function loadKat() {
     // katalog.json: vanlig cache räcker, filen byts en gång per dygn (granskning 2026-11-18)
@@ -5464,7 +5473,7 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
   function navHashFor(el) {
     if (!el || !el.closest || el.closest("a[href]")) return "";
     var mk = house !== 113 ? "&m=" + house : "", x;
-    if ((x = el.closest(".mode > button[id^=mode]"))) return "#tab=" + x.id.slice(4).toLowerCase() + mk;
+    if ((x = el.closest(".mode > button[id^=mode]"))) return x.id === "modeLb" ? "#top=" + (lbGroup(arLb) ? arLb : "ilvl") : "#tab=" + x.id.slice(4).toLowerCase() + mk;
     if ((x = el.closest("tr[data-hu]"))) return "#beast=" + x.dataset.hu;
     if ((x = el.closest("tr[data-dgboss]"))) return "#dungeon=" + x.dataset.dgmap + "&boss=" + x.dataset.dgboss;
     if ((x = el.closest("tr[data-co]"))) return "#col=" + x.dataset.co;
@@ -5491,8 +5500,23 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
   $("modeCr").addEventListener("click", function () { setMode("cr"); });
   $("modeAr").addEventListener("click", function () {
     if (mode === "ar" && arCmp && arData) { arCmp = null; renderChar(arData); drawCats(); return; }   // Armory-fliken stänger jämförelsen
+    if (mode === "ar" && arLb) { arLb = ""; arHome(); return; }   // från Leaderboards-fliken tillbaka till Armory
     setMode("ar");
   });
+  // Leaderboards-fliken: Armory-läget med en lista vald (arLb). Armory utan lista = spelaren/guilden som var öppen.
+  function lbTab() {
+    if (mode === "ar" && arLb) return;
+    arLb = lbGroup(arLb) ? arLb : "ilvl";
+    if (mode !== "ar") setMode("ar"); else { drawCats(); refresh(); lbShow(); }
+    setHash("#top=" + arLb); drawMode(); showTab("item");
+  }
+  function arHome() {
+    setHash("#tab=ar"); drawMode(); drawCats(); refresh();
+    if (arData) { if (arData.kind === "character") renderChar(arData); else renderGuild(arData); setHash(arData.kind === "character" ? arHash() : "#guild=" + arData.slug); }
+    else if (arRecent[0]) arLoad(arRecent[0].kind, arRecent[0].slug);
+    else { arShow('<div class="hint">' + t("ar_hint") + "</div>", ""); setHash("#tab=ar"); }
+  }
+  $("modeLb").addEventListener("click", function () { lbTab(); });
   $("modeQu").addEventListener("click", function () { setMode("qu"); });
   $("modeDg").addEventListener("click", function () { setMode("dg"); });
   $("modeHu").addEventListener("click", function () { setMode("hu"); });
