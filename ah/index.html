@@ -86,7 +86,7 @@ h1 { font-family: var(--display); font-weight: 500; font-size: 36px; margin: 0; 
 /* Marknaden (Joakims spec 2026-11-16): en kompakt väljare till vänster om uppdateringstiden. Stängd: fraktionsmärke,
    fraktion · servertyp och en pil. Öppen: panel under knappen med Faction (Horde/Alliance) och Realm type (Normal/PvP). */
 .mkt { position: relative; margin-left: auto; align-self: center; flex: 0 0 auto; }
-.mbtn { all: unset; box-sizing: border-box; min-width: 192px; cursor: pointer; height: 40px; padding: 0 12px 0 10px; border-radius: 5px; background: #1B140F; border: 1px solid #7A5739;
+.mbtn { all: unset; box-sizing: border-box; min-width: 192px; cursor: pointer; height: 40px; padding: 0 12px 0 10px; border-radius: 0; background: #1B140F; border: 1px solid #7A5739;
   display: inline-flex; align-items: center; gap: 8px; font-size: 14.5px; font-weight: 500; color: var(--fg);
   box-shadow: inset 0 1px 0 rgba(229, 180, 106, .10), 0 1px 2px rgba(0, 0, 0, .5); }
 .mbtn:hover, .mbtn[aria-expanded=true] { border-color: var(--edge); }
@@ -96,14 +96,14 @@ h1 { font-family: var(--display); font-weight: 500; font-size: 36px; margin: 0; 
 .mbtn[aria-expanded=true] .caret { transform: rotate(180deg); }
 .mkt .fi { width: 26px; height: 26px; object-fit: contain; display: block; }
 .mkt .fi:not([src]) { display: none; }
-.rt { font-size: 12.5px; padding: 2px 7px; border-radius: 4px; background: rgba(255, 255, 255, .08); color: var(--grey); }
+.rt { font-size: 12.5px; padding: 2px 7px; border-radius: 0; background: rgba(255, 255, 255, .08); color: var(--grey); }
 .rt.pvp { background: rgba(246, 196, 72, .16); color: var(--gold); }
-.mpop { position: absolute; right: 0; top: calc(100% + 6px); z-index: 40; width: min(330px, calc(100vw - 52px)); padding: 8px; border-radius: 6px;
+.mpop { position: absolute; right: 0; top: calc(100% + 6px); z-index: 40; width: min(330px, calc(100vw - 52px)); padding: 8px; border-radius: 0;
   background: #1B140F; border: 1px solid #7A5739; box-shadow: 0 12px 30px rgba(0, 0, 0, .55), inset 0 1px 0 rgba(229, 180, 106, .10); }
 .mrow { display: grid; grid-template-columns: 86px 1fr 1fr; gap: 6px; align-items: center; }
 .mrow + .mrow { margin-top: 6px; }
 .mlbl { font-size: 11.5px; letter-spacing: .07em; text-transform: uppercase; color: var(--grey); font-weight: 600; padding-left: 4px; }
-.mrow button { all: unset; cursor: pointer; height: 36px; padding: 0 10px; border-radius: 5px; border: 1px solid transparent; color: var(--grey);
+.mrow button { all: unset; cursor: pointer; height: 36px; padding: 0 10px; border-radius: 0; border: 1px solid transparent; color: var(--grey);
   display: inline-flex; align-items: center; justify-content: center; gap: 7px; font-size: 14px; }
 .mrow button:hover { background: var(--hover); color: var(--fg); }
 .mrow button[aria-pressed=true] { color: var(--fg); background: linear-gradient(#39271A, #21170F); border-color: rgba(246, 196, 72, .6); }
