@@ -217,6 +217,13 @@ h1 { font-family: var(--display); font-weight: 500; font-size: 36px; margin: 0; 
 .hurole { display: inline-block; padding: 1px 7px; border-radius: 9px; font-size: 11.5px; font-weight: 600; border: 1px solid; }
 .hurole.r-tank { color: #8fb8ff; border-color: rgba(143, 184, 255, .45); } .hurole.r-dps { color: #ff8a7a; border-color: rgba(255, 138, 122, .45); } .hurole.r-allround { color: #d8c48a; border-color: rgba(216, 196, 138, .45); }
 .hufil { display: grid; gap: 8px; padding: 4px 6px 8px; }
+.hurow { display: flex; align-items: center; gap: 8px; } .hurow .hulvl { flex: 1 1 auto; white-space: nowrap; } .hurow .huchip { white-space: nowrap; flex: none; }
+.huseg { display: flex; border: 1px solid var(--line); background: var(--inset); }
+.huseg button { all: unset; box-sizing: border-box; cursor: pointer; flex: 1 1 auto; text-align: center; padding: 6px 6px; font-size: 13px; color: var(--grey); border-left: 1px solid var(--line); white-space: nowrap; }
+.huseg button:first-child { border-left: 0; }
+.huseg button:hover { color: var(--fg); background: var(--hover); }
+.huseg button.on { color: var(--edge); background: var(--sel); box-shadow: inset 0 -2px 0 var(--edge); }
+.huseg button:focus-visible { outline: 2px solid var(--edge); outline-offset: -2px; }
 .hulvl { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 13px; color: var(--gold); }
 .hulvl input { width: 70px; height: 28px; padding: 0 8px; border-radius: 4px; border: 1px solid var(--line); background: #0b0908; color: var(--fg); font: inherit; }
 .huchips { display: flex; flex-wrap: wrap; gap: 4px; }
@@ -1220,7 +1227,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       rise_tip: "%1% above the usual price these days (%2)", col_pct: "Vs usual", col_pct_s: "Now", col_pct_tip: "Market price now versus the usual market price these days. Red = down, green = up.",
       mode_qu: "Quests", mode_qu_tip: "Every quest in WoW Forever by level and zone, with rewards priced on the auction house", search_qu: "Search quest or zone, e.g. Kobold Camp Cleanup",
       mode_hu: "Hunter pets", mode_hu_tip: "Every tameable beast: level, family, role, attack speed, abilities and where it lives.", search_hu: "Search beast, family or zone",
-      hu_lvl: "Your level", hu_lvl_tip: "You can tame beasts up to your own level.", hu_any: "Any role", hu_r_tank: "Tank", hu_r_dps: "DPS", hu_r_allround: "Allround", hu_rare: "Rares only", hu_fams: "Families", hu_all: "All families",
+      hu_lvl: "Level", hu_lvl_tip: "You can tame beasts up to your own level.", hu_any: "All", hu_r_tank: "Tank", hu_r_dps: "DPS", hu_r_allround: "Allround", hu_rare: "Rares", hu_fams: "Families", hu_all: "All families",
       hu_col_name: "Beast", hu_col_fam: "Family", hu_col_role: "Role", hu_col_speed: "Speed", hu_col_speed_tip: "Attack speed in seconds. A tamed pet keeps it – lower is faster.", hu_col_zone: "Where",
       hu_zone_wait: "zones soon", hu_zone_wait_long: "Zones are being read from the game and show up soon.", hu_nowhere: "No known spawn in the open world.", hu_count: "%1 beasts", hu_empty: "No beast matches.",
       hu_hp: "Health", hu_dmg: "Damage", hu_armor: "Armor", hu_diet: "Diet", hu_learn: "Abilities the family can learn", hu_uses: "Uses in the wild", hu_where: "Where it lives", hu_inst: "dungeon", hu_spawns: "%1 spawns in the database",
@@ -4210,11 +4217,12 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   function huCats() {
     var cnt = {}, all = 0;
     HU.beasts.forEach(function (b) { if (!huOk(b, true)) return; cnt[b.fam] = (cnt[b.fam] || 0) + 1; all++; });
-    var role = function (k, lbl) { return '<button type="button" class="huchip' + (huRole === k ? " on" : "") + '" data-hurole="' + k + '" aria-pressed="' + (huRole === k) + '">' + lbl + "</button>"; };
-    var h = '<div class="hufil"><label class="hulvl" title="' + t("hu_lvl_tip") + '"><span>' + t("hu_lvl") + '</span><input id="hulvl" type="number" min="1" max="60" inputmode="numeric" value="' + (huLvl || "") + '" placeholder="1–60"></label>' +
-      '<div class="huchips">' + role("", t("hu_any")) + role("tank", t("hu_r_tank")) + role("dps", t("hu_r_dps")) + role("allround", t("hu_r_allround")) + "</div>" +
-      '<div class="huchips"><button type="button" class="huchip rare' + (huRare ? " on" : "") + '" data-hurare="1" aria-pressed="' + huRare + '">◆ ' + t("hu_rare") + "</button>" +
-      '<button type="button" class="huchip' + (huMapOn ? " on" : "") + '" data-humap="1" aria-pressed="' + huMapOn + '" title="' + t("hu_map_tip") + '">⌖ ' + t("hu_map") + "</button></div></div>" +
+    // Joakim 2026-11-18 ("totalt kaos"): level och rares på en rad, rollen som ett enda växlingsreglage under. Kartknappen
+    // borta: varje djur har sin egen karta i högerrutan.
+    var role = function (k, lbl) { return '<button type="button" class="' + (huRole === k ? "on" : "") + '" data-hurole="' + k + '" aria-pressed="' + (huRole === k) + '">' + lbl + "</button>"; };
+    var h = '<div class="hufil"><div class="hurow"><label class="hulvl" title="' + t("hu_lvl_tip") + '"><span>' + t("hu_lvl") + '</span><input id="hulvl" type="number" min="1" max="60" inputmode="numeric" value="' + (huLvl || "") + '" placeholder="1–60"></label>' +
+      '<button type="button" class="huchip rare' + (huRare ? " on" : "") + '" data-hurare="1" aria-pressed="' + huRare + '">◆ ' + t("hu_rare") + "</button></div>" +
+      '<div class="huseg" role="group" aria-label="' + t("hu_col_role") + '">' + role("", t("hu_any")) + role("tank", t("hu_r_tank")) + role("dps", t("hu_r_dps")) + role("allround", t("hu_r_allround")) + "</div></div>" +
       '<div class="cath">' + t("hu_fams") + "</div>" +
       '<button class="cat" type="button" data-hufam="0" aria-pressed="' + !huFam + '"><em class="nm">' + t("hu_all") + "</em><span>" + all + "</span></button>";
     Object.keys(HU.families).map(Number).sort(function (a, b) { return HU.families[a].name.localeCompare(HU.families[b].name); }).forEach(function (f) {
