@@ -232,6 +232,12 @@ h1 { font-family: var(--display); font-weight: 500; font-size: 36px; margin: 0; 
 .qmtoast { position: fixed; left: 50%; bottom: 24px; z-index: 60; transform: translate(-50%, 20px); opacity: 0; pointer-events: none; transition: opacity .15s, transform .15s;
   padding: 8px 14px; border-radius: 6px; background: rgba(8, 6, 5, .95); border: 1px solid #ffd100; color: var(--fg); font-size: 13px; max-width: calc(100vw - 32px); }
 .qmtoast.on { opacity: 1; transform: translate(-50%, 0); }
+.qmtxl line { stroke: #e8d9a8; stroke-width: 1.2; stroke-dasharray: 3 3; vector-effect: non-scaling-stroke; opacity: .45; }
+.qmtx { position: absolute; z-index: 2; transform: translate(-50%, -50%); font: 700 11px/1 system-ui, sans-serif; width: 15px; height: 15px; display: grid; place-items: center;
+  border-radius: 4px; border: 1px solid #000; cursor: copy; box-shadow: 0 0 4px rgba(0, 0, 0, .8); color: #fff; }
+.qmtx.fH { background: #a3271c; } .qmtx.fA { background: #2a5fa8; } .qmtx.fB { background: #a07a1e; }
+.qmtx:hover { transform: translate(-50%, -50%) scale(1.4); z-index: 5; }
+.huzbig .qmtx { width: 19px; height: 19px; font-size: 13px; }
 .huz { position: absolute; width: 7px; height: 7px; margin: -4.5px 0 0 -4.5px; border-radius: 50%; border: 1px solid #000; background: #f0c040; cursor: pointer; }
 .huz.e { width: 9px; height: 9px; margin: -5.5px 0 0 -5.5px; background: #40c040; }
 .huz.r { width: 10px; height: 10px; margin: -6px 0 0 -6px; border-radius: 1px; background: #e3e9ef; transform: rotate(45deg); box-shadow: 0 0 6px rgba(227, 233, 239, .9); z-index: 2; }
@@ -1023,7 +1029,8 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       qm_lg_avail: "Can take", qm_zone_pick: "Pick a zone", qm_zone_more: "All %1 zones…", qm_lg_done: "Done", qm_lg_obj: "Active quest goal", qm_lg_turnin: "Turn in", qm_ar_btn: "Show on map",
       qm_ar_title: "Quests on the map", qm_ar_sub: "%1 active · %2 you can take now",
       qm_ar_note: "Active quests show their goal and where to turn in. ! = quests this character can take now: right faction, class and level, earlier quest in the chain done, not grey. Profession quests are left out. Click a mark to open the quest.",
-      dg_entrance: "Entrance", dg_entrance_note: "The meeting stone at the entrance. Click to copy /way.", hu_map_close: "click outside or Esc to close", hu_map_big: "Click the map to open it large",
+      dg_entrance: "Entrance", dg_entrance_note: "The meeting stone at the entrance. Click to copy /way.", dg_entrance_note2: "Click to copy /way. ✈ = flight masters for your side.",
+      qm_taxi: "Flight master: %1", hu_map_close: "click outside or Esc to close", hu_map_big: "Click the map to open it large",
       hu_map_znote: "The game's own zone maps. Hover a point for the name, click it to open the beast. Zones with the most beasts in the list come first.", hu_zone_wait_short: "zone names soon",
       hu_map_note: "Hover a point for the name, click to open the beast. The land is drawn from every spawn in the Classic database, place names from the graveyards.",
       hu_for: "Pets for you", hu_for_sub: "tameable around level %1", hu_near: "near you", hu_near_tip: "In a zone where this hunter has quests right now",
@@ -2372,7 +2379,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   function qmLoad(id) {
     var k = id % 50;
     if (!QM[k]) QM[k] = fetch(DATA_BASE + "questmap/" + k + ".json").then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }).catch(function () { QM[k] = null; return {}; });
-    return Promise.all([QM[k], loadZmap()]).then(function (a) { return a[0][id] || null; });
+    return Promise.all([QM[k], loadZmap(), qmIndex().catch(function () { return null; })]).then(function (a) { return a[0][id] || null; });   // index: flygmästarna
   }
   function qmIndex() {
     if (!qmIxP) qmIxP = Promise.all([fetch(DATA_BASE + "questmap/index.json").then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }), loadZmap()])
@@ -2380,6 +2387,26 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     return qmIxP;
   }
   function qmWay(z, x, y) { return "/way " + z + " " + x + " " + y; }
+  // Flygmästarna på zonens karta: rutterna som svaga linjer (även de som går ut över kartkanten), mästarna som en liten
+  // vinge i sidans färg. Världspunkt → zonprocent med zonens gränser (index.json zb).
+  function qmTaxi(zone) {
+    if (!QMIX || !QMIX.tn || !QMIX.zb || !QMIX.zb[zone]) return "";
+    var b = QMIX.zb[zone], fac = myFaction(), pos = {}, mk = "", ln = "";
+    var proj = function (n) { return [(b[2] - n[3]) / (b[2] - b[4]) * 100, (b[1] - n[2]) / (b[1] - b[3]) * 100]; };
+    QMIX.tn.forEach(function (n) { if (n[1] === b[0] && (n[5] === fac || n[5] === "B")) pos[n[0]] = { p: proj(n), n: n }; });
+    var inside = function (p) { return p[0] >= 0 && p[0] <= 100 && p[1] >= 0 && p[1] <= 100; };
+    (QMIX.tp || []).forEach(function (r) {
+      var a = pos[r[0]], c = pos[r[1]];
+      if (a && c && (inside(a.p) || inside(c.p))) ln += '<line x1="' + a.p[0].toFixed(1) + '" y1="' + a.p[1].toFixed(1) + '" x2="' + c.p[0].toFixed(1) + '" y2="' + c.p[1].toFixed(1) + '"/>';
+    });
+    Object.keys(pos).forEach(function (k) {
+      var e = pos[k];
+      if (!inside(e.p)) return;
+      var x = Math.round(e.p[0] * 10) / 10, y = Math.round(e.p[1] * 10) / 10;
+      mk += '<b class="qmtx f' + e.n[5] + '" style="left:' + x + "%;top:" + y + '%" data-way="' + esc(qmWay(zone, x, y)) + '" title="' + esc(t("qm_taxi", e.n[4]) + " · " + x + ", " + y + " · " + t("qm_click_copy")) + '">✈</b>';
+    });
+    return (ln ? '<svg class="qmpoly qmtxl" viewBox="0 0 100 100" preserveAspectRatio="none">' + ln + "</svg>" : "") + mk;
+  }
   function qmChip(p, cur) {
     var w = qmWay(p[0], p[1], p[2]);
     return '<button type="button" class="qmc" data-way="' + esc(w) + '" title="' + esc(t("qm_copy_tip", w)) + '">' + p[1] + ", " + p[2] + (p[0] !== cur ? " <small>" + esc(p[0]) + "</small>" : "") + "</button>";
@@ -2435,7 +2462,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
         });
       });
       h += '<div class="huzm qmap"><img src="' + huZUrl(zs) + '" alt="' + esc(zs) + '" width="1002" height="668" decoding="async">' +
-        (svg ? '<svg class="qmpoly" viewBox="0 0 100 100" preserveAspectRatio="none">' + svg + "</svg>" : "") + mk + top + "</div>";
+        qmTaxi(zs) + (svg ? '<svg class="qmpoly" viewBox="0 0 100 100" preserveAspectRatio="none">' + svg + "</svg>" : "") + mk + top + "</div>";
     }
     var verb = { k: "qm_kill", u: "qm_use", i: "qm_get" };
     var line = function (e, chance) {
@@ -2481,7 +2508,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     if (few.indexOf(zs) < 0) few = few.concat([zs]);
     return '<div class="huchips">' + few.map(chip).join("") + (zones.length > few.length ? '<select class="qmzsel" data-qmozsel="1" aria-label="' + t("qm_zone_pick") + '"><option value="">' + t("qm_zone_more", zones.length) + "</option>" +
       zones.slice().sort(function (a, b) { return a.localeCompare(b); }).map(function (z) { return '<option value="' + esc(z) + '"' + (z === zs ? " selected" : "") + ">" + esc(z) + " (" + Math.round(cnt[z]) + ")</option>"; }).join("") + "</select>" : "") + "</div>" +
-      '<div class="huzm qmap"><img src="' + huZUrl(zs) + '" alt="' + esc(zs) + '" width="1002" height="668" decoding="async">' + L.join("") + "</div>" +
+      '<div class="huzm qmap"><img src="' + huZUrl(zs) + '" alt="' + esc(zs) + '" width="1002" height="668" decoding="async">' + qmTaxi(zs) + L.join("") + "</div>" +
       '<div class="humaplg">' + (n.s ? '<span><b class="qmq s in sm">!</b>' + t("qm_lg_avail") + "</span>" : "") + (n.d ? '<span><b class="qmq s dn in sm">!</b>' + t("qm_lg_done") + "</span>" : "") +
       (n.o ? '<span><i class="qmk o in"></i>' + t("qm_lg_obj") + '</span><span><b class="qmq e in sm">?</b>' + t("qm_lg_turnin") + "</span>" : "") + "</div>";
   }
@@ -2623,12 +2650,15 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       '<div class="note">' + t(d.forever ? "dg_source_fv" : "dg_source") + "</div>";
     var dmap = d.map;
     qmIndex().then(function () {
-      var el = $("dgmap"), p = QMIX.dg && QMIX.dg[dmap];
-      if (!el || mode !== "dg" || !dgList[dgSel] || dgList[dgSel].map !== dmap || !p || !huHasZ(QMIX.z[p[0]])) return;
-      var z = QMIX.z[p[0]], w = qmWay(z, p[1], p[2]);
-      el.innerHTML = "<h3>" + t("dg_entrance") + '</h3><div class="huzm qmap"><img src="' + huZUrl(z) + '" alt="' + esc(z) + '" width="1002" height="668" decoding="async">' +
-        '<b class="qmq dg" style="left:' + p[1] + "%;top:" + p[2] + '%" data-way="' + esc(w) + '" title="' + esc(t("dg_entrance") + " · " + t("qm_click_copy")) + '">◈</b></div>' +
-        '<div class="qmleg1">' + esc(z) + " " + qmChip([z, p[1], p[2]], z) + ' <span class="dim">' + t("dg_entrance_note") + "</span></div>";
+      var el = $("dgmap"), L = QMIX.dg && QMIX.dg[dmap];
+      if (L && typeof L[0] === "number") L = [L];   // äldre index: en ingång
+      if (!el || mode !== "dg" || !dgList[dgSel] || dgList[dgSel].map !== dmap || !L || !L.length || !huHasZ(QMIX.z[L[0][0]])) return;
+      var z = QMIX.z[L[0][0]];
+      var here = L.filter(function (p) { return QMIX.z[p[0]] === z; });
+      el.innerHTML = "<h3>" + t("dg_entrance") + '</h3><div class="huzm qmap"><img src="' + huZUrl(z) + '" alt="' + esc(z) + '" width="1002" height="668" decoding="async">' + qmTaxi(z) +
+        here.map(function (p) { return '<b class="qmq dg" style="left:' + p[1] + "%;top:" + p[2] + '%" data-way="' + esc(qmWay(z, p[1], p[2])) + '" title="' + esc((p[3] || t("dg_entrance")) + " · " + t("qm_click_copy")) + '">◈</b>'; }).join("") + "</div>" +
+        '<div class="qmleg1">' + esc(z) + " " + here.map(function (p) { return (p[3] && here.length > 1 ? '<span class="dim">' + esc(p[3]) + "</span> " : "") + qmChip([z, p[1], p[2]], z); }).join(" ") +
+        ' <span class="dim">' + t("dg_entrance_note2") + "</span></div>";
     }).catch(function () {});
   }
   function dgItemDetail(id) {   // föremål som inte finns på AH: bara fakta och var det droppar
