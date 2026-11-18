@@ -182,6 +182,13 @@ body[data-mode=hu] .facts { grid-template-columns: repeat(3, minmax(0, 1fr)); ga
 body[data-mode=hu] .facts dd { font-size: 15px; }
 .hurare { color: #c0c8d0; text-shadow: 0 0 6px rgba(200, 210, 220, .8); }
 /* Rare-djur: silverram som spelets rare-porträtt, silvervitt namn (Joakim 2026-11-17). */
+/* Spelets drakram (ui-targetingframe rare/elite, Joakim 2026-11-18): silver runt rare, guld runt elite. Ikonen blir rund i
+   ringen, draken ritas över den (::after, 128 px-bilden skalad efter ikonen: ringen sitter vid 54,42 med radie 26). */
+.drk { position: relative; display: inline-block; line-height: 0; vertical-align: middle; z-index: 1; }
+.drk img { border-radius: 50% !important; box-shadow: none !important; border-color: #000 !important; }
+.drk::after { content: ""; position: absolute; left: -54%; top: -31%; width: 246%; height: 246%; background: var(--frame-s) center / 100% 100% no-repeat; pointer-events: none; }
+.drk.g::after { background-image: var(--frame-g); }
+#list.hu .drk { margin-right: 38px; } .strip h2 .drk { margin: 10px 48px 6px 6px; } .strip h2 .drk img { width: 48px; height: 48px; } .strip h2:has(.drk) + small { display: block; padding-left: 60px; }   /* raden under i linje med namnet, bakom svansen annars */ .hufr .drk { margin: 0 26px 0 2px; }
 #list.hu .hic.rare, .hufr img.rare, .strip h2 .ci.rare { border: 1px solid #f2f6fa; box-shadow: 0 0 0 1px #59626c, 0 0 0 3px #b9c3cd, 0 0 9px 2px rgba(214, 226, 238, .55); }
 .hurn { color: #dfe7ef; text-shadow: 0 0 5px rgba(200, 214, 228, .45); }
 /* Upgrade gear i Armory (Joakim 2026-11-17). */
@@ -1069,7 +1076,9 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
     $("q").style.backgroundImage = "url(" + ASSET_BASE + "icons/search.png)";
     var fi = document.querySelectorAll(".mkt .fi");
     for (var i = 0; i < fi.length; i++) fi[i].src = ASSET_BASE + "icons/" + fi[i].getAttribute("data-icon");
-    ["horde-orgrimmar", "alliance-stormwind"].forEach(function (n) { var im = new Image(); im.src = ASSET_BASE + "backgrounds/" + n + ".webp"; });   // förladdas: bytet ska inte hacka
+    ["horde-orgrimmar", "alliance-stormwind"].forEach(function (n) { var im = new Image(); im.src = ASSET_BASE + "backgrounds/" + n + ".webp"; });
+    document.documentElement.style.setProperty("--frame-s", "url(" + ASSET_BASE + "icons/frame-rare.png)");
+    document.documentElement.style.setProperty("--frame-g", "url(" + ASSET_BASE + "icons/frame-elite.png)");   // förladdas: bytet ska inte hacka
   }
   var APP_KEY = "wow-site-appearance";
   function appIs() { return document.documentElement.getAttribute("data-appearance") === "atlas" ? "atlas" : "original"; }
@@ -2852,8 +2861,12 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
     human: ["Elwynn Forest", "Westfall", "Redridge Mountains", "Hillsbrad Foothills", "Wetlands", "Stormwind City", "The Stockade", "The Deadmines"],
     troll: ["Stranglethorn Vale", "Un'Goro Crater", "Dustwallow Marsh", "The Hinterlands", "Zul'Gurub", "Sunken Temple"]
   }, HU_BGZ = null;
+  // Djur som bara finns i en dungeon: dungeonens egen laddningsbild (Joakim 2026-11-18: "miljö efter instans").
+  var HU_DG = { "Blackfathom Deeps": "blackfathom-deeps", "Blackrock Depths": "blackrock-depths", "Blackrock Spire": "blackrock-spire", "Dire Maul": "dire-maul", "Maraudon": "maraudon", "Scarlet Monastery": "scarlet-monastery",
+    "Razorfen Downs": "razorfen-downs", "Razorfen Kraul": "razorfen-kraul", "Shadowfang Keep": "shadowfang-keep", "Sunken Temple": "sunken-temple", "Uldaman": "uldaman", "Wailing Caverns": "wailing-caverns", "Zul'Farrak": "zulfarrak", "Zul'Gurub": "zulgurub" };
   function huBg(b) {
     if (!HU_BGZ) { HU_BGZ = {}; Object.keys(HU_BG).forEach(function (r) { HU_BG[r].forEach(function (z) { HU_BGZ[z] = r; }); }); }
+    if (!(b.zones && b.zones.length) && b.inst && b.inst[0] && HU_DG[b.inst[0][0]]) return ASSET_BASE + "backgrounds/dg-" + HU_DG[b.inst[0][0]] + ".webp";
     var z = b.zones && b.zones[0] ? b.zones[0].zone : b.inst && b.inst[0] ? b.inst[0][0] : "";
     var r = HU_BGZ[z] || (b.pts && b.pts[0] ? (b.pts[0][0] === 1 ? "tauren" : "human") : "");   // okänd zon: kontinenten
     return r ? ASSET_BASE + "backgrounds/dress-" + r + ".webp" : "";
@@ -4477,6 +4490,7 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
       huZoneHtml(zs[i].zone, zs[i].pts.map(function (p) { return { x: p[0], y: p[1], b: b }; }), true, huIsRare(b) && zs[i].pts.length > 1 ? huRoute(zs[i].pts) : "") +
       '<div class="dim">' + (huIsRare(b) && zs[i].pts.length > 1 ? t("hu_route") + " " : "") + t("hu_map_big") + "</div>";
   }
+  function drk(rare, elite, img) { return rare ? '<span class="drk s">' + img + "</span>" : elite ? '<span class="drk g">' + img + "</span>" : img; }
   function huFamIcon(fam) { return RICON + "ability_hunter_pet_" + (HU_FAMIC[fam] || "wolf") + ".jpg"; }
   function huIsRare(b) { return b.rank === 2 || b.rank === 4; }
   function huOk(b, skipFam) {
@@ -4532,7 +4546,7 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
   function huRow(r) {
     var b = r.hu, f = HU.families[b.fam] || {}, rare = huIsRare(b);
     return '<tr tabindex="0" data-hu="' + b.id + '"' + (b.id === huSel ? ' aria-selected="true"' : "") + '><td class="fav">' + (rare ? '<span class="hurare" title="' + HU_RANK[b.rank] + '">◆</span>' : "") + "</td>" +
-      '<td class="nm"><img class="hic' + (rare ? " rare" : "") + '" src="' + huFamIcon(b.fam) + '" alt="" loading="lazy"><span class="' + (rare ? "hurn" : b.rank === 1 ? "q2" : "q1") + '">' + esc(b.name) + "</span>" + (b.rank ? ' <small class="dim">' + HU_RANK[b.rank] + "</small>" : "") + "</td>" +
+      '<td class="nm">' + drk(rare, b.rank === 1, '<img class="hic' + (rare ? " rare" : "") + '" src="' + huFamIcon(b.fam) + '" alt="" loading="lazy">') + '<span class="' + (rare ? "hurn" : b.rank === 1 ? "q2" : "q1") + '">' + esc(b.name) + "</span>" + (b.rank ? ' <small class="dim">' + HU_RANK[b.rank] + "</small>" : "") + "</td>" +
       "<td>" + b.min + (b.max > b.min ? "–" + b.max : "") + '</td><td class="kat hide-s">' + esc(b.family) + '</td><td><span class="hurole r-' + (f.role || "") + '">' + t("hu_r_" + (f.role || "allround")) + "</span></td>" +
       "<td" + (b.speed <= 1.5 ? ' class="pos"' : "") + ">" + b.speed.toFixed(1) + '</td><td class="kat">' + esc(huZoneText(b)) + "</td></tr>";
   }
@@ -4549,7 +4563,7 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
       (b.inst || []).map(function (x) { return "<li><b>" + esc(x[0]) + '</b> <span class="dim">' + t("hu_inst") + "</span></li>"; }).join("");
     $("detail").scrollTop = 0;
     $("detail").innerHTML = '<div class="strip"><button class="lnk" type="button" data-copyany="#beast=' + b.id + '" title="' + t("copy_link") + '">' + t("copy_link") + "</button>" +
-      '<h2 class="' + (rare ? "hurn" : b.rank === 1 ? "q2" : "q1") + '"><img class="ci' + (rare ? " rare" : "") + '" src="' + huFamIcon(b.fam) + '" alt=""> ' + esc(b.name) + "</h2><small>" + esc(b.family) + " · " + t("col_lvl") + " " + b.min + (b.max > b.min ? "–" + b.max : "") + (b.rank ? " · " + HU_RANK[b.rank] : "") + "</small></div>" + portraitHtml(b.disp, rare, b.m3, "", huBg(b)) +
+      '<h2 class="' + (rare ? "hurn" : b.rank === 1 ? "q2" : "q1") + '">' + drk(rare, b.rank === 1, '<img class="ci' + (rare ? " rare" : "") + '" src="' + huFamIcon(b.fam) + '" alt="">') + " " + esc(b.name) + "</h2><small>" + esc(b.family) + " · " + t("col_lvl") + " " + b.min + (b.max > b.min ? "–" + b.max : "") + (b.rank ? " · " + HU_RANK[b.rank] : "") + "</small></div>" + portraitHtml(b.disp, rare, b.m3, "", huBg(b)) +
       '<dl class="facts"><div><dt>' + t("hu_col_role") + '</dt><dd><span class="hurole r-' + (f.role || "") + '">' + t("hu_r_" + (f.role || "allround")) + "</span></dd></div>" +
       "<div><dt>" + t("hu_col_speed") + "</dt><dd" + (b.speed <= 1.5 ? ' class="pos"' : "") + ">" + b.speed.toFixed(1) + " s</dd></div>" +
       "<div><dt>" + t("hu_hp") + "</dt><dd>" + pc(f.hp || 1) + "</dd></div><div><dt>" + t("hu_dmg") + "</dt><dd>" + pc(f.dmg || 1) + "</dd></div><div><dt>" + t("hu_armor") + "</dt><dd>" + pc(f.armor || 1) + "</dd></div>" +
@@ -4765,7 +4779,7 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
     var l = huForChar(d);
     return h + '<div class="hufor">' + l.map(function (x) {
       var b = x.b;
-      return '<a href="#beast=' + b.id + '" data-gobeast="' + b.id + '" class="hufr"><img' + (huIsRare(b) ? ' class="rare"' : "") + ' src="' + huFamIcon(b.fam) + '" alt=""><span><b class="' + (huIsRare(b) ? "hurn" : "q1") + '">' + esc(b.name) + "</b><small>" + b.min + (b.max > b.min ? "–" + b.max : "") + " · " + esc(b.family) + " · " + b.speed.toFixed(1) + " s · " + esc(huZoneText(b)) + "</small></span>" + (x.near ? '<em title="' + t("hu_near_tip") + '">' + t("hu_near") + "</em>" : "") + "</a>";
+      return '<a href="#beast=' + b.id + '" data-gobeast="' + b.id + '" class="hufr">' + drk(huIsRare(b), b.rank === 1, '<img' + (huIsRare(b) ? ' class="rare"' : "") + ' src="' + huFamIcon(b.fam) + '" alt="">') + '<span><b class="' + (huIsRare(b) ? "hurn" : "q1") + '">' + esc(b.name) + "</b><small>" + b.min + (b.max > b.min ? "–" + b.max : "") + " · " + esc(b.family) + " · " + b.speed.toFixed(1) + " s · " + esc(huZoneText(b)) + "</small></span>" + (x.near ? '<em title="' + t("hu_near_tip") + '">' + t("hu_near") + "</em>" : "") + "</a>";
     }).join("") + '<div class="note">' + t("hu_for_note") + "</div></div>";
   }
   // ---- Topplistor i Armory (Joakim 2026-11-17): katalog.json (hamta-katalog.js, varje dygn) = spelare och guilder som
