@@ -880,6 +880,9 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
 [data-appearance=atlas] .strip { background: linear-gradient(90deg, rgba(67, 218, 209, .13), rgba(67, 218, 209, .02)); }
 [data-appearance=atlas] .exp td { border-bottom-color: rgba(67, 218, 209, .35); }
 [data-appearance=atlas] .portr.on3d { background: radial-gradient(ellipse at 50% 60%, #1E2E3C, #0A1018 70%); }
+/* Miljön bakom 3D-djuret (provrumsbilden för zonen), lite mörkare nedtill så djuret syns mot marken */
+.portr.on3d.hasbg, [data-appearance=atlas] .portr.on3d.hasbg { background: #1f1f1f; }
+.portr.on3d.hasbg::before { content: ""; position: absolute; inset: -8px; background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, .35)), var(--pbg) center 78% / cover no-repeat; filter: blur(1.5px); }   /* uppskalad bild: lite oskärpa som djupskärpa */
 [data-appearance=atlas] .p3d { color: #CFF6F3; background: rgba(10, 18, 26, .8); border-color: #3F6C78; }
 [data-appearance=atlas] .p3d:hover { color: #fff; border-color: var(--edge); }
 [data-appearance=atlas] .ttree { background: radial-gradient(ellipse at top, rgba(67, 140, 160, .16), rgba(0, 0, 0, .35)); }
@@ -2796,9 +2799,26 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     var put = function (html) { var el = $("npcbox"); if (el && npcSel === id) el.innerHTML = html; };
     npcLoad(id).then(function (n) { npcCur = { id: id, n: n }; put(npcHtml(id, n)); if (npcSel === id) m3Auto(); }, function () { put('<div class="note">' + t("npc_fail") + "</div>"); });
   }
-  function portraitHtml(disp, rare, m3, img) {
+  // Zon → provrumsbild (rasens miljö som liknar zonen mest). Instanser efter var de ligger.
+  var HU_BG = {
+    orc: ["Durotar", "Badlands", "Thousand Needles", "Tanaris", "Desolace", "Burning Steppes", "Searing Gorge", "Blasted Lands", "Silithus", "Stonetalon Mountains", "Uldaman", "Maraudon", "Blackrock Spire", "Blackrock Depths", "Razorfen Kraul", "Razorfen Downs", "Zul'Farrak", "Ragefire Chasm", "Orgrimmar"],
+    tauren: ["Mulgore", "The Barrens", "Arathi Highlands", "Wailing Caverns", "Thunder Bluff"],
+    scourge: ["Tirisfal Glades", "Silverpine Forest", "Duskwood", "Western Plaguelands", "Eastern Plaguelands", "Felwood", "Swamp of Sorrows", "Shadowfang Keep", "Scarlet Monastery", "Scholomance", "Stratholme", "Deadwind Pass", "Undercity"],
+    nightelf: ["Teldrassil", "Darkshore", "Ashenvale", "Feralas", "Azshara", "Moonglade", "Blackfathom Deeps", "Dire Maul", "Darnassus"],
+    dwarf: ["Dun Morogh", "Loch Modan", "Alterac Mountains", "Ironforge"],
+    gnome: ["Winterspring", "Gnomeregan"],
+    human: ["Elwynn Forest", "Westfall", "Redridge Mountains", "Hillsbrad Foothills", "Wetlands", "Stormwind City", "The Stockade", "The Deadmines"],
+    troll: ["Stranglethorn Vale", "Un'Goro Crater", "Dustwallow Marsh", "The Hinterlands", "Zul'Gurub", "Sunken Temple"]
+  }, HU_BGZ = null;
+  function huBg(b) {
+    if (!HU_BGZ) { HU_BGZ = {}; Object.keys(HU_BG).forEach(function (r) { HU_BG[r].forEach(function (z) { HU_BGZ[z] = r; }); }); }
+    var z = b.zones && b.zones[0] ? b.zones[0].zone : b.inst && b.inst[0] ? b.inst[0][0] : "";
+    var r = HU_BGZ[z] || (b.pts && b.pts[0] ? (b.pts[0][0] === 1 ? "tauren" : "human") : "");   // okänd zon: kontinenten
+    return r ? ASSET_BASE + "backgrounds/dress-" + r + ".webp" : "";
+  }
+  function portraitHtml(disp, rare, m3, img, bg) {
     if (!(disp > 0)) return "";
-    return '<div class="portr' + (rare ? " rare" : "") + '"' + (m3 ? ' data-m3="' + disp + '"' : "") + '><img src="' + (img ? esc(img) : "https://render.worldofwarcraft.com/eu/npcs/zoom/creature-display-" + disp + ".jpg") + '" alt="" loading="lazy" decoding="async" onerror="m3NoPic(this)">' +
+    return '<div class="portr' + (rare ? " rare" : "") + (bg ? " hasbg" : "") + '"' + (bg ? ' style="--pbg:url(' + esc(bg) + ')"' : "") + (m3 ? ' data-m3="' + disp + '"' : "") + '><img src="' + (img ? esc(img) : "https://render.worldofwarcraft.com/eu/npcs/zoom/creature-display-" + disp + ".jpg") + '" alt="" loading="lazy" decoding="async" onerror="m3NoPic(this)">' +
       (m3 ? '<button class="p3d" type="button" data-m3b title="' + t("m3_tip") + '">' + t("m3_btn") + "</button>" : "") + "</div>";
   }
   // 3D (Joakim 2026-11-18: "3D-modellerna på djuren"): modellen från spelklienten via wow.export (modeller/krymp.js,
@@ -2836,6 +2856,27 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     var pb = m3Pref() && $("detail").querySelector(".portr[data-m3]");
     if (pb) m3Start(pb); else m3Stop();
   }
+  // wow.export skriver alla material som ogenomskinliga, så man, fjädrar och vingar (alfa-urklipp i spelet) blev svarta
+  // skivor – syns mot miljöbakgrunden (2026-11-18). Texturer vars alfa är nästan bara helt av/helt på räknas som urklipp;
+  // alfa med mjuka övergångar (glans m.m.) lämnas.
+  var M3_CUT = typeof WeakMap === "function" ? new WeakMap() : null;
+  function m3Cutout(mt) {
+    var im = mt && mt.map && mt.map.image;
+    if (!im || !im.width) return;
+    var cut = M3_CUT && M3_CUT.get(im);
+    if (cut === undefined) {
+      cut = false;
+      try {
+        var N = 96, cv = document.createElement("canvas"); cv.width = cv.height = N;
+        var cx = cv.getContext("2d", { willReadFrequently: true }); cx.drawImage(im, 0, 0, N, N);
+        var d = cx.getImageData(0, 0, N, N).data, lo = 0, mid = 0;
+        for (var i = 3; i < d.length; i += 4) { if (d[i] < 64) lo++; else if (d[i] < 192) mid++; }
+        var n = N * N; cut = lo / n > 0.02 && lo / n < 0.9 && mid / n < 0.2;   // nästan helt genomskinlig (spöken, glans) = inget urklipp
+      } catch (e) { cut = false; }
+      if (M3_CUT) M3_CUT.set(im, cut);
+    }
+    if (cut) { mt.alphaTest = 0.5; mt.transparent = false; mt.needsUpdate = true; }
+  }
   function m3Start(box) {
     var disp = +box.dataset.m3;
     if (!(disp > 0)) return;
@@ -2855,7 +2896,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
         scene.add(new T.HemisphereLight(0xfff1dc, 0x2a2018, 1.5));
         var sun = new T.DirectionalLight(0xfff4e6, 1.7); sun.position.set(2, 4, 3); scene.add(sun);
         var o = g.scene;
-        o.traverse(function (x) { if (x.isMesh) { x.frustumCulled = false; [].concat(x.material || []).forEach(function (mt) { mt.side = T.DoubleSide; }); } });
+        o.traverse(function (x) { if (x.isMesh) { x.frustumCulled = false; [].concat(x.material || []).forEach(function (mt) { mt.side = T.DoubleSide; m3Cutout(mt); }); } });
         scene.add(o);
         var mix = g.animations.length ? new T.AnimationMixer(o) : null;
         if (mix) { mix.clipAction(g.animations[0]).play(); mix.update(0); }
@@ -4273,7 +4314,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       (b.inst || []).map(function (x) { return "<li><b>" + esc(x[0]) + '</b> <span class="dim">' + t("hu_inst") + "</span></li>"; }).join("");
     $("detail").scrollTop = 0;
     $("detail").innerHTML = '<div class="strip"><button class="lnk" type="button" data-copyany="#beast=' + b.id + '" title="' + t("copy_link") + '">' + t("copy_link") + "</button>" +
-      '<h2 class="' + (rare ? "hurn" : b.rank === 1 ? "q2" : "q1") + '"><img class="ci' + (rare ? " rare" : "") + '" src="' + huFamIcon(b.fam) + '" alt=""> ' + esc(b.name) + "</h2><small>" + esc(b.family) + " · " + t("col_lvl") + " " + b.min + (b.max > b.min ? "–" + b.max : "") + (b.rank ? " · " + HU_RANK[b.rank] : "") + "</small></div>" + portraitHtml(b.disp, rare, b.m3) +
+      '<h2 class="' + (rare ? "hurn" : b.rank === 1 ? "q2" : "q1") + '"><img class="ci' + (rare ? " rare" : "") + '" src="' + huFamIcon(b.fam) + '" alt=""> ' + esc(b.name) + "</h2><small>" + esc(b.family) + " · " + t("col_lvl") + " " + b.min + (b.max > b.min ? "–" + b.max : "") + (b.rank ? " · " + HU_RANK[b.rank] : "") + "</small></div>" + portraitHtml(b.disp, rare, b.m3, "", huBg(b)) +
       '<dl class="facts"><div><dt>' + t("hu_col_role") + '</dt><dd><span class="hurole r-' + (f.role || "") + '">' + t("hu_r_" + (f.role || "allround")) + "</span></dd></div>" +
       "<div><dt>" + t("hu_col_speed") + "</dt><dd" + (b.speed <= 1.5 ? ' class="pos"' : "") + ">" + b.speed.toFixed(1) + " s</dd></div>" +
       "<div><dt>" + t("hu_hp") + "</dt><dd>" + pc(f.hp || 1) + "</dd></div><div><dt>" + t("hu_dmg") + "</dt><dd>" + pc(f.dmg || 1) + "</dd></div><div><dt>" + t("hu_armor") + "</dt><dd>" + pc(f.armor || 1) + "</dd></div>" +
