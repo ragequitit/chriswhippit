@@ -81,6 +81,23 @@ body {
 .logo { flex: none; width: 80px; height: 80px; object-fit: contain; display: block; }
 .logo:not([src]) { display: none; }
 .title { min-width: 0; flex: 0 1 auto; }
+/* Sök överallt (sidhuvudet): rutan mellan titeln och Style, rullgardinen under den */
+.gs { position: relative; flex: 1 1 300px; max-width: 560px; min-width: 200px; align-self: center; }
+.gs input { box-sizing: border-box; width: 100%; height: 42px; padding: 0 12px 0 38px; font: inherit; font-size: 15px; color: var(--fg); background: var(--inset); border: 1px solid var(--line); border-radius: 6px; outline: none; }
+.gs input:focus { border-color: var(--edge); box-shadow: 0 0 0 2px rgba(214, 168, 59, .18); }
+.gs input::placeholder { color: var(--grey); }
+.gs svg { position: absolute; left: 12px; top: 13px; width: 16px; height: 16px; color: var(--grey); pointer-events: none; }
+.gsp { position: absolute; left: 0; right: 0; top: 46px; z-index: 40; max-height: min(70vh, 640px); overflow: auto; background: var(--panel); border: 1px solid var(--edge); border-radius: 6px; box-shadow: 0 12px 36px rgba(0, 0, 0, .7); }
+.gsk { display: flex; flex-wrap: wrap; gap: 4px; padding: 8px; border-bottom: 1px solid var(--line); position: sticky; top: 0; background: var(--panel); }
+.gsr { display: grid; grid-template-columns: 26px minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 7px 12px; color: inherit; text-decoration: none; border-bottom: 1px solid rgba(255, 255, 255, .04); }
+.gsr:hover, .gsr.on { background: var(--hover); }
+.gsr .ic, .gsr .hic, .gsr img { width: 22px; height: 22px; margin: 0; border-radius: 3px; vertical-align: middle; }
+.gsr b { font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; } .gsr b mark { background: none; color: var(--gold); }
+.gsr small { color: var(--grey); white-space: nowrap; }
+.gsr .gsub { display: block; color: var(--grey); font-size: 12px; font-weight: 400; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.gsn { padding: 12px; color: var(--grey); font-size: 13px; }
+.gsmore { display: block; width: 100%; padding: 8px; font: inherit; color: var(--gold); background: none; border: 0; border-top: 1px solid var(--line); cursor: pointer; }
+@media (max-width: 1100px) { .gs { flex: 1 1 100%; max-width: none; order: 5; } }
 h1 { font-family: var(--display); font-weight: 500; font-size: 36px; margin: 0; color: var(--gold); letter-spacing: .06em; line-height: 1.1; text-wrap: balance; }
 .sub { color: var(--grey); margin-top: 2px; font-size: 18px; letter-spacing: .01em; }
 /* Marknaden (Joakims spec 2026-11-16): en kompakt väljare till vänster om uppdateringstiden. Stängd: fraktionsmärke,
@@ -157,7 +174,12 @@ h1 { font-family: var(--display); font-weight: 500; font-size: 36px; margin: 0; 
 .prof.rephd.arow .ci { width: 32px; height: 32px; border: 1px solid #000; box-shadow: 0 0 0 1px var(--bronze); }
 .prof.rephd.arow .pn small { font-family: var(--body); text-transform: none; letter-spacing: 0; }
 #list.hu th.nm { width: 34%; } #list.hu td.nm { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 0; }
-#list.hu .hic { width: 22px; height: 22px; border-radius: 3px; vertical-align: middle; margin-right: 7px; border: 1px solid #000; }
+#list.hu .hic { width: 34px; height: 34px; border-radius: 4px; vertical-align: middle; margin-right: 9px; border: 1px solid #000; }   /* större djurbild, högre rad (Joakim 2026-11-18) */
+#list.hu td { height: 46px; }
+/* Hunter pets: rutan till höger bredare så djuret, fakta och kartan får plats utan rullning (Joakim 2026-11-18: "mycket döytor") */
+body[data-mode=hu] .cols { grid-template-columns: 224px minmax(0, 1fr) minmax(0, 520px); }
+body[data-mode=hu] .facts { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px 12px; }
+body[data-mode=hu] .facts dd { font-size: 15px; }
 .hurare { color: #c0c8d0; text-shadow: 0 0 6px rgba(200, 210, 220, .8); }
 /* Rare-djur: silverram som spelets rare-porträtt, silvervitt namn (Joakim 2026-11-17). */
 #list.hu .hic.rare, .hufr img.rare, .strip h2 .ci.rare { border: 1px solid #f2f6fa; box-shadow: 0 0 0 1px #59626c, 0 0 0 3px #b9c3cd, 0 0 9px 2px rgba(214, 226, 238, .55); }
@@ -303,6 +325,14 @@ h1 { font-family: var(--display); font-weight: 500; font-size: 36px; margin: 0; 
 .huzbig .qmtx { width: 19px; height: 19px; font-size: 13px; }
 .huz { position: absolute; width: 7px; height: 7px; margin: -4.5px 0 0 -4.5px; border-radius: 50%; border: 1px solid #000; background: #f0c040; cursor: pointer; }
 .huz.e { width: 9px; height: 9px; margin: -5.5px 0 0 -5.5px; background: #40c040; }
+.huz.src { width: 8px; height: 8px; margin: -5px 0 0 -5px; background: #ffd24a; box-shadow: 0 0 4px rgba(255, 210, 74, .8); cursor: default; }
+.srcs2 { display: grid; gap: 10px; }
+.srcs2 h3 { margin-bottom: 4px; }
+.srct { width: 100%; border-collapse: collapse; font-size: 13px; }
+.srct td { padding: 3px 6px 3px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+.srct td:last-child { text-align: right; white-space: nowrap; padding-right: 0; }
+.srcl { margin: 0; padding-left: 18px; font-size: 13px; } .srcl li { margin: 2px 0; }
+.srcsum { font-size: 12.5px; color: var(--grey); margin: 4px 0; }
 .huz.r { width: 10px; height: 10px; margin: -6px 0 0 -6px; border-radius: 1px; background: #e3e9ef; transform: rotate(45deg); box-shadow: 0 0 6px rgba(227, 233, 239, .9); z-index: 2; }
 .huz:hover { transform: scale(1.7); z-index: 3; } .huz.r:hover { transform: rotate(45deg) scale(1.7); }
 .huz.one { width: 13px; height: 13px; margin: -7.5px 0 0 -7.5px; cursor: default; box-shadow: 0 0 0 4px rgba(240, 192, 64, .32), 0 0 8px rgba(0, 0, 0, .8); }
@@ -712,9 +742,14 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
 }
 @media (min-width: 1101px) and (max-width: 1400px) { .hide-s:not(.dcol) { display: none; } }
 @media (min-width: 1101px) and (max-width: 1250px) { td, th { padding-left: 5px; padding-right: 5px; } }   /* listorna rymdes inte precis över brytpunkten */
+/* Quests: listan smal, questens ruta stor (Joakim 2026-11-18: "omvänd ordning på rutorna") */
+body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(0, 1fr); }
+.quz { display: block; color: var(--grey); font-size: 11.5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 @media (max-width: 1250px) {
   .win { width: auto; }
   .cols { grid-template-columns: 196px minmax(0, 1fr) minmax(0, 340px); }
+  body[data-mode=qu] .cols { grid-template-columns: 196px minmax(0, 300px) minmax(0, 1fr); }
+  body[data-mode=hu] .cols { grid-template-columns: 196px minmax(0, 1fr) minmax(0, 440px); }
   td, th { padding-left: 7px; padding-right: 7px; }
 }
 @media (max-width: 1100px) {
@@ -722,7 +757,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   .win { width: auto; }
   h1 { font-size: 26px; }
   .logo { width: 56px; height: 56px; }
-  .cols { grid-template-columns: minmax(0, 1fr); }
+  .cols, body[data-mode=qu] .cols, body[data-mode=hu] .cols { grid-template-columns: minmax(0, 1fr); }
   .cats { flex-direction: row; flex-wrap: nowrap; overflow-x: auto; order: -2; }
   .cats h2 { display: none; }
   .cat, .cat.sub, .cat.sub2 { margin-left: 2px; flex: none; }
@@ -916,6 +951,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       <div class="sub">WoW Forever</div>
     </div>
     </a>
+    <div class="gs"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="7" cy="7" r="4.5"/><path d="M10.5 10.5L14 14"/></svg><input id="gq" type="search" autocomplete="off" spellcheck="false" data-t-ph="gs_ph" data-t-aria="gs_ph" placeholder=""><div class="gsp" id="gsp" hidden></div></div>
     <div class="appsel" role="radiogroup" aria-labelledby="appLbl">
       <span class="applbl" id="appLbl" data-t="style_lbl">Style</span>
       <div class="appseg">
@@ -1338,6 +1374,13 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       cr_h: "Professions", cr_all: "All", cr_count: "%1 recipes", cr_empty: "No recipe matches the search.", cr_loading: "Loading recipes…", cr_fail: "The recipes could not be loaded.",
       f_cost: "Cost to craft", f_sellf: "Sells for", f_profit: "Profit after 5%", f_trainer: "Trainer price", f_makes: "Makes %1", reagents: "Reagents", col_each: "Each", col_total: "Total", col_qty_s: "Qty",
       vendor_tag: "vendor", missing_n: "No price for %1 reagent(s): the cost is incomplete.", not_on_ah: "The crafted item is not on the auction house right now, so there is no selling price.",
+      it_find: "Where to find it", it_gather: "Gathered from", it_chests: "Also in chests", it_drop: "Dropped by", it_drop_more: "and %1 more mobs",
+      it_skin: "Skinned from", it_pick: "Pickpocketed from", it_vendor: "Sold by", it_vendor_lim: "limited stock", it_in: "Found in", it_used: "Reagent for",
+      it_made: "Created by", it_node_sum: "%1 in the world · %2 chance", it_inst: "Also in:", it_none: "No known source in the Classic database.",
+      it_notah: "Not on the auction house right now", it_db: "Places and chances from the Classic database (cmangos), not Forever's own spawns.",
+      gs_ph: "Search everything: items, recipes, quests, NPCs, beasts, players…", gs_all: "All", gs_k_item: "Items", gs_k_rec: "Recipes", gs_k_quest: "Quests",
+      gs_k_npc: "NPCs", gs_k_beast: "Beasts", gs_k_col: "Collections", gs_k_dg: "Dungeons", gs_k_pl: "Players", gs_k_gl: "Guilds", gs_none: "Nothing found",
+      gs_ar: "Look up “%1” in the Armory", gs_ar_g: "Look up the guild “%1”", gs_more: "Show all %1", gs_loading: "Loading…",
       src_h: "Where to learn it", src_h_drop: "Where it drops", src_trainer: "Trainer", src_vendor: "Vendor", src_drop: "Drops from", src_quest: "Quest reward", src_none: "No known source in the Classic database.",
       limited: "limited stock", more_n: "and %1 more", requires: "requires %1", tier_1: "Apprentice", tier_2: "Journeyman", tier_3: "Expert", tier_4: "Artisan",
       cr_source: "Recipes from Blizzard (WoW Forever); trainer prices and sources from the open Classic database (1.12). Skill levels of new Forever recipes from <a class=\"wh\" href=\"https://www.curseforge.com/projects/1422985\" target=\"_blank\" rel=\"noopener\">AtlasLoot Classic Forever</a> (GPL-2.0) and <a class=\"wh\" href=\"https://warcraft.wiki.gg/wiki/World_of_Warcraft:_Forever\" target=\"_blank\" rel=\"noopener\">Warcraft Wiki</a> (CC BY-SA 4.0). Prices from the latest update.",
@@ -2589,8 +2632,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   function quRow(r) {
     var done = quDone(r.qid), bi = r.bestId && byId[r.bestId];
     return '<tr tabindex="0" data-qid="' + r.qid + '"' + (r.qid === selQuest ? ' aria-selected="true"' : "") + (done ? ' class="qdone"' : "") + '><td class="fav">' + (done ? '<span class="qok" title="' + esc(t("qu_done_by", quPlayer.name)) + '">✓</span>' : "") + '</td><td class="nm">' +
-      esc(r.name) + (r.elite ? ' <span class="tag el">' + t("qu_elite") + "</span>" : "") + "</td><td>" + (r.lvl ? (r.est ? '<span class="dim" title="' + esc(t("qu_est_tip")) + '">~' + r.lvl + "</span>" : r.lvl) : DASH) +
-      '</td><td class="kat hide-s"><em class="nm">' + esc(r.zone) + "</em></td><td>" + (r.xp ? num(r.xp) : DASH) + '</td><td class="hide-s">' + (r.money ? money(r.money) : DASH) + "</td><td>" + (r.best ? (bi ? iconHtml(bi) : "") + money(r.best) : DASH) + "</td></tr>";
+      esc(r.name) + (r.elite ? ' <span class="tag el">' + t("qu_elite") + "</span>" : "") + '<small class="quz">' + esc(r.zone) + "</small></td><td>" + (r.lvl ? (r.est ? '<span class="dim" title="' + esc(t("qu_est_tip")) + '">~' + r.lvl + "</span>" : r.lvl) : DASH) + "</td></tr>";
   }
   function quItems(list, choose) {
     return list.map(function (it) {
@@ -3547,7 +3589,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   // Kolumnerna efter läget. [nyckel, text, tips, klass]
   function headHtml() {
     var cols = mode === "qu"
-      ? [["name", "col_quest"], ["lvl", "col_lvl"], ["zone", "col_zone", null, "kat hide-s"], ["xp", "col_xp"], ["money", "col_money", null, "hide-s"], ["best", "col_reward", "col_reward_tip"]]
+      ? [["name", "col_quest"], ["lvl", "col_lvl"]]   // smal lista, allt annat står i rutan till höger (Joakim 2026-11-18)
       : mode === "fx"
       ? fxCols()
       : mode === "de"
@@ -3573,6 +3615,11 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   }
   // Lägesknapparna. I Trading sorterar man på kolumnrubrikerna (Nu, Dygn, Bästa tid), inga extra knappar (Joakim 2026-11-16).
   function drawMode() {
+    document.body.setAttribute("data-mode", mode);
+    // Min lista hör till varorna (AH, Trading, Professions); i de andra flikarna syns bara rutan (Joakim 2026-11-18).
+    var tabsOn = /^(ah|tr|cr|de|fx)$/.test(mode), tabs = document.querySelector(".right .tabs");
+    if (tabs) tabs.style.display = tabsOn ? "" : "none";
+    if (!tabsOn && !$("watch").hidden) showTab("item");
     $("modeAh").setAttribute("aria-pressed", mode === "ah" ? "true" : "false");
     $("modeTr").setAttribute("aria-pressed", mode === "tr" || mode === "de" || mode === "fx" ? "true" : "false");
     $("modeCr").setAttribute("aria-pressed", mode === "cr" ? "true" : "false");
@@ -3785,7 +3832,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     var reag = rc.reagents.map(function (rg) {
       var ri = byId[rg[0]], nm = RECEPT.items[rg[0]], p = recPrice(rg[0]), vend = !(ri && ri.min > 0) && nm && nm[2] > 0;
       // Stjärnan (Joakim 2026-11-16): reagensen hamnar i Min lista som inköpslista; bara varor som finns på AH går att spara.
-      return '<tr><td class="st">' + (ri ? starHtml(rg[0]) : "") + "</td><td>" + (ri ? iconHtml(ri) : "") + '<span data-tip="' + rg[0] + '" class="' + qcls(ri ? ri.q : nm ? nm[1] : -1) + '">' + esc(nm ? nm[0] : ri ? ri.name : "Item " + rg[0]) + "</span>" +
+      return '<tr><td class="st">' + (ri ? starHtml(rg[0]) : "") + "</td><td>" + (ri ? iconHtml(ri) : "") + '<a class="wh" href="#item=' + rg[0] + '" data-upgo="' + rg[0] + '"><span data-tip="' + rg[0] + '" class="' + qcls(ri ? ri.q : nm ? nm[1] : -1) + '">' + esc(nm ? nm[0] : ri ? ri.name : "Item " + rg[0]) + "</span></a>" +
         (vend ? ' <span class="tag v">' + t("vendor_tag") + "</span>" : "") + "</td><td>" + rg[1] + "</td><td>" + (p ? money(p) : DASH) + "</td><td>" + (p ? money(p * rg[1]) : DASH) + "</td></tr>";
     }).join("");
     var ahReag = rc.reagents.filter(function (rg) { return byId[rg[0]]; }).map(function (rg) { return rg[0]; });
@@ -3822,7 +3869,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     if (id !== selId) $("detail").scrollTop = 0;
     selId = id;
     var r = byId[id];
-    if (!r) return;
+    if (!r) { if (id > 0 && mode !== "dg" && mode !== "qu") itemPage(id); return; }
     if (mode !== "dg" && mode !== "qu") setHash("#item=" + id + (house !== 113 ? "&m=" + house : ""));
     var trs = $("rows").children;
     for (var j = 0; j < trs.length; j++) {
@@ -3850,7 +3897,8 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       "<div><h3>" + t("dayday") + '</h3><div id="dayBox"></div>' +
       '<div class="legend"><span><i style="background:#d6a83b;height:8px"></i>' + t("lg_morning") + '</span><span><i style="background:#a1a1a1;height:8px"></i>' + t("lg_evening") + "</span></div>" +
       '<div class="read" id="dread">' + t("dd_hover") + "</div></div>" +
-      "<div>" + stepsHtml(r) + "</div>";
+      "<div>" + stepsHtml(r) + "</div>" + '<div id="srcBox"></div>';
+    srcFill(r.id);
     if (scroll && window.matchMedia("(max-width: 1100px)").matches) $("tabItem").scrollIntoView({ block: "start", behavior: "smooth" });
     // Historiken hämtas per dag (cache i histFile); bara det valda spannet, "Allt" = alla dagar.
     var secs = 0;
@@ -3881,6 +3929,181 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     });
   }
   var selToken = 0;
+  // ---- Sök överallt (Joakim 2026-11-18). Indexet byggs vid första sökningen ur det sidan redan har: varorna (data.json),
+  // recepten, questen, NPC-namnen (sok-npc.json ur NPC-sidorna), djuren, samlingarna, dungeons och, om katalogen råkar
+  // vara laddad (topplistorna), spelare och guilder. Annars slås spelarnamn upp i Armory. Ett val går via adressen
+  // (#item=, #quest= …), samma väg som bakåt/framåt, så det hamnar rätt i vilken flik som helst.
+  var GS = { ix: null, p: null, q: "", kind: "", rows: [], timer: 0 };
+  var GS_KINDS = ["item", "rec", "quest", "beast", "npc", "col", "dg", "pl", "gl"];
+  function gsIndex() {
+    if (GS.p) return GS.p;
+    var npcs = fetch(DATA_BASE + "sok-npc.json").then(function (r) { return r.ok ? r.json() : []; }).catch(function () { return []; });
+    var soft = function (p) { return p.catch(function () { return null; }); };
+    GS.p = Promise.all([npcs, soft(loadRecept()), soft(loadQuests()), soft(loadHunter()), soft(loadCo()), soft(loadDungeons())]).then(function (a) {
+      var ix = [], lc = function (x) { return String(x || "").toLowerCase(); };
+      Object.keys(byId).forEach(function (id) { var r = byId[id]; if (r.name) ix.push({ k: "item", n: r.name, l: lc(r.name), h: "#item=" + r.id, i: iconHtml(r), sh: r.min > 0 ? money(r.min) : "", c: qcls(r.q) }); });
+      if (RECEPT) RECEPT.recipes.forEach(function (rc) { var it = byId[rc.item]; ix.push({ k: "rec", n: rc.name, l: lc(rc.name), h: "#recipe=" + rc.spell, i: it ? iconHtml(it) : xIcon(rc.item, 1), s: ((RECEPT.profs && RECEPT.profs[rc.prof]) || "") + (rc.skill ? " " + rc.skill : "") }); });
+      if (QU) Object.keys(QU.quests).forEach(function (id) { var q = QU.quests[id]; ix.push({ k: "quest", n: q[0], l: lc(q[0]), h: "#quest=" + id, s: (q[2] ? t("col_lvl") + " " + q[2] + " · " : "") + (QU.areas[q[1]] || "") }); });
+      a[0].forEach(function (n) { ix.push({ k: "npc", n: n[1], l: lc(n[1]), h: "#npc=" + n[0], s: (n[2] ? "<" + n[2] + "> " : "") + (n[3] ? t("col_lvl") + " " + n[3] : "") }); });
+      if (HU) HU.beasts.forEach(function (b) { ix.push({ k: "beast", n: b.name, l: lc(b.name), h: "#beast=" + b.id, i: '<img class="hic" src="' + huFamIcon(b.fam) + '" alt="">', s: b.family + " · " + t("col_lvl") + " " + b.min + (b.max > b.min ? "–" + b.max : "") + (b.rank ? " · " + HU_RANK[b.rank] : ""), c: huIsRare(b) ? "hurn" : "" }); });
+      if (CO) Object.keys(CO_LETTER).forEach(function (kind) { (CO[kind] || []).forEach(function (x) { ix.push({ k: "col", n: x.name, l: lc(x.name), h: "#col=" + CO_LETTER[kind] + x.id, i: x.img ? '<img src="' + esc(x.img) + '" alt="" loading="lazy">' : "", s: t("co_" + kind) }); }); });
+      if (DG) DG.dungeons.forEach(function (d) { ix.push({ k: "dg", n: d.name, l: lc(d.name + " " + (d.short || "")), h: "#dungeon=" + d.map, s: (d.short ? d.short + " · " : "") + t("col_lvl") + " " + d.min + "–" + d.max }); if (d.bosses) d.bosses.forEach(function (b) { ix.push({ k: "npc", n: b.name, l: lc(b.name), h: "#dungeon=" + d.map, s: d.name }); }); });
+      GS.ix = ix; return ix;
+    });
+    return GS.p;
+  }
+  function gsKat() {   // spelare och guilder bara när katalogen redan är laddad (8 MB)
+    var out = [];
+    if (!KAT) return out;
+    Object.keys(KAT.players).forEach(function (sl) { var p = KAT.players[sl]; var nm = p.n + (p.sn ? " " + p.sn : ""); out.push({ k: "pl", n: nm, l: nm.toLowerCase(), h: "#player=" + p.s, s: (p.lv ? t("col_lvl") + " " + p.lv + " " : "") + (p.c || "") + (p.gn ? " · <" + p.gn + ">" : "") }); });
+    Object.keys(KAT.guilds).forEach(function (sl) { var g = KAT.guilds[sl]; out.push({ k: "gl", n: g.name, l: g.name.toLowerCase(), h: "#guild=" + g.s, s: g.n ? g.n + " " + t("gs_k_pl").toLowerCase() : "" }); });
+    return out;
+  }
+  function gsFind(q) {
+    var ix = (GS.ix || []).concat(gsKat()), hits = [];
+    ix.forEach(function (x) { var i = x.l.indexOf(q); if (i >= 0) hits.push({ x: x, w: (i === 0 ? 0 : x.l.charAt(i - 1) === " " ? 1 : 2) * 1000 + x.l.length }); });
+    hits.sort(function (a, b) { return a.w - b.w; });
+    return hits.map(function (h) { return h.x; });
+  }
+  function gsMark(n, q) { var i = n.toLowerCase().indexOf(q); return i < 0 ? esc(n) : esc(n.slice(0, i)) + "<mark>" + esc(n.slice(i, i + q.length)) + "</mark>" + esc(n.slice(i + q.length)); }
+  function gsDraw() {
+    var q = GS.q, pop = $("gsp");
+    if (!q) { pop.hidden = true; return; }
+    var all = gsFind(q), cnt = {}, kinds = [];
+    all.forEach(function (x) { cnt[x.k] = (cnt[x.k] || 0) + 1; });
+    GS_KINDS.forEach(function (k) { if (cnt[k]) kinds.push(k); });
+    if (GS.kind && !cnt[GS.kind]) GS.kind = "";
+    var rows = [];
+    if (GS.kind) rows = all.filter(function (x) { return x.k === GS.kind; }).slice(0, 60);
+    else { var per = {}; all.forEach(function (x) { per[x.k] = (per[x.k] || 0) + 1; if (per[x.k] <= (kinds.length > 3 ? 4 : 8) && rows.length < 30) rows.push(x); }); }
+    GS.rows = rows;
+    var chip = function (k, lbl, n) { return '<button type="button" class="huchip' + (GS.kind === k ? " on" : "") + '" data-gsk="' + k + '" aria-pressed="' + (GS.kind === k) + '">' + lbl + (n ? ' <span class="dim">' + n + "</span>" : "") + "</button>"; };
+    var h = '<div class="gsk">' + chip("", t("gs_all"), all.length) + kinds.map(function (k) { return chip(k, t("gs_k_" + k), cnt[k]); }).join("") + "</div>";
+    h += rows.map(function (x, i) { return '<a class="gsr' + (i === 0 ? " on" : "") + '" href="' + x.h + '" data-gsgo="' + x.h + '">' + (x.i || '<span class="upnoi"></span>') + '<b class="' + (x.c || "") + '">' + gsMark(x.n, q) + "</b><small>" + t("gs_k_" + x.k) + (x.sh ? " · " + x.sh : x.s ? " · " + esc(x.s) : "") + "</small></a>"; }).join("");
+    if (!rows.length) h += '<div class="gsn">' + t("gs_none") + "</div>";
+    if (!GS.kind && all.length > rows.length) h += '<button type="button" class="gsmore" data-gsk="' + (kinds.length === 1 ? kinds[0] : all[0].k) + '">' + t("gs_more", num(all.length)) + "</button>";
+    // Spelare utan katalog: direkt uppslag i Armory (namnet som skrivits).
+    if (!KAT && all.length < 6 && /^[a-z0-9À-ɏ'’ -]{3,40}$/i.test(q)) h += '<a class="gsr" href="#player=' + esc(q.replace(/\s+/g, "-")) + '" data-gsgo="#player=' + esc(q.replace(/\s+/g, "-")) + '"><span class="upnoi"></span><b>' + esc(t("gs_ar", q)) + "</b><small>" + t("gs_k_pl") + "</small></a>" +
+      '<a class="gsr" href="#guild=' + esc(q.replace(/\s+/g, "-")) + '" data-gsgo="#guild=' + esc(q.replace(/\s+/g, "-")) + '"><span class="upnoi"></span><b>' + esc(t("gs_ar_g", q)) + "</b><small>" + t("gs_k_gl") + "</small></a>";
+    pop.innerHTML = h; pop.hidden = false;
+  }
+  function gsGo(h) {
+    $("gsp").hidden = true; $("gq").blur();
+    huZBigClose();
+    if (location.hash !== h) history.pushState(null, "", h);
+    navRestoring = true; arCmp = null; arCmpPick = false;
+    load(D, false, true);
+    toTop();
+  }
+  $("gq").addEventListener("input", function () {
+    var v = $("gq").value.trim().toLowerCase();
+    clearTimeout(GS.timer);
+    if (v.length < 2) { GS.q = ""; $("gsp").hidden = true; return; }
+    if (!GS.ix) { $("gsp").innerHTML = '<div class="gsn">' + t("gs_loading") + "</div>"; $("gsp").hidden = false; }
+    GS.timer = setTimeout(function () { gsIndex().then(function () { GS.q = $("gq").value.trim().toLowerCase(); if (GS.q.length >= 2) gsDraw(); }); }, 120);
+  });
+  $("gq").addEventListener("focus", function () { if (GS.q && GS.q === $("gq").value.trim().toLowerCase()) gsDraw(); });
+  $("gq").addEventListener("keydown", function (e) {
+    if (e.key === "Escape") { $("gsp").hidden = true; $("gq").blur(); return; }
+    var rs = $("gsp").querySelectorAll(".gsr"), cur = -1;
+    for (var i = 0; i < rs.length; i++) if (rs[i].classList.contains("on")) cur = i;
+    if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+      if (!rs.length) return;
+      e.preventDefault();
+      var nx = e.key === "ArrowDown" ? Math.min(cur + 1, rs.length - 1) : Math.max(cur - 1, 0);
+      for (var j = 0; j < rs.length; j++) rs[j].classList.toggle("on", j === nx);
+      rs[nx].scrollIntoView({ block: "nearest" });
+      return;
+    }
+    if (e.key === "Enter") { e.preventDefault(); if ($("gsp").hidden) gsDraw(); else if (rs[cur >= 0 ? cur : 0]) gsGo(rs[cur >= 0 ? cur : 0].dataset.gsgo); }
+  });
+  $("gsp").addEventListener("click", function (e) {
+    var k = e.target.closest("[data-gsk]"), go = e.target.closest("[data-gsgo]");
+    if (k) { GS.kind = k.dataset.gsk; gsDraw(); $("gq").focus(); return; }
+    if (go && !(e.ctrlKey || e.metaKey) && e.button === 0) { e.preventDefault(); gsGo(go.dataset.gsgo); }
+  });
+  document.addEventListener("click", function (e) { if (!e.target.closest(".gs")) $("gsp").hidden = true; });
+  // ---- Var föremålet finns (Joakim 2026-11-18: "clickar jag på en ore så borde en karta komma upp"). kallor/<id % 100>.json
+  // (hamta-varukallor.js): g noder/kistor med zoner och prickar, d/s/p mobs, v försäljare, c behållare, n/q namn.
+  var KALL = {}, SRC = { id: 0, n: 0, z: 0, d: null };
+  function kallLoad(id) {
+    var k = id % 100;
+    if (!KALL[k]) KALL[k] = fetch(DATA_BASE + "kallor/" + k + ".json").then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+      .catch(function (e) { KALL[k] = null; throw e; });
+    return KALL[k].then(function (j) { return j[id] || null; });
+  }
+  function srcPct(v) { return (v >= 10 ? Math.round(v) : v >= 1 ? Math.round(v * 10) / 10 : Math.round(v * 100) / 100) + " %"; }
+  function srcNpcRows(list) {
+    return '<table class="srct">' + list.map(function (r) {
+      var lv = r[3] ? (r[4] > r[3] ? r[3] + "–" + r[4] : String(r[3])) : "";
+      return "<tr><td>" + (r[5] ? '<a class="wh" href="#npc=' + r[0] + '" data-npc="' + r[0] + '">' + esc(r[1]) + "</a>" : esc(r[1])) + '</td><td class="dim">' + (lv ? t("col_lvl") + " " + lv : "") + "</td><td>" + srcPct(r[2]) + "</td></tr>";
+    }).join("") + "</table>";
+  }
+  function srcHtml(id, o) {
+    var h = "", G = (o && o.g) || [], nodes = G.filter(function (g) { return g[3] === 0; }), chests = G.filter(function (g) { return g[3] === 1; });
+    if (nodes.length) {
+      var ni = Math.min(SRC.n, nodes.length - 1), nd = nodes[ni], zs = nd[4].filter(function (z) { return huHasZ(z[0]); }), zi = Math.min(SRC.z, Math.max(0, zs.length - 1)), z = zs[zi];
+      h += "<div><h3>" + t("it_gather") + "</h3>" +
+        (nodes.length > 1 ? '<div class="huchips">' + nodes.map(function (g, k) { return '<button type="button" class="huchip' + (k === ni ? " on" : "") + '" data-srcn="' + k + '" aria-pressed="' + (k === ni) + '">' + esc(g[0]) + ' <span class="dim">' + srcPct(g[1]) + "</span></button>"; }).join("") + "</div>" : "") +
+        '<div class="srcsum">' + (nodes.length > 1 ? "" : "<b>" + esc(nd[0]) + "</b> · ") + t("it_node_sum", num(nd[2]), srcPct(nd[1])) + "</div>" +
+        (zs.length ? '<div class="huchips">' + zs.map(function (zz, k) { return '<button type="button" class="huchip' + (k === zi ? " on" : "") + '" data-srcz="' + k + '" aria-pressed="' + (k === zi) + '">' + esc(zz[0]) + ' <span class="dim">' + zz[1] + "</span></button>"; }).join("") + "</div>" +
+          '<div class="huzm"><img src="' + huZUrl(z[0]) + '" alt="' + esc(z[0]) + '" width="1002" height="668" decoding="async">' +
+          z[2].map(function (p) { return '<i class="huz src one" style="left:' + p[0] + "%;top:" + p[1] + '%" title="' + esc(z[0] + " " + p[0] + ", " + p[1]) + '"></i>'; }).join("") + "</div>" +
+          '<div class="dim">' + t("hu_map_big") + "</div>" : "") +
+        (nd[5].length ? '<div class="srcsum">' + t("it_inst") + " " + nd[5].map(function (x) { return esc(x[0]) + " " + x[1]; }).join(", ") + "</div>" : "") + "</div>";
+    }
+    if (chests.length) h += "<div><h3>" + t(nodes.length ? "it_chests" : "it_find") + '</h3><ul class="srcl">' + chests.map(function (g) {
+      var where = g[4].slice(0, 4).map(function (zz) { return esc(zz[0]) + " " + zz[1]; }).concat(g[5].slice(0, 3).map(function (x) { return esc(x[0]) + " " + x[1]; }));
+      return "<li><b>" + esc(g[0]) + '</b> <span class="dim">' + srcPct(g[1]) + "</span>" + (where.length ? ' <span class="dim">· ' + where.join(", ") + "</span>" : "") + "</li>";
+    }).join("") + "</ul></div>";
+    if (o && o.d) h += "<div><h3>" + t("it_drop") + "</h3>" + srcNpcRows(o.d) + (o.dn > o.d.length ? '<div class="srcsum">' + t("it_drop_more", num(o.dn - o.d.length)) + "</div>" : "") + "</div>";
+    if (o && o.s) h += "<div><h3>" + t("it_skin") + "</h3>" + srcNpcRows(o.s) + "</div>";
+    if (o && o.p) h += "<div><h3>" + t("it_pick") + "</h3>" + srcNpcRows(o.p) + "</div>";
+    if (o && o.v) h += "<div><h3>" + t("it_vendor") + '</h3><ul class="srcl">' + o.v.map(function (v) {
+      return "<li>" + (v[3] ? '<a class="wh" href="#npc=' + v[0] + '" data-npc="' + v[0] + '">' + esc(v[1]) + "</a>" : esc(v[1])) + (v[2] ? ' <span class="dim">· ' + t("it_vendor_lim") + "</span>" : "") + "</li>";
+    }).join("") + "</ul></div>";
+    if (o && o.c) h += "<div><h3>" + t("it_in") + '</h3><ul class="srcl">' + o.c.map(function (c) {
+      return '<li><a class="wh" href="#item=' + c[0] + '" data-upgo="' + c[0] + '">' + esc(c[1]) + '</a> <span class="dim">' + srcPct(c[2]) + "</span></li>";
+    }).join("") + "</ul></div>";
+    // Recepten: där föremålet är reagens, och de som gör det
+    var used = [], made = [];
+    if (RECEPT) RECEPT.recipes.forEach(function (rc) {
+      if ((rc.reagents || []).some(function (g) { return g[0] === id; })) used.push(rc);
+      if (rc.item === id) made.push(rc);
+    });
+    var recLi = function (rc) { return '<li><a class="wh" href="#recipe=' + rc.spell + '" data-recgo="' + rc.spell + '">' + esc(rc.name) + '</a> <span class="dim">' + esc((RECEPT.profs && RECEPT.profs[rc.prof]) || "") + (rc.skill ? " " + rc.skill : "") + "</span></li>"; };
+    used.sort(function (a, b) { return (a.skill || 0) - (b.skill || 0); });
+    if (made.length) h += "<div><h3>" + t("it_made") + '</h3><ul class="srcl">' + made.map(recLi).join("") + "</ul></div>";
+    if (used.length) h += "<div><h3>" + t("it_used") + " (" + used.length + ')</h3><ul class="srcl">' + used.map(recLi).join("") + "</ul></div>";
+    if (!h) return '<div class="note">' + t("it_none") + "</div>";
+    return '<div class="srcs2">' + h + '<div class="dim">' + t("it_db") + "</div></div>";
+  }
+  function srcFill(id) {
+    if (SRC.id !== id) { SRC = { id: id, n: 0, z: 0, d: null }; }
+    Promise.all([kallLoad(id).catch(function () { return null; }), loadRecept().catch(function () { return null; }), loadZmap()]).then(function (a) {
+      var box = $("srcBox");
+      if (SRC.id !== id || !box) return;
+      SRC.d = a[0];
+      box.innerHTML = srcHtml(id, a[0]);
+    });
+  }
+  // Föremål som inte ligger på AH (eller inte finns i datan): bara namnet och källorna.
+  function itemPage(id) {
+    selId = id;
+    setHash("#item=" + id + (house !== 113 ? "&m=" + house : ""));
+    var trs = $("rows").children;
+    for (var j = 0; j < trs.length; j++) trs[j].removeAttribute("aria-selected");
+    $("detail").scrollTop = 0;
+    var head = function (nm, q) { return '<div class="strip"><h2>' + xIcon(id, q) + '<span class="' + qcls(q) + '" data-tip="' + id + '">' + esc(nm) + "</span></h2><small>" + t("it_notah") + "</small></div>"; };
+    var rn = RECEPT && RECEPT.items[id];
+    $("detail").innerHTML = head(rn ? rn[0] : "Item " + id, rn ? rn[1] : 1) + '<div id="srcBox"><div class="note">' + t("hist_loading") + "</div></div>";
+    kallLoad(id).then(function (o) {
+      if (selId !== id || !o || !o.n || rn) return;
+      var st = $("detail").querySelector(".strip");
+      if (st) st.outerHTML = head(o.n, o.q);
+    }).catch(function () {});
+    srcFill(id);
+  }
 
   // En lyssnare för hela sidan: flaggorna, stjärnan (håll koll / ta bort) och radklicket.
   document.addEventListener("click", function (e) {
@@ -3918,6 +4141,18 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     var qmz = e.target.closest("[data-qmz]");
     if (qmz && qmCur) { qmZone = qmz.dataset.qmz; var qme = $("qmap"); if (qme) qme.innerHTML = qmHtml(qmCur.id, qmCur.r); return; }
     // NPC-sidan (Joakim 2026-11-18): namnet i questkartans lista, zonflikarna på NPC:ns karta
+    var sn = e.target.closest("[data-srcn]"), sz = e.target.closest("[data-srcz]");
+    if ((sn || sz) && $("srcBox") && SRC.id) {
+      if (sn) { SRC.n = +sn.dataset.srcn; SRC.z = 0; } else SRC.z = +sz.dataset.srcz;
+      $("srcBox").innerHTML = srcHtml(SRC.id, SRC.d); return;
+    }
+    var rg = e.target.closest("[data-recgo]");
+    if (rg) {
+      e.preventDefault(); var rid = +rg.dataset.recgo;
+      selRec = rid; showTab("item");
+      if (mode === "cr") selectRecipe(rid, true); else setMode("cr");
+      return;
+    }
     var npl = e.target.closest("[data-npc]");
     if (npl) { e.preventDefault(); huZBigClose(); if (qmOv) { qmOv = false; if (mode === "qu") drawCats(); } showTab("item"); npcDetail(+npl.dataset.npc); return; }
     var npz = e.target.closest("[data-npcz]");
