@@ -182,13 +182,16 @@ body[data-mode=hu] .facts { grid-template-columns: repeat(3, minmax(0, 1fr)); ga
 body[data-mode=hu] .facts dd { font-size: 15px; }
 .hurare { color: #c0c8d0; text-shadow: 0 0 6px rgba(200, 210, 220, .8); }
 /* Rare-djur: silverram som spelets rare-porträtt, silvervitt namn (Joakim 2026-11-17). */
-/* Spelets drakram (ui-targetingframe rare/elite, Joakim 2026-11-18): silver runt rare, guld runt elite. Ikonen blir rund i
-   ringen, draken ritas över den (::after, 128 px-bilden skalad efter ikonen: ringen sitter vid 54,42 med radie 26). */
+/* Drakramen (Joakims bilder ur ChatGPT 2026-11-18, PROMPT-DRAKRAM.md): silver runt rare, guld runt elite. Bilden är
+   kvadratisk med hålet exakt i mitten och hälften så brett som bilden, så ramen är 200 % av ikonen, centrerad. Ikonen
+   blir rund i ringen; draken sticker ut ca 0,4 ikon uppåt, 0,36 åt höger, 0,3 nedåt och 0,16 åt vänster. */
 .drk { position: relative; display: inline-block; line-height: 0; vertical-align: middle; z-index: 1; }
-.drk img { border-radius: 50% !important; box-shadow: none !important; border-color: #000 !important; }
-.drk::after { content: ""; position: absolute; left: -54%; top: -31%; width: 246%; height: 246%; background: var(--frame-s) center / 100% 100% no-repeat; pointer-events: none; }
+.drk img { border-radius: 50% !important; box-shadow: none !important; border-color: #000 !important; object-fit: cover; }
+.drk::after { content: ""; position: absolute; left: -50%; top: -50%; width: 200%; height: 200%; background: var(--frame-s) center / 100% 100% no-repeat; pointer-events: none; }
 .drk.g::after { background-image: var(--frame-g); }
-#list.hu .drk { margin-right: 38px; } .strip h2 .drk { margin: 10px 48px 6px 6px; } .strip h2 .drk img { width: 48px; height: 48px; } .strip h2:has(.drk) + small { display: block; padding-left: 60px; }   /* raden under i linje med namnet, bakom svansen annars */ .hufr .drk { margin: 0 26px 0 2px; }
+.drk .rn { display: block; width: 48px; height: 48px; border-radius: 50%; overflow: hidden; background: #1f1f1f; border: 1px solid #000; box-sizing: border-box; }
+.drk .rn img { width: 100%; height: 100%; border: 0 !important; transform: scale(2.3); transform-origin: 50% 45%; filter: brightness(1.35) contrast(1.05); }
+#list.hu .drk { margin: 0 16px 0 6px; } .strip h2 .drk { margin: 12px 22px 6px 10px; } .strip h2 .drk img { width: 48px; height: 48px; } .strip h2:has(.drk) + small { display: block; padding-left: 70px; } .hufr .drk { margin: 0 14px 0 6px; }   /* raden under i linje med namnet, bakom svansen annars */ 
 #list.hu .hic.rare, .hufr img.rare, .strip h2 .ci.rare { border: 1px solid #f2f6fa; box-shadow: 0 0 0 1px #59626c, 0 0 0 3px #b9c3cd, 0 0 9px 2px rgba(214, 226, 238, .55); }
 .hurn { color: #dfe7ef; text-shadow: 0 0 5px rgba(200, 214, 228, .45); }
 /* Upgrade gear i Armory (Joakim 2026-11-17). */
@@ -1082,8 +1085,8 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
     var fi = document.querySelectorAll(".mkt .fi");
     for (var i = 0; i < fi.length; i++) fi[i].src = ASSET_BASE + "icons/" + fi[i].getAttribute("data-icon");
     ["horde-orgrimmar", "alliance-stormwind"].forEach(function (n) { var im = new Image(); im.src = ASSET_BASE + "backgrounds/" + n + ".webp"; });
-    document.documentElement.style.setProperty("--frame-s", "url(" + ASSET_BASE + "icons/frame-rare.png)");
-    document.documentElement.style.setProperty("--frame-g", "url(" + ASSET_BASE + "icons/frame-elite.png)");   // förladdas: bytet ska inte hacka
+    document.documentElement.style.setProperty("--frame-s", "url(" + ASSET_BASE + "icons/frame-rare.webp)");
+    document.documentElement.style.setProperty("--frame-g", "url(" + ASSET_BASE + "icons/frame-elite.webp)");   // förladdas: bytet ska inte hacka
   }
   var APP_KEY = "wow-site-appearance";
   function appIs() { return document.documentElement.getAttribute("data-appearance") === "atlas" ? "atlas" : "original"; }
@@ -3003,7 +3006,7 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
     var lv = n[2] ? n[2] + (n[3] > n[2] ? "–" + n[3] : "") : "";
     var roles = NPC_FLAGS.filter(function (f) { return n[5] & f[0]; }).map(function (f) { return "<span>" + t(f[1]) + "</span>"; }).join("");
     var h = '<div class="strip"><button class="lnk" type="button" data-copyany="#npc=' + id + '" title="' + t("copy_link") + '">' + t("copy_link") + "</button>" +
-      "<h2>" + esc(n[0]) + (n[4] && HU_RANK[n[4]] ? ' <span class="tag el">' + HU_RANK[n[4]] + "</span>" : "") + "</h2><small>" +
+      "<h2>" + (n[11] && (n[4] === 1 || n[4] === 2 || n[4] === 4) ? drk(n[4] !== 1, n[4] === 1, '<img class="ci" src="https://render.worldofwarcraft.com/eu/npcs/zoom/creature-display-' + n[11] + '.jpg" alt="" onerror="this.parentNode.parentNode.remove()">', true) : "") + esc(n[0]) + (n[4] && HU_RANK[n[4]] ? ' <span class="tag el">' + HU_RANK[n[4]] + "</span>" : "") + "</h2><small>" +
       [n[1] ? "&lt;" + esc(n[1]) + "&gt;" : "", lv ? t("col_lvl") + " " + lv : ""].filter(Boolean).join(" · ") + "</small></div>" + portraitHtml(n[11], n[4] === 2 || n[4] === 4, n[12]) +
       (roles ? '<div class="huab">' + roles + "</div>" : "");
     // Kartan: zonerna med kartbild (platser och gångvägar), flest platser först, flikar när de är flera.
@@ -3204,7 +3207,7 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
       var r = byId[l[0]], m = DG.items[l[0]] || ["Item " + l[0], 1], q = r ? r.q : hasGameTip(l[0]) ? GQ[l[0]] : m[1];
       return "<tr><td>" + (r ? iconHtml(r) : xIcon(l[0], q)) + '<span class="' + qcls(q) + '"' + (r || hasGameTip(l[0]) ? ' data-tip="' + l[0] + '"' : ' data-dgtip="' + l[0] + '"') + ">" + esc(r && r.name ? r.name : m[0]) + "</span></td><td>" + (l[1] >= 10 ? Math.round(l[1]) : l[1]) + " %</td><td>" + (r && r.min > 0 ? money(r.min) : DASH) + "</td></tr>";
     }).join("");
-    $("detail").innerHTML = '<div class="strip"><button class="lnk" type="button" data-copyany="#dungeon=' + d.map + "&boss=" + b.id + '" title="' + t("copy_link") + '">' + t("copy_link") + "</button><h2>" + esc(b.name) + "</h2><small>" +
+    $("detail").innerHTML = '<div class="strip"><button class="lnk" type="button" data-copyany="#dungeon=' + d.map + "&boss=" + b.id + '" title="' + t("copy_link") + '">' + t("copy_link") + "</button><h2>" + (b.disp ? drk(false, true, '<img class="ci" src="https://render.worldofwarcraft.com/eu/npcs/zoom/creature-display-' + b.disp + '.jpg" alt="" onerror="this.parentNode.parentNode.remove()">', true) : "") + esc(b.name) + "</h2><small>" +
       esc(d.name) + (b.lvl ? " · " + t("dg_boss_lvl", b.lvl) : "") + "</small></div>" +
       (b.m3 ? portraitHtml(b.disp, false, b.m3, "", dgBg(d)) : dgBg(d) ? '<div class="portr hasbg banner" style="--pbg:url(' + esc(dgBg(d)) + ')"></div>' : "") +   // utan modell: bara dungeonbilden
       '<div><button class="lnk" type="button" data-dg="' + dgSel + '">' + t("dg_back") + "</button></div>" +
@@ -4528,7 +4531,8 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
       huZoneHtml(zs[i].zone, zs[i].pts.map(function (p) { return { x: p[0], y: p[1], b: b }; }), true, huIsRare(b) && zs[i].pts.length > 1 ? huRoute(zs[i].pts) : "") +
       '<div class="dim">' + (huIsRare(b) && zs[i].pts.length > 1 ? t("hu_route") + " " : "") + t("hu_map_big") + "</div>";
   }
-  function drk(rare, elite, img) { return rare ? '<span class="drk s">' + img + "</span>" : elite ? '<span class="drk g">' + img + "</span>" : img; }
+  // render: Blizzards helbild av varelsen (mörk, liten i mitten) – zoomas in på mitten och ljusas upp i en rund klippruta.
+  function drk(rare, elite, img, render) { if (render) img = '<span class="rn">' + img + "</span>"; return rare ? '<span class="drk s">' + img + "</span>" : elite ? '<span class="drk g">' + img + "</span>" : img; }
   // Skinning (hamta-skinning.js via build.js): b.skin = [[item, chans %, min, max]], namn för föremål utanför AH i HU.skinItems.
   function huSkinHtml(b) {
     if (!b.skin || !b.skin.length) return "";
