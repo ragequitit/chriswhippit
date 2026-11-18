@@ -1235,13 +1235,15 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       lb_how: "Click a player or guild to open it in the Armory. Guilds are ranked by level 60 members, then their average item level.",
       de_watch: "All to My list", de_watch_tip: "Put every item in the list with a profit on My list (click again to remove them)",
       de_ingame: "In game: WhippitPanel makes the Auctionator list WhippitPanel DE of the best ones, shows DE value in item tooltips and tells you in chat when the AH has one below its disenchant value.",
+      fx_gear: "Gear", fx_gear_tip: "Compared with exactly the same suffix on both sides", fx_k_all: "All", fx_k_stack: "Stackable", fx_k_gear: "Gear",
+      fx_price_gear: "Cheapest", fx_gear_note: "Gear has no market price: this is the cheapest listing of exactly this item and suffix on each side.",
       fx_btn: "Horde ⇄ Alliance", fx_h: "Horde", fx_a: "Alliance", fx_b: "Blackwater", fx_count: "%1 items on both sides", fx_empty: "No item with a difference in this direction right now.",
       fx_here: "Cheaper here", fx_there: "Cheaper there", fx_all: "All", fx_col_gap: "Difference", fx_col_gap_tip: "How much more the item costs on the other side than here",
       fx_col_profit: "Profit", fx_col_profit_tip: "Per item if you sell it to the other side via Blackwater at their price (or Blackwater's, if it is already cheaper there), after Blackwater's 15 % cut",
       fx_col_day: "Sold/day there", fx_price: "Market price", fx_listed: "Listed", fx_sold: "Sold/day", fx_you: "You",
       fx_route: "Buy on %1 for %2, list it on Blackwater a little under %3, and a player from %4 buys it to sell on their side.",
       fx_route_back: "It is cheaper on %1 (%2) than here (%3): buy it from the other side via Blackwater instead of here.",
-      fx_profit: "Up to %1 per item after Blackwater's 15 % cut.", fx_min: "Only stackable items with at least 2 listed on both sides (gear has no market price, only the cheapest listing).",
+      fx_profit: "Up to %1 per item after Blackwater's 15 % cut.", fx_min: "Stackable items need at least 2 listed on both sides. Gear is compared with exactly the same suffix, by the cheapest listing.",
       fx_how: "Market price on each side's auction house in %1, updated every hour. Blackwater is the neutral auction house both sides can use.",
       fx_nobw: "Not on Blackwater right now", fx_fail: "Could not load the other side's prices.",
       mode_de: "Disenchant", mode_de_tip: "Gear on the AH that is worth more as dust, essences and shards than it costs.",
@@ -3891,8 +3893,10 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     if (e.target.closest("[data-gofx]") && mode === "tr") { setMode("fx"); return; }
     var fxd = e.target.closest("[data-fxdir]");
     if (fxd && mode === "fx") { fxDir = fxd.dataset.fxdir; drawCats(); refresh(); toTop(); return; }
+    var fxk = e.target.closest("[data-fxkind]");
+    if (fxk && mode === "fx") { fxKind = fxk.dataset.fxkind; drawCats(); refresh(); toTop(); return; }
     var tfx = e.target.closest("tbody tr[data-fx]");
-    if (tfx) { showTab("item"); fxDetail(+tfx.dataset.fx); return; }
+    if (tfx) { showTab("item"); fxDetail(+tfx.dataset.fx, tfx.dataset.fxg || ""); return; }
     var deq = e.target.closest("[data-deq]");
     if (deq && mode === "de") { deQ = +deq.dataset.deq; drawCats(); refresh(); toTop(); return; }
     if (e.target.closest("[data-dewatch]") && mode === "de") { toggleWatchAll(view.filter(function (x) { return x.profit > 0; }).map(function (x) { return x.de; })); showTab("watch"); return; }
@@ -4663,7 +4667,16 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   // ---- Horde ⇄ Alliance ----
   // Alla tre husen i samma region och realmtyp: [Horde, Alliance, Blackwater]. "Här" = den sida marknadsknappen står på
   // (Blackwater vald: Horde). Riktpriset (marknadspris) per sida; minst 2 ute på båda sidor (ensamma listningar räknas inte).
-  var FX = { ok: false, key: "", maps: null }, fxPromise = null, fxPKey = "", fxSel = 0, fxDir = "here", FX_CUT = 0.85, FX_MIN = 2;
+  var FX = { ok: false, key: "", maps: null }, fxPromise = null, fxPKey = "", fxSel = 0, fxSelG = "", fxDir = "here", fxKind = "all", FX_CUT = 0.85, FX_MIN = 2;
+  var FX_SUF = null;   // suffix.json: bonuskod → "of the Monkey"
+  function fxGear(k) { return fetch(DATA_BASE + "gear-" + k + ".json", { cache: "no-cache" }).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; }); }
+  // Namn för gear (fxMap tar bara stapelbart): id → { namn, kvalitet, ikon } ur alla tre filerna.
+  function fxNames(ds) { var m = {}; ds.forEach(function (d) { (d && d.items || []).forEach(function (r) { if (!m[r[0]] && r[1]) m[r[0]] = { id: r[0], name: r[1], q: r[2], ic: r[12] || "" }; }); }); return m; }
+  function fxSufName(k) {
+    if (!k || k === "0") return "";
+    var parts = k.split(".").map(function (b) { return FX_SUF && FX_SUF[b]; }).filter(Boolean);
+    return parts.length ? parts.join(" ") : "#" + k;
+  }
   function fxKeys() { var p = houseParts(house) || ["pvp", "horde", "eu"]; return { rg: p[2], rs: p[0], mine: p[1] === "alliance" ? "alliance" : "horde", keys: [mkKey(p[2], p[0], "horde"), mkKey(p[2], p[0], "alliance"), mkKey(p[2], p[0], "blackwater")] }; }
   function fxGet(k) {
     if (k === house && D) return Promise.resolve(D);
@@ -4683,8 +4696,10 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     if (FX.ok && FX.key === pk) return Promise.resolve(FX);
     if (fxPromise && fxPKey === pk) return fxPromise;
     fxPKey = pk;
-    fxPromise = Promise.all(fk.keys.map(function (k, i) { return fxGet(k).catch(function (e) { if (i < 2) throw e; return null; }); }))   // Blackwater får saknas
-      .then(function (a) { if (fxPKey !== pk) return FX; FX = { ok: true, key: pk, maps: a.map(fxMap) }; return FX; })
+    var gears = Promise.all(fk.keys.map(fxGear));   // gear per suffix (finns bara när molnet byggt den)
+    var suf = FX_SUF ? Promise.resolve(FX_SUF) : fetch(DATA_BASE + "suffix.json").then(function (r) { return r.ok ? r.json() : {}; }).catch(function () { return {}; });
+    fxPromise = Promise.all([Promise.all(fk.keys.map(function (k, i) { return fxGet(k).catch(function (e) { if (i < 2) throw e; return null; }); })), gears, suf])   // Blackwater får saknas
+      .then(function (r) { if (fxPKey !== pk) return FX; var a = r[0]; FX_SUF = r[2] || {}; FX = { ok: true, key: pk, maps: a.map(fxMap), gear: r[1], names: fxNames(a) }; return FX; })
       .catch(function (e) { fxPromise = null; throw e; });
     return fxPromise;
   }
@@ -4698,7 +4713,9 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   function fxCats() {
     var chip = function (d, lbl) { return '<button type="button" class="huchip' + (fxDir === d ? " on" : "") + '" data-fxdir="' + d + '" aria-pressed="' + (fxDir === d) + '">' + lbl + "</button>"; };
     var fk = fxKeys();
+    var kchip = function (d, lbl) { return '<button type="button" class="huchip' + (fxKind === d ? " on" : "") + '" data-fxkind="' + d + '" aria-pressed="' + (fxKind === d) + '">' + lbl + "</button>"; };
     return '<div class="hufil"><div class="huchips">' + chip("here", t("fx_here")) + chip("there", t("fx_there")) + chip("all", t("fx_all")) + "</div></div>" +
+      '<div class="hufil"><div class="huchips">' + kchip("all", t("fx_k_all")) + kchip("stack", t("fx_k_stack")) + kchip("gear", t("fx_k_gear")) + "</div></div>" +
       '<div class="note">' + t("fx_how", fk.rg.toUpperCase() + " " + (MK_RSN[fk.rs] || "")) + "</div><div class='note'>" + t("fx_min") + "</div>";
   }
   function fxRefresh(q) {
@@ -4713,8 +4730,10 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       var gap = (ot.min - me.min) / me.min, profit = Math.round(eff * FX_CUT - me.min);
       if (fxDir === "here" && !(gap > 0.05)) return;
       if (fxDir === "there" && !(gap < -0.05)) return;
-      view.push({ fx: +id, it: me.name ? me : ot, p: [h.min, a.min, b ? b.min : 0], n: [h.qty, a.qty, b ? b.qty : 0], d: [h.day, a.day, b ? b.day : 0], gap: gap, profit: profit, mi: mi, oi: oi });
+      if (fxKind === "gear") return;
+      view.push({ fx: +id, gk: "", it: me.name ? me : ot, p: [h.min, a.min, b ? b.min : 0], n: [h.qty, a.qty, b ? b.qty : 0], d: [h.day, a.day, b ? b.day : 0], gap: gap, profit: profit, mi: mi, oi: oi });
     });
+    if (fxKind !== "stack") fxGearRows(q, mi, oi).forEach(function (x) { view.push(x); });
     var k = sortKey, dir = sortDir;
     view.sort(function (x, y) {
       var d = k === "name" ? x.it.name.localeCompare(y.it.name) : k === "h" ? x.p[0] - y.p[0] : k === "a" ? x.p[1] - y.p[1] : k === "b" ? x.p[2] - y.p[2]
@@ -4723,26 +4742,65 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     });
     shown = Math.min(PAGE, view.length);
   }
+  // Gear: samma vara med exakt samma suffix på båda sidor (priset är den billigaste listningen av just den).
+  function fxGearRow(id, k, mi, oi) {
+    var G = FX.gear || [], h = G[0] && G[0][id] && G[0][id][k], a = G[1] && G[1][id] && G[1][id][k], b = G[2] && G[2][id] && G[2][id][k];
+    var nm = FX.names && FX.names[id];
+    if (!h || !a || !nm || nm.q === 0) return null;
+    var me = mi ? a : h, ot = mi ? h : a, eff = b && b[0] > 0 && b[0] < ot[0] ? b[0] : ot[0];
+    // Orimliga listningar (en ensam 125g-listning som ingen köper): mer än 4 × medianen av samma vara (alla suffix) på
+    // den sidan, eller mer än 6 × priset här när varan har för få suffix för en median.
+    var med = fxGearMed(oi, id);
+    if (med ? ot[0] > med * 4 : ot[0] > me[0] * 6) return null;
+    var suf = fxSufName(k);
+    return { fx: +id, gk: k, gear: true, it: { id: nm.id, name: nm.name + (suf ? " " + suf : ""), q: nm.q, ic: nm.ic }, p: [h[0], a[0], b ? b[0] : 0], n: [h[1], a[1], b ? b[1] : 0], d: [0, 0, 0],
+      gap: (ot[0] - me[0]) / me[0], profit: Math.round(eff * FX_CUT - me[0]), mi: mi, oi: oi };
+  }
+  function fxGearMed(side, id) {
+    var c = FX.gmed || (FX.gmed = [{}, {}, {}]);
+    if (c[side][id] !== undefined) return c[side][id];
+    var g = FX.gear && FX.gear[side] && FX.gear[side][id], v = g ? Object.keys(g).map(function (k) { return g[k][0]; }).sort(function (x, y) { return x - y; }) : [];
+    return (c[side][id] = v.length >= 3 ? v[Math.floor(v.length / 2)] : 0);
+  }
+  function fxGearRows(q, mi, oi) {
+    var out = [], G = FX.gear || [];
+    if (!G[0] || !G[1]) return out;
+    Object.keys(G[0]).forEach(function (id) {
+      if (!G[1][id]) return;
+      Object.keys(G[0][id]).forEach(function (k) {
+        if (!G[1][id][k]) return;
+        var x = fxGearRow(id, k, mi, oi);
+        if (!x) return;
+        if (q && x.it.name.toLowerCase().indexOf(q) < 0) return;
+        if (fxDir === "here" && !(x.gap > 0.05)) return;
+        if (fxDir === "there" && !(x.gap < -0.05)) return;
+        out.push(x);
+      });
+    });
+    return out;
+  }
   function fxGapHtml(g) { var pc = Math.round(g * 100); return '<span class="' + (pc > 0 ? "pos" : pc < 0 ? "neg" : "") + '">' + (pc > 0 ? "▲ +" : pc < 0 ? "▼ " : "") + pc + " %</span>"; }
   function fxRow(x) {
     var it = x.it, cell = function (i, cls) { return '<td class="' + (i === x.mi ? "me" : "") + (cls ? " " + cls : "") + '">' + (x.p[i] ? money(x.p[i]) : "–") + "</td>"; };
-    return '<tr tabindex="0" data-fx="' + x.fx + '"' + (x.fx === fxSel ? ' aria-selected="true"' : "") + '><td class="fav"></td>' +
-      '<td class="nm">' + iconHtml(it) + '<span class="' + qcls(it.q) + '" data-tip="' + it.id + '">' + esc(it.name) + "</span></td>" +
+    return '<tr tabindex="0" data-fx="' + x.fx + '" data-fxg="' + esc(x.gk || "") + '"' + (x.fx === fxSel && (x.gk || "") === fxSelG ? ' aria-selected="true"' : "") + '><td class="fav"></td>' +
+      '<td class="nm">' + iconHtml(it) + '<span class="' + qcls(it.q) + '" data-tip="' + it.id + '">' + esc(it.name) + "</span>" + (x.gear ? ' <span class="tag" title="' + t("fx_gear_tip") + '">' + t("fx_gear") + "</span>" : "") + "</td>" +
       cell(0) + cell(1) + cell(2, "hide-s") + "<td>" + fxGapHtml(x.gap) + "</td>" +
       '<td class="hide-s ' + (x.profit > 0 ? "pos" : "neg") + '">' + (x.profit > 0 ? "" : "−") + money(Math.abs(x.profit)) + '</td><td class="hide-s">' + (x.d[x.oi] > 0 ? num(Math.round(x.d[x.oi])) : "–") + "</td></tr>";
   }
-  function fxDetail(id) {
+  function fxDetail(id, gk) {
+    gk = gk || "";
     var x = null;
-    view.forEach(function (v) { if (v.fx === id) x = v; });
-    if (!x && FX.ok) {   // inte i den filtrerade listan (direktlänk): räkna fram raden ändå
+    view.forEach(function (v) { if (v.fx === id && (v.gk || "") === gk) x = v; });
+    if (!x && FX.ok && gk) { var mi0 = fxKeys().mine === "alliance" ? 1 : 0; x = fxGearRow(id, gk, mi0, 1 - mi0); }
+    if (!x && FX.ok && !gk) {   // inte i den filtrerade listan (direktlänk): räkna fram raden ändå
       var M = FX.maps, h = M[0][id], a = M[1][id], b = M[2] && M[2][id], mi = fxKeys().mine === "alliance" ? 1 : 0;
       if (h && a) { var me = mi ? a : h, ot = mi ? h : a, ef = b && b.min > 0 && b.min < ot.min ? b.min : ot.min; x = { fx: id, it: me, p: [h.min, a.min, b ? b.min : 0], n: [h.qty, a.qty, b ? b.qty : 0], d: [h.day, a.day, b ? b.day : 0], gap: (ot.min - me.min) / me.min, profit: Math.round(ef * FX_CUT - me.min), mi: mi, oi: 1 - mi }; }
     }
     if (!x) { $("detail").innerHTML = '<div class="note">' + t("fx_empty") + "</div>"; return; }
-    fxSel = id;
+    fxSel = id; fxSelG = gk;
     var trs = $("rows").children;
-    for (var j = 0; j < trs.length; j++) { if (+trs[j].dataset.fx === id) trs[j].setAttribute("aria-selected", "true"); else trs[j].removeAttribute("aria-selected"); }
-    setHash("#fx=" + id + (house !== 113 ? "&m=" + house : ""));
+    for (var j = 0; j < trs.length; j++) { if (+trs[j].dataset.fx === id && (trs[j].dataset.fxg || "") === gk) trs[j].setAttribute("aria-selected", "true"); else trs[j].removeAttribute("aria-selected"); }
+    setHash("#fx=" + id + (gk ? "&g=" + gk : "") + (house !== 113 ? "&m=" + house : ""));
     var it = x.it, mine = x.p[x.mi], fas = [0, 1, 2];
     var vs = function (i, vals) { if (i === x.mi || !vals[i] || !vals[x.mi]) return ""; return "<small>" + fxGapHtml((vals[i] - vals[x.mi]) / vals[x.mi]) + "</small>"; };
     var row = function (lbl, vals, fmt, diff) { return "<div>" + lbl + "</div>" + fas.map(function (i) { return '<div class="' + (i === x.mi ? "me" : "") + '">' + (vals[i] ? fmt(vals[i]) : "–") + (diff ? vs(i, vals) : "") + "</div>"; }).join(""); };
@@ -4751,10 +4809,11 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       ? t("fx_route", here, money(mine), money(x.p[x.oi]), there) + (x.profit > 0 ? " " + t("fx_profit", money(x.profit)) : "")
       : x.gap < -0.05 ? t("fx_route_back", there, money(x.p[x.oi]), money(mine)) : "";
     $("detail").scrollTop = 0;
-    $("detail").innerHTML = '<div class="strip"><button class="lnk" type="button" data-copyany="#fx=' + id + (house !== 113 ? "&m=" + house : "") + '" title="' + t("copy_link") + '">' + t("copy_link") + "</button>" +
+    $("detail").innerHTML = '<div class="strip"><button class="lnk" type="button" data-copyany="#fx=' + id + (gk ? "&g=" + gk : "") + (house !== 113 ? "&m=" + house : "") + '" title="' + t("copy_link") + '">' + t("copy_link") + "</button>" +
       '<h2 class="' + qcls(it.q) + '">' + iconHtml(it, true) + " " + esc(it.name) + "</h2><small>" + t("fx_how", fxKeys().rg.toUpperCase() + " " + (MK_RSN[fxKeys().rs] || "")).split(".")[0] + "</small></div>" +
       '<div class="fxcmp"><div></div>' + fas.map(function (i) { return '<div class="fxhd' + (i === x.mi ? " me" : "") + '">' + fxIcon(fxFa(i)) + fxName(fxFa(i)) + (i === x.mi ? '<small class="dim">' + t("fx_you") + "</small>" : "") + "</div>"; }).join("") +
-      row(t("fx_price"), x.p, money, true) + row(t("fx_listed"), x.n, num, false) + row(t("fx_sold"), x.d, function (v) { return num(Math.round(v)); }, false) + "</div>" +
+      row(t(x.gear ? "fx_price_gear" : "fx_price"), x.p, money, true) + row(t("fx_listed"), x.n, num, false) + (x.gear ? "" : row(t("fx_sold"), x.d, function (v) { return num(Math.round(v)); }, false)) + "</div>" +
+      (x.gear ? '<div class="note">' + t("fx_gear_note") + "</div>" : "") +
       (route ? '<div class="fxroute">' + route + "</div>" : "") + (!x.p[2] ? '<div class="note">' + t("fx_nobw") + "</div>" : "") +
       (byId[id] ? '<div><button class="lnk" type="button" data-upgo="' + id + '">' + t("co_open_ah") + "</button></div>" : "");
   }
@@ -4763,8 +4822,8 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     fxLoad().then(function () {
       if (mode !== "fx") return;
       drawCats(); refresh(); if (!keep) toTop();
-      var w = want || fxSel;
-      if (w) { fxDetail(w); if (want && !keep) showTab("item"); } else if (view[0]) fxDetail(view[0].fx);
+      var w = want || fxSel, wg = want ? (hashParams().g || "") : fxSelG;
+      if (w) { fxDetail(w, wg); if (want && !keep) showTab("item"); } else if (view[0]) fxDetail(view[0].fx, view[0].gk);
     }).catch(function () { if (mode === "fx") $("detail").innerHTML = '<div class="note">' + t("fx_fail") + "</div>"; });
   }
   function deStart(want, keep) {   // keep: ny data, ingen "Loading"/rullning/flikväxling (granskning 2026-11-18)
