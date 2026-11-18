@@ -4956,7 +4956,7 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
             (k === "rk" ? rankBadge(p.fa, p.rk) || p.rk : num(p[k])) + "</b></td></tr>";
         }).join("") + "</tbody></table>" + (pl.length ? "" : '<div class="note">' + t("lb_none") + "</div>");
     }
-    h += '<div class="note">' + t("lb_note") + "</div></div>";
+    h += "</div>";   // snöbollstexten borttagen (Joakim 2026-11-18); står i About
     arShow(h, '<div class="strip"><h2>' + t(def[3] === "s" ? "lb_server" : "lb") + "</h2><small>" + t(def[2]) + '</small></div><div class="note">' + t("lb_how") + "</div>");
   }
   // ---- Disenchant (Joakim 2026-11-17: "vad som är värt att disenchanta på AH för att få essence som är värt mer"):
