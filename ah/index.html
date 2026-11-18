@@ -231,6 +231,7 @@ body[data-mode=hu] .facts dd { font-size: 15px; }
 .ekoc > b { font-family: var(--display); font-size: 15px; color: var(--gold); } .ekoc.fa-alliance > b { color: #7ea2d6; } .ekoc.fa-blackwater > b { color: #c9c9c9; }
 .ekov { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; font-size: 12.5px; color: var(--grey); } .ekov em { font-style: normal; font-size: 16px; font-weight: 600; color: var(--fg); } .ekov em.pos { color: #6fdc6f; } .ekov em.neg { color: #e06060; }
 .ekos { width: 100%; height: 40px; margin-top: 4px; } .ekos polyline { fill: none; stroke: var(--gold); stroke-width: 2; vector-effect: non-scaling-stroke; }
+.fkh { margin: 14px 0 4px; } .lbt.fk tr.dim td { color: var(--grey); }
 .lbcls { display: grid; gap: 8px; } .lbc { display: grid; grid-template-columns: minmax(130px, 34%) 1fr; grid-template-rows: auto auto; column-gap: 12px; row-gap: 3px; align-items: center; }
 .lbc .nm { grid-row: span 2; display: flex; align-items: center; gap: 6px; min-width: 0; } .lbc .nm .ri { width: 22px; height: 22px; border-radius: 3px; } .lbc .nm small { color: var(--grey); margin-left: auto; white-space: nowrap; }
 .lbcb { display: flex; align-items: center; gap: 6px; height: 10px; font-size: 11.5px; } .lbcb i { height: 8px; border-radius: 3px; min-width: 2px; } .lbcb em { font-style: normal; color: var(--grey); }
@@ -1333,6 +1334,12 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
       lb_pve_note: "From Blizzard's character statistics, fetched for level 60s once a week.",
       lb_pvp: "PvP", lb_pvp_bg: "Battlegrounds played", lb_pvp_bgw: "Battlegrounds won", lb_pvp_kb: "Killing blows", lb_pvp_wkb: "World killing blows", lb_pvp_whk: "World honorable kills", lb_pvp_duel: "Duels won",
       lb_pvp_note: "Honorable kills and rank from the PvP summary of every player in the catalog; the rest from Blizzard's character statistics, fetched for level 60s once a week.",
+      lb_achc: "Achievement categories", lb_titles: "Titles", lb_titles_most: "Most titles", lb_titles_active: "Wearing", lb_titles_holders: "%1 holders",
+      lb_quests: "Quests", lb_quests_done: "Most completed", lb_quests_aband: "Most abandoned", lb_travel: "Travel", lb_travel_fl: "Flight paths taken", lb_travel_po: "Mage portals taken", lb_travel_su: "Summons accepted", lb_travel_hs: "Times hearthed",
+      lb_pvp_duelr: "Duel win rate", lb_pve_kpd: "Kills per death", lb_min_duels: "at least 10 duels", lb_min_kills: "at least 1,000 kills",
+      lb_fk: "First kills", lb_fk_boss: "Boss", lb_fk_when: "First kill", lb_fk_top: "Most first kills", lb_fk_n: "%1 first kills",
+      lb_fk_none: "No raid boss has been killed on the server yet. The first guild to kill each boss will be listed here with the time.",
+      lb_fk_note: "First kill = the earliest kill the catalog has seen for the boss, with the guild the player was in. Level 60s are checked once a week, so a kill can show up a few days late – and only for players in the catalog.",
       lb_prog: "Progression", lb_prog_raids: "Raids", lb_prog_dgs: "Dungeons", lb_prog_note: "Bosses killed = the most bosses any checked member has killed in that raid; the small number is how many checked level 60s have killed the final boss. From Blizzard's character statistics, fetched for level 60s once a week.",
       lb_prog_noraid: "No raid boss has been killed on the server yet – the raid list fills in when the raids open.", lb_prog_dg_note: "How many checked level 60s in the guild have killed the end boss of each dungeon.", lb_prog_none: "No level 60s checked yet – the catalog fetches statistics once a day.",
       lb_fish: "Fishing", lb_fish_n: "Most caught", lb_fish_k: "Most different", lb_fish_s: "Highest skill", lb_fish_note: "From Blizzard's character statistics for level 60s. Players who never fished are not listed.",
@@ -4402,6 +4409,10 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
     var lbpv = e.target.closest("[data-lbpvp]"), lbpe = e.target.closest("[data-lbpve]");
     if (lbpv && mode === "ar") { lbPvp = lbpv.dataset.lbpvp; lbShow(); return; }
     if (lbpe && mode === "ar") { lbPve = +lbpe.dataset.lbpve; lbShow(); return; }
+    var lbti = e.target.closest("[data-lbtitle]"), lbac = e.target.closest("[data-lbachc]"), lbqt = e.target.closest("[data-lbqt]");
+    if (lbti && mode === "ar") { lbTitle = lbti.dataset.lbtitle; lbShow(); return; }
+    if (lbac && mode === "ar") { lbAchc = lbac.dataset.lbachc; lbShow(); return; }
+    if (lbqt && mode === "ar") { if (arLb === "quests") lbQuest = +lbqt.dataset.lbqt; else lbTravel = +lbqt.dataset.lbqt; lbShow(); return; }
     var lbga = e.target.closest("[data-lbgath]");
     if (lbga && mode === "ar") { lbGath = lbga.dataset.lbgath; lbShow(); return; }
     var lbpg = e.target.closest("[data-lbprog]"), lbfs = e.target.closest("[data-lbfish]");
@@ -4960,17 +4971,26 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
   // "First to 60" borttagen ur listan (Joakim 2026-11-18); koden för #top=first60 finns kvar.
   // [nyckel, fält, text, grupp]: b = topplistor, s = serverstatistik (Joakim 2026-11-18: klasser är inte en topplista;
   // Activity borttagen helt – den byggde bara på timmarna Joakim själv var online; koden för #top=act finns kvar).
-  var LB = [["ilvl", "il", "lb_ilvl", "b"], ["pvp", "", "lb_pvp", "b"], ["pve", "", "lb_pve", "b"], ["gath", "", "lb_gath", "b"], ["ach", "ap", "lb_ach", "b"], ["guilds", "", "lb_guilds", "b"], ["prog", "", "lb_prog", "b"], ["att", "", "lb_att", "b"], ["rep", "", "lb_rep", "b"], ["fish", "", "lb_fish", "b"], ["cls", "", "lb_cls", "s"]];
+  var LB = [["ilvl", "il", "lb_ilvl", "b"], ["pvp", "", "lb_pvp", "b"], ["pve", "", "lb_pve", "b"], ["gath", "", "lb_gath", "b"], ["ach", "ap", "lb_ach", "b"], ["achc", "", "lb_achc", "b"], ["titles", "", "lb_titles", "b"], ["quests", "", "lb_quests", "b"], ["travel", "", "lb_travel", "b"], ["guilds", "", "lb_guilds", "b"], ["prog", "", "lb_prog", "b"], ["fk", "", "lb_fk", "b"], ["att", "", "lb_att", "b"], ["rep", "", "lb_rep", "b"], ["fish", "", "lb_fish", "b"], ["cls", "", "lb_cls", "s"]];
   var lbProg = "raids", lbFish = "n", lbPvp = "hk", lbPve = 0, lbGath = "";   // Progression: raids/dungeons; Fishing: n fångade, k olika, s skill; PvP: undermeny
   // PvP-undermenyerna: [nyckel, text, värde(p)]; pv2 = [bg spelade, bg vunna, killing blows, world kb, dueller vunna, förlorade, world HK, bg HK]
   var LB_PVP = [["hk", "lb_hk", function (p) { return p.hk || 0; }], ["rank", "lb_rank", function (p) { return p.rk || 0; }], ["bg", "lb_pvp_bg", function (p) { return p.pv2 ? p.pv2[0] : 0; }], ["bgw", "lb_pvp_bgw", function (p) { return p.pv2 ? p.pv2[1] : 0; }],
-    ["kb", "lb_pvp_kb", function (p) { return p.pv2 ? p.pv2[2] : 0; }], ["wkb", "lb_pvp_wkb", function (p) { return p.pv2 ? p.pv2[3] : 0; }], ["whk", "lb_pvp_whk", function (p) { return p.pv2 ? p.pv2[6] : 0; }], ["duel", "lb_pvp_duel", function (p) { return p.pv2 ? p.pv2[4] : 0; }]];
+    ["kb", "lb_pvp_kb", function (p) { return p.pv2 ? p.pv2[2] : 0; }], ["wkb", "lb_pvp_wkb", function (p) { return p.pv2 ? p.pv2[3] : 0; }], ["whk", "lb_pvp_whk", function (p) { return p.pv2 ? p.pv2[6] : 0; }], ["duel", "lb_pvp_duel", function (p) { return p.pv2 ? p.pv2[4] : 0; }],
+    ["duelr", "lb_pvp_duelr", function (p) { return p.pv2 && p.pv2[4] + p.pv2[5] >= 10 ? Math.round(p.pv2[4] / (p.pv2[4] + p.pv2[5]) * 1000) / 10 : 0; }]];
   var LB_RAIDS = [["Molten Core", "MC", 10], ["Onyxia\'s Lair", "Ony", 1], ["Blackwing Lair", "BWL", 8], ["Zul\'Gurub", "ZG", 10], ["Ruins of Ahn\'Qiraj", "AQ20", 6], ["Temple of Ahn\'Qiraj", "AQ40", 9], ["Naxxramas", "Naxx", 15]];
+  // Raidernas bossar i ordning (Blizzards namn kan avvika: bossar katalogen sett läggs till under sin instans)
+  var LB_BOSSES = [["Molten Core", ["Lucifron", "Magmadar", "Gehennas", "Garr", "Baron Geddon", "Shazzrah", "Sulfuron Harbinger", "Golemagg the Incinerator", "Majordomo Executus", "Ragnaros"]],
+    ["Onyxia\'s Lair", ["Onyxia"]], ["Blackwing Lair", ["Razorgore the Untamed", "Vaelastrasz the Corrupt", "Broodlord Lashlayer", "Firemaw", "Ebonroc", "Flamegor", "Chromaggus", "Nefarian"]],
+    ["Zul\'Gurub", ["High Priestess Jeklik", "High Priest Venoxis", "High Priestess Mar\'li", "Bloodlord Mandokir", "Edge of Madness", "High Priest Thekal", "Gahz\'ranka", "High Priestess Arlokk", "Jin\'do the Hexxer", "Hakkar"]],
+    ["Ruins of Ahn\'Qiraj", ["Kurinnaxx", "General Rajaxx", "Moam", "Buru the Gorger", "Ayamiss the Hunter", "Ossirian the Unscarred"]],
+    ["Temple of Ahn\'Qiraj", ["The Prophet Skeram", "Silithid Royalty", "Battleguard Sartura", "Fankriss the Unyielding", "Viscidus", "Princess Huhuran", "Twin Emperors", "Ouro", "C\'Thun"]],
+    ["Naxxramas", ["Anub\'Rekhan", "Grand Widow Faerlina", "Maexxna", "Noth the Plaguebringer", "Heigan the Unclean", "Loatheb", "Instructor Razuvious", "Gothik the Harvester", "The Four Horsemen", "Patchwerk", "Grobbulus", "Gluth", "Thaddius", "Sapphiron", "Kel\'Thuzad"]]];
   var LB_DGS = [["Blackrock Depths", "BRD"], ["Lower Blackrock Spire", "LBRS"], ["Upper Blackrock Spire", "UBRS"], ["Scholomance", "Scholo"], ["Stratholme", "Strat"], ["Dire Maul", "DM"]];
   var lbRep = "";   // vald fraktion i Reputation-listan ("" = flest Exalted)
   var LB_REPF = ["Timbermaw Hold", "Zandalar Tribe", "Argent Dawn", "Cenarion Circle", "Thorium Brotherhood", "Hydraxian Waterlords", "Brood of Nozdormu", "Wintersaber Trainers", "Darkmoon Faire", "Bloodsail Buccaneers"];
   var LB_STAND = ["Hated", "Hostile", "Unfriendly", "Neutral", "Friendly", "Honored", "Revered", "Exalted"];
-  var LB_ICON = { prog: "inv_misc_head_dragon_black", fish: "trade_fishing", pvp: "inv_bannerpvp_01", pve: "ability_warrior_cleave", gath: "inv_misc_flower_02", att: "inv_misc_key_10", rep: "inv_misc_tabardpvp_01", ilvl: "inv_misc_trophy_argent", hk: "ability_rogue_ambush", rank: "inv_bannerpvp_01", ach: "achievement_general", guilds: "inv_misc_tabard_01", cls: "inv_misc_map02" };
+  var lbAchc = "", lbTitle = "", lbQuest = 0, lbTravel = 0;
+  var LB_ICON = { achc: "achievement_general", titles: "inv_misc_book_09", quests: "inv_misc_note_01", travel: "ability_mount_gryphon_01", fk: "inv_misc_head_dragon_01", prog: "inv_misc_head_dragon_black", fish: "trade_fishing", pvp: "inv_bannerpvp_01", pve: "ability_warrior_cleave", gath: "inv_misc_flower_02", att: "inv_misc_key_10", rep: "inv_misc_tabardpvp_01", ilvl: "inv_misc_trophy_argent", hk: "ability_rogue_ambush", rank: "inv_bannerpvp_01", ach: "achievement_general", guilds: "inv_misc_tabard_01", cls: "inv_misc_map02" };
   function lbCats() {
     return "<h2>" + t("lb") + "</h2>" + LB.map(function (b) {
       return '<button class="cat" type="button" data-lb="' + b[0] + '" aria-pressed="' + (b[0] === arLb) + '"><img class="ci" src="' + RICON + (LB_ICON[b[0]] || "inv_misc_questionmark") + '.jpg" alt="" onerror="this.style.visibility=\'hidden\'"><em class="nm">' + t(b[3] === "s" ? "lb_server" : b[2]) + "</em></button>";
@@ -5078,15 +5098,16 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
         }).join("") + "</tbody></table>" + (gp2.length ? "" : '<div class="note">' + t("lb_prog_none") + "</div>") + '<div class="note">' + t("lb_pve_note") + "</div>";
     } else if (def[0] === "pve") {
       var echip = function (c, i) { return '<button type="button" class="huchip' + (lbPve === i ? " on" : "") + '" data-lbpve="' + i + '" aria-pressed="' + (lbPve === i) + '">' + t(c) + "</button>"; };
-      var PVE = ["lb_pve_kills", "lb_pve_creat", "lb_pve_dg", "lb_pve_raid", "lb_pve_q", "lb_pve_deaths", "lb_pve_crit"];
+      var PVE = ["lb_pve_kills", "lb_pve_creat", "lb_pve_dg", "lb_pve_raid", "lb_pve_q", "lb_pve_deaths", "lb_pve_crit", "lb_pve_kpd"];
+      var pveV = function (p) { return lbPve === 7 ? (p.pve[0] >= 1000 ? Math.round(p.pve[0] / Math.max(1, p.pve[5])) : 0) : p.pve[lbPve]; };
       h += '<div class="huchips">' + PVE.map(echip).join("") + "</div>";
-      var ep = KAT.players.filter(function (p) { return faOk(p) && p.pve && p.pve[lbPve] > 0; }).sort(function (a, b) { return b.pve[lbPve] - a.pve[lbPve] || b.pve[0] - a.pve[0]; }).slice(0, 100);
+      var ep = KAT.players.filter(function (p) { return faOk(p) && p.pve && pveV(p) > 0; }).sort(function (a, b) { return pveV(b) - pveV(a) || b.pve[0] - a.pve[0]; }).slice(0, 100);
       h += '<table class="lbt"><thead><tr><th>#</th><th class="nm">' + t("lb_player") + "</th><th>" + t("col_lvl") + '</th><th class="hide-s">' + t("lb_guild") + "</th><th>" + t(PVE[lbPve]) + "</th></tr></thead><tbody>" +
         ep.map(function (p, i) {
           var full = p.n + (p.sn ? " " + p.sn : "");
           return '<tr><td class="lbn' + (i < 3 ? " top" + (i + 1) : "") + '">' + (i + 1) + '</td><td class="nm">' + (i < 3 ? drk(false, true, classIcon(p.c)) : classIcon(p.c)) + '<a href="#player=' + esc(p.s) + '" data-ar="char" data-slug="' + esc(p.s) + '" style="color:' + (CLASS_COL[p.c] || "inherit") + '">' + esc(full) + "</a></td><td>" + p.lv + "</td>" +
-            '<td class="hide-s">' + (p.g ? '<a class="dim" href="#guild=' + esc(p.g) + '" data-ar="guild" data-slug="' + esc(p.g) + '">&lt;' + esc(p.gn) + "&gt;</a>" : "") + "</td><td><b>" + num(p.pve[lbPve]) + "</b></td></tr>";
-        }).join("") + "</tbody></table>" + (ep.length ? "" : '<div class="note">' + t("lb_prog_none") + "</div>") + '<div class="note">' + t("lb_pve_note") + "</div>";
+            '<td class="hide-s">' + (p.g ? '<a class="dim" href="#guild=' + esc(p.g) + '" data-ar="guild" data-slug="' + esc(p.g) + '">&lt;' + esc(p.gn) + "&gt;</a>" : "") + "</td><td><b>" + num(pveV(p)) + "</b>" + (lbPve === 7 ? ' <small class="dim">' + num(p.pve[0]) + " / " + num(p.pve[5]) + "</small>" : "") + "</td></tr>";
+        }).join("") + "</tbody></table>" + (ep.length ? "" : '<div class="note">' + t("lb_prog_none") + "</div>") + '<div class="note">' + (lbPve === 7 ? t("lb_min_kills") + ". " : "") + t("lb_pve_note") + "</div>";
     } else if (def[0] === "pvp") {
       var vchip = function (c) { return '<button type="button" class="huchip' + (lbPvp === c[0] ? " on" : "") + '" data-lbpvp="' + c[0] + '" aria-pressed="' + (lbPvp === c[0]) + '">' + t(c[1]) + "</button>"; };
       var pdef = LB_PVP.filter(function (c) { return c[0] === lbPvp; })[0] || LB_PVP[0], pval = pdef[2];
@@ -5096,8 +5117,68 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
         pp.map(function (p, i) {
           var full = p.n + (p.sn ? " " + p.sn : ""), v = pval(p);
           return '<tr><td class="lbn' + (i < 3 ? " top" + (i + 1) : "") + '">' + (i + 1) + '</td><td class="nm">' + (i < 3 ? drk(false, true, classIcon(p.c)) : classIcon(p.c)) + '<a href="#player=' + esc(p.s) + '" data-ar="char" data-slug="' + esc(p.s) + '" style="color:' + (CLASS_COL[p.c] || "inherit") + '">' + esc(full) + "</a></td><td>" + p.lv + "</td>" +
-            '<td class="hide-s">' + (p.g ? '<a class="dim" href="#guild=' + esc(p.g) + '" data-ar="guild" data-slug="' + esc(p.g) + '">&lt;' + esc(p.gn) + "&gt;</a>" : "") + "</td><td><b>" + (lbPvp === "rank" ? (rankBadge(p.fa, v) || v) : num(v)) + "</b></td></tr>";
-        }).join("") + "</tbody></table>" + (pp.length ? "" : '<div class="note">' + t("lb_prog_none") + "</div>") + '<div class="note">' + t("lb_pvp_note") + "</div>";
+            '<td class="hide-s">' + (p.g ? '<a class="dim" href="#guild=' + esc(p.g) + '" data-ar="guild" data-slug="' + esc(p.g) + '">&lt;' + esc(p.gn) + "&gt;</a>" : "") + "</td><td><b>" + (lbPvp === "rank" ? (rankBadge(p.fa, v) || v) : lbPvp === "duelr" ? v + ' %</b> <small class="dim">' + p.pv2[4] + "–" + p.pv2[5] + "</small>" : num(v) + "</b>") + "</td></tr>";
+        }).join("") + "</tbody></table>" + (pp.length ? "" : '<div class="note">' + t("lb_prog_none") + "</div>") + '<div class="note">' + (lbPvp === "duelr" ? t("lb_min_duels") + ". " : "") + t("lb_pvp_note") + "</div>";
+    } else if (def[0] === "titles") {
+      var tc = {}; KAT.players.forEach(function (p) { if (faOk(p) && p.ti) p.ti[2].forEach(function (n) { tc[n] = (tc[n] || 0) + 1; }); });
+      var tkeys = Object.keys(tc).sort(function (a, b) { return tc[a] - tc[b] || a.localeCompare(b); });   // sällsyntast först
+      if (lbTitle && !tc[lbTitle]) lbTitle = "";
+      var tchip = function (k, lbl, n) { return '<button type="button" class="huchip' + (lbTitle === k ? " on" : "") + '" data-lbtitle="' + esc(k) + '" aria-pressed="' + (lbTitle === k) + '">' + lbl + (n ? ' <span class="dim">' + n + "</span>" : "") + "</button>"; };
+      h += '<div class="huchips">' + tchip("", t("lb_titles_most")) + tkeys.map(function (k) { return tchip(k, esc(k), tc[k]); }).join("") + "</div>";
+      var tp = KAT.players.filter(function (p) { return faOk(p) && p.ti && (lbTitle ? p.ti[2].indexOf(lbTitle) >= 0 : p.ti[0] > 0); }).sort(function (a, b) { return b.ti[0] - a.ti[0] || b.il - a.il; }).slice(0, 100);
+      h += '<table class="lbt"><thead><tr><th>#</th><th class="nm">' + t("lb_player") + '</th><th class="hide-s">' + t("lb_guild") + "</th><th>" + t("lb_titles") + "</th><th>" + t("lb_titles_active") + "</th></tr></thead><tbody>" +
+        tp.map(function (p, i) {
+          var full = p.n + (p.sn ? " " + p.sn : "");
+          return '<tr><td class="lbn' + (i < 3 ? " top" + (i + 1) : "") + '">' + (i + 1) + '</td><td class="nm">' + (i < 3 ? drk(false, true, classIcon(p.c)) : classIcon(p.c)) + '<a href="#player=' + esc(p.s) + '" data-ar="char" data-slug="' + esc(p.s) + '" style="color:' + (CLASS_COL[p.c] || "inherit") + '">' + esc(full) + "</a></td>" +
+            '<td class="hide-s">' + (p.g ? '<a class="dim" href="#guild=' + esc(p.g) + '" data-ar="guild" data-slug="' + esc(p.g) + '">&lt;' + esc(p.gn) + "&gt;</a>" : "") + "</td><td><b>" + p.ti[0] + "</b></td><td>" + esc(p.ti[1] || "–") + "</td></tr>";
+        }).join("") + "</tbody></table>" + (tp.length ? "" : '<div class="note">' + t("lb_prog_none") + "</div>") + '<div class="note">' + t("lb_pve_note") + "</div>";
+    } else if (def[0] === "achc") {
+      var cc2 = {}; KAT.players.forEach(function (p) { if (faOk(p) && p.ac) Object.keys(p.ac).forEach(function (k) { if (k.charAt(0) !== "_") cc2[k] = (cc2[k] || 0) + 1; }); });
+      var ckeys = Object.keys(cc2).sort(function (a, b) { return cc2[b] - cc2[a]; });
+      if (ckeys.indexOf(lbAchc) < 0) lbAchc = ckeys[0] || "";
+      h += '<div class="huchips">' + ckeys.map(function (k) { return '<button type="button" class="huchip' + (lbAchc === k ? " on" : "") + '" data-lbachc="' + esc(k) + '" aria-pressed="' + (lbAchc === k) + '">' + esc(k) + "</button>"; }).join("") + "</div>";
+      var ap2 = KAT.players.filter(function (p) { return faOk(p) && p.ac && p.ac[lbAchc] > 0; }).sort(function (a, b) { return b.ac[lbAchc] - a.ac[lbAchc] || b.ac._n - a.ac._n; }).slice(0, 100);
+      h += '<table class="lbt"><thead><tr><th>#</th><th class="nm">' + t("lb_player") + '</th><th class="hide-s">' + t("lb_guild") + "</th><th>" + esc(lbAchc) + '</th><th class="hide-s">' + t("lb_ach") + "</th></tr></thead><tbody>" +
+        ap2.map(function (p, i) {
+          var full = p.n + (p.sn ? " " + p.sn : "");
+          return '<tr><td class="lbn' + (i < 3 ? " top" + (i + 1) : "") + '">' + (i + 1) + '</td><td class="nm">' + (i < 3 ? drk(false, true, classIcon(p.c)) : classIcon(p.c)) + '<a href="#player=' + esc(p.s) + '" data-ar="char" data-slug="' + esc(p.s) + '" style="color:' + (CLASS_COL[p.c] || "inherit") + '">' + esc(full) + "</a></td>" +
+            '<td class="hide-s">' + (p.g ? '<a class="dim" href="#guild=' + esc(p.g) + '" data-ar="guild" data-slug="' + esc(p.g) + '">&lt;' + esc(p.gn) + "&gt;</a>" : "") + "</td><td><b>" + num(p.ac[lbAchc]) + '</b></td><td class="hide-s">' + num(p.ac._p) + "</td></tr>";
+        }).join("") + "</tbody></table>" + (ap2.length ? "" : '<div class="note">' + t("lb_prog_none") + "</div>") + '<div class="note">' + t("lb_pve_note") + "</div>";
+    } else if (def[0] === "quests" || def[0] === "travel") {
+      var isQ = def[0] === "quests", qdefs = isQ ? [["lb_quests_done", function (p) { return p.pve ? p.pve[4] : 0; }], ["lb_quests_aband", function (p) { return p.pve ? p.pve[7] || 0 : 0; }]]
+        : [["lb_travel_fl", function (p) { return p.tr ? p.tr[0] : 0; }], ["lb_travel_po", function (p) { return p.tr ? p.tr[1] : 0; }], ["lb_travel_su", function (p) { return p.tr ? p.tr[2] : 0; }], ["lb_travel_hs", function (p) { return p.tr ? p.tr[3] : 0; }]];
+      var qi = isQ ? lbQuest : lbTravel, qv = qdefs[qi][1];
+      h += '<div class="huchips">' + qdefs.map(function (d2, i) { return '<button type="button" class="huchip' + (qi === i ? " on" : "") + '" data-lbqt="' + i + '" aria-pressed="' + (qi === i) + '">' + t(d2[0]) + "</button>"; }).join("") + "</div>";
+      var qp = KAT.players.filter(function (p) { return faOk(p) && qv(p) > 0; }).sort(function (a, b) { return qv(b) - qv(a) || b.lv - a.lv; }).slice(0, 100);
+      h += '<table class="lbt"><thead><tr><th>#</th><th class="nm">' + t("lb_player") + "</th><th>" + t("col_lvl") + '</th><th class="hide-s">' + t("lb_guild") + "</th><th>" + t(qdefs[qi][0]) + "</th></tr></thead><tbody>" +
+        qp.map(function (p, i) {
+          var full = p.n + (p.sn ? " " + p.sn : "");
+          return '<tr><td class="lbn' + (i < 3 ? " top" + (i + 1) : "") + '">' + (i + 1) + '</td><td class="nm">' + (i < 3 ? drk(false, true, classIcon(p.c)) : classIcon(p.c)) + '<a href="#player=' + esc(p.s) + '" data-ar="char" data-slug="' + esc(p.s) + '" style="color:' + (CLASS_COL[p.c] || "inherit") + '">' + esc(full) + "</a></td><td>" + p.lv + "</td>" +
+            '<td class="hide-s">' + (p.g ? '<a class="dim" href="#guild=' + esc(p.g) + '" data-ar="guild" data-slug="' + esc(p.g) + '">&lt;' + esc(p.gn) + "&gt;</a>" : "") + "</td><td><b>" + num(qv(p)) + "</b></td></tr>";
+        }).join("") + "</tbody></table>" + (qp.length ? "" : '<div class="note">' + t("lb_prog_none") + "</div>") + '<div class="note">' + t("lb_pve_note") + "</div>";
+    } else if (def[0] === "fk") {
+      var FK = KAT.firstKills || {}, fkKeys = Object.keys(FK).filter(function (b) { return faOk(FK[b]) || !FK[b].fa; });
+      var gc = {};
+      fkKeys.forEach(function (b) { var v = FK[b]; if (!v.g) return; var g = gc[v.g] = gc[v.g] || { s: v.g, n: v.gn || v.g, fa: v.fa, c: 0, first: v.t }; g.c++; if (v.t < g.first) g.first = v.t; });
+      var gl2 = Object.keys(gc).map(function (k) { return gc[k]; }).sort(function (a, b) { return b.c - a.c || a.first - b.first; });
+      if (gl2.length) h += "<h3>" + t("lb_fk_top") + '</h3><table class="lbt"><tbody>' + gl2.slice(0, 10).map(function (g, i) {
+        return '<tr><td class="lbn' + (i < 3 ? " top" + (i + 1) : "") + '">' + (i + 1) + '</td><td class="nm"><a href="#guild=' + esc(g.s) + '" data-ar="guild" data-slug="' + esc(g.s) + '">&lt;' + esc(g.n) + '&gt;</a> <small class="dim">' + (g.fa === "ALLIANCE" ? "A" : "H") + "</small></td><td><b>" + t("lb_fk_n", g.c) + "</b></td></tr>";
+      }).join("") + "</tbody></table>";
+      var seen = {};
+      LB_BOSSES.forEach(function (r) {
+        var bosses = r[1].slice();
+        fkKeys.forEach(function (b) { if (FK[b].inst === r[0] && bosses.indexOf(b) < 0) bosses.push(b); });
+        var killed = bosses.filter(function (b) { return FK[b]; }).length;
+        bosses.forEach(function (b) { seen[b] = 1; });
+        h += '<h3 class="fkh">' + esc(r[0]) + ' <small class="dim">' + killed + "/" + bosses.length + '</small></h3><table class="lbt fk"><thead><tr><th class="nm">' + t("lb_fk_boss") + "</th><th>" + t("lb_fk_when") + "</th><th>" + t("lb_guild") + '</th><th class="hide-s">' + t("lb_player") + "</th></tr></thead><tbody>" +
+          bosses.map(function (b) {
+            var v = FK[b];
+            return '<tr' + (v ? "" : ' class="dim"') + '><td class="nm">' + esc(b) + "</td><td>" + (v ? "<b>" + when2(v.t) + "</b>" : "–") + "</td><td>" + (v && v.g ? '<a href="#guild=' + esc(v.g) + '" data-ar="guild" data-slug="' + esc(v.g) + '">&lt;' + esc(v.gn) + "&gt;</a>" : v ? '<span class="dim">–</span>' : "") + '</td><td class="hide-s">' + (v ? '<a href="#player=' + esc(v.p) + '" data-ar="char" data-slug="' + esc(v.p) + '">' + esc(v.n) + "</a>" : "") + "</td></tr>";
+          }).join("") + "</tbody></table>";
+      });
+      var extra = fkKeys.filter(function (b) { return !seen[b]; });
+      if (extra.length) h += '<h3 class="fkh">' + t("lb_prog_raids") + '</h3><table class="lbt fk"><tbody>' + extra.map(function (b) { var v = FK[b]; return '<tr><td class="nm">' + esc(b) + ' <small class="dim">' + esc(v.inst || "") + "</small></td><td><b>" + when2(v.t) + "</b></td><td>" + (v.g ? '<a href="#guild=' + esc(v.g) + '" data-ar="guild" data-slug="' + esc(v.g) + '">&lt;' + esc(v.gn) + "&gt;</a>" : "") + '</td><td class="hide-s"><a href="#player=' + esc(v.p) + '" data-ar="char" data-slug="' + esc(v.p) + '">' + esc(v.n) + "</a></td></tr>"; }).join("") + "</tbody></table>";
+      h += '<div class="note">' + t(fkKeys.length ? "lb_fk_note" : "lb_fk_none") + "</div>";
     } else if (def[0] === "prog") {
       var pchip = function (k, lbl) { return '<button type="button" class="huchip' + (lbProg === k ? " on" : "") + '" data-lbprog="' + k + '" aria-pressed="' + (lbProg === k) + '">' + lbl + "</button>"; };
       h += '<div class="huchips">' + pchip("raids", t("lb_prog_raids")) + pchip("dgs", t("lb_prog_dgs")) + "</div>" + (raidsExist ? "" : '<div class="note">' + t("lb_prog_noraid") + "</div>");
