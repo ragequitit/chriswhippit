@@ -1237,11 +1237,11 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       de_ingame: "In game: WhippitPanel makes the Auctionator list WhippitPanel DE of the best ones, shows DE value in item tooltips and tells you in chat when the AH has one below its disenchant value.",
       fx_btn: "Horde ⇄ Alliance", fx_h: "Horde", fx_a: "Alliance", fx_b: "Blackwater", fx_count: "%1 items on both sides", fx_empty: "No item with a difference in this direction right now.",
       fx_here: "Cheaper here", fx_there: "Cheaper there", fx_all: "All", fx_col_gap: "Difference", fx_col_gap_tip: "How much more the item costs on the other side than here",
-      fx_col_profit: "Profit", fx_col_profit_tip: "Per item if you sell it to the other side via Blackwater at their price, after Blackwater's 15 % cut",
+      fx_col_profit: "Profit", fx_col_profit_tip: "Per item if you sell it to the other side via Blackwater at their price (or Blackwater's, if it is already cheaper there), after Blackwater's 15 % cut",
       fx_col_day: "Sold/day there", fx_price: "Market price", fx_listed: "Listed", fx_sold: "Sold/day", fx_you: "You",
       fx_route: "Buy on %1 for %2, list it on Blackwater a little under %3, and a player from %4 buys it to sell on their side.",
       fx_route_back: "It is cheaper on %1 (%2) than here (%3): buy it from the other side via Blackwater instead of here.",
-      fx_profit: "Up to %1 per item after Blackwater's 15 % cut.", fx_min: "Only items with at least 2 listed on both sides.",
+      fx_profit: "Up to %1 per item after Blackwater's 15 % cut.", fx_min: "Only stackable items with at least 2 listed on both sides (gear has no market price, only the cheapest listing).",
       fx_how: "Market price on each side's auction house in %1, updated every hour. Blackwater is the neutral auction house both sides can use.",
       fx_nobw: "Not on Blackwater right now", fx_fail: "Could not load the other side's prices.",
       mode_de: "Disenchant", mode_de_tip: "Gear on the AH that is worth more as dust, essences and shards than it costs.",
@@ -4674,7 +4674,8 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   }
   function fxMap(d) {
     var m = {};
-    (d && d.items || []).forEach(function (r) { if (r[3] > 0) m[r[0]] = { id: r[0], name: r[1] || "", q: r[2], ic: r[12] || "", min: r[3], qty: r[7] || r[4] || 0, day: r[8] || 0 }; });
+    // gear (r[21]) räknas inte: där är priset bara den billigaste listningen och slumpade suffix delar id (granskning 2026-11-18)
+    (d && d.items || []).forEach(function (r) { if (r[3] > 0 && r[21] !== 1) m[r[0]] = { id: r[0], name: r[1] || "", q: r[2], ic: r[12] || "", min: r[3], qty: r[7] || r[4] || 0, day: r[8] || 0 }; });
     return m;
   }
   function fxLoad() {
@@ -4708,7 +4709,8 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       if (!a || h.qty < FX_MIN || a.qty < FX_MIN) return;
       var me = mi ? a : h, ot = mi ? h : a, b = M[2] && M[2][id];
       if (q && (me.name || ot.name).toLowerCase().indexOf(q) < 0) return;
-      var gap = (ot.min - me.min) / me.min, profit = Math.round(ot.min * FX_CUT - me.min);
+      var eff = b && b.min > 0 && b.min < ot.min ? b.min : ot.min;   // ligger det billigare på Blackwater köper andra sidan där
+      var gap = (ot.min - me.min) / me.min, profit = Math.round(eff * FX_CUT - me.min);
       if (fxDir === "here" && !(gap > 0.05)) return;
       if (fxDir === "there" && !(gap < -0.05)) return;
       view.push({ fx: +id, it: me.name ? me : ot, p: [h.min, a.min, b ? b.min : 0], n: [h.qty, a.qty, b ? b.qty : 0], d: [h.day, a.day, b ? b.day : 0], gap: gap, profit: profit, mi: mi, oi: oi });
@@ -4734,7 +4736,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     view.forEach(function (v) { if (v.fx === id) x = v; });
     if (!x && FX.ok) {   // inte i den filtrerade listan (direktlänk): räkna fram raden ändå
       var M = FX.maps, h = M[0][id], a = M[1][id], b = M[2] && M[2][id], mi = fxKeys().mine === "alliance" ? 1 : 0;
-      if (h && a) { var me = mi ? a : h, ot = mi ? h : a; x = { fx: id, it: me, p: [h.min, a.min, b ? b.min : 0], n: [h.qty, a.qty, b ? b.qty : 0], d: [h.day, a.day, b ? b.day : 0], gap: (ot.min - me.min) / me.min, profit: Math.round(ot.min * FX_CUT - me.min), mi: mi, oi: 1 - mi }; }
+      if (h && a) { var me = mi ? a : h, ot = mi ? h : a, ef = b && b.min > 0 && b.min < ot.min ? b.min : ot.min; x = { fx: id, it: me, p: [h.min, a.min, b ? b.min : 0], n: [h.qty, a.qty, b ? b.qty : 0], d: [h.day, a.day, b ? b.day : 0], gap: (ot.min - me.min) / me.min, profit: Math.round(ef * FX_CUT - me.min), mi: mi, oi: 1 - mi }; }
     }
     if (!x) { $("detail").innerHTML = '<div class="note">' + t("fx_empty") + "</div>"; return; }
     fxSel = id;
