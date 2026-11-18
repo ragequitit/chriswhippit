@@ -221,6 +221,25 @@ h1 { font-family: var(--display); font-weight: 500; font-size: 36px; margin: 0; 
 .qmq.in, .qmk.in { position: static; display: inline-block; transform: none; margin: 0 6px 0 0; vertical-align: -1px; }
 .qmk.in { width: 9px; height: 9px; } .qmq.in { font-size: 16px; } .qmq.in.sm { font-size: 14px; }
 .huzbig .qmk { transform: scale(1.3); } .huzbig .qmq { font-size: 24px; }
+/* ! och ? på samma punkt: ! strax till vänster, ? strax till höger, så båda syns (Joakim 2026-11-18) */
+.qmq.l { transform: translate(-108%, -60%); } .qmq.r { transform: translate(8%, -60%); }
+.qmq.l:hover { transform: translate(-108%, -60%) scale(1.3); } .qmq.r:hover { transform: translate(8%, -60%) scale(1.3); }
+/* Tillbaka/Framåt överst i högerrutan (Joakim 2026-11-18): två guldknappar som delar raden */
+.navrow { flex: none; display: flex; gap: 6px; padding: 6px 8px; border-bottom: 1px solid var(--line); background: linear-gradient(#22180f, #15100c); }
+.navb { flex: 1 1 0; height: 30px; padding: 0 12px; border-radius: 4px; border: 1px solid var(--bronze); color: var(--gold); font: inherit; font-size: 14.5px; font-weight: 600; letter-spacing: .02em; cursor: pointer;
+  background: linear-gradient(var(--btn-a), var(--btn-b)); box-shadow: inset 0 1px 0 rgba(255, 200, 160, .22), inset 0 -2px 0 rgba(0, 0, 0, .35), 0 1px 2px rgba(0, 0, 0, .6); }
+.navb:hover:not([disabled]) { filter: brightness(1.2); } .navb:focus-visible { outline: 2px solid var(--edge); }
+.navb[disabled] { color: var(--grey); opacity: .45; cursor: default; box-shadow: none; }
+/* About (Joakim 2026-11-18): överlagrad ruta mitt på sidan, samma mönster som den stora zonkartan */
+.about { position: fixed; inset: 0; z-index: 55; display: grid; place-items: center; padding: 16px; background: rgba(4, 3, 2, .82); }
+.aboutbox { position: relative; width: min(520px, 100%); max-height: calc(100vh - 32px); overflow: auto; padding: 16px 20px 18px; border: 1px solid var(--bronze); border-radius: 7px;
+  background: linear-gradient(#22180f, #120d0a); box-shadow: inset 0 0 0 1px var(--line), 0 14px 36px rgba(0, 0, 0, .6); font-size: 13.5px; }
+.aboutbox h2 { font-family: var(--display); font-weight: 500; font-size: 22px; margin: 0 0 4px; color: var(--gold); }
+.aboutbox h3 { margin: 12px 0 4px; color: var(--gold); font-size: 14px; }
+.aboutbox ul { margin: 0; padding-left: 18px; display: grid; gap: 3px; } .aboutbox p { margin: 0; color: var(--grey); }
+.aboutbox a, .foot a { color: var(--fg); text-decoration: underline dotted; text-decoration-color: var(--bronze); text-underline-offset: 3px; }
+.aboutbox a:hover, .foot a:hover { color: var(--gold); text-decoration-color: var(--gold); }
+.aboutx { position: absolute; top: 8px; right: 10px; padding: 2px 8px; font-size: 16px; }
 .qmleg { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 8px; font-size: 13px; }
 .qmleg ul { list-style: none; margin: 3px 0 0 18px; padding: 0; display: grid; gap: 2px; }
 .qmleg ul li { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
@@ -235,6 +254,9 @@ h1 { font-family: var(--display); font-weight: 500; font-size: 36px; margin: 0; 
 .qmtxl line { stroke: #e8d9a8; stroke-width: 1.2; stroke-dasharray: 3 3; vector-effect: non-scaling-stroke; opacity: .45; }
 .qmtx { position: absolute; z-index: 2; transform: translate(-50%, -50%); font: 700 11px/1 system-ui, sans-serif; width: 15px; height: 15px; display: grid; place-items: center;
   border-radius: 4px; border: 1px solid #000; cursor: copy; box-shadow: 0 0 4px rgba(0, 0, 0, .8); color: #fff; }
+.portr { height: 180px; border-radius: 6px; overflow: hidden; border: 1px solid var(--edge); background: radial-gradient(ellipse at 50% 60%, #2a2219, #0e0b08 70%); box-shadow: inset 0 0 30px rgba(0, 0, 0, .7); }
+.portr img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 50% 52%; transform: scale(1.35); mix-blend-mode: lighten; }
+.portr.rare { border-color: #c0c8d0; box-shadow: 0 0 10px rgba(200, 214, 228, .35), inset 0 0 30px rgba(0, 0, 0, .7); }
 .qmtx.fH { background: #a3271c; } .qmtx.fA { background: #2a5fa8; } .qmtx.fB { background: #a07a1e; }
 .qmtx:hover { transform: translate(-50%, -50%) scale(1.4); z-index: 5; }
 .huzbig .qmtx { width: 19px; height: 19px; font-size: 13px; }
@@ -793,6 +815,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     </section>
 
     <aside class="inset right">
+      <div class="navrow"><button class="navb" id="navBack" type="button" disabled data-t="nav_back">‹ Back</button><button class="navb" id="navFwd" type="button" disabled data-t="nav_fwd">Forward ›</button></div>
       <div class="tabs">
         <button class="tab" id="tabItem" type="button" aria-pressed="true" data-t="tab_item">Vara</button>
         <button class="tab" id="tabWatch" type="button" aria-pressed="false">Min lista</button>
@@ -803,7 +826,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   </div>
 
   <footer class="foot">
-    <div class="legal" data-t="foot3">Fristående fansida, inte knuten till Blizzard Entertainment. World of Warcraft är ett varumärke som tillhör Blizzard Entertainment, Inc. Auktionsdata från Blizzards API.</div>
+    <div class="legal"><span data-t="foot3">Data from Blizzard's API and the game client</span> · <a class="wh" href="#about" data-about="1" data-t="about">About</a></div>
   </footer>
 </div>
 
@@ -886,15 +909,34 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   // stänger av det (även val som kommer efter en laddning, t.ex. arLoad). navSkip: ett mellansteg som inte ska synas.
   var navRestoring = true, navSkip = false;
   function sameHash(a, b) { try { return decodeURIComponent(a) === decodeURIComponent(b); } catch (e) { return a === b; } }   // å/ä/ö i adressen är %-kodade
+  // Tillbaka/Framåt-raden (Joakim 2026-11-18): varje historiksteg bär sin position {i}. navPos = där vi står, navMax =
+  // längsta steget framåt, navStart = där sidan öppnades (Back längre bak lämnar sidan och är därför grå).
+  var navPos = 0, navMax = 0, navStart = 0;
+  try { var hs0 = history.state; navPos = hs0 && typeof hs0.i === "number" ? hs0.i : 0; history.replaceState({ i: navPos }, ""); } catch (e) {}
+  navMax = navPos; navStart = navPos;
+  function navDraw() {
+    var b = $("navBack"), f = $("navFwd");
+    if (b) b.disabled = navPos <= navStart;
+    if (f) f.disabled = navPos >= navMax;
+  }
   function setHash(h) {
     if (navSkip) return;
     try {
       if (sameHash(location.hash, h)) return;
-      if (navRestoring || !location.hash || location.hash === "#") history.replaceState(null, "", h); else history.pushState(null, "", h);
+      if (navRestoring || !location.hash || location.hash === "#") history.replaceState({ i: navPos }, "", h);
+      else { history.pushState({ i: navPos + 1 }, "", h); navPos++; navMax = navPos; }
     } catch (e) {}
+    navDraw();
   }
   ["pointerdown", "keydown"].forEach(function (ev) { document.addEventListener(ev, function () { navRestoring = false; }, true); });
-  window.addEventListener("popstate", function () {
+  window.addEventListener("popstate", function (e) {
+    // Steg utan position (en vanlig #-länk eller adress inskriven för hand) är ett nytt steg framåt: det får nästa position.
+    var si = e.state && e.state.i;
+    if (typeof si === "number") navPos = si;
+    else { navPos++; navMax = navPos; try { history.replaceState({ i: navPos }, ""); } catch (e2) {} }
+    navDraw();
+    if (location.hash === "#about") { aboutOpen(); return; }
+    aboutClose();
     if (!D) return;
     navRestoring = true;
     huZBigClose();   // stora zonkartan hör till steget man lämnar (granskning 2026-11-18)
@@ -980,7 +1022,6 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       hu_zone_wait: "zones soon", hu_zone_wait_long: "Zones are being read from the game and show up soon.", hu_nowhere: "No known spawn in the open world.", hu_count: "%1 beasts", hu_empty: "No beast matches.",
       hu_hp: "Health", hu_dmg: "Damage", hu_armor: "Armor", hu_diet: "Diet", hu_learn: "Abilities the family can learn", hu_uses: "Uses in the wild", hu_where: "Where it lives", hu_inst: "dungeon", hu_spawns: "%1 spawns in the database",
       hu_speed_note: "A tamed pet keeps its attack speed: 1.0–1.3 is fast, 2.0 is normal. Health, damage and armor come from the family.",
-      hu_src: "Classic database (cmangos, GPL). Zones and map positions from the game client via WhippitPanel.",
       lb: "Leaderboards", lb_sub: "%1 players and %2 guilds found so far · %3", lb_ilvl: "Item level", lb_level: "Level", lb_hk: "Honorable kills", lb_rank: "PvP rank", lb_ach: "Achievement points", lb_guilds: "Guilds",
       lb_cls: "Classes", lb_only60: "Only level 60", lb_cls_note: "%1 players with a known class. Top bar = Horde, bottom bar = Alliance, on the same scale.",
       lb_meter_tip: "How many Horde and Alliance players the catalog has found on this realm type. Alliance grows with enemy nameplates on (Ctrl+V) and battlegrounds.",
@@ -1011,7 +1052,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       co_col_name: "Name", co_col_src: "Source", co_col_where: "Where", co_col_req: "Requires", co_col_price: "Price", co_col_price_tip: "Lowest price on the AH, otherwise the vendor price", co_ah: "AH", co_vendor: "vendor",
       co_count: "%1 shown", co_empty: "Nothing matches.", co_item: "Item", co_open_ah: "Open on the AH", co_where: "Where to get it", co_price_ah: "On the AH", co_price_vendor: "Vendor price", co_pvprank: "PvP rank %1",
       co_forever: "New on Forever: not in the Classic database, so the source is unknown here.", co_nosrc: "No known source in the Classic database.",
-      co_src_note: "Names and pictures: Blizzard (WoW Forever). Sources: the Classic database (cmangos, GPL), place = nearest graveyard or the dungeon.",
+      co_place: "Place = nearest graveyard or the dungeon.",
       up_btn: "Upgrade gear", up_short: "Upgrades", up_btn_sub: "Better items on the auction house right now, with prices", up_title: "Upgrades from the AH", up_prices: "prices from %1",
       up_side: "Your character is on the other side: switch the auction house at the top right to see the right prices.", up_none: "No upgrade on the AH right now for this level and class.",
       up_all: "All %1 upgrades", up_cheap_all: "With the cheaper picks", up_alt: "Cheaper", up_empty: "Empty slot", up_fx: "effect", up_nocls: "No upgrade profile for this class.",
@@ -1023,7 +1064,6 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       qm_vendor: "vendor", qm_object: "object", qm_inst: "in %1", qm_more: "+%1 more places", qm_nosrc: "No place in the database (new or changed in Forever).",
       qm_none: "No map for this quest: it is new or changed in Forever and not in the Classic database.", qm_copied: "Copied:", qm_click_copy: "click to copy /way",
       qm_copy_tip: "Copy %1 for TomTom or another waypoint addon",
-      qm_note: "Click a point or a coordinate to copy it as /way (TomTom and most waypoint addons). Shaded areas are the game's own quest areas. Places from the Classic database (cmangos, GPL), maps from the game client.",
       qm_map_tip: "Show the quests in the list on the map", qm_ov_title: "Quests on the map", qm_ov_sub: "%1 quests in the list", qm_ov_none: "None of these quests has a place on a map.",
       qm_ov_note: "! = where the quest starts (grey = done by the chosen player). Click an ! to open the quest. Same filters as the list.", qm_open: "click to open",
       qm_lg_avail: "Can take", qm_zone_pick: "Pick a zone", qm_zone_more: "All %1 zones…", qm_lg_done: "Done", qm_lg_obj: "Active quest goal", qm_lg_turnin: "Turn in", qm_ar_btn: "Show on map",
@@ -1040,15 +1080,13 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       qu_check: "Check a player", qu_nobody: "— nobody —", qu_check_tip: "Look up a player in Armory first, then pick them here to tick off their done quests.", qu_hide: "Hide done (%1)",
       qu_fac_h: "Showing Horde and neutral quests (your market).", qu_fac_a: "Showing Alliance and neutral quests (your market).", qu_done_by: "Done by %1", qu_notdone: "Not done by %1 yet",
       qu_elite: "Elite", qu_est_tip: "Estimated from the zone (new quest in Forever)", qu_both: "Both factions", qu_req: "Requires level", qu_rewards: "Rewards", qu_choose: "choose one",
-      qu_notah: "not on AH", qu_notah_long: "Not on the auction house right now", qu_text: "Quest", qu_obj: "Objective:", qu_wowhead: "Open on Wowhead",
-      qu_source: "Quests and rewards from Blizzard's API; levels from the open Classic database (1.12).", col_quest: "Quest", col_zone: "Zone", col_xp: "XP", col_money: "Money",
+      qu_notah: "not on AH", qu_notah_long: "Not on the auction house right now", qu_text: "Quest", qu_obj: "Objective:", qu_wowhead: "Open on Wowhead ↗", qu_wowhead_q: "Open quest on Wowhead ↗",
+      col_quest: "Quest", col_zone: "Zone", col_xp: "XP", col_money: "Money",
       col_reward: "Best reward", col_reward_tip: "The most valuable reward item on the auction house right now", col_drop: "Drop", col_drop_tip: "Drop chance from the boss (Classic 1.12 data)",
-      dg_al: "New in Forever · from AtlasLoot", dg_al_new: "Loot · from AtlasLoot", dg_al_tip: "Drop chance not known yet: WhippitPanel logs it as bosses die", dg_al_src: "Forever loot:",
-      dg_source_fv: "New dungeon in WoW Forever. Bosses and loot from AtlasLoot Classic Forever; drop chances appear as kills are logged.",
+      dg_al: "New in Forever", dg_al_new: "Loot", dg_al_tip: "Drop chance not known yet: WhippitPanel logs it as bosses die",
       dg_fv: "Seen in Forever · %1 kills logged", dg_cl: "Classic 1.12 list (may be outdated in Forever)", dg_fv_tip: "Seen in %1 of the logged kills", dg_logged: "Logged in Forever", dg_logged_n: "%1 of %2 bosses",
       dg_lv: "Level %1", dg_raids: "Raids", dg_count: "%1 drops", dg_empty: "No drop matches the search.", dg_pick: "Pick a dungeon on the left.", dg_boss_lvl: "level %1", dg_noloot: "no listed loot",
       dg_raid: "Raid · %1 players", dg_party: "Dungeon · 5 players", dg_bosses: "Bosses", dg_players: "Players", dg_onah: "Drops on the AH", dg_ilvl: "Item level", dg_dropsfrom: "Drops from",
-      dg_source: "Bosses and drop chances from the open Classic database (1.12). Changes in Forever are not included. Prices from the latest update.",
       mode_ar: "Armory", mode_ar_tip: "Look up any player or guild: gear, professions, reputation and guild roster",
       search_ar: "Player: first and last name – or a guild", ar_hint: "Type a player's first and last name (e.g. Alisee Alistar), or a guild name, and press Search.",
       ar_recent: "Recent", ar_loading: "Looking up…", ar_notfound: "No player or guild with that name. Players show up from level 10, after logging out.",
@@ -1084,7 +1122,18 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       gone_tag: "left out", f_usual: "Usual price", f_gear: "Sold one by one, like gear and recipes: the cheapest price, no percent (prices differ in gold).",
       empty: "No item matches the search.", more: "Show more (%1 more)", count: "%1 items",
       tab_item: "Item", tab_watch: "My list", pick: "Pick an item in the list.",
-      foot3: "Independent fan site, not affiliated with Blizzard Entertainment. World of Warcraft is a trademark of Blizzard Entertainment, Inc. Auction data from Blizzard's API.",
+      foot3: "Data from Blizzard's API and the game client", about: "About", about_close: "Close", nav_back: "‹ Back", nav_fwd: "Forward ›",
+      about_src_h: "Sources", about_legal_h: "Legal", about_data_h: "Data",
+      about_s1: "Blizzard's API: auction prices, characters, guilds, quests, rewards and creature portraits.",
+      about_s2: "The game client via <a href=\"https://github.com/Kruithne/wow.export\" target=\"_blank\" rel=\"noopener\">wow.export</a>: zone maps, flight paths, dungeon portals.",
+      about_s3: "The open Classic database <a href=\"https://github.com/cmangos/classic-db\" target=\"_blank\" rel=\"noopener\">cmangos classic-db</a> (GPL): levels, NPC and object locations, drops, NPC paths.",
+      about_s4: "<a href=\"https://www.curseforge.com/projects/1422985\" target=\"_blank\" rel=\"noopener\">AtlasLoot Classic Forever</a> (GPL-2.0): dungeon loot and skill levels of new recipes.",
+      about_s5: "<a href=\"https://warcraft.wiki.gg/wiki/World_of_Warcraft:_Forever\" target=\"_blank\" rel=\"noopener\">Warcraft Wiki</a> (CC BY-SA 4.0): skill levels of new Forever recipes.",
+      about_s6: "The WhippitPanel addon: tooltips, scan prices, names seen in game.",
+      about_legal: "Fan site, not affiliated with or endorsed by Blizzard Entertainment. World of Warcraft and Blizzard Entertainment are trademarks of Blizzard Entertainment, Inc.",
+      about_data: "Blizzard data older than 30 days is not kept.",
+      npc_gives: "Gives", npc_ends: "Ends", npc_none: "No data for this NPC.", npc_fail: "The NPC could not be loaded.",
+      npc_f_quest: "Quest giver", npc_f_vendor: "Vendor", npc_f_trainer: "Trainer", npc_f_flight: "Flight master", npc_f_inn: "Innkeeper", npc_f_bank: "Banker", npc_f_ah: "Auctioneer", npc_f_stable: "Stable master", npc_f_repair: "Repair",
       scan_at: "Updated %1 at %2", m_faction: "Faction", m_realm: "Realm type", home_tip: "Back to the start: all items, latest prices", on_ah: "%1 items on the auction house", market_label: "Market", search_btn: "Search", col_fav: "Fav",
       hist_loading: "Loading history…", hist_fail: "The history could not be loaded.", today: "today", item_n: "Item %1",
       copy_link: "Copy link", copied: "Link copied", star_add: "Watch this item", star_del: "Remove from my list", star_all: "All reagents to my list", star_all_del: "Remove reagents from my list", star_lbl_add: "Watch", star_lbl_on: "In my list",
@@ -2329,7 +2378,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   function selectQuest(id, scroll, inAr) {   // inAr: i Armorys högerpanel, med tillbaka till spelaren
     var q = QU && QU.quests[id];
     if (!q) return;
-    selQuest = id;
+    selQuest = id; npcSel = 0;
     if (!inAr) setHash("#quest=" + id);
     var trs = $("rows").children;
     for (var j = 0; j < trs.length; j++) { if (+trs[j].dataset.qid === id) trs[j].setAttribute("aria-selected", "true"); else trs[j].removeAttribute("aria-selected"); }
@@ -2360,7 +2409,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       "<div><h3>" + t("qm_where") + '</h3><div id="qmap" class="qmwrap"><div class="note">' + t("ar_loading") + "</div></div></div>" +
       (items ? "<div><h3>" + t("qu_rewards") + '</h3><div class="scroll"><table class="steps reag"><thead><tr><th></th><th style="text-align:left">' + t("col_item") + "</th><th>" + t("col_qty_s") + "</th><th>" + t("col_min") + "</th></tr></thead><tbody>" + quItems(q[9], false) + quItems(q[10], true) + "</tbody></table></div></div>" : "") +
       '<div><h3>' + t("qu_text") + '</h3><div class="qtext" id="qtext">' + t("ar_loading") + "</div></div>" +
-      '<div class="note"><a class="wh" href="https://www.wowhead.com/forever/quest=' + id + '" target="_blank" rel="noopener">' + t("qu_wowhead") + "</a> · " + t("qu_source") + "</div>";
+      '<div class="note"><a class="wh" href="https://www.wowhead.com/forever/quest=' + id + '" target="_blank" rel="noopener">' + t("qu_wowhead_q") + "</a></div>";   // källraden flyttad till About (Joakim 2026-11-18)
     quTextOf(id, function (tx) {
       var el = $("qtext"); if (!el || selQuest !== id) return;
       var fmt = function (s) { return esc(s || "").replace(/\{name\}/g, "&lt;name&gt;").replace(/\r?\n/g, "<br>"); };
@@ -2449,24 +2498,38 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
         var c = pcol(pp[0]);
         return '<polygon points="' + pp[2].map(function (q) { return q[0] + "," + q[1]; }).join(" ") + '" style="fill:' + c + ";stroke:" + c + '"/>';
       }).join("");
-      var mk = "", top = "";
+      var mk = "", top = "", paths = [], seenPath = {}, sKey = {}, eKey = {};
+      // Punkter där både ! och ? står (samma zon och x/y): ! flyttas strax till vänster, ? strax till höger (Joakim 2026-11-18).
       P.forEach(function (p) {
+        if (p.k !== "s" && p.k !== "e") return;
+        p.ents.forEach(function (e) { e[4].forEach(function (pt) { if (pt[0] === zs) (p.k === "s" ? sKey : eKey)[pt[1] + "," + pt[2]] = 1; }); });
+      });
+      P.forEach(function (p) {
+        var qe = p.k === "s" || p.k === "e";
         p.ents.forEach(function (e) {
+          // Gångvägar för vandrande NPC:er (e[6]) i målets färg, guld för givare och inlämnare (Joakim 2026-11-18).
+          (e[6] || []).forEach(function (gw, gi) {
+            var col = qe ? "#ffd100" : p.col, pk = e[0] + ":" + e[1] + "|" + col + "|" + gi;   // samma NPC som givare och inlämnare: en linje
+            if (gw[0] !== zs || !gw[1] || gw[1].length < 2 || seenPath[pk]) return;
+            seenPath[pk] = 1; paths.push({ pts: gw[1], col: col });
+          });
           e[4].forEach(function (pt) {
             if (pt[0] !== zs) return;
             var way = esc(qmWay(pt[0], pt[1], pt[2])), tip = esc(e[2] + " · " + pt[1] + ", " + pt[2] + " · " + t("qm_click_copy"));
-            var pos = "left:" + pt[1] + "%;top:" + pt[2] + "%";
-            if (p.k === "s" || p.k === "e") top += '<b class="qmq ' + p.k + '" style="' + pos + '" data-way="' + way + '" title="' + tip + '">' + (p.k === "s" ? "!" : "?") + "</b>";
+            var pos = "left:" + pt[1] + "%;top:" + pt[2] + "%", both = sKey[pt[1] + "," + pt[2]] && eKey[pt[1] + "," + pt[2]];
+            if (qe) top += '<b class="qmq ' + p.k + (both ? (p.k === "s" ? " l" : " r") : "") + '" style="' + pos + '" data-way="' + way + '" title="' + tip + '">' + (p.k === "s" ? "!" : "?") + "</b>";
             else mk += '<i class="qmk" style="' + pos + ";--c:" + p.col + '" data-way="' + way + '" title="' + tip + '"></i>';
           });
         });
       });
       h += '<div class="huzm qmap"><img src="' + huZUrl(zs) + '" alt="' + esc(zs) + '" width="1002" height="668" decoding="async">' +
-        qmTaxi(zs) + (svg ? '<svg class="qmpoly" viewBox="0 0 100 100" preserveAspectRatio="none">' + svg + "</svg>" : "") + mk + top + "</div>";
+        qmTaxi(zs) + (svg ? '<svg class="qmpoly" viewBox="0 0 100 100" preserveAspectRatio="none">' + svg + "</svg>" : "") + qmPaths(paths) + mk + top + "</div>";
     }
     var verb = { k: "qm_kill", u: "qm_use", i: "qm_get" };
     var line = function (e, chance) {
-      return "<li><span>" + esc(e[2]) + (e[0] === 2 ? ' <small class="dim">' + t("qm_vendor") + "</small>" : e[0] === 1 ? ' <small class="dim">' + t("qm_object") + "</small>" : "") +
+      // NPC-namnet (sort 0 och 2) öppnar NPC:n i högerrutan (Joakim 2026-11-18)
+      var nm = e[0] === 0 || e[0] === 2 ? '<a class="wh" href="#npc=' + e[1] + '" data-npc="' + e[1] + '">' + esc(e[2]) + "</a>" : esc(e[2]);
+      return "<li><span>" + nm + (e[0] === 2 ? ' <small class="dim">' + t("qm_vendor") + "</small>" : e[0] === 1 ? ' <small class="dim">' + t("qm_object") + "</small>" : "") +
         (chance && e[3] ? ' <span class="dim">' + e[3] + " %</span>" : "") + "</span>" + (e[4][0] ? qmChip(e[4][0], zs) : "") +
         e[5].map(function (x) { return ' <span class="tag v">' + esc(t("qm_inst", x[0])) + "</span>"; }).join("") + "</li>";
     };
@@ -2475,8 +2538,78 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       var head = '<i class="qmk in" style="--c:' + p.col + '"></i>' + t(p.k === "si" ? "qm_start_item" : verb[p.t]) + " <b>" + esc(p.name) + "</b>" + (p.cnt > 1 ? " ×" + p.cnt : "");
       var body = p.ents.length ? "<ul>" + p.ents.map(function (e) { return line(e, p.k === "si" || p.t === "i"); }).join("") + "</ul>" + (p.tot > p.ents.length ? '<div class="dim">' + t("qm_more", p.tot - p.ents.length) + "</div>" : "") : '<div class="dim">' + t("qm_nosrc") + "</div>";
       return '<li class="qmrow">' + head + body + "</li>";
-    }).join("") + "</ul>" + '<div class="note">' + t("qm_note") + "</div>";
+    }).join("") + "</ul>";   // förklaringsraden borta, koordinaterna har tooltip (Joakim 2026-11-18)
     return h;
+  }
+  // Gångvägar som streckade linjer med mörk kant (huRoute-stilen), en färg per linje: list = [{pts: [[x, y], ...], col}].
+  function qmPaths(list) {
+    if (!list.length) return "";
+    return '<svg class="qmpoly hurt" viewBox="0 0 100 100" preserveAspectRatio="none">' + list.map(function (g) {
+      var pl = g.pts.map(function (p) { return p[0] + "," + p[1]; }).join(" ");
+      return '<polyline class="bg" points="' + pl + '"/><polyline points="' + pl + '" style="stroke:' + g.col + '"/>';
+    }).join("") + "</svg>";
+  }
+
+  // ---- NPC-sidan (Joakim 2026-11-18): namnet i questkartans lista öppnar NPC:n i högerrutan, länk #npc=<id>.
+  // Data: npc/<id % 50>.json (hamta-questplatser.js) = [namn, titel, minLv, maxLv, rank, npcflags, [[zon, x, y, antal]],
+  // [[instans, antal]], gångvägar [[zon, [[x, y]...]]], [quests den ger], [quests den tar emot], displayId].
+  var NPCF = {}, npcSel = 0, npcCur = null, npcZone = "";
+  var NPC_FLAGS = [[2, "npc_f_quest"], [4, "npc_f_vendor"], [16, "npc_f_trainer"], [8, "npc_f_flight"], [128, "npc_f_inn"], [256, "npc_f_bank"], [4096, "npc_f_ah"], [8192, "npc_f_stable"], [16384, "npc_f_repair"]];
+  function npcLoad(id) {
+    var k = id % 50;
+    if (!NPCF[k]) NPCF[k] = fetch(DATA_BASE + "npc/" + k + ".json").then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+      .catch(function (e) { NPCF[k] = null; throw e; });   // fel: nästa försök hämtar igen
+    return Promise.all([NPCF[k], loadZmap(), qmIndex().catch(function () { return null; }), loadQuests().catch(function () { return null; })]).then(function (a) { return a[0][id] || null; });
+  }
+  function npcDetail(id) {
+    if (npcSel !== id) npcZone = "";
+    npcSel = id;
+    setHash("#npc=" + id);
+    $("detail").scrollTop = 0;
+    $("detail").innerHTML = '<div id="npcbox" style="display:contents"><div class="note">' + t("ar_loading") + "</div></div>";   // contents: rutans rutnät och strip-kanterna gäller
+    var put = function (html) { var el = $("npcbox"); if (el && npcSel === id) el.innerHTML = html; };
+    npcLoad(id).then(function (n) { npcCur = { id: id, n: n }; put(npcHtml(id, n)); }, function () { put('<div class="note">' + t("npc_fail") + "</div>"); });
+  }
+  function portraitHtml(disp, rare) {
+    if (!(disp > 0)) return "";
+    return '<div class="portr' + (rare ? " rare" : "") + '"><img src="https://render.worldofwarcraft.com/eu/npcs/zoom/creature-display-' + disp + '.jpg" alt="" loading="lazy" decoding="async" onerror="this.parentNode.remove()"></div>';
+  }
+  function npcHtml(id, n) {
+    if (!n) return '<div class="note">' + t("npc_none") + "</div>";
+    var lv = n[2] ? n[2] + (n[3] > n[2] ? "–" + n[3] : "") : "";
+    var roles = NPC_FLAGS.filter(function (f) { return n[5] & f[0]; }).map(function (f) { return "<span>" + t(f[1]) + "</span>"; }).join("");
+    var h = '<div class="strip"><button class="lnk" type="button" data-copyany="#npc=' + id + '" title="' + t("copy_link") + '">' + t("copy_link") + "</button>" +
+      "<h2>" + esc(n[0]) + (n[4] && HU_RANK[n[4]] ? ' <span class="tag el">' + HU_RANK[n[4]] + "</span>" : "") + "</h2><small>" +
+      [n[1] ? "&lt;" + esc(n[1]) + "&gt;" : "", lv ? t("col_lvl") + " " + lv : ""].filter(Boolean).join(" · ") + "</small></div>" + portraitHtml(n[11], n[4] === 2 || n[4] === 4) +
+      (roles ? '<div class="huab">' + roles + "</div>" : "");
+    // Kartan: zonerna med kartbild (platser och gångvägar), flest platser först, flikar när de är flera.
+    var cnt = {}, add = function (z, w) { if (huHasZ(z)) cnt[z] = (cnt[z] || 0) + w; };
+    (n[6] || []).forEach(function (p) { add(p[0], 1); });
+    (n[8] || []).forEach(function (g) { add(g[0], 1); });
+    var zones = Object.keys(cnt).sort(function (a, b) { return cnt[b] - cnt[a] || a.localeCompare(b); });
+    var zs = zones.indexOf(npcZone) >= 0 ? npcZone : zones[0] || "";
+    if (zs) {
+      var pts = (n[6] || []).filter(function (p) { return p[0] === zs; });
+      var dots = pts.map(function (p) {
+        return '<i class="qmk" style="left:' + p[1] + "%;top:" + p[2] + '%;--c:#ffd100" data-way="' + esc(qmWay(p[0], p[1], p[2])) + '" title="' + esc(n[0] + " · " + p[1] + ", " + p[2] + " · " + t("qm_click_copy")) + '"></i>';
+      }).join("");
+      var paths = (n[8] || []).filter(function (g) { return g[0] === zs && g[1] && g[1].length > 1; }).map(function (g) { return { pts: g[1], col: "#ffd100" }; });
+      h += "<div>" + (zones.length > 1 ? '<div class="huchips">' + zones.map(function (z) { return '<button type="button" class="huchip' + (z === zs ? " on" : "") + '" data-npcz="' + esc(z) + '" aria-pressed="' + (z === zs) + '">' + esc(z) + "</button>"; }).join("") + "</div>" : "") +
+        '<div class="huzm qmap"><img src="' + huZUrl(zs) + '" alt="' + esc(zs) + '" width="1002" height="668" decoding="async">' + qmTaxi(zs) + qmPaths(paths) + dots + "</div>" +
+        (pts.length ? '<div class="huchips">' + pts.slice(0, 12).map(function (p) { return qmChip(p, zs); }).join("") + (pts.length > 12 ? ' <span class="dim">' + t("qm_more", pts.length - 12) + "</span>" : "") + "</div>" : "") + "</div>";
+    }
+    if ((n[7] || []).length) h += '<div class="huab">' + n[7].map(function (x) { return '<span class="u">' + esc(t("qm_inst", x[0])) + "</span>"; }).join("") + "</div>";
+    // Quests: ger och tar emot, med nivå och bock för vald spelare.
+    var ql = function (ids) {
+      return ids.filter(function (q) { return QU && QU.quests[q]; }).map(function (q) {
+        var x = QU.quests[q];
+        return '<li><a class="wh" href="#quest=' + q + '" data-goquest="' + q + '"><span class="dim">[' + (x[2] ? (x[4] ? "~" : "") + x[2] : "?") + "]</span> " + esc(x[0]) + "</a>" + (quDone(q) ? ' <span class="qok">✓</span>' : "") + "</li>";
+      }).join("");
+    };
+    var gives = ql(n[9] || []), ends = ql(n[10] || []);
+    if (gives) h += "<div><h3>" + t("npc_gives") + '</h3><ul class="huwhere">' + gives + "</ul></div>";
+    if (ends) h += "<div><h3>" + t("npc_ends") + '</h3><ul class="huwhere">' + ends + "</ul></div>";
+    return h + '<div class="note"><a class="wh" href="https://www.wowhead.com/forever/npc=' + id + '" target="_blank" rel="noopener">' + t("qu_wowhead") + "</a></div>";
   }
   // Översiktskarta: items = [{id, a}] där a = "s" (kan tas: gult !), "d" (klar: grått !), "o" (pågående: målet ● och ?).
   function qmOverview(items, zoneSel) {
@@ -2645,9 +2778,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       "<div><dt>" + t("dg_players") + "</dt><dd>" + d.players + "</dd></div><div><dt>" + t("dg_onah") + "</dt><dd>" + ah + "</dd></div>" +
       '<div class="wide"><dt>' + t("dg_logged") + "</dt><dd>" + t("dg_logged_n", d.bosses.filter(function (b) { return FL[b.id]; }).length, d.bosses.length) + "</dd></div></dl>" +
       '<div id="dgmap"></div>' +
-      "<div><h3>" + t("dg_bosses") + '</h3><ol class="bosslist">' + d.bosses.map(function (b) { return "<li>" + esc(b.name) + ' <span class="dim">' + (b.lvl ? t("dg_boss_lvl", b.lvl) : "") + "</span></li>"; }).join("") + "</ol></div>" +
-      (AL ? '<div class="note">' + t("dg_al_src") + ' <a class="wh" href="' + esc(AL.url) + '" target="_blank" rel="noopener">AtlasLoot Classic Forever</a> (' + esc(AL.license) + ")</div>" : "") +
-      '<div class="note">' + t(d.forever ? "dg_source_fv" : "dg_source") + "</div>";
+      "<div><h3>" + t("dg_bosses") + '</h3><ol class="bosslist">' + d.bosses.map(function (b) { return "<li>" + esc(b.name) + ' <span class="dim">' + (b.lvl ? t("dg_boss_lvl", b.lvl) : "") + "</span></li>"; }).join("") + "</ol></div>";   // källraderna (AtlasLoot, Classic-databasen) flyttade till About (Joakim 2026-11-18)
     var dmap = d.map;
     qmIndex().then(function () {
       var el = $("dgmap"), L = QMIX.dg && QMIX.dg[dmap];
@@ -2662,7 +2793,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     }).catch(function () {});
   }
   function dgItemDetail(id) {   // föremål som inte finns på AH: bara fakta och var det droppar
-    var m = DG.items[id] || (FLN[id] ? [FLN[id][0], FLN[id][1], 0, 0] : ["Item " + id, -1, 0, 0]), from = [], fv = false;
+    var m = DG.items[id] || (FLN[id] ? [FLN[id][0], FLN[id][1], 0, 0] : ["Item " + id, -1, 0, 0]), from = [];
     dgList.forEach(function (d) {
       d.bosses.forEach(function (b) {
         var ch = null, fl = FL[b.id];
@@ -2670,7 +2801,6 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
         if (ch == null && fl && fl.items[id]) { var den = fl.loots || fl.kills; ch = den ? Math.round(fl.items[id][0] / den * 1000) / 10 + "%" : ""; }
         if (ch == null && (b.al || []).indexOf(id) >= 0) ch = "";
         if (ch == null) return;
-        if (d.forever) fv = true;
         from.push(esc(b.name) + ' <span class="dim">' + (ch ? ch + " · " : "") + esc(d.name) + "</span>");
       });
     });
@@ -2680,7 +2810,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     $("detail").innerHTML = '<div class="strip"><h2 class="' + qcls(m[1]) + '">' + esc(m[0]) + "</h2><small>" + t("qu_notah_long") + "</small></div>" +
       (m[2] || m[3] ? '<dl class="facts">' + (m[2] ? "<div><dt>" + t("dg_ilvl") + "</dt><dd>" + m[2] + "</dd></div>" : "") + (m[3] ? "<div><dt>" + t("qu_req") + "</dt><dd>" + m[3] + "</dd></div>" : "") + "</dl>" : "") +
       (from.length ? "<div><h3>" + t("dg_dropsfrom") + '</h3><div class="srcs1">' + from.join("<br>") + "</div></div>" : "") +
-      '<div class="note"><a class="wh" href="https://www.wowhead.com/forever/item=' + id + '" target="_blank" rel="noopener">' + t("qu_wowhead") + "</a> · " + t(fv ? "dg_source_fv" : "dg_source") + "</div>";
+      '<div class="note"><a class="wh" href="https://www.wowhead.com/forever/item=' + id + '" target="_blank" rel="noopener">' + t("qu_wowhead") + "</a></div>";   // källan i About (Joakim 2026-11-18)
   }
   function drawCats() {
     if (mode === "qu") { $("cats").innerHTML = QU ? quCats() : ""; $("cats").hidden = false; return; }
@@ -2793,11 +2923,11 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     drawWatch();
     var hp0 = hashParams();
     // En länk bestämmer fliken (annars den som sparats): #quest, #dungeon, #player/#guild, #recipe, #item.
-    var hm = hp0.de ? "de" : hp0.col ? "co" : hp0.beast ? "hu" : hp0.quest ? "qu" : hp0.dungeon ? "dg" : hp0.player || hp0.guild || hp0.top ? "ar" : hp0.recipe ? "cr" : hp0.item ? "ah" : "";
+    var hm = hp0.de ? "de" : hp0.col ? "co" : hp0.beast ? "hu" : hp0.quest || hp0.npc ? "qu" : hp0.dungeon ? "dg" : hp0.player || hp0.guild || hp0.top ? "ar" : hp0.recipe ? "cr" : hp0.item ? "ah" : "";
     var wantI = byId[+hp0.item];
     if (hm && !keep && mode !== hm && !(hm === "ah" && mode === "tr" && (!wantI || (!wantI.gear && wantI.qty >= TR_MIN)))) { if (fromNav) resetModeState(hm); mode = hm; drawCats(); refresh(); }   // trädet ritades för den sparade fliken
     // keep (ny scan eller annan marknad): lägesvyerna visar inte "Loading" och rullar inte upp, de ritar om listan (granskning 2026-11-18)
-    if (mode === "qu" || (!keep && hp0.quest)) { mode = "qu"; if (!keep) { sortKey = "lvl"; sortDir = 1; } $("q").placeholder = t("search_qu"); quStart(+hp0.quest || (keep ? selQuest : 0), false, keep); return; }
+    if (mode === "qu" || (!keep && (hp0.quest || hp0.npc))) { mode = "qu"; if (!keep) { sortKey = "lvl"; sortDir = 1; } $("q").placeholder = t("search_qu"); quStart(+hp0.quest || (keep ? selQuest : 0), false, keep, +hp0.npc || 0); return; }   // #npc: Quests-läget, NPC:n i högerrutan (Joakim 2026-11-18)
     if (mode === "de" || (!keep && hp0.de)) { mode = "de"; if (!keep) { sortKey = "profit"; sortDir = -1; } $("q").placeholder = t("search_ph"); deStart(+hp0.de || (keep ? deSel : 0), keep); return; }
     if (mode === "co" || (!keep && hp0.col)) { mode = "co"; if (!keep) { sortKey = "name"; sortDir = 1; } $("q").placeholder = t("search_co"); coStart(hp0.col || (keep ? coSel : ""), keep); return; }
     if (mode === "hu" || (!keep && hp0.beast)) { mode = "hu"; if (!keep) { sortKey = "lvl"; sortDir = huLvl ? -1 : 1; } $("q").placeholder = t("search_hu"); huStart(+hp0.beast || (keep ? huSel : 0), keep); return; }
@@ -3303,8 +3433,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       '<dl class="facts">' + facts + "</dl>" +
       (r.miss ? '<div class="note">' + t("missing_n", r.miss) + "</div>" : "") + (!r.sell ? '<div class="note">' + t("not_on_ah") + "</div>" : "") +
       '<div><div class="h3row"><h3>' + t("reagents") + "</h3>" + starAll + '</div><div class="scroll"><table class="steps reag"><thead><tr><th></th><th style="text-align:left">' + t("reagents") + "</th><th>" + t("col_qty_s") + "</th><th>" + t("col_each") + "</th><th>" + t("col_total") + "</th></tr></thead><tbody>" + reag + "</tbody></table></div></div>" +
-      "<div><h3>" + t(onlyDrop ? "src_h_drop" : "src_h") + "</h3>" + (srcs ? '<dl class="srcs">' + srcs + "</dl>" : '<div class="note">' + t("src_none") + "</div>") + "</div>" +
-      '<div class="note">' + t("cr_source") + "</div>";
+      "<div><h3>" + t(onlyDrop ? "src_h_drop" : "src_h") + "</h3>" + (srcs ? '<dl class="srcs">' + srcs + "</dl>" : '<div class="note">' + t("src_none") + "</div>") + "</div>";   // källorna står i About
   }
   function selectRecipe(rid, scroll) {
     var r = null;
@@ -3383,6 +3512,9 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
 
   // En lyssnare för hela sidan: flaggorna, stjärnan (håll koll / ta bort) och radklicket.
   document.addEventListener("click", function (e) {
+    // About (Joakim 2026-11-18): länken i foten öppnar, klick utanför rutan stänger
+    if (e.target.closest("[data-about]")) { e.preventDefault(); aboutOpen(); return; }
+    if (e.target.closest(".about")) { if (!e.target.closest(".aboutbox") || e.target.closest("[data-aboutx]")) aboutClose(); return; }
     var rg = e.target.closest("[data-range]");
     if (rg) {
       rangeKey = rg.getAttribute("data-range");
@@ -3407,6 +3539,11 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     if (wy) { e.preventDefault(); qmCopy(wy.dataset.way); return; }
     var qmz = e.target.closest("[data-qmz]");
     if (qmz && qmCur) { qmZone = qmz.dataset.qmz; var qme = $("qmap"); if (qme) qme.innerHTML = qmHtml(qmCur.id, qmCur.r); return; }
+    // NPC-sidan (Joakim 2026-11-18): namnet i questkartans lista, zonflikarna på NPC:ns karta
+    var npl = e.target.closest("[data-npc]");
+    if (npl) { e.preventDefault(); huZBigClose(); if (qmOv) { qmOv = false; if (mode === "qu") drawCats(); } showTab("item"); npcDetail(+npl.dataset.npc); return; }
+    var npz = e.target.closest("[data-npcz]");
+    if (npz && npcCur && npcCur.id === npcSel) { npcZone = npz.dataset.npcz; var npb = $("npcbox"); if (npb) npb.innerHTML = npcHtml(npcCur.id, npcCur.n); return; }
     var qmoz = e.target.closest("[data-qmoz]");
     if (qmoz) { qmOvZone = qmoz.dataset.qmoz; if (mode === "qu" && qmOv) qmOvView(); else if (mode === "ar" && arQMap && arData) qmArView(arData); return; }
     if (e.target.closest("[data-qmov]") && mode === "qu" && QU) { qmOv = !qmOv; drawCats(); if (qmOv) { showTab("item"); qmOvView(); } else if (selQuest) selectQuest(selQuest, false); return; }
@@ -3611,6 +3748,10 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     if (tnb && talPlan) { e.preventDefault(); talClick(+tnb.dataset.tal, true); }
   });
   $("tabWatch").addEventListener("click", function () { showTab("watch"); });
+  // Tillbaka/Framåt-raden (Joakim 2026-11-18): samma steg som mus 4/5, popstate ritar om sidan och raden
+  $("navBack").addEventListener("click", function () { if (navPos > navStart) history.back(); });
+  $("navFwd").addEventListener("click", function () { if (navPos < navMax) history.forward(); });
+  navDraw();
   document.addEventListener("keydown", function (e) {
     if (e.key !== "Enter" && e.key !== " ") return;
     if (e.target.tagName === "TR" && !e.target.dataset.id && (e.target.dataset.qid || e.target.dataset.rid || e.target.dataset.dgi || e.target.dataset.arrec || e.target.dataset.hu || e.target.dataset.co || e.target.dataset.de)) { e.preventDefault(); e.target.click(); return; }
@@ -3649,13 +3790,15 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   });
   // keep: ny data i samma läge (granskning 2026-11-18): ingen "Loading", ingen rullning upp, ingen flikväxling; questet
   // ritas om med de nya priserna, kartöversikten ligger kvar om den är öppen.
-  function quStart(want, restore, keep) {
+  function quStart(want, restore, keep, npc) {   // npc: #npc=<id>, NPC:n i högerrutan i stället för ett quest (Joakim 2026-11-18)
     if (!keep) $("detail").innerHTML = '<div class="note">' + t("ar_loading") + "</div>";
     var saved = ""; try { saved = localStorage.getItem(QU_PKEY) || ""; } catch (e) {}
+    if (npc && !keep) qmOv = false;
     Promise.all([loadQuests(), loadXIcons(), loadDungeons().catch(function () {})]).then(function () {
       if (mode !== "qu") return;
       drawCats(); refresh(); if (!keep) toTop();
       if (saved && !quPlayer) setQuPlayer(saved);
+      if (npc) { if (!keep) { npcDetail(npc); showTab("item"); } return; }   // ny data: NPC-rutan har inga priser och ligger kvar
       if (keep && qmOv) return;
       if (want && QU.quests[want] && (!restore || view.some(function (r) { return r.qid === want; }))) { selectQuest(want, !restore && !keep); if (!restore && !keep) showTab("item"); } else if (view[0]) selectQuest(view[0].qid, false);
     }).catch(function () { if (mode === "qu") $("detail").innerHTML = '<div class="note">' + t("qu_fail") + "</div>"; });
@@ -3785,7 +3928,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       (b.inst || []).map(function (x) { return "<li><b>" + esc(x[0]) + '</b> <span class="dim">' + t("hu_inst") + "</span></li>"; }).join("");
     $("detail").scrollTop = 0;
     $("detail").innerHTML = '<div class="strip"><button class="lnk" type="button" data-copyany="#beast=' + b.id + '" title="' + t("copy_link") + '">' + t("copy_link") + "</button>" +
-      '<h2 class="' + (rare ? "hurn" : b.rank === 1 ? "q2" : "q1") + '"><img class="ci' + (rare ? " rare" : "") + '" src="' + huFamIcon(b.fam) + '" alt=""> ' + esc(b.name) + "</h2><small>" + esc(b.family) + " · " + t("col_lvl") + " " + b.min + (b.max > b.min ? "–" + b.max : "") + (b.rank ? " · " + HU_RANK[b.rank] : "") + "</small></div>" +
+      '<h2 class="' + (rare ? "hurn" : b.rank === 1 ? "q2" : "q1") + '"><img class="ci' + (rare ? " rare" : "") + '" src="' + huFamIcon(b.fam) + '" alt=""> ' + esc(b.name) + "</h2><small>" + esc(b.family) + " · " + t("col_lvl") + " " + b.min + (b.max > b.min ? "–" + b.max : "") + (b.rank ? " · " + HU_RANK[b.rank] : "") + "</small></div>" + portraitHtml(b.disp, rare) +
       '<dl class="facts"><div><dt>' + t("hu_col_role") + '</dt><dd><span class="hurole r-' + (f.role || "") + '">' + t("hu_r_" + (f.role || "allround")) + "</span></dd></div>" +
       "<div><dt>" + t("hu_col_speed") + "</dt><dd" + (b.speed <= 1.5 ? ' class="pos"' : "") + ">" + b.speed.toFixed(1) + " s</dd></div>" +
       "<div><dt>" + t("hu_hp") + "</dt><dd>" + pc(f.hp || 1) + "</dd></div><div><dt>" + t("hu_dmg") + "</dt><dd>" + pc(f.dmg || 1) + "</dd></div><div><dt>" + t("hu_armor") + "</dt><dd>" + pc(f.armor || 1) + "</dd></div>" +
@@ -3795,8 +3938,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       (b.uses && b.uses.length ? "<div><h3>" + t("hu_uses") + '</h3><div class="huab">' + b.uses.map(function (a) { return '<span class="u">' + esc(a) + "</span>"; }).join("") + "</div></div>" : "") +
       "<div><h3>" + t("hu_where") + "</h3>" + (where ? '<ul class="huwhere">' + where + "</ul>" : hasPts ? "" : '<div class="note">' + t(HU.zonesFromGame ? "hu_nowhere" : "hu_zone_wait_long") + "</div>") +
       (zmap ? '<div class="huzwrap">' + zmap + "</div>" : "") +
-      (hasPts ? '<div class="humap sm"><canvas></canvas><div class="humaptip" hidden></div></div>' : "") + '<div class="dim">' + t("hu_spawns", b.spawns) + (hasPts && !HU.zonesFromGame ? " · " + t("hu_zone_wait_short") : "") + "</div></div>" +
-      '<div class="note">' + t("hu_src") + "</div>";
+      (hasPts ? '<div class="humap sm"><canvas></canvas><div class="humaptip" hidden></div></div>' : "") + '<div class="dim">' + t("hu_spawns", b.spawns) + (hasPts && !HU.zonesFromGame ? " · " + t("hu_zone_wait_short") : "") + "</div></div>";   // källraden i About (Joakim 2026-11-18)
     if (hasPts) huBeastMap(b);
   }
   // Karta (Joakim 2026-11-17: "silverram och en karta över var de står"). Kontinentens form ur databasens alla spawns
@@ -3946,7 +4088,23 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     document.body.appendChild(o);
   }
   function huZBigClose() { var o = document.querySelector(".huzbig"); if (o) o.remove(); }
-  document.addEventListener("keydown", function (e) { if (e.key === "Escape") huZBigClose(); });
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape") { huZBigClose(); aboutClose(); } });
+  // About (Joakim 2026-11-18): källor, det juridiska och hur länge data sparas, i en ruta mitt på sidan. Länken i foten
+  // eller #about öppnar, klick utanför eller Esc stänger.
+  function aboutOpen() {
+    if (document.querySelector(".about")) return;
+    var o = document.createElement("div");
+    o.className = "about";
+    o.innerHTML = '<div class="aboutbox" role="dialog" aria-modal="true" aria-labelledby="aboutH" tabindex="-1">' +
+      '<button class="lnk aboutx" type="button" data-aboutx="1" aria-label="' + t("about_close") + '">✕</button>' +
+      '<h2 id="aboutH">' + t("about") + "</h2>" +
+      "<h3>" + t("about_src_h") + "</h3><ul>" + ["about_s1", "about_s2", "about_s3", "about_s4", "about_s5", "about_s6"].map(function (k) { return "<li>" + t(k) + "</li>"; }).join("") + "</ul>" +
+      "<h3>" + t("about_legal_h") + "</h3><p>" + t("about_legal") + "</p>" +
+      "<h3>" + t("about_data_h") + "</h3><p>" + t("about_data") + "</p></div>";
+    document.body.appendChild(o);
+    o.firstChild.focus();
+  }
+  function aboutClose() { var o = document.querySelector(".about"); if (o) o.remove(); }
   document.addEventListener("change", function (e) {
     if (!e.target.matches || !e.target.matches("[data-qmozsel]") || !e.target.value) return;
     qmOvZone = e.target.value;
@@ -4336,7 +4494,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
       (it ? "<div><h3>" + t("co_item") + '</h3><div class="coitem"><span class="' + qcls(it.q) + '"' + (r ? ' data-tip="' + it.id + '"' : "") + ">" + esc(it.name) + "</span>" + (r ? ' <button class="lnk" type="button" data-upgo="' + it.id + '">' + t("co_open_ah") + "</button>" : "") + "</div></div>" : "") +
       (src ? "<div><h3>" + t("co_where") + '</h3><ul class="huwhere">' + src + "</ul></div>" : '<div class="note">' + t(sk === "forever" ? "co_forever" : "co_nosrc") + "</div>") +
       (x.desc && f.kind !== "titles" ? '<div class="note">' + esc(x.desc) + "</div>" : "") +
-      '<div class="note">' + t("co_src_note") + "</div>";
+      '<div class="note">' + t("co_place") + "</div>";   // källorna i About, kvar: hur platsen väljs (Joakim 2026-11-18)
   }
   function coStart(want, keep) {   // keep: ny data, ingen "Loading"/rullning/flikväxling (granskning 2026-11-18)
     if (!keep) $("detail").innerHTML = '<div class="note">' + t("ar_loading") + "</div>";
@@ -4457,6 +4615,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     query = $("q").value.trim().toLowerCase(); refresh(); $("q").blur();
   });
   $("q").addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); $("qbtn").click(); } });
+  if (location.hash === "#about") aboutOpen();   // länk direkt till About (Joakim 2026-11-18)
   var tok0 = ++dataSeq, house0 = house;
   fetch(dataUrl()).then(function (r) {
     if (!r.ok) throw new Error(r.status);
