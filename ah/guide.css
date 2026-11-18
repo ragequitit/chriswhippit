@@ -1,0 +1,15 @@
+:root{--bg:#120d09;--card:#1d1610;--line:#3a2d1e;--gold:#f0c040;--fg:#e8dcc2;--grey:#9a8f7c}
+body{margin:0;background:var(--bg) radial-gradient(ellipse at top,#2a1d12,#120d09 60%) fixed;color:var(--fg);font:15px/1.55 system-ui,Segoe UI,sans-serif}
+main{max-width:860px;margin:0 auto;padding:16px}a{color:var(--gold);text-decoration:none}a:hover{text-decoration:underline}
+nav.crumb{font-size:13px;color:var(--grey)}h1{font-family:Georgia,serif;color:var(--gold);margin:6px 0 2px;font-size:28px}
+.sub{color:var(--grey);margin-bottom:12px}.card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:12px 14px;margin:12px 0}
+h2{font-family:Georgia,serif;color:var(--gold);font-size:17px;margin:0 0 6px}ul{margin:4px 0;padding-left:20px}code{color:var(--gold);background:#0c0907;border:1px solid var(--line);border-radius:8px;padding:0 6px;font-size:13px}
+.facts{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:14px}.facts b{color:var(--grey);font-weight:400}
+.map{position:relative;line-height:0;border:1px solid var(--line);border-radius:6px;overflow:hidden;margin:8px 0}.map img{width:100%;height:auto}
+.map svg{position:absolute;inset:0;width:100%;height:100%}.map polyline{fill:none;stroke:#f2f6fa;stroke-width:2;stroke-dasharray:6 4;vector-effect:non-scaling-stroke}
+.map .d{position:absolute;width:10px;height:10px;margin:-6px 0 0 -6px;border-radius:50%;border:1px solid #000;background:#ff6b5a;font-style:normal}
+.map .d.q{width:auto;height:auto;margin:0;transform:translate(-50%,-60%);border:0;background:none;color:#ffd100;font:900 22px/1 Georgia,serif;text-shadow:0 0 3px #000,1px 1px 0 #000}
+.map .d.q.l{transform:translate(-115%,-60%)}.map .d.q.r{transform:translate(15%,-60%)}.map .d.n{background:#ffd84a}
+.btn{display:inline-block;background:linear-gradient(#7a1c12,#4a0f09);border:1px solid #b8862b;color:#ffd100;border-radius:6px;padding:8px 14px;font-weight:600;margin:6px 0}
+.portr{float:right;width:150px;height:150px;border-radius:8px;overflow:hidden;border:1px solid var(--line);margin:0 0 8px 12px;background:#0e0b08}.portr img{width:100%;height:100%;object-fit:cover;transform:scale(1.35)}
+.text{white-space:pre-line}.dim{color:var(--grey)}footer{color:var(--grey);font-size:12px;margin:24px 0}

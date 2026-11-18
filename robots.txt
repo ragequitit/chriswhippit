@@ -23,3 +23,4 @@ Disallow: /*/mediakit/
 Disallow: /*/blogg/
 
 Sitemap: https://www.chriswhippit.com/sitemap.xml
+Sitemap: https://www.chriswhippit.com/ah/sitemap.xml
