@@ -793,7 +793,35 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
 .appseg button:hover { color: var(--fg); background: var(--hover); }
 .appseg button[aria-checked=true] { color: #fff6e6; background: var(--btn-a); box-shadow: inset 0 -2px 0 var(--edge); }
 .appseg button:focus-visible { outline: 2px solid var(--edge); outline-offset: 1px; }
-.t-atlas, .alogo, .mode .ai, .sect { display: none; }
+.t-atlas, .alogo { display: none; }
+/* ===== Flikraden i båda stilarna (Joakim 2026-11-18: Original ska ha Atlas layout – stora ikoner, tydliga flikar,
+   sökningen under flikarna). Färgerna här är Originals; Atlas skriver över dem längre ner. ===== */
+.bar { padding: 0 18px 12px; row-gap: 14px; }
+.mode { order: -1; flex: 1 0 100%; display: flex; max-width: none; overflow: visible; margin: 0 -18px; padding: 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); background: #17120F; }
+.mode button { box-sizing: border-box; flex: 1 1 0; justify-content: center; height: 56px; padding: 0 10px; gap: 8px; margin: 0; font-size: 15px; font-weight: 600; color: var(--fg);
+  border-left: 1px solid var(--line); background: linear-gradient(#1F1813, #161210); box-shadow: inset 0 1px 0 rgba(255, 255, 255, .04); }
+.mode button:first-child { border-left: 0; }
+.mode .mi { display: none; }
+.mode .ai { display: block; width: 44px; height: 44px; object-fit: contain; margin: -4px 0; filter: drop-shadow(0 2px 2px rgba(0, 0, 0, .45)); }
+.mode .ai:not([src]) { visibility: hidden; }
+.mode button:hover { background: linear-gradient(#2B2119, #1E1712); }
+.mode button[aria-pressed=true] { color: var(--edge); background: linear-gradient(#3B2B1B, #241A12); box-shadow: inset 0 -3px 0 var(--edge), inset 0 -8px 16px rgba(246, 196, 72, .08); }
+.mode button:focus-visible { outline: 2px solid var(--edge); outline-offset: -2px; }
+.sect { display: block; order: 0; margin: 0 8px 0 0; font: 600 26px/1.1 var(--display); color: var(--gold); white-space: nowrap; }
+.bar #q { order: 1; flex: 0 1 640px; height: 40px; }
+.bar #qbtn { order: 2; }
+.bar .count { order: 3; margin-left: auto; }
+@media (max-width: 1180px) {
+  .mode { justify-content: flex-start; overflow-x: auto; scrollbar-width: none; gap: 2px; }
+  .mode button { padding: 0 10px; gap: 6px; font-size: 13.5px; white-space: nowrap; flex: 1 0 auto; height: 56px; }
+  .mode .ai { width: 36px; height: 36px; margin: -2px 0; }
+}
+@media (max-width: 760px) {
+  .mode button { height: 48px; }
+  .mode .ai { width: 34px; height: 34px; }
+  .sect { font-size: 22px; flex: 1 0 100%; }
+  .bar #q { flex: 1 1 100%; }
+}
 
 /* ===== Azeroth Atlas ===== */
 :root[data-appearance=atlas] {
@@ -1001,8 +1029,8 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
     if (v === "atlas") document.documentElement.setAttribute("data-appearance", "atlas"); else document.documentElement.removeAttribute("data-appearance");
     if (save) { try { localStorage.setItem(APP_KEY, v); } catch (e) { /* gäller tills sidan stängs */ } }
     Array.prototype.forEach.call(document.querySelectorAll("[data-app]"), function (b) { var on = b.getAttribute("data-app") === v; b.setAttribute("aria-checked", on ? "true" : "false"); b.tabIndex = on ? 0 : -1; });
-    if (v === "atlas" && ASSET_BASE) {   // Atlas-bilderna hämtas först när Atlas används
-      if (!$("alogo").src) $("alogo").src = ASSET_BASE + "icons/logo-atlas-book.png";
+    if (ASSET_BASE) {   // flikbilderna i båda stilarna, boken bara i Atlas
+      if (v === "atlas" && !$("alogo").src) $("alogo").src = ASSET_BASE + "icons/logo-atlas-book.png";
       Array.prototype.forEach.call(document.querySelectorAll("img[data-ai]"), function (im) { if (!im.src) im.src = ASSET_BASE + "icons/" + im.getAttribute("data-ai") + ".png"; });
     }
     applyPanorama(document.body.classList.contains("fa-alliance") ? "alliance" : "horde");
