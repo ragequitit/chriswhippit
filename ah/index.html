@@ -284,7 +284,10 @@ h1 { font-family: var(--display); font-weight: 500; font-size: 36px; margin: 0; 
 .qmtx { position: absolute; z-index: 2; transform: translate(-50%, -50%); font: 700 11px/1 system-ui, sans-serif; width: 15px; height: 15px; display: grid; place-items: center;
   border-radius: 4px; border: 1px solid #000; cursor: copy; box-shadow: 0 0 4px rgba(0, 0, 0, .8); color: #fff; }
 .portr { height: 230px; border-radius: 6px; overflow: hidden; border: 1px solid var(--edge); background: radial-gradient(ellipse at 50% 60%, #2a2219, #0e0b08 70%); box-shadow: inset 0 0 30px rgba(0, 0, 0, .7); }
-.portr img { display: block; width: 100%; height: 100%; object-fit: contain; mix-blend-mode: lighten; -webkit-mask-image: radial-gradient(closest-side, #000 72%, transparent 100%); mask-image: radial-gradient(closest-side, #000 72%, transparent 100%); }   /* hela bilden: kvadratisk med djuret i mitten (Joakim 2026-11-18: beskuren slättlöpare) */
+.portr img { display: block; width: 100%; height: 100%; object-fit: contain; filter: brightness(1.3) contrast(1.08) saturate(1.1); }
+/* Bilden (Joakim 2026-11-18: "syns EXTREMT dåligt"): Blizzards porträtt har platt bakgrund #181818 – rutan får samma
+   färg (×1,3 som bilden), så ingen blandning eller toning äter upp mörka djur och vingar. 3D-läget har egen bakgrund. */
+.portr:not(.on3d) { background: #1f1f1f; }   /* hela bilden: kvadratisk med djuret i mitten (Joakim 2026-11-18: beskuren slättlöpare) */
 .portr { position: relative; }
 .portr canvas { position: absolute; inset: 0; width: 100% !important; height: 100% !important; display: block; cursor: grab; touch-action: pan-y; }
 .portr canvas:active { cursor: grabbing; }
@@ -876,7 +879,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
 [data-appearance=atlas] .cat[aria-pressed=true] { background: linear-gradient(#1C4850, #18343F); box-shadow: inset 0 0 0 1px rgba(67, 218, 209, .25); color: #F4FBFA; }
 [data-appearance=atlas] .strip { background: linear-gradient(90deg, rgba(67, 218, 209, .13), rgba(67, 218, 209, .02)); }
 [data-appearance=atlas] .exp td { border-bottom-color: rgba(67, 218, 209, .35); }
-[data-appearance=atlas] .portr { background: radial-gradient(ellipse at 50% 60%, #1E2E3C, #0A1018 70%); }
+[data-appearance=atlas] .portr.on3d { background: radial-gradient(ellipse at 50% 60%, #1E2E3C, #0A1018 70%); }
 [data-appearance=atlas] .p3d { color: #CFF6F3; background: rgba(10, 18, 26, .8); border-color: #3F6C78; }
 [data-appearance=atlas] .p3d:hover { color: #fff; border-color: var(--edge); }
 [data-appearance=atlas] .ttree { background: radial-gradient(ellipse at top, rgba(67, 140, 160, .16), rgba(0, 0, 0, .35)); }
@@ -2801,7 +2804,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   // 3D (Joakim 2026-11-18: "3D-modellerna på djuren"): modellen från spelklienten via wow.export (modeller/krymp.js,
   // assets/models/<displayId>.glb, bara Stand-animationen). three.js laddas från jsDelivr först vid första klick. En visare
   // åt gången; den stängs när rutan byts ut. Valet (3D eller bild) sparas så nästa djur öppnas likadant.
-  var M3 = { lib: null, cur: null, KEY: "ah3d" };
+  var M3 = { lib: null, cur: null, KEY: "ah3d2" };   // ny nyckel 2026-11-18: alla börjar i 3D igen (bilderna syns sämre)
   // 3D är standard (Joakim 2026-11-18: bilderna är olika inramade, platta djur blir pyttesmå); "Picture" sparas som val.
   function m3Pref() { try { return localStorage.getItem(M3.KEY) !== "0"; } catch (e) { return true; } }
   function m3SetPref(on) { try { localStorage.setItem(M3.KEY, on ? "1" : "0"); } catch (e) {} }
