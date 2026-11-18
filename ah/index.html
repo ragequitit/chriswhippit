@@ -5125,11 +5125,11 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
       h += '<div class="huchips">' + fchip("n", t("lb_fish_n")) + (fhas[1] ? fchip("k", t("lb_fish_k")) : "") + (fhas[2] ? fchip("s", t("lb_fish_s")) : "") + "</div>";
       var fi = lbFish === "n" ? 0 : lbFish === "k" ? 1 : 2;
       var fp = KAT.players.filter(function (p) { return faOk(p) && p.fish && p.fish[fi] > 0; }).sort(function (a, b) { return b.fish[fi] - a.fish[fi] || b.fish[0] - a.fish[0]; }).slice(0, 100);
-      h += '<table class="lbt"><thead><tr><th>#</th><th class="nm">' + t("lb_player") + '</th><th class="hide-s">' + t("lb_guild") + "</th><th>" + t("lb_fish_n") + "</th><th>" + t("lb_fish_k") + '</th><th class="hide-s">' + t("lb_fish_s") + "</th></tr></thead><tbody>" +
+      h += '<table class="lbt"><thead><tr><th>#</th><th class="nm">' + t("lb_player") + '</th><th class="hide-s">' + t("lb_guild") + "</th><th>" + t("lb_fish_n") + "</th>" + (fhas[1] ? "<th>" + t("lb_fish_k") + "</th>" : "") + '<th class="hide-s">' + t("lb_fish_s") + "</th></tr></thead><tbody>" +
         fp.map(function (p, i) {
           var full = p.n + (p.sn ? " " + p.sn : "");
           return '<tr><td class="lbn' + (i < 3 ? " top" + (i + 1) : "") + '">' + (i + 1) + '</td><td class="nm">' + (i < 3 ? drk(false, true, classIcon(p.c)) : classIcon(p.c)) + '<a href="#player=' + esc(p.s) + '" data-ar="char" data-slug="' + esc(p.s) + '" style="color:' + (CLASS_COL[p.c] || "inherit") + '">' + esc(full) + "</a></td>" +
-            '<td class="hide-s">' + (p.g ? '<a class="dim" href="#guild=' + esc(p.g) + '" data-ar="guild" data-slug="' + esc(p.g) + '">&lt;' + esc(p.gn) + "&gt;</a>" : "") + "</td><td>" + (fi === 0 ? "<b>" + num(p.fish[0]) + "</b>" : num(p.fish[0])) + "</td><td>" + (fi === 1 ? "<b>" + p.fish[1] + "</b>" : p.fish[1]) + '</td><td class="hide-s">' + (fi === 2 ? "<b>" + p.fish[2] + "</b>" : p.fish[2]) + "</td></tr>";
+            '<td class="hide-s">' + (p.g ? '<a class="dim" href="#guild=' + esc(p.g) + '" data-ar="guild" data-slug="' + esc(p.g) + '">&lt;' + esc(p.gn) + "&gt;</a>" : "") + "</td><td>" + (fi === 0 ? "<b>" + num(p.fish[0]) + "</b>" : num(p.fish[0])) + "</td>" + (fhas[1] ? "<td>" + (fi === 1 ? "<b>" + p.fish[1] + "</b>" : p.fish[1]) + "</td>" : "") + '<td class="hide-s">' + (fi === 2 ? "<b>" + p.fish[2] + "</b>" : p.fish[2]) + "</td></tr>";
         }).join("") + "</tbody></table>" + (fp.length ? "" : '<div class="note">' + t("lb_prog_none") + "</div>") + '<div class="note">' + t("lb_fish_note") + "</div>";
     } else if (def[0] === "att") {
       var gA = {};
