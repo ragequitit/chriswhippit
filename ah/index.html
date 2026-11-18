@@ -189,6 +189,13 @@ body[data-mode=hu] .facts dd { font-size: 15px; }
 .drk img { border-radius: 50% !important; box-shadow: none !important; border-color: #000 !important; object-fit: cover; }
 .drk::after { content: ""; position: absolute; left: -50%; top: -50%; width: 200%; height: 200%; background: var(--frame-s) center / 100% 100% no-repeat; pointer-events: none; }
 .drk.g::after { background-image: var(--frame-g); }
+/* lite: bara ringen (listor med många rader) */
+.drk.lite::after { display: none; }
+.drk.lite img { border: 2px solid #cfd8e2 !important; box-shadow: 0 0 0 1px #000, 0 0 7px rgba(205, 220, 235, .7) !important; }
+.drk.lite.g img { border-color: #e4b53c !important; box-shadow: 0 0 0 1px #000, 0 0 7px rgba(228, 181, 60, .65) !important; }
+#list.hu .drk.lite { margin: 0 9px 0 0; } .hufr .drk.lite { margin: 0 9px 0 0; }
+/* drakar i topplistan och sökrutan får luft: raderna med ram blir högre */
+.lbt tr:has(.drk) td { padding-top: 12px; padding-bottom: 12px; } .gsr:has(.drk) { padding-top: 13px; padding-bottom: 13px; }
 .lbt .drk { margin: 0 10px 0 4px; } .lbt .drk img { width: 20px; height: 20px; }
 .gsr .drk { margin: 0 4px 0 2px; } .gsr .drk img, .gsr .drk .hic, .gsr .drk .rn { width: 22px; height: 22px; }
 .mtip.hasbg { position: relative; overflow: hidden; } .mtip.hasbg::before { content: ""; position: absolute; inset: -8px; z-index: 0; background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, .4)), var(--pbg) center 78% / cover no-repeat; filter: blur(1.5px); }
@@ -4557,7 +4564,8 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
       '<div class="dim">' + (huIsRare(b) && zs[i].pts.length > 1 ? t("hu_route") + " " : "") + t("hu_map_big") + "</div>";
   }
   // render: Blizzards helbild av varelsen (mörk, liten i mitten) – zoomas in på mitten och ljusas upp i en rund klippruta.
-  function drk(rare, elite, img, render) { if (render) img = '<span class="rn">' + img + "</span>"; return rare ? '<span class="drk s">' + img + "</span>" : elite ? '<span class="drk g">' + img + "</span>" : img; }
+  // lite: i täta listor (Joakim 2026-11-18: "drakarna i listan ser ut som skit") bara en silver-/guldring runt ikonen, ingen drake.
+  function drk(rare, elite, img, render, lite) { if (render) img = '<span class="rn">' + img + "</span>"; var c = lite ? "drk lite" : "drk"; return rare ? '<span class="' + c + ' s">' + img + "</span>" : elite ? '<span class="' + c + ' g">' + img + "</span>" : img; }
   // Skinning (hamta-skinning.js via build.js): b.skin = [[item, chans %, min, max]], namn för föremål utanför AH i HU.skinItems.
   function huSkinHtml(b) {
     if (!b.skin || !b.skin.length) return "";
@@ -4623,7 +4631,7 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
   function huRow(r) {
     var b = r.hu, f = HU.families[b.fam] || {}, rare = huIsRare(b);
     return '<tr tabindex="0" data-hu="' + b.id + '"' + (b.id === huSel ? ' aria-selected="true"' : "") + '><td class="fav">' + (rare ? '<span class="hurare" title="' + HU_RANK[b.rank] + '">◆</span>' : "") + "</td>" +
-      '<td class="nm">' + drk(rare, b.rank === 1, '<img class="hic' + (rare ? " rare" : "") + '" src="' + huFamIcon(b.fam) + '" alt="" loading="lazy">') + '<span class="' + (rare ? "hurn" : b.rank === 1 ? "q2" : "q1") + '">' + esc(b.name) + "</span>" + (b.rank ? ' <small class="dim">' + HU_RANK[b.rank] + "</small>" : "") + "</td>" +
+      '<td class="nm">' + drk(rare, b.rank === 1, '<img class="hic' + (rare ? " rare" : "") + '" src="' + huFamIcon(b.fam) + '" alt="" loading="lazy">', false, true) + '<span class="' + (rare ? "hurn" : b.rank === 1 ? "q2" : "q1") + '">' + esc(b.name) + "</span>" + (b.rank ? ' <small class="dim">' + HU_RANK[b.rank] + "</small>" : "") + "</td>" +
       "<td>" + b.min + (b.max > b.min ? "–" + b.max : "") + '</td><td class="kat hide-s">' + esc(b.family) + '</td><td><span class="hurole r-' + (f.role || "") + '">' + t("hu_r_" + (f.role || "allround")) + "</span></td>" +
       "<td" + (b.speed <= 1.5 ? ' class="pos"' : "") + ">" + b.speed.toFixed(1) + '</td><td class="kat">' + esc(huZoneText(b)) + "</td></tr>";
   }
@@ -4857,7 +4865,7 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
     var l = huForChar(d);
     return h + '<div class="hufor">' + l.map(function (x) {
       var b = x.b;
-      return '<a href="#beast=' + b.id + '" data-gobeast="' + b.id + '" class="hufr">' + drk(huIsRare(b), b.rank === 1, '<img' + (huIsRare(b) ? ' class="rare"' : "") + ' src="' + huFamIcon(b.fam) + '" alt="">') + '<span><b class="' + (huIsRare(b) ? "hurn" : "q1") + '">' + esc(b.name) + "</b><small>" + b.min + (b.max > b.min ? "–" + b.max : "") + " · " + esc(b.family) + " · " + b.speed.toFixed(1) + " s · " + esc(huZoneText(b)) + "</small></span>" + (x.near ? '<em title="' + t("hu_near_tip") + '">' + t("hu_near") + "</em>" : "") + "</a>";
+      return '<a href="#beast=' + b.id + '" data-gobeast="' + b.id + '" class="hufr">' + drk(huIsRare(b), b.rank === 1, '<img' + (huIsRare(b) ? ' class="rare"' : "") + ' src="' + huFamIcon(b.fam) + '" alt="">', false, true) + '<span><b class="' + (huIsRare(b) ? "hurn" : "q1") + '">' + esc(b.name) + "</b><small>" + b.min + (b.max > b.min ? "–" + b.max : "") + " · " + esc(b.family) + " · " + b.speed.toFixed(1) + " s · " + esc(huZoneText(b)) + "</small></span>" + (x.near ? '<em title="' + t("hu_near_tip") + '">' + t("hu_near") + "</em>" : "") + "</a>";
     }).join("") + '<div class="note">' + t("hu_for_note") + "</div></div>";
   }
   // ---- Topplistor i Armory (Joakim 2026-11-17): katalog.json (hamta-katalog.js, varje dygn) = spelare och guilder som
