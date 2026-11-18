@@ -349,6 +349,10 @@ body[data-mode=hu] .facts dd { font-size: 15px; }
 .huz.e { width: 9px; height: 9px; margin: -5.5px 0 0 -5.5px; background: #40c040; }
 .huz.src { width: 8px; height: 8px; margin: -5px 0 0 -5px; background: #ffd24a; box-shadow: 0 0 4px rgba(255, 210, 74, .8); cursor: default; }
 .srcs2 { display: grid; gap: 10px; }
+.atts { display: grid; gap: 6px; padding: 6px 0 2px; } .attrow { padding: 6px 8px; border: 1px solid var(--line); border-radius: 5px; background: var(--inset); font-size: 13px; }
+.attrow.ok { border-color: rgba(64, 192, 64, .35); } .atth { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; } .atth .att { margin-left: auto; font-size: 12px; padding: 1px 7px; border-radius: 9px; border: 1px solid; white-space: nowrap; }
+.att.ok { color: #6fdc6f; border-color: rgba(64, 192, 64, .5); } .att.part { color: var(--gold); border-color: rgba(214, 168, 59, .5); } .att.no { color: var(--grey); border-color: var(--line); }
+.attrow .dim { font-size: 12px; margin-top: 3px; }
 .srcs2 h3 { margin-bottom: 4px; }
 .srct { width: 100%; border-collapse: collapse; font-size: 13px; }
 .srct td { padding: 3px 6px 3px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
@@ -1406,6 +1410,11 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
       ar_crafters: "Who can craft what", ar_crafters_load: "Loading professions… %1 / %2", ar_crafters_q: "Recipe name, e.g. Bolt of Woolen Cloth", ar_nobody: "Nobody in the guild knows a recipe with that name.",
       ar_nobody_p: "No professions found in the guild.", skill_unknown: "skill requirement unknown", ar_friends: "Friends", ar_recipes_n: "%1 rec.", ar_quests: "Quests done", ar_general: "General", st_health: "Health", st_str: "Strength", st_agi: "Agility", st_sta: "Stamina", st_int: "Intellect", st_spi: "Spirit", st_armor: "Armor", st_crit: "Crit", st_scrit: "Spell crit", st_dodge: "Dodge",
       ar_pvp: "PvP", pvp_hk: "honorable kills", pvp_norank: "No rank yet", pvp_rank_n: "PvP rank %1", ar_stats: "Statistics", col_hk: "HK", col_pvp: "PvP rank", ar_pick: "Open a profession and pick a recipe to see cost, reagents and profit here.", skill_unknown_h: "Skill requirement unknown", fr_add: "Add to friends", fr_del: "Remove from friends", ar_open_cr: "Open in Professions", ar_last: "Last seen", ar_mounts: "Mounts", ar_pets: "Pets", ar_members: "Members", ar_faction: "Faction",
+      ar_att: "Attunements", att_done: "Attuned", att_next: "Next", att_none: "Not started", att_steps: "%1 of %2 quests", att_key: "Key",
+      att_mc_how: "Quest in Blackrock Depths: touch the Core Fragment past the Lyceum.", att_bwl_how: "Quest in Upper Blackrock Spire: pick it up from the orb at Drakkisath and return to Scarshield Quartermaster.",
+      att_ony_how: "Long quest chain ending with the Drakefire Amulet.", att_naxx_how: "Argent Dawn in Light's Hope Chapel: Honored + 60g, Revered + 30g, Exalted free.", att_naxx_rep: "Argent Dawn: %1",
+      att_ubrs_how: "Seal of Ascension: gems from LBRS and the Unforged Seal, forged by Vaelastrasz at the top of Blackrock Spire.", att_brd_how: "Shadowforge Key: Dark Iron Legacy, kill Fineous Darkvire in BRD.",
+      att_scholo_how: "Skeleton Key: Argent Dawn chain in Eastern Plaguelands.", att_note: "From the quests Blizzard reports as completed. The amulet and keys themselves cannot be seen from here.",
       ar_prof: "Professions", ar_prof2: "Secondary", ar_rep: "Reputation", ar_recipes: "%1 recipes known", ar_roster: "Roster", ar_rank: "Rank", ar_noimg: "No picture yet",
       ar_open: "Open in the armory", slot_HEAD: "Head", slot_NECK: "Neck", slot_SHOULDER: "Shoulder", slot_BACK: "Back", slot_CHEST: "Chest", slot_SHIRT: "Shirt", slot_TABARD: "Tabard",
       slot_WRIST: "Wrist", slot_HANDS: "Hands", slot_WAIST: "Waist", slot_LEGS: "Legs", slot_FEET: "Feet", slot_FINGER_1: "Ring", slot_FINGER_2: "Ring", slot_TRINKET_1: "Trinket",
@@ -1836,9 +1845,9 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
   function rankName(faction, r) { var a = PVP_RANKS[faction === "ALLIANCE" ? "ALLIANCE" : "HORDE"]; return r > 0 && a[r] ? a[r] : ""; }
   function rankBadge(faction, r) { var n = rankName(faction, r); return n ? '<span class="rank r' + r + '" title="' + t("pvp_rank_n", r) + '"><b>' + r + "</b> " + esc(n) + "</span>" : ""; }
   // Fällbara rader i Armory (Joakim 2026-11-17: "klickar man på ... så fälls rutan ut"); stängda från början.
-  var arOpen = { hpets: false, talents: false, quests: false, ach: false, rep: false, prof: false, stats: false, mounts: false };
+  var arOpen = { hpets: false, talents: false, quests: false, ach: false, rep: false, att: true, prof: false, stats: false, mounts: false };
   // Ikon per rad (spelets ikoner hos Blizzard), så raderna blir en kolumn att läsa uppifrån och ner.
-  var AR_ROW_IC = { hpets: "ability_hunter_beasttaming", talents: "ability_marksmanship", quests: "inv_misc_note_01", ach: "achievement_general", rep: "inv_misc_tabardpvp_01", prof: "trade_blacksmithing", stats: "inv_misc_book_11", mounts: "ability_mount_blackdirewolf" };
+  var AR_ROW_IC = { att: "inv_misc_key_10", hpets: "ability_hunter_beasttaming", talents: "ability_marksmanship", quests: "inv_misc_note_01", ach: "achievement_general", rep: "inv_misc_tabardpvp_01", prof: "trade_blacksmithing", stats: "inv_misc_book_11", mounts: "ability_mount_blackdirewolf" };
   function pct(v) { return v == null ? "–" : (Math.round(v * 100) / 100) + "%"; }
   function arToggle(key, title, n, sub) {
     var open = arOpen[key], ic = AR_ROW_IC[key];
@@ -1860,6 +1869,39 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
       row(t("st_sp"), n(s.spellPower)) + row(t("st_scrit"), pct(s.spellCrit)) + "</div>";
   }
   // Statistics: gjorda quests och pets först (flyttade från under dockan), sedan spelets statistik per kategori.
+  // Raidernas attunements och dungeonnycklar: [nyckel, namn, { H: [quests i ordning], A: [...] } eller done: [något av], how]
+  var ATT = [
+    { k: "mc", name: "Molten Core", done: [7848, 7487], how: "att_mc_how" },
+    { k: "ony", name: "Onyxia\'s Lair", chain: { HORDE: [4903, 4941, 4974, 6566, 6567, 6568, 6569, 6570, 6601, 6602], ALLIANCE: [4182, 4183, 4184, 4185, 4186, 4224, 4223, 4241, 4242, 4264, 4282, 4322, 6402, 6403, 6501, 6502] }, how: "att_ony_how" },
+    { k: "bwl", name: "Blackwing Lair", done: [7761], how: "att_bwl_how" },
+    { k: "naxx", name: "Naxxramas", done: [9121, 9122, 9123], rep: "Argent Dawn", how: "att_naxx_how" },
+    { k: "ubrs", name: "Upper Blackrock Spire", key: true, done: [4742, 4743], how: "att_ubrs_how" },
+    { k: "brd", name: "Blackrock Depths", key: true, done: [3801, 3802], how: "att_brd_how" },
+    { k: "scholo", name: "Scholomance", key: true, chain: { HORDE: [5511], ALLIANCE: [5505] }, how: "att_scholo_how" }
+  ];
+  function attStatus(d, a) {   // { ok, n, tot, next } ur spelarens klara quests
+    var done = {}; (d.quests || []).forEach(function (id) { done[id] = 1; });
+    if (a.chain) {
+      var ch = a.chain[d.faction === "ALLIANCE" ? "ALLIANCE" : "HORDE"] || [], n = 0, next = 0;
+      ch.forEach(function (id) { if (done[id]) n++; else if (!next) next = id; });
+      return { ok: ch.length > 0 && done[ch[ch.length - 1]], n: n, tot: ch.length, next: next };
+    }
+    var ok = a.done.some(function (id) { return done[id]; });
+    return { ok: ok, n: ok ? 1 : 0, tot: 1, next: ok ? 0 : a.done[0] };
+  }
+  function attSection(d) {
+    if (!QU) loadQuests().then(function () { if (mode === "ar" && arData && arData.kind === "character") arRedraw(); }).catch(function () {});   // questnamnen
+    var rows = ATT.map(function (a) { return { a: a, st: attStatus(d, a) }; }), nOk = rows.filter(function (r) { return r.st.ok; }).length;
+    var qn = function (id) { var q = QU && QU.quests[id]; return q ? q[0] : "Quest " + id; };
+    var html = rows.map(function (r) {
+      var a = r.a, st = r.st, badge = st.ok ? '<span class="att ok">✓ ' + t("att_done") + "</span>" : st.n ? '<span class="att part">' + t("att_steps", st.n, st.tot) + "</span>" : '<span class="att no">' + t("att_none") + "</span>";
+      var extra = "";
+      if (!st.ok && a.rep) { var rp = (d.reputations || []).filter(function (x) { return x.name === a.rep; })[0]; extra = '<div class="dim">' + t("att_naxx_rep", rp ? esc(rp.standing) + " " + num(rp.value) + " / " + num(rp.max) : "–") + "</div>"; }
+      if (!st.ok && st.next && !(a.rep)) extra += '<div class="dim">' + t("att_next") + ': <a class="wh" href="#quest=' + st.next + '" data-goquest="' + st.next + '">' + esc(qn(st.next)) + "</a></div>";
+      return '<div class="attrow' + (st.ok ? " ok" : "") + '"><div class="atth"><b>' + esc(a.name) + "</b>" + (a.key ? ' <span class="tag">' + t("att_key") + "</span>" : "") + badge + "</div>" + (st.ok ? "" : '<div class="dim">' + t(a.how) + "</div>") + extra + "</div>";
+    }).join("");
+    return arToggle("att", t("ar_att"), nOk + "/" + rows.length) + (arOpen.att ? '<div class="atts">' + html + '<div class="note">' + t("att_note") + "</div></div>" : "");
+  }
   function statsSection(d) {
     var list = d.statList || [];
     var n = list.length + 2;
@@ -2140,6 +2182,7 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
       '<div class="picnote" title="' + t("ar_picnote_tip") + '">' + t("ar_picnote") + "</div></div>" + statsPanel(d) + "</div>" +
       '<div class="arside">' + huArmorySection(d) + talentsRow(d) + questsActiveSection(d) + achSection(d) +
       arToggle("rep", t("ar_rep"), d.reputations.length) + (arOpen.rep ? '<div class="reps">' + repsHtml(d) + "</div>" : "") +
+      attSection(d) +
       arToggle("prof", t("ar_prof"), profN) + (arOpen.prof ? '<div class="profsec"><h4>' + t("ar_prof") + '</h4><div class="profs">' + (d.professions.primary.map(profHtml).join("") || '<div class="note">–</div>') + "</div>" +
         "<h4>" + t("ar_prof2") + '</h4><div class="profs">' + (d.professions.secondary.map(profHtml).join("") || '<div class="note">–</div>') + "</div></div>" : "") +
       statsSection(d) + mountsSection(d) +
