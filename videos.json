@@ -1,19 +1,12 @@
 {
- "t": "2026-11-19T09:28:20.123Z",
+ "t": "2026-11-19T18:38:23.664Z",
  "videos": [
   {
-   "id": "EsatraGPFfk",
-   "title": "Vi FYLLER HELA HYLLAN i Megastore Tidy Up Together med UfoSXM",
+   "id": "u4FhXhrNdgE",
+   "title": "GTA 6 #1: Äntligen är det HÄR!",
    "channel": "ChrisWhippit",
    "handle": "@chriswhippit",
-   "at": "2026-11-19T05:30:32Z"
-  },
-  {
-   "id": "f5YKZLTEAhY",
-   "title": "BOOSTAR ÖVER STUPET i RV There Yet? med UfoSXM",
-   "channel": "ChrisWhippit",
-   "handle": "@chriswhippit",
-   "at": "2026-11-17T05:30:16Z"
+   "at": "2026-11-19T14:30:26Z"
   },
   {
    "id": "CZJIMzrNqWo",
@@ -21,6 +14,13 @@
    "channel": "ChrisWhippit",
    "handle": "@chriswhippit",
    "at": "2026-11-18T05:30:10Z"
+  },
+  {
+   "id": "EsatraGPFfk",
+   "title": "Vi FYLLER HELA HYLLAN i Megastore Tidy Up Together med UfoSXM",
+   "channel": "ChrisWhippit",
+   "handle": "@chriswhippit",
+   "at": "2026-11-19T05:30:32Z"
   },
   {
    "id": "9XSzCQFFMyc",
@@ -38,7 +38,7 @@
   }
  ],
  "counts": {
-  "chriswhippit": 4603,
+  "chriswhippit": 4606,
   "whippitsson": 534,
   "figgwhipp": 2848,
   "whippitextra": 126
@@ -162,6 +162,12 @@
   ],
   "gta-5": [
    {
+    "id": "u4FhXhrNdgE",
+    "title": "GTA 6 #1: Äntligen är det HÄR!",
+    "at": "2026-11-19T14:30:26Z",
+    "list": ""
+   },
+   {
     "id": "EPaaedOzFYs",
     "title": "GTA 5 *JUL-UPDATE* SÅ FÅR NI 125'000 SNABBT & GRATIS",
     "at": "2023-12-29T08:00:07Z",
@@ -225,12 +231,6 @@
     "id": "PWjmf5XIq9g",
     "title": "JAG GLITCHAR & BUGGAR GENOM VÄGEN I GTA V",
     "at": "2023-07-26T07:00:12Z",
-    "list": "PLpinm9x4zUokXmRLV02nlqJUlFDnRn9vB"
-   },
-   {
-    "id": "UHYPo7zwkow",
-    "title": "SITTER FAST I EN BLOMKRUKA I GTA V",
-    "at": "2023-07-17T07:00:11Z",
     "list": "PLpinm9x4zUokXmRLV02nlqJUlFDnRn9vB"
    }
   ],
@@ -545,8 +545,8 @@
  "media": {
   "chriswhippit": {
    "views": 244374000,
-   "avgViews": 5500,
-   "avgSample": 10,
+   "avgViews": 5600,
+   "avgSample": 9,
    "uploads30": 50
   },
   "whippitsson": {
@@ -563,7 +563,7 @@
   },
   "whippitextra": {
    "views": 309000,
-   "avgViews": 2500,
+   "avgViews": 2600,
    "avgSample": 18,
    "uploads30": 48
   }
