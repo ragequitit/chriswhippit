@@ -6386,7 +6386,11 @@ body[data-mode=cl] .ttrees { gap: 8px; } body[data-mode=cl] .ttree { padding: 6p
   function clTrainers() { var c = clC(); return c ? c.trainers.filter(function (x) { return (!clFa || !x.f || x.f === clFa) && (!clTk || x.k === clTk); }) : []; }
   function clSpells() {   // raderna i vald vy (spells/pets), före sökning
     var c = clC(); if (!c) return [];
-    if (clView === "pets") return c.pets.filter(function (p) { return !clPet || p.name === clPet; }).reduce(function (a, p) { return a.concat(p.spells.map(function (s) { return { sp: s, pet: p.name }; })); }, []);
+    if (clView === "pets") {   // "All": samma spell (Bite) finns i många familjer, en rad med familjerna samlade
+      var seen = {}, rows = [];
+      c.pets.filter(function (p) { return !clPet || p.name === clPet; }).forEach(function (p) { p.spells.forEach(function (s) { var r = seen[s.id]; if (r) { r.n++; r.pet = r.pet0 + " +" + (r.n - 1); } else { r = { sp: s, pet: p.name, pet0: p.name, n: 1 }; seen[s.id] = r; rows.push(r); } }); });
+      return rows;
+    }
     return c.spells.filter(function (s) { return clLine === "x" ? s.x : !s.x && (!clLine || s.ln === clLine); }).map(function (s) { return { sp: s }; });
   }
   function clFind(id) {   // samma pet-spell finns i flera familjer (Bite): den valda familjen först
