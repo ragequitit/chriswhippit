@@ -4755,10 +4755,10 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
       var mb = lbme.dataset.lbme, ms = lbme.dataset.lbsub;
       if (mb === "pvp") lbPvp = ms; else if (mb === "pve") lbPve = +ms; else if (mb === "quests") lbQuest = +ms; else if (mb === "travel") lbTravel = +ms; else if (mb === "fish") lbFish = ms; else if (mb === "titles") lbTitle = ""; else if (mb === "rep") lbRep = "";
       lbFa = ""; lbRs = "all"; lbCls = ""; lbRaceF = "";   // placeringen räknades bland alla
-      arLb = mb; drawMode(); drawCats(); lbShow(); setHash("#top=" + mb); showTab("item"); toTop(); return;
+      arLb = mb; lbFold = false; drawMode(); drawCats(); lbShow(); setHash("#top=" + mb); showTab("item"); toTop(); return;
     }
     var lbb = e.target.closest("[data-lb]");
-    if (lbb && mode === "ar") { arLb = lbb.dataset.lb; drawMode(); drawCats(); lbShow(); setHash("#top=" + arLb); showTab("item"); return; }
+    if (lbb && mode === "ar") { lbFold = arLb === lbb.dataset.lb ? !lbFold : false; arLb = lbb.dataset.lb; drawMode(); drawCats(); lbShow(); setHash("#top=" + arLb); showTab("item"); return; }
     var cb = e.target.closest(".cat, .catlink");
     var hf = e.target.closest("[data-hufam]");
     if (hf && mode === "hu") { huFam = +hf.dataset.hufam; drawCats(); refresh(); toTop(); return; }
@@ -4824,7 +4824,7 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
     var tde = e.target.closest("tbody tr[data-de]");
     if (tde) { showTab("item"); deDetail(+tde.dataset.de); return; }
     var cok = e.target.closest("[data-cokind]");
-    if (cok && mode === "co") { coKind = cok.dataset.cokind; coSrc = ""; if (sortKey === "req" && coKind === "titles") sortKey = "name"; drawCats(); refresh(); toTop(); if (view[0]) coDetail(CO_LETTER[coKind] + view[0].co.id); return; }
+    if (cok && mode === "co") { coFold = coKind === cok.dataset.cokind ? !coFold : false; coKind = cok.dataset.cokind; coSrc = ""; if (sortKey === "req" && coKind === "titles") sortKey = "name"; drawCats(); refresh(); toTop(); if (view[0]) coDetail(CO_LETTER[coKind] + view[0].co.id); return; }
     var cos = e.target.closest("[data-cosrc]");
     if (cos && mode === "co") { coSrc = cos.dataset.cosrc; drawCats(); refresh(); toTop(); return; }
     if (e.target.closest("[data-coside]") && mode === "co") { coSide = !coSide; drawCats(); refresh(); toTop(); return; }
@@ -5453,7 +5453,7 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
   // ---- Topplistor i Armory (Joakim 2026-11-17): katalog.json (hamta-katalog.js, varje dygn) = spelare och guilder som
   // hittats via snöbollen (kända spelare → guild → roster → nya guilder) och addonets spelarnamn. Bara det katalogen känner
   // till räknas, så listan växer för varje dag. Länk #top=<lista>. ----
-  var KAT = null, katPromise = null, arLb = "", lbFa = "";
+  var KAT = null, katPromise = null, arLb = "", lbFa = "", lbFold = false;   // lbFold: vald kategoris undermeny ihopfälld
   // Ruleset (Joakim 2026-11-17): Blizzards API har alla Forever-spelare, PvP och Normal i samma katalog. "" = följer vald
   // AH-marknad (PvP eller Normal), "all" = båda. Guildens ruleset = det flest kända medlemmar har.
   var lbRs = "", lb60 = false, lbCls = "", lbRaceF = "";   // lbRaceF: rasfilter via rasikonen   // lbCls: klassfilter via klassikonen (Joakim 2026-11-19)
@@ -5510,7 +5510,7 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
   }
   function lbCats() {
     return "<h2>" + t("lb_cats") + "</h2>" + LB.map(function (b) {
-      return '<button class="cat" type="button" data-lb="' + b[0] + '" aria-pressed="' + (b[0] === arLb) + '"><img class="ci" src="' + RICON + (LB_ICON[b[0]] || "inv_misc_questionmark") + '.jpg" alt="" onerror="this.style.visibility=\'hidden\'"><em class="nm">' + t(b[3] === "s" ? "lb_server" : b[2]) + "</em></button>" + (b[0] === arLb ? lbSubHtml : "");
+      return '<button class="cat" type="button" data-lb="' + b[0] + '" aria-pressed="' + (b[0] === arLb) + '"><img class="ci" src="' + RICON + (LB_ICON[b[0]] || "inv_misc_questionmark") + '.jpg" alt="" onerror="this.style.visibility=\'hidden\'"><em class="nm">' + t(b[3] === "s" ? "lb_server" : b[2]) + "</em></button>" + (b[0] === arLb && !lbFold ? lbSubHtml : "");
     }).join("") + (KAT ? '<div class="dim" style="padding:8px 10px;font-size:12px">' + num(KAT.players.length) + " " + t("gs_k_pl").toLowerCase() + " · " + num(KAT.guilds.length) + " " + t("gs_k_gl").toLowerCase() + "</div>" : "");
   }
   function lbGroup(k) { var d = LB.filter(function (b) { return b[0] === k; })[0]; return d ? d[3] : ""; }
@@ -6076,7 +6076,7 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
   // ---- Collections (Joakim 2026-11-17): mounts, husdjur, toys och titlar på Forever (collections.json, hamta-samlingar.js):
   // Blizzards listor och bilder, var de fås ur Classic-databasen (säljare och plats, drop med chans, quest). Pris från AH
   // när föremålet säljs där, annars säljarens pris. ✓ = spelaren som är öppen i Armory har mounten. Länk #col=m<id>. ----
-  var CO = null, coPromise = null, coKind = "mounts", coSrc = "", coSide = false, coSel = "";
+  var CO = null, coPromise = null, coKind = "mounts", coSrc = "", coSide = false, coSel = "", coFold = false;   // coFold: vald samlings undermeny ihopfälld (klick på den igen)
   var CO_LETTER = { mounts: "m", pets: "p", toys: "t", titles: "x" }, CO_KIND = { m: "mounts", p: "pets", t: "toys", x: "titles" };
   var CO_PVP = /^(Private|Corporal|Sergeant|Master Sergeant|Sergeant Major|Knight|Knight-Lieutenant|Knight-Captain|Knight-Champion|Lieutenant Commander|Commander|Marshal|Field Marshal|Grand Marshal|Scout|Grunt|Senior Sergeant|First Sergeant|Stone Guard|Blood Guard|Legionnaire|Centurion|Champion|Lieutenant General|General|Warlord|High Warlord)$/;
   function loadCo() {
@@ -6132,7 +6132,7 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
     var h = '<div class="cath">' + t("co_kinds") + "</div>";
     ["mounts", "pets", "toys", "titles"].forEach(function (k) {
       h += '<button class="cat" type="button" data-cokind="' + k + '" aria-pressed="' + (coKind === k && !coSrc) + '"><em class="nm">' + t("co_k_" + k) + "</em><span>" + CO[k].length + "</span></button>";
-      if (coKind !== k) return;
+      if (coKind !== k || coFold) return;
       h += sub("", t("co_s_all"), all);
       ["vendor", "drop", "quest", "class", "pvp", "other", "forever"].forEach(function (k2) { if (cnt[k2]) h += sub(k2, t("co_s_" + k2), cnt[k2]); });
       if (coOwner() && k === "mounts") h += sub("missing", t("co_missing", esc(coOwner().name)));
