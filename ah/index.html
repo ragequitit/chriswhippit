@@ -178,6 +178,7 @@ h1 { font-family: var(--display); font-weight: 500; font-size: 36px; margin: 0; 
 #list.hu td { height: 46px; }
 /* Hunter pets: rutan till höger bredare så djuret, fakta och kartan får plats utan rullning (Joakim 2026-11-18: "mycket döytor") */
 body[data-mode=hu] .cols { grid-template-columns: 224px minmax(0, 1fr) minmax(0, 520px); }
+body[data-mode=dg] .cols { grid-template-columns: 312px minmax(0, 1fr) minmax(0, 380px); }   /* Ruins of Lordaeron + FV-taggen ska få plats (Joakim 2026-11-19) */
 body[data-mode=hu] .facts { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px 12px; }
 body[data-mode=hu] .facts dd { font-size: 15px; }
 .hurare { color: #c0c8d0; text-shadow: 0 0 6px rgba(200, 210, 220, .8); }
@@ -230,11 +231,18 @@ body[data-mode=hu] .facts dd { font-size: 15px; }
 .lbci { background: none; border: 0; padding: 0; margin: 0 8px 0 0; cursor: pointer; vertical-align: middle; line-height: 0; } .lbci .ri, .lbci .rng { margin-right: 0; } .lbci:hover .ri { filter: brightness(1.3); } .lbt td.rc .lbci { margin: 0; line-height: normal; color: var(--grey); font: inherit; display: inline-flex; align-items: center; } .lbt td.rc .lbci:hover { color: var(--fg); }
 .huchip .ri { width: 18px; height: 18px; vertical-align: -4px; margin-right: 5px; border-radius: 3px; }
 .lbt td.rc, .lbt td.gl { text-align: left; }   /* Race och Guild vänsterjusterade som Player (Joakim 2026-11-19) */
-.lbt td.rc { white-space: nowrap; color: var(--grey); } .lbt td.rc .ri { width: 26px; height: 26px; margin-right: 6px; } .lbt td.rc .ri.none { display: none; } .lbn { color: var(--grey); width: 28px; } .lbn.top1 { color: #ffd100; font-weight: 700; } .lbn.top2 { color: #d6dee8; font-weight: 700; } .lbn.top3 { color: #e0a060; font-weight: 700; }
+.lbt td.rc { white-space: nowrap; color: var(--grey); } .lbt td.rc .ri { width: 26px; height: 26px; margin-right: 6px; } .lbt td.rc .ri.none { display: none; } svg.ri.sky { display: inline-block; vertical-align: middle; } .lbn { color: var(--grey); width: 28px; } .lbn.top1 { color: #ffd100; font-weight: 700; } .lbn.top2 { color: #d6dee8; font-weight: 700; } .lbn.top3 { color: #e0a060; font-weight: 700; }
 .lbmeter { display: grid; grid-template-columns: auto minmax(60px, 1fr) auto; gap: 10px; align-items: center; font-size: 12.5px; color: var(--grey); }
 .lbmeter b { color: var(--fg); } .lbmeter .h b { color: #ff6b5a; } .lbmeter .a b { color: #5aa0ff; }
 .lbmeter .lbbar { display: flex; height: 8px; border-radius: 4px; overflow: hidden; background: var(--inset); border: 1px solid var(--line); }
 .lbmeter .hb { background: linear-gradient(#c8392b, #8f2219); } .lbmeter .ab { background: linear-gradient(#3b7fd6, #234f8f); min-width: 2px; }
+/* Högerrutan i Leaderboards: klasser och raser som staplar */
+.lbbars { display: grid; gap: 5px; margin: 8px 0 14px; } .lbb { display: grid; grid-template-columns: 118px minmax(0, 1fr) 62px; gap: 8px; align-items: center; font-size: 12.5px; }
+.lbb .nm { display: flex; align-items: center; gap: 6px; white-space: nowrap; overflow: hidden; } .lbb .nm b { font-weight: 500; overflow: hidden; text-overflow: ellipsis; } .lbb .ri { width: 18px; height: 18px; border-radius: 3px; flex: none; }
+.lbb .lbfill { display: block; height: 8px; padding: 0; border-radius: 4px; background: var(--inset); border: 1px solid var(--line); overflow: hidden; } .lbb .lbfill i { display: block; height: 8px; opacity: .85; }
+.lbb em { font-style: normal; color: var(--grey); text-align: right; white-space: nowrap; }
+#detail .lbmeter { margin: 10px 0 12px; }
+.lbsegs { margin-left: 0; } .seg .ri { width: 18px; height: 18px; margin-right: 6px; border-radius: 3px; } .cat.sub.tgl span { color: var(--gold); }
 .ekoh { margin: 6px 0 16px; } .ekoh h3 { margin-bottom: 8px; }
 .ekog { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; }
 .ekoc { padding: 10px 12px; border: 1px solid var(--line); border-radius: 6px; background: var(--inset); display: grid; gap: 4px; }
@@ -1073,6 +1081,7 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
     </div>
     <div class="subrow" id="ahsub" hidden></div>
     <div class="subrow sub2" id="trsub" hidden></div>
+    <div class="subrow sub2" id="lbsub" hidden></div>
     <span class="count" id="count"></span>
   </div>
 
@@ -1427,7 +1436,7 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
       lb_cls: "Classes", lb_only60: "Only level 60", lb_cls_note: "%1 players with a known class. Top bar = Horde, bottom bar = Alliance, on the same scale.",
       lb_meter_tip: "How many Horde and Alliance players the catalog has found on this realm type. Alliance grows with enemy nameplates on (Ctrl+V) and battlegrounds.",
       lb_rs_auto: "%1 (your AH)", lb_rs_all: "All realms", lb_rs_partial: "Some players are still being sorted into PvP or Normal; they show under All realms until the next update.",
-      lb_both: "Both sides", lb_race: "Race", lb_cls_on: "Show only %1s", lb_cls_off: "Show all classes", lb_race_on: "Show only %1", lb_race_off: "Show all races", lb_player: "Player", lb_guild: "Guild", lb_n60: "Level 60s", lb_il60: "Item level (60s)", lb_avg: "Avg level", lb_members: "Members", lb_none: "Nobody here yet.", lb_fail: "The leaderboards could not be loaded.",
+      lb_both: "Both sides", lb_cats: "Categories", lb_races: "Races", lb_race: "Race", lb_cls_on: "Show only %1s", lb_cls_off: "Show all classes", lb_race_on: "Show only %1", lb_race_off: "Show all races", lb_player: "Player", lb_guild: "Guild", lb_n60: "Level 60s", lb_il60: "Item level (60s)", lb_avg: "Avg level", lb_members: "Members", lb_none: "Nobody here yet.", lb_fail: "The leaderboards could not be loaded.",
       lb_note: "Blizzard can only look up a player by name, so the list grows like a snowball: known players → their guild → its members → their guilds, plus the names WhippitPanel notes in the game. Refreshed daily; anyone not seen for 29 days drops out.",
       lb_how: "Click a player or guild to open it in the Armory. Guilds are ranked by level 60 members, then their average item level.",
       de_watch: "All to My list", de_watch_tip: "Put every item in the list with a profit on My list (click again to remove them)",
@@ -1792,7 +1801,7 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
   // Topplistornas spelarcell (Joakim 2026-11-19): klassikon med ring guld/silver/koppar för plats 1–3 (drakarna blev för
   // tajta), och en ras-kolumn med ikon + namn (p.r ur katalogen, p.ge = 1 för kvinnlig figur).
   function lbIc(p, top) { var ic = classIcon(p.c); if (top >= 0) ic = '<span class="rng r' + (top + 1) + '">' + ic + "</span>"; return p.c ? '<button type="button" class="lbci" data-lbcls="' + esc(p.c) + '" title="' + t(lbCls === p.c ? "lb_cls_off" : "lb_cls_on", p.c) + '">' + ic + "</button>" : ic; }
-  function lbRace(p) { return '<td class="rc">' + (p.r ? '<button type="button" class="lbci" data-lbrace="' + esc(p.r) + '" title="' + t(lbRaceF === p.r ? "lb_race_off" : "lb_race_on", p.r) + '">' + raceIcon(p.r, p.ge ? "FEMALE" : "MALE") + '<span class="hide-s">' + esc(p.r) + "</span></button>" : "") + "</td>"; }
+  function lbRace(p) { var r = raceDisp(p.r); return '<td class="rc">' + (r ? '<button type="button" class="lbci" data-lbrace="' + esc(r) + '" title="' + t(lbRaceF === r ? "lb_race_off" : "lb_race_on", r) + '">' + raceIcon(p.r, p.ge ? "FEMALE" : "MALE") + '<span class="hide-s">' + esc(r) + "</span></button>" : "") + "</td>"; }
   function lbRaceTh() { return '<th class="rc">' + t("lb_race") + "</th>"; }
   function faMark(fa) { return faIcon(fa) || '<small class="dim">' + (fa === "ALLIANCE" ? "A" : "H") + "</small>"; }
   function arShow(mid, right) { $("armory").innerHTML = mid; if (right != null) $("detail").innerHTML = right; }
@@ -2528,7 +2537,10 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
   var RACE_IC = { "Human": "human", "Orc": "orc", "Dwarf": "dwarf", "Night Elf": "nightelf", "Undead": "undead", "Tauren": "tauren", "Gnome": "gnome", "Troll": "troll" };
   var CLASS_COL = { Warrior: "#c69b6d", Paladin: "#f48cba", Hunter: "#aad372", Rogue: "#fff468", Priest: "#ffffff", Shaman: "#0070dd", Mage: "#3fc7eb", Warlock: "#8788ee", Druid: "#ff7c0a" };
   var RICON = "https://render.worldofwarcraft.com/classic1x-eu/icons/56/";
-  function raceIcon(race, gender) { var k = RACE_IC[race]; return k ? '<img class="ri" src="' + RICON + "achievement_character_" + k + "_" + (gender === "FEMALE" ? "female" : "male") + '.jpg" alt="" loading="lazy">' : '<span class="ri none"></span>'; }
+  // Forevers två Skyborne-raser (High Order = Alliance, Windshaper = Horde) visas som "Skyborne" med egen vinge-ikon (Joakim 2026-11-19).
+  function raceDisp(r) { return r && /skyborne?/i.test(r) ? "Skyborne" : r || ""; }
+  var SKY_SVG = '<svg class="ri sky" viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="skyg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff0b8"/><stop offset="1" stop-color="#c9952c"/></linearGradient></defs><rect width="32" height="32" rx="4" fill="#1a1410"/><path fill="url(#skyg)" d="M3 24c3-1 5-3 6-6 2-4 5-7 9-9 4-2 8-3 11-2-2 1-3 3-3 5 3-1 5 0 4 2-2 0-4 1-5 3 3 0 4 1 4 3-2 0-4 1-5 2 2 1 3 2 2 4-3-1-5 0-8 1-4 2-8 1-11 0-2-1-3-2-4-3z"/><path fill="none" stroke="#1a1410" stroke-width="1.1" stroke-linecap="round" d="M6 22c4-1 7-4 10-8M8 24c4-1 8-3 11-6M11 26c3 0 6-1 9-3"/></svg>';
+  function raceIcon(race, gender) { if (/skyborne?/i.test(race || "")) return SKY_SVG; var k = RACE_IC[race]; return k ? '<img class="ri" src="' + RICON + "achievement_character_" + k + "_" + (gender === "FEMALE" ? "female" : "male") + '.jpg" alt="" loading="lazy">' : '<span class="ri none"></span>'; }
   function classIcon(cls) { return CLASS_COL[cls] ? '<img class="ri" src="' + RICON + "classicon_" + cls.toLowerCase() + '.jpg" alt="" loading="lazy">' : '<span class="ri none"></span>'; }
   // En rads celler som fylls i när medlemmens data kommit (profilbild, kön, PvP): ritas om på plats, inte hela tabellen.
   function rosterCells(d, m, x) {
@@ -3463,6 +3475,7 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
       '<div class="note"><a class="wh" href="https://www.wowhead.com/forever/item=' + id + '" target="_blank" rel="noopener">' + t("qu_wowhead") + "</a></div>";   // källan i About (Joakim 2026-11-18)
   }
   function drawCats() {
+    drawLbSub();
     if (mode === "qu") { $("cats").innerHTML = QU ? quCats() : ""; $("cats").hidden = false; return; }
     if (mode === "dg") { $("cats").innerHTML = DG ? dgCats() : ""; $("cats").hidden = false; return; }
     if (mode === "hu") { $("cats").innerHTML = HU ? huCats() : ""; $("cats").hidden = false; return; }
@@ -3896,7 +3909,7 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
     $("modeDg").setAttribute("aria-pressed", mode === "dg" ? "true" : "false");
     $("modeHu").setAttribute("aria-pressed", mode === "hu" ? "true" : "false");
     $("modeCo").setAttribute("aria-pressed", mode === "co" ? "true" : "false");
-    drawTrSub();
+    drawTrSub(); drawLbSub();
     $("sect").textContent = mode === "ah" ? ahName((houseParts(house) || [0, "horde"])[1]) : t(mode === "de" || mode === "fx" ? "mode_tr" : mode === "ar" && arLb ? "mode_lb" : "mode_" + mode);
     drawSub();
     $("q").setAttribute("aria-label", t(mode === "cr" ? "search_rc" : mode === "ar" ? "search_ar" : mode === "qu" ? "search_qu" : mode === "dg" ? "search_dg" : mode === "hu" ? "search_hu" : mode === "co" ? "search_co" : "search_ph"));
@@ -4474,7 +4487,7 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
     if (dgb) { dgSel = +dgb.dataset.dg; query = ""; $("q").value = ""; drawCats(); refresh(); toTop(); dgDetail(); showTab("item"); return; }
     if (cb && cb.hasAttribute("data-ar")) { showTab("item"); arLoad(cb.dataset.ar, cb.dataset.slug); return; }   // Friends/Recent i Armory
     if (cb && cb.hasAttribute("data-arsec")) { arSec[cb.dataset.arsec] = !arSec[cb.dataset.arsec]; try { localStorage.setItem(SEC_KEY, JSON.stringify(arSec)); } catch (e2) {} drawCats(); return; }
-    if (cb) {
+    if (cb && !(mode === "ar" && arLb)) {   // topplistornas undermeny (data-lbpve m.fl.) hanteras längre ner
       var nc = +cb.getAttribute("data-cat");
       var ns = cb.hasAttribute("data-sub") ? +cb.getAttribute("data-sub") : -1;
       var nu = cb.hasAttribute("data-sub2") ? +cb.getAttribute("data-sub2") : -1;
@@ -5110,9 +5123,36 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
   var LB_STAND = ["Hated", "Hostile", "Unfriendly", "Neutral", "Friendly", "Honored", "Revered", "Exalted"];
   var lbAchc = "", lbTitle = "", lbQuest = 0, lbTravel = 0;
   var LB_ICON = { achc: "achievement_general", titles: "inv_misc_book_09", quests: "inv_misc_note_01", travel: "ability_mount_gryphon_01", fk: "inv_misc_head_dragon_01", prog: "inv_misc_head_dragon_black", fish: "trade_fishing", pvp: "inv_bannerpvp_01", pve: "ability_warrior_cleave", gath: "inv_misc_flower_02", att: "inv_misc_key_10", rep: "inv_misc_tabardpvp_01", ilvl: "inv_misc_trophy_argent", hk: "ability_rogue_ambush", rank: "inv_bannerpvp_01", ach: "achievement_general", guilds: "inv_misc_tabard_01", cls: "inv_misc_map02" };
+  // Brädans val (Most kills, Creatures killed …) som undermeny under vald kategori i spalten (Joakim 2026-11-19: inte piller).
+  var lbSubHtml = "";
+  function lbSub(attr, k, on, lbl, n) { return '<button class="cat sub" type="button" ' + attr + '="' + esc(String(k)) + '" aria-pressed="' + on + '"><em class="nm">' + lbl + "</em>" + (n != null ? "<span>" + num(n) + "</span>" : "") + "</button>"; }
+  // Fraktion och realm som segment i en egen rad under flikarna, plus aktivt klass-/rasfilter med ×.
+  function drawLbSub() {
+    var el = $("lbsub"); if (!el) return;
+    var on = mode === "ar" && !!arLb; el.hidden = !on; if (!on) return;
+    var sg = function (attr, cur, items) { return '<span class="seg">' + items.map(function (it) { return '<button type="button" ' + attr + '="' + esc(String(it[0])) + '" aria-pressed="' + (cur === it[0]) + '" title="' + esc(it[2] || "") + '">' + it[1] + "</button>"; }).join("") + "</span>"; };
+    var ownRs = houseParts(house)[0] === "pvp" ? "PvP" : "Normal", otherRs = ownRs === "PvP" ? "Normal" : "PvP";
+    el.innerHTML = '<span class="segs lbsegs">' + sg("data-lbfa", lbFa, [["", t("lb_both")], ["HORDE", faIcon("HORDE") || "Horde", "Horde"], ["ALLIANCE", faIcon("ALLIANCE") || "Alliance", "Alliance"]]) +
+      sg("data-lbrs", lbRs || "", [["", ownRs, t("lb_rs_auto", ownRs)], [otherRs.toLowerCase(), otherRs], ["all", t("lb_rs_all")]]) +
+      (lbCls ? '<span class="seg"><button type="button" data-lbcls="' + esc(lbCls) + '" aria-pressed="true" title="' + t("lb_cls_off", lbCls) + '" style="color:' + (CLASS_COL[lbCls] || "inherit") + '">' + classIcon(lbCls) + esc(lbCls) + " ×</button></span>" : "") +
+      (lbRaceF ? '<span class="seg"><button type="button" data-lbrace="' + esc(lbRaceF) + '" aria-pressed="true" title="' + t("lb_race_off", lbRaceF) + '">' + raceIcon(lbRaceF, "MALE") + esc(lbRaceF) + " ×</button></span>" : "") + "</span>";
+  }
+  // Högerrutan i Leaderboards (Joakim 2026-11-19: "helt tom"): Horde/Alliance-mätaren, klasser och raser bland de filtrerade spelarna.
+  function lbSideBars(ok) {
+    var cc = {}, rc = {}, n = 0;
+    KAT.players.forEach(function (p) { if (!ok(p)) return; n++; if (p.c) cc[p.c] = (cc[p.c] || 0) + 1; var r = raceDisp(p.r); if (r) rc[r] = (rc[r] || 0) + 1; });
+    var bars = function (o, title, ic) {
+      var ks = Object.keys(o).sort(function (a, b) { return o[b] - o[a]; }), mx = o[ks[0]] || 1, tot = ks.reduce(function (a, k) { return a + o[k]; }, 0);
+      if (!ks.length) return "";
+      return "<h3>" + title + ' <small class="dim">' + num(tot) + "</small></h3>" + '<div class="lbbars">' + ks.map(function (k) {
+        return '<div class="lbb"><span class="nm">' + ic(k) + '<b style="color:' + (CLASS_COL[k] || "inherit") + '">' + esc(k) + '</b></span><span class="lbfill"><i style="width:' + (o[k] / mx * 100).toFixed(1) + "%;background:" + (CLASS_COL[k] || "#c9a24a") + '"></i></span><em>' + num(o[k]) + " · " + Math.round(o[k] / tot * 100) + "%</em></div>";
+      }).join("") + "</div>";
+    };
+    return bars(cc, t("lb_cls"), classIcon) + bars(rc, t("lb_races"), function (r) { return raceIcon(r, "MALE"); });
+  }
   function lbCats() {
-    return "<h2>" + t("lb") + "</h2>" + LB.map(function (b) {
-      return '<button class="cat" type="button" data-lb="' + b[0] + '" aria-pressed="' + (b[0] === arLb) + '"><img class="ci" src="' + RICON + (LB_ICON[b[0]] || "inv_misc_questionmark") + '.jpg" alt="" onerror="this.style.visibility=\'hidden\'"><em class="nm">' + t(b[3] === "s" ? "lb_server" : b[2]) + "</em></button>";
+    return "<h2>" + t("lb_cats") + "</h2>" + LB.map(function (b) {
+      return '<button class="cat" type="button" data-lb="' + b[0] + '" aria-pressed="' + (b[0] === arLb) + '"><img class="ci" src="' + RICON + (LB_ICON[b[0]] || "inv_misc_questionmark") + '.jpg" alt="" onerror="this.style.visibility=\'hidden\'"><em class="nm">' + t(b[3] === "s" ? "lb_server" : b[2]) + "</em></button>" + (b[0] === arLb ? lbSubHtml : "");
     }).join("") + (KAT ? '<div class="dim" style="padding:8px 10px;font-size:12px">' + num(KAT.players.length) + " " + t("gs_k_pl").toLowerCase() + " · " + num(KAT.guilds.length) + " " + t("gs_k_gl").toLowerCase() + "</div>" : "");
   }
   function lbGroup(k) { var d = LB.filter(function (b) { return b[0] === k; })[0]; return d ? d[3] : ""; }
@@ -5155,22 +5195,16 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
     var def = LB.filter(function (b) { return b[0] === arLb; })[0] || LB[0];
     var rs = lbRuleset(), gRs = {};
     if (rs) { var cnt = {}; KAT.players.forEach(function (p) { if (p.g && p.rs) { var c = cnt[p.g] = cnt[p.g] || { pvp: 0, normal: 0 }; c[p.rs]++; } }); Object.keys(cnt).forEach(function (g) { gRs[g] = cnt[g].pvp >= cnt[g].normal ? "pvp" : "normal"; }); }
-    var faOk = function (x) { return (!lbFa || x.fa === lbFa) && (!lbCls || !x.c || x.c === lbCls) && (!lbRaceF || !x.r || x.r === lbRaceF) && (!rs || (x.rs || gRs[x.s] || gRs[x.g] || "") === rs); };
+    var faOk = function (x) { return (!lbFa || x.fa === lbFa) && (!lbCls || !x.c || x.c === lbCls) && (!lbRaceF || !x.r || raceDisp(x.r) === lbRaceF) && (!rs || (x.rs || gRs[x.s] || gRs[x.g] || "") === rs); };
     // Kategoriraden togs bort (Joakim 2026-11-19: menyn till vänster räcker, raden blev kludd); rubriken visar vald topplista i stället.
     // Filterraden bantad (Joakim 2026-11-19): ligger på rubrikraden, fraktion som emblem, inget "(your AH)" i knappen.
-    var fa = function (k, lbl) { return '<button type="button" class="huchip' + (lbFa === k ? " on" : "") + (k ? " fab" : "") + '" data-lbfa="' + k + '" aria-pressed="' + (lbFa === k) + '" title="' + (k ? lbl : "") + '">' + (k ? faIcon(k) || lbl : lbl) + "</button>"; };
-    var rsb = function (k, lbl, tip) { var on = (lbRs || "") === k; return '<button type="button" class="huchip' + (on ? " on" : "") + '" data-lbrs="' + k + '" aria-pressed="' + on + '" title="' + (tip || "") + '">' + lbl + "</button>"; };
+    lbSubHtml = "";
     var np = KAT.players.filter(faOk).length, ng = KAT.guilds.filter(faOk).length;
     var rsOk = function (x) { return !rs || (x.rs || gRs[x.g] || "") === rs; }, nh = 0, na = 0;
     KAT.players.forEach(function (p) { if (!rsOk(p)) return; if (p.fa === "HORDE") nh++; else if (p.fa === "ALLIANCE") na++; });
     var pa = nh + na ? na / (nh + na) * 100 : 0;
     var meter = nh + na ? '<div class="lbmeter" title="' + t("lb_meter_tip") + '"><span class="h">Horde <b>' + num(nh) + '</b></span><div class="lbbar"><i class="hb" style="width:' + (100 - pa).toFixed(1) + '%"></i><i class="ab" style="width:' + pa.toFixed(1) + '%"></i></div><span class="a"><b>' + num(na) + "</b> Alliance · " + (pa < 1 && pa > 0 ? pa.toFixed(1) : Math.round(pa)) + " %</span></div>" : "";
-    var ownRs = houseParts(house)[0] === "pvp" ? "PvP" : "Normal", otherRs = ownRs === "PvP" ? "Normal" : "PvP";
-    var h = '<div class="lbwrap"><div class="lbhead"><div><h2>' + t(def[3] === "s" ? "lb_server" : def[2]) + "</h2><small>" + t("lb_sub", num(np), num(ng), when2(KAT.t)) + "</small></div>" +
-      '<div class="huchips lbfil">' + fa("", t("lb_both")) + fa("HORDE", "Horde") + fa("ALLIANCE", "Alliance") + '<span class="lbsep"></span>' +
-      rsb("", ownRs, t("lb_rs_auto", ownRs)) + rsb(otherRs.toLowerCase(), otherRs) + rsb("all", t("lb_rs_all")) +
-      (lbCls ? '<span class="lbsep"></span><button type="button" class="huchip on" data-lbcls="' + esc(lbCls) + '" aria-pressed="true" title="' + t("lb_cls_off", lbCls) + '" style="color:' + (CLASS_COL[lbCls] || "inherit") + '">' + classIcon(lbCls) + esc(lbCls) + " ×</button>" : "") +
-      (lbRaceF ? (lbCls ? "" : '<span class="lbsep"></span>') + '<button type="button" class="huchip on" data-lbrace="' + esc(lbRaceF) + '" aria-pressed="true" title="' + t("lb_race_off", lbRaceF) + '">' + raceIcon(lbRaceF, "MALE") + esc(lbRaceF) + " ×</button>" : "") + "</div></div>" + meter +
+    var h = '<div class="lbwrap"><div class="lbhead"><div><h2>' + t(def[3] === "s" ? "lb_server" : def[2]) + "</h2><small>" + t("lb_sub", num(np), num(ng), when2(KAT.t)) + "</small></div></div>" +
       (KAT.players.some(function (p) { return !p.rs; }) && rs ? '<div class="note">' + t("lb_rs_partial") + "</div>" : "");
     if (def[0] === "cls") {
       h += ekoHtml();
@@ -5183,7 +5217,8 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
       });
       var cls = Object.keys(cc).sort(function (x, y) { return (cc[y].h + cc[y].a) - (cc[x].h + cc[x].a); });
       var mx = Math.max.apply(null, cls.map(function (k) { return Math.max(cc[k].h, cc[k].a); }).concat([1]));
-      h += '<div class="huchips"><button type="button" class="huchip' + (lb60 ? " on" : "") + '" data-lb60="1" aria-pressed="' + lb60 + '">' + t("lb_only60") + "</button></div>" +
+      lbSubHtml = lbSub("data-lb60", 1, lb60, t("lb_only60"));
+      h +=
         '<div class="lbcls">' + cls.map(function (k) {
           var e = cc[k], n = e.h + e.a;
           return '<div class="lbc"><span class="nm">' + classIcon(k) + '<b style="color:' + (CLASS_COL[k] || "inherit") + '">' + esc(k) + '</b><small>' + num(n) + " · " + (tot ? Math.round(n / tot * 100) : 0) + ' %</small></span>' +
@@ -5209,7 +5244,7 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
       KAT.players.forEach(function (p) { if (faOk(p) && p.gath) Object.keys(p.gath).forEach(function (k) { if (!/^Professions /.test(k)) gk[k] = (gk[k] || 0) + 1; }); });   // "Professions learned" är bara antal yrken
       var gkeys = Object.keys(gk).sort(function (a, b) { return gk[b] - gk[a]; }).slice(0, 12);
       if (gkeys.indexOf(lbGath) < 0) lbGath = gkeys[0] || "";
-      h += '<div class="huchips">' + gkeys.map(function (k) { return '<button type="button" class="huchip' + (lbGath === k ? " on" : "") + '" data-lbgath="' + esc(k) + '" aria-pressed="' + (lbGath === k) + '">' + esc(k) + "</button>"; }).join("") + "</div>";
+      lbSubHtml = gkeys.map(function (k) { return lbSub("data-lbgath", k, lbGath === k, esc(k), gk[k]); }).join("");
       var gp2 = KAT.players.filter(function (p) { return faOk(p) && p.gath && p.gath[lbGath] > 0; }).sort(function (a, b) { return b.gath[lbGath] - a.gath[lbGath]; }).slice(0, 100);
       h += '<table class="lbt"><thead><tr><th>#</th><th class="nm">' + t("lb_player") + "</th>" + lbRaceTh() + "<th>" + t("col_lvl") + '</th><th class="hide-s">' + t("lb_guild") + "</th><th>" + esc(lbGath) + "</th></tr></thead><tbody>" +
         gp2.map(function (p, i) {
@@ -5218,10 +5253,10 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
             '<td class="hide-s gl">' + (p.g ? '<a class="dim" href="#guild=' + esc(p.g) + '" data-ar="guild" data-slug="' + esc(p.g) + '">&lt;' + esc(p.gn) + "&gt;</a>" : "") + "</td><td><b>" + num(p.gath[lbGath]) + "</b></td></tr>";
         }).join("") + "</tbody></table>" + (gp2.length ? "" : '<div class="note">' + t("lb_prog_none") + "</div>") + '<div class="note">' + t("lb_pve_note") + "</div>";
     } else if (def[0] === "pve") {
-      var echip = function (c, i) { return '<button type="button" class="huchip' + (lbPve === i ? " on" : "") + '" data-lbpve="' + i + '" aria-pressed="' + (lbPve === i) + '">' + t(c) + "</button>"; };
+      var echip = function (c, i) { return lbSub("data-lbpve", i, lbPve === i, t(c)); };
       var PVE = ["lb_pve_kills", "lb_pve_creat", "lb_pve_dg", "lb_pve_raid", "lb_pve_q", "lb_pve_deaths", "lb_pve_crit", "lb_pve_kpd"];
       var pveV = function (p) { return lbPve === 7 ? (p.pve[0] >= 1000 ? Math.round(p.pve[0] / Math.max(1, p.pve[5])) : 0) : p.pve[lbPve]; };
-      h += '<div class="huchips">' + PVE.map(echip).join("") + "</div>";
+      lbSubHtml = PVE.map(echip).join("");
       var ep = KAT.players.filter(function (p) { return faOk(p) && p.pve && pveV(p) > 0; }).sort(function (a, b) { return pveV(b) - pveV(a) || b.pve[0] - a.pve[0]; }).slice(0, 100);
       h += '<table class="lbt"><thead><tr><th>#</th><th class="nm">' + t("lb_player") + "</th>" + lbRaceTh() + "<th>" + t("col_lvl") + '</th><th class="hide-s">' + t("lb_guild") + "</th><th>" + t(PVE[lbPve]) + "</th></tr></thead><tbody>" +
         ep.map(function (p, i) {
@@ -5230,9 +5265,9 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
             '<td class="hide-s gl">' + (p.g ? '<a class="dim" href="#guild=' + esc(p.g) + '" data-ar="guild" data-slug="' + esc(p.g) + '">&lt;' + esc(p.gn) + "&gt;</a>" : "") + "</td><td><b>" + num(pveV(p)) + "</b>" + (lbPve === 7 ? ' <small class="dim">' + num(p.pve[0]) + " / " + num(p.pve[5]) + "</small>" : "") + "</td></tr>";
         }).join("") + "</tbody></table>" + (ep.length ? "" : '<div class="note">' + t("lb_prog_none") + "</div>") + '<div class="note">' + (lbPve === 7 ? t("lb_min_kills") + ". " : "") + t("lb_pve_note") + "</div>";
     } else if (def[0] === "pvp") {
-      var vchip = function (c) { return '<button type="button" class="huchip' + (lbPvp === c[0] ? " on" : "") + '" data-lbpvp="' + c[0] + '" aria-pressed="' + (lbPvp === c[0]) + '">' + t(c[1]) + "</button>"; };
+      var vchip = function (c) { return lbSub("data-lbpvp", c[0], lbPvp === c[0], t(c[1])); };
       var pdef = LB_PVP.filter(function (c) { return c[0] === lbPvp; })[0] || LB_PVP[0], pval = pdef[2];
-      h += '<div class="huchips">' + LB_PVP.map(vchip).join("") + "</div>";
+      lbSubHtml = LB_PVP.map(vchip).join("");
       var pp = KAT.players.filter(function (p) { return faOk(p) && pval(p) > 0; }).sort(function (a, b) { return pval(b) - pval(a) || (b.hk || 0) - (a.hk || 0) || b.lv - a.lv; }).slice(0, 100);
       h += '<table class="lbt"><thead><tr><th>#</th><th class="nm">' + t("lb_player") + "</th>" + lbRaceTh() + "<th>" + t("col_lvl") + '</th><th class="hide-s">' + t("lb_guild") + "</th><th>" + t(pdef[1]) + "</th></tr></thead><tbody>" +
         pp.map(function (p, i) {
@@ -5244,8 +5279,8 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
       var tc = {}; KAT.players.forEach(function (p) { if (faOk(p) && p.ti) p.ti[2].forEach(function (n) { tc[n] = (tc[n] || 0) + 1; }); });
       var tkeys = Object.keys(tc).sort(function (a, b) { return tc[a] - tc[b] || a.localeCompare(b); });   // sällsyntast först
       if (lbTitle && !tc[lbTitle]) lbTitle = "";
-      var tchip = function (k, lbl, n) { return '<button type="button" class="huchip' + (lbTitle === k ? " on" : "") + '" data-lbtitle="' + esc(k) + '" aria-pressed="' + (lbTitle === k) + '">' + lbl + (n ? ' <span class="dim">' + n + "</span>" : "") + "</button>"; };
-      h += '<div class="huchips">' + tchip("", t("lb_titles_most")) + tkeys.map(function (k) { return tchip(k, esc(k), tc[k]); }).join("") + "</div>";
+      var tchip = function (k, lbl, n) { return lbSub("data-lbtitle", k, lbTitle === k, lbl, n); };
+      lbSubHtml = tchip("", t("lb_titles_most")) + tkeys.map(function (k) { return tchip(k, esc(k), tc[k]); }).join("");
       var tp = KAT.players.filter(function (p) { return faOk(p) && p.ti && (lbTitle ? p.ti[2].indexOf(lbTitle) >= 0 : p.ti[0] > 0); }).sort(function (a, b) { return b.ti[0] - a.ti[0] || b.il - a.il; }).slice(0, 100);
       h += '<table class="lbt"><thead><tr><th>#</th><th class="nm">' + t("lb_player") + "</th>" + lbRaceTh() + '<th class="hide-s">' + t("lb_guild") + "</th><th>" + t("lb_titles") + "</th><th>" + t("lb_titles_active") + "</th></tr></thead><tbody>" +
         tp.map(function (p, i) {
@@ -5257,7 +5292,7 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
       var cc2 = {}; KAT.players.forEach(function (p) { if (faOk(p) && p.ac) Object.keys(p.ac).forEach(function (k) { if (k.charAt(0) !== "_") cc2[k] = (cc2[k] || 0) + 1; }); });
       var ckeys = Object.keys(cc2).sort(function (a, b) { return cc2[b] - cc2[a]; });
       if (ckeys.indexOf(lbAchc) < 0) lbAchc = ckeys[0] || "";
-      h += '<div class="huchips">' + ckeys.map(function (k) { return '<button type="button" class="huchip' + (lbAchc === k ? " on" : "") + '" data-lbachc="' + esc(k) + '" aria-pressed="' + (lbAchc === k) + '">' + esc(k) + "</button>"; }).join("") + "</div>";
+      lbSubHtml = ckeys.map(function (k) { return lbSub("data-lbachc", k, lbAchc === k, esc(k), cc2[k]); }).join("");
       var ap2 = KAT.players.filter(function (p) { return faOk(p) && p.ac && p.ac[lbAchc] > 0; }).sort(function (a, b) { return b.ac[lbAchc] - a.ac[lbAchc] || b.ac._n - a.ac._n; }).slice(0, 100);
       h += '<table class="lbt"><thead><tr><th>#</th><th class="nm">' + t("lb_player") + "</th>" + lbRaceTh() + '<th class="hide-s">' + t("lb_guild") + "</th><th>" + esc(lbAchc) + '</th><th class="hide-s">' + t("lb_ach") + "</th></tr></thead><tbody>" +
         ap2.map(function (p, i) {
@@ -5269,7 +5304,7 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
       var isQ = def[0] === "quests", qdefs = isQ ? [["lb_quests_done", function (p) { return p.pve ? p.pve[4] : 0; }], ["lb_quests_aband", function (p) { return p.pve ? p.pve[7] || 0 : 0; }]]
         : [["lb_travel_fl", function (p) { return p.tr ? p.tr[0] : 0; }], ["lb_travel_po", function (p) { return p.tr ? p.tr[1] : 0; }], ["lb_travel_su", function (p) { return p.tr ? p.tr[2] : 0; }], ["lb_travel_hs", function (p) { return p.tr ? p.tr[3] : 0; }]];
       var qi = isQ ? lbQuest : lbTravel, qv = qdefs[qi][1];
-      h += '<div class="huchips">' + qdefs.map(function (d2, i) { return '<button type="button" class="huchip' + (qi === i ? " on" : "") + '" data-lbqt="' + i + '" aria-pressed="' + (qi === i) + '">' + t(d2[0]) + "</button>"; }).join("") + "</div>";
+      lbSubHtml = qdefs.map(function (d2, i) { return lbSub("data-lbqt", i, qi === i, t(d2[0])); }).join("");
       var qp = KAT.players.filter(function (p) { return faOk(p) && qv(p) > 0; }).sort(function (a, b) { return qv(b) - qv(a) || b.lv - a.lv; }).slice(0, 100);
       h += '<table class="lbt"><thead><tr><th>#</th><th class="nm">' + t("lb_player") + "</th>" + lbRaceTh() + "<th>" + t("col_lvl") + '</th><th class="hide-s">' + t("lb_guild") + "</th><th>" + t(qdefs[qi][0]) + "</th></tr></thead><tbody>" +
         qp.map(function (p, i) {
@@ -5301,10 +5336,11 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
       if (extra.length) h += '<h3 class="fkh">' + t("lb_prog_raids") + '</h3><table class="lbt fk"><tbody>' + extra.map(function (b) { var v = FK[b]; return '<tr><td class="nm">' + esc(b) + ' <small class="dim">' + esc(v.inst || "") + "</small></td><td><b>" + when2(v.t) + "</b></td><td>" + (v.g ? '<a href="#guild=' + esc(v.g) + '" data-ar="guild" data-slug="' + esc(v.g) + '">&lt;' + esc(v.gn) + "&gt;</a>" : "") + '</td><td class="hide-s"><a href="#player=' + esc(v.p) + '" data-ar="char" data-slug="' + esc(v.p) + '">' + esc(v.n) + "</a></td></tr>"; }).join("") + "</tbody></table>";
       h += '<div class="note">' + t(fkKeys.length ? "lb_fk_note" : "lb_fk_none") + "</div>";
     } else if (def[0] === "prog") {
-      var pchip = function (k, lbl) { return '<button type="button" class="huchip' + (lbProg === k ? " on" : "") + '" data-lbprog="' + k + '" aria-pressed="' + (lbProg === k) + '">' + lbl + "</button>"; };
-      h += '<div class="huchips">' + pchip("raids", t("lb_prog_raids")) + pchip("dgs", t("lb_prog_dgs")) + "</div>" + (raidsExist ? "" : '<div class="note">' + t("lb_prog_noraid") + "</div>");
       var raidsExist = KAT.players.some(function (p) { return p.bk && LB_RAIDS.some(function (c) { return p.bk[c[0]]; }); });
       if (!raidsExist && lbProg === "raids") lbProg = "dgs";
+      var pchip = function (k, lbl) { return lbSub("data-lbprog", k, lbProg === k, lbl); };
+      lbSubHtml = pchip("raids", t("lb_prog_raids")) + pchip("dgs", t("lb_prog_dgs"));
+      h += raidsExist ? "" : '<div class="note">' + t("lb_prog_noraid") + "</div>";
       var cols = lbProg === "raids" ? LB_RAIDS : LB_DGS, gP = {};
       KAT.players.forEach(function (p) {
         if (!faOk(p) || p.lv < 60 || !p.bk || !p.g) return;
@@ -5321,10 +5357,10 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
             '<td class="hide-s">' + g.n60 + "</td></tr>";
         }).join("") + "</tbody></table>" + (gp.length ? "" : '<div class="note">' + t("lb_prog_none") + "</div>") + '<div class="note">' + t(lbProg === "raids" ? "lb_prog_note" : "lb_prog_dg_note") + "</div>";
     } else if (def[0] === "fish") {
-      var fchip = function (k, lbl) { return '<button type="button" class="huchip' + (lbFish === k ? " on" : "") + '" data-lbfish="' + k + '" aria-pressed="' + (lbFish === k) + '">' + lbl + "</button>"; };
+      var fchip = function (k, lbl) { return lbSub("data-lbfish", k, lbFish === k, lbl); };
       var fhas = [0, 0, 0]; KAT.players.forEach(function (p) { if (p.fish) { if (p.fish[0]) fhas[0] = 1; if (p.fish[1]) fhas[1] = 1; if (p.fish[2]) fhas[2] = 1; } });
       if ((lbFish === "k" && !fhas[1]) || (lbFish === "s" && !fhas[2])) lbFish = "n";
-      h += '<div class="huchips">' + fchip("n", t("lb_fish_n")) + (fhas[1] ? fchip("k", t("lb_fish_k")) : "") + (fhas[2] ? fchip("s", t("lb_fish_s")) : "") + "</div>";
+      lbSubHtml = fchip("n", t("lb_fish_n")) + (fhas[1] ? fchip("k", t("lb_fish_k")) : "") + (fhas[2] ? fchip("s", t("lb_fish_s")) : "");
       var fi = lbFish === "n" ? 0 : lbFish === "k" ? 1 : 2;
       var fp = KAT.players.filter(function (p) { return faOk(p) && p.fish && p.fish[fi] > 0; }).sort(function (a, b) { return b.fish[fi] - a.fish[fi] || b.fish[0] - a.fish[0]; }).slice(0, 100);
       h += '<table class="lbt"><thead><tr><th>#</th><th class="nm">' + t("lb_player") + "</th>" + lbRaceTh() + '<th class="hide-s">' + t("lb_guild") + "</th><th>" + t("lb_fish_n") + "</th>" + (fhas[1] ? "<th>" + t("lb_fish_k") + "</th>" : "") + '<th class="hide-s">' + t("lb_fish_s") + "</th></tr></thead><tbody>" +
@@ -5347,8 +5383,8 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
           return '<tr><td class="lbn' + (i < 3 ? " top" + (i + 1) : "") + '">' + (i + 1) + '</td><td class="nm"><a href="#guild=' + esc(g.s) + '" data-ar="guild" data-slug="' + esc(g.s) + '">&lt;' + esc(g.n) + '&gt;</a> ' + faMark(g.fa) + "</td>" + c(g.mc) + c(g.ony) + c(g.bwl) + c(g.all) + '<td class="hide-s">' + g.n60 + "</td></tr>";
         }).join("") + "</tbody></table>" + (ga.length ? "" : '<div class="note">' + t("lb_att_none") + "</div>") + '<div class="note">' + t("lb_att_note") + "</div>";
     } else if (def[0] === "rep") {
-      var rchip = function (k, lbl) { return '<button type="button" class="huchip' + (lbRep === k ? " on" : "") + '" data-lbrep="' + k + '" aria-pressed="' + (lbRep === k) + '">' + lbl + "</button>"; };
-      h += '<div class="huchips">' + rchip("", t("lb_rep_ex")) + LB_REPF.map(function (n) { return rchip(n, n); }).join("") + "</div>";
+      var rchip = function (k, lbl) { return lbSub("data-lbrep", k, lbRep === k, lbl); };
+      lbSubHtml = rchip("", t("lb_rep_ex")) + LB_REPF.map(function (n) { return rchip(n, n); }).join("");
       var rp = KAT.players.filter(function (p) { return faOk(p) && p.rep && (lbRep ? p.rep.f && p.rep.f[lbRep] : p.rep.ex > 0); });
       if (lbRep) rp.sort(function (a, b) { var x = a.rep.f[lbRep], y = b.rep.f[lbRep]; return (y[0] - x[0]) || (y[1] - x[1]) || b.lv - a.lv; });
       else rp.sort(function (a, b) { return (b.rep.ex - a.rep.ex) || b.il - a.il; });
@@ -5377,7 +5413,8 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
         }).join("") + "</tbody></table>" + (pl.length ? "" : '<div class="note">' + t("lb_none") + "</div>");
     }
     h += "</div>";   // snöbollstexten borttagen (Joakim 2026-11-18); står i About
-    arShow(h, '<div class="strip"><h2>' + t(def[3] === "s" ? "lb_server" : "lb") + "</h2><small>" + t(def[2]) + '</small></div><div class="note">' + t("lb_how") + "</div>");
+    arShow(h, '<div class="strip"><h2>' + t(def[3] === "s" ? "lb_server" : def[2]) + "</h2><small>" + t("lb") + "</small></div>" + meter + (def[0] === "cls" ? "" : lbSideBars(faOk)) + '<div class="note">' + t("lb_how") + "</div>");
+    drawCats(); drawLbSub();
   }
   // ---- Disenchant (Joakim 2026-11-17: "vad som är värt att disenchanta på AH för att få essence som är värt mer"):
   // varje rustning/vapen på AH som går att disenchanta, köppris mot värdet av det den ger. Vad den ger: Classic-databasen
@@ -5730,17 +5767,19 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
     return true;
   }
   function coCats() {
-    var h = '<div class="cath">' + t("co_kinds") + "</div>";
-    ["mounts", "pets", "toys", "titles"].forEach(function (k) {
-      h += '<button class="cat" type="button" data-cokind="' + k + '" aria-pressed="' + (coKind === k) + '"><em class="nm">' + t("co_k_" + k) + "</em><span>" + CO[k].length + "</span></button>";
-    });
     var cnt = {}, all = 0;
     CO[coKind].forEach(function (x) { if (coSide && x.faction && x.faction !== (houseParts(house)[1] === "alliance" ? "ALLIANCE" : "HORDE")) return; var k = coSrcKind(x); cnt[k] = (cnt[k] || 0) + 1; all++; });
-    var chip = function (k, lbl, n) { return '<button type="button" class="huchip' + (coSrc === k ? " on" : "") + '" data-cosrc="' + k + '" aria-pressed="' + (coSrc === k) + '">' + lbl + (n != null ? ' <span class="dim">' + n + "</span>" : "") + "</button>"; };
-    h += '<div class="cath">' + t("co_from") + '</div><div class="hufil"><div class="huchips">' + chip("", t("co_s_all"), all);
-    ["vendor", "drop", "quest", "class", "pvp", "other", "forever"].forEach(function (k) { if (cnt[k]) h += chip(k, t("co_s_" + k), cnt[k]); });
-    if (coOwner() && coKind === "mounts") h += chip("missing", t("co_missing", esc(coOwner().name)));
-    h += "</div>" + (coKind !== "titles" ? '<button type="button" class="huchip' + (coSide ? " on" : "") + '" data-coside="1" aria-pressed="' + coSide + '">' + t("co_side", houseParts(house)[1] === "alliance" ? "Alliance" : "Horde") + "</button>" : "") + "</div>";
+    // "Where from" som undermeny under vald samling (Joakim 2026-11-19: inte piller)
+    var sub = function (k, lbl, n) { return '<button class="cat sub" type="button" data-cosrc="' + k + '" aria-pressed="' + (coSrc === k) + '"><em class="nm">' + lbl + "</em>" + (n != null ? "<span>" + num(n) + "</span>" : "") + "</button>"; };
+    var h = '<div class="cath">' + t("co_kinds") + "</div>";
+    ["mounts", "pets", "toys", "titles"].forEach(function (k) {
+      h += '<button class="cat" type="button" data-cokind="' + k + '" aria-pressed="' + (coKind === k && !coSrc) + '"><em class="nm">' + t("co_k_" + k) + "</em><span>" + CO[k].length + "</span></button>";
+      if (coKind !== k) return;
+      h += sub("", t("co_s_all"), all);
+      ["vendor", "drop", "quest", "class", "pvp", "other", "forever"].forEach(function (k2) { if (cnt[k2]) h += sub(k2, t("co_s_" + k2), cnt[k2]); });
+      if (coOwner() && k === "mounts") h += sub("missing", t("co_missing", esc(coOwner().name)));
+      if (k !== "titles") h += '<button class="cat sub tgl" type="button" data-coside="1" aria-pressed="' + coSide + '"><em class="nm">' + t("co_side", houseParts(house)[1] === "alliance" ? "Alliance" : "Horde") + "</em><span>" + (coSide ? "✓" : "") + "</span></button>";
+    });
     if (coOwner() && coKind === "mounts") {
       var o = coOwner(), have = CO.mounts.filter(function (x) { return coOwned(x); }).length;
       h += '<div class="note">' + t("co_owner", esc(o.name), have, CO.mounts.length) + "</div>";
