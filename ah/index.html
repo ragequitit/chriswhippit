@@ -374,6 +374,10 @@ body[data-mode=hu] .facts dd { font-size: 15px; }
 .huz.e { width: 9px; height: 9px; margin: -5.5px 0 0 -5.5px; background: #40c040; }
 .huz.src { width: 8px; height: 8px; margin: -5px 0 0 -5px; background: #ffd24a; box-shadow: 0 0 4px rgba(255, 210, 74, .8); cursor: default; }
 .srcs2 { display: grid; gap: 10px; }
+.lbme { display: grid; gap: 2px; padding: 4px 0 6px; }
+.lbmer { display: grid; grid-template-columns: minmax(0, 1fr) 54px auto; gap: 8px; align-items: baseline; padding: 3px 8px; border-radius: 4px; color: var(--fg); text-decoration: none; font-size: 12.5px; }
+.lbmer:hover { background: var(--hover); } .lbmer .nm { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; } .lbmer b { text-align: right; color: var(--grey); } .lbmer small { color: var(--grey); font-size: 11.5px; white-space: nowrap; }
+.lbmer.t100 b { color: var(--gold); } .lbmer.top1 b { color: #ffd100; } .lbmer.top2 b { color: #d6dee8; } .lbmer.top3 b { color: #d08a4e; }
 .atts { display: grid; gap: 6px; padding: 6px 0 2px; } .attrow { padding: 6px 8px; border: 1px solid var(--line); border-radius: 5px; background: var(--inset); font-size: 13px; }
 .attrow.ok { border-color: rgba(64, 192, 64, .35); } .atth { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; } .atth .att { margin-left: auto; font-size: 12px; padding: 1px 7px; border-radius: 9px; border: 1px solid; white-space: nowrap; }
 .att.ok { color: #6fdc6f; border-color: rgba(64, 192, 64, .5); } .att.part { color: var(--gold); border-color: rgba(214, 168, 59, .5); } .att.no { color: var(--grey); border-color: var(--line); }
@@ -1436,7 +1440,7 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
       lb_cls: "Classes", lb_only60: "Only level 60", lb_cls_note: "%1 players with a known class. Top bar = Horde, bottom bar = Alliance, on the same scale.",
       lb_meter_tip: "How many Horde and Alliance players the catalog has found on this realm type. Alliance grows with enemy nameplates on (Ctrl+V) and battlegrounds.",
       lb_rs_auto: "%1 (your AH)", lb_rs_all: "All realms", lb_rs_partial: "Some players are still being sorted into PvP or Normal; they show under All realms until the next update.",
-      lb_both: "Both sides", lb_cats: "Categories", lb_races: "Races", lb_race: "Race", lb_cls_on: "Show only %1s", lb_cls_off: "Show all classes", lb_race_on: "Show only %1", lb_race_off: "Show all races", lb_player: "Player", lb_guild: "Guild", lb_n60: "Level 60s", lb_il60: "Item level (60s)", lb_avg: "Avg level", lb_members: "Members", lb_none: "Nobody here yet.", lb_fail: "The leaderboards could not be loaded.",
+      lb_both: "Both sides", lb_me_of: "of %1", lb_me_none: "Not on any leaderboard yet.", lb_me_unknown: "Not in the catalog yet – shows up after the next catalog run.", lb_cats: "Categories", lb_races: "Races", lb_race: "Race", lb_cls_on: "Show only %1s", lb_cls_off: "Show all classes", lb_race_on: "Show only %1", lb_race_off: "Show all races", lb_player: "Player", lb_guild: "Guild", lb_n60: "Level 60s", lb_il60: "Item level (60s)", lb_avg: "Avg level", lb_members: "Members", lb_none: "Nobody here yet.", lb_fail: "The leaderboards could not be loaded.",
       lb_note: "Blizzard can only look up a player by name, so the list grows like a snowball: known players → their guild → its members → their guilds, plus the names WhippitPanel notes in the game. Refreshed daily; anyone not seen for 29 days drops out.",
       lb_how: "Click a player or guild to open it in the Armory. Guilds are ranked by level 60 members, then their average item level.",
       de_watch: "All to My list", de_watch_tip: "Put every item in the list with a profit on My list (click again to remove them)",
@@ -1973,9 +1977,9 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
   function rankName(faction, r) { var a = PVP_RANKS[faction === "ALLIANCE" ? "ALLIANCE" : "HORDE"]; return r > 0 && a[r] ? a[r] : ""; }
   function rankBadge(faction, r) { var n = rankName(faction, r); return n ? '<span class="rank r' + r + '" title="' + t("pvp_rank_n", r) + '"><b>' + r + "</b> " + esc(n) + "</span>" : ""; }
   // Fällbara rader i Armory (Joakim 2026-11-17: "klickar man på ... så fälls rutan ut"); stängda från början.
-  var arOpen = { hpets: false, talents: false, quests: false, ach: false, rep: false, att: true, prof: false, stats: false, mounts: false };
+  var arOpen = { hpets: false, talents: false, quests: false, ach: false, rep: false, att: false, lb: false, prof: false, stats: false, mounts: false };   // att stängd från start (Joakim 2026-11-19)
   // Ikon per rad (spelets ikoner hos Blizzard), så raderna blir en kolumn att läsa uppifrån och ner.
-  var AR_ROW_IC = { att: "inv_misc_key_10", hpets: "ability_hunter_beasttaming", talents: "ability_marksmanship", quests: "inv_misc_note_01", ach: "achievement_general", rep: "inv_misc_tabardpvp_01", prof: "trade_blacksmithing", stats: "inv_misc_book_11", mounts: "ability_mount_blackdirewolf" };
+  var AR_ROW_IC = { lb: "inv_misc_trophy_argent", att: "inv_misc_key_10", hpets: "ability_hunter_beasttaming", talents: "ability_marksmanship", quests: "inv_misc_note_01", ach: "achievement_general", rep: "inv_misc_tabardpvp_01", prof: "trade_blacksmithing", stats: "inv_misc_book_11", mounts: "ability_mount_blackdirewolf" };
   function pct(v) { return v == null ? "–" : (Math.round(v * 100) / 100) + "%"; }
   function arToggle(key, title, n, sub) {
     var open = arOpen[key], ic = AR_ROW_IC[key];
@@ -2029,6 +2033,40 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
       return '<div class="attrow' + (st.ok ? " ok" : "") + '"><div class="atth"><b>' + esc(a.name) + "</b>" + (a.key ? ' <span class="tag">' + t("att_key") + "</span>" : "") + badge + "</div>" + (st.ok ? "" : '<div class="dim">' + t(a.how) + "</div>") + extra + "</div>";
     }).join("");
     return arToggle("att", t("ar_att"), nOk + "/" + rows.length) + (arOpen.att ? '<div class="atts">' + html + '<div class="note">' + t("att_note") + "</div></div>" : "");
+  }
+  // Spelarens placeringar på topplistorna (Joakim 2026-11-19): en rad per lista, liten text, klick öppnar listan. Räknas
+  // bland alla i katalogen (båda sidor, alla realms) med samma sortering som listorna (värde, sedan level, sedan ilvl).
+  function lbMeDefs() {
+    var pve = ["lb_pve_kills", "lb_pve_creat", "lb_pve_dg", "lb_pve_raid", "lb_pve_q", "lb_pve_deaths", "lb_pve_crit", "lb_pve_kpd"];
+    var d = [["ilvl", "", "lb_ilvl", function (p) { return p.il || 0; }], ["ach", "", "lb_ach", function (p) { return p.ap || 0; }]];
+    LB_PVP.forEach(function (c) { d.push(["pvp", c[0], c[1], c[2]]); });
+    pve.forEach(function (k, i) { d.push(["pve", i, k, function (p) { if (!p.pve) return 0; return i === 7 ? (p.pve[0] >= 1000 ? Math.round(p.pve[0] / Math.max(1, p.pve[5])) : 0) : p.pve[i] || 0; }]); });
+    d.push(["quests", 1, "lb_quests_aband", function (p) { return p.pve ? p.pve[7] || 0 : 0; }]);
+    [["lb_travel_fl", 0], ["lb_travel_po", 1], ["lb_travel_su", 2], ["lb_travel_hs", 3]].forEach(function (x) { d.push(["travel", x[1], x[0], function (p) { return p.tr ? p.tr[x[1]] || 0 : 0; }]); });
+    [["lb_fish_n", "n", 0], ["lb_fish_k", "k", 1], ["lb_fish_s", "s", 2]].forEach(function (x) { d.push(["fish", x[1], ["lb_fish", x[0]], function (p) { return p.fish ? p.fish[x[2]] || 0 : 0; }]); });
+    d.push(["titles", "", "lb_titles", function (p) { return p.ti ? p.ti[0] || 0 : 0; }], ["rep", "", "lb_rep_ex", function (p) { return p.rep ? p.rep.ex || 0 : 0; }]);
+    return d;
+  }
+  function lbMeRows(me) {
+    var P = KAT.players, out = [];
+    lbMeDefs().forEach(function (df) {
+      var fn = df[3], v = fn(me); if (!(v > 0)) return;
+      var ahead = 0, n = 0;
+      for (var i = 0; i < P.length; i++) { var p = P[i], w = fn(p); if (!(w > 0)) continue; n++; if (w > v || (w === v && (p.lv > me.lv || (p.lv === me.lv && p.il > me.il)))) ahead++; }
+      out.push({ b: df[0], sub: df[1], lbl: Array.isArray(df[2]) ? t(df[2][0]) + ": " + t(df[2][1]).toLowerCase() : t(df[2]), rank: ahead + 1, n: n, v: v });
+    });
+    out.sort(function (a, b) { return a.rank - b.rank || b.n - a.n; });
+    return out;
+  }
+  function lbSection(d) {
+    if (!KAT) { if (arOpen.lb) loadKat().then(function () { if (mode === "ar" && arData && arData.kind === "character") arRedraw(); }).catch(function () {}); return arToggle("lb", t("lb"), null); }
+    var me = null; for (var i = 0; i < KAT.players.length && !me; i++) if (KAT.players[i].s === d.slug) me = KAT.players[i];
+    var rows = me ? lbMeRows(me) : [];
+    var html = rows.length ? '<div class="lbme">' + rows.map(function (r) {
+      var val = r.b === "pvp" && r.sub === "rank" ? (rankBadge(d.faction, r.v) || r.v) : r.b === "pvp" && r.sub === "duelr" ? r.v + " %" : num(r.v);
+      return '<a class="lbmer' + (r.rank <= 3 ? " top" + r.rank : r.rank <= 100 ? " t100" : "") + '" href="#top=' + r.b + '" data-lbme="' + r.b + '" data-lbsub="' + esc(String(r.sub)) + '"><span class="nm">' + esc(r.lbl) + "</span><b>#" + num(r.rank) + "</b><small>" + t("lb_me_of", num(r.n)) + " · " + val + "</small></a>";
+    }).join("") + "</div>" : '<div class="note">' + t(me ? "lb_me_none" : "lb_me_unknown") + "</div>";
+    return arToggle("lb", t("lb"), rows.length) + (arOpen.lb ? html : "");
   }
   function statsSection(d) {
     var list = d.statList || [];
@@ -2311,7 +2349,7 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
       '<div class="picnote" title="' + t("ar_picnote_tip") + '">' + t("ar_picnote") + "</div></div>" + statsPanel(d) + "</div>" +
       '<div class="arside">' + huArmorySection(d) + talentsRow(d) + questsActiveSection(d) + achSection(d) +
       arToggle("rep", t("ar_rep"), d.reputations.length) + (arOpen.rep ? '<div class="reps">' + repsHtml(d) + "</div>" : "") +
-      attSection(d) +
+      attSection(d) + lbSection(d) +
       arToggle("prof", t("ar_prof"), profN) + (arOpen.prof ? '<div class="profsec"><h4>' + t("ar_prof") + '</h4><div class="profs">' + (d.professions.primary.map(profHtml).join("") || '<div class="note">–</div>') + "</div>" +
         "<h4>" + t("ar_prof2") + '</h4><div class="profs">' + (d.professions.secondary.map(profHtml).join("") || '<div class="note">–</div>') + "</div></div>" : "") +
       statsSection(d) + mountsSection(d) +
@@ -4405,6 +4443,14 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
       try { localStorage.setItem(RKEY, rangeKey); } catch (e2) {}
       if (selId) select(selId, false);
       return;
+    }
+    var lbme = e.target.closest("[data-lbme]");
+    if (lbme && mode === "ar") {
+      e.preventDefault();
+      var mb = lbme.dataset.lbme, ms = lbme.dataset.lbsub;
+      if (mb === "pvp") lbPvp = ms; else if (mb === "pve") lbPve = +ms; else if (mb === "quests") lbQuest = +ms; else if (mb === "travel") lbTravel = +ms; else if (mb === "fish") lbFish = ms; else if (mb === "titles") lbTitle = ""; else if (mb === "rep") lbRep = "";
+      lbFa = ""; lbRs = "all"; lbCls = ""; lbRaceF = "";   // placeringen räknades bland alla
+      arLb = mb; drawMode(); drawCats(); lbShow(); setHash("#top=" + mb); showTab("item"); toTop(); return;
     }
     var lbb = e.target.closest("[data-lb]");
     if (lbb && mode === "ar") { arLb = lbb.dataset.lb; drawMode(); drawCats(); lbShow(); setHash("#top=" + arLb); showTab("item"); return; }
