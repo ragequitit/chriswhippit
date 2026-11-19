@@ -376,7 +376,7 @@ body[data-mode=hu] .facts dd { font-size: 15px; }
 .srcs2 { display: grid; gap: 10px; }
 .lbme { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: 2px 8px; padding: 4px 0 6px; }   /* kolumnerna delas av alla rader (subgrid) så # och "of" står rakt under varandra (Joakim 2026-11-19) */
 .lbmer { display: grid; grid-column: 1 / -1; grid-template-columns: subgrid; align-items: baseline; padding: 3px 8px; border-radius: 4px; color: var(--fg); text-decoration: none; font-size: 12.5px; }
-.lbmer:hover { background: var(--hover); } .lbmer .nm { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; } .lbmer b { text-align: left; color: var(--grey); } .lbmer small { color: var(--grey); font-size: 11.5px; white-space: nowrap; }
+.lbmer:hover { background: var(--hover); } .lbmer .nm { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; } .lbmer b { text-align: left; color: var(--grey); } .lbmer small { color: var(--grey); font-size: 11.5px; white-space: nowrap; } .lbmer small em { font-weight: 700; font-style: italic; color: var(--fg); }   /* PvP-rankens namn fet och kursiv (Joakim 2026-11-19) */
 .lbmer.t100 b { color: var(--gold); } .lbmer.top1 b { color: #ffd100; } .lbmer.top2 b { color: #d6dee8; } .lbmer.top3 b { color: #d08a4e; }
 .atts { display: grid; gap: 6px; padding: 6px 0 2px; } .attrow { padding: 6px 8px; border: 1px solid var(--line); border-radius: 5px; background: var(--inset); font-size: 13px; }
 .attrow.ok { border-color: rgba(64, 192, 64, .35); } .atth { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; } .atth .att { margin-left: auto; font-size: 12px; padding: 1px 7px; border-radius: 9px; border: 1px solid; white-space: nowrap; }
@@ -2086,7 +2086,7 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
     var kat = null; for (var i = 0; i < KAT.players.length && !kat; i++) if (KAT.players[i].s === d.slug) kat = KAT.players[i];
     var me = lbMeLive(d, kat), rows = lbMeRows(me);
     var html = rows.length ? '<div class="lbme">' + rows.map(function (r) {
-      var val = r.b === "pvp" && r.sub === "rank" ? esc(rankName(d.faction, r.v) || String(r.v)) : r.b === "pvp" && r.sub === "duelr" ? r.v + " %" : num(r.v);
+      var val = r.b === "pvp" && r.sub === "rank" ? "<em>" + esc(rankName(d.faction, r.v) || String(r.v)) + "</em>" : r.b === "pvp" && r.sub === "duelr" ? r.v + " %" : num(r.v);
       return '<a class="lbmer' + (r.rank <= 3 ? " top" + r.rank : r.rank <= 100 ? " t100" : "") + '" href="#top=' + r.b + '" data-lbme="' + r.b + '" data-lbsub="' + esc(String(r.sub)) + '"><span class="nm">' + esc(r.lbl) + "</span><b>#" + num(r.rank) + "</b><small>" + t("lb_me_of", num(r.n)) + " · " + val + "</small></a>";
     }).join("") + "</div>" : '<div class="note">' + t("lb_me_none") + "</div>";
     return arToggle("lb", t("lb"), rows.length) + (arOpen.lb ? html : "");
