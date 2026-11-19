@@ -3469,7 +3469,7 @@ body[data-mode=cl] .ttrees { gap: 8px; } body[data-mode=cl] .ttree { padding: 6p
     return r ? ASSET_BASE + "backgrounds/dress-" + r + ".webp" : "";
   }
   function portraitHtml(disp, rare, m3, img, bg) {
-    if (!(disp > 0)) return "";
+    if (!(disp > 0) && !img) return "";   // egen bild (img) räcker: Forever-djur utan display-id
     return '<div class="portr' + (rare ? " rare" : "") + (bg ? " hasbg" : "") + '"' + (bg ? ' style="--pbg:url(' + esc(bg) + ')"' : "") + (m3 ? ' data-m3="' + disp + '"' : "") + '><img src="' + (img ? esc(img) : "https://render.worldofwarcraft.com/eu/npcs/zoom/creature-display-" + disp + ".jpg") + '" alt="" loading="lazy" decoding="async" onerror="m3NoPic(this)">' +
       (m3 ? '<button class="p3d" type="button" data-m3b title="' + t("m3_tip") + '">' + t("m3_btn") + "</button>" : "") + "</div>";
   }
@@ -5303,7 +5303,7 @@ body[data-mode=cl] .ttrees { gap: 8px; } body[data-mode=cl] .ttree { padding: 6p
   function huRow(r) {
     var b = r.hu, f = HU.families[b.fam] || {}, rare = huIsRare(b);
     return '<tr tabindex="0" data-hu="' + b.id + '"' + (b.id === huSel ? ' aria-selected="true"' : "") + '><td class="fav">' + (rare ? '<span class="hurare" title="' + HU_RANK[b.rank] + '">◆</span>' : "") + "</td>" +
-      '<td class="nm">' + drk(rare, b.rank === 1, '<img class="hic' + (rare ? " rare" : "") + '" src="' + huFamIcon(b.fam) + '" alt="" loading="lazy">', false, true) + '<span class="' + (rare ? "hurn" : b.rank === 1 ? "q2" : "q1") + '">' + esc(b.name) + "</span>" + (b.rank ? ' <small class="dim">' + HU_RANK[b.rank] + "</small>" : "") + "</td>" +
+      '<td class="nm">' + drk(rare, b.rank === 1, '<img class="hic' + (rare ? " rare" : "") + '" src="' + huFamIcon(b.fam) + '" alt="" loading="lazy">', false, true) + '<span class="' + (rare ? "hurn" : b.rank === 1 ? "q2" : "q1") + '">' + esc(b.name) + "</span>" + (b.rank ? ' <small class="dim">' + HU_RANK[b.rank] + "</small>" : "") + (b.fv ? ' <span class="tag fv">' + t("co_s_forever") + "</span>" : "") + "</td>" +
       "<td>" + b.min + (b.max > b.min ? "–" + b.max : "") + '</td><td class="kat hide-s">' + esc(b.family) + '</td><td><span class="hurole r-' + (f.role || "") + '">' + t("hu_r_" + (f.role || "allround")) + "</span></td>" +
       "<td" + (b.speed <= 1.5 ? ' class="pos"' : "") + ">" + b.speed.toFixed(1) + '</td><td class="kat">' + esc(huZoneText(b)) + "</td></tr>";
   }
@@ -5320,7 +5320,7 @@ body[data-mode=cl] .ttrees { gap: 8px; } body[data-mode=cl] .ttree { padding: 6p
       (b.inst || []).map(function (x) { return "<li><b>" + esc(x[0]) + '</b> <span class="dim">' + t("hu_inst") + "</span></li>"; }).join("");
     $("detail").scrollTop = 0;
     $("detail").innerHTML = '<div class="strip"><button class="lnk" type="button" data-copyany="#beast=' + b.id + '" title="' + t("copy_link") + '">' + t("copy_link") + "</button>" +
-      '<h2 class="' + (rare ? "hurn" : b.rank === 1 ? "q2" : "q1") + '">' + drk(rare, b.rank === 1, '<img class="ci' + (rare ? " rare" : "") + '" src="' + huFamIcon(b.fam) + '" alt="">') + " " + esc(b.name) + "</h2><small>" + esc(b.family) + " · " + t("col_lvl") + " " + b.min + (b.max > b.min ? "–" + b.max : "") + (b.rank ? " · " + HU_RANK[b.rank] : "") + "</small></div>" + portraitHtml(b.disp, rare, b.m3, "", huBg(b)) +
+      '<h2 class="' + (rare ? "hurn" : b.rank === 1 ? "q2" : "q1") + '">' + drk(rare, b.rank === 1, '<img class="ci' + (rare ? " rare" : "") + '" src="' + huFamIcon(b.fam) + '" alt="">') + " " + esc(b.name) + "</h2><small>" + esc(b.family) + " · " + t("col_lvl") + " " + b.min + (b.max > b.min ? "–" + b.max : "") + (b.rank ? " · " + HU_RANK[b.rank] : "") + "</small></div>" + portraitHtml(b.disp, rare, b.m3, b.img ? ASSET_BASE + b.img : "", huBg(b)) + (b.how ? '<div class="note">' + esc(b.how) + "</div>" : "") +
       '<dl class="facts"><div><dt>' + t("hu_col_role") + '</dt><dd><span class="hurole r-' + (f.role || "") + '">' + t("hu_r_" + (f.role || "allround")) + "</span></dd></div>" +
       "<div><dt>" + t("hu_col_speed") + "</dt><dd" + (b.speed <= 1.5 ? ' class="pos"' : "") + ">" + b.speed.toFixed(1) + " s</dd></div>" +
       "<div><dt>" + t("hu_hp") + "</dt><dd>" + pc(f.hp || 1) + "</dd></div><div><dt>" + t("hu_dmg") + "</dt><dd>" + pc(f.dmg || 1) + "</dd></div><div><dt>" + t("hu_armor") + "</dt><dd>" + pc(f.armor || 1) + "</dd></div>" +
