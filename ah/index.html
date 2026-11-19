@@ -197,6 +197,7 @@ body[data-mode=hu] .facts dd { font-size: 15px; }
 /* drakar i topplistan och sökrutan får luft: raderna med ram blir högre */
 .lbt tr:has(.drk) td { padding-top: 12px; padding-bottom: 12px; } .gsr:has(.drk) { padding-top: 13px; padding-bottom: 13px; }
 .lbt .drk { margin: 0 10px 0 4px; } .lbt .drk img { width: 20px; height: 20px; }
+.gsr .rng { margin: 0; padding: 1px; border-radius: 5px; } .gsr .rng img, .gsr .rng .hic, .gsr .rng .upnoi { width: 20px; height: 20px; display: block; }
 .gsr .drk { margin: 0 4px 0 2px; } .gsr .drk img, .gsr .drk .hic, .gsr .drk .rn { width: 22px; height: 22px; }
 .mtip.hasbg { position: relative; overflow: hidden; } .mtip.hasbg::before { content: ""; position: absolute; inset: -8px; z-index: 0; background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, .4)), var(--pbg) center 78% / cover no-repeat; filter: blur(1.5px); }
 .mtip.hasbg img, .mtip.hasbg b { position: relative; z-index: 1; } .mtip.hasbg img { opacity: .92; }
@@ -226,6 +227,8 @@ body[data-mode=hu] .facts dd { font-size: 15px; }
 .lbt td { padding-top: 4px; padding-bottom: 4px; } .lbt td.nm a { vertical-align: middle; }
 .rng { display: inline-block; vertical-align: middle; margin-right: 8px; padding: 2px; border-radius: 6px; border: 2px solid var(--rng); box-shadow: 0 0 6px var(--rng), inset 0 0 4px rgba(0, 0, 0, .6); line-height: 0; }
 .rng .ri { margin: 0; vertical-align: top; } .rng.r1 { --rng: #ffd100; } .rng.r2 { --rng: #d6dee8; } .rng.r3 { --rng: #e0a060; }
+.lbci { background: none; border: 0; padding: 0; margin: 0 8px 0 0; cursor: pointer; vertical-align: middle; line-height: 0; } .lbci .ri, .lbci .rng { margin-right: 0; } .lbci:hover .ri { filter: brightness(1.3); }
+.huchip .ri { width: 18px; height: 18px; vertical-align: -4px; margin-right: 5px; border-radius: 3px; }
 .lbt td.rc { white-space: nowrap; color: var(--grey); } .lbt td.rc .ri { width: 26px; height: 26px; margin-right: 6px; } .lbt td.rc .ri.none { display: none; } .lbn { color: var(--grey); width: 28px; } .lbn.top1 { color: #ffd100; font-weight: 700; } .lbn.top2 { color: #d6dee8; font-weight: 700; } .lbn.top3 { color: #e0a060; font-weight: 700; }
 .lbmeter { display: grid; grid-template-columns: auto minmax(60px, 1fr) auto; gap: 10px; align-items: center; font-size: 12.5px; color: var(--grey); }
 .lbmeter b { color: var(--fg); } .lbmeter .h b { color: #ff6b5a; } .lbmeter .a b { color: #5aa0ff; }
@@ -479,7 +482,7 @@ td.nm, .watch td:first-child { text-align: left; white-space: nowrap; max-width:
 .arhead2 .gld { font-size: 13.5px; color: var(--gold); text-decoration: none; }
 .arhead2 .gld:hover { text-decoration: underline; }
 .arhead2 .lnk { float: none; }
-.arhead2 .ahname { display: flex; align-items: baseline; gap: 6px; }
+.arhead2 .ahname { display: flex; align-items: center; gap: 6px; } .ahav { margin-right: 4px; padding: 2px; } .ahav img { width: 44px; height: 44px; border-radius: 4px; display: block; border: 1px solid #000; }
 .arhead2 .ahname .star.fr { font-size: 20px; padding: 0 2px; margin: 0; align-self: center; }
 .arhead2 h2 { font-family: var(--display); font-weight: 500; font-size: 24px; margin: 0; }
 .arhead2 .lvl { color: var(--grey); font-size: 17px; }
@@ -1356,7 +1359,7 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
       lb_cls: "Classes", lb_only60: "Only level 60", lb_cls_note: "%1 players with a known class. Top bar = Horde, bottom bar = Alliance, on the same scale.",
       lb_meter_tip: "How many Horde and Alliance players the catalog has found on this realm type. Alliance grows with enemy nameplates on (Ctrl+V) and battlegrounds.",
       lb_rs_auto: "%1 (your AH)", lb_rs_all: "All realms", lb_rs_partial: "Some players are still being sorted into PvP or Normal; they show under All realms until the next update.",
-      lb_both: "Both sides", lb_race: "Race", lb_player: "Player", lb_guild: "Guild", lb_n60: "Level 60s", lb_il60: "Item level (60s)", lb_avg: "Avg level", lb_members: "Members", lb_none: "Nobody here yet.", lb_fail: "The leaderboards could not be loaded.",
+      lb_both: "Both sides", lb_race: "Race", lb_cls_on: "Show only %1s", lb_cls_off: "Show all classes", lb_player: "Player", lb_guild: "Guild", lb_n60: "Level 60s", lb_il60: "Item level (60s)", lb_avg: "Avg level", lb_members: "Members", lb_none: "Nobody here yet.", lb_fail: "The leaderboards could not be loaded.",
       lb_note: "Blizzard can only look up a player by name, so the list grows like a snowball: known players → their guild → its members → their guilds, plus the names WhippitPanel notes in the game. Refreshed daily; anyone not seen for 29 days drops out.",
       lb_how: "Click a player or guild to open it in the Armory. Guilds are ranked by level 60 members, then their average item level.",
       de_watch: "All to My list", de_watch_tip: "Put every item in the list with a profit on My list (click again to remove them)",
@@ -1711,7 +1714,7 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
   function faIcon(fa) { if (!ASSET_BASE || !fa) return ""; var n = fa === "ALLIANCE" ? "alliance" : "horde"; return '<img class="fe" src="' + ASSET_BASE + "icons/faction-" + n + '.png" alt="' + (fa === "ALLIANCE" ? "Alliance" : "Horde") + '" title="' + (fa === "ALLIANCE" ? "Alliance" : "Horde") + '">'; }
   // Topplistornas spelarcell (Joakim 2026-11-19): klassikon med ring guld/silver/koppar för plats 1–3 (drakarna blev för
   // tajta), och en ras-kolumn med ikon + namn (p.r ur katalogen, p.ge = 1 för kvinnlig figur).
-  function lbIc(p, top) { var ic = classIcon(p.c); return top >= 0 ? '<span class="rng r' + (top + 1) + '">' + ic + "</span>" : ic; }
+  function lbIc(p, top) { var ic = classIcon(p.c); if (top >= 0) ic = '<span class="rng r' + (top + 1) + '">' + ic + "</span>"; return p.c ? '<button type="button" class="lbci" data-lbcls="' + esc(p.c) + '" title="' + t(lbCls === p.c ? "lb_cls_off" : "lb_cls_on", p.c) + '">' + ic + "</button>" : ic; }
   function lbRace(p) { return '<td class="rc">' + (p.r ? raceIcon(p.r, p.ge ? "FEMALE" : "MALE") + '<span class="hide-s">' + esc(p.r) + "</span>" : "") + "</td>"; }
   function lbRaceTh() { return '<th class="rc">' + t("lb_race") + "</th>"; }
   function faMark(fa) { return faIcon(fa) || '<small class="dim">' + (fa === "ALLIANCE" ? "A" : "H") + "</small>"; }
@@ -2208,7 +2211,8 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
     var mid = '<div class="arhead2"><div class="ahtop">' +
       (d.guild ? '<span class="glbl">' + t("ar_guild") + ':</span> <a class="wh gld" href="#guild=' + esc(d.guild.slug) + '" data-ar="guild" data-slug="' + esc(d.guild.slug) + '">&lt;' + esc(d.guild.name) + "&gt;</a>" : "<span></span>") +
       '<span class="ahbtns"><button class="lnk" type="button" data-upg="1" title="' + t("up_btn_sub") + '">⬆ ' + t("up_short") + '</button><button class="lnk" type="button" data-cmp="1" aria-expanded="' + arCmpPick + '" title="' + t("cmp_tip") + '">⇄ ' + t("cmp") + '</button><button class="lnk" type="button" data-copyany="#player=' + esc(d.slug) + '" title="' + t("copy_link") + '">' + t("copy_link") + "</button></span></div>" +
-      '<div class="ahname"><button class="star fr" type="button" data-friend="' + esc(d.slug) + '" data-label="' + esc(full) + '" aria-pressed="' + fr + '" title="' + t(fr ? "fr_del" : "fr_add") + '">' + (fr ? "★" : "☆") + "</button>" +
+      '<div class="ahname">' + (d.media && d.media.avatar ? '<span class="rng ' + (d.level >= 60 ? "r1" : "r2") + ' ahav"><img src="' + esc(d.media.avatar) + '" alt=""></span>' : "") +
+      '<button class="star fr" type="button" data-friend="' + esc(d.slug) + '" data-label="' + esc(full) + '" aria-pressed="' + fr + '" title="' + t(fr ? "fr_del" : "fr_add") + '">' + (fr ? "★" : "☆") + "</button>" +
       '<h2 class="q1">' + esc(full) + '</h2><span class="lvl">(' + d.level + ")</span></div>" +
       '<div class="ahsub">' + esc(((d.race || "") + " " + (d.cls || "")).trim()) +
       (d.pvp ? " · " + (rankBadge(d.faction, d.pvp.rank) || '<span class="dim">' + t("pvp_norank") + "</span>") + ' <span class="hk"><b>' + num(d.pvp.hk) + "</b> " + t("pvp_hk") + "</span>" : "") + "</div></div>" + (arCmpPick ? cmpPickHtml(d) : "") +
@@ -4148,7 +4152,7 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
     GS.rows = rows;
     var chip = function (k, lbl, n) { return '<button type="button" class="huchip' + (GS.kind === k ? " on" : "") + '" data-gsk="' + k + '" aria-pressed="' + (GS.kind === k) + '">' + lbl + (n ? ' <span class="dim">' + n + "</span>" : "") + "</button>"; };
     var h = '<div class="gsk">' + chip("", t("gs_all"), all.length) + kinds.map(function (k) { return chip(k, t("gs_k_" + k), cnt[k]); }).join("") + "</div>";
-    h += rows.map(function (x, i) { return '<a class="gsr' + (i === 0 ? " on" : "") + '" href="' + x.h + '" data-gsgo="' + x.h + '">' + (x.f ? drk(x.f === "s", x.f === "g", x.i || '<span class="upnoi"></span>') : x.i || '<span class="upnoi"></span>') + '<b class="' + (x.c || "") + '">' + gsMark(x.n, q) + "</b><small>" + t("gs_k_" + x.k) + (x.sh ? " · " + x.sh : x.s ? " · " + esc(x.s) : "") + "</small></a>"; }).join("");
+    h += rows.map(function (x, i) { return '<a class="gsr' + (i === 0 ? " on" : "") + '" href="' + x.h + '" data-gsgo="' + x.h + '">' + (x.f ? '<span class="rng ' + (x.f === "g" ? "r1" : "r2") + '">' + (x.i || '<span class="upnoi"></span>') + "</span>" : x.i || '<span class="upnoi"></span>') + '<b class="' + (x.c || "") + '">' + gsMark(x.n, q) + "</b><small>" + t("gs_k_" + x.k) + (x.sh ? " · " + x.sh : x.s ? " · " + esc(x.s) : "") + "</small></a>"; }).join("");
     if (!rows.length) h += '<div class="gsn">' + t("gs_none") + "</div>";
     if (!GS.kind && all.length > rows.length) h += '<button type="button" class="gsmore" data-gsk="' + (kinds.length === 1 ? kinds[0] : all[0].k) + '">' + t("gs_more", num(all.length)) + "</button>";
     // Spelare utan katalog: direkt uppslag i Armory (namnet som skrivits).
@@ -4438,6 +4442,8 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
     if (lbr && mode === "ar") { lbRs = lbr.dataset.lbrs; lbShow(); return; }
     var lbf = e.target.closest("[data-lbfa]");
     if (lbf && mode === "ar") { lbFa = lbf.dataset.lbfa; lbShow(); return; }
+    var lbc = e.target.closest("[data-lbcls]");
+    if (lbc && mode === "ar") { e.preventDefault(); lbCls = lbCls === lbc.dataset.lbcls ? "" : lbc.dataset.lbcls; lbShow(); return; }
     var pb = e.target.closest("[data-prof]");
     if (pb && arData && arData.kind === "character") { arOpenProf = arOpenProf === +pb.dataset.prof ? 0 : +pb.dataset.prof; renderChar(arData); return; }
     var fb = e.target.closest("[data-friend]");
@@ -4980,7 +4986,7 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
   var KAT = null, katPromise = null, arLb = "", lbFa = "";
   // Ruleset (Joakim 2026-11-17): Blizzards API har alla Forever-spelare, PvP och Normal i samma katalog. "" = följer vald
   // AH-marknad (PvP eller Normal), "all" = båda. Guildens ruleset = det flest kända medlemmar har.
-  var lbRs = "", lb60 = false;
+  var lbRs = "", lb60 = false, lbCls = "";   // lbCls: klassfilter via klassikonen (Joakim 2026-11-19)
   function lbRuleset() { var r = houseParts(house)[0]; return lbRs === "all" ? "" : lbRs || (r === "pvp" || r === "normal" ? r : ""); }   // RP-marknader: topplistorna (bara PvP/Normal i katalogen) visar alla
   // "First to 60" borttagen ur listan (Joakim 2026-11-18); koden för #top=first60 finns kvar.
   // [nyckel, fält, text, grupp]: b = topplistor, s = serverstatistik (Joakim 2026-11-18: klasser är inte en topplista;
@@ -5050,7 +5056,7 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
     var def = LB.filter(function (b) { return b[0] === arLb; })[0] || LB[0];
     var rs = lbRuleset(), gRs = {};
     if (rs) { var cnt = {}; KAT.players.forEach(function (p) { if (p.g && p.rs) { var c = cnt[p.g] = cnt[p.g] || { pvp: 0, normal: 0 }; c[p.rs]++; } }); Object.keys(cnt).forEach(function (g) { gRs[g] = cnt[g].pvp >= cnt[g].normal ? "pvp" : "normal"; }); }
-    var faOk = function (x) { return (!lbFa || x.fa === lbFa) && (!rs || (x.rs || gRs[x.s] || gRs[x.g] || "") === rs); };
+    var faOk = function (x) { return (!lbFa || x.fa === lbFa) && (!lbCls || !x.c || x.c === lbCls) && (!rs || (x.rs || gRs[x.s] || gRs[x.g] || "") === rs); };
     // Kategoriraden togs bort (Joakim 2026-11-19: menyn till vänster räcker, raden blev kludd); rubriken visar vald topplista i stället.
     // Filterraden bantad (Joakim 2026-11-19): ligger på rubrikraden, fraktion som emblem, inget "(your AH)" i knappen.
     var fa = function (k, lbl) { return '<button type="button" class="huchip' + (lbFa === k ? " on" : "") + (k ? " fab" : "") + '" data-lbfa="' + k + '" aria-pressed="' + (lbFa === k) + '" title="' + (k ? lbl : "") + '">' + (k ? faIcon(k) || lbl : lbl) + "</button>"; };
@@ -5063,7 +5069,8 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
     var ownRs = houseParts(house)[0] === "pvp" ? "PvP" : "Normal", otherRs = ownRs === "PvP" ? "Normal" : "PvP";
     var h = '<div class="lbwrap"><div class="lbhead"><div><h2>' + t(def[3] === "s" ? "lb_server" : def[2]) + "</h2><small>" + t("lb_sub", num(np), num(ng), when2(KAT.t)) + "</small></div>" +
       '<div class="huchips lbfil">' + fa("", t("lb_both")) + fa("HORDE", "Horde") + fa("ALLIANCE", "Alliance") + '<span class="lbsep"></span>' +
-      rsb("", ownRs, t("lb_rs_auto", ownRs)) + rsb(otherRs.toLowerCase(), otherRs) + rsb("all", t("lb_rs_all")) + "</div></div>" + meter +
+      rsb("", ownRs, t("lb_rs_auto", ownRs)) + rsb(otherRs.toLowerCase(), otherRs) + rsb("all", t("lb_rs_all")) +
+      (lbCls ? '<span class="lbsep"></span><button type="button" class="huchip on" data-lbcls="' + esc(lbCls) + '" aria-pressed="true" title="' + t("lb_cls_off", lbCls) + '" style="color:' + (CLASS_COL[lbCls] || "inherit") + '">' + classIcon(lbCls) + esc(lbCls) + " ×</button>" : "") + "</div></div>" + meter +
       (KAT.players.some(function (p) { return !p.rs; }) && rs ? '<div class="note">' + t("lb_rs_partial") + "</div>" : "");
     if (def[0] === "cls") {
       h += ekoHtml();
