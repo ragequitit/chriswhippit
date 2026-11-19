@@ -222,7 +222,11 @@ body[data-mode=hu] .facts dd { font-size: 15px; }
 .fe { width: 16px; height: 16px; vertical-align: -3px; margin-left: 3px; object-fit: contain; } .huchip.fab { padding-left: 6px; padding-right: 6px; } .huchip.fab .fe { width: 20px; height: 20px; margin: -3px 0; vertical-align: -5px; }
 .lbt { width: 100%; border-collapse: collapse; font-size: 13.5px; } .lbt th { text-align: left; color: var(--gold); font-size: 11.5px; text-transform: uppercase; letter-spacing: .04em; padding: 6px 8px; border-bottom: 1px solid var(--line); }
 .lbt td { padding: 5px 8px; border-bottom: 1px solid rgba(255, 255, 255, .04); white-space: nowrap; } .lbt td.nm { overflow: hidden; text-overflow: ellipsis; max-width: 0; width: 45%; } .lbt td.nm a { text-decoration: none; } .lbt td.nm a:hover { text-decoration: underline; }
-.lbt .ri { width: 18px; height: 18px; vertical-align: -4px; margin-right: 6px; border-radius: 3px; } .lbn { color: var(--grey); width: 28px; } .lbn.top1 { color: #ffd100; font-weight: 700; } .lbn.top2 { color: #d6dee8; font-weight: 700; } .lbn.top3 { color: #e0a060; font-weight: 700; }
+.lbt .ri { width: 30px; height: 30px; vertical-align: middle; margin-right: 8px; border-radius: 4px; border: 1px solid #000; }
+.lbt td { padding-top: 4px; padding-bottom: 4px; } .lbt td.nm a { vertical-align: middle; }
+.rng { display: inline-block; vertical-align: middle; margin-right: 8px; padding: 2px; border-radius: 6px; border: 2px solid var(--rng); box-shadow: 0 0 6px var(--rng), inset 0 0 4px rgba(0, 0, 0, .6); line-height: 0; }
+.rng .ri { margin: 0; vertical-align: top; } .rng.r1 { --rng: #ffd100; } .rng.r2 { --rng: #d6dee8; } .rng.r3 { --rng: #e0a060; }
+.lbt td.rc { white-space: nowrap; color: var(--grey); } .lbt td.rc .ri { width: 26px; height: 26px; margin-right: 6px; } .lbt td.rc .ri.none { display: none; } .lbn { color: var(--grey); width: 28px; } .lbn.top1 { color: #ffd100; font-weight: 700; } .lbn.top2 { color: #d6dee8; font-weight: 700; } .lbn.top3 { color: #e0a060; font-weight: 700; }
 .lbmeter { display: grid; grid-template-columns: auto minmax(60px, 1fr) auto; gap: 10px; align-items: center; font-size: 12.5px; color: var(--grey); }
 .lbmeter b { color: var(--fg); } .lbmeter .h b { color: #ff6b5a; } .lbmeter .a b { color: #5aa0ff; }
 .lbmeter .lbbar { display: flex; height: 8px; border-radius: 4px; overflow: hidden; background: var(--inset); border: 1px solid var(--line); }
@@ -1352,7 +1356,7 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
       lb_cls: "Classes", lb_only60: "Only level 60", lb_cls_note: "%1 players with a known class. Top bar = Horde, bottom bar = Alliance, on the same scale.",
       lb_meter_tip: "How many Horde and Alliance players the catalog has found on this realm type. Alliance grows with enemy nameplates on (Ctrl+V) and battlegrounds.",
       lb_rs_auto: "%1 (your AH)", lb_rs_all: "All realms", lb_rs_partial: "Some players are still being sorted into PvP or Normal; they show under All realms until the next update.",
-      lb_both: "Both sides", lb_player: "Player", lb_guild: "Guild", lb_n60: "Level 60s", lb_il60: "Item level (60s)", lb_avg: "Avg level", lb_members: "Members", lb_none: "Nobody here yet.", lb_fail: "The leaderboards could not be loaded.",
+      lb_both: "Both sides", lb_race: "Race", lb_player: "Player", lb_guild: "Guild", lb_n60: "Level 60s", lb_il60: "Item level (60s)", lb_avg: "Avg level", lb_members: "Members", lb_none: "Nobody here yet.", lb_fail: "The leaderboards could not be loaded.",
       lb_note: "Blizzard can only look up a player by name, so the list grows like a snowball: known players → their guild → its members → their guilds, plus the names WhippitPanel notes in the game. Refreshed daily; anyone not seen for 29 days drops out.",
       lb_how: "Click a player or guild to open it in the Armory. Guilds are ranked by level 60 members, then their average item level.",
       de_watch: "All to My list", de_watch_tip: "Put every item in the list with a profit on My list (click again to remove them)",
@@ -1705,6 +1709,11 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
   }
   // Fraktionsemblem i listrader (Joakim 2026-11-19: hellre emblem än "H"/"A"); tom sträng utan bilder → fallback-bokstav.
   function faIcon(fa) { if (!ASSET_BASE || !fa) return ""; var n = fa === "ALLIANCE" ? "alliance" : "horde"; return '<img class="fe" src="' + ASSET_BASE + "icons/faction-" + n + '.png" alt="' + (fa === "ALLIANCE" ? "Alliance" : "Horde") + '" title="' + (fa === "ALLIANCE" ? "Alliance" : "Horde") + '">'; }
+  // Topplistornas spelarcell (Joakim 2026-11-19): klassikon med ring guld/silver/koppar för plats 1–3 (drakarna blev för
+  // tajta), och en ras-kolumn med ikon + namn (p.r ur katalogen, p.ge = 1 för kvinnlig figur).
+  function lbIc(p, top) { var ic = classIcon(p.c); return top >= 0 ? '<span class="rng r' + (top + 1) + '">' + ic + "</span>" : ic; }
+  function lbRace(p) { return '<td class="rc">' + (p.r ? raceIcon(p.r, p.ge ? "FEMALE" : "MALE") + '<span class="hide-s">' + esc(p.r) + "</span>" : "") + "</td>"; }
+  function lbRaceTh() { return '<th class="rc">' + t("lb_race") + "</th>"; }
   function faMark(fa) { return faIcon(fa) || '<small class="dim">' + (fa === "ALLIANCE" ? "A" : "H") + "</small>"; }
   function arShow(mid, right) { $("armory").innerHTML = mid; if (right != null) $("detail").innerHTML = right; }
   // /char/ delas av arLoad, arCompare och setQuPlayer (granskning 2026-11-18): samma spelare inom 10 minuter hämtas inte
@@ -5080,10 +5089,10 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
       var st = KAT.start || 0, nBefore = 0;
       var f6 = KAT.players.filter(function (p) { if (!faOk(p) || !(p.t60 > 0)) return false; if (st && p.t60 <= st) { nBefore++; return false; } return true; })
         .sort(function (a, b) { return (a.t60 - b.t60) || (b.il - a.il); }).slice(0, 100);
-      h += '<table class="lbt"><thead><tr><th>#</th><th class="nm">' + t("lb_player") + '</th><th class="hide-s">' + t("lb_guild") + "</th><th>" + t("lb_reached") + "</th></tr></thead><tbody>" +
+      h += '<table class="lbt"><thead><tr><th>#</th><th class="nm">' + t("lb_player") + "</th>" + lbRaceTh() + '<th class="hide-s">' + t("lb_guild") + "</th><th>" + t("lb_reached") + "</th></tr></thead><tbody>" +
         f6.map(function (p, i) {
           var full = p.n + (p.sn ? " " + p.sn : ""), before = st && p.t60 <= st;
-          return '<tr><td class="lbn' + (i < 3 && !before ? " top" + (i + 1) : "") + '">' + (i + 1) + '</td><td class="nm">' + (i < 3 && !before ? drk(false, true, classIcon(p.c)) : classIcon(p.c)) + '<a href="#player=' + esc(p.s) + '" data-ar="char" data-slug="' + esc(p.s) + '" style="color:' + (CLASS_COL[p.c] || "inherit") + '">' + esc(full) + "</a></td>" +
+          return '<tr><td class="lbn' + (i < 3 && !before ? " top" + (i + 1) : "") + '">' + (i + 1) + '</td><td class="nm">' + lbIc(p, i < 3 && !before ? i : -1) + '<a href="#player=' + esc(p.s) + '" data-ar="char" data-slug="' + esc(p.s) + '" style="color:' + (CLASS_COL[p.c] || "inherit") + '">' + esc(full) + "</a></td>" + lbRace(p) + "" +
             '<td class="hide-s">' + (p.g ? '<a class="dim" href="#guild=' + esc(p.g) + '" data-ar="guild" data-slug="' + esc(p.g) + '">&lt;' + esc(p.gn) + "&gt;</a>" : "") + "</td><td>" + (before ? '<span class="dim">' + t("lb_before", when2(st)) + "</span>" : "<b>" + when2(p.t60) + "</b>") + "</td></tr>";
         }).join("") + "</tbody></table>" + (f6.length ? "" : '<div class="note">' + t("lb_first60_none") + "</div>") +
         '<div class="note">' + t("lb_first60_note2", when2(st), num(nBefore)) + "</div>";
@@ -5095,10 +5104,10 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
       if (gkeys.indexOf(lbGath) < 0) lbGath = gkeys[0] || "";
       h += '<div class="huchips">' + gkeys.map(function (k) { return '<button type="button" class="huchip' + (lbGath === k ? " on" : "") + '" data-lbgath="' + esc(k) + '" aria-pressed="' + (lbGath === k) + '">' + esc(k) + "</button>"; }).join("") + "</div>";
       var gp2 = KAT.players.filter(function (p) { return faOk(p) && p.gath && p.gath[lbGath] > 0; }).sort(function (a, b) { return b.gath[lbGath] - a.gath[lbGath]; }).slice(0, 100);
-      h += '<table class="lbt"><thead><tr><th>#</th><th class="nm">' + t("lb_player") + "</th><th>" + t("col_lvl") + '</th><th class="hide-s">' + t("lb_guild") + "</th><th>" + esc(lbGath) + "</th></tr></thead><tbody>" +
+      h += '<table class="lbt"><thead><tr><th>#</th><th class="nm">' + t("lb_player") + "</th>" + lbRaceTh() + "<th>" + t("col_lvl") + '</th><th class="hide-s">' + t("lb_guild") + "</th><th>" + esc(lbGath) + "</th></tr></thead><tbody>" +
         gp2.map(function (p, i) {
           var full = p.n + (p.sn ? " " + p.sn : "");
-          return '<tr><td class="lbn' + (i < 3 ? " top" + (i + 1) : "") + '">' + (i + 1) + '</td><td class="nm">' + (i < 3 ? drk(false, true, classIcon(p.c)) : classIcon(p.c)) + '<a href="#player=' + esc(p.s) + '" data-ar="char" data-slug="' + esc(p.s) + '" style="color:' + (CLASS_COL[p.c] || "inherit") + '">' + esc(full) + "</a></td><td>" + p.lv + "</td>" +
+          return '<tr><td class="lbn' + (i < 3 ? " top" + (i + 1) : "") + '">' + (i + 1) + '</td><td class="nm">' + lbIc(p, i < 3 ? i : -1) + '<a href="#player=' + esc(p.s) + '" data-ar="char" data-slug="' + esc(p.s) + '" style="color:' + (CLASS_COL[p.c] || "inherit") + '">' + esc(full) + "</a></td>" + lbRace(p) + "<td>" + p.lv + "</td>" +
             '<td class="hide-s">' + (p.g ? '<a class="dim" href="#guild=' + esc(p.g) + '" data-ar="guild" data-slug="' + esc(p.g) + '">&lt;' + esc(p.gn) + "&gt;</a>" : "") + "</td><td><b>" + num(p.gath[lbGath]) + "</b></td></tr>";
         }).join("") + "</tbody></table>" + (gp2.length ? "" : '<div class="note">' + t("lb_prog_none") + "</div>") + '<div class="note">' + t("lb_pve_note") + "</div>";
     } else if (def[0] === "pve") {
@@ -5107,10 +5116,10 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
       var pveV = function (p) { return lbPve === 7 ? (p.pve[0] >= 1000 ? Math.round(p.pve[0] / Math.max(1, p.pve[5])) : 0) : p.pve[lbPve]; };
       h += '<div class="huchips">' + PVE.map(echip).join("") + "</div>";
       var ep = KAT.players.filter(function (p) { return faOk(p) && p.pve && pveV(p) > 0; }).sort(function (a, b) { return pveV(b) - pveV(a) || b.pve[0] - a.pve[0]; }).slice(0, 100);
-      h += '<table class="lbt"><thead><tr><th>#</th><th class="nm">' + t("lb_player") + "</th><th>" + t("col_lvl") + '</th><th class="hide-s">' + t("lb_guild") + "</th><th>" + t(PVE[lbPve]) + "</th></tr></thead><tbody>" +
+      h += '<table class="lbt"><thead><tr><th>#</th><th class="nm">' + t("lb_player") + "</th>" + lbRaceTh() + "<th>" + t("col_lvl") + '</th><th class="hide-s">' + t("lb_guild") + "</th><th>" + t(PVE[lbPve]) + "</th></tr></thead><tbody>" +
         ep.map(function (p, i) {
           var full = p.n + (p.sn ? " " + p.sn : "");
-          return '<tr><td class="lbn' + (i < 3 ? " top" + (i + 1) : "") + '">' + (i + 1) + '</td><td class="nm">' + (i < 3 ? drk(false, true, classIcon(p.c)) : classIcon(p.c)) + '<a href="#player=' + esc(p.s) + '" data-ar="char" data-slug="' + esc(p.s) + '" style="color:' + (CLASS_COL[p.c] || "inherit") + '">' + esc(full) + "</a></td><td>" + p.lv + "</td>" +
+          return '<tr><td class="lbn' + (i < 3 ? " top" + (i + 1) : "") + '">' + (i + 1) + '</td><td class="nm">' + lbIc(p, i < 3 ? i : -1) + '<a href="#player=' + esc(p.s) + '" data-ar="char" data-slug="' + esc(p.s) + '" style="color:' + (CLASS_COL[p.c] || "inherit") + '">' + esc(full) + "</a></td>" + lbRace(p) + "<td>" + p.lv + "</td>" +
             '<td class="hide-s">' + (p.g ? '<a class="dim" href="#guild=' + esc(p.g) + '" data-ar="guild" data-slug="' + esc(p.g) + '">&lt;' + esc(p.gn) + "&gt;</a>" : "") + "</td><td><b>" + num(pveV(p)) + "</b>" + (lbPve === 7 ? ' <small class="dim">' + num(p.pve[0]) + " / " + num(p.pve[5]) + "</small>" : "") + "</td></tr>";
         }).join("") + "</tbody></table>" + (ep.length ? "" : '<div class="note">' + t("lb_prog_none") + "</div>") + '<div class="note">' + (lbPve === 7 ? t("lb_min_kills") + ". " : "") + t("lb_pve_note") + "</div>";
     } else if (def[0] === "pvp") {
@@ -5118,10 +5127,10 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
       var pdef = LB_PVP.filter(function (c) { return c[0] === lbPvp; })[0] || LB_PVP[0], pval = pdef[2];
       h += '<div class="huchips">' + LB_PVP.map(vchip).join("") + "</div>";
       var pp = KAT.players.filter(function (p) { return faOk(p) && pval(p) > 0; }).sort(function (a, b) { return pval(b) - pval(a) || (b.hk || 0) - (a.hk || 0) || b.lv - a.lv; }).slice(0, 100);
-      h += '<table class="lbt"><thead><tr><th>#</th><th class="nm">' + t("lb_player") + "</th><th>" + t("col_lvl") + '</th><th class="hide-s">' + t("lb_guild") + "</th><th>" + t(pdef[1]) + "</th></tr></thead><tbody>" +
+      h += '<table class="lbt"><thead><tr><th>#</th><th class="nm">' + t("lb_player") + "</th>" + lbRaceTh() + "<th>" + t("col_lvl") + '</th><th class="hide-s">' + t("lb_guild") + "</th><th>" + t(pdef[1]) + "</th></tr></thead><tbody>" +
         pp.map(function (p, i) {
           var full = p.n + (p.sn ? " " + p.sn : ""), v = pval(p);
-          return '<tr><td class="lbn' + (i < 3 ? " top" + (i + 1) : "") + '">' + (i + 1) + '</td><td class="nm">' + (i < 3 ? drk(false, true, classIcon(p.c)) : classIcon(p.c)) + '<a href="#player=' + esc(p.s) + '" data-ar="char" data-slug="' + esc(p.s) + '" style="color:' + (CLASS_COL[p.c] || "inherit") + '">' + esc(full) + "</a></td><td>" + p.lv + "</td>" +
+          return '<tr><td class="lbn' + (i < 3 ? " top" + (i + 1) : "") + '">' + (i + 1) + '</td><td class="nm">' + lbIc(p, i < 3 ? i : -1) + '<a href="#player=' + esc(p.s) + '" data-ar="char" data-slug="' + esc(p.s) + '" style="color:' + (CLASS_COL[p.c] || "inherit") + '">' + esc(full) + "</a></td>" + lbRace(p) + "<td>" + p.lv + "</td>" +
             '<td class="hide-s">' + (p.g ? '<a class="dim" href="#guild=' + esc(p.g) + '" data-ar="guild" data-slug="' + esc(p.g) + '">&lt;' + esc(p.gn) + "&gt;</a>" : "") + "</td><td><b>" + (lbPvp === "rank" ? (rankBadge(p.fa, v) || v) : lbPvp === "duelr" ? v + ' %</b> <small class="dim">' + p.pv2[4] + "–" + p.pv2[5] + "</small>" : num(v) + "</b>") + "</td></tr>";
         }).join("") + "</tbody></table>" + (pp.length ? "" : '<div class="note">' + t("lb_prog_none") + "</div>") + '<div class="note">' + (lbPvp === "duelr" ? t("lb_min_duels") + ". " : "") + t("lb_pvp_note") + "</div>";
     } else if (def[0] === "titles") {
@@ -5131,10 +5140,10 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
       var tchip = function (k, lbl, n) { return '<button type="button" class="huchip' + (lbTitle === k ? " on" : "") + '" data-lbtitle="' + esc(k) + '" aria-pressed="' + (lbTitle === k) + '">' + lbl + (n ? ' <span class="dim">' + n + "</span>" : "") + "</button>"; };
       h += '<div class="huchips">' + tchip("", t("lb_titles_most")) + tkeys.map(function (k) { return tchip(k, esc(k), tc[k]); }).join("") + "</div>";
       var tp = KAT.players.filter(function (p) { return faOk(p) && p.ti && (lbTitle ? p.ti[2].indexOf(lbTitle) >= 0 : p.ti[0] > 0); }).sort(function (a, b) { return b.ti[0] - a.ti[0] || b.il - a.il; }).slice(0, 100);
-      h += '<table class="lbt"><thead><tr><th>#</th><th class="nm">' + t("lb_player") + '</th><th class="hide-s">' + t("lb_guild") + "</th><th>" + t("lb_titles") + "</th><th>" + t("lb_titles_active") + "</th></tr></thead><tbody>" +
+      h += '<table class="lbt"><thead><tr><th>#</th><th class="nm">' + t("lb_player") + "</th>" + lbRaceTh() + '<th class="hide-s">' + t("lb_guild") + "</th><th>" + t("lb_titles") + "</th><th>" + t("lb_titles_active") + "</th></tr></thead><tbody>" +
         tp.map(function (p, i) {
           var full = p.n + (p.sn ? " " + p.sn : "");
-          return '<tr><td class="lbn' + (i < 3 ? " top" + (i + 1) : "") + '">' + (i + 1) + '</td><td class="nm">' + (i < 3 ? drk(false, true, classIcon(p.c)) : classIcon(p.c)) + '<a href="#player=' + esc(p.s) + '" data-ar="char" data-slug="' + esc(p.s) + '" style="color:' + (CLASS_COL[p.c] || "inherit") + '">' + esc(full) + "</a></td>" +
+          return '<tr><td class="lbn' + (i < 3 ? " top" + (i + 1) : "") + '">' + (i + 1) + '</td><td class="nm">' + lbIc(p, i < 3 ? i : -1) + '<a href="#player=' + esc(p.s) + '" data-ar="char" data-slug="' + esc(p.s) + '" style="color:' + (CLASS_COL[p.c] || "inherit") + '">' + esc(full) + "</a></td>" + lbRace(p) + "" +
             '<td class="hide-s">' + (p.g ? '<a class="dim" href="#guild=' + esc(p.g) + '" data-ar="guild" data-slug="' + esc(p.g) + '">&lt;' + esc(p.gn) + "&gt;</a>" : "") + "</td><td><b>" + p.ti[0] + "</b></td><td>" + esc(p.ti[1] || "–") + "</td></tr>";
         }).join("") + "</tbody></table>" + (tp.length ? "" : '<div class="note">' + t("lb_prog_none") + "</div>") + '<div class="note">' + t("lb_pve_note") + "</div>";
     } else if (def[0] === "achc") {
@@ -5143,10 +5152,10 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
       if (ckeys.indexOf(lbAchc) < 0) lbAchc = ckeys[0] || "";
       h += '<div class="huchips">' + ckeys.map(function (k) { return '<button type="button" class="huchip' + (lbAchc === k ? " on" : "") + '" data-lbachc="' + esc(k) + '" aria-pressed="' + (lbAchc === k) + '">' + esc(k) + "</button>"; }).join("") + "</div>";
       var ap2 = KAT.players.filter(function (p) { return faOk(p) && p.ac && p.ac[lbAchc] > 0; }).sort(function (a, b) { return b.ac[lbAchc] - a.ac[lbAchc] || b.ac._n - a.ac._n; }).slice(0, 100);
-      h += '<table class="lbt"><thead><tr><th>#</th><th class="nm">' + t("lb_player") + '</th><th class="hide-s">' + t("lb_guild") + "</th><th>" + esc(lbAchc) + '</th><th class="hide-s">' + t("lb_ach") + "</th></tr></thead><tbody>" +
+      h += '<table class="lbt"><thead><tr><th>#</th><th class="nm">' + t("lb_player") + "</th>" + lbRaceTh() + '<th class="hide-s">' + t("lb_guild") + "</th><th>" + esc(lbAchc) + '</th><th class="hide-s">' + t("lb_ach") + "</th></tr></thead><tbody>" +
         ap2.map(function (p, i) {
           var full = p.n + (p.sn ? " " + p.sn : "");
-          return '<tr><td class="lbn' + (i < 3 ? " top" + (i + 1) : "") + '">' + (i + 1) + '</td><td class="nm">' + (i < 3 ? drk(false, true, classIcon(p.c)) : classIcon(p.c)) + '<a href="#player=' + esc(p.s) + '" data-ar="char" data-slug="' + esc(p.s) + '" style="color:' + (CLASS_COL[p.c] || "inherit") + '">' + esc(full) + "</a></td>" +
+          return '<tr><td class="lbn' + (i < 3 ? " top" + (i + 1) : "") + '">' + (i + 1) + '</td><td class="nm">' + lbIc(p, i < 3 ? i : -1) + '<a href="#player=' + esc(p.s) + '" data-ar="char" data-slug="' + esc(p.s) + '" style="color:' + (CLASS_COL[p.c] || "inherit") + '">' + esc(full) + "</a></td>" + lbRace(p) + "" +
             '<td class="hide-s">' + (p.g ? '<a class="dim" href="#guild=' + esc(p.g) + '" data-ar="guild" data-slug="' + esc(p.g) + '">&lt;' + esc(p.gn) + "&gt;</a>" : "") + "</td><td><b>" + num(p.ac[lbAchc]) + '</b></td><td class="hide-s">' + num(p.ac._p) + "</td></tr>";
         }).join("") + "</tbody></table>" + (ap2.length ? "" : '<div class="note">' + t("lb_prog_none") + "</div>") + '<div class="note">' + t("lb_pve_note") + "</div>";
     } else if (def[0] === "quests" || def[0] === "travel") {
@@ -5155,10 +5164,10 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
       var qi = isQ ? lbQuest : lbTravel, qv = qdefs[qi][1];
       h += '<div class="huchips">' + qdefs.map(function (d2, i) { return '<button type="button" class="huchip' + (qi === i ? " on" : "") + '" data-lbqt="' + i + '" aria-pressed="' + (qi === i) + '">' + t(d2[0]) + "</button>"; }).join("") + "</div>";
       var qp = KAT.players.filter(function (p) { return faOk(p) && qv(p) > 0; }).sort(function (a, b) { return qv(b) - qv(a) || b.lv - a.lv; }).slice(0, 100);
-      h += '<table class="lbt"><thead><tr><th>#</th><th class="nm">' + t("lb_player") + "</th><th>" + t("col_lvl") + '</th><th class="hide-s">' + t("lb_guild") + "</th><th>" + t(qdefs[qi][0]) + "</th></tr></thead><tbody>" +
+      h += '<table class="lbt"><thead><tr><th>#</th><th class="nm">' + t("lb_player") + "</th>" + lbRaceTh() + "<th>" + t("col_lvl") + '</th><th class="hide-s">' + t("lb_guild") + "</th><th>" + t(qdefs[qi][0]) + "</th></tr></thead><tbody>" +
         qp.map(function (p, i) {
           var full = p.n + (p.sn ? " " + p.sn : "");
-          return '<tr><td class="lbn' + (i < 3 ? " top" + (i + 1) : "") + '">' + (i + 1) + '</td><td class="nm">' + (i < 3 ? drk(false, true, classIcon(p.c)) : classIcon(p.c)) + '<a href="#player=' + esc(p.s) + '" data-ar="char" data-slug="' + esc(p.s) + '" style="color:' + (CLASS_COL[p.c] || "inherit") + '">' + esc(full) + "</a></td><td>" + p.lv + "</td>" +
+          return '<tr><td class="lbn' + (i < 3 ? " top" + (i + 1) : "") + '">' + (i + 1) + '</td><td class="nm">' + lbIc(p, i < 3 ? i : -1) + '<a href="#player=' + esc(p.s) + '" data-ar="char" data-slug="' + esc(p.s) + '" style="color:' + (CLASS_COL[p.c] || "inherit") + '">' + esc(full) + "</a></td>" + lbRace(p) + "<td>" + p.lv + "</td>" +
             '<td class="hide-s">' + (p.g ? '<a class="dim" href="#guild=' + esc(p.g) + '" data-ar="guild" data-slug="' + esc(p.g) + '">&lt;' + esc(p.gn) + "&gt;</a>" : "") + "</td><td><b>" + num(qv(p)) + "</b></td></tr>";
         }).join("") + "</tbody></table>" + (qp.length ? "" : '<div class="note">' + t("lb_prog_none") + "</div>") + '<div class="note">' + t("lb_pve_note") + "</div>";
     } else if (def[0] === "fk") {
@@ -5211,10 +5220,10 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
       h += '<div class="huchips">' + fchip("n", t("lb_fish_n")) + (fhas[1] ? fchip("k", t("lb_fish_k")) : "") + (fhas[2] ? fchip("s", t("lb_fish_s")) : "") + "</div>";
       var fi = lbFish === "n" ? 0 : lbFish === "k" ? 1 : 2;
       var fp = KAT.players.filter(function (p) { return faOk(p) && p.fish && p.fish[fi] > 0; }).sort(function (a, b) { return b.fish[fi] - a.fish[fi] || b.fish[0] - a.fish[0]; }).slice(0, 100);
-      h += '<table class="lbt"><thead><tr><th>#</th><th class="nm">' + t("lb_player") + '</th><th class="hide-s">' + t("lb_guild") + "</th><th>" + t("lb_fish_n") + "</th>" + (fhas[1] ? "<th>" + t("lb_fish_k") + "</th>" : "") + '<th class="hide-s">' + t("lb_fish_s") + "</th></tr></thead><tbody>" +
+      h += '<table class="lbt"><thead><tr><th>#</th><th class="nm">' + t("lb_player") + "</th>" + lbRaceTh() + '<th class="hide-s">' + t("lb_guild") + "</th><th>" + t("lb_fish_n") + "</th>" + (fhas[1] ? "<th>" + t("lb_fish_k") + "</th>" : "") + '<th class="hide-s">' + t("lb_fish_s") + "</th></tr></thead><tbody>" +
         fp.map(function (p, i) {
           var full = p.n + (p.sn ? " " + p.sn : "");
-          return '<tr><td class="lbn' + (i < 3 ? " top" + (i + 1) : "") + '">' + (i + 1) + '</td><td class="nm">' + (i < 3 ? drk(false, true, classIcon(p.c)) : classIcon(p.c)) + '<a href="#player=' + esc(p.s) + '" data-ar="char" data-slug="' + esc(p.s) + '" style="color:' + (CLASS_COL[p.c] || "inherit") + '">' + esc(full) + "</a></td>" +
+          return '<tr><td class="lbn' + (i < 3 ? " top" + (i + 1) : "") + '">' + (i + 1) + '</td><td class="nm">' + lbIc(p, i < 3 ? i : -1) + '<a href="#player=' + esc(p.s) + '" data-ar="char" data-slug="' + esc(p.s) + '" style="color:' + (CLASS_COL[p.c] || "inherit") + '">' + esc(full) + "</a></td>" + lbRace(p) + "" +
             '<td class="hide-s">' + (p.g ? '<a class="dim" href="#guild=' + esc(p.g) + '" data-ar="guild" data-slug="' + esc(p.g) + '">&lt;' + esc(p.gn) + "&gt;</a>" : "") + "</td><td>" + (fi === 0 ? "<b>" + num(p.fish[0]) + "</b>" : num(p.fish[0])) + "</td>" + (fhas[1] ? "<td>" + (fi === 1 ? "<b>" + p.fish[1] + "</b>" : p.fish[1]) + "</td>" : "") + '<td class="hide-s">' + (fi === 2 ? "<b>" + p.fish[2] + "</b>" : p.fish[2]) + "</td></tr>";
         }).join("") + "</tbody></table>" + (fp.length ? "" : '<div class="note">' + t("lb_prog_none") + "</div>") + '<div class="note">' + t("lb_fish_note") + "</div>";
     } else if (def[0] === "att") {
@@ -5237,10 +5246,10 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
       if (lbRep) rp.sort(function (a, b) { var x = a.rep.f[lbRep], y = b.rep.f[lbRep]; return (y[0] - x[0]) || (y[1] - x[1]) || b.lv - a.lv; });
       else rp.sort(function (a, b) { return (b.rep.ex - a.rep.ex) || b.il - a.il; });
       rp = rp.slice(0, 100);
-      h += '<table class="lbt"><thead><tr><th>#</th><th class="nm">' + t("lb_player") + '</th><th class="hide-s">' + t("lb_guild") + "</th><th>" + (lbRep ? esc(lbRep) : t("lb_rep_ex")) + "</th></tr></thead><tbody>" +
+      h += '<table class="lbt"><thead><tr><th>#</th><th class="nm">' + t("lb_player") + "</th>" + lbRaceTh() + '<th class="hide-s">' + t("lb_guild") + "</th><th>" + (lbRep ? esc(lbRep) : t("lb_rep_ex")) + "</th></tr></thead><tbody>" +
         rp.map(function (p, i) {
           var full = p.n + (p.sn ? " " + p.sn : ""), v = lbRep ? p.rep.f[lbRep] : null;
-          return '<tr><td class="lbn' + (i < 3 ? " top" + (i + 1) : "") + '">' + (i + 1) + '</td><td class="nm">' + (i < 3 ? drk(false, true, classIcon(p.c)) : classIcon(p.c)) + '<a href="#player=' + esc(p.s) + '" data-ar="char" data-slug="' + esc(p.s) + '" style="color:' + (CLASS_COL[p.c] || "inherit") + '">' + esc(full) + "</a></td>" +
+          return '<tr><td class="lbn' + (i < 3 ? " top" + (i + 1) : "") + '">' + (i + 1) + '</td><td class="nm">' + lbIc(p, i < 3 ? i : -1) + '<a href="#player=' + esc(p.s) + '" data-ar="char" data-slug="' + esc(p.s) + '" style="color:' + (CLASS_COL[p.c] || "inherit") + '">' + esc(full) + "</a></td>" + lbRace(p) + "" +
             '<td class="hide-s">' + (p.g ? '<a class="dim" href="#guild=' + esc(p.g) + '" data-ar="guild" data-slug="' + esc(p.g) + '">&lt;' + esc(p.gn) + "&gt;</a>" : "") + "</td><td>" + (v ? "<b>" + LB_STAND[v[0]] + "</b> <small class=\"dim\">" + num(v[1]) + "</small>" : "<b>" + p.rep.ex + "</b> " + t("lb_rep_exn")) + "</td></tr>";
         }).join("") + "</tbody></table>" + (rp.length ? "" : '<div class="note">' + t("lb_att_none") + "</div>") + '<div class="note">' + t("lb_rep_note") + "</div>";
     } else if (def[0] === "guilds") {
@@ -5252,10 +5261,10 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
     } else {
       var k = def[1];
       var pl = KAT.players.filter(function (p) { return faOk(p) && p[k] > 0; }).sort(function (a, b) { return (b[k] - a[k]) || (b.lv - a.lv) || (b.il - a.il); }).slice(0, 100);
-      h += '<table class="lbt"><thead><tr><th>#</th><th class="nm">' + t("lb_player") + "</th><th>" + t("col_lvl") + '</th><th class="hide-s">' + t("lb_guild") + "</th><th>" + t(def[2]) + "</th></tr></thead><tbody>" +
+      h += '<table class="lbt"><thead><tr><th>#</th><th class="nm">' + t("lb_player") + "</th>" + lbRaceTh() + "<th>" + t("col_lvl") + '</th><th class="hide-s">' + t("lb_guild") + "</th><th>" + t(def[2]) + "</th></tr></thead><tbody>" +
         pl.map(function (p, i) {
           var full = p.n + (p.sn ? " " + p.sn : "");
-          return '<tr><td class="lbn' + (i < 3 ? " top" + (i + 1) : "") + '">' + (i + 1) + '</td><td class="nm">' + (i < 3 ? drk(false, true, classIcon(p.c)) : classIcon(p.c)) + '<a href="#player=' + esc(p.s) + '" data-ar="char" data-slug="' + esc(p.s) + '" style="color:' + (CLASS_COL[p.c] || "inherit") + '">' + esc(full) + "</a></td>" +
+          return '<tr><td class="lbn' + (i < 3 ? " top" + (i + 1) : "") + '">' + (i + 1) + '</td><td class="nm">' + lbIc(p, i < 3 ? i : -1) + '<a href="#player=' + esc(p.s) + '" data-ar="char" data-slug="' + esc(p.s) + '" style="color:' + (CLASS_COL[p.c] || "inherit") + '">' + esc(full) + "</a></td>" + lbRace(p) + "" +
             "<td>" + p.lv + '</td><td class="hide-s">' + (p.g ? '<a class="dim" href="#guild=' + esc(p.g) + '" data-ar="guild" data-slug="' + esc(p.g) + '">&lt;' + esc(p.gn) + "&gt;</a>" : "") + "</td><td><b>" +
             (k === "rk" ? rankBadge(p.fa, p.rk) || p.rk : num(p[k])) + "</b></td></tr>";
         }).join("") + "</tbody></table>" + (pl.length ? "" : '<div class="note">' + t("lb_none") + "</div>");
