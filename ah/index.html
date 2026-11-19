@@ -1050,7 +1050,8 @@ body[data-mode=cl] .armory { padding: 8px; } body[data-mode=cl] .talpanel { padd
 .cltrees .lbb { grid-template-columns: 112px minmax(0, 1fr) 36px; }
 .subrow .clsegs { margin-left: 0; flex-wrap: wrap; row-gap: 4px; padding: 4px 0 4px 6px; }
 /* Rullgardinen bredvid Spells/Pet spells/Class quests/Trainers i spalten (hovra, Joakim 2026-11-20) */
-.clfly { position: fixed; z-index: 60; min-width: 170px; max-height: 70vh; overflow: auto; scrollbar-width: thin; padding: 4px; border: 1px solid var(--bronze); border-radius: 6px; background: linear-gradient(#1d1510, #120d0a); box-shadow: 0 8px 22px rgba(0, 0, 0, .65); display: grid; gap: 1px; }
+.clfly { position: fixed; z-index: 60; min-width: 170px; max-height: 70vh; overflow: auto; scrollbar-width: thin; padding: 4px; border: 1px solid #7A5739; border-radius: 0; background: #1B140F; box-shadow: 0 12px 30px rgba(0, 0, 0, .55), inset 0 1px 0 rgba(229, 180, 106, .10); display: grid; gap: 1px; }   /* samma ruta som marknadsväljaren (.mpop) */
+[data-appearance=atlas] .clfly { background: #142130; border-color: #3F5D6E; box-shadow: inset 0 1px 0 rgba(160, 220, 230, .10), 0 12px 30px rgba(0, 0, 0, .55); }
 .clfly h4 { margin: 3px 10px 4px; font: 500 12px var(--display); letter-spacing: .06em; text-transform: uppercase; color: var(--grey); }
 .clfly button { all: unset; cursor: pointer; display: flex; justify-content: space-between; gap: 14px; padding: 6px 10px; border-radius: 4px; font-size: 13.5px; color: var(--fg); white-space: nowrap; }
 .clfly button span { color: var(--grey); font-size: 12.5px; } .clfly button:hover { background: var(--hover); color: var(--gold); } .clfly button[aria-pressed=true] { background: var(--sel); color: var(--gold); box-shadow: inset 0 0 0 1px rgba(246, 196, 72, .25); }
@@ -1532,7 +1533,7 @@ body[data-mode=cl] .ttrees { gap: 8px; } body[data-mode=cl] .ttree { padding: 6p
       cl_pts: "Points", cl_level_need: "Level needed", cl_trees: "Talent trees", cl_lvls: "level %1–%2", cl_races: "Races that can play this class",
       cl_tal_note: "51 points at level 60, one per level from 10. Left-click adds, right-click removes. The link holds the plan.",
       cl_note_src: "Spell list, levels and prices from the open Classic database (1.12); texts, icons and numbers from WoW Forever's game data. Forever's own class changes may be missing.",
-      cl_q_note: "Class quests on your side. Click a quest for the details and the map.", cl_class_tr: "%1 trainer", cl_tr_missing: "Forever lets %1 play this class too, but their trainers are new on Forever and not in the Classic database, so they are missing here.", cl_fv: "New on Forever", cl_lvl6: "to level 6",
+      cl_q_note: "Class quests on your side. Click a quest for the details and the map.", cl_class_tr: "%1 trainer", cl_tr_missing: "Forever lets %1 play this class too, but their trainers are new on Forever and not in the Classic database, so they are missing here.", cl_fv: "New on Forever", cl_changed_short: "Changed", cl_lvl6: "to level 6",
       cl_tr_fv_note: "New trainer on Forever: name and position from community guides (Warcraft Tavern, Eternadex, UrGameTips, November 2026), not from the Classic database.", cl_pos: "Position", cl_teaches: "Teaches", cl_side: "Side",
       cl_tr_card_note: "Position from the Classic database (1.12). Trainers that also give quests show their quests and map here.", cl_tr_note: "Click a trainer to see where they stand.",
       about_s7: "WoW Forever's game data (Blizzard) via <a href=\"https://wago.tools\" target=\"_blank\" rel=\"noopener\">wago.tools</a>: spell texts, icons and numbers in Classes.",
@@ -6446,13 +6447,14 @@ body[data-mode=cl] .ttrees { gap: 8px; } body[data-mode=cl] .ttree { padding: 6p
       var on = n.toLowerCase() === clSel, live = c.spells.filter(function (s) { return !s.x; }).length;
       h += '<button class="cat" type="button" data-clc="' + n.toLowerCase() + '" aria-pressed="' + on + '">' + classIcon(n) + '<em class="nm" style="color:' + clCol(n) + '">' + n + "</em>" + (on && !clFold ? "" : "<span>" + live + "</span>") + "</button>";
       if (!on || clFold) return;
-      var sub = function (v, lbl, n2) { return '<button class="cat sub" type="button" data-clv="' + v + '" aria-pressed="' + (clView === v) + '"><em class="nm">' + lbl + "</em>" + (n2 != null ? "<span>" + n2 + "</span>" : "") + "</button>"; };
+      var faL = clFa ? (clFa === "H" ? "Horde" : "Alliance") : "";
+      var sub = function (v, lbl, n2, cur) { return '<button class="cat sub" type="button" data-clv="' + v + '" aria-pressed="' + (clView === v) + '"><em class="nm">' + lbl + (cur ? ' <small class="dim">' + cur + "</small>" : "") + "</em>" + (n2 != null ? "<span>" + n2 + "</span>" : "") + "</button>"; };
       var tc = clTal(), used = tc ? talTotal(tc.c, clRanks) : 0;
       h += sub("tal", t("cl_v_tal"), used + "/" + TAL_MAX);
-      h += sub("spells", t("cl_v_spells"), live);
-      if (c.pets.length) h += sub("pets", t("cl_v_pets"), c.pets.reduce(function (a, p) { return a + p.spells.length; }, 0));
-      h += sub("quests", t("cl_v_quests"), QU ? clQuestsAll(n).length : null);
-      h += sub("trainers", t("cl_v_trainers"), c.trainers.length);
+      h += sub("spells", t("cl_v_spells"), live, clLine === "x" ? t("cl_changed_short") : esc(clLine));
+      if (c.pets.length) h += sub("pets", t("cl_v_pets"), c.pets.reduce(function (a, p) { return a + p.spells.length; }, 0), esc(clPet));
+      h += sub("quests", t("cl_v_quests"), QU ? clQuestsAll(n).length : null, faL);
+      h += sub("trainers", t("cl_v_trainers"), c.trainers.length, [faL, clTk === "c" ? t("cl_tk_class") : clTk === "p" ? t(n === "Warlock" ? "cl_tk_demon" : "cl_tk_pet") : ""].filter(Boolean).join(" · "));
     });
     var c0 = clC();
     if (c0) h += '<div class="clraces" title="' + t("cl_races") + '">' + c0.races.map(function (r) { return '<span title="' + esc(r[0]) + (r[1] === "H" ? " · Horde" : " · Alliance") + '">' + raceIcon(r[0], "MALE") + "</span>"; }).join("") + "</div>";
@@ -6505,7 +6507,7 @@ body[data-mode=cl] .ttrees { gap: 8px; } body[data-mode=cl] .ttree { padding: 6p
   document.addEventListener("keydown", function (e) { if (e.key === "Escape") clFlyHide(); });
   function drawClSub() {   // segmenten ovanför listan: skill line / pet / fraktion / tränarsort
     var el = $("clsub"); if (!el) return;
-    var on = mode === "cl" && clView !== "tal" && !!CL && !!clC(); el.hidden = !on; if (!on) return;
+    var on = false; el.hidden = true; if (!on) return;   // segmenten ersatta av rullgardinen i spalten (Joakim 2026-11-20)
     var c = clC(), h = '<span class="segs clsegs">';
     var sg = function (attr, cur, items) { return '<span class="seg">' + items.map(function (it) { return '<button type="button" ' + attr + '="' + esc(String(it[0])) + '" aria-pressed="' + (cur === it[0]) + '">' + it[1] + "</button>"; }).join("") + "</span>"; };
     if (clView === "spells") { var xs = c.spells.filter(function (s) { return s.x; }).length; h += sg("data-clln", clLine, [["", t("co_s_all")]].concat(c.lines.map(function (l) { return [l, esc(l)]; })).concat(xs ? [["x", t("cl_changed", xs)]] : [])); }
