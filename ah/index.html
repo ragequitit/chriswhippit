@@ -4,12 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="description" content="WoW Forever auction house prices, updated every hour: market price, listed, day trade and best time to buy and sell.">
-<link rel="canonical" href="https://www.chriswhippit.com/ah/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Auction House Forever">
 <meta property="og:title" content="Auction House Forever">
 <meta property="og:description" content="Live auction house prices for WoW Forever, updated every hour: market price, listed, day trade and the best time to buy and sell.">
-<meta property="og:url" content="https://www.chriswhippit.com/ah/">
+<meta property="og:url" content="https://ragequitit.github.io/ah/">
 <meta property="og:image" content="https://ragequitit.github.io/ah/assets/og.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -1094,7 +1093,7 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
   var BT_MIN = 3;   // bästa tid räknas som tydlig vid minst 3 % vinst efter AH:s andel och plus minst 6 av 10 dagar
   function btClear(r) { return !!(r.bt && r.bt[2] >= BT_MIN && r.bt[3] * 10 >= r.bt[4] * 6); }
   var byId = {}, lastUpdate = null;   // lastUpdate = { key, t } (översätts när den visas)
-  var ICON_BASE = "https://ragequitit.github.io/ah/icons/";             // mappen med ikoner; tom = inga ikoner (Claude-sidan kan inte ladda bilder utifrån)
+  var ICON_BASE = "icons/";             // mappen med ikoner; tom = inga ikoner (Claude-sidan kan inte ladda bilder utifrån)
   // Bilderna ur Joakims designpaket (publik/assets/): medaljong, sökikon, fraktionsmärken, kategoriikoner, panoraman.
   var ASSET_BASE = ICON_BASE ? ICON_BASE.replace(/icons\/$/, "assets/") : "";
   // Flikikonerna (Joakims fyra guldbilder 2026-11-16: våg, kurva, städ, hjälm) – mode-<läge>.png i assets/icons.
@@ -1166,7 +1165,7 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
   }
   var catSel = -1, subSel = -1, sub2Sel = -1;   // vald nivå 1/2/3 (-1 = ingen vald = alla), som AH:s kategorilista
   var catCount = [], subCount = [], sub2Count = [];
-  var DATA_URL = "https://ragequitit.github.io/ah/data.json";   // priserna; på chriswhippit.com/ah byts den mot adressen på GitHub (build.js)
+  var DATA_URL = "data.json";   // priserna; på chriswhippit.com/ah byts den mot adressen på GitHub (build.js)
   // Fyra marknader (Blizzards hus): data.json = EU PvP Horde (113), data-<hus>.json för de andra. Historiken per vara
   // ligger i dagsfiler bredvid: hist/<hus>/<dag>/<id % 100>.json (build.js). Valet sparas i webbläsaren.
   var DATA_BASE = DATA_URL.replace(/data\.json$/, "");
@@ -5037,9 +5036,7 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
     var rs = lbRuleset(), gRs = {};
     if (rs) { var cnt = {}; KAT.players.forEach(function (p) { if (p.g && p.rs) { var c = cnt[p.g] = cnt[p.g] || { pvp: 0, normal: 0 }; c[p.rs]++; } }); Object.keys(cnt).forEach(function (g) { gRs[g] = cnt[g].pvp >= cnt[g].normal ? "pvp" : "normal"; }); }
     var faOk = function (x) { return (!lbFa || x.fa === lbFa) && (!rs || (x.rs || gRs[x.s] || gRs[x.g] || "") === rs); };
-    var tabs = def[3] === "s" ? "" : LB.filter(function (b) { return b[3] === def[3] && (!b[1] || KAT.players.some(function (p) { return p[b[1]] > 0; })); }).map(function (b) {
-      return '<button type="button" class="huchip' + (b === def ? " on" : "") + '" data-lb="' + b[0] + '" aria-pressed="' + (b === def) + '">' + t(b[2]) + "</button>";
-    }).join("");
+    // Kategoriraden togs bort (Joakim 2026-11-19: menyn till vänster räcker, raden blev kludd); rubriken visar vald topplista i stället.
     var fa = function (k, lbl) { return '<button type="button" class="huchip' + (lbFa === k ? " on" : "") + '" data-lbfa="' + k + '" aria-pressed="' + (lbFa === k) + '">' + lbl + "</button>"; };
     var rsb = function (k, lbl) { var on = (lbRs || "") === k; return '<button type="button" class="huchip' + (on ? " on" : "") + '" data-lbrs="' + k + '" aria-pressed="' + on + '">' + lbl + "</button>"; };
     var np = KAT.players.filter(faOk).length, ng = KAT.guilds.filter(faOk).length;
@@ -5047,8 +5044,8 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
     KAT.players.forEach(function (p) { if (!rsOk(p)) return; if (p.fa === "HORDE") nh++; else if (p.fa === "ALLIANCE") na++; });
     var pa = nh + na ? na / (nh + na) * 100 : 0;
     var meter = nh + na ? '<div class="lbmeter" title="' + t("lb_meter_tip") + '"><span class="h">Horde <b>' + num(nh) + '</b></span><div class="lbbar"><i class="hb" style="width:' + (100 - pa).toFixed(1) + '%"></i><i class="ab" style="width:' + pa.toFixed(1) + '%"></i></div><span class="a"><b>' + num(na) + "</b> Alliance · " + (pa < 1 && pa > 0 ? pa.toFixed(1) : Math.round(pa)) + " %</span></div>" : "";
-    var h = '<div class="lbwrap"><div class="lbhead"><h2>' + t(def[3] === "s" ? "lb_server" : "lb") + "</h2><small>" + t("lb_sub", num(np), num(ng), when2(KAT.t)) + "</small></div>" + meter +
-      '<div class="huchips">' + tabs + '</div><div class="huchips">' + fa("", t("lb_both")) + fa("HORDE", "Horde") + fa("ALLIANCE", "Alliance") + '<span class="lbsep"></span>' +
+    var h = '<div class="lbwrap"><div class="lbhead"><h2>' + t(def[3] === "s" ? "lb_server" : def[2]) + "</h2><small>" + t("lb_sub", num(np), num(ng), when2(KAT.t)) + "</small></div>" + meter +
+      '<div class="huchips">' + fa("", t("lb_both")) + fa("HORDE", "Horde") + fa("ALLIANCE", "Alliance") + '<span class="lbsep"></span>' +
       rsb("", t("lb_rs_auto", houseParts(house)[0] === "pvp" ? "PvP" : "Normal")) + rsb(houseParts(house)[0] === "pvp" ? "normal" : "pvp", houseParts(house)[0] === "pvp" ? "Normal" : "PvP") + rsb("all", t("lb_rs_all")) + "</div>" +
       (KAT.players.some(function (p) { return !p.rs; }) && rs ? '<div class="note">' + t("lb_rs_partial") + "</div>" : "");
     if (def[0] === "cls") {
