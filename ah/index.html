@@ -951,8 +951,8 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
 .bar .count { order: 3; margin-left: auto; }
 @media (max-width: 1180px) {
   .mode { justify-content: flex-start; overflow-x: auto; scrollbar-width: none; gap: 2px; }
-  .mode button { padding: 0 10px; gap: 6px; font-size: 13.5px; white-space: nowrap; flex: 1 0 auto; height: 56px; }
-  .mode .ai { width: 36px; height: 36px; margin: -2px 0; }
+  .mode button { padding: 0 6px; gap: 4px; font-size: 13px; white-space: nowrap; flex: 1 0 auto; height: 56px; }   /* nio flikar ska rymmas vid 1100 px (Classes 2026-11-19) */
+  .mode .ai { width: 32px; height: 32px; margin: -2px 0; }
 }
 @media (max-width: 760px) {
   .mode button { height: 48px; }
@@ -1033,6 +1033,26 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
   [data-appearance=atlas] .bar #q { flex: 1 1 100%; }
   [data-appearance=atlas] .bar #qbtn { order: 2; }
 }
+/* Classes (Joakim 2026-11-19): klasslistan, spellraderna, spellrutan, talangräknarens ruta */
+body[data-mode=cl] .cols { grid-template-columns: 212px minmax(0, 1fr) minmax(0, 340px); }   /* tre talangträd bredvid varandra */
+body[data-mode=cl] .armory { padding: 8px; } body[data-mode=cl] .talpanel { padding: 8px 6px; }
+.cats .cat .ri { width: 24px; height: 24px; border-radius: 3px; flex: none; }
+.clraces { display: flex; flex-wrap: wrap; gap: 4px; padding: 10px 10px 4px; } .clraces .ri { width: 22px; height: 22px; border-radius: 3px; }
+.clic { width: 28px; height: 28px; border-radius: 4px; vertical-align: middle; margin-right: 8px; border: 1px solid #000; }
+.clic.none { display: inline-block; background: #111; } .clic.big { width: 52px; height: 52px; margin: 0 10px 0 0; vertical-align: middle; }
+#list.cl td { height: 40px; } #list.cl th.nm { width: 46%; } #list.cl td.nm { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 0; }
+#list.cl tr.clx td { opacity: .55; }
+.cldesc { color: #ffd100; font-size: 14px; line-height: 1.45; white-space: pre-line; padding: 10px 12px; border: 1px solid var(--line); border-radius: 5px; background: rgba(0, 0, 0, .35); }
+.clranks { margin: 0; padding: 0; list-style: none; display: grid; gap: 2px; font-size: 13.5px; }
+.clranks li { display: flex; gap: 10px; align-items: center; } .clranks li.cur .lnk { color: var(--gold); } .clranks .lnk { padding: 2px 6px; min-width: 64px; }
+.clload { display: flex; gap: 6px; margin-bottom: 6px; }
+.clload input { flex: 1 1 auto; min-width: 0; height: 32px; padding: 0 10px; border-radius: 4px; border: 1px solid var(--line); background: #0b0908; color: var(--fg); font: inherit; font-size: 13.5px; }
+.cltrees .lbb { grid-template-columns: 112px minmax(0, 1fr) 36px; }
+.subrow .clsegs { margin-left: 0; flex-wrap: wrap; row-gap: 4px; padding: 4px 0 4px 6px; }
+body[data-mode=cl] .ttrees { gap: 8px; } body[data-mode=cl] .ttree { padding: 6px 6px 8px; }
+.cltr .facts { margin-top: 4px; }
+@media (max-width: 1250px) { body[data-mode=cl] .cols { grid-template-columns: 196px minmax(0, 1fr) minmax(0, 300px); } }
+@media (max-width: 1100px) { body[data-mode=cl] .cols { grid-template-columns: minmax(0, 1fr); } }
 </style>
 </head>
 <body>
@@ -1093,10 +1113,12 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
       <button type="button" id="modeDg" aria-pressed="false" data-t-title="mode_dg_tip"><img class="ai" alt="" width="32" height="32" data-ai="nav-dungeons"><img class="mi" alt="" data-mi="dg" onerror="this.style.visibility='hidden'"><span data-t="mode_dg">Dungeons</span></button>
       <button type="button" id="modeHu" aria-pressed="false" data-t-title="mode_hu_tip"><img class="ai" alt="" width="32" height="32" data-ai="nav-hunter-pets"><img class="mi" alt="" data-mi="hu" onerror="this.style.visibility='hidden'"><span data-t="mode_hu">Hunter pets</span></button>
       <button type="button" id="modeCo" aria-pressed="false" data-t-title="mode_co_tip"><img class="ai" alt="" width="32" height="32" data-ai="nav-collections"><img class="mi" alt="" data-mi="co" onerror="this.style.visibility='hidden'"><span data-t="mode_co">Collections</span></button>
+      <button type="button" id="modeCl" aria-pressed="false" data-t-title="mode_cl_tip"><img class="ai" alt="" width="32" height="32" data-ai="nav-classes"><img class="mi" alt="" data-mi="cl" onerror="this.style.visibility='hidden'"><span data-t="mode_cl">Classes</span></button>
     </div>
     <div class="subrow" id="ahsub" hidden></div>
     <div class="subrow sub2" id="trsub" hidden></div>
     <div class="subrow sub2" id="lbsub" hidden></div>
+    <div class="subrow sub2" id="clsub" hidden></div>
     <span class="count" id="count"></span>
   </div>
 
@@ -1140,7 +1162,7 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
   // mot vanligt, dygnshandel och bästa tid. Trading visar bara stapelbart med minst TR_MIN ute (gear och tunna varor svänger
   // i guld, där säger procent ingenting). Sparas i webbläsaren.
   var MKEY = "whippit-ah-mode", TR_MIN = 20;
-  var mode = (function () { try { var m = localStorage.getItem(MKEY); return m === "tr" || m === "cr" || m === "ar" || m === "qu" || m === "dg" || m === "hu" || m === "co" || m === "de" || m === "fx" ? m : "ah"; } catch (e) { return "ah"; } })();
+  var mode = (function () { try { var m = localStorage.getItem(MKEY); return m === "tr" || m === "cr" || m === "ar" || m === "qu" || m === "dg" || m === "hu" || m === "co" || m === "de" || m === "fx" || m === "cl" ? m : "ah"; } catch (e) { return "ah"; } })();
   if (mode === "tr") { sortKey = "dip"; sortDir = -1; }
   var BT_MIN = 3;   // bästa tid räknas som tydlig vid minst 3 % vinst efter AH:s andel och plus minst 6 av 10 dagar
   function btClear(r) { return !!(r.bt && r.bt[2] >= BT_MIN && r.bt[3] * 10 >= r.bt[4] * 6); }
@@ -1489,6 +1511,23 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
       co_count: "%1 shown", co_empty: "Nothing matches.", co_item: "Item", co_open_ah: "Open on the AH", co_where: "Where to get it", co_price_ah: "On the AH", co_price_vendor: "Vendor price", co_pvprank: "PvP rank %1",
       co_forever: "New on Forever: not in the Classic database, so the source is unknown here.", co_nosrc: "No known source in the Classic database.",
       co_place: "Place = nearest graveyard or the dungeon.",
+      mode_cl: "Classes", mode_cl_tip: "Every class: talent calculator, spells with level and trainer cost, pet spells, class quests and trainers.", search_cl: "Search spell, quest or trainer",
+      cl_classes: "Classes", cl_v_tal: "Talent calculator", cl_v_spells: "Spells", cl_v_pets: "Pet spells", cl_v_quests: "Class quests", cl_v_trainers: "Trainers",
+      cl_col_spell: "Spell", cl_col_cost: "Cost", cl_col_cost_tip: "What the trainer charges in the Classic database (prices may differ on Forever)", cl_col_line: "Tree", cl_col_pet: "Pet", cl_col_trainer: "Trainer",
+      cl_count: "%1 shown", cl_empty: "Nothing matches.", cl_rank: "Rank %1", cl_free: "Free", cl_quest: "Quest", cl_beast: "From a beast", cl_demon_tr: "Demon trainer", cl_pet_tr: "Pet trainer",
+      cl_tk_class: "Class trainers", cl_tk_pet: "Pet trainers", cl_tk_demon: "Demon trainers", cl_changed: "Changed on Forever (%1)",
+      cl_changed_note: "This spell is not in Forever's game data: it was removed or reworked on Forever.", cl_passive: "Passive",
+      cl_power: "Costs", cl_cast: "Cast", cl_range: "Range", cl_cd: "Cooldown", cl_school: "School", cl_where: "Where to learn it", cl_ranks: "Ranks", cl_nodesc: "No description in the game data.",
+      cl_w_trainer: "Class trainers (%1 on your side, e.g. %2).", cl_w_start: "Known from level 1.", cl_w_quest: "Reward from the quest", cl_w_pet: "Pet trainers (%1 on your side, e.g. %2).",
+      cl_w_demon: "Demon trainers (%1 on your side, e.g. %2).", cl_w_beast: "Learned from a tamed %1 that already knows it (Beast Training).", cl_w_other: "From a book, an item or a quest.",
+      cl_load_h: "Load from Armory", cl_load_ph: "Player name", cl_load_btn: "Load", cl_load_note: "Type a player's name to copy their talents into the calculator.",
+      cl_load_ok: "Loaded %1 (level %2): %3.", cl_load_cls: "%1 is a %2, which has no talent trees here.",
+      cl_pts: "Points", cl_level_need: "Level needed", cl_trees: "Talent trees", cl_lvls: "level %1–%2", cl_races: "Races that can play this class",
+      cl_tal_note: "51 points at level 60, one per level from 10. Left-click adds, right-click removes. The link holds the plan.",
+      cl_note_src: "Spell list, levels and prices from the open Classic database (1.12); texts, icons and numbers from WoW Forever's game data. Forever's own class changes may be missing.",
+      cl_q_note: "Class quests on your side. Click a quest for the details and the map.", cl_class_tr: "%1 trainer", cl_pos: "Position", cl_teaches: "Teaches", cl_side: "Side",
+      cl_tr_card_note: "Position from the Classic database (1.12). Trainers that also give quests show their quests and map here.", cl_tr_note: "Click a trainer to see where they stand.",
+      about_s7: "WoW Forever's game data (Blizzard) via <a href=\"https://wago.tools\" target=\"_blank\" rel=\"noopener\">wago.tools</a>: spell texts, icons and numbers in Classes.",
       up_btn: "Upgrade gear", up_short: "Upgrades", up_btn_sub: "Better items on the auction house right now, with prices", up_title: "Upgrades from the AH", up_prices: "prices from %1",
       up_side: "Your character is on the other side: switch the auction house at the top right to see the right prices.", up_none: "No upgrade on the AH right now for this level and class.",
       up_all: "All %1 upgrades", up_cheap_all: "With the cheaper picks", up_alt: "Cheaper", up_empty: "Empty slot", up_fx: "effect", up_nocls: "No upgrade profile for this class.",
@@ -2345,6 +2384,7 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
   }
   function talSave(cid, ranks) { try { localStorage.setItem(TAL_KEY + cid, JSON.stringify(ranks)); } catch (e) {} }
   function talTip(id) {
+    if (mode === "cl") return clTalTip(id);
     var d = arData; if (!d || !TAL) return "";
     var tc = talClass(d.cls); if (!tc) return "";
     var f = talById(tc.c, id); if (!f) return "";
@@ -3812,6 +3852,7 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
     if (mode === "dg") { $("cats").innerHTML = DG ? dgCats() : ""; $("cats").hidden = false; return; }
     if (mode === "hu") { $("cats").innerHTML = HU ? huCats() : ""; $("cats").hidden = false; return; }
     if (mode === "co") { $("cats").innerHTML = CO ? coCats() : ""; $("cats").hidden = false; return; }
+    if (mode === "cl") { $("cats").innerHTML = CL ? clCats() : ""; $("cats").hidden = false; drawClSub(); return; }
     if (mode === "ar") {
       if (arLb) { $("cats").innerHTML = lbCats(); $("cats").hidden = false; return; }
       $("cats").innerHTML = arSection("friends", t("ar_friends"), arFriends) + arSection("recent", t("ar_recent"), arRecent);
@@ -3920,13 +3961,14 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
     var hp0 = hashParams();
     // En länk bestämmer fliken (annars den som sparats): #quest, #dungeon, #player/#guild, #recipe, #item.
     if (hp0.tab === "lb") { hp0.top = lbGroup(arLb) ? arLb : "ilvl"; delete hp0.tab; }
-    var hm = /^(ah|tr|cr|ar|qu|dg|hu|co)$/.test(hp0.tab || "") ? hp0.tab : hp0.fx ? "fx" : hp0.de ? "de" : hp0.col ? "co" : hp0.beast ? "hu" : hp0.quest || hp0.npc ? "qu" : hp0.dungeon ? "dg" : hp0.player || hp0.guild || hp0.top ? "ar" : hp0.recipe || hp0.gather ? "cr" : hp0.item ? "ah" : "";
+    var hm = /^(ah|tr|cr|ar|qu|dg|hu|co|cl)$/.test(hp0.tab || "") ? hp0.tab : hp0.cls ? "cl" : hp0.fx ? "fx" : hp0.de ? "de" : hp0.col ? "co" : hp0.beast ? "hu" : hp0.quest || hp0.npc ? "qu" : hp0.dungeon ? "dg" : hp0.player || hp0.guild || hp0.top ? "ar" : hp0.recipe || hp0.gather ? "cr" : hp0.item ? "ah" : "";
     var wantI = byId[+hp0.item];
     if (hm && !keep && mode !== hm && !(hm === "ah" && mode === "tr" && (!wantI || (!wantI.gear && wantI.qty >= TR_MIN)))) { if (fromNav) resetModeState(hm); mode = hm; drawCats(); refresh(); }   // trädet ritades för den sparade fliken
     // keep (ny scan eller annan marknad): lägesvyerna visar inte "Loading" och rullar inte upp, de ritar om listan (granskning 2026-11-18)
     if (mode === "qu" || (!keep && (hp0.quest || hp0.npc))) { mode = "qu"; if (!keep) { sortKey = "lvl"; sortDir = 1; } $("q").placeholder = t("search_qu"); quStart(+hp0.quest || (keep ? selQuest : 0), false, keep, +hp0.npc || 0); return; }   // #npc: Quests-läget, NPC:n i högerrutan (Joakim 2026-11-18)
     if (mode === "fx" || (!keep && hp0.fx)) { mode = "fx"; if (!keep) { sortKey = "profit"; sortDir = -1; } $("q").placeholder = t("search_ph"); fxStart(+hp0.fx || (keep ? fxSel : 0), keep); return; }
     if (mode === "de" || (!keep && hp0.de)) { mode = "de"; if (!keep) { sortKey = "profit"; sortDir = -1; } $("q").placeholder = t("search_ph"); deStart(+hp0.de || (keep ? deSel : 0), keep); return; }
+    if (mode === "cl" || (!keep && hp0.cls)) { mode = "cl"; if (!keep) { sortKey = "lvl"; sortDir = 1; } $("q").placeholder = t("search_cl"); clStart(keep ? {} : hp0, keep); return; }
     if (mode === "co" || (!keep && hp0.col)) { mode = "co"; if (!keep) { sortKey = "name"; sortDir = 1; } $("q").placeholder = t("search_co"); coStart(hp0.col || (keep ? coSel : ""), keep); return; }
     if (mode === "hu" || (!keep && hp0.beast)) { mode = "hu"; if (!keep) { sortKey = "lvl"; sortDir = huLvl ? -1 : 1; } $("q").placeholder = t("search_hu"); huStart(+hp0.beast || (keep ? huSel : 0), keep); return; }
     if (mode === "dg" || (!keep && hp0.dungeon)) { mode = "dg"; $("q").placeholder = t("search_dg"); dgStart(+hp0.dungeon || 0, keep); return; }
@@ -3969,6 +4011,7 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
     if (mode === "dg") { if (DG) dgRefresh(q); else { view = []; shown = 0; } draw(); return; }
     if (mode === "hu") { if (HU) huRefresh(q); else { view = []; shown = 0; } draw(); if (HU && huMapOn) huMapView(); return; }
     if (mode === "co") { if (CO) coRefresh(q); else { view = []; shown = 0; } draw(); return; }
+    if (mode === "cl") { if (CL) clRefresh(q); else { view = []; shown = 0; } draw(); return; }
     if (mode === "de") { if (DEX) deRefresh(q); else { view = []; shown = 0; } draw(); trCounts(); return; }
     if (mode === "fx") { if (FX.ok) fxRefresh(q); else { view = []; shown = 0; } draw(); trCounts(); return; }
     if (mode === "cr") {
@@ -4184,6 +4227,7 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
     if (mode === "dg") return dgRow(r);
     if (mode === "hu") return huRow(r);
     if (mode === "co") return coRow(r);
+    if (mode === "cl") return clRow(r);
     if (mode === "de") return deRow(r);
     if (mode === "fx") return fxRow(r);
     if (mode === "cr") {
@@ -4210,6 +4254,8 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
       ? fxCols()
       : mode === "de"
       ? [["name", "col_item"], ["lvl", "de_col_ilvl"], ["min", "de_col_buy"], ["val", "de_col_val", "de_col_val_tip", "hide-s"], ["profit", "de_col_profit"], ["pct", "de_col_pct", null, "hide-s"]]
+      : mode === "cl"
+      ? clCols()
       : mode === "co"
       ? [["name", "co_col_name"], ["src", "co_col_src"], ["where", "co_col_where", null, "kat hide-s"], ["req", "co_col_req", null, "hide-s"], ["price", "co_col_price", "co_col_price_tip"]]
       : mode === "hu"
@@ -4225,7 +4271,7 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
          ["qty", "col_qty"], ["day", "col_day", "col_day_tip", "hide-s dcol"]]
       : [["name", "col_item"], ["cat", "col_cat", null, "kat hide-s"], ["lvl", "col_lvl", "col_lvl_tip", "hide-s"], ["min", "col_min", "col_min_tip"],
          ["qty", "col_qty"], ["day", "col_day", "col_day_tip", "hide-s dcol"]];
-    return '<tr><th class="fav">' + (mode === "hu" || mode === "fx" ? "" : mode === "de" ? '<span title="' + t("de_own_col") + '">#</span>' : mode === "co" ? (coOwner() ? "✓" : "") : mode === "qu" ? (quPlayer && quPlayer.set ? "✓" : "") : t("col_fav")) + "</th>" + cols.map(function (c) {
+    return '<tr><th class="fav">' + (mode === "hu" || mode === "fx" || mode === "cl" ? "" : mode === "de" ? '<span title="' + t("de_own_col") + '">#</span>' : mode === "co" ? (coOwner() ? "✓" : "") : mode === "qu" ? (quPlayer && quPlayer.set ? "✓" : "") : t("col_fav")) + "</th>" + cols.map(function (c) {
       if (mode === "dg") return "<th" + (c[3] ? ' class="' + c[3] + '"' : c[0] === "name" ? ' class="nm"' : "") + (c[2] ? ' title="' + esc(t(c[2])) + '"' : "") + ">" + (c[1] ? t(c[1]) : "") + "</th>";
       return "<th" + (c[3] ? ' class="' + c[3] + '"' : c[0] === "name" ? ' class="nm"' : "") + '><button type="button" data-k="' + c[0] + '"' + (c[2] ? ' title="' + esc(t(c[2])) + '"' : "") +
         (c[0] === sortKey ? ' aria-sort="' + (sortDir > 0 ? "ascending" : "descending") + '"' : "") + ">" + (c[1] ? t(c[1]) : "") + "</button></th>";
@@ -4246,10 +4292,11 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
     $("modeDg").setAttribute("aria-pressed", mode === "dg" ? "true" : "false");
     $("modeHu").setAttribute("aria-pressed", mode === "hu" ? "true" : "false");
     $("modeCo").setAttribute("aria-pressed", mode === "co" ? "true" : "false");
-    drawTrSub(); drawLbSub();
+    $("modeCl").setAttribute("aria-pressed", mode === "cl" ? "true" : "false");
+    drawTrSub(); drawLbSub(); drawClSub();
     $("sect").textContent = mode === "ah" ? ahName((houseParts(house) || [0, "horde"])[1]) : t(mode === "de" || mode === "fx" ? "mode_tr" : mode === "ar" && arLb ? "mode_lb" : "mode_" + mode);
     drawSub();
-    $("q").setAttribute("aria-label", t(mode === "cr" ? "search_rc" : mode === "ar" ? "search_ar" : mode === "qu" ? "search_qu" : mode === "dg" ? "search_dg" : mode === "hu" ? "search_hu" : mode === "co" ? "search_co" : "search_ph"));
+    $("q").setAttribute("aria-label", t(mode === "cr" ? "search_rc" : mode === "ar" ? "search_ar" : mode === "qu" ? "search_qu" : mode === "dg" ? "search_dg" : mode === "hu" ? "search_hu" : mode === "co" ? "search_co" : mode === "cl" ? "search_cl" : "search_ph"));
   }
   // Raden i: själva raden och, i AH/Trading, de utfällda prisstegen under den.
   function rowFull(i) { return rowHtml(view[i]) + ((mode === "ah" || mode === "tr") && view[i].id === openId ? expHtml(view[i]) : ""); }
@@ -4287,12 +4334,12 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
     drawn = { view: view, mode: mode, n: shown, sk: sortKey, sd: sortDir };
     $("empty").hidden = view.length > 0;
     document.querySelector(".left .scroll").classList.toggle("noitems", view.length === 0);
-    $("empty").textContent = t(mode === "fx" ? "fx_empty" : mode === "de" ? "de_empty" : mode === "co" ? "co_empty" : mode === "hu" ? "hu_empty" : mode === "cr" ? (gaSel >= 0 ? "ga_empty" : "cr_empty") : mode === "qu" ? "qu_empty" : mode === "dg" ? (query || dgSel >= 0 ? "dg_empty" : "dg_pick") : "empty");
+    $("empty").textContent = t(mode === "fx" ? "fx_empty" : mode === "de" ? "de_empty" : mode === "co" ? "co_empty" : mode === "cl" ? "cl_empty" : mode === "hu" ? "hu_empty" : mode === "cr" ? (gaSel >= 0 ? "ga_empty" : "cr_empty") : mode === "qu" ? "qu_empty" : mode === "dg" ? (query || dgSel >= 0 ? "dg_empty" : "dg_pick") : "empty");
     drawMoreBtn();
-    $("count").textContent = t(mode === "fx" ? "fx_count" : mode === "de" ? "de_count" : mode === "co" ? "co_count" : mode === "hu" ? "hu_count" : mode === "cr" ? (gaSel >= 0 ? "ga_count" : "cr_count") : mode === "qu" ? "qu_count" : mode === "dg" ? "dg_count" : "count", num(mode === "dg" ? view.filter(function (x) { return !x.hd && !x.sub; }).length : view.length));
-    $("head").innerHTML = mode === "ar" ? "" : headHtml();
-    $("list").className = mode === "tr" || mode === "cr" || mode === "qu" || mode === "dg" || mode === "hu" || mode === "co" || mode === "de" || mode === "fx" ? mode + (mode === "cr" && gaSel >= 0 ? " ga" : "") : "";
-    var ar = mode === "ar";
+    $("count").textContent = t(mode === "fx" ? "fx_count" : mode === "de" ? "de_count" : mode === "co" ? "co_count" : mode === "cl" ? "cl_count" : mode === "hu" ? "hu_count" : mode === "cr" ? (gaSel >= 0 ? "ga_count" : "cr_count") : mode === "qu" ? "qu_count" : mode === "dg" ? "dg_count" : "count", num(mode === "dg" ? view.filter(function (x) { return !x.hd && !x.sub; }).length : view.length));
+    $("head").innerHTML = mode === "ar" || (mode === "cl" && clView === "tal") ? "" : headHtml();
+    $("list").className = mode === "tr" || mode === "cr" || mode === "qu" || mode === "dg" || mode === "hu" || mode === "co" || mode === "cl" || mode === "de" || mode === "fx" ? mode + (mode === "cr" && gaSel >= 0 ? " ga" : "") : "";
+    var ar = mode === "ar" || (mode === "cl" && clView === "tal");   // Classes: talangräknaren ritas i samma ruta som Armory
     $("armory").hidden = !ar;
     document.querySelector(".left .scroll").hidden = ar;
     if (ar) { $("empty").hidden = true; $("more").hidden = true; $("count").textContent = ""; }
@@ -4823,6 +4870,24 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
     if (e.target.closest("[data-deprofit]") && mode === "de") { deProfit = !deProfit; drawTrSub(); refresh(); toTop(); return; }
     var tde = e.target.closest("tbody tr[data-de]");
     if (tde) { showTab("item"); deDetail(+tde.dataset.de); return; }
+    // Classes (2026-11-19): klass, vy, segment, rader, rangerna i rutan, talangplanens knappar
+    var clc = e.target.closest("[data-clc]");
+    if (clc && mode === "cl") { if (clc.dataset.clc !== clSel) { clSel = clc.dataset.clc; clRanks = clLoadSaved(); clSp = 0; clQ = 0; clTr = 0; clLine = ""; clPet = ""; if (clView === "pets" && !(clC() && clC().pets.length)) clView = "spells"; try { localStorage.setItem(CL_SEL_KEY, clSel); } catch (e9) {} } qFlush(); query = ""; $("q").value = ""; clShow(true); showTab("item"); return; }
+    var clv = e.target.closest("[data-clv]");
+    if (clv && mode === "cl") { clView = clv.dataset.clv; qFlush(); query = ""; $("q").value = ""; clShow(true); showTab("item"); return; }
+    var clln = e.target.closest("[data-clln]"), clpet = e.target.closest("[data-clpet]"), clfa = e.target.closest("[data-clfa]"), cltk = e.target.closest("[data-cltk]");
+    if ((clln || clpet || clfa || cltk) && mode === "cl") { if (clln) { clLine = clln.dataset.clln; clSp = 0; } if (clpet) { clPet = clpet.dataset.clpet; clSp = 0; } if (clfa) { clFa = clfa.dataset.clfa; clFaSet = true; clQ = 0; clTr = 0; } if (cltk) { clTk = cltk.dataset.cltk; clTr = 0; } drawClSub(); refresh(); toTop(); clDetail(); setHash(clHash()); return; }
+    var tcl = e.target.closest("tbody tr[data-clsp]");
+    if (tcl && mode === "cl") { showTab("item"); clSpDetail(+tcl.dataset.clsp); return; }
+    var tclq = e.target.closest("tbody tr[data-clq]");
+    if (tclq && mode === "cl") { showTab("item"); clQ = +tclq.dataset.clq; clDetail(); setHash(clHash()); return; }
+    var tcltr = e.target.closest("tbody tr[data-cltr]");
+    if (tcltr && mode === "cl") { showTab("item"); clTr = +tcltr.dataset.cltr; clDetail(); setHash(clHash()); return; }
+    var clgo = e.target.closest("[data-clgo]");
+    if (clgo && mode === "cl") { clSpDetail(+clgo.dataset.clgo); return; }
+    if (e.target.closest("[data-clback]") && mode === "cl") { clQ = 0; clTr = 0; clDetail(); setHash(clHash()); return; }
+    if (e.target.closest("[data-clreset]") && mode === "cl") { clRanks = {}; clSave(); clRedraw(); return; }
+    if (e.target.closest("[data-clload]") && mode === "cl") { clArmLoad(); return; }
     var cok = e.target.closest("[data-cokind]");
     if (cok && mode === "co") { coFold = coKind === cok.dataset.cokind ? !coFold : false; coKind = cok.dataset.cokind; coSrc = ""; if (sortKey === "req" && coKind === "titles") sortKey = "name"; drawCats(); refresh(); toTop(); if (view[0]) coDetail(CO_LETTER[coKind] + view[0].co.id); return; }
     var cos = e.target.closest("[data-cosrc]");
@@ -4971,6 +5036,7 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
     if (e.target.closest("[data-talreset]") && talPlan) { talPlan.ranks = {}; talSave(talPlan.cls, talPlan.ranks); arRedraw(); return; }
     if (e.target.closest("[data-talcopy]") && talPlan && arData) { talPlan.ranks = talHave(arData); talSave(talPlan.cls, talPlan.ranks); arRedraw(); return; }
     var tnb = e.target.closest("[data-tal]");
+    if (tnb && mode === "cl") { clTalClick(+tnb.dataset.tal, e.shiftKey); return; }
     if (tnb) { talClick(+tnb.dataset.tal, e.shiftKey); return; }
     var tg = e.target.closest("[data-artoggle]");
     if (tg && arData && arData.kind === "character") { arOpen[tg.dataset.artoggle] = !arOpen[tg.dataset.artoggle]; arRedraw(); return; }
@@ -5033,6 +5099,7 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
   $("tabItem").addEventListener("click", function () { showTab("item"); });
   document.addEventListener("contextmenu", function (e) {
     var tnb = e.target.closest && e.target.closest("[data-tal]");
+    if (tnb && mode === "cl") { e.preventDefault(); clTalClick(+tnb.dataset.tal, true); return; }
     if (tnb && talPlan) { e.preventDefault(); talClick(+tnb.dataset.tal, true); }
   });
   $("tabWatch").addEventListener("click", function () { showTab("watch"); });
@@ -5042,7 +5109,7 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
   navDraw();
   document.addEventListener("keydown", function (e) {
     if (e.key !== "Enter" && e.key !== " ") return;
-    if (e.target.tagName === "TR" && !e.target.dataset.id && (e.target.dataset.qid || e.target.dataset.rid || e.target.dataset.dgi || e.target.dataset.arrec || e.target.dataset.hu || e.target.dataset.co || e.target.dataset.de || e.target.dataset.fx)) { e.preventDefault(); e.target.click(); return; }
+    if (e.target.tagName === "TR" && !e.target.dataset.id && (e.target.dataset.qid || e.target.dataset.rid || e.target.dataset.dgi || e.target.dataset.arrec || e.target.dataset.hu || e.target.dataset.co || e.target.dataset.de || e.target.dataset.fx || e.target.dataset.clsp || e.target.dataset.clq || e.target.dataset.cltr)) { e.preventDefault(); e.target.click(); return; }
     if (e.target.tagName !== "TR" || !e.target.dataset.id) return;
     e.preventDefault();
     var kid = +e.target.dataset.id;
@@ -5402,7 +5469,7 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
     o.innerHTML = '<div class="aboutbox" role="dialog" aria-modal="true" aria-labelledby="aboutH" tabindex="-1">' +
       '<button class="lnk aboutx" type="button" data-aboutx="1" aria-label="' + t("about_close") + '">✕</button>' +
       '<h2 id="aboutH">' + t("about") + "</h2>" +
-      "<h3>" + t("about_src_h") + "</h3><ul>" + ["about_s1", "about_s2", "about_s3", "about_s4", "about_s5", "about_s6"].map(function (k) { return "<li>" + t(k) + "</li>"; }).join("") + "</ul>" +
+      "<h3>" + t("about_src_h") + "</h3><ul>" + ["about_s1", "about_s2", "about_s3", "about_s4", "about_s5", "about_s6", "about_s7"].map(function (k) { return "<li>" + t(k) + "</li>"; }).join("") + "</ul>" +
       "<h3>" + t("about_legal_h") + "</h3><p>" + t("about_legal") + "</p>" +
       "<h3>" + t("about_data_h") + "</h3><p>" + t("about_data") + "</p></div>";
     document.body.appendChild(o);
@@ -6221,6 +6288,338 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
       '<div class="note">' + t("co_place") + "</div>";   // källorna i About, kvar: hur platsen väljs (Joakim 2026-11-18)
     m3Auto();
   }
+  // ===== Classes (Joakim 2026-11-19) ==================================================================================
+  // Klasserna: talangräknare (samma träd som Armory, talents.json), spells och pet-spells (classes.json ur
+  // hamta-klasser.js: Classic-databasens tränare, Forever-klientens texter), class quests (quests.json) och tränare.
+  // Länk: #cls=warrior&cv=tal|spells|pets|quests|trainers, &t=<plan> (en siffra per talang, träden med - emellan),
+  // &sp=<spell-id>, &ln=<skill line>, &pet=<namn>, &cq=<quest>, &tr=<npc>. Planen sparas per klass i webbläsaren.
+  var CL = null, clPromise = null, clSel = "", clView = "tal", clPet = "", clLine = "", clSp = 0, clQ = 0, clTr = 0, clRanks = {}, clFa = "", clFaSet = false, clTk = "";
+  var CL_ORDER = ["Warrior", "Paladin", "Hunter", "Rogue", "Priest", "Shaman", "Mage", "Warlock", "Druid"], CL_VIEWS = ["tal", "spells", "pets", "quests", "trainers"];
+  var CL_KEY = "whippit-ah-clplan-", CL_SEL_KEY = "whippit-ah-cls";
+  var CL_BIT = { Warrior: 1, Paladin: 2, Hunter: 4, Rogue: 8, Priest: 16, Shaman: 64, Mage: 128, Warlock: 256, Druid: 1024 };
+  function loadCl() {
+    if (!clPromise) clPromise = fetch(DATA_BASE + "classes.json").then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }).then(function (j) { CL = j; return j; })
+      .catch(function (e) { clPromise = null; throw e; });
+    return clPromise;
+  }
+  function clName() { return CL_ORDER.filter(function (n) { return n.toLowerCase() === clSel; })[0] || ""; }
+  function clC(name) { var n = name || clName(), out = null; if (CL) Object.keys(CL.classes).forEach(function (k) { if (CL.classes[k].name === n) out = CL.classes[k]; }); return out; }
+  function clTal() { return clName() ? talClass(clName()) : null; }
+  function clCol(n) { return CLASS_COL[n || clName()] || "inherit"; }
+  // Planen i länken: per träd en siffra per talang (trädets ordning), utan avslutande nollor, träden med - emellan.
+  function clPlanCode() {
+    var tc = clTal(); if (!tc) return "";
+    return tc.c.trees.map(function (tr) { return tr.nodes.map(function (n) { return clRanks[n.id] || 0; }).join("").replace(/0+$/, ""); }).join("-").replace(/-+$/, "");
+  }
+  function clPlanParse(code) {
+    var tc = clTal(), r = {}; if (!tc || !code) return r;
+    code.split("-").forEach(function (part, ti) { var tr = tc.c.trees[ti]; if (!tr) return; tr.nodes.forEach(function (n, i) { var v = +part.charAt(i) || 0; if (v > 0) r[n.id] = Math.min(v, n.max); }); });
+    // Planen måste hålla (poängkrav, pilar): poäng som inte får ligga tas bort, uppifrån och ner.
+    var ok = {}, guard = 0;
+    while (guard++ < 60) {
+      var changed = false;
+      tc.c.trees.forEach(function (tr) { tr.nodes.forEach(function (n) { var want = r[n.id] || 0; while (want > (ok[n.id] || 0) && talOpenFor(tr, n, ok) && talTotal(tc.c, ok) < TAL_MAX) { ok[n.id] = (ok[n.id] || 0) + 1; changed = true; } }); });
+      if (!changed) break;
+    }
+    return ok;
+  }
+  function clHash() {
+    var h = "#cls=" + clSel + (clView !== "tal" ? "&cv=" + clView : "");
+    if (clView === "tal") { var code = clPlanCode(); if (code.replace(/-/g, "")) h += "&t=" + code; }
+    if (clView === "spells" && clLine) h += "&ln=" + encodeURIComponent(clLine);
+    if (clView === "pets" && clPet) h += "&pet=" + encodeURIComponent(clPet);
+    if ((clView === "spells" || clView === "pets") && clSp) h += "&sp=" + clSp;
+    if (clView === "quests" && clQ) h += "&cq=" + clQ;
+    if (clView === "trainers" && clTr) h += "&tr=" + clTr;
+    return h;
+  }
+  function clSave() { try { localStorage.setItem(CL_KEY + clSel, JSON.stringify(clRanks)); } catch (e) { /* gäller tills sidan stängs */ } }
+  function clLoadSaved() { try { var s = JSON.parse(localStorage.getItem(CL_KEY + clSel) || "null"); return s && typeof s === "object" ? s : {}; } catch (e) { return {}; } }
+  function clStart(hp, keep) {
+    hp = hp || {};
+    if (!keep) $("detail").innerHTML = '<div class="note">' + t("ar_loading") + "</div>";
+    Promise.all([loadCl(), loadTal().catch(function () {}), loadQuests().catch(function () {})]).then(function () {
+      if (mode !== "cl") return;   // bytt flik medan filen laddades
+      var want = (hp.cls || "").toLowerCase(), saved = "";
+      try { saved = localStorage.getItem(CL_SEL_KEY) || ""; } catch (e) { saved = ""; }
+      if (!CL_ORDER.some(function (n) { return n.toLowerCase() === want; })) want = clSel || (CL_ORDER.some(function (n) { return n.toLowerCase() === saved; }) ? saved : "warrior");
+      if (want !== clSel) { clSel = want; clRanks = clLoadSaved(); clSp = 0; clQ = 0; clTr = 0; clLine = ""; clPet = ""; }
+      if (!clFa && !clFaSet) { clFa = myFaction(); clFaSet = true; }   // din sida förvald i quests och tränare
+      if (hp.cv && CL_VIEWS.indexOf(hp.cv) >= 0) clView = hp.cv; else if (hp.cls) clView = "tal";
+      if (hp.t) { clRanks = clPlanParse(hp.t); clSave(); }
+      if (hp.ln != null) clLine = hp.ln;
+      if (hp.pet != null) clPet = hp.pet;
+      if (hp.sp) clSp = +hp.sp;
+      if (hp.cq) clQ = +hp.cq;
+      if (hp.tr) clTr = +hp.tr;
+      try { localStorage.setItem(CL_SEL_KEY, clSel); } catch (e) { /* gäller tills sidan stängs */ }
+      clShow(!keep);
+    }).catch(function () { if (mode === "cl") $("detail").innerHTML = '<div class="note">' + t("qu_fail") + "</div>"; });
+  }
+  function clShow(scroll) { drawCats(); refresh(); if (clView === "tal") $("armory").innerHTML = clTalPanel(); if (scroll) toTop(); clDetail(); setHash(clHash()); }
+  function clRedraw() { if (clView === "tal") $("armory").innerHTML = clTalPanel(); drawCats(); clDetail(); setHash(clHash()); }
+  function clQuestsAll(name) { var bit = CL_BIT[name] || 0, out = []; if (!QU || !bit) return out; Object.keys(QU.quests).forEach(function (id) { var q = QU.quests[id]; if (q[15] & bit) out.push({ q: q, id: +id }); }); return out; }
+  function clQuests() { return clQuestsAll(clName()).filter(function (x) { return !clFa || !x.q[5] || x.q[5] === clFa; }); }
+  function clTrainers() { var c = clC(); return c ? c.trainers.filter(function (x) { return (!clFa || !x.f || x.f === clFa) && (!clTk || x.k === clTk); }) : []; }
+  function clSpells() {   // raderna i vald vy (spells/pets), före sökning
+    var c = clC(); if (!c) return [];
+    if (clView === "pets") return c.pets.filter(function (p) { return !clPet || p.name === clPet; }).reduce(function (a, p) { return a.concat(p.spells.map(function (s) { return { sp: s, pet: p.name }; })); }, []);
+    return c.spells.filter(function (s) { return clLine === "x" ? s.x : !s.x && (!clLine || s.ln === clLine); }).map(function (s) { return { sp: s }; });
+  }
+  function clFind(id) {   // samma pet-spell finns i flera familjer (Bite): den valda familjen först
+    var c = clC(), hit = null; if (!c) return null;
+    c.spells.forEach(function (s) { if (s.id === id) hit = { sp: s }; });
+    c.pets.forEach(function (p) { p.spells.forEach(function (s) { if (s.id === id && (!hit || !hit.pet || p.name === clPet)) hit = { sp: s, pet: p.name }; }); });
+    return hit;
+  }
+  function clIcon(s, big) { return s.i ? '<img class="clic' + (big ? " big" : "") + '" src="https://render.worldofwarcraft.com/forever-eu/icons/56/' + s.i + '.jpg" alt="" loading="lazy">' : '<span class="clic none' + (big ? " big" : "") + '"></span>'; }
+  function clCost(s) {
+    if (s.c) return money(s.c);
+    if (s.s === "s") return t("cl_free");
+    if (s.s === "q") return t("cl_quest");
+    if (s.s === "b") return t("cl_beast");
+    if (s.s === "p") return t(clName() === "Warlock" ? "cl_demon_tr" : "cl_free");
+    if (s.s === "t") return t("cl_free");
+    return DASH;
+  }
+  function clFaIc(f) { return f ? (faIcon(f === "H" ? "HORDE" : "ALLIANCE") || (f === "H" ? "Horde" : "Alliance")) : ""; }
+  function clCols() {
+    if (clView === "quests") return [["name", "col_quest"], ["lvl", "col_lvl"], ["zone", "col_zone", null, "kat hide-s"]];
+    if (clView === "trainers") return [["name", "cl_col_trainer"], ["zone", "col_zone", null, "kat"]];
+    return [["name", "cl_col_spell"], ["lvl", "col_lvl"], ["cost", "cl_col_cost", "cl_col_cost_tip"], ["line", clView === "pets" ? "cl_col_pet" : "cl_col_line", null, "kat hide-s"]];
+  }
+  function clRefresh(q) {
+    var k = sortKey, dir = sortDir;
+    if (clView === "quests") {
+      view = clQuests().filter(function (x) { return !q || x.q[0].toLowerCase().indexOf(q) >= 0 || (QU.areas[x.q[1]] || "").toLowerCase().indexOf(q) >= 0; });
+      view.sort(function (a, b) { var d = k === "name" ? a.q[0].localeCompare(b.q[0]) : k === "zone" ? (QU.areas[a.q[1]] || "").localeCompare(QU.areas[b.q[1]] || "") : a.q[2] - b.q[2]; return d * dir || a.q[2] - b.q[2] || a.q[0].localeCompare(b.q[0]); });
+    } else if (clView === "trainers") {
+      view = clTrainers().filter(function (x) { return !q || x.n.toLowerCase().indexOf(q) >= 0 || x.z.toLowerCase().indexOf(q) >= 0; }).map(function (x) { return { tr: x }; });
+      view.sort(function (a, b) { var x = a.tr, y = b.tr, d = k === "name" ? x.n.localeCompare(y.n) : x.z.localeCompare(y.z); return d * dir || x.z.localeCompare(y.z) || x.n.localeCompare(y.n); });
+    } else if (clView === "spells" || clView === "pets") {
+      view = clSpells().filter(function (x) { var s = x.sp; return !q || s.n.toLowerCase().indexOf(q) >= 0 || (s.d || "").toLowerCase().indexOf(q) >= 0 || (x.pet || "").toLowerCase().indexOf(q) >= 0; });
+      view.sort(function (a, b) {
+        var x = a.sp, y = b.sp, d = 0;
+        if (k === "name") d = x.n.localeCompare(y.n) || x.r - y.r;
+        else if (k === "cost") d = x.c - y.c;
+        else if (k === "line") d = (a.pet || x.ln || "").localeCompare(b.pet || y.ln || "");
+        else d = (x.l || 1) - (y.l || 1);
+        return d * dir || (x.l || 1) - (y.l || 1) || x.n.localeCompare(y.n) || x.r - y.r;
+      });
+    } else view = [];
+    shown = Math.min(PAGE, view.length);
+  }
+  function clRow(r) {
+    if (r.q) {
+      var q = r.q;
+      return '<tr tabindex="0" data-clq="' + r.id + '"' + (r.id === clQ ? ' aria-selected="true"' : "") + '><td class="fav">' + clFaIc(q[5]) + '</td><td class="nm"><span class="q1">' + esc(q[0]) + "</span>" + (quDone(r.id) ? ' <span class="qok">✓</span>' : "") + "</td><td>" + (q[4] ? "~" : "") + (q[2] || "–") + '</td><td class="kat hide-s">' + esc(QU.areas[q[1]] || "") + "</td></tr>";
+    }
+    if (r.tr) {
+      var x = r.tr;
+      return '<tr tabindex="0" data-cltr="' + x.id + '"' + (x.id === clTr ? ' aria-selected="true"' : "") + '><td class="fav">' + clFaIc(x.f) + '</td><td class="nm"><span class="q1">' + esc(x.n) + "</span>" + (x.k === "p" ? ' <small class="dim">' + t(clName() === "Warlock" ? "cl_demon_tr" : "cl_pet_tr") + "</small>" : "") + '</td><td class="kat">' + esc(x.z) + "</td></tr>";
+    }
+    var s = r.sp;
+    return '<tr tabindex="0" data-clsp="' + s.id + '"' + (s.id === clSp ? ' aria-selected="true"' : "") + (s.x ? ' class="clx"' : "") + '><td class="fav">' + (s.pa ? '<span class="dim" title="' + t("cl_passive") + '">●</span>' : "") + '</td><td class="nm">' + clIcon(s) + '<span class="q1">' + esc(s.n) + "</span>" + (s.r ? ' <small class="dim">' + t("cl_rank", s.r) + "</small>" : "") + "</td><td>" + (s.l || 1) + "</td><td>" + clCost(s) + '</td><td class="kat hide-s">' + esc(r.pet || s.ln || "") + "</td></tr>";
+  }
+  function clCats() {
+    var h = "<h2>" + t("cl_classes") + "</h2>";
+    CL_ORDER.forEach(function (n) {
+      var c = clC(n); if (!c) return;
+      var on = n.toLowerCase() === clSel, live = c.spells.filter(function (s) { return !s.x; }).length;
+      h += '<button class="cat" type="button" data-clc="' + n.toLowerCase() + '" aria-pressed="' + on + '">' + classIcon(n) + '<em class="nm" style="color:' + clCol(n) + '">' + n + "</em>" + (on ? "" : "<span>" + live + "</span>") + "</button>";
+      if (!on) return;
+      var sub = function (v, lbl, n2) { return '<button class="cat sub" type="button" data-clv="' + v + '" aria-pressed="' + (clView === v) + '"><em class="nm">' + lbl + "</em>" + (n2 != null ? "<span>" + n2 + "</span>" : "") + "</button>"; };
+      var tc = clTal(), used = tc ? talTotal(tc.c, clRanks) : 0;
+      h += sub("tal", t("cl_v_tal"), used + "/" + TAL_MAX);
+      h += sub("spells", t("cl_v_spells"), live);
+      if (c.pets.length) h += sub("pets", t("cl_v_pets"), c.pets.reduce(function (a, p) { return a + p.spells.length; }, 0));
+      h += sub("quests", t("cl_v_quests"), QU ? clQuestsAll(n).length : null);
+      h += sub("trainers", t("cl_v_trainers"), c.trainers.length);
+    });
+    var c0 = clC();
+    if (c0) h += '<div class="clraces" title="' + t("cl_races") + '">' + c0.races.map(function (r) { return '<span title="' + esc(r[0]) + (r[1] === "H" ? " · Horde" : " · Alliance") + '">' + raceIcon(r[0], "MALE") + "</span>"; }).join("") + "</div>";
+    return h;
+  }
+  function drawClSub() {   // segmenten ovanför listan: skill line / pet / fraktion / tränarsort
+    var el = $("clsub"); if (!el) return;
+    var on = mode === "cl" && clView !== "tal" && !!CL && !!clC(); el.hidden = !on; if (!on) return;
+    var c = clC(), h = '<span class="segs clsegs">';
+    var sg = function (attr, cur, items) { return '<span class="seg">' + items.map(function (it) { return '<button type="button" ' + attr + '="' + esc(String(it[0])) + '" aria-pressed="' + (cur === it[0]) + '">' + it[1] + "</button>"; }).join("") + "</span>"; };
+    if (clView === "spells") { var xs = c.spells.filter(function (s) { return s.x; }).length; h += sg("data-clln", clLine, [["", t("co_s_all")]].concat(c.lines.map(function (l) { return [l, esc(l)]; })).concat(xs ? [["x", t("cl_changed", xs)]] : [])); }
+    else if (clView === "pets") h += sg("data-clpet", clPet, [["", t("co_s_all")]].concat(c.pets.map(function (p) { return [p.name, esc(p.name)]; })));
+    else {
+      h += sg("data-clfa", clFa, [["", t("lb_both")], ["H", faIcon("HORDE") || "Horde"], ["A", faIcon("ALLIANCE") || "Alliance"]]);
+      if (clView === "trainers" && c.pets.length) h += sg("data-cltk", clTk, [["", t("co_s_all")], ["c", t("cl_tk_class")], ["p", t(clName() === "Warlock" ? "cl_tk_demon" : "cl_tk_pet")]]);
+    }
+    el.innerHTML = h + "</span>";
+  }
+  // Talangräknaren i mittenrutan: samma träd som Armorys planerare (talTreeHtml), poängen i clRanks.
+  function clTalPanel() {
+    var tc = clTal();
+    if (!TAL) { loadTal().then(function () { if (mode === "cl") clRedraw(); }).catch(function () {}); return '<div class="talpanel"><div class="note">' + t("ar_loading") + "</div></div>"; }
+    if (!tc) return '<div class="talpanel"><div class="note">' + t("tal_nocls") + "</div></div>";
+    var used = talTotal(tc.c, clRanks);
+    var head = '<div class="talhd"><div class="talinfo"><span>' + t("tal_left", TAL_MAX - used) + "</span><span>" + t("tal_lvl", used ? used + 9 : 10) + "</span>" +
+      '<button type="button" class="lnk" data-clreset="1">' + t("tal_reset") + '</button><button type="button" class="lnk" data-copyany="' + esc(clHash()) + '" title="' + t("copy_link") + '">' + t("copy_link") + "</button></div></div>";
+    return '<div class="talpanel cls-' + clSel + '">' + head + '<div class="ttrees">' + tc.c.trees.map(function (tr, ti) { return talTreeHtml(tr, ti, clRanks, true); }).join("") + '</div><div class="note">' + t("tal_hint") + "</div></div>";
+  }
+  function clTalClick(id, remove) {
+    var tc = clTal(), f = tc && talById(tc.c, id); if (!f) return;
+    var r = clRanks, rk = r[id] || 0;
+    if (remove) { if (talCanRemove(tc.c, id, r)) { r[id] = rk - 1; if (!r[id]) delete r[id]; } else return; }
+    else { if (rk >= f.n.max || talTotal(tc.c, r) >= TAL_MAX || !talOpenFor(f.tr, f.n, r)) return; r[id] = rk + 1; }
+    clSave(); clRedraw();
+    var tip = clTalTip(id); if (tip && tipBox && !tipBox.hidden) { tipBox.innerHTML = tip; placeTip(); }
+  }
+  function clTalTip(id) {
+    var tc = clTal(); if (!tc) return "";
+    var f = talById(tc.c, id); if (!f) return "";
+    var ranks = clRanks, rk = ranks[id] || 0, n = f.n;
+    var h = '<div class="ln"><b class="q1">' + esc(n.name) + '</b></div><div class="ln"><span>' + t("tal_rank", rk, n.max) + "</span></div>";
+    if (n.cast) h += '<div class="ln"><span>' + esc(n.cast) + "</span></div>";
+    var need = (n.row - 1) * 5, spent = talSpent(f.tr, ranks);
+    if (spent < need) h += '<div class="ln"><span class="neg">' + t("tal_req_pts", need, esc(f.tr.spec)) + "</span></div>";
+    n.req.forEach(function (rid) { var r = talById(tc.c, rid); if (r && (ranks[rid] || 0) < r.n.max) h += '<div class="ln"><span class="neg">' + t("tal_req", r.n.max, esc(r.n.name)) + "</span></div>"; });
+    h += '<div class="ln"><span class="tipy">' + esc(n.desc[Math.max(0, rk - 1)] || "") + "</span></div>";
+    if (rk > 0 && rk < n.max) h += '<div class="ln"><span>' + t("tal_next") + '</span></div><div class="ln"><span class="tipy">' + esc(n.desc[rk] || "") + "</span></div>";
+    h += '<div class="ln"><span class="dim">' + t("tal_hint") + "</span></div>";
+    return h;
+  }
+  // Högerrutan
+  function clStrip(sub, hash) {
+    var n = clName();
+    return '<div class="strip"><button class="lnk" type="button" data-copyany="' + esc(hash || clHash()) + '" title="' + t("copy_link") + '">' + t("copy_link") + "</button><h2>" + classIcon(n) + ' <span style="color:' + clCol(n) + '">' + n + "</span></h2><small>" + sub + "</small></div>";
+  }
+  function clOverview() {
+    var c = clC(), n = clName(), tc = clTal(); if (!c) return "";
+    var seen = {}, races = c.races.filter(function (r) { if (seen[r[0]]) return false; seen[r[0]] = 1; return true; }).map(function (r) { return r[0]; }).join(", ");
+    var tr = { H: 0, A: 0 }; c.trainers.forEach(function (x) { if (x.f) tr[x.f]++; });
+    var qs = clQuestsAll(n), lv = qs.map(function (x) { return x.q[2]; }).filter(Boolean);
+    return clStrip(esc(c.power) + " · " + esc(races)) +
+      '<dl class="facts"><div><dt>' + t("cl_v_spells") + "</dt><dd>" + c.spells.filter(function (s) { return !s.x; }).length + "</dd></div>" +
+      (c.pets.length ? "<div><dt>" + t("cl_v_pets") + "</dt><dd>" + c.pets.reduce(function (a, p) { return a + p.spells.length; }, 0) + "</dd></div>" : "") +
+      "<div><dt>" + t("cl_v_quests") + "</dt><dd>" + (qs.length ? qs.length + (lv.length ? ' <small class="dim">' + t("cl_lvls", Math.min.apply(null, lv), Math.max.apply(null, lv)) + "</small>" : "") : "–") + "</dd></div>" +
+      "<div><dt>" + t("cl_v_trainers") + "</dt><dd>" + c.trainers.length + ' <small class="dim">' + tr.H + " H · " + tr.A + " A</small></dd></div>" +
+      (tc ? '<div class="wide"><dt>' + t("cl_trees") + "</dt><dd>" + tc.c.trees.map(function (x) { return esc(x.spec); }).join(" · ") + "</dd></div>" : "") + "</dl>";
+  }
+  function clTalDetail() {
+    var tc = clTal(), c = clC(); if (!c) return "";
+    var used = tc ? talTotal(tc.c, clRanks) : 0, mx = 0;
+    var bars = tc ? tc.c.trees.map(function (tr) { var s = talSpent(tr, clRanks); mx = Math.max(mx, s); return [tr.spec, s]; }) : [];
+    return clStrip(t("cl_v_tal") + " · " + t("tal_used", used), clHash()) +
+      '<dl class="facts"><div><dt>' + t("cl_pts") + "</dt><dd>" + used + " / " + TAL_MAX + "</dd></div><div><dt>" + t("cl_level_need") + "</dt><dd>" + (used ? Math.min(60, used + 9) : 10) + "</dd></div></dl>" +
+      (bars.length ? '<div class="lbbars cltrees">' + bars.map(function (b) { return '<div class="lbb"><span class="nm"><b>' + esc(b[0]) + '</b></span><span class="lbfill"><i style="width:' + (mx ? b[1] / mx * 100 : 0).toFixed(1) + "%;background:" + clCol() + '"></i></span><em>' + b[1] + "</em></div>"; }).join("") + "</div>" : "") +
+      "<div><h3>" + t("cl_load_h") + '</h3><div class="clload"><input id="clArm" type="search" placeholder="' + esc(t("cl_load_ph")) + '" autocomplete="off" aria-label="' + esc(t("cl_load_h")) + '"><button class="wowbtn" type="button" data-clload="1">' + t("cl_load_btn") + '</button></div><div class="note" id="clArmNote">' + t("cl_load_note") + "</div></div>" +
+      '<div class="note">' + t("cl_tal_note") + "</div>";
+  }
+  function clArmLoad() {
+    var inp = $("clArm"), note = $("clArmNote"), name = inp ? inp.value.trim() : "";
+    if (!name || !note) return;
+    note.textContent = t("ar_loading");
+    var slug = arSlug(name);
+    charFetch(slug).then(function (d) {
+      if (mode !== "cl") return;
+      if (d.kind !== "character" || !d.cls) { note.textContent = t("ar_notfound"); return; }
+      if (!CL_ORDER.some(function (n) { return n === d.cls; })) { note.textContent = t("cl_load_cls", esc(d.name), esc(d.cls)); return; }
+      var cls = d.cls.toLowerCase();
+      if (cls !== clSel) { clSel = cls; clSp = 0; clQ = 0; clTr = 0; clLine = ""; clPet = ""; try { localStorage.setItem(CL_SEL_KEY, clSel); } catch (e) {} }
+      clRanks = talHave(d); clSave(); clRedraw();
+      var n2 = $("clArmNote"); if (n2) n2.innerHTML = t("cl_load_ok", '<a class="wh" href="#player=' + esc(d.slug) + '" data-ar="char" data-slug="' + esc(d.slug) + '">' + esc(d.name + " " + d.surname) + "</a>", d.level || "", talSummary(d) || "0");
+    }).catch(function (e) { var n2 = $("clArmNote"); if (n2) n2.textContent = t(e && e.message === "404" ? "ar_notfound" : "ar_fail"); });
+  }
+  function clSpDetail(id) {
+    var f = clFind(id); if (!f) { clSp = 0; $("detail").innerHTML = clOverview(); return; }
+    var s = f.sp, c = clC(), n = clName();
+    clSp = id;
+    var trs = $("rows").children;
+    for (var j = 0; j < trs.length; j++) { if (+trs[j].dataset.clsp === id) trs[j].setAttribute("aria-selected", "true"); else trs[j].removeAttribute("aria-selected"); }
+    setHash(clHash());
+    var facts = [[t("col_lvl"), s.l || 1], [t("cl_col_cost"), clCost(s)]];
+    if (s.p && (s.p[0] || s.p[2])) facts.push([t("cl_power"), (s.p[2] ? s.p[2] + "% " : s.p[0] + " ") + esc(s.p[1])]);
+    if (s.ct) facts.push([t("cl_cast"), esc(s.ct)]);
+    if (s.rg) facts.push([t("cl_range"), s.rg + " yd"]);
+    if (s.cd) facts.push([t("cl_cd"), s.cd >= 60 ? (Math.round(s.cd / 6) / 10) + " min" : s.cd + " sec"]);
+    if (s.sc && s.sc !== "Physical") facts.push([t("cl_school"), esc(s.sc)]);
+    var pool = f.pet ? (c.pets.filter(function (p) { return p.name === f.pet; })[0] || { spells: [] }).spells : c.spells;
+    var ranks = pool.filter(function (x) { return x.n === s.n; }).sort(function (a, b) { return a.r - b.r || (a.l || 1) - (b.l || 1); });
+    var ranksHtml = ranks.length > 1 ? "<div><h3>" + t("cl_ranks") + '</h3><ul class="clranks">' + ranks.map(function (x) {
+      return "<li" + (x.id === s.id ? ' class="cur"' : "") + '><button class="lnk" type="button" data-clgo="' + x.id + '">' + (x.r ? t("cl_rank", x.r) : esc(x.n)) + "</button><span>" + t("col_lvl") + " " + (x.l || 1) + '</span><span class="dim">' + clCost(x) + "</span></li>";
+    }).join("") + "</ul></div>" : "";
+    var side = myFaction(), near = c.trainers.filter(function (x) { return x.k === (f.pet ? "p" : "c") && (!x.f || x.f === side); }), zones = {};
+    if (!near.length) near = c.trainers.filter(function (x) { return x.k === (f.pet ? "p" : "c"); });   // klassen finns inte på din sida (Paladin/Shaman): alla
+    near.forEach(function (x) { zones[x.z] = (zones[x.z] || 0) + 1; });
+    var zl = Object.keys(zones).sort(function (a, b) { return zones[b] - zones[a]; }).slice(0, 6).map(function (z) { return esc(z) + (zones[z] > 1 ? " ×" + zones[z] : ""); }).join(", ");
+    var where = "";
+    if (s.s === "t") where = t("cl_w_trainer", near.length, zl || "–");
+    else if (s.s === "s") where = t("cl_w_start");
+    else if (s.s === "q") where = t("cl_w_quest") + " " + (QU && QU.quests[s.q] ? '<a class="wh" href="#quest=' + s.q + '" data-goquest="' + s.q + '">' + esc(QU.quests[s.q][0]) + "</a>" + (QU.quests[s.q][2] ? ' <span class="dim">' + t("col_lvl") + " " + QU.quests[s.q][2] + "</span>" : "") : '<a class="wh" href="#quest=' + s.q + '" data-goquest="' + s.q + '">#' + s.q + "</a>");
+    else if (s.s === "p") where = t(n === "Warlock" ? "cl_w_demon" : "cl_w_pet", near.length, zl || "–");
+    else if (s.s === "b") where = t("cl_w_beast", esc(f.pet || ""));
+    else where = t("cl_w_other");
+    if (s.x) where += " " + t("cl_changed_note");
+    $("detail").scrollTop = 0;
+    $("detail").innerHTML = '<div class="strip"><button class="lnk" type="button" data-copyany="' + esc(clHash()) + '" title="' + t("copy_link") + '">' + t("copy_link") + "</button><h2>" + clIcon(s, true) + esc(s.n) + '</h2><small><span style="color:' + clCol(n) + '">' + n + "</span>" + (f.pet ? " · " + esc(f.pet) : s.ln ? " · " + esc(s.ln) : "") + (s.r ? " · " + t("cl_rank", s.r) : "") + (s.pa ? " · " + t("cl_passive") : "") + "</small></div>" +
+      '<dl class="facts">' + facts.map(function (x) { return "<div><dt>" + x[0] + "</dt><dd>" + x[1] + "</dd></div>"; }).join("") + "</dl>" +
+      (s.d ? '<div class="cldesc">' + esc(s.d) + "</div>" : '<div class="note">' + t("cl_nodesc") + "</div>") +
+      "<div><h3>" + t("cl_where") + '</h3><div class="srcs1">' + where + "</div></div>" + ranksHtml +
+      '<div class="note">' + t("cl_note_src") + "</div>";
+  }
+  function clQuestOverview() {
+    var qs = clQuests(), zones = {}, lv = [];
+    qs.forEach(function (x) { var z = QU.areas[x.q[1]] || "?"; zones[z] = (zones[z] || 0) + 1; if (x.q[2]) lv.push(x.q[2]); });
+    var zl = Object.keys(zones).sort(function (a, b) { return zones[b] - zones[a]; });
+    return clOverview() + "<div><h3>" + t("cl_v_quests") + (lv.length ? ' <small class="dim">' + t("cl_lvls", Math.min.apply(null, lv), Math.max.apply(null, lv)) + "</small>" : "") + '</h3><ul class="huwhere">' + zl.map(function (z) { return "<li>" + esc(z) + ' <span class="dim">' + zones[z] + "</span></li>"; }).join("") + "</ul></div>" +
+      '<div class="note">' + t("cl_q_note") + "</div>";
+  }
+  function clTrainerOverview() {
+    var list = clTrainers(), zones = {};
+    list.forEach(function (x) { var k = x.z; if (!zones[k]) zones[k] = { n: 0, f: x.f, p: 0 }; zones[k].n++; if (x.k === "p") zones[k].p++; });
+    var zl = Object.keys(zones).sort(function (a, b) { return zones[b].n - zones[a].n; });
+    return clOverview() + "<div><h3>" + t("cl_v_trainers") + '</h3><ul class="huwhere">' + zl.map(function (z) { var o = zones[z]; return "<li>" + clFaIc(o.f) + " " + esc(z) + ' <span class="dim">' + o.n + (o.p ? " · " + o.p + " " + t(clName() === "Warlock" ? "cl_demon_tr" : "cl_pet_tr").toLowerCase() : "") + "</span></li>"; }).join("") + "</ul></div>" +
+      '<div class="note">' + t("cl_tr_note") + "</div>";
+  }
+  function clTrainerDetail(id) {
+    var c = clC(), x = null, n = clName(); c.trainers.forEach(function (y) { if (y.id === id) x = y; });
+    if (!x) { clTr = 0; $("detail").innerHTML = clTrainerOverview(); return; }
+    var kind = x.k === "p" ? t(n === "Warlock" ? "cl_demon_tr" : "cl_pet_tr") : t("cl_class_tr", n);
+    var pos = x.x != null ? x.x.toFixed(1) + ", " + x.y.toFixed(1) : "", way = x.x != null ? qmWay(x.z, x.x.toFixed(1), x.y.toFixed(1)) : "";
+    var teach = x.k === "p" ? c.pets.reduce(function (a, p) { return a + p.spells.filter(function (s) { return s.s === "p"; }).length; }, 0) : c.spells.filter(function (s) { return s.s === "t" && !s.x; }).length;
+    var back = '<button class="lnk back" type="button" data-clback="1">‹ ' + esc(n) + "</button>";
+    var facts = '<div class="cltr"><dl class="facts"><div><dt>' + t("col_zone") + "</dt><dd>" + esc(x.z) + "</dd></div>" + (pos ? "<div><dt>" + t("cl_pos") + '</dt><dd><button type="button" class="qmc" data-way="' + esc(way) + '" title="' + esc(t("qm_copy_tip", way)) + '">' + pos + "</button></dd></div>" : "") +
+      "<div><dt>" + t("cl_teaches") + "</dt><dd>" + teach + "</dd></div>" + (x.f ? "<div><dt>" + t("cl_side") + "</dt><dd>" + clFaIc(x.f) + " " + (x.f === "H" ? "Horde" : "Alliance") + "</dd></div>" : "") + "</dl></div>";
+    // Zonens karta med tränaren som en guldpinne (samma kartor som questkartan); laddas när kartindexet finns.
+    var map = function () { return x.x != null && huHasZ(x.z) ? '<div class="huzm qmap"><img src="' + huZUrl(x.z) + '" alt="' + esc(x.z) + '" width="1002" height="668" decoding="async"><b class="qmq s" style="left:' + x.x + '%;top:' + x.y + '%" data-way="' + esc(way) + '" title="' + esc(x.n + " · " + pos + " · " + t("qm_click_copy")) + '">!</b></div>' : ""; };
+    $("detail").innerHTML = back + '<div class="strip"><button class="lnk" type="button" data-copyany="' + esc(clHash()) + '" title="' + t("copy_link") + '">' + t("copy_link") + "</button><h2>" + esc(x.n) + "</h2><small>" + kind + "</small></div>" + facts + '<div id="cltrmap">' + map() + "</div>" + '<div class="note">' + t("cl_tr_card_note") + "</div>";
+    if (x.x != null && !huHasZ(x.z)) loadZmap().then(function () { var el = $("cltrmap"); if (el && mode === "cl" && clTr === id) el.innerHTML = map(); });
+    npcLoad(id).then(function (np) {   // NPC-sidan (quests, karta) finns för tränare som också ger quests
+      if (!np || mode !== "cl" || clTr !== id) return;
+      npcCur = { id: id, n: np };
+      $("detail").innerHTML = back + npcHtml(id, np) + facts;
+      m3Auto();
+    }).catch(function () {});
+  }
+  function clDetail() {
+    if (!CL || !clC()) { $("detail").innerHTML = '<div class="note">' + t("qu_fail") + "</div>"; return; }
+    $("detail").scrollTop = 0;
+    if (clView === "tal") { $("detail").innerHTML = clTalDetail(); return; }
+    if (clView === "spells" || clView === "pets") { if (clSp && clFind(clSp)) clSpDetail(clSp); else { clSp = 0; $("detail").innerHTML = clOverview(); } return; }
+    if (clView === "quests") {
+      if (clQ && QU && QU.quests[clQ]) {
+        var trs = $("rows").children;
+        for (var j = 0; j < trs.length; j++) { if (+trs[j].dataset.clq === clQ) trs[j].setAttribute("aria-selected", "true"); else trs[j].removeAttribute("aria-selected"); }
+        selectQuest(clQ, false, true);   // questens ruta utan att byta flik (Armorys variant utan tillbakaknapp)
+        $("detail").insertAdjacentHTML("afterbegin", '<button class="lnk back" type="button" data-clback="1">‹ ' + esc(clName()) + "</button>");
+      } else { clQ = 0; $("detail").innerHTML = QU ? clQuestOverview() : clOverview(); }
+      return;
+    }
+    if (clView === "trainers") {
+      if (clTr) {
+        var trs2 = $("rows").children;
+        for (var k = 0; k < trs2.length; k++) { if (+trs2[k].dataset.cltr === clTr) trs2[k].setAttribute("aria-selected", "true"); else trs2[k].removeAttribute("aria-selected"); }
+        clTrainerDetail(clTr);
+      } else $("detail").innerHTML = clTrainerOverview();
+    }
+  }
   function coStart(want, keep) {   // keep: ny data, ingen "Loading"/rullning/flikväxling (granskning 2026-11-18)
     if (!keep) $("detail").innerHTML = '<div class="note">' + t("ar_loading") + "</div>";
     loadCo().then(function () {
@@ -6241,7 +6640,7 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
     }).catch(function () { if (mode === "dg") $("detail").innerHTML = '<div class="note">' + t("qu_fail") + "</div>"; });
   }
   function resetModeState(m) {   // ny flik: egen sortering, inga kvarglömda filter från förra fliken
-    if (m === "tr") { trSort(trView); } else if (m === "cr") { sortKey = "profit"; sortDir = -1; gaSel = -1; } else if (m === "qu") { sortKey = "lvl"; sortDir = 1; } else { sortKey = "day"; sortDir = -1; }
+    if (m === "tr") { trSort(trView); } else if (m === "cr") { sortKey = "profit"; sortDir = -1; gaSel = -1; } else if (m === "qu" || m === "cl") { sortKey = "lvl"; sortDir = 1; } else { sortKey = "day"; sortDir = -1; }
     openId = null;
     catSel = -1; subSel = -1; sub2Sel = -1;   // kategorierna och yrkena är olika listor
     qFlush(); query = ""; $("q").value = "";   // väntande sökning från förra fliken stryks (granskning 2026-11-18)
@@ -6252,11 +6651,12 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
     mode = m;
     try { localStorage.setItem(MKEY, m); } catch (e) { /* gäller tills sidan stängs */ }
     resetModeState(m);
-    $("q").placeholder = t(m === "cr" ? "search_rc" : m === "ar" ? "search_ar" : m === "qu" ? "search_qu" : m === "dg" ? "search_dg" : m === "hu" ? "search_hu" : m === "co" ? "search_co" : m === "de" ? "search_ph" : "search_ph");
+    $("q").placeholder = t(m === "cr" ? "search_rc" : m === "ar" ? "search_ar" : m === "qu" ? "search_qu" : m === "dg" ? "search_dg" : m === "hu" ? "search_hu" : m === "co" ? "search_co" : m === "cl" ? "search_cl" : "search_ph");
     if (m === "qu") { quStart(selQuest || 0, true); return; }
     if (m === "dg") { dgStart(0); return; }
     if (m === "hu") { sortKey = "lvl"; sortDir = huLvl ? -1 : 1; huStart(huSel); return; }
     if (m === "co") { sortKey = "name"; sortDir = 1; coStart(0); return; }
+    if (m === "cl") { sortKey = "lvl"; sortDir = 1; clStart({}, false); return; }
     if (m === "de") { sortKey = "profit"; sortDir = -1; deStart(0); return; }
     if (m === "fx") { sortKey = "profit"; sortDir = -1; fxStart(0); return; }   // vinst i guld först: procent överdriver billiga varor
     if (m === "ar") {
@@ -6286,6 +6686,9 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
     if ((x = el.closest("tr[data-hu]"))) return "#beast=" + x.dataset.hu;
     if ((x = el.closest("tr[data-dgboss]"))) return "#dungeon=" + x.dataset.dgmap + "&boss=" + x.dataset.dgboss;
     if ((x = el.closest("tr[data-co]"))) return "#col=" + x.dataset.co;
+    if ((x = el.closest("tr[data-clsp]"))) return "#cls=" + clSel + "&cv=" + clView + "&sp=" + x.dataset.clsp;
+    if ((x = el.closest("tr[data-clq]"))) return "#cls=" + clSel + "&cv=quests&cq=" + x.dataset.clq;
+    if ((x = el.closest("tr[data-cltr]"))) return "#cls=" + clSel + "&cv=trainers&tr=" + x.dataset.cltr;
     if ((x = el.closest("tr[data-fx]"))) return "#fx=" + x.dataset.fx + (x.dataset.fxg ? "&g=" + x.dataset.fxg : "") + mk;
     if ((x = el.closest("tr[data-de]"))) return "#de=" + x.dataset.de + mk;
     if ((x = el.closest("tr[data-qid]"))) return "#quest=" + x.dataset.qid;
@@ -6330,13 +6733,14 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
   $("modeDg").addEventListener("click", function () { setMode("dg"); });
   $("modeHu").addEventListener("click", function () { setMode("hu"); });
   $("modeCo").addEventListener("click", function () { setMode("co"); });
+  $("modeCl").addEventListener("click", function () { setMode("cl"); });
   document.addEventListener("change", function (e) { if (e.target && e.target.id === "quPlayer") setQuPlayer(e.target.value); });
   $("head").addEventListener("click", function (e) {
     var b = e.target.closest("button");
     if (!b) return;
     var k = b.dataset.k;
     if (mode === "dg") return;   // Dungeons sorteras per boss, inte på rubrikerna
-    if (k === sortKey) sortDir = -sortDir; else { sortKey = k; sortDir = k === "name" || k === "min" || k === "cat" || k === "lvl" || k === "speed" || k === "fam" || k === "role" || k === "zone" ? 1 : -1; }
+    if (k === sortKey) sortDir = -sortDir; else { sortKey = k; sortDir = k === "name" || k === "min" || k === "cat" || k === "lvl" || k === "speed" || k === "fam" || k === "role" || k === "zone" || k === "cost" || k === "line" ? 1 : -1; }
     refresh(); toTop();
   });
 
@@ -6405,6 +6809,7 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
     query = $("q").value.trim().toLowerCase(); refresh(); $("q").blur();
   });
   $("q").addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); $("qbtn").click(); } });
+  document.addEventListener("keydown", function (e) { if (e.key === "Enter" && e.target && e.target.id === "clArm" && mode === "cl") { e.preventDefault(); clArmLoad(); } });
   if (location.hash === "#about") aboutOpen();   // länk direkt till About (Joakim 2026-11-18)
   var tok0 = ++dataSeq, house0 = house;
   fetch(dataUrl()).then(function (r) {
