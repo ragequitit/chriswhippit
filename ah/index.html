@@ -903,22 +903,22 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
 .mode button[aria-pressed=true] { color: var(--edge); background: linear-gradient(#3B2B1B, #241A12); box-shadow: inset 0 -3px 0 var(--edge), inset 0 -8px 16px rgba(246, 196, 72, .08); }
 .mode button:focus-visible { outline: 2px solid var(--edge); outline-offset: -2px; }
 /* Underflikarna under Auction house (Joakim 2026-11-19) */
-.sub { order: -1; flex: 1 0 100%; display: flex; gap: 2px; margin: -14px -18px 0; padding: 0 10px; background: #130F0D; border-bottom: 1px solid var(--line); overflow-x: auto; scrollbar-width: none; }
-.sub button { all: unset; box-sizing: border-box; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; height: 42px; padding: 0 16px; font-size: 14px; font-weight: 600; color: var(--grey); white-space: nowrap; border-bottom: 2px solid transparent; }
-.sub button:hover { color: var(--fg); background: var(--hover); }
-.sub button[aria-pressed=true] { color: var(--edge); border-bottom-color: var(--edge); background: var(--sel); }
-.sub button:focus-visible { outline: 2px solid var(--edge); outline-offset: -2px; }
-.sub .fi { width: 22px; height: 22px; object-fit: contain; } .sub .fi.bw { border-radius: 50%; }
-[data-appearance=atlas] .sub { background: #0F1821; }
+.subrow { order: -1; flex: 1 0 100%; display: flex; gap: 2px; margin: -14px -18px 0; padding: 0 10px; background: #130F0D; border-bottom: 1px solid var(--line); overflow-x: auto; scrollbar-width: none; }
+.subrow button { all: unset; box-sizing: border-box; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; height: 42px; padding: 0 16px; font-size: 14px; font-weight: 600; color: var(--grey); white-space: nowrap; border-bottom: 2px solid transparent; }
+.subrow button:hover { color: var(--fg); background: var(--hover); }
+.subrow button[aria-pressed=true] { color: var(--edge); border-bottom-color: var(--edge); background: var(--sel); }
+.subrow button:focus-visible { outline: 2px solid var(--edge); outline-offset: -2px; }
+.subrow .fi { width: 22px; height: 22px; object-fit: contain; } .subrow .fi.bw { border-radius: 50%; }
+[data-appearance=atlas] .subrow { background: #0F1821; }
 /* Tradings egen flikrad under underflikarna */
 .sub2 { margin-top: -14px; background: #100D0B; } .sub2 button { height: 36px; font-size: 13.5px; font-weight: 500; padding: 0 14px; } .sub2 .ci { width: 18px; height: 18px; border-radius: 3px; }
 [data-appearance=atlas] .sub2 { background: #0C131A; }
-.sub .segs { margin-left: auto; display: inline-flex; gap: 10px; align-items: center; padding-left: 10px; }
+.subrow .segs { margin-left: auto; display: inline-flex; gap: 10px; align-items: center; padding-left: 10px; }
 .seg { display: inline-flex; border: 1px solid var(--line); background: var(--inset); }
 .seg button { all: unset; cursor: pointer; height: 26px; padding: 0 11px; font-size: 13px; color: var(--grey); display: inline-flex; align-items: center; border-left: 1px solid var(--line); }
 .seg button:first-child { border-left: 0; } .seg button:hover { color: var(--fg); background: var(--hover); }
 .seg button[aria-pressed=true] { color: var(--edge); background: var(--sel); box-shadow: inset 0 -2px 0 var(--edge); }
-.sub .n { color: var(--grey); font-weight: 400; font-size: 12px; margin-left: 6px; } .sub .n:empty { display: none; } .sub button[aria-pressed=true] .n { color: inherit; opacity: .75; }
+.subrow .n { color: var(--grey); font-weight: 400; font-size: 12px; margin-left: 6px; } .subrow .n:empty { display: none; } .subrow button[aria-pressed=true] .n { color: inherit; opacity: .75; }
 .seg .lbl { display: inline-flex; align-items: center; gap: 6px; height: 26px; padding: 0 8px; font-size: 12.5px; color: var(--gold); white-space: nowrap; }
 .seg .lbl input { width: 54px; height: 20px; padding: 0 6px; border-radius: 3px; border: 1px solid var(--line); background: #0b0908; color: var(--fg); font: inherit; font-size: 12.5px; }
 #list th.bs, #list td.bs { text-align: left; white-space: nowrap; line-height: 1.2; padding-top: 3px; padding-bottom: 3px; }
@@ -1071,8 +1071,8 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
       <button type="button" id="modeHu" aria-pressed="false" data-t-title="mode_hu_tip"><img class="ai" alt="" width="32" height="32" data-ai="nav-hunter-pets"><img class="mi" alt="" data-mi="hu" onerror="this.style.visibility='hidden'"><span data-t="mode_hu">Hunter pets</span></button>
       <button type="button" id="modeCo" aria-pressed="false" data-t-title="mode_co_tip"><img class="ai" alt="" width="32" height="32" data-ai="nav-collections"><img class="mi" alt="" data-mi="co" onerror="this.style.visibility='hidden'"><span data-t="mode_co">Collections</span></button>
     </div>
-    <div class="sub" id="ahsub" hidden></div>
-    <div class="sub sub2" id="trsub" hidden></div>
+    <div class="subrow" id="ahsub" hidden></div>
+    <div class="subrow sub2" id="trsub" hidden></div>
     <span class="count" id="count"></span>
   </div>
 
