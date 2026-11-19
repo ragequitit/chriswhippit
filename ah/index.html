@@ -448,6 +448,16 @@ body[data-mode=hu] .facts dd { font-size: 15px; }
 .recx.ok { width: auto; padding: 0 8px; opacity: 1; color: #fff; background: #a3271c; border: 1px solid #ff5a4a; font-size: 12px; }
 .cat.sub2 { margin-left: 34px; height: 26px; font-size: 13px; color: var(--grey); border-left: 1px solid var(--line); border-radius: 0; }
 .cat.sub2[aria-pressed=true] { color: var(--gold); background: var(--sel); border-left-color: var(--edge); box-shadow: none; }
+/* Yrkesräknaren (Joakim 2026-11-19): guld per timme för samlaryrkena i Professions. Rubrikrader i spalten, staplar i rutan. */
+.cat.hd.gahd { cursor: default; height: 28px; font-size: 13px; margin-top: 6px; } .cat.hd.gahd:hover { background: none; } .cat.hd.gahd:first-of-type { margin-top: 0; }
+.gabars { display: grid; gap: 5px; } .gabar { display: grid; grid-template-columns: minmax(0, 1fr) 96px 62px; gap: 8px; align-items: center; font-size: 13px; }
+.gabar > span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; } .gabar .ic { width: 20px; height: 20px; vertical-align: -5px; margin-right: 6px; }
+.gabar .bar { height: 8px; border-radius: 4px; background: var(--inset); border: 1px solid var(--line); overflow: hidden; } .gabar .bar i { display: block; height: 100%; background: linear-gradient(90deg, #b8891f, var(--edge)); min-width: 2px; }
+.gabar b { font-weight: 500; text-align: right; white-space: nowrap; color: var(--fg); } .gabar small { color: var(--grey); font-size: 12px; }
+.gaas { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; } .gaas .lbl input { width: 62px; } .gaas .lnk { font-size: 13px; padding: 4px 8px; }
+.reag tr[data-garec] { cursor: pointer; } .reag tr[data-garec]:hover td { background: var(--hover); } .reag tr[data-garec] td:first-child { width: 58%; }
+#list.cr.ga th.nm { width: 30%; }
+@media (max-width: 560px) { .gabar { grid-template-columns: minmax(0, 1fr) 54px 58px; gap: 6px; } }
 .cat:focus-visible, .catlink:focus-visible { outline: 2px solid var(--edge); outline-offset: -2px; }
 .catlink { all: unset; cursor: pointer; color: var(--grey); font-size: 13px; }
 .catlink:hover { color: var(--gold); text-decoration: underline; }
@@ -1538,6 +1548,12 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
       col_recipe: "Recipe", col_skill: "Skill", col_skill_tip: "Skill required to learn the recipe", col_cost: "Cost", col_cost_tip: "Reagents at market price; vendor reagents at vendor price",
       col_sell: "Sells for", col_sell_tip: "Market price of the crafted item", col_profit: "Profit", col_profit_tip: "Sells for minus the auction house's 5% minus cost, per craft",
       cr_h: "Professions", cr_all: "All", cr_count: "%1 recipes", cr_empty: "No recipe matches the search.", cr_loading: "Loading recipes…", cr_fail: "The recipes could not be loaded.",
+      ga_h: "Gold per hour", ga_crafting: "Crafting", ga_band: "Level %1–%2", ga_skill: "skill about %1–%2", ga_de: "disenchant", ga_count: "%1 items", ga_empty: "No item matches the search.",
+      ga_gph: "Gold per hour", ga_gph_tip: "Items per hour × market price on the selected market, after the auction house's 5 %", ga_units: "Items per hour", ga_units_tip: "Your assumptions split over what comes up in this level band",
+      ga_top: "Best item", ga_col_units: "Per hour", ga_col_gph: "Gold/h", ga_skill_tip: "Skill needed to gather it", ga_share_tip: "%1 % of what you pick up in this band",
+      ga_assume: "Your pace", ga_reset: "Reset", ga_nodes: "Nodes / hour", ga_per_node: "Items / node", ga_kills: "Kills / hour", ga_per_kill: "Skins / kill", ga_greens: "Greens / hour", ga_per_green: "Materials / green",
+      ga_what: "What it brings", ga_more: "and %1 more", ga_recipes: "Best recipes to craft", ga_rec_none: "No recipe in this skill range sells at a profit right now.", ga_rec_tip: "Open the recipe",
+      ga_missing: "%1 item(s) have no price on this market right now and count as 0.", ga_note: "The shares per band are what the zones of that level typically give, not measured in Forever. Change your pace above and everything is recalculated.",
       f_cost: "Cost to craft", f_sellf: "Sells for", f_profit: "Profit after 5%", f_trainer: "Trainer price", f_makes: "Makes %1", reagents: "Reagents", col_each: "Each", col_total: "Total", col_qty_s: "Qty",
       vendor_tag: "vendor", missing_n: "No price for %1 reagent(s): the cost is incomplete.", not_on_ah: "The crafted item is not on the auction house right now, so there is no selling price.",
       it_find: "Where to find it", it_gather: "Gathered from", it_chests: "Also in chests", it_drop: "Dropped by", it_drop_more: "and %1 more mobs",
@@ -2765,6 +2781,260 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
   var TIERS = [[1, 74], [75, 149], [150, 224], [225, 300]];
   function tierOf(skill) { return skill >= 225 ? 3 : skill >= 150 ? 2 : skill >= 75 ? 1 : 0; }
   function tierName(skill) { return t(skill >= 225 ? "tier_4" : skill >= 150 ? "tier_3" : skill >= 75 ? "tier_2" : "tier_1"); }   // 1–74 Apprentice, 75–149 Journeyman, 150–224 Expert, 225–300 Artisan
+  // ---- Yrkesräknaren (Joakim 2026-11-19): guld per timme för samlaryrkena, per levelband, ur riktpriset på vald marknad.
+  // Rad i GATHER.rows: [vara, skill som krävs, andel i band 1–20, 20–30, 30–40, 40–50, 50–60]. Andelarna är relativa
+  // inom bandet (0 = kommer inte upp där) och bygger på vad zonerna i den nivån ger i Classic, inte mätt i Forever.
+  // Guld/h = takt (a × b, t.ex. noder/timme × örter/nod) × Σ andel × riktpris × 0,95. Takten går att ändra i rutan och
+  // sparas i webbläsaren. Enchanting räknas på gröna saker man plockar upp och disenchantar (material per grön sak).
+  var GA_BANDS = [[1, 20], [20, 30], [30, 40], [40, 50], [50, 60]];
+  var GA_SKILL = [[1, 125], [100, 175], [150, 225], [200, 275], [250, 300]];   // ungefärlig yrkesskill i bandet, styr recepten
+  var GATHER = [
+    { key: "herb", name: "Herbalism", icon: "yrke-herbalism", a: ["ga_nodes", 25], b: ["ga_per_node", 2.5], crafts: [171], rows: [
+      [2447, 1, 10, 0, 0, 0, 0],      // Peacebloom
+      [765, 1, 10, 0, 0, 0, 0],       // Silverleaf
+      [2449, 15, 6, 0, 0, 0, 0],      // Earthroot
+      [785, 50, 6, 2, 0, 0, 0],       // Mageroyal
+      [2450, 70, 6, 3, 0, 0, 0],      // Briarthorn
+      [2452, 70, 2, 1, 0, 0, 0],      // Swiftthistle (bonus ur Briarthorn/Mageroyal)
+      [3820, 85, 3, 4, 1, 0, 0],      // Stranglekelp
+      [2453, 100, 3, 6, 1, 0, 0],     // Bruiseweed
+      [3355, 115, 0, 5, 3, 0, 0],     // Wild Steelbloom
+      [3369, 120, 0, 2, 1, 0, 0],     // Grave Moss
+      [3356, 125, 0, 6, 4, 0, 0],     // Kingsblood
+      [3357, 150, 0, 4, 4, 0, 0],     // Liferoot
+      [3818, 160, 0, 0, 5, 1, 0],     // Fadeleaf
+      [3821, 170, 0, 0, 5, 2, 0],     // Goldthorn
+      [3358, 185, 0, 0, 4, 3, 0],     // Khadgar's Whisker
+      [3819, 195, 0, 0, 1, 0, 0],     // Wintersbite (bara Alterac)
+      [4625, 205, 0, 0, 0, 4, 0],     // Firebloom
+      [8831, 210, 0, 0, 0, 5, 1],     // Purple Lotus
+      [8836, 220, 0, 0, 0, 2, 2],     // Arthas' Tears
+      [8838, 230, 0, 0, 0, 5, 2],     // Sungrass
+      [8839, 235, 0, 0, 0, 3, 0],     // Blindweed
+      [8845, 245, 0, 0, 0, 2, 0],     // Ghost Mushroom
+      [8846, 250, 0, 0, 0, 3, 2],     // Gromsblood
+      [13464, 260, 0, 0, 0, 0, 5],    // Golden Sansam
+      [13463, 270, 0, 0, 0, 0, 6],    // Dreamfoil
+      [13465, 280, 0, 0, 0, 0, 5],    // Mountain Silversage
+      [13466, 285, 0, 0, 0, 0, 4],    // Plaguebloom
+      [13467, 290, 0, 0, 0, 0, 3],    // Icecap
+      [13468, 300, 0, 0, 0, 0, 0.1]   // Black Lotus (sällsynt)
+    ] },
+    { key: "mine", name: "Mining", icon: "yrke-mining", a: ["ga_nodes", 20], b: ["ga_per_node", 3], crafts: [164, 202, 186], rows: [
+      [2770, 1, 10, 0, 0, 0, 0],      // Copper Ore
+      [2835, 1, 5, 0, 0, 0, 0],       // Rough Stone
+      [774, 1, 0.35, 0, 0, 0, 0],     // Malachite
+      [818, 1, 0.35, 0, 0, 0, 0],     // Tigerseye
+      [2771, 65, 4, 8, 0, 0, 0],      // Tin Ore
+      [2836, 65, 2, 4, 0, 0, 0],      // Coarse Stone
+      [2775, 75, 0.3, 1.5, 0.3, 0, 0],   // Silver Ore
+      [1210, 65, 0, 0.3, 0, 0, 0],    // Shadowgem
+      [1206, 65, 0, 0.2, 0, 0, 0],    // Moss Agate
+      [1705, 65, 0, 0.25, 0.2, 0, 0], // Lesser Moonstone
+      [2772, 125, 0, 3, 8, 1, 0],     // Iron Ore
+      [2838, 125, 0, 1.5, 4, 0.5, 0], // Heavy Stone
+      [2776, 155, 0, 0, 1.2, 0.3, 0], // Gold Ore
+      [3864, 125, 0, 0, 0.25, 0.2, 0], // Citrine
+      [1529, 125, 0, 0, 0.25, 0, 0],  // Jade
+      [3858, 175, 0, 0, 3, 8, 2],     // Mithril Ore
+      [7912, 175, 0, 0, 1.5, 4, 1],   // Solid Stone
+      [7911, 230, 0, 0, 0, 1, 0.8],   // Truesilver Ore
+      [7909, 175, 0, 0, 0, 0.25, 0],  // Aquamarine
+      [7910, 175, 0, 0, 0, 0.2, 0.2], // Star Ruby
+      [10620, 230, 0, 0, 0, 1.5, 10], // Thorium Ore
+      [12365, 230, 0, 0, 0, 0.8, 4],  // Dense Stone
+      [11370, 230, 0, 0, 0, 0, 0.5],  // Dark Iron Ore
+      [12363, 230, 0, 0, 0, 0, 0.2],  // Arcane Crystal
+      [12364, 230, 0, 0, 0, 0, 0.08], // Huge Emerald
+      [12800, 230, 0, 0, 0, 0, 0.08], // Azerothian Diamond
+      [12799, 230, 0, 0, 0, 0, 0.08], // Large Opal
+      [12361, 230, 0, 0, 0, 0, 0.08]  // Blue Sapphire
+    ] },
+    { key: "skin", name: "Skinning", icon: "yrke-skinning", a: ["ga_kills", 60], b: ["ga_per_kill", 1.1], crafts: [165], rows: [
+      [2934, 1, 4, 1, 0, 0, 0],       // Ruined Leather Scraps
+      [2318, 1, 10, 3, 0, 0, 0],      // Light Leather
+      [783, 1, 1, 0.3, 0, 0, 0],      // Light Hide
+      [6470, 1, 1, 0, 0, 0, 0],       // Deviate Scale (Wailing Caverns)
+      [2319, 100, 1, 10, 3, 0, 0],    // Medium Leather
+      [4232, 100, 0, 1, 0.3, 0, 0],   // Medium Hide
+      [4461, 100, 0, 1, 0.5, 0, 0],   // Raptor Hide
+      [8165, 100, 0, 0.3, 0, 0, 0],   // Worn Dragonscale (Wetlands)
+      [5784, 125, 0, 0.3, 0.3, 0, 0], // Slimy Murloc Scale
+      [4234, 150, 0, 1, 10, 3, 0],    // Heavy Leather
+      [4235, 150, 0, 0, 1, 0.3, 0],   // Heavy Hide
+      [15412, 175, 0, 0, 0.4, 0.2, 0],   // Green Dragonscale (Swamp of Sorrows)
+      [7428, 150, 0, 0, 0.3, 0, 0],   // Shadowcat Hide
+      [4304, 200, 0, 0, 1, 10, 3],    // Thick Leather
+      [8169, 200, 0, 0, 0, 1, 0.3],   // Thick Hide
+      [8167, 200, 0, 0, 0, 1.5, 0],   // Turtle Scale
+      [8154, 200, 0, 0, 0, 1, 0],     // Scorpid Scale
+      [5785, 200, 0, 0, 0, 0.3, 0],   // Thick Murloc Scale
+      [8170, 250, 0, 0, 0, 1, 10],    // Rugged Leather
+      [8171, 250, 0, 0, 0, 0, 1],     // Rugged Hide
+      [15408, 250, 0, 0, 0, 0, 0.8],  // Heavy Scorpid Scale
+      [15417, 250, 0, 0, 0, 0, 0.5],  // Devilsaur Leather (Un'Goro)
+      [15419, 250, 0, 0, 0, 0, 0.3],  // Warbear Leather
+      [15422, 250, 0, 0, 0, 0, 0.3],  // Frostsaber Leather
+      [15423, 250, 0, 0, 0, 0, 0.3],  // Chimera Leather
+      [8368, 250, 0, 0, 0, 0, 0.2],   // Thick Wolfhide
+      [15416, 275, 0, 0, 0, 0, 0.15]  // Black Dragonscale
+    ] },
+    // Disenchant: skill = vad som krävs för att disenchanta gröna saker i bandet (itemlevel), andel = material per grön sak.
+    { key: "ench", name: "Enchanting", de: true, icon: "yrke-enchanting", a: ["ga_greens", 4], b: ["ga_per_green", 1.85], crafts: [333], rows: [
+      [10940, 1, 1.6, 0, 0, 0, 0],    // Strange Dust
+      [10938, 1, 0.3, 0, 0, 0, 0],    // Lesser Magic Essence
+      [10939, 1, 0.15, 0, 0, 0, 0],   // Greater Magic Essence
+      [10978, 1, 0.05, 0.03, 0, 0, 0],   // Small Glimmering Shard
+      [11083, 50, 0, 1.6, 0, 0, 0],   // Soul Dust
+      [10998, 50, 0, 0.3, 0, 0, 0],   // Lesser Astral Essence
+      [11082, 50, 0, 0.15, 0, 0, 0],  // Greater Astral Essence
+      [11084, 50, 0, 0.05, 0, 0, 0],  // Large Glimmering Shard
+      [11137, 100, 0, 0, 1.6, 0, 0],  // Vision Dust
+      [11134, 100, 0, 0, 0.3, 0, 0],  // Lesser Mystic Essence
+      [11135, 100, 0, 0, 0.15, 0, 0], // Greater Mystic Essence
+      [11138, 100, 0, 0, 0.03, 0, 0], // Small Glowing Shard
+      [11139, 100, 0, 0, 0.03, 0, 0], // Large Glowing Shard
+      [11176, 150, 0, 0, 0, 1.6, 0],  // Dream Dust
+      [11174, 150, 0, 0, 0, 0.3, 0],  // Lesser Nether Essence
+      [11175, 150, 0, 0, 0, 0.15, 0], // Greater Nether Essence
+      [11177, 150, 0, 0, 0, 0.03, 0], // Small Radiant Shard
+      [11178, 150, 0, 0, 0, 0.03, 0], // Large Radiant Shard
+      [16204, 200, 0, 0, 0, 0, 1.6],  // Illusion Dust
+      [16202, 200, 0, 0, 0, 0, 0.3],  // Lesser Eternal Essence
+      [16203, 200, 0, 0, 0, 0, 0.15], // Greater Eternal Essence
+      [14343, 200, 0, 0, 0, 0, 0.03], // Small Brilliant Shard
+      [14344, 200, 0, 0, 0, 0, 0.03]  // Large Brilliant Shard
+    ] }
+  ];
+  var GA_KEY = "whippit-ah-gather", GA_AKEY = "whippit-ah-gather-pace";
+  var gaSel = -1;   // -1 = vanliga recept, annars index i GATHER
+  var gaBand = (function () { try { var o = JSON.parse(localStorage.getItem(GA_KEY) || "{}"); return o && o.b >= 0 && o.b < 5 ? +o.b : 0; } catch (e) { return 0; } })();
+  var gaAs = (function () { try { var o = JSON.parse(localStorage.getItem(GA_AKEY) || "{}"); return o && typeof o === "object" ? o : {}; } catch (e) { return {}; } })();
+  function gaSave() { try { localStorage.setItem(GA_AKEY, JSON.stringify(gaAs)); } catch (e) { /* gäller tills sidan stängs */ } }
+  function gaVal(g, which) { var o = gaAs[g.key], v = o ? +o[which] : 0; return v > 0 && v < 10000 ? v : (which === "a" ? g.a[1] : g.b[1]); }
+  function gaMoney(c) { var g = c / 1e4; return c <= 0 ? "–" : g >= 10 ? Math.round(g) + " g" : g >= 1 ? g.toFixed(1).replace(/\.0$/, "") + " g" : Math.round(c / 100) + " s"; }
+  function gaNum(x) { return x >= 10 ? num(x) : x >= 1 ? x.toFixed(1).replace(/\.0$/, "") : x.toFixed(2); }
+  function gaCalc(g, band) {
+    var tot = 0, rows = [], miss = 0, sum = 0, per = gaVal(g, "a") * gaVal(g, "b");
+    g.rows.forEach(function (x) { if (x[2 + band] > 0) tot += x[2 + band]; });
+    g.rows.forEach(function (x) {
+      var s = x[2 + band];
+      if (!(s > 0) || !tot) return;
+      var r = byId[x[0]], it = RECEPT && RECEPT.items[x[0]], price = r && r.min > 0 ? r.min : 0, units = per * s / tot;
+      if (!price) miss++;
+      var name = r && r.name ? r.name : it ? it[0] : "Item " + x[0];
+      rows.push({ id: x[0], r: r, name: name, lower: name.toLowerCase(), q: r ? r.q : it ? it[1] : -1, skill: x[1], share: s / tot, units: units, min: price, gph: units * price * 0.95, day: r && r.day ? r.day : 0 });
+    });
+    rows.forEach(function (x) { sum += x.gph; });
+    return { rows: rows, gph: sum, units: per, miss: miss };
+  }
+  function gaSet(key, band) {   // ur länken #gather=herb&band=2
+    gaSel = -1;
+    GATHER.forEach(function (g, i) { if (g.key === key) gaSel = i; });
+    var b = +band - 1;
+    if (b >= 0 && b < GA_BANDS.length) gaBand = b;
+    if (gaSel >= 0) { catSel = -1; subSel = -1; sub2Sel = -1; sortKey = "gph"; sortDir = -1; }
+  }
+  function gaHash() { return "#gather=" + GATHER[gaSel].key + "&band=" + (gaBand + 1) + (house !== 113 ? "&m=" + house : ""); }
+  function gaPick(i, band) {
+    if (band < 0 && gaSel === i) {   // klick på det valda igen: hopfällt, tillbaka till recepten
+      gaSel = -1; sortKey = "profit"; sortDir = -1;
+      drawCats(); refresh(); toTop();
+      if (view[0]) selectRecipe(view[0].rid, false);
+      setHash("#tab=cr" + (house !== 113 ? "&m=" + house : ""));
+      return;
+    }
+    gaSel = i; if (band >= 0) gaBand = band;
+    catSel = -1; subSel = -1; sub2Sel = -1; sortKey = "gph"; sortDir = -1;
+    try { localStorage.setItem(GA_KEY, JSON.stringify({ g: GATHER[i].key, b: gaBand })); } catch (e) { /* gäller tills sidan stängs */ }
+    drawCats(); refresh(); toTop(); gaDetail(); showTab("item");
+    setHash(gaHash());
+  }
+  function gaCatsHtml() {   // spaltens rubrik Gold per hour, de fyra samlaryrkena med bästa band, banden under det valda
+    var h = '<div class="cat hd gahd">' + t("ga_h") + "</div>";
+    GATHER.forEach(function (g, i) {
+      var best = 0, per = GA_BANDS.map(function (b, k) { var v = gaCalc(g, k).gph; if (v > best) best = v; return v; });
+      var ic = ASSET_BASE ? '<img class="ci" src="' + ASSET_BASE + "icons/" + g.icon + '.jpg" alt="">' : "";
+      h += '<button class="cat" type="button" data-ga="' + i + '" aria-pressed="' + (gaSel === i) + '" title="' + esc(g.name) + (g.de ? " · " + t("ga_de") : "") + '">' + ic + '<em class="nm">' + esc(g.name) + (g.de ? ' <span class="dim">' + t("ga_de") + "</span>" : "") + "</em><span>" + gaMoney(best) + "/h</span></button>";
+      if (gaSel !== i) return;
+      GA_BANDS.forEach(function (b, k) {
+        h += '<button class="cat sub" type="button" data-ga="' + i + '" data-gab="' + k + '" aria-pressed="' + (gaBand === k) + '" title="' + esc(t("ga_skill", GA_SKILL[k][0], GA_SKILL[k][1])) + '">' + t("ga_band", b[0], b[1]) + "<span>" + gaMoney(per[k]) + "/h</span></button>";
+      });
+    });
+    return h;
+  }
+  function gaRefresh(q) {
+    var c = gaCalc(GATHER[gaSel], gaBand), ck = sortKey, cd = sortDir;
+    view = c.rows.filter(function (r) { return !q || r.lower.indexOf(q) >= 0; });
+    view.sort(function (a, b) {
+      if (ck === "name") return cd * a.name.localeCompare(b.name);
+      var av = a[ck] || 0, bv = b[ck] || 0;
+      return cd * (av - bv) || b.gph - a.gph || a.id - b.id;
+    });
+    shown = Math.min(PAGE, view.length);
+  }
+  function gaRow(r) {
+    var name = (r.r ? iconHtml(r.r) : "") + "<span" + (r.r ? ' data-tip="' + r.id + '"' : "") + ' class="' + qcls(r.q) + '">' + esc(r.name) + "</span>";
+    return '<tr tabindex="0" data-id="' + r.id + '"' + (r.id === selId ? ' aria-selected="true"' : "") + '><td class="fav">' + (r.r ? starHtml(r.id) : "") + '</td><td class="nm">' + name + "</td><td>" + r.skill +
+      "</td><td>" + (r.min ? money(r.min) : DASH) + '</td><td title="' + esc(t("ga_share_tip", Math.round(r.share * 100))) + '">' + gaNum(r.units) + '</td><td class="pct">' + (r.gph >= 50 ? '<span class="down2">' + money(r.gph) + "</span>" : DASH) +
+      '</td><td class="hide-s dcol">' + (r.day ? '<span class="est">' + num(r.day) + "</span>" : DASH) + "</td></tr>";
+  }
+  function gaRecipes(g, band) {   // de fem bästa recepten i parade tillverkningsyrken, i bandets skill, som säljs
+    var sk = GA_SKILL[band];
+    return crRows.filter(function (r) { return g.crafts.indexOf(r.prof) >= 0 && r.skill >= sk[0] && r.skill <= sk[1] && r.hasProfit && r.profit > 0 && r.day > 0; })
+      .sort(function (a, b) { return b.profit - a.profit || b.day - a.day; }).slice(0, 5);
+  }
+  function gaOutHtml(g) {   // allt som räknas om när takten ändras: nyckeltalen, staplarna och recepten
+    var c = gaCalc(g, gaBand), top = c.rows.slice().sort(function (a, b) { return b.gph - a.gph; }), max = top.length ? top[0].gph : 0;
+    var facts = '<dl class="facts"><div><dt title="' + esc(t("ga_gph_tip")) + '">' + t("ga_gph") + "</dt><dd>" + (c.gph >= 50 ? money(c.gph) : DASH) + "</dd></div>" +
+      '<div><dt title="' + esc(t("ga_units_tip")) + '">' + t("ga_units") + "</dt><dd>" + gaNum(c.units) + "</dd></div>" +
+      (top[0] && top[0].gph > 0 ? "<div><dt>" + t("ga_top") + '</dt><dd class="' + qcls(top[0].q) + '" style="font-size:15px">' + esc(top[0].name) + "</dd></div>" : "") + "</dl>";
+    var bars = top.filter(function (x) { return x.gph > 0; }).slice(0, 8).map(function (x) {
+      return '<div class="gabar"><span>' + (x.r ? iconHtml(x.r) : "") + '<a class="wh" href="#item=' + x.id + '" data-upgo="' + x.id + '"><span' + (x.r ? ' data-tip="' + x.id + '"' : "") + ' class="' + qcls(x.q) + '">' + esc(x.name) + "</span></a> <small>" + gaNum(x.units) + "/h</small></span>" +
+        '<div class="bar" title="' + esc(t("ga_share_tip", Math.round(x.share * 100))) + '"><i style="width:' + (max ? Math.max(2, Math.round(x.gph / max * 100)) : 0) + '%"></i></div><b>' + gaMoney(x.gph) + "/h</b></div>";
+    }).join("");
+    var rest = top.filter(function (x) { return x.gph > 0; }).length - 8;
+    var recs = gaRecipes(g, gaBand), recHtml;
+    if (recs.length) {
+      recHtml = '<div class="scroll"><table class="steps reag"><thead><tr><th style="text-align:left">' + t("col_recipe") + "</th><th>" + t("col_profit") + "</th><th>" + t("col_day") + "</th></tr></thead><tbody>" +
+        recs.map(function (r) {
+          return '<tr data-garec="' + r.rid + '" title="' + esc(t("ga_rec_tip")) + '"><td>' + recName(r) + (g.crafts.length > 1 ? ' <span class="dim">' + esc(RECEPT.profs[r.prof]) + "</span>" : "") + '</td><td class="pct">' + profitHtml(r) + '</td><td><span class="est">' + num(r.day) + "</span></td></tr>";
+        }).join("") + "</tbody></table></div>";
+    } else recHtml = '<div class="note">' + t("ga_rec_none") + "</div>";
+    return [facts + (c.miss ? '<div class="note">' + t("ga_missing", c.miss) + "</div>" : ""),
+      "<div><h3>" + t("ga_what") + '</h3><div class="gabars">' + bars + (rest > 0 ? '<div class="note">' + t("ga_more", rest) + "</div>" : "") + "</div></div>" +
+      "<div><h3>" + t("ga_recipes") + "</h3>" + recHtml + "</div>"];
+  }
+  function gaDetail() {
+    var g = GATHER[gaSel]; if (!g) return;
+    var b = GA_BANDS[gaBand], sk = GA_SKILL[gaBand];
+    var ic = ASSET_BASE ? '<img class="ic big" src="' + ASSET_BASE + "icons/" + g.icon + '.jpg" width="36" height="36" alt="">' : "";
+    var out = gaOutHtml(g);
+    var inp = function (which, step, max) { return '<span class="seg"><label class="lbl">' + t(g[which][0]) + ' <input data-gaas="' + which + '" type="number" min="' + step + '" max="' + max + '" step="' + step + '" inputmode="decimal" value="' + gaVal(g, which) + '"></label></span>'; };
+    $("detail").innerHTML = '<div class="strip">' + ic + '<h2>' + esc(g.name) + (g.de ? ' <small>' + t("ga_de") + "</small>" : "") + "</h2><small>" + t("ga_band", b[0], b[1]) + " · " + t("ga_skill", sk[0], sk[1]) + "</small></div>" +
+      '<div id="gaout1">' + out[0] + "</div>" +
+      '<div><h3>' + t("ga_assume") + '</h3><div class="gaas">' + inp("a", 1, 999) + inp("b", 0.1, 99) + '<button class="lnk" type="button" data-gareset="1">' + t("ga_reset") + "</button></div></div>" +
+      '<div id="gaout2">' + out[1] + "</div>" +
+      '<div class="note">' + t("ga_note") + "</div>";
+  }
+  function gaInput(el) {   // takten ändrad: räkna om rutan (inte fälten, så fokus hålls), spalten och listan
+    var g = GATHER[gaSel]; if (!g) return;
+    var v = parseFloat(el.value);
+    if (!(v > 0) || v >= 10000) return;
+    if (!gaAs[g.key]) gaAs[g.key] = {};
+    gaAs[g.key][el.dataset.gaas] = v;
+    gaSave();
+    var out = gaOutHtml(g), o1 = $("gaout1"), o2 = $("gaout2");
+    if (o1) o1.innerHTML = out[0];
+    if (o2) o2.innerHTML = out[1];
+    drawCats(); refresh();
+  }
+  function gaGoRecipe(rid) {   // recept i rutan: öppna det i yrkets vanliga lista
+    var r = null; crRows.forEach(function (x) { if (x.rid === rid) r = x; }); if (!r) return;
+    gaSel = -1; catSel = -1; profList.forEach(function (p, i) { if (p.id === r.prof) catSel = i; });
+    subSel = r.skill >= 1 ? tierOf(r.skill) + 1 : 0; sub2Sel = -1; sortKey = "profit"; sortDir = -1;
+    drawCats(); refresh(); selectRecipe(rid, true); showTab("item");
+  }
   // ---- Quests (Joakim 2026-11-16): alla Forever-quests från Blizzards API (quests.json, hamta-forever-quests.js), nivå
   // först (1–10 … 51–60, okänd nivå), sedan zon. Nivåerna kommer ur Classic-databasen; Forever-nya quests får zonens median
   // (visas med ~) eller hamnar under "Level unknown". Bara den valda marknadens fraktion och neutrala visas. En spelare
@@ -3548,7 +3818,7 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
       return;
     }
     if (mode === "cr") {
-      $("cats").innerHTML = "<h2>" + t("cr_h") + "</h2>" + profList.map(function (p, i) {
+      $("cats").innerHTML = "<h2>" + t("cr_h") + "</h2>" + gaCatsHtml() + '<div class="cat hd gahd">' + t("ga_crafting") + "</div>" + profList.map(function (p, i) {
         var pi = PROF_ICON[p.name], ic = "";
         if (ASSET_BASE && pi) ic = pi[0] ? '<img class="ci" src="' + ASSET_BASE + "icons/" + pi[0] + '.jpg" onerror="this.onerror=null;this.src=\x27' + ASSET_BASE + "icons/cat-" + pi[1] + '.jpg\x27" alt="">'
           : '<img class="ci" src="' + ASSET_BASE + "icons/cat-" + pi[1] + '.jpg" alt="">';
@@ -3649,7 +3919,7 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
     var hp0 = hashParams();
     // En länk bestämmer fliken (annars den som sparats): #quest, #dungeon, #player/#guild, #recipe, #item.
     if (hp0.tab === "lb") { hp0.top = lbGroup(arLb) ? arLb : "ilvl"; delete hp0.tab; }
-    var hm = /^(ah|tr|cr|ar|qu|dg|hu|co)$/.test(hp0.tab || "") ? hp0.tab : hp0.fx ? "fx" : hp0.de ? "de" : hp0.col ? "co" : hp0.beast ? "hu" : hp0.quest || hp0.npc ? "qu" : hp0.dungeon ? "dg" : hp0.player || hp0.guild || hp0.top ? "ar" : hp0.recipe ? "cr" : hp0.item ? "ah" : "";
+    var hm = /^(ah|tr|cr|ar|qu|dg|hu|co)$/.test(hp0.tab || "") ? hp0.tab : hp0.fx ? "fx" : hp0.de ? "de" : hp0.col ? "co" : hp0.beast ? "hu" : hp0.quest || hp0.npc ? "qu" : hp0.dungeon ? "dg" : hp0.player || hp0.guild || hp0.top ? "ar" : hp0.recipe || hp0.gather ? "cr" : hp0.item ? "ah" : "";
     var wantI = byId[+hp0.item];
     if (hm && !keep && mode !== hm && !(hm === "ah" && mode === "tr" && (!wantI || (!wantI.gear && wantI.qty >= TR_MIN)))) { if (fromNav) resetModeState(hm); mode = hm; drawCats(); refresh(); }   // trädet ritades för den sparade fliken
     // keep (ny scan eller annan marknad): lägesvyerna visar inte "Loading" och rullar inte upp, de ritar om listan (granskning 2026-11-18)
@@ -3670,10 +3940,11 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
       else if (arRecent[0]) arLoad(arRecent[0].kind, arRecent[0].slug); else arShow('<div class="hint">' + t("ar_hint") + "</div>", "");
       return;
     }
-    if (mode === "cr" || (!keep && hashParams().recipe)) {   // Crafting: recepten laddas först, sedan listan och rutan
+    if (mode === "cr" || (!keep && (hashParams().recipe || hashParams().gather))) {   // Crafting: recepten laddas först, sedan listan och rutan
       mode = "cr"; if (!keep) { sortKey = "profit"; sortDir = -1; } $("q").placeholder = t("search_rc");
       var wantR = +hashParams().recipe;
-      loadRecept().then(function () { buildCr(); if (mode !== "cr") return; drawCats(); refresh(); if (wantR) { selectRecipe(wantR, true); showTab("item"); } else if (keep && selRec) selectRecipe(selRec, false); else if (view[0]) selectRecipe(view[0].rid, false); })
+      var wantG = hashParams().gather;
+      loadRecept().then(function () { buildCr(); if (mode !== "cr") return; if (wantG) gaSet(wantG, hashParams().band); else if (!keep) gaSel = -1; drawCats(); refresh(); if (gaSel >= 0) { gaDetail(); if (wantG && !keep) showTab("item"); } else if (wantR) { selectRecipe(wantR, true); showTab("item"); } else if (keep && selRec) selectRecipe(selRec, false); else if (view[0]) selectRecipe(view[0].rid, false); })
         .catch(function () { if (mode === "cr") $("detail").innerHTML = '<div class="note">' + t("cr_fail") + "</div>"; });   // bytt flik under laddningen: rita inget (granskning 2026-11-18)
       return;
     }
@@ -3700,6 +3971,7 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
     if (mode === "de") { if (DEX) deRefresh(q); else { view = []; shown = 0; } draw(); trCounts(); return; }
     if (mode === "fx") { if (FX.ok) fxRefresh(q); else { view = []; shown = 0; } draw(); trCounts(); return; }
     if (mode === "cr") {
+      if (gaSel >= 0) { gaRefresh(q); draw(); return; }
       var pid = catSel >= 0 && profList[catSel] ? profList[catSel].id : 0;
       var tier = subSel >= 1 ? TIERS[subSel - 1] : null;
       view = crRows.filter(function (r) { return (!pid || r.prof === pid) && (!tier || (r.skill >= tier[0] && r.skill <= tier[1])) && (!q || r.lower.indexOf(q) >= 0); });
@@ -3914,6 +4186,7 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
     if (mode === "de") return deRow(r);
     if (mode === "fx") return fxRow(r);
     if (mode === "cr") {
+      if (gaSel >= 0) return gaRow(r);
       return '<tr tabindex="0" data-rid="' + r.rid + '"' + (r.rid === selRec ? ' aria-selected="true"' : "") + '><td class="fav"></td><td class="nm">' + recName(r) + "</td><td>" + (r.skill || DASH) +
         "</td><td>" + (r.cost ? money(r.cost) + (r.miss ? '<span class="dim" title="' + esc(t("missing_n", r.miss)) + '"> ?</span>' : "") : DASH) + "</td><td>" + (r.sell ? money(r.sell) : DASH) +
         '</td><td class="pct">' + profitHtml(r) + '</td><td class="hide-s dcol">' + (r.day ? '<span class="est">' + num(r.day) + "</span>" : DASH) + "</td></tr>";
@@ -3942,6 +4215,8 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
       ? [["name", "hu_col_name"], ["lvl", "col_lvl"], ["fam", "hu_col_fam", null, "kat hide-s"], ["role", "hu_col_role"], ["speed", "hu_col_speed", "hu_col_speed_tip"], ["zone", "hu_col_zone", null, "kat"]]
       : mode === "dg"
       ? [["name", "col_item"], ["ch", "col_drop", "col_drop_tip"], ["rl", "col_lvl", "col_lvl_tip"], ["min", "col_min", "col_min_tip"]]
+      : mode === "cr" && gaSel >= 0
+      ? [["name", "col_item"], ["skill", "col_skill", "ga_skill_tip"], ["min", "col_min", "col_min_tip"], ["units", "ga_col_units", "ga_units_tip"], ["gph", "ga_col_gph", "ga_gph_tip"], ["day", "col_day", "col_day_tip", "hide-s dcol"]]
       : mode === "cr"
       ? [["name", "col_recipe"], ["skill", "col_skill", "col_skill_tip"], ["cost", "col_cost", "col_cost_tip"], ["sell", "col_sell", "col_sell_tip"], ["profit", "col_profit", "col_profit_tip"], ["day", "col_day", "col_day_tip", "hide-s dcol"]]
       : mode === "tr"
@@ -4011,11 +4286,11 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
     drawn = { view: view, mode: mode, n: shown, sk: sortKey, sd: sortDir };
     $("empty").hidden = view.length > 0;
     document.querySelector(".left .scroll").classList.toggle("noitems", view.length === 0);
-    $("empty").textContent = t(mode === "fx" ? "fx_empty" : mode === "de" ? "de_empty" : mode === "co" ? "co_empty" : mode === "hu" ? "hu_empty" : mode === "cr" ? "cr_empty" : mode === "qu" ? "qu_empty" : mode === "dg" ? (query || dgSel >= 0 ? "dg_empty" : "dg_pick") : "empty");
+    $("empty").textContent = t(mode === "fx" ? "fx_empty" : mode === "de" ? "de_empty" : mode === "co" ? "co_empty" : mode === "hu" ? "hu_empty" : mode === "cr" ? (gaSel >= 0 ? "ga_empty" : "cr_empty") : mode === "qu" ? "qu_empty" : mode === "dg" ? (query || dgSel >= 0 ? "dg_empty" : "dg_pick") : "empty");
     drawMoreBtn();
-    $("count").textContent = t(mode === "fx" ? "fx_count" : mode === "de" ? "de_count" : mode === "co" ? "co_count" : mode === "hu" ? "hu_count" : mode === "cr" ? "cr_count" : mode === "qu" ? "qu_count" : mode === "dg" ? "dg_count" : "count", num(mode === "dg" ? view.filter(function (x) { return !x.hd && !x.sub; }).length : view.length));
+    $("count").textContent = t(mode === "fx" ? "fx_count" : mode === "de" ? "de_count" : mode === "co" ? "co_count" : mode === "hu" ? "hu_count" : mode === "cr" ? (gaSel >= 0 ? "ga_count" : "cr_count") : mode === "qu" ? "qu_count" : mode === "dg" ? "dg_count" : "count", num(mode === "dg" ? view.filter(function (x) { return !x.hd && !x.sub; }).length : view.length));
     $("head").innerHTML = mode === "ar" ? "" : headHtml();
-    $("list").className = mode === "tr" || mode === "cr" || mode === "qu" || mode === "dg" || mode === "hu" || mode === "co" || mode === "de" || mode === "fx" ? mode : "";
+    $("list").className = mode === "tr" || mode === "cr" || mode === "qu" || mode === "dg" || mode === "hu" || mode === "co" || mode === "de" || mode === "fx" ? mode + (mode === "cr" && gaSel >= 0 ? " ga" : "") : "";
     var ar = mode === "ar";
     $("armory").hidden = !ar;
     document.querySelector(".left .scroll").hidden = ar;
@@ -4554,6 +4829,11 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
     if (gb) { e.preventDefault(); huSel = +gb.dataset.gobeast; if (huMapOn) { huMapOn = false; if (mode === "hu") drawCats(); } if (mode !== "hu") setMode("hu"); else huDetail(huSel); showTab("item"); return; }
     var dgb = e.target.closest("[data-dg]");
     if (dgb) { dgSel = +dgb.dataset.dg; query = ""; $("q").value = ""; drawCats(); refresh(); toTop(); dgDetail(); showTab("item"); return; }
+    var gab = e.target.closest("[data-ga]");
+    if (gab && mode === "cr") { gaPick(+gab.dataset.ga, gab.hasAttribute("data-gab") ? +gab.dataset.gab : -1); return; }
+    var garc = e.target.closest("[data-garec]");
+    if (garc && mode === "cr") { e.preventDefault(); gaGoRecipe(+garc.dataset.garec); return; }
+    if (e.target.closest("[data-gareset]") && mode === "cr" && gaSel >= 0) { delete gaAs[GATHER[gaSel].key]; gaSave(); drawCats(); refresh(); gaDetail(); return; }
     if (cb && cb.hasAttribute("data-ar")) { showTab("item"); arLoad(cb.dataset.ar, cb.dataset.slug); return; }   // Friends/Recent i Armory
     if (cb && cb.hasAttribute("data-arsec")) { arSec[cb.dataset.arsec] = !arSec[cb.dataset.arsec]; try { localStorage.setItem(SEC_KEY, JSON.stringify(arSec)); } catch (e2) {} drawCats(); return; }
     if (cb && !(mode === "ar" && arLb)) {   // topplistornas undermeny (data-lbpve m.fl.) hanteras längre ner
@@ -4564,7 +4844,9 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
       if (same && cb.classList.contains("cat")) {   // klick på den valda igen: ett steg upp (toppen: allt)
         if (nu >= 0) { sub2Sel = -1; } else if (ns >= 0) { subSel = -1; sub2Sel = -1; } else { catSel = -1; subSel = -1; sub2Sel = -1; }
       } else { catSel = nc; subSel = ns; sub2Sel = nu; }
+      if (mode === "cr" && gaSel >= 0) { gaSel = -1; sortKey = "profit"; sortDir = -1; }   // ett vanligt yrke valt: räknaren stängs
       drawCats(); refresh();
+      if (mode === "cr" && !selRec && view[0]) selectRecipe(view[0].rid, false);
       var top = document.querySelector('#cats .cat[data-cat="' + catSel + '"]:not(.sub):not(.sub2)');
       if (top && ns < 0 && !same) { var cbx = $("cats"); if (window.matchMedia("(max-width: 1100px)").matches) top.scrollIntoView({ block: "nearest", inline: "start" }); else cbx.scrollTop = Math.max(0, top.offsetTop - 6); }
       var lb = document.querySelector(".left .scroll");
@@ -5952,7 +6234,7 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
     }).catch(function () { if (mode === "dg") $("detail").innerHTML = '<div class="note">' + t("qu_fail") + "</div>"; });
   }
   function resetModeState(m) {   // ny flik: egen sortering, inga kvarglömda filter från förra fliken
-    if (m === "tr") { trSort(trView); } else if (m === "cr") { sortKey = "profit"; sortDir = -1; } else if (m === "qu") { sortKey = "lvl"; sortDir = 1; } else { sortKey = "day"; sortDir = -1; }
+    if (m === "tr") { trSort(trView); } else if (m === "cr") { sortKey = "profit"; sortDir = -1; gaSel = -1; } else if (m === "qu") { sortKey = "lvl"; sortDir = 1; } else { sortKey = "day"; sortDir = -1; }
     openId = null;
     catSel = -1; subSel = -1; sub2Sel = -1;   // kategorierna och yrkena är olika listor
     qFlush(); query = ""; $("q").value = "";   // väntande sökning från förra fliken stryks (granskning 2026-11-18)
@@ -6000,6 +6282,7 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
     if ((x = el.closest("tr[data-fx]"))) return "#fx=" + x.dataset.fx + (x.dataset.fxg ? "&g=" + x.dataset.fxg : "") + mk;
     if ((x = el.closest("tr[data-de]"))) return "#de=" + x.dataset.de + mk;
     if ((x = el.closest("tr[data-qid]"))) return "#quest=" + x.dataset.qid;
+    if ((x = el.closest("[data-ga]")) && GATHER[+x.dataset.ga]) return "#gather=" + GATHER[+x.dataset.ga].key + "&band=" + ((x.hasAttribute("data-gab") ? +x.dataset.gab : gaBand) + 1) + mk;
     if ((x = el.closest("tr[data-rid]"))) return "#recipe=" + x.dataset.rid + mk;
     if ((x = el.closest("tr[data-id]"))) return "#item=" + x.dataset.id + mk;
     if ((x = el.closest("button[data-ar][data-slug]"))) return (x.dataset.ar === "guild" ? "#guild=" : "#player=") + x.dataset.slug;
@@ -6063,6 +6346,7 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
   document.addEventListener("click", function (e) { if (!$("mktPop").hidden && !e.target.closest("#mkt")) mktOpen(false); });
   // Jämförelsens ruta: Enter eller knappen jämför med namnet i rutan.
   document.addEventListener("input", function (e) {
+    if (e.target && e.target.hasAttribute && e.target.hasAttribute("data-gaas")) { gaInput(e.target); return; }
     if (e.target && e.target.id === "deskill") { var dv = parseInt(e.target.value, 10); deSkill = dv >= 1 && dv <= 300 ? dv : 0; try { localStorage.setItem("whippit-ah-deskill", String(deSkill)); } catch (e3) {} refresh(); }
     if (e.target && e.target.id === "hulvl") { var v = parseInt(e.target.value, 10); huLvl = v >= 1 && v <= 60 ? v : 0; try { localStorage.setItem(HU_LKEY, String(huLvl)); } catch (e2) {} if (sortKey === "lvl") sortDir = huLvl ? -1 : 1; refresh(); }
   });
