@@ -218,6 +218,8 @@ body[data-mode=hu] .facts dd { font-size: 15px; }
 .coitem { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 /* Topplistor (Joakim 2026-11-17). */
 .lbwrap { display: grid; gap: 8px; padding: 4px 2px; } .lbhead h2 { margin: 0; color: var(--gold); } .lbhead small { color: var(--grey); }
+.lbhead { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; } .lbhead > div:first-child { display: grid; } .lbhead .lbfil { margin-left: auto; }
+.fe { width: 16px; height: 16px; vertical-align: -3px; margin-left: 3px; object-fit: contain; } .huchip.fab { padding-left: 6px; padding-right: 6px; } .huchip.fab .fe { width: 20px; height: 20px; margin: -3px 0; vertical-align: -5px; }
 .lbt { width: 100%; border-collapse: collapse; font-size: 13.5px; } .lbt th { text-align: left; color: var(--gold); font-size: 11.5px; text-transform: uppercase; letter-spacing: .04em; padding: 6px 8px; border-bottom: 1px solid var(--line); }
 .lbt td { padding: 5px 8px; border-bottom: 1px solid rgba(255, 255, 255, .04); white-space: nowrap; } .lbt td.nm { overflow: hidden; text-overflow: ellipsis; max-width: 0; width: 45%; } .lbt td.nm a { text-decoration: none; } .lbt td.nm a:hover { text-decoration: underline; }
 .lbt .ri { width: 18px; height: 18px; vertical-align: -4px; margin-right: 6px; border-radius: 3px; } .lbn { color: var(--grey); width: 28px; } .lbn.top1 { color: #ffd100; font-weight: 700; } .lbn.top2 { color: #d6dee8; font-weight: 700; } .lbn.top3 { color: #e0a060; font-weight: 700; }
@@ -1701,6 +1703,9 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
     var first = words.length === 2 ? "char" : "guild", second = first === "char" ? "guild" : "char";
     arLoad(first, slug, function () { arLoad(second, slug, function () { arShow('<div class="hint">' + t("ar_notfound") + "</div>", ""); }); });
   }
+  // Fraktionsemblem i listrader (Joakim 2026-11-19: hellre emblem än "H"/"A"); tom sträng utan bilder → fallback-bokstav.
+  function faIcon(fa) { if (!ASSET_BASE || !fa) return ""; var n = fa === "ALLIANCE" ? "alliance" : "horde"; return '<img class="fe" src="' + ASSET_BASE + "icons/faction-" + n + '.png" alt="' + (fa === "ALLIANCE" ? "Alliance" : "Horde") + '" title="' + (fa === "ALLIANCE" ? "Alliance" : "Horde") + '">'; }
+  function faMark(fa) { return faIcon(fa) || '<small class="dim">' + (fa === "ALLIANCE" ? "A" : "H") + "</small>"; }
   function arShow(mid, right) { $("armory").innerHTML = mid; if (right != null) $("detail").innerHTML = right; }
   // /char/ delas av arLoad, arCompare och setQuPlayer (granskning 2026-11-18): samma spelare inom 10 minuter hämtas inte
   // igen (bakåt/framåt, jämförelse, Quests). Fel (även 404) sparas inte.
@@ -5038,16 +5043,18 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
     if (rs) { var cnt = {}; KAT.players.forEach(function (p) { if (p.g && p.rs) { var c = cnt[p.g] = cnt[p.g] || { pvp: 0, normal: 0 }; c[p.rs]++; } }); Object.keys(cnt).forEach(function (g) { gRs[g] = cnt[g].pvp >= cnt[g].normal ? "pvp" : "normal"; }); }
     var faOk = function (x) { return (!lbFa || x.fa === lbFa) && (!rs || (x.rs || gRs[x.s] || gRs[x.g] || "") === rs); };
     // Kategoriraden togs bort (Joakim 2026-11-19: menyn till vänster räcker, raden blev kludd); rubriken visar vald topplista i stället.
-    var fa = function (k, lbl) { return '<button type="button" class="huchip' + (lbFa === k ? " on" : "") + '" data-lbfa="' + k + '" aria-pressed="' + (lbFa === k) + '">' + lbl + "</button>"; };
-    var rsb = function (k, lbl) { var on = (lbRs || "") === k; return '<button type="button" class="huchip' + (on ? " on" : "") + '" data-lbrs="' + k + '" aria-pressed="' + on + '">' + lbl + "</button>"; };
+    // Filterraden bantad (Joakim 2026-11-19): ligger på rubrikraden, fraktion som emblem, inget "(your AH)" i knappen.
+    var fa = function (k, lbl) { return '<button type="button" class="huchip' + (lbFa === k ? " on" : "") + (k ? " fab" : "") + '" data-lbfa="' + k + '" aria-pressed="' + (lbFa === k) + '" title="' + (k ? lbl : "") + '">' + (k ? faIcon(k) || lbl : lbl) + "</button>"; };
+    var rsb = function (k, lbl, tip) { var on = (lbRs || "") === k; return '<button type="button" class="huchip' + (on ? " on" : "") + '" data-lbrs="' + k + '" aria-pressed="' + on + '" title="' + (tip || "") + '">' + lbl + "</button>"; };
     var np = KAT.players.filter(faOk).length, ng = KAT.guilds.filter(faOk).length;
     var rsOk = function (x) { return !rs || (x.rs || gRs[x.g] || "") === rs; }, nh = 0, na = 0;
     KAT.players.forEach(function (p) { if (!rsOk(p)) return; if (p.fa === "HORDE") nh++; else if (p.fa === "ALLIANCE") na++; });
     var pa = nh + na ? na / (nh + na) * 100 : 0;
     var meter = nh + na ? '<div class="lbmeter" title="' + t("lb_meter_tip") + '"><span class="h">Horde <b>' + num(nh) + '</b></span><div class="lbbar"><i class="hb" style="width:' + (100 - pa).toFixed(1) + '%"></i><i class="ab" style="width:' + pa.toFixed(1) + '%"></i></div><span class="a"><b>' + num(na) + "</b> Alliance · " + (pa < 1 && pa > 0 ? pa.toFixed(1) : Math.round(pa)) + " %</span></div>" : "";
-    var h = '<div class="lbwrap"><div class="lbhead"><h2>' + t(def[3] === "s" ? "lb_server" : def[2]) + "</h2><small>" + t("lb_sub", num(np), num(ng), when2(KAT.t)) + "</small></div>" + meter +
-      '<div class="huchips">' + fa("", t("lb_both")) + fa("HORDE", "Horde") + fa("ALLIANCE", "Alliance") + '<span class="lbsep"></span>' +
-      rsb("", t("lb_rs_auto", houseParts(house)[0] === "pvp" ? "PvP" : "Normal")) + rsb(houseParts(house)[0] === "pvp" ? "normal" : "pvp", houseParts(house)[0] === "pvp" ? "Normal" : "PvP") + rsb("all", t("lb_rs_all")) + "</div>" +
+    var ownRs = houseParts(house)[0] === "pvp" ? "PvP" : "Normal", otherRs = ownRs === "PvP" ? "Normal" : "PvP";
+    var h = '<div class="lbwrap"><div class="lbhead"><div><h2>' + t(def[3] === "s" ? "lb_server" : def[2]) + "</h2><small>" + t("lb_sub", num(np), num(ng), when2(KAT.t)) + "</small></div>" +
+      '<div class="huchips lbfil">' + fa("", t("lb_both")) + fa("HORDE", "Horde") + fa("ALLIANCE", "Alliance") + '<span class="lbsep"></span>' +
+      rsb("", ownRs, t("lb_rs_auto", ownRs)) + rsb(otherRs.toLowerCase(), otherRs) + rsb("all", t("lb_rs_all")) + "</div></div>" + meter +
       (KAT.players.some(function (p) { return !p.rs; }) && rs ? '<div class="note">' + t("lb_rs_partial") + "</div>" : "");
     if (def[0] === "cls") {
       h += ekoHtml();
@@ -5160,7 +5167,7 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
       fkKeys.forEach(function (b) { var v = FK[b]; if (!v.g) return; var g = gc[v.g] = gc[v.g] || { s: v.g, n: v.gn || v.g, fa: v.fa, c: 0, first: v.t }; g.c++; if (v.t < g.first) g.first = v.t; });
       var gl2 = Object.keys(gc).map(function (k) { return gc[k]; }).sort(function (a, b) { return b.c - a.c || a.first - b.first; });
       if (gl2.length) h += "<h3>" + t("lb_fk_top") + '</h3><table class="lbt"><tbody>' + gl2.slice(0, 10).map(function (g, i) {
-        return '<tr><td class="lbn' + (i < 3 ? " top" + (i + 1) : "") + '">' + (i + 1) + '</td><td class="nm"><a href="#guild=' + esc(g.s) + '" data-ar="guild" data-slug="' + esc(g.s) + '">&lt;' + esc(g.n) + '&gt;</a> <small class="dim">' + (g.fa === "ALLIANCE" ? "A" : "H") + "</small></td><td><b>" + t("lb_fk_n", g.c) + "</b></td></tr>";
+        return '<tr><td class="lbn' + (i < 3 ? " top" + (i + 1) : "") + '">' + (i + 1) + '</td><td class="nm"><a href="#guild=' + esc(g.s) + '" data-ar="guild" data-slug="' + esc(g.s) + '">&lt;' + esc(g.n) + '&gt;</a> ' + faMark(g.fa) + "</td><td><b>" + t("lb_fk_n", g.c) + "</b></td></tr>";
       }).join("") + "</tbody></table>";
       var seen = {};
       LB_BOSSES.forEach(function (r) {
@@ -5193,7 +5200,7 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
       var gp = Object.keys(gP).map(function (k) { return gP[k]; }).filter(function (g) { return g.r.some(function (e) { return e[0] || e[1]; }); }).sort(function (a, b) { return score(b) - score(a) || b.n60 - a.n60; }).slice(0, 50);
       h += '<table class="lbt"><thead><tr><th>#</th><th class="nm">' + t("lb_guild") + "</th>" + cols.map(function (c) { return "<th>" + c[1] + "</th>"; }).join("") + '<th class="hide-s">' + t("lb_att_n") + "</th></tr></thead><tbody>" +
         gp.map(function (g, i) {
-          return '<tr><td class="lbn' + (i < 3 ? " top" + (i + 1) : "") + '">' + (i + 1) + '</td><td class="nm"><a href="#guild=' + esc(g.s) + '" data-ar="guild" data-slug="' + esc(g.s) + '">&lt;' + esc(g.n) + '&gt;</a> <small class="dim">' + (g.fa === "ALLIANCE" ? "A" : "H") + "</small></td>" +
+          return '<tr><td class="lbn' + (i < 3 ? " top" + (i + 1) : "") + '">' + (i + 1) + '</td><td class="nm"><a href="#guild=' + esc(g.s) + '" data-ar="guild" data-slug="' + esc(g.s) + '">&lt;' + esc(g.n) + '&gt;</a> ' + faMark(g.fa) + "</td>" +
             g.r.map(function (e, k) { var c = cols[k]; if (lbProg === "raids") return "<td>" + (e[0] ? "<b>" + e[0] + "</b>/" + c[2] + (e[1] ? ' <small class="pos">' + e[1] + "</small>" : "") : '<span class="dim">–</span>') + "</td>"; return "<td>" + (e[1] ? "<b>" + e[1] + "</b>" : '<span class="dim">–</span>') + "</td>"; }).join("") +
             '<td class="hide-s">' + g.n60 + "</td></tr>";
         }).join("") + "</tbody></table>" + (gp.length ? "" : '<div class="note">' + t("lb_prog_none") + "</div>") + '<div class="note">' + t(lbProg === "raids" ? "lb_prog_note" : "lb_prog_dg_note") + "</div>";
@@ -5221,7 +5228,7 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
       h += '<table class="lbt"><thead><tr><th>#</th><th class="nm">' + t("lb_guild") + "</th><th>MC</th><th>Ony</th><th>BWL</th><th>" + t("lb_att_all") + '</th><th class="hide-s">' + t("lb_att_n") + "</th></tr></thead><tbody>" +
         ga.map(function (g, i) {
           var c = function (v) { return "<td>" + (v ? "<b>" + v + "</b>" : '<span class="dim">0</span>') + "</td>"; };
-          return '<tr><td class="lbn' + (i < 3 ? " top" + (i + 1) : "") + '">' + (i + 1) + '</td><td class="nm"><a href="#guild=' + esc(g.s) + '" data-ar="guild" data-slug="' + esc(g.s) + '">&lt;' + esc(g.n) + '&gt;</a> <small class="dim">' + (g.fa === "ALLIANCE" ? "A" : "H") + "</small></td>" + c(g.mc) + c(g.ony) + c(g.bwl) + c(g.all) + '<td class="hide-s">' + g.n60 + "</td></tr>";
+          return '<tr><td class="lbn' + (i < 3 ? " top" + (i + 1) : "") + '">' + (i + 1) + '</td><td class="nm"><a href="#guild=' + esc(g.s) + '" data-ar="guild" data-slug="' + esc(g.s) + '">&lt;' + esc(g.n) + '&gt;</a> ' + faMark(g.fa) + "</td>" + c(g.mc) + c(g.ony) + c(g.bwl) + c(g.all) + '<td class="hide-s">' + g.n60 + "</td></tr>";
         }).join("") + "</tbody></table>" + (ga.length ? "" : '<div class="note">' + t("lb_att_none") + "</div>") + '<div class="note">' + t("lb_att_note") + "</div>";
     } else if (def[0] === "rep") {
       var rchip = function (k, lbl) { return '<button type="button" class="huchip' + (lbRep === k ? " on" : "") + '" data-lbrep="' + k + '" aria-pressed="' + (lbRep === k) + '">' + lbl + "</button>"; };
@@ -5240,7 +5247,7 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
       var gl = KAT.guilds.filter(faOk).sort(function (a, b) { return (b.n60 - a.n60) || (b.il60 - a.il60) || (b.avg - a.avg); }).slice(0, 50);
       h += '<table class="lbt"><thead><tr><th>#</th><th class="nm">' + t("lb_guild") + "</th><th>" + t("lb_n60") + '</th><th class="hide-s">' + t("lb_il60") + "</th><th>" + t("lb_avg") + '</th><th class="hide-s">' + t("lb_members") + "</th></tr></thead><tbody>" +
         gl.map(function (g, i) {
-          return '<tr><td class="lbn">' + (i + 1) + '</td><td class="nm"><a href="#guild=' + esc(g.s) + '" data-ar="guild" data-slug="' + esc(g.s) + '">&lt;' + esc(g.name) + '&gt;</a> <small class="dim">' + (g.fa === "ALLIANCE" ? "A" : "H") + "</small></td><td><b>" + g.n60 + '</b></td><td class="hide-s">' + (g.il60 || "–") + "</td><td>" + g.avg + '</td><td class="hide-s">' + g.n + "</td></tr>";
+          return '<tr><td class="lbn">' + (i + 1) + '</td><td class="nm"><a href="#guild=' + esc(g.s) + '" data-ar="guild" data-slug="' + esc(g.s) + '">&lt;' + esc(g.name) + '&gt;</a> ' + faMark(g.fa) + "</td><td><b>" + g.n60 + '</b></td><td class="hide-s">' + (g.il60 || "–") + "</td><td>" + g.avg + '</td><td class="hide-s">' + g.n + "</td></tr>";
         }).join("") + "</tbody></table>";
     } else {
       var k = def[1];
