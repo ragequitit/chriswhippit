@@ -49,6 +49,14 @@ if (require.main === module) {
     const bad = PAGES.filter((p) => split(read(pageFile(p)), p.file).body !== body).map((p) => p.file);
     if (bad.length) { console.error('Stämmer inte med src/sida.html:', bad.join(', ')); process.exit(1); }
     console.log('alla', PAGES.length, 'sidor stämmer med src/sida.html');
+    // Vakt för ah/index.html (2026-11-19: fel fil kopierades in och sidan blev tom utan ikoner och data). Bara
+    // hemsida-varianten från ah-sida/build.js duger: ikoner och data hämtas från ragequitit.github.io, canonical hit.
+    const ah = read(path.join(__dirname, '..', 'ah', 'index.html'));
+    const krav = ['var DATA_URL = "https://ragequitit.github.io/ah/data.json"', 'var ICON_BASE = "https://ragequitit.github.io/ah/icons/"',
+      '<link rel="canonical" href="https://www.chriswhippit.com/ah/">'];
+    const saknas = krav.filter((k) => !ah.includes(k));
+    if (saknas.length) { console.error('ah/index.html är fel variant (kopiera ah-sida/hemsida/index.html, inte publik/index.html). Saknar:', saknas.join(' | ')); process.exit(1); }
+    console.log('ah/index.html är chriswhippit-varianten');
   } else {
     buildAll();
     console.log('byggde', PAGES.length, 'sidor från src/sida.html');
