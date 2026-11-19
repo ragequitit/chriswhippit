@@ -4,11 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="description" content="WoW Forever auction house prices, updated every hour: market price, listed, day trade and best time to buy and sell.">
+<link rel="canonical" href="https://www.chriswhippit.com/ah/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Auction House Forever">
 <meta property="og:title" content="Auction House Forever">
 <meta property="og:description" content="Live auction house prices for WoW Forever, updated every hour: market price, listed, day trade and the best time to buy and sell.">
-<meta property="og:url" content="https://ragequitit.github.io/ah/">
+<meta property="og:url" content="https://www.chriswhippit.com/ah/">
 <meta property="og:image" content="https://ragequitit.github.io/ah/assets/og.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -1093,7 +1094,7 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
   var BT_MIN = 3;   // bästa tid räknas som tydlig vid minst 3 % vinst efter AH:s andel och plus minst 6 av 10 dagar
   function btClear(r) { return !!(r.bt && r.bt[2] >= BT_MIN && r.bt[3] * 10 >= r.bt[4] * 6); }
   var byId = {}, lastUpdate = null;   // lastUpdate = { key, t } (översätts när den visas)
-  var ICON_BASE = "icons/";             // mappen med ikoner; tom = inga ikoner (Claude-sidan kan inte ladda bilder utifrån)
+  var ICON_BASE = "https://ragequitit.github.io/ah/icons/";             // mappen med ikoner; tom = inga ikoner (Claude-sidan kan inte ladda bilder utifrån)
   // Bilderna ur Joakims designpaket (publik/assets/): medaljong, sökikon, fraktionsmärken, kategoriikoner, panoraman.
   var ASSET_BASE = ICON_BASE ? ICON_BASE.replace(/icons\/$/, "assets/") : "";
   // Flikikonerna (Joakims fyra guldbilder 2026-11-16: våg, kurva, städ, hjälm) – mode-<läge>.png i assets/icons.
@@ -1165,7 +1166,7 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
   }
   var catSel = -1, subSel = -1, sub2Sel = -1;   // vald nivå 1/2/3 (-1 = ingen vald = alla), som AH:s kategorilista
   var catCount = [], subCount = [], sub2Count = [];
-  var DATA_URL = "data.json";   // priserna; på chriswhippit.com/ah byts den mot adressen på GitHub (build.js)
+  var DATA_URL = "https://ragequitit.github.io/ah/data.json";   // priserna; på chriswhippit.com/ah byts den mot adressen på GitHub (build.js)
   // Fyra marknader (Blizzards hus): data.json = EU PvP Horde (113), data-<hus>.json för de andra. Historiken per vara
   // ligger i dagsfiler bredvid: hist/<hus>/<dag>/<id % 100>.json (build.js). Valet sparas i webbläsaren.
   var DATA_BASE = DATA_URL.replace(/data\.json$/, "");
