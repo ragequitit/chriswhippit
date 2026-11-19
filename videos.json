@@ -1,19 +1,12 @@
 {
- "t": "2026-11-19T01:27:22.411Z",
+ "t": "2026-11-19T09:28:20.123Z",
  "videos": [
   {
-   "id": "CZJIMzrNqWo",
-   "title": "Vi bygger om ALLT i Waterpark Simulator med UfoSXM",
+   "id": "EsatraGPFfk",
+   "title": "Vi FYLLER HELA HYLLAN i Megastore Tidy Up Together med UfoSXM",
    "channel": "ChrisWhippit",
    "handle": "@chriswhippit",
-   "at": "2026-11-18T05:30:10Z"
-  },
-  {
-   "id": "SqIvYKu7S4g",
-   "title": "Köper en VÄRDELÖS MASKIN i Moon Sweepers med UfoSXM",
-   "channel": "ChrisWhippit",
-   "handle": "@chriswhippit",
-   "at": "2026-11-16T05:30:30Z"
+   "at": "2026-11-19T05:30:32Z"
   },
   {
    "id": "f5YKZLTEAhY",
@@ -23,6 +16,13 @@
    "at": "2026-11-17T05:30:16Z"
   },
   {
+   "id": "CZJIMzrNqWo",
+   "title": "Vi bygger om ALLT i Waterpark Simulator med UfoSXM",
+   "channel": "ChrisWhippit",
+   "handle": "@chriswhippit",
+   "at": "2026-11-18T05:30:10Z"
+  },
+  {
    "id": "9XSzCQFFMyc",
    "title": "RAIDAR SPACE-PIKACHU MED MIN SON | POKÉMON GO",
    "channel": "Chris Whippit Vloggar",
@@ -30,11 +30,11 @@
    "at": "2026-10-10T04:30:24Z"
   },
   {
-   "id": "ymMSKvvpffY",
-   "title": "SÅ GULLIGA i Minecraft med Mammaspelar",
+   "id": "UPnH4EuNlQk",
+   "title": "JAG VANN UTMANINGEN i Minecraft med Mammaspelar och Pappaspelar",
    "channel": "Whippit",
    "handle": "@whippitextra",
-   "at": "2026-11-16T05:30:30Z"
+   "at": "2026-11-19T05:30:20Z"
   }
  ],
  "counts": {
@@ -87,6 +87,12 @@
  },
  "seriesVids": {
   "minecraft": [
+   {
+    "id": "UPnH4EuNlQk",
+    "title": "JAG VANN UTMANINGEN i Minecraft med Mammaspelar och Pappaspelar",
+    "at": "2026-11-19T05:30:20Z",
+    "list": ""
+   },
    {
     "id": "ymMSKvvpffY",
     "title": "SÅ GULLIGA i Minecraft med Mammaspelar",
@@ -151,12 +157,6 @@
     "id": "JUazDqGBXSw",
     "title": "STORA LUCKY BLOCK och PVP i Minecraft med Jnx",
     "at": "2026-11-01T05:30:22Z",
-    "list": ""
-   },
-   {
-    "id": "lXT6rzgBefA",
-    "title": "JAG HÄNGER I NETHER - MINECRAFT SKYBLOCK #7",
-    "at": "2026-10-31T05:30:12Z",
     "list": ""
    }
   ],
@@ -544,26 +544,26 @@
  },
  "media": {
   "chriswhippit": {
-   "views": 244362000,
-   "avgViews": 5600,
-   "avgSample": 9,
+   "views": 244374000,
+   "avgViews": 5500,
+   "avgSample": 10,
    "uploads30": 50
   },
   "whippitsson": {
-   "views": 50373000,
+   "views": 50374000,
    "avgViews": 20000,
    "avgSample": 5,
    "uploads30": 0
   },
   "figgwhipp": {
-   "views": 97259000,
+   "views": 97260000,
    "avgViews": 0,
    "avgSample": 0,
    "uploads30": 0
   },
   "whippitextra": {
-   "views": 307000,
-   "avgViews": 2700,
+   "views": 309000,
+   "avgViews": 2500,
    "avgSample": 18,
    "uploads30": 48
   }
