@@ -1017,6 +1017,8 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
 [data-appearance=atlas] .p3d { color: #CFF6F3; background: rgba(10, 18, 26, .8); border-color: #3F6C78; }
 [data-appearance=atlas] .p3d:hover { color: #fff; border-color: var(--edge); }
 [data-appearance=atlas] .ttree { background: radial-gradient(ellipse at top, rgba(67, 140, 160, .16), rgba(0, 0, 0, .35)); }
+[data-appearance=atlas] .talpanel { background: linear-gradient(#131C27, #0C1219); border-color: #3F5D6E; }   /* talangpanelen i Atlas-blått (Joakim 2026-11-20), även i Armory */
+[data-appearance=atlas] .cldesc { background: rgba(0, 0, 0, .3); }
 [data-appearance=atlas] .tag.fv { border-color: rgba(236, 193, 120, .5); }
 @media (max-width: 1180px) {
   [data-appearance=atlas] .mode { justify-content: flex-start; overflow-x: auto; scrollbar-width: none; gap: 2px; }
@@ -1055,7 +1057,8 @@ body[data-mode=cl] .armory { padding: 8px; } body[data-mode=cl] .talpanel { padd
 .clfly h4 { margin: 3px 10px 4px; font: 500 12px var(--display); letter-spacing: .06em; text-transform: uppercase; color: var(--grey); }
 .clfly button { all: unset; cursor: pointer; display: flex; justify-content: space-between; gap: 14px; padding: 6px 10px; border-radius: 4px; font-size: 13.5px; color: var(--fg); white-space: nowrap; }
 .clfly button span { color: var(--grey); font-size: 12.5px; } .clfly button:hover { background: var(--hover); color: var(--gold); } .clfly button[aria-pressed=true] { background: var(--sel); color: var(--gold); box-shadow: inset 0 0 0 1px rgba(246, 196, 72, .25); }
-.clfly .fe, .clfly .ri { width: 16px; height: 16px; vertical-align: -3px; margin-right: 5px; }
+.clfly .fe, .clfly .ri { width: 16px; height: 16px; vertical-align: -3px; margin-right: 6px; border-radius: 3px; }
+.cats .cat.sub small .ri, .strip small .ri { width: 15px; height: 15px; vertical-align: -3px; margin-right: 3px; border-radius: 3px; }
 .cats .cat.sub[data-clv] em.nm::after { content: "›"; margin-left: 6px; color: var(--grey); opacity: .6; } .cats .cat.sub[data-clv=tal] em.nm::after { content: ""; }
 body[data-mode=cl] .ttrees { gap: 8px; } body[data-mode=cl] .ttree { padding: 6px 6px 8px; }
 .cltr .facts { margin-top: 4px; }
@@ -6389,6 +6392,9 @@ body[data-mode=cl] .ttrees { gap: 8px; } body[data-mode=cl] .ttree { padding: 6p
     c.pets.forEach(function (p) { p.spells.forEach(function (s) { if (s.id === id && (!hit || !hit.pet || p.name === clPet)) hit = { sp: s, pet: p.name }; }); });
     return hit;
   }
+  // Trädets ikon (classes.json lineIcons, ur SkillLine) och pettens (Summon-spellens ikon), 18 px som rasikonerna.
+  function clLineIc(name) { var c = clC(), id = c && c.lineIcons ? c.lineIcons[name] : 0; return id ? '<img class="ri" src="https://render.worldofwarcraft.com/forever-eu/icons/56/' + id + '.jpg" alt="" loading="lazy">' : ""; }
+  function clPetIc(name) { var c = clC(), sp = c ? c.spells.filter(function (x) { return x.n === "Summon " + name && x.i; })[0] : null; return sp ? '<img class="ri" src="https://render.worldofwarcraft.com/forever-eu/icons/56/' + sp.i + '.jpg" alt="" loading="lazy">' : ""; }
   function clIcon(s, big) { return s.i ? '<img class="clic' + (big ? " big" : "") + '" src="https://render.worldofwarcraft.com/forever-eu/icons/56/' + s.i + '.jpg" alt="" loading="lazy">' : '<span class="clic none' + (big ? " big" : "") + '"></span>'; }
   function clCost(s) {
     if (s.c) return money(s.c);
@@ -6451,8 +6457,8 @@ body[data-mode=cl] .ttrees { gap: 8px; } body[data-mode=cl] .ttree { padding: 6p
       var sub = function (v, lbl, n2, cur) { return '<button class="cat sub" type="button" data-clv="' + v + '" aria-pressed="' + (clView === v) + '"><em class="nm">' + lbl + (cur ? ' <small class="dim">' + cur + "</small>" : "") + "</em>" + (n2 != null ? "<span>" + n2 + "</span>" : "") + "</button>"; };
       var tc = clTal(), used = tc ? talTotal(tc.c, clRanks) : 0;
       h += sub("tal", t("cl_v_tal"), used + "/" + TAL_MAX);
-      h += sub("spells", t("cl_v_spells"), live, clLine === "x" ? t("cl_changed_short") : esc(clLine));
-      if (c.pets.length) h += sub("pets", t("cl_v_pets"), c.pets.reduce(function (a, p) { return a + p.spells.length; }, 0), esc(clPet));
+      h += sub("spells", t("cl_v_spells"), live, clLine === "x" ? t("cl_changed_short") : clLine ? clLineIc(clLine) + esc(clLine) : "");
+      if (c.pets.length) h += sub("pets", t("cl_v_pets"), c.pets.reduce(function (a, p) { return a + p.spells.length; }, 0), clPet ? clPetIc(clPet) + esc(clPet) : "");
       h += sub("quests", t("cl_v_quests"), QU ? clQuestsAll(n).length : null, faL);
       h += sub("trainers", t("cl_v_trainers"), c.trainers.length, [faL, clTk === "c" ? t("cl_tk_class") : clTk === "p" ? t(n === "Warlock" ? "cl_tk_demon" : "cl_tk_pet") : ""].filter(Boolean).join(" · "));
     });
@@ -6469,11 +6475,11 @@ body[data-mode=cl] .ttrees { gap: 8px; } body[data-mode=cl] .ttree { padding: 6p
     if (v === "spells") {
       var live = c.spells.filter(function (s) { return !s.x; }), xs = c.spells.length - live.length;
       it.push(["ln", "", t("co_s_all"), live.length, clLine === ""]);
-      c.lines.forEach(function (l) { it.push(["ln", l, esc(l), live.filter(function (s) { return s.ln === l; }).length, clLine === l]); });
+      c.lines.forEach(function (l) { it.push(["ln", l, clLineIc(l) + esc(l), live.filter(function (s) { return s.ln === l; }).length, clLine === l]); });
       if (xs) it.push(["ln", "x", t("cl_changed", xs), null, clLine === "x"]);
     } else if (v === "pets") {
       it.push(["pet", "", t("co_s_all"), c.pets.reduce(function (a, p) { return a + p.spells.length; }, 0), clPet === ""]);
-      c.pets.forEach(function (p) { it.push(["pet", p.name, esc(p.name), p.spells.length, clPet === p.name]); });
+      c.pets.forEach(function (p) { it.push(["pet", p.name, clPetIc(p.name) + esc(p.name), p.spells.length, clPet === p.name]); });
     } else if (v === "quests") {
       var qs = clQuestsAll(clName());
       ["", "H", "A"].forEach(function (f) { it.push(["fa", f, fa(f), qs.filter(function (x) { return !f || !x.q[5] || x.q[5] === f; }).length, clFa === f]); });
@@ -6623,7 +6629,7 @@ body[data-mode=cl] .ttrees { gap: 8px; } body[data-mode=cl] .ttree { padding: 6p
     else where = t("cl_w_other");
     if (s.x) where += " " + t("cl_changed_note");
     $("detail").scrollTop = 0;
-    $("detail").innerHTML = '<div class="strip"><button class="lnk" type="button" data-copyany="' + esc(clHash()) + '" title="' + t("copy_link") + '">' + t("copy_link") + "</button><h2>" + clIcon(s, true) + esc(s.n) + '</h2><small><span style="color:' + clCol(n) + '">' + n + "</span>" + (f.pet ? " · " + esc(f.pet) : s.ln ? " · " + esc(s.ln) : "") + (s.r ? " · " + t("cl_rank", s.r) : "") + (s.pa ? " · " + t("cl_passive") : "") + "</small></div>" +
+    $("detail").innerHTML = '<div class="strip"><button class="lnk" type="button" data-copyany="' + esc(clHash()) + '" title="' + t("copy_link") + '">' + t("copy_link") + "</button><h2>" + clIcon(s, true) + esc(s.n) + '</h2><small><span style="color:' + clCol(n) + '">' + n + "</span>" + (f.pet ? " · " + clPetIc(f.pet) + esc(f.pet) : s.ln ? " · " + clLineIc(s.ln) + esc(s.ln) : "") + (s.r ? " · " + t("cl_rank", s.r) : "") + (s.pa ? " · " + t("cl_passive") : "") + "</small></div>" +
       '<dl class="facts">' + facts.map(function (x) { return "<div><dt>" + x[0] + "</dt><dd>" + x[1] + "</dd></div>"; }).join("") + "</dl>" +
       (s.d ? '<div class="cldesc">' + esc(s.d) + "</div>" : '<div class="note">' + t("cl_nodesc") + "</div>") +
       "<div><h3>" + t("cl_where") + '</h3><div class="srcs1">' + where + "</div></div>" + ranksHtml +
