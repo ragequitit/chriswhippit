@@ -902,6 +902,16 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
 .mode button:hover { background: linear-gradient(#2B2119, #1E1712); }
 .mode button[aria-pressed=true] { color: var(--edge); background: linear-gradient(#3B2B1B, #241A12); box-shadow: inset 0 -3px 0 var(--edge), inset 0 -8px 16px rgba(246, 196, 72, .08); }
 .mode button:focus-visible { outline: 2px solid var(--edge); outline-offset: -2px; }
+/* Underflikarna under Auction house (Joakim 2026-11-19) */
+.sub { order: -1; flex: 1 0 100%; display: flex; gap: 2px; margin: -14px -18px 0; padding: 0 10px; background: #130F0D; border-bottom: 1px solid var(--line); overflow-x: auto; scrollbar-width: none; }
+.sub button { all: unset; box-sizing: border-box; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; height: 42px; padding: 0 16px; font-size: 14px; font-weight: 600; color: var(--grey); white-space: nowrap; border-bottom: 2px solid transparent; }
+.sub button:hover { color: var(--fg); background: var(--hover); }
+.sub button[aria-pressed=true] { color: var(--edge); border-bottom-color: var(--edge); background: var(--sel); }
+.sub button:focus-visible { outline: 2px solid var(--edge); outline-offset: -2px; }
+.sub .fi { width: 22px; height: 22px; object-fit: contain; } .sub .fi.bw { border-radius: 50%; }
+[data-appearance=atlas] .sub { background: #0F1821; }
+.trnote { margin: 0 0 10px; }
+#list th.bs, #list td.bs { text-align: left; white-space: nowrap; line-height: 1.2; padding-top: 3px; padding-bottom: 3px; }
 .sect { display: block; order: 0; margin: 0 8px 0 0; font: 600 26px/1.1 var(--display); color: var(--gold); white-space: nowrap; }
 .bar #q { order: 1; flex: 0 1 640px; height: 40px; }
 .bar #qbtn { order: 2; }
@@ -1032,10 +1042,6 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
           <button type="button" data-fa="horde" aria-pressed="true"><img class="fi" data-icon="faction-horde.png" alt="">Horde</button>
           <button type="button" data-fa="alliance" aria-pressed="false"><img class="fi" data-icon="faction-alliance.png" alt="">Alliance</button>
         </div>
-        <div class="mrow"><span class="mlbl" data-t="m_ah">Auction house</span>
-          <button type="button" data-ah="own" aria-pressed="true" data-t="m_ah_own">Faction AH</button>
-          <button type="button" data-ah="bw" aria-pressed="false"><img class="fi bw" src="https://render.worldofwarcraft.com/classic1x-eu/icons/56/inv_misc_coin_02.jpg" alt=""><span data-t="m_ah_bw">Blackwater · neutral</span></button>
-        </div>
       </div>
     </div>
     <div class="scan"><b id="scanTime" data-t="loading">Läser in scannen…</b><span id="scanInfo"></span></div>
@@ -1047,7 +1053,6 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
     <button class="wowbtn" id="qbtn" type="button" data-t="search_btn">Sök</button>
     <div class="mode" role="group">
       <button type="button" id="modeAh" aria-pressed="true" data-t-title="mode_ah_tip"><img class="ai" alt="" width="32" height="32" data-ai="nav-auction-house"><img class="mi" alt="" data-mi="ah"><span data-t="mode_ah">Auktionshus</span></button>
-      <button type="button" id="modeTr" aria-pressed="false" data-t-title="mode_tr_tip"><img class="ai" alt="" width="32" height="32" data-ai="nav-trading"><img class="mi" alt="" data-mi="tr"><span data-t="mode_tr">Trading</span></button>
       <button type="button" id="modeCr" aria-pressed="false" data-t-title="mode_cr_tip"><img class="ai" alt="" width="32" height="32" data-ai="nav-professions"><img class="mi" alt="" data-mi="cr"><span data-t="mode_cr">Professions</span></button>
       <button type="button" id="modeAr" aria-pressed="false" data-t-title="mode_ar_tip"><img class="ai" alt="" width="32" height="32" data-ai="nav-armory"><img class="mi" alt="" data-mi="ar"><span data-t="mode_ar">Armory</span></button>
       <button type="button" id="modeLb" aria-pressed="false" data-t-title="mode_lb_tip"><img class="ai" alt="" width="32" height="32" data-ai="nav-leaderboards"><img class="mi" alt="" data-mi="ar"><span data-t="mode_lb">Leaderboards</span></button>
@@ -1056,6 +1061,7 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
       <button type="button" id="modeHu" aria-pressed="false" data-t-title="mode_hu_tip"><img class="ai" alt="" width="32" height="32" data-ai="nav-hunter-pets"><img class="mi" alt="" data-mi="hu" onerror="this.style.visibility='hidden'"><span data-t="mode_hu">Hunter pets</span></button>
       <button type="button" id="modeCo" aria-pressed="false" data-t-title="mode_co_tip"><img class="ai" alt="" width="32" height="32" data-ai="nav-collections"><img class="mi" alt="" data-mi="co" onerror="this.style.visibility='hidden'"><span data-t="mode_co">Collections</span></button>
     </div>
+    <div class="sub" id="ahsub" hidden></div>
     <span class="count" id="count"></span>
   </div>
 
@@ -1280,6 +1286,22 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
     if (hp[1] === "blackwater") { ic.removeAttribute("data-icon"); ic.src = "https://render.worldofwarcraft.com/classic1x-eu/icons/56/inv_misc_coin_02.jpg"; ic.classList.add("bw"); }
     else { ic.classList.remove("bw"); ic.setAttribute("data-icon", "faction-" + hp[1] + ".png"); if (ASSET_BASE) ic.src = ASSET_BASE + "icons/faction-" + hp[1] + ".png"; }
   }
+  // Underflikarna under Auction house (Joakim 2026-11-19): ditt faction-AH, Blackwater, andra sidan, Trading. Trading
+  // räknar alltid på ditt faction-AH; underfliken för huset gäller bara Auction house-fliken.
+  function otherSide() { return side === "alliance" ? "horde" : "alliance"; }
+  function ahName(fa) { return fa === "blackwater" ? t("sub_bw") : (fa === "alliance" ? "Alliance" : "Horde") + " " + t("sub_ah"); }
+  function subKey() { if (mode === "tr" || mode === "de" || mode === "fx") return "tr"; var hp = houseParts(house); return !hp || hp[1] === side ? "own" : hp[1] === "blackwater" ? "bw" : "other"; }
+  function drawSub() {
+    var el = $("ahsub"); if (!el) return;
+    var on = /^(ah|tr|de|fx)$/.test(mode); el.hidden = !on; if (!on) return;
+    var cur = subKey(), fi = function (fa) { return ASSET_BASE ? '<img class="fi" src="' + ASSET_BASE + "icons/faction-" + fa + '.png" alt="">' : ""; };
+    var b = function (k, html, tip) { return '<button type="button" data-sub="' + k + '" aria-pressed="' + (cur === k) + '" title="' + esc(tip || "") + '">' + html + "</button>"; };
+    el.innerHTML = b("own", fi(side) + "<span>" + esc(ahName(side)) + "</span>", t("sub_own_tip")) +
+      b("bw", '<img class="fi bw" src="' + RICON + 'inv_misc_coin_02.jpg" alt=""><span>' + esc(ahName("blackwater")) + "</span>", t("sub_bw_tip")) +
+      b("other", fi(otherSide()) + "<span>" + esc(ahName(otherSide())) + "</span>", t("sub_other_tip")) +
+      b("tr", (ASSET_BASE ? '<img class="fi" src="' + ASSET_BASE + 'icons/nav-trading.png" alt="">' : "") + "<span>" + t("mode_tr") + "</span>", t("mode_tr_tip"));
+  }
+  function houseFor(fa) { var hp = houseParts(house) || ["pvp", "horde", "eu"], k = mkKey(hp[2], hp[0], fa); return mkHas(k) ? k : mkNear(hp[2], hp[0], fa); }
   function mktOpen(open) { $("mktPop").hidden = !open; $("mktBtn").setAttribute("aria-expanded", open ? "true" : "false"); }
   var histCache = {};
   // data.json per hus i minnet (granskning 2026-11-18): byte fram och tillbaka hämtar inte 2 MB igen inom 10 minuter.
@@ -1474,7 +1496,14 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
       cr_source: "Recipes from Blizzard (WoW Forever); trainer prices and sources from the open Classic database (1.12). Skill levels of new Forever recipes from <a class=\"wh\" href=\"https://www.curseforge.com/projects/1422985\" target=\"_blank\" rel=\"noopener\">AtlasLoot Classic Forever</a> (GPL-2.0) and <a class=\"wh\" href=\"https://warcraft.wiki.gg/wiki/World_of_Warcraft:_Forever\" target=\"_blank\" rel=\"noopener\">Warcraft Wiki</a> (CC BY-SA 4.0). Prices from the latest update.",
       style_lbl: "Style", style_orig: "Original", style_atlas: "Atlas",
       mode_ah: "Auction house", mode_ah_tip: "All items, like the in-game auction house", mode_tr: "Trading",
-      mode_tr_tip: "Like a stock site: what is cheap and dear versus usual, day trade and the best time to buy and sell",
+      mode_tr_tip: "Where the price moves: cheap versus usual, the best time of day to buy and sell, disenchant and Horde ⇄ Alliance. Every + is profit after the 5% cut.",
+      sub_ah: "Auction House", sub_bw: "Blackwater Auction House", sub_own_tip: "Your side's auction house", sub_bw_tip: "The neutral auction house in Booty Bay, Gadgetzan and Everlook: both sides, 15% cut",
+      sub_other_tip: "The other side's auction house: look, compare, or shop via Blackwater",
+      col_usual_p: "Sell at usual", col_usual_p_tip: "Buy at today's price, sell at the usual price these days: profit after the auction house's 5% cut. Grey minus = dearer than usual right now.",
+      usual_pos: "Buy now at %1, sell at the usual price %2: +%3% after the auction house's 5% cut", usual_neg: "%1% above the usual price (%2): a time to sell, not to buy",
+      col_bs: "Buy / sell", col_bs_tip: "From this week's morning and evening scans: when the item is cheapest and dearest. Profit after the auction house's 5% cut, on at least 6 of the last 10 days. Empty = no clear pattern.",
+      bs_txt: "Buy %1, sell %2", bl_0: "night", bl_1: "morning", bl_2: "afternoon", bl_3: "evening",
+      tr_intro: "Trading shows where the price moves: buy cheap at one time or place, sell at another. Every + is profit after the auction house's 5% cut.",
       col_best: "Best time", col_best_tip: "When in the day the item has been cheapest and dearest this week. The profit is after the AH's 5%.",
       bt_0: "at night", bt_1: "in the morning", bt_2: "in the afternoon", bt_3: "in the evening", bs_0: "night", bs_1: "morn", bs_2: "aftn", bs_3: "eve",
       best_txt: "Buy %1, sell %2: +%3% (%4 of %5 days)", best_none: "No clear difference over the day yet",
@@ -3438,7 +3467,7 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
       });
     });
     // Disenchant sist, under kategorierna (Joakim 2026-11-18)
-    $("cats").innerHTML = "<h2>" + t("cats_h") + "</h2>" + html + (mode === "tr" ? '<button class="cat lbbtn" type="button" data-gode="1"><img class="ci" src="' + RICON + 'inv_enchant_disenchant.jpg" alt=""><em class="nm">' + t("mode_de") + "</em><span>›</span></button>" +
+    $("cats").innerHTML = (mode === "tr" ? '<div class="note trnote">' + t("tr_intro") + "</div>" : "") + "<h2>" + t("cats_h") + "</h2>" + html + (mode === "tr" ? '<button class="cat lbbtn" type="button" data-gode="1"><img class="ci" src="' + RICON + 'inv_enchant_disenchant.jpg" alt=""><em class="nm">' + t("mode_de") + "</em><span>›</span></button>" +
       '<button class="cat lbbtn" type="button" data-gofx="1"><img class="ci" src="' + RICON + 'inv_misc_coin_02.jpg" alt=""><em class="nm">' + t("fx_btn") + "</em><span>›</span></button>" : "");
     $("cats").hidden = cats.length === 0 && mode !== "tr";
   }
@@ -3582,7 +3611,7 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
       if (k === "name") return dir * (a.name || "~" + a.id).localeCompare(b.name || "~" + b.id, "sv");
       if (k === "dip") return dir * (a.dip - b.dip) || a.id - b.id;
       if (k === "tg") return dir * (a.tg - b.tg) || a.id - b.id;
-      if (k === "btg") return dir * (a.btg - b.btg) || a.id - b.id;
+      if (k === "btg" || k === "bs") return dir * (a.btg - b.btg) || a.id - b.id;
       if (k === "cat") {   // kategori, underkategori, sedan namn; okänd kategori sist
         var ac = a.ci < 0 ? 9999 : a.ci, bc = b.ci < 0 ? 9999 : b.ci;
         return dir * (ac - bc || a.si - b.si || a.ui - b.ui) || (a.name || "").localeCompare(b.name || "", "sv");
@@ -3728,6 +3757,20 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
     return '<span class="bt down2" title="' + esc(t("best_txt", t("bt_" + b[0]), t("bt_" + b[1]), b[2], b[3], b[4])) + '">' +
       t("bs_" + b[0]) + "→" + t("bs_" + b[1]) + " +" + b[2] + "%</span>";
   }
+  // Trading (Joakim 2026-11-19: alla plusprocent = vinst efter AH:s 5 %): "Sell at usual" = köp nu, sälj till vanligt pris.
+  function usualHtml(r) {
+    if (!r.us || !r.min) return "";
+    var p = Math.round((r.us * 0.95 - r.min) / r.min * 100), usual = moneyText(r.us);
+    if (p >= 1) return '<span class="down2" title="' + esc(t("usual_pos", moneyText(r.min), usual, p)) + '">+' + p + "%</span>";
+    if (p <= -1) return '<span class="dim" title="' + esc(t("usual_neg", -p, usual)) + '">−' + (-p) + "%</span>";
+    return '<span class="dim">±0</span>';
+  }
+  // "Buy / sell": veckans mönster i klartext, "Buy morning, sell evening +11%"; tomt när mönstret inte är tydligt.
+  function bsHtml(r) {
+    if (!btClear(r)) return "";
+    var b = r.bt;
+    return '<span class="bt" title="' + esc(t("best_txt", t("bt_" + b[0]), t("bt_" + b[1]), b[2], b[3], b[4])) + '">' + t("bs_txt", t("bl_" + b[0]), t("bl_" + b[1])) + '<br><b class="down2">+' + b[2] + "%</b></span>";
+  }
   function recName(r) {   // receptets namn i den tillverkade varans kvalitetsfärg, med ikon och tooltip när varan finns på AH
     var out = byId[r.rc.item], it = RECEPT.items[r.rc.item], q = out ? out.q : it ? it[1] : -1;
     return (out ? iconHtml(out) : "") + '<span data-tip="' + r.rc.item + '" class="' + qcls(q) + '">' + esc(r.name) + "</span>";
@@ -3753,8 +3796,7 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
     var tr = '<tr tabindex="0" data-id="' + r.id + '"' + (r.id === selId ? ' aria-selected="true"' : "") + '><td class="fav">' + starHtml(r.id) + '</td><td class="nm">' + name + "</td>";
     if (mode === "tr") {
       var c0 = D.cats && D.cats[r.ci], cico = c0 ? catIcon(c0[0]) : "";
-      return tr + '<td class="cic kat" title="' + esc(c0 ? catName(c0[0]) : "") + '">' + (cico || "") + "</td><td>" + money(r.min) + '</td><td class="pct">' + pctHtml(r) + '</td><td class="pct hide-s">' + (tradeHtml(r) || DASH) +
-        '</td><td class="pct">' + btHtml(r) + "</td><td>" + num(r.qty) + "</td>" + day + "</tr>";
+      return tr + '<td class="cic kat" title="' + esc(c0 ? catName(c0[0]) : "") + '">' + (cico || "") + "</td><td>" + money(r.min) + '</td><td class="pct">' + usualHtml(r) + '</td><td class="pct bs">' + bsHtml(r) + "</td><td>" + num(r.qty) + "</td>" + day + "</tr>";
     }
     return tr + '<td class="kat hide-s">' + catCell(r) + '</td><td class="hide-s">' + (r.lvl ? r.lvl : DASH) + "</td><td>" + money(r.min) +
       "</td><td>" + num(r.qty) + "</td>" + day + "</tr>";
@@ -3776,8 +3818,8 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
       : mode === "cr"
       ? [["name", "col_recipe"], ["skill", "col_skill", "col_skill_tip"], ["cost", "col_cost", "col_cost_tip"], ["sell", "col_sell", "col_sell_tip"], ["profit", "col_profit", "col_profit_tip"], ["day", "col_day", "col_day_tip", "hide-s dcol"]]
       : mode === "tr"
-      ? [["name", "col_item"], ["cat", "", null, "cic kat"], ["min", "col_min", "col_min_tip"], ["dip", "col_pct_s", "col_pct_tip"], ["tg", "col_trade", "day_tip", "hide-s"],
-         ["btg", "col_best", "col_best_tip"], ["qty", "col_qty"], ["day", "col_day", "col_day_tip", "hide-s dcol"]]
+      ? [["name", "col_item"], ["cat", "", null, "cic kat"], ["min", "col_min", "col_min_tip"], ["dip", "col_usual_p", "col_usual_p_tip"], ["bs", "col_bs", "col_bs_tip", "bs"],
+         ["qty", "col_qty"], ["day", "col_day", "col_day_tip", "hide-s dcol"]]
       : [["name", "col_item"], ["cat", "col_cat", null, "kat hide-s"], ["lvl", "col_lvl", "col_lvl_tip", "hide-s"], ["min", "col_min", "col_min_tip"],
          ["qty", "col_qty"], ["day", "col_day", "col_day_tip", "hide-s dcol"]];
     return '<tr><th class="fav">' + (mode === "hu" || mode === "fx" ? "" : mode === "de" ? '<span title="' + t("de_own_col") + '">#</span>' : mode === "co" ? (coOwner() ? "✓" : "") : mode === "qu" ? (quPlayer && quPlayer.set ? "✓" : "") : t("col_fav")) + "</th>" + cols.map(function (c) {
@@ -3793,8 +3835,7 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
     var tabsOn = /^(ah|tr|cr|de|fx)$/.test(mode), tabs = document.querySelector(".right .tabs");
     if (tabs) tabs.style.display = tabsOn ? "" : "none";
     if (!tabsOn && !$("watch").hidden) showTab("item");
-    $("modeAh").setAttribute("aria-pressed", mode === "ah" ? "true" : "false");
-    $("modeTr").setAttribute("aria-pressed", mode === "tr" || mode === "de" || mode === "fx" ? "true" : "false");
+    $("modeAh").setAttribute("aria-pressed", mode === "ah" || mode === "tr" || mode === "de" || mode === "fx" ? "true" : "false");
     $("modeCr").setAttribute("aria-pressed", mode === "cr" ? "true" : "false");
     $("modeAr").setAttribute("aria-pressed", mode === "ar" && !arLb ? "true" : "false");
     $("modeLb").setAttribute("aria-pressed", mode === "ar" && arLb ? "true" : "false");
@@ -3802,7 +3843,8 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
     $("modeDg").setAttribute("aria-pressed", mode === "dg" ? "true" : "false");
     $("modeHu").setAttribute("aria-pressed", mode === "hu" ? "true" : "false");
     $("modeCo").setAttribute("aria-pressed", mode === "co" ? "true" : "false");
-    $("sect").textContent = t(mode === "de" || mode === "fx" ? "mode_tr" : mode === "ar" && arLb ? "mode_lb" : "mode_" + mode);
+    $("sect").textContent = mode === "ah" ? ahName((houseParts(house) || [0, "horde"])[1]) : t(mode === "de" || mode === "fx" ? "mode_tr" : mode === "ar" && arLb ? "mode_lb" : "mode_" + mode);
+    drawSub();
     $("q").setAttribute("aria-label", t(mode === "cr" ? "search_rc" : mode === "ar" ? "search_ar" : mode === "qu" ? "search_qu" : mode === "dg" ? "search_dg" : mode === "hu" ? "search_hu" : mode === "co" ? "search_co" : "search_ph"));
   }
   // Raden i: själva raden och, i AH/Trading, de utfällda prisstegen under den.
@@ -5805,7 +5847,6 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
   document.addEventListener("auxclick", function (e) { if (e.button === 1) navOpen(e); });
   document.addEventListener("click", function (e) { if (e.button === 0 && (e.ctrlKey || e.metaKey)) navOpen(e); }, true);
   $("modeAh").addEventListener("click", function () { setMode("ah"); });
-  $("modeTr").addEventListener("click", function () { setMode("tr"); });
   $("modeCr").addEventListener("click", function () { setMode("cr"); });
   $("modeAr").addEventListener("click", function () {
     if (mode === "ar" && arCmp && arData) { arCmp = null; renderChar(arData); drawCats(); return; }   // Armory-fliken stänger jämförelsen
@@ -5863,14 +5904,16 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
     var b = e.target.closest("button");
     if (!b) return;
     if (b.disabled) return;
-    var hp = houseParts(house) || ["pvp", "horde", "eu"];
-    var ah = b.getAttribute("data-ah"), bw = ah ? ah === "bw" : hp[1] === "blackwater";
+    var hp = houseParts(house) || ["pvp", "horde", "eu"], bw = hp[1] === "blackwater";
     if (b.getAttribute("data-fa")) { side = b.getAttribute("data-fa"); try { localStorage.setItem(SIDE_KEY, side); } catch (e3) {} }
     var rs = b.getAttribute("data-rs") || hp[0], fa = bw ? "blackwater" : mySide(), rg = b.getAttribute("data-rg") || hp[2];
     var h = mkHas(mkKey(rg, rs, fa)) && (rg === "eu" || rg === "us" || rs === "pvp" || rs === "normal") ? mkKey(rg, rs, fa) : mkNear(rg, rs, fa);
-    if (h === house) { drawMarket(); return; }   // bara sidan bytt medan Blackwater visas: tinten följer med
+    switchHouse(h);
+  });
+  function switchHouse(h) {
+    if (h === house) { drawMarket(); drawSub(); return; }   // bara sidan bytt medan Blackwater visas: tinten och underflikarna följer med
     house = h;
-    drawMarket();
+    drawMarket(); drawSub();
     try { localStorage.setItem(MARKET_KEY, String(house)); } catch (e2) {}
     lastUpdate = null;
     var tok = ++dataSeq, hh = house, c = dataCache[hh];
@@ -5878,6 +5921,13 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
     if (c && Date.now() - c.t < DATA_TTL) { load(c.d, !!D); return; }
     fetch(dataUrl(), { cache: "no-cache" }).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
       .then(function (d) { gotData(hh, d); if (tok === dataSeq) load(d, !!D); }).catch(function () { if (tok === dataSeq) showError(); });
+  }
+  $("ahsub").addEventListener("click", function (e) {
+    var b = e.target.closest("button[data-sub]"); if (!b) return;
+    var k = b.dataset.sub;
+    if (k === "tr") { if (mode !== "tr") setMode("tr"); switchHouse(houseFor(side)); return; }   // Trading: alltid ditt faction-AH
+    if (mode !== "ah") setMode("ah");
+    switchHouse(houseFor(k === "bw" ? "blackwater" : k === "other" ? otherSide() : side));
   });
   // Sökknappen (som i spelets AH): söker på det som står i rutan, även tomt = hela AH. Den hämtar inte data.json
   // (granskning 2026-11-18: Enter i sökrutan laddade om 2 MB varje gång); Hem och Update prices hämtar nytt.
