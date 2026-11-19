@@ -1525,7 +1525,8 @@ body[data-mode=cl] .ttrees { gap: 8px; } body[data-mode=cl] .ttree { padding: 6p
       cl_pts: "Points", cl_level_need: "Level needed", cl_trees: "Talent trees", cl_lvls: "level %1–%2", cl_races: "Races that can play this class",
       cl_tal_note: "51 points at level 60, one per level from 10. Left-click adds, right-click removes. The link holds the plan.",
       cl_note_src: "Spell list, levels and prices from the open Classic database (1.12); texts, icons and numbers from WoW Forever's game data. Forever's own class changes may be missing.",
-      cl_q_note: "Class quests on your side. Click a quest for the details and the map.", cl_class_tr: "%1 trainer", cl_pos: "Position", cl_teaches: "Teaches", cl_side: "Side",
+      cl_q_note: "Class quests on your side. Click a quest for the details and the map.", cl_class_tr: "%1 trainer", cl_tr_missing: "Forever lets %1 play this class too, but their trainers are new on Forever and not in the Classic database, so they are missing here.", cl_fv: "New on Forever", cl_lvl6: "to level 6",
+      cl_tr_fv_note: "New trainer on Forever: name and position from community guides (Warcraft Tavern, Eternadex, UrGameTips, November 2026), not from the Classic database.", cl_pos: "Position", cl_teaches: "Teaches", cl_side: "Side",
       cl_tr_card_note: "Position from the Classic database (1.12). Trainers that also give quests show their quests and map here.", cl_tr_note: "Click a trainer to see where they stand.",
       about_s7: "WoW Forever's game data (Blizzard) via <a href=\"https://wago.tools\" target=\"_blank\" rel=\"noopener\">wago.tools</a>: spell texts, icons and numbers in Classes.",
       up_btn: "Upgrade gear", up_short: "Upgrades", up_btn_sub: "Better items on the auction house right now, with prices", up_title: "Upgrades from the AH", up_prices: "prices from %1",
@@ -6390,6 +6391,8 @@ body[data-mode=cl] .ttrees { gap: 8px; } body[data-mode=cl] .ttree { padding: 6p
   }
   function clRefresh(q) {
     var k = sortKey, dir = sortDir;
+    // Klassen finns inte på din sida (Paladin/Shaman i Classic): visa båda sidorna i stället för en tom lista.
+    if (clFa && ((clView === "trainers" && !clTrainers().length && clC() && clC().trainers.length) || (clView === "quests" && !clQuests().length && clQuestsAll(clName()).length))) { clFa = ""; drawClSub(); }
     if (clView === "quests") {
       view = clQuests().filter(function (x) { return !q || x.q[0].toLowerCase().indexOf(q) >= 0 || (QU.areas[x.q[1]] || "").toLowerCase().indexOf(q) >= 0; });
       view.sort(function (a, b) { var d = k === "name" ? a.q[0].localeCompare(b.q[0]) : k === "zone" ? (QU.areas[a.q[1]] || "").localeCompare(QU.areas[b.q[1]] || "") : a.q[2] - b.q[2]; return d * dir || a.q[2] - b.q[2] || a.q[0].localeCompare(b.q[0]); });
@@ -6416,7 +6419,7 @@ body[data-mode=cl] .ttrees { gap: 8px; } body[data-mode=cl] .ttree { padding: 6p
     }
     if (r.tr) {
       var x = r.tr;
-      return '<tr tabindex="0" data-cltr="' + x.id + '"' + (x.id === clTr ? ' aria-selected="true"' : "") + '><td class="fav">' + clFaIc(x.f) + '</td><td class="nm"><span class="q1">' + esc(x.n) + "</span>" + (x.k === "p" ? ' <small class="dim">' + t(clName() === "Warlock" ? "cl_demon_tr" : "cl_pet_tr") + "</small>" : "") + '</td><td class="kat">' + esc(x.z) + "</td></tr>";
+      return '<tr tabindex="0" data-cltr="' + x.id + '"' + (x.id === clTr ? ' aria-selected="true"' : "") + '><td class="fav">' + clFaIc(x.f) + '</td><td class="nm"><span class="q1">' + esc(x.n) + "</span>" + (x.k === "p" ? ' <small class="dim">' + t(clName() === "Warlock" ? "cl_demon_tr" : "cl_pet_tr") + "</small>" : "") + (x.fv ? ' <span class="tag v">' + t("cl_fv") + "</span>" : "") + (x.l6 ? ' <small class="dim">' + t("cl_lvl6") + "</small>" : "") + '</td><td class="kat">' + esc(x.z) + (x.sub ? ' <small class="dim">' + esc(x.sub) + "</small>" : "") + "</td></tr>";
     }
     var s = r.sp;
     return '<tr tabindex="0" data-clsp="' + s.id + '"' + (s.id === clSp ? ' aria-selected="true"' : "") + (s.x ? ' class="clx"' : "") + '><td class="fav">' + (s.pa ? '<span class="dim" title="' + t("cl_passive") + '">●</span>' : "") + '</td><td class="nm">' + clIcon(s) + '<span class="q1">' + esc(s.n) + "</span>" + (s.r ? ' <small class="dim">' + t("cl_rank", s.r) + "</small>" : "") + "</td><td>" + (s.l || 1) + "</td><td>" + clCost(s) + '</td><td class="kat hide-s">' + esc(r.pet || s.ln || "") + "</td></tr>";
@@ -6575,22 +6578,26 @@ body[data-mode=cl] .ttrees { gap: 8px; } body[data-mode=cl] .ttree { padding: 6p
     var list = clTrainers(), zones = {};
     list.forEach(function (x) { var k = x.z; if (!zones[k]) zones[k] = { n: 0, f: x.f, p: 0 }; zones[k].n++; if (x.k === "p") zones[k].p++; });
     var zl = Object.keys(zones).sort(function (a, b) { return zones[b].n - zones[a].n; });
-    return clOverview() + "<div><h3>" + t("cl_v_trainers") + '</h3><ul class="huwhere">' + zl.map(function (z) { var o = zones[z]; return "<li>" + clFaIc(o.f) + " " + esc(z) + ' <span class="dim">' + o.n + (o.p ? " · " + o.p + " " + t(clName() === "Warlock" ? "cl_demon_tr" : "cl_pet_tr").toLowerCase() : "") + "</span></li>"; }).join("") + "</ul></div>" +
+    // Forever har raser som Classic inte hade (Undead-paladiner, Dwarf-shamaner): den sidans tränare finns inte i Classic-databasen.
+    var miss = ["H", "A"].filter(function (f) { var c = clC(); return c.races.some(function (r) { return r[1] === f; }) && !c.trainers.some(function (x) { return x.f === f; }); });
+    var missNote = miss.length ? '<div class="note">' + t("cl_tr_missing", miss.map(function (f) { return f === "H" ? "Horde" : "Alliance"; }).join(" & ")) + "</div>" : "";
+    return clOverview() + missNote + "<div><h3>" + t("cl_v_trainers") + '</h3><ul class="huwhere">' + zl.map(function (z) { var o = zones[z]; return "<li>" + clFaIc(o.f) + " " + esc(z) + ' <span class="dim">' + o.n + (o.p ? " · " + o.p + " " + t(clName() === "Warlock" ? "cl_demon_tr" : "cl_pet_tr").toLowerCase() : "") + "</span></li>"; }).join("") + "</ul></div>" +
       '<div class="note">' + t("cl_tr_note") + "</div>";
   }
   function clTrainerDetail(id) {
     var c = clC(), x = null, n = clName(); c.trainers.forEach(function (y) { if (y.id === id) x = y; });
     if (!x) { clTr = 0; $("detail").innerHTML = clTrainerOverview(); return; }
-    var kind = x.k === "p" ? t(n === "Warlock" ? "cl_demon_tr" : "cl_pet_tr") : t("cl_class_tr", n);
+    var kind = (x.k === "p" ? t(n === "Warlock" ? "cl_demon_tr" : "cl_pet_tr") : t("cl_class_tr", n)) + (x.l6 ? " · " + t("cl_lvl6") : "") + (x.fv ? ' <span class="tag v">' + t("cl_fv") + "</span>" : "");
     var pos = x.x != null ? x.x.toFixed(1) + ", " + x.y.toFixed(1) : "", way = x.x != null ? qmWay(x.z, x.x.toFixed(1), x.y.toFixed(1)) : "";
     var teach = x.k === "p" ? c.pets.reduce(function (a, p) { return a + p.spells.filter(function (s) { return s.s === "p"; }).length; }, 0) : c.spells.filter(function (s) { return s.s === "t" && !s.x; }).length;
     var back = '<button class="lnk back" type="button" data-clback="1">‹ ' + esc(n) + "</button>";
-    var facts = '<div class="cltr"><dl class="facts"><div><dt>' + t("col_zone") + "</dt><dd>" + esc(x.z) + "</dd></div>" + (pos ? "<div><dt>" + t("cl_pos") + '</dt><dd><button type="button" class="qmc" data-way="' + esc(way) + '" title="' + esc(t("qm_copy_tip", way)) + '">' + pos + "</button></dd></div>" : "") +
+    var facts = '<div class="cltr"><dl class="facts"><div><dt>' + t("col_zone") + "</dt><dd>" + esc(x.z) + (x.sub ? ' <small class="dim">' + esc(x.sub) + "</small>" : "") + "</dd></div>" + (pos ? "<div><dt>" + t("cl_pos") + '</dt><dd><button type="button" class="qmc" data-way="' + esc(way) + '" title="' + esc(t("qm_copy_tip", way)) + '">' + pos + "</button></dd></div>" : "") +
       "<div><dt>" + t("cl_teaches") + "</dt><dd>" + teach + "</dd></div>" + (x.f ? "<div><dt>" + t("cl_side") + "</dt><dd>" + clFaIc(x.f) + " " + (x.f === "H" ? "Horde" : "Alliance") + "</dd></div>" : "") + "</dl></div>";
     // Zonens karta med tränaren som en guldpinne (samma kartor som questkartan); laddas när kartindexet finns.
     var map = function () { return x.x != null && huHasZ(x.z) ? '<div class="huzm qmap"><img src="' + huZUrl(x.z) + '" alt="' + esc(x.z) + '" width="1002" height="668" decoding="async"><b class="qmq s" style="left:' + x.x + '%;top:' + x.y + '%" data-way="' + esc(way) + '" title="' + esc(x.n + " · " + pos + " · " + t("qm_click_copy")) + '">!</b></div>' : ""; };
-    $("detail").innerHTML = back + '<div class="strip"><button class="lnk" type="button" data-copyany="' + esc(clHash()) + '" title="' + t("copy_link") + '">' + t("copy_link") + "</button><h2>" + esc(x.n) + "</h2><small>" + kind + "</small></div>" + facts + '<div id="cltrmap">' + map() + "</div>" + '<div class="note">' + t("cl_tr_card_note") + "</div>";
+    $("detail").innerHTML = back + '<div class="strip"><button class="lnk" type="button" data-copyany="' + esc(clHash()) + '" title="' + t("copy_link") + '">' + t("copy_link") + "</button><h2>" + esc(x.n) + "</h2><small>" + kind + "</small></div>" + facts + '<div id="cltrmap">' + map() + "</div>" + '<div class="note">' + t(x.fv ? "cl_tr_fv_note" : "cl_tr_card_note") + "</div>";
     if (x.x != null && !huHasZ(x.z)) loadZmap().then(function () { var el = $("cltrmap"); if (el && mode === "cl" && clTr === id) el.innerHTML = map(); });
+    if (x.fv) return;   // Forever-ny: ingen NPC-sida i Classic-databasen
     npcLoad(id).then(function (np) {   // NPC-sidan (quests, karta) finns för tränare som också ger quests
       if (!np || mode !== "cl" || clTr !== id) return;
       npcCur = { id: id, n: np };
