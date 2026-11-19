@@ -2336,7 +2336,10 @@ body[data-mode=cl] .ttrees { gap: 8px; } body[data-mode=cl] .ttree { padding: 6p
   var TAL = null, talPromise = null, TAL_MAX = 51, TAL_KEY = "whippit-ah-talplan-";
   var talPlan = null;   // { slug, cls, ranks: { talangId: rang } } när planeraren är öppen för spelaren
   function loadTal() {
-    if (!talPromise) talPromise = fetch(DATA_BASE + "talents.json").then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }).then(function (j) { TAL = j; return j; })
+    if (!talPromise) talPromise = fetch(DATA_BASE + "talents.json").then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }).then(function (j) {
+      // Krav från en lägre rad är cirkelkrav i Blizzards data (Intimidation ⇄ Bestial Wrath) och låser båda: bort (2026-11-20).
+      Object.keys(j.classes).forEach(function (k) { j.classes[k].trees.forEach(function (tr) { var row = {}; tr.nodes.forEach(function (n) { row[n.id] = n.row; }); tr.nodes.forEach(function (n) { n.req = (n.req || []).filter(function (r) { return row[r] == null || row[r] <= n.row; }); }); }); });
+      TAL = j; return j; })
       .catch(function (e) { talPromise = null; throw e; });   // fel sparas inte, nästa försök hämtar igen (granskning 2026-11-18)
     return talPromise;
   }
@@ -6394,7 +6397,10 @@ body[data-mode=cl] .ttrees { gap: 8px; } body[data-mode=cl] .ttree { padding: 6p
   }
   // Trädets ikon (classes.json lineIcons, ur SkillLine) och pettens (Summon-spellens ikon), 18 px som rasikonerna.
   function clLineIc(name) { var c = clC(), id = c && c.lineIcons ? c.lineIcons[name] : 0; return id ? '<img class="ri" src="https://render.worldofwarcraft.com/forever-eu/icons/56/' + id + '.jpg" alt="" loading="lazy">' : ""; }
-  function clPetIc(name) { var c = clC(), sp = c ? c.spells.filter(function (x) { return x.n === "Summon " + name && x.i; })[0] : null; return sp ? '<img class="ri" src="https://render.worldofwarcraft.com/forever-eu/icons/56/' + sp.i + '.jpg" alt="" loading="lazy">' : ""; }
+  var HU_PET_IC = { "All pets": "ability_hunter_beasttraining", Cat: "ability_hunter_pet_cat", Bear: "ability_hunter_pet_bear", Boar: "ability_hunter_pet_boar", Crab: "ability_hunter_pet_crab", Crocolisk: "ability_hunter_pet_crocolisk", Gorilla: "ability_hunter_pet_gorilla", Hyena: "ability_hunter_pet_hyena", Owl: "ability_hunter_pet_owl", Raptor: "ability_hunter_pet_raptor", Scorpid: "ability_hunter_pet_scorpid", Spider: "ability_hunter_pet_spider", Tallstrider: "ability_hunter_pet_tallstrider", Turtle: "ability_hunter_pet_turtle", "Carrion Bird": "ability_hunter_pet_vulture", "Wind Serpent": "ability_hunter_pet_windserpent", Wolf: "ability_hunter_pet_wolf", Bat: "ability_hunter_pet_bat" };   // spelets familjeikoner (pet-fönstret)
+  function clPetIc(name) {
+    if (HU_PET_IC[name]) return '<img class="ri" src="' + RICON + HU_PET_IC[name] + '.jpg" alt="" loading="lazy">';
+    var c = clC(), sp = c ? c.spells.filter(function (x) { return x.n === "Summon " + name && x.i; })[0] : null; return sp ? '<img class="ri" src="https://render.worldofwarcraft.com/forever-eu/icons/56/' + sp.i + '.jpg" alt="" loading="lazy">' : ""; }
   function clIcon(s, big) { return s.i ? '<img class="clic' + (big ? " big" : "") + '" src="https://render.worldofwarcraft.com/forever-eu/icons/56/' + s.i + '.jpg" alt="" loading="lazy">' : '<span class="clic none' + (big ? " big" : "") + '"></span>'; }
   function clCost(s) {
     if (s.c) return money(s.c);
