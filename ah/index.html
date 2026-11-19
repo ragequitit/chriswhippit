@@ -2047,12 +2047,35 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
     d.push(["titles", "", "lb_titles", function (p) { return p.ti ? p.ti[0] || 0 : 0; }], ["rep", "", "lb_rep_ex", function (p) { return p.rep ? p.rep.ex || 0 : 0; }]);
     return d;
   }
+  // Spelaren i katalogens form, men med live-profilens siffror (Joakim 2026-11-19): samma regex som hamta-katalog.js
+  // kör över Blizzards statistik, fast i webbläsaren över d.statList ([kategori, namn, antal, text]). Katalogens post
+  // (om spelaren är 60 och hämtad) fyller det live-profilen saknar: titlar hämtas inte av workern.
+  function lbMeLive(d, kat) {
+    var me = { s: d.slug, lv: d.level || 0, il: d.ilvl || 0, ap: d.achievements || 0, hk: d.pvp ? d.pvp.hk || 0 : 0, rk: d.pvp ? d.pvp.rank || 0 : 0,
+      pve: kat ? kat.pve : 0, pv2: kat ? kat.pv2 : 0, fish: kat ? kat.fish : 0, tr: kat ? kat.tr : 0, ti: kat ? kat.ti : 0, rep: kat ? kat.rep : 0 };
+    var L = d.statList || [];
+    if (L.length) {
+      var pe = [0, 0, 0, 0, 0, 0, 0, 0], pv = [0, 0, 0, 0, 0, 0, 0, 0], tr = [0, 0, 0, 0], fish = [0, 0, 0];
+      var PE = [/^Total kills$/i, /^Creatures killed$/i, /^Total 5-player dungeons entered$/i, /raids entered$/i, /^Quests completed$/i, /^Total deaths$/i, /^Critters killed$/i, /^Quests abandoned$/i];
+      var PV = [/^Battlegrounds played$/i, /^Battlegrounds won$/i, /^Total Killing Blows$/i, /^World Killing Blows$/i, /^Duels won$/i, /^Duels lost$/i, /^World Honorable Kills$/i, /^Battleground Honorable Kills$/i];
+      var TR = [/^Flight paths taken$/i, /^Mage Portals taken$/i, /^Summons accepted$/i, /times hearthed$/i];
+      L.forEach(function (x) {
+        var nm = x[1] || "", q = x[2] || 0;
+        if (/^fish(?:es)?\b.*caught/i.test(nm)) fish[0] = q; else if (/different fish/i.test(nm)) fish[1] = q; else if (/^fishing skill/i.test(nm)) fish[2] = q;
+        else { PE.forEach(function (re, i) { if (re.test(nm)) pe[i] = q; }); PV.forEach(function (re, i) { if (re.test(nm)) pv[i] = q; }); TR.forEach(function (re, i) { if (re.test(nm)) tr[i] = q; }); }
+      });
+      var any = function (a) { return a.some(function (v) { return v > 0; }); };
+      me.pve = any(pe) ? pe : 0; me.pv2 = any(pv) ? pv : 0; me.tr = any(tr) ? tr : 0; me.fish = any(fish) ? fish : 0;
+    }
+    if (d.reputations && d.reputations.length) { var ex = 0; d.reputations.forEach(function (r) { if (r.standing === "Exalted") ex++; }); me.rep = { ex: ex }; }
+    return me;
+  }
   function lbMeRows(me) {
     var P = KAT.players, out = [];
     lbMeDefs().forEach(function (df) {
       var fn = df[3], v = fn(me); if (!(v > 0)) return;
-      var ahead = 0, n = 0;
-      for (var i = 0; i < P.length; i++) { var p = P[i], w = fn(p); if (!(w > 0)) continue; n++; if (w > v || (w === v && (p.lv > me.lv || (p.lv === me.lv && p.il > me.il)))) ahead++; }
+      var ahead = 0, n = 1;   // n: spelaren själv plus alla andra med värde (katalogens egen post för spelaren räknas inte, live-siffran gäller)
+      for (var i = 0; i < P.length; i++) { var p = P[i]; if (p.s === me.s) continue; var w = fn(p); if (!(w > 0)) continue; n++; if (w > v || (w === v && (p.lv > me.lv || (p.lv === me.lv && p.il > me.il)))) ahead++; }
       out.push({ b: df[0], sub: df[1], lbl: Array.isArray(df[2]) ? t(df[2][0]) + ": " + t(df[2][1]).toLowerCase() : t(df[2]), rank: ahead + 1, n: n, v: v });
     });
     out.sort(function (a, b) { return a.rank - b.rank || b.n - a.n; });
@@ -2060,12 +2083,12 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
   }
   function lbSection(d) {
     if (!KAT) { if (arOpen.lb) loadKat().then(function () { if (mode === "ar" && arData && arData.kind === "character") arRedraw(); }).catch(function () {}); return arToggle("lb", t("lb"), null); }
-    var me = null; for (var i = 0; i < KAT.players.length && !me; i++) if (KAT.players[i].s === d.slug) me = KAT.players[i];
-    var rows = me ? lbMeRows(me) : [];
+    var kat = null; for (var i = 0; i < KAT.players.length && !kat; i++) if (KAT.players[i].s === d.slug) kat = KAT.players[i];
+    var me = lbMeLive(d, kat), rows = lbMeRows(me);
     var html = rows.length ? '<div class="lbme">' + rows.map(function (r) {
       var val = r.b === "pvp" && r.sub === "rank" ? (rankBadge(d.faction, r.v) || r.v) : r.b === "pvp" && r.sub === "duelr" ? r.v + " %" : num(r.v);
       return '<a class="lbmer' + (r.rank <= 3 ? " top" + r.rank : r.rank <= 100 ? " t100" : "") + '" href="#top=' + r.b + '" data-lbme="' + r.b + '" data-lbsub="' + esc(String(r.sub)) + '"><span class="nm">' + esc(r.lbl) + "</span><b>#" + num(r.rank) + "</b><small>" + t("lb_me_of", num(r.n)) + " · " + val + "</small></a>";
-    }).join("") + "</div>" : '<div class="note">' + t(me ? "lb_me_none" : "lb_me_unknown") + "</div>";
+    }).join("") + "</div>" : '<div class="note">' + t("lb_me_none") + "</div>";
     return arToggle("lb", t("lb"), rows.length) + (arOpen.lb ? html : "");
   }
   function statsSection(d) {
