@@ -1049,6 +1049,13 @@ body[data-mode=cl] .armory { padding: 8px; } body[data-mode=cl] .talpanel { padd
 .clload input { flex: 1 1 auto; min-width: 0; height: 32px; padding: 0 10px; border-radius: 4px; border: 1px solid var(--line); background: #0b0908; color: var(--fg); font: inherit; font-size: 13.5px; }
 .cltrees .lbb { grid-template-columns: 112px minmax(0, 1fr) 36px; }
 .subrow .clsegs { margin-left: 0; flex-wrap: wrap; row-gap: 4px; padding: 4px 0 4px 6px; }
+/* Rullgardinen bredvid Spells/Pet spells/Class quests/Trainers i spalten (hovra, Joakim 2026-11-20) */
+.clfly { position: fixed; z-index: 60; min-width: 170px; max-height: 70vh; overflow: auto; scrollbar-width: thin; padding: 4px; border: 1px solid var(--bronze); border-radius: 6px; background: linear-gradient(#1d1510, #120d0a); box-shadow: 0 8px 22px rgba(0, 0, 0, .65); display: grid; gap: 1px; }
+.clfly h4 { margin: 3px 10px 4px; font: 500 12px var(--display); letter-spacing: .06em; text-transform: uppercase; color: var(--grey); }
+.clfly button { all: unset; cursor: pointer; display: flex; justify-content: space-between; gap: 14px; padding: 6px 10px; border-radius: 4px; font-size: 13.5px; color: var(--fg); white-space: nowrap; }
+.clfly button span { color: var(--grey); font-size: 12.5px; } .clfly button:hover { background: var(--hover); color: var(--gold); } .clfly button[aria-pressed=true] { background: var(--sel); color: var(--gold); box-shadow: inset 0 0 0 1px rgba(246, 196, 72, .25); }
+.clfly .fe, .clfly .ri { width: 16px; height: 16px; vertical-align: -3px; margin-right: 5px; }
+.cats .cat.sub[data-clv] em.nm::after { content: "›"; margin-left: 6px; color: var(--grey); opacity: .6; } .cats .cat.sub[data-clv=tal] em.nm::after { content: ""; }
 body[data-mode=cl] .ttrees { gap: 8px; } body[data-mode=cl] .ttree { padding: 6px 6px 8px; }
 .cltr .facts { margin-top: 4px; }
 @media (max-width: 1250px) { body[data-mode=cl] .cols { grid-template-columns: 196px minmax(0, 1fr) minmax(0, 300px); } }
@@ -4872,6 +4879,14 @@ body[data-mode=cl] .ttrees { gap: 8px; } body[data-mode=cl] .ttree { padding: 6p
     var tde = e.target.closest("tbody tr[data-de]");
     if (tde) { showTab("item"); deDetail(+tde.dataset.de); return; }
     // Classes (2026-11-19): klass, vy, segment, rader, rangerna i rutan, talangplanens knappar
+    var clfly = e.target.closest("[data-clfly]");
+    if (clfly && mode === "cl") {
+      var fp = clfly.dataset.clfly.split("|");
+      clView = fp[0]; clFold = false; clSp = 0; clQ = 0; clTr = 0;
+      if (fp[1] === "ln") clLine = fp[2]; else if (fp[1] === "pet") clPet = fp[2]; else if (fp[1] === "fa") { clFa = fp[2]; clFaSet = true; } else if (fp[1] === "tk") clTk = fp[2];
+      clFlyHide(); qFlush(); query = ""; $("q").value = ""; clShow(true); showTab("item"); return;
+    }
+    if (!e.target.closest("#clfly")) clFlyHide();
     var clc = e.target.closest("[data-clc]");
     if (clc && mode === "cl") { if (clc.dataset.clc === clSel) { clFold = !clFold; drawCats(); return; } clFold = false; if (clc.dataset.clc !== clSel) { clSel = clc.dataset.clc; clRanks = clLoadSaved(); clSp = 0; clQ = 0; clTr = 0; clLine = ""; clPet = ""; if (clView === "pets" && !(clC() && clC().pets.length)) clView = "spells"; try { localStorage.setItem(CL_SEL_KEY, clSel); } catch (e9) {} } qFlush(); query = ""; $("q").value = ""; clShow(true); showTab("item"); return; }
     var clv = e.target.closest("[data-clv]");
@@ -6443,6 +6458,51 @@ body[data-mode=cl] .ttrees { gap: 8px; } body[data-mode=cl] .ttree { padding: 6p
     if (c0) h += '<div class="clraces" title="' + t("cl_races") + '">' + c0.races.map(function (r) { return '<span title="' + esc(r[0]) + (r[1] === "H" ? " · Horde" : " · Alliance") + '">' + raceIcon(r[0], "MALE") + "</span>"; }).join("") + "</div>";
     return h;
   }
+  // Rullgardinen (Joakim 2026-11-20): hovra över Spells/Pet spells/Class quests/Trainers i spalten så ligger samma val som
+  // segmenten bredvid raden; klick väljer vy och filter i ett. Till höger om raden, under den när det inte får plats.
+  var clFlyEl = null, clFlyRow = null, clFlyTimer = 0;
+  function clFlyItems(v) {
+    var c = clC(), it = [], fa = function (f) { return f === "H" ? faIcon("HORDE") + "Horde" : f === "A" ? faIcon("ALLIANCE") + "Alliance" : t("lb_both"); };
+    if (!c) return it;
+    if (v === "spells") {
+      var live = c.spells.filter(function (s) { return !s.x; }), xs = c.spells.length - live.length;
+      it.push(["ln", "", t("co_s_all"), live.length, clLine === ""]);
+      c.lines.forEach(function (l) { it.push(["ln", l, esc(l), live.filter(function (s) { return s.ln === l; }).length, clLine === l]); });
+      if (xs) it.push(["ln", "x", t("cl_changed", xs), null, clLine === "x"]);
+    } else if (v === "pets") {
+      it.push(["pet", "", t("co_s_all"), c.pets.reduce(function (a, p) { return a + p.spells.length; }, 0), clPet === ""]);
+      c.pets.forEach(function (p) { it.push(["pet", p.name, esc(p.name), p.spells.length, clPet === p.name]); });
+    } else if (v === "quests") {
+      var qs = clQuestsAll(clName());
+      ["", "H", "A"].forEach(function (f) { it.push(["fa", f, fa(f), qs.filter(function (x) { return !f || !x.q[5] || x.q[5] === f; }).length, clFa === f]); });
+    } else if (v === "trainers") {
+      ["", "H", "A"].forEach(function (f) { it.push(["fa", f, fa(f), c.trainers.filter(function (x) { return !f || !x.f || x.f === f; }).length, clFa === f]); });
+      if (c.pets.length) { it.push(["tk", "c", t("cl_tk_class"), c.trainers.filter(function (x) { return x.k === "c"; }).length, clTk === "c"]); it.push(["tk", "p", t(clName() === "Warlock" ? "cl_tk_demon" : "cl_tk_pet"), c.trainers.filter(function (x) { return x.k === "p"; }).length, clTk === "p"]); }
+    }
+    return it;
+  }
+  function clFlyHide() { clFlyRow = null; if (clFlyEl) clFlyEl.hidden = true; }
+  function clFlyShow(row) {
+    var v = row.dataset.clv, items = clFlyItems(v);
+    if (!items.length) { clFlyHide(); return; }
+    if (!clFlyEl) { clFlyEl = document.createElement("div"); clFlyEl.className = "clfly"; clFlyEl.id = "clfly"; document.body.appendChild(clFlyEl); }
+    clFlyRow = row;
+    clFlyEl.innerHTML = "<h4>" + t("cl_v_" + v) + "</h4>" + items.map(function (x) { return '<button type="button" data-clfly="' + v + "|" + x[0] + "|" + esc(String(x[1])) + '" aria-pressed="' + x[4] + '">' + x[2] + (x[3] != null ? "<span>" + num(x[3]) + "</span>" : "") + "</button>"; }).join("");
+    clFlyEl.hidden = false;
+    var r = row.getBoundingClientRect(), w = clFlyEl.offsetWidth, h = clFlyEl.offsetHeight, left = r.right - 2, top = r.top;
+    if (left + w > innerWidth - 8) { left = Math.max(8, Math.min(r.left, innerWidth - w - 8)); top = r.bottom - 2; }   // smal skärm: under raden
+    if (top + h > innerHeight - 8) top = Math.max(8, innerHeight - h - 8);
+    clFlyEl.style.left = left + "px"; clFlyEl.style.top = top + "px";
+  }
+  document.addEventListener("mouseover", function (e) {
+    if (mode !== "cl" || !CL || !e.target.closest) return;
+    var row = e.target.closest("#cats .cat.sub[data-clv]");
+    clearTimeout(clFlyTimer);
+    if (row) { if (row !== clFlyRow) clFlyTimer = setTimeout(function () { clFlyShow(row); }, 120); return; }
+    if (clFlyEl && !clFlyEl.hidden && !e.target.closest("#clfly")) clFlyTimer = setTimeout(clFlyHide, 150);
+  });
+  document.addEventListener("scroll", function () { if (clFlyEl && !clFlyEl.hidden) clFlyHide(); }, true);
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape") clFlyHide(); });
   function drawClSub() {   // segmenten ovanför listan: skill line / pet / fraktion / tränarsort
     var el = $("clsub"); if (!el) return;
     var on = mode === "cl" && clView !== "tal" && !!CL && !!clC(); el.hidden = !on; if (!on) return;
