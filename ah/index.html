@@ -374,6 +374,7 @@ body[data-mode=hu] .facts dd { font-size: 15px; }
 .huz.e { width: 9px; height: 9px; margin: -5.5px 0 0 -5.5px; background: #40c040; }
 .huz.src { width: 8px; height: 8px; margin: -5px 0 0 -5px; background: #ffd24a; box-shadow: 0 0 4px rgba(255, 210, 74, .8); cursor: default; }
 .srcs2 { display: grid; gap: 10px; }
+.tag.cd { color: #f0a85a; border-color: rgba(240, 168, 90, .5); background: rgba(240, 120, 40, .14); }   /* reagens som görs på cooldown */
 .lbme { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: 2px 8px; padding: 4px 0 6px; }   /* kolumnerna delas av alla rader (subgrid) så # och "of" står rakt under varandra (Joakim 2026-11-19) */
 .lbmer { display: grid; grid-column: 1 / -1; grid-template-columns: subgrid; align-items: baseline; padding: 3px 8px; border-radius: 4px; color: var(--fg); text-decoration: none; font-size: 12.5px; }
 .lbmer:hover { background: var(--hover); } .lbmer .nm { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; } .lbmer b { text-align: left; color: var(--grey); } .lbmer small { color: var(--grey); font-size: 11.5px; white-space: nowrap; } .lbmer small em { font-weight: 700; font-style: italic; color: var(--fg); }   /* PvP-rankens namn fet och kursiv (Joakim 2026-11-19) */
@@ -1554,7 +1555,7 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
       ga_assume: "Your pace", ga_reset: "Reset", ga_nodes: "Nodes / hour", ga_per_node: "Items / node", ga_kills: "Kills / hour", ga_per_kill: "Skins / kill", ga_greens: "Greens / hour", ga_per_green: "Materials / green",
       ga_what: "What it brings", ga_more: "and %1 more", ga_recipes: "Best recipes to craft", ga_rec_none: "No recipe in this skill range sells at a profit right now.", ga_rec_tip: "Open the recipe",
       ga_missing: "%1 item(s) have no price on this market right now and count as 0.", ga_note: "The shares per band are what the zones of that level typically give, not measured in Forever. Change your pace above and everything is recalculated.",
-      f_cost: "Cost to craft", f_sellf: "Sells for", f_profit: "Profit after 5%", f_trainer: "Trainer price", f_makes: "Makes %1", reagents: "Reagents", col_each: "Each", col_total: "Total", col_qty_s: "Qty",
+      f_cost: "Cost to craft", f_sellf: "Sells for", f_profit: "Profit after 5%", f_trainer: "Trainer price", f_makes: "Makes", f_cd: "Cooldown", cd_tag: "%1 cooldown", cd_tip: "Made on a cooldown (%1), so few are made and the price stays high", reagents: "Reagents", col_each: "Each", col_total: "Total", col_qty_s: "Qty",
       vendor_tag: "vendor", missing_n: "No price for %1 reagent(s): the cost is incomplete.", not_on_ah: "The crafted item is not on the auction house right now, so there is no selling price.",
       it_find: "Where to find it", it_gather: "Gathered from", it_chests: "Also in chests", it_drop: "Dropped by", it_drop_more: "and %1 more mobs",
       it_skin: "Skinned from", it_pick: "Pickpocketed from", it_vendor: "Sold by", it_vendor_lim: "limited stock", it_in: "Found in", it_used: "Reagent for",
@@ -4439,20 +4440,26 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
 
   // Receptets ruta: kostnad, säljpris, vinst, tränarpris, reagenserna med pris, och var man lär sig det.
   // Receptrutan (reagenser med stjärnor, källor): används av Professions och av Armory (kända recept i högerpanelen).
+  // Cooldowns (Joakim 2026-11-19: "är det cooldown … så borde det stå här"): ur cmangos spell_template 1.12. Receptets egen
+  // cooldown efter namn, och reagenser som bara görs på cooldown (därför dyra: Refined Deeprock Salt, Mooncloth, Arcanite Bar).
+  function cdRecipe(name) { if (/^Transmute: (Arcanite|Mithril to Truesilver)$/.test(name)) return 48; if (/^Transmute:/.test(name)) return 24; if (name === "Mooncloth") return 96; return 0; }
+  var CD_ITEM = { 15409: [72, "Salt Shaker"], 14342: [96, "Mooncloth"], 12360: [48, "Transmute: Arcanite"] };
+  function cdText(h) { return h < 48 ? h + " h" : (h / 24) + " d"; }
   function recipeHtml(r) {
-    var rc = r.rc, out = byId[rc.item], it = RECEPT.items[rc.item] || ["", -1, 0], q = out ? out.q : it[1];
+    var rc = r.rc, cdh = cdRecipe(rc.name), out = byId[rc.item], it = RECEPT.items[rc.item] || ["", -1, 0], q = out ? out.q : it[1];
     var learn = rc.cost ? t("src_trainer") : rc.recipeItem ? (RECEPT.items[rc.recipeItem] ? RECEPT.items[rc.recipeItem][0] : t("src_drop")) : "";
     var facts = '<div><dt title="' + esc(t("col_cost_tip")) + '">' + t("f_cost") + "</dt><dd>" + (r.cost ? money(r.cost) : DASH) + "</dd></div>" +
       "<div><dt>" + t("f_sellf") + "</dt><dd>" + (r.sell ? money(r.sell) : DASH) + "</dd></div>" +
       '<div><dt title="' + esc(t("col_profit_tip")) + '">' + t("f_profit") + "</dt><dd>" + profitHtml(r) + "</dd></div>" +
       (r.day ? "<div><dt>" + t("f_day") + '</dt><dd><span class="est">' + num(r.day) + "</span></dd></div>" : "") +
       (rc.cost ? "<div><dt>" + t("f_trainer") + "</dt><dd>" + money(rc.cost) + "</dd></div>" : "") +
-      (rc.n > 1 ? "<div><dt>" + t("f_makes") + "</dt><dd>" + rc.n + "</dd></div>" : "");
+      (rc.n > 1 ? "<div><dt>" + t("f_makes") + "</dt><dd>" + rc.n + "</dd></div>" : "") +
+      (cdh ? "<div><dt>" + t("f_cd") + "</dt><dd>" + cdText(cdh) + "</dd></div>" : "");
     var reag = rc.reagents.map(function (rg) {
       var ri = byId[rg[0]], nm = RECEPT.items[rg[0]], p = recPrice(rg[0]), vend = !(ri && ri.min > 0) && nm && nm[2] > 0;
       // Stjärnan (Joakim 2026-11-16): reagensen hamnar i Min lista som inköpslista; bara varor som finns på AH går att spara.
       return '<tr><td class="st">' + (ri ? starHtml(rg[0]) : "") + "</td><td>" + (ri ? iconHtml(ri) : "") + '<a class="wh" href="#item=' + rg[0] + '" data-upgo="' + rg[0] + '"><span data-tip="' + rg[0] + '" class="' + qcls(ri ? ri.q : nm ? nm[1] : -1) + '">' + esc(nm ? nm[0] : ri ? ri.name : "Item " + rg[0]) + "</span></a>" +
-        (vend ? ' <span class="tag v">' + t("vendor_tag") + "</span>" : "") + "</td><td>" + rg[1] + "</td><td>" + (p ? money(p) : DASH) + "</td><td>" + (p ? money(p * rg[1]) : DASH) + "</td></tr>";
+        (vend ? ' <span class="tag v">' + t("vendor_tag") + "</span>" : "") + (CD_ITEM[rg[0]] ? ' <span class="tag cd" title="' + esc(t("cd_tip", CD_ITEM[rg[0]][1])) + '">' + t("cd_tag", cdText(CD_ITEM[rg[0]][0])) + "</span>" : "") + "</td><td>" + rg[1] + "</td><td>" + (p ? money(p) : DASH) + "</td><td>" + (p ? money(p * rg[1]) : DASH) + "</td></tr>";
     }).join("");
     var ahReag = rc.reagents.filter(function (rg) { return byId[rg[0]]; }).map(function (rg) { return rg[0]; });
     var allOn = ahReag.length && ahReag.every(watched);
