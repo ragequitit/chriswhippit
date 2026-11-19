@@ -910,7 +910,14 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
 .sub button:focus-visible { outline: 2px solid var(--edge); outline-offset: -2px; }
 .sub .fi { width: 22px; height: 22px; object-fit: contain; } .sub .fi.bw { border-radius: 50%; }
 [data-appearance=atlas] .sub { background: #0F1821; }
-.trnote { margin: 0 0 10px; }
+/* Tradings egen flikrad under underflikarna */
+.sub2 { margin-top: -14px; background: #100D0B; } .sub2 button { height: 36px; font-size: 13.5px; font-weight: 500; padding: 0 14px; } .sub2 .ci { width: 18px; height: 18px; border-radius: 3px; }
+[data-appearance=atlas] .sub2 { background: #0C131A; }
+.sub .segs { margin-left: auto; display: inline-flex; gap: 10px; align-items: center; padding-left: 10px; }
+.seg { display: inline-flex; border: 1px solid var(--line); background: var(--inset); }
+.seg button { all: unset; cursor: pointer; height: 26px; padding: 0 11px; font-size: 13px; color: var(--grey); display: inline-flex; align-items: center; border-left: 1px solid var(--line); }
+.seg button:first-child { border-left: 0; } .seg button:hover { color: var(--fg); background: var(--hover); }
+.seg button[aria-pressed=true] { color: var(--edge); background: var(--sel); box-shadow: inset 0 -2px 0 var(--edge); }
 #list th.bs, #list td.bs { text-align: left; white-space: nowrap; line-height: 1.2; padding-top: 3px; padding-bottom: 3px; }
 .sect { display: block; order: 0; margin: 0 8px 0 0; font: 600 26px/1.1 var(--display); color: var(--gold); white-space: nowrap; }
 .bar #q { order: 1; flex: 0 1 640px; height: 40px; }
@@ -1062,6 +1069,7 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
       <button type="button" id="modeCo" aria-pressed="false" data-t-title="mode_co_tip"><img class="ai" alt="" width="32" height="32" data-ai="nav-collections"><img class="mi" alt="" data-mi="co" onerror="this.style.visibility='hidden'"><span data-t="mode_co">Collections</span></button>
     </div>
     <div class="sub" id="ahsub" hidden></div>
+    <div class="sub sub2" id="trsub" hidden></div>
     <span class="count" id="count"></span>
   </div>
 
@@ -1301,6 +1309,21 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
       b("other", fi(otherSide()) + "<span>" + esc(ahName(otherSide())) + "</span>", t("sub_other_tip")) +
       b("tr", (ASSET_BASE ? '<img class="fi" src="' + ASSET_BASE + 'icons/nav-trading.png" alt="">' : "") + "<span>" + t("mode_tr") + "</span>", t("mode_tr_tip"));
   }
+  // Tradings vyer (Joakim 2026-11-19): cheap = Sell at usual, bs = Buy / sell (bara tydliga mönster), vend = Vendor pays more.
+  var trView = "cheap";
+  function drawTrSub() {
+    var el = $("trsub"); if (!el) return;
+    var on = mode === "tr" || mode === "de" || mode === "fx"; el.hidden = !on; if (!on) return;
+    var cur = mode === "de" ? "de" : mode === "fx" ? "fx" : trView;
+    var b = function (k, html, tip) { return '<button type="button" data-trv="' + k + '" aria-pressed="' + (cur === k) + '" title="' + esc(tip || "") + '">' + html + "</button>"; };
+    el.innerHTML = b("cheap", t("trv_cheap"), t("col_usual_p_tip")) + b("bs", t("col_bs"), t("col_bs_tip")) + b("vend", t("trv_vend"), t("col_vp_tip")) +
+      b("de", '<img class="ci" src="' + RICON + 'inv_enchant_disenchant.jpg" alt="">' + t("mode_de")) + b("fx", '<img class="ci" src="' + RICON + 'inv_misc_coin_02.jpg" alt="">' + t("fx_btn"), t("fx_how", (fxKeys().rg || "eu").toUpperCase() + " " + (MK_RSN[fxKeys().rs] || "")) + " " + t("fx_min"));
+    if (mode === "fx") {   // filtren som segment till höger (Joakim 2026-11-19: inte chips i spalten)
+      var sg = function (attr, cur, items) { return '<span class="seg">' + items.map(function (it) { return '<button type="button" ' + attr + '="' + it[0] + '" aria-pressed="' + (cur === it[0]) + '">' + it[1] + "</button>"; }).join("") + "</span>"; };
+      el.innerHTML += '<span class="segs">' + sg("data-fxdir", fxDir, [["here", t("fx_here")], ["there", t("fx_there")], ["all", t("fx_all")]]) + sg("data-fxkind", fxKind, [["all", t("fx_k_all")], ["stack", t("fx_k_stack")], ["gear", t("fx_k_gear")]]) + "</span>";
+    }
+  }
+  function trSort(v) { if (v === "bs") { sortKey = "bs"; sortDir = -1; } else if (v === "vend") { sortKey = "vp"; sortDir = -1; } else { sortKey = "dip"; sortDir = -1; } }
   function houseFor(fa) { var hp = houseParts(house) || ["pvp", "horde", "eu"], k = mkKey(hp[2], hp[0], fa); return mkHas(k) ? k : mkNear(hp[2], hp[0], fa); }
   function mktOpen(open) { $("mktPop").hidden = !open; $("mktBtn").setAttribute("aria-expanded", open ? "true" : "false"); }
   var histCache = {};
@@ -1502,6 +1525,8 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
       col_usual_p: "Sell at usual", col_usual_p_tip: "Buy at today's price, sell at the usual price these days: profit after the auction house's 5% cut. Grey minus = dearer than usual right now.",
       usual_pos: "Buy now at %1, sell at the usual price %2: +%3% after the auction house's 5% cut", usual_neg: "%1% above the usual price (%2): a time to sell, not to buy",
       col_bs: "Buy / sell", col_bs_tip: "From this week's morning and evening scans: when the item is cheapest and dearest. Profit after the auction house's 5% cut, on at least 6 of the last 10 days. Empty = no clear pattern.",
+      trv_cheap: "Cheap now", trv_vend: "Vendor pays more", col_vp: "Vendor pays", col_vp_tip: "What the vendor pays minus the cheapest listing on the AH: buy it up and sell to any vendor. No auction house cut.",
+      vp_tip: "Buy at %1, the vendor pays %2: +%3 each (%4%)",
       bs_txt: "Buy %1, sell %2", bl_0: "night", bl_1: "morning", bl_2: "afternoon", bl_3: "evening",
       tr_intro: "Trading shows where the price moves: buy cheap at one time or place, sell at another. Every + is profit after the auction house's 5% cut.",
       col_best: "Best time", col_best_tip: "When in the day the item has been cheapest and dearest this week. The profit is after the AH's 5%.",
@@ -3420,8 +3445,7 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
     if (mode === "dg") { $("cats").innerHTML = DG ? dgCats() : ""; $("cats").hidden = false; return; }
     if (mode === "hu") { $("cats").innerHTML = HU ? huCats() : ""; $("cats").hidden = false; return; }
     if (mode === "co") { $("cats").innerHTML = CO ? coCats() : ""; $("cats").hidden = false; return; }
-    if (mode === "de") { $("cats").innerHTML = '<button class="cat lbbtn" type="button" data-gotr="1"><em class="nm">‹ Trading</em></button>' + (DEX ? deCats() : ""); $("cats").hidden = false; return; }
-    if (mode === "fx") { $("cats").innerHTML = '<button class="cat lbbtn" type="button" data-gotr="1"><em class="nm">‹ Trading</em></button>' + fxCats(); $("cats").hidden = false; return; }
+    if (mode === "de") { $("cats").innerHTML = DEX ? deCats() : ""; $("cats").hidden = false; return; }
     if (mode === "ar") {
       if (arLb) { $("cats").innerHTML = lbCats(); $("cats").hidden = false; return; }
       $("cats").innerHTML = arSection("friends", t("ar_friends"), arFriends) + arSection("recent", t("ar_recent"), arRecent);
@@ -3467,8 +3491,7 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
       });
     });
     // Disenchant sist, under kategorierna (Joakim 2026-11-18)
-    $("cats").innerHTML = (mode === "tr" ? '<div class="note trnote">' + t("tr_intro") + "</div>" : "") + "<h2>" + t("cats_h") + "</h2>" + html + (mode === "tr" ? '<button class="cat lbbtn" type="button" data-gode="1"><img class="ci" src="' + RICON + 'inv_enchant_disenchant.jpg" alt=""><em class="nm">' + t("mode_de") + "</em><span>›</span></button>" +
-      '<button class="cat lbbtn" type="button" data-gofx="1"><img class="ci" src="' + RICON + 'inv_misc_coin_02.jpg" alt=""><em class="nm">' + t("fx_btn") + "</em><span>›</span></button>" : "");
+    $("cats").innerHTML = "<h2>" + t("cats_h") + "</h2>" + html;   // Disenchant och Horde ⇄ Alliance ligger i Tradings flikrad (Joakim 2026-11-19)
     $("cats").hidden = cats.length === 0 && mode !== "tr";
   }
 
@@ -3599,7 +3622,10 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
     }
     view = rows.filter(function (r) {
       if (!showAll && !r.name) return false;
-      if (mode === "tr" && (r.gear || r.qty < TR_MIN)) return false;
+      if (mode === "tr") {
+        if (trView === "vend") { if (!(r.sp > 0 && (r.lo || r.min) > 0 && r.sp > (r.lo || r.min))) return false; }
+        else { if (r.gear || r.qty < TR_MIN) return false; if (trView === "bs" && !btClear(r)) return false; }
+      }
       if (catSel >= 0 && r.ci !== catSel) return false;
       if (subSel >= 0 && r.si !== subSel) return false;
       if (sub2Sel >= 0 && r.ui !== sub2Sel) return false;
@@ -3609,7 +3635,8 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
     var k = sortKey, dir = sortDir;
     view.sort(function (a, b) {
       if (k === "name") return dir * (a.name || "~" + a.id).localeCompare(b.name || "~" + b.id, "sv");
-      if (k === "dip") return dir * (a.dip - b.dip) || a.id - b.id;
+      if (k === "dip") { var ad = a.day >= 20 ? 1 : 0, bd = b.day >= 20 ? 1 : 0; if (ad !== bd) return bd - ad; return dir * (a.dip - b.dip) || a.id - b.id; }   // 1-kopparfiskar med +2000 % inte överst (Joakim 2026-11-19)
+      if (k === "vp") return dir * ((a.sp - (a.lo || a.min)) - (b.sp - (b.lo || b.min))) || a.id - b.id;
       if (k === "tg") return dir * (a.tg - b.tg) || a.id - b.id;
       if (k === "btg" || k === "bs") return dir * (a.btg - b.btg) || a.id - b.id;
       if (k === "cat") {   // kategori, underkategori, sedan namn; okänd kategori sist
@@ -3765,6 +3792,11 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
     if (p <= -1) return '<span class="dim" title="' + esc(t("usual_neg", -p, usual)) + '">−' + (-p) + "%</span>";
     return '<span class="dim">±0</span>';
   }
+  function vpHtml(r) {   // Vendor pays more: handlarens pris minus billigaste listningen, ingen AH-avgift
+    var buy = r.lo || r.min; if (!(r.sp > buy)) return "";
+    var p = Math.round((r.sp - buy) / buy * 100);
+    return '<span class="down2" title="' + esc(t("vp_tip", moneyText(buy), moneyText(r.sp), moneyText(r.sp - buy), p)) + '">+' + p + "%</span> <small>+" + moneyText(r.sp - buy) + "</small>";
+  }
   // "Buy / sell": veckans mönster i klartext, "Buy morning, sell evening +11%"; tomt när mönstret inte är tydligt.
   function bsHtml(r) {
     if (!btClear(r)) return "";
@@ -3796,7 +3828,7 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
     var tr = '<tr tabindex="0" data-id="' + r.id + '"' + (r.id === selId ? ' aria-selected="true"' : "") + '><td class="fav">' + starHtml(r.id) + '</td><td class="nm">' + name + "</td>";
     if (mode === "tr") {
       var c0 = D.cats && D.cats[r.ci], cico = c0 ? catIcon(c0[0]) : "";
-      return tr + '<td class="cic kat" title="' + esc(c0 ? catName(c0[0]) : "") + '">' + (cico || "") + "</td><td>" + money(r.min) + '</td><td class="pct">' + usualHtml(r) + '</td><td class="pct bs">' + bsHtml(r) + "</td><td>" + num(r.qty) + "</td>" + day + "</tr>";
+      return tr + '<td class="cic kat" title="' + esc(c0 ? catName(c0[0]) : "") + '">' + (cico || "") + "</td><td>" + money(r.min) + '</td><td class="pct">' + (trView === "vend" ? vpHtml(r) : usualHtml(r)) + '</td><td class="pct bs">' + bsHtml(r) + "</td><td>" + num(r.qty) + "</td>" + day + "</tr>";
     }
     return tr + '<td class="kat hide-s">' + catCell(r) + '</td><td class="hide-s">' + (r.lvl ? r.lvl : DASH) + "</td><td>" + money(r.min) +
       "</td><td>" + num(r.qty) + "</td>" + day + "</tr>";
@@ -3818,7 +3850,7 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
       : mode === "cr"
       ? [["name", "col_recipe"], ["skill", "col_skill", "col_skill_tip"], ["cost", "col_cost", "col_cost_tip"], ["sell", "col_sell", "col_sell_tip"], ["profit", "col_profit", "col_profit_tip"], ["day", "col_day", "col_day_tip", "hide-s dcol"]]
       : mode === "tr"
-      ? [["name", "col_item"], ["cat", "", null, "cic kat"], ["min", "col_min", "col_min_tip"], ["dip", "col_usual_p", "col_usual_p_tip"], ["bs", "col_bs", "col_bs_tip", "bs"],
+      ? [["name", "col_item"], ["cat", "", null, "cic kat"], ["min", "col_min", "col_min_tip"], (trView === "vend" ? ["vp", "col_vp", "col_vp_tip"] : ["dip", "col_usual_p", "col_usual_p_tip"]), ["bs", "col_bs", "col_bs_tip", "bs"],
          ["qty", "col_qty"], ["day", "col_day", "col_day_tip", "hide-s dcol"]]
       : [["name", "col_item"], ["cat", "col_cat", null, "kat hide-s"], ["lvl", "col_lvl", "col_lvl_tip", "hide-s"], ["min", "col_min", "col_min_tip"],
          ["qty", "col_qty"], ["day", "col_day", "col_day_tip", "hide-s dcol"]];
@@ -3843,6 +3875,7 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
     $("modeDg").setAttribute("aria-pressed", mode === "dg" ? "true" : "false");
     $("modeHu").setAttribute("aria-pressed", mode === "hu" ? "true" : "false");
     $("modeCo").setAttribute("aria-pressed", mode === "co" ? "true" : "false");
+    drawTrSub();
     $("sect").textContent = mode === "ah" ? ahName((houseParts(house) || [0, "horde"])[1]) : t(mode === "de" || mode === "fx" ? "mode_tr" : mode === "ar" && arLb ? "mode_lb" : "mode_" + mode);
     drawSub();
     $("q").setAttribute("aria-label", t(mode === "cr" ? "search_rc" : mode === "ar" ? "search_ar" : mode === "qu" ? "search_qu" : mode === "dg" ? "search_dg" : mode === "hu" ? "search_hu" : mode === "co" ? "search_co" : "search_ph"));
@@ -4394,9 +4427,9 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
     if (e.target.closest("[data-gotr]") && (mode === "de" || mode === "fx")) { setMode("tr"); return; }
     if (e.target.closest("[data-gofx]") && mode === "tr") { setMode("fx"); return; }
     var fxd = e.target.closest("[data-fxdir]");
-    if (fxd && mode === "fx") { fxDir = fxd.dataset.fxdir; drawCats(); refresh(); toTop(); return; }
+    if (fxd && mode === "fx") { fxDir = fxd.dataset.fxdir; drawTrSub(); refresh(); toTop(); return; }
     var fxk = e.target.closest("[data-fxkind]");
-    if (fxk && mode === "fx") { fxKind = fxk.dataset.fxkind; drawCats(); refresh(); toTop(); return; }
+    if (fxk && mode === "fx") { fxKind = fxk.dataset.fxkind; drawTrSub(); refresh(); toTop(); return; }
     var tfx = e.target.closest("tbody tr[data-fx]");
     if (tfx) { showTab("item"); fxDetail(+tfx.dataset.fx, tfx.dataset.fxg || ""); return; }
     var deq = e.target.closest("[data-deq]");
@@ -5476,6 +5509,11 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
       '<div class="hufil"><div class="huchips">' + kchip("all", t("fx_k_all")) + kchip("stack", t("fx_k_stack")) + kchip("gear", t("fx_k_gear")) + "</div></div>" +
       '<div class="note">' + t("fx_how", fk.rg.toUpperCase() + " " + (MK_RSN[fk.rs] || "")) + "</div><div class='note'>" + t("fx_min") + "</div>";
   }
+  function fxCatOk(id) {   // vald kategori i vänsterspalten gäller även Horde ⇄ Alliance (Joakim 2026-11-19)
+    if (catSel < 0) return true;
+    var r0 = byId[id]; if (!r0) return false;
+    return r0.ci === catSel && (subSel < 0 || r0.si === subSel) && (sub2Sel < 0 || r0.ui === sub2Sel);
+  }
   function fxRefresh(q) {
     view = [];
     var M = FX.maps, mi = fxKeys().mine === "alliance" ? 1 : 0, oi = 1 - mi;
@@ -5484,6 +5522,7 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
       if (!a || h.qty < FX_MIN || a.qty < FX_MIN) return;
       var me = mi ? a : h, ot = mi ? h : a, b = M[2] && M[2][id];
       if (q && (me.name || ot.name).toLowerCase().indexOf(q) < 0) return;
+      if (!fxCatOk(+id)) return;
       var eff = b && b.min > 0 && b.min < ot.min ? b.min : ot.min;   // ligger det billigare på Blackwater köper andra sidan där
       var gap = (ot.min - me.min) / me.min, profit = Math.round(eff * FX_CUT - me.min);
       if (fxDir === "here" && !(gap > 0.05)) return;
@@ -5491,7 +5530,7 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
       if (fxKind === "gear") return;
       view.push({ fx: +id, gk: "", it: me.name ? me : ot, p: [h.min, a.min, b ? b.min : 0], n: [h.qty, a.qty, b ? b.qty : 0], d: [h.day, a.day, b ? b.day : 0], gap: gap, profit: profit, mi: mi, oi: oi });
     });
-    if (fxKind !== "stack") fxGearRows(q, mi, oi).forEach(function (x) { view.push(x); });
+    if (fxKind !== "stack") fxGearRows(q, mi, oi).forEach(function (x) { if (fxCatOk(x.fx)) view.push(x); });
     var k = sortKey, dir = sortDir;
     view.sort(function (x, y) {
       var d = k === "name" ? x.it.name.localeCompare(y.it.name) : k === "h" ? x.p[0] - y.p[0] : k === "a" ? x.p[1] - y.p[1] : k === "b" ? x.p[2] - y.p[2]
@@ -5783,7 +5822,7 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
     }).catch(function () { if (mode === "dg") $("detail").innerHTML = '<div class="note">' + t("qu_fail") + "</div>"; });
   }
   function resetModeState(m) {   // ny flik: egen sortering, inga kvarglömda filter från förra fliken
-    if (m === "tr") { sortKey = "dip"; sortDir = -1; } else if (m === "cr") { sortKey = "profit"; sortDir = -1; } else if (m === "qu") { sortKey = "lvl"; sortDir = 1; } else { sortKey = "day"; sortDir = -1; }
+    if (m === "tr") { trSort(trView); } else if (m === "cr") { sortKey = "profit"; sortDir = -1; } else if (m === "qu") { sortKey = "lvl"; sortDir = 1; } else { sortKey = "day"; sortDir = -1; }
     openId = null;
     catSel = -1; subSel = -1; sub2Sel = -1;   // kategorierna och yrkena är olika listor
     qFlush(); query = ""; $("q").value = "";   // väntande sökning från förra fliken stryks (granskning 2026-11-18)
@@ -5922,6 +5961,14 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
     fetch(dataUrl(), { cache: "no-cache" }).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
       .then(function (d) { gotData(hh, d); if (tok === dataSeq) load(d, !!D); }).catch(function () { if (tok === dataSeq) showError(); });
   }
+  $("trsub").addEventListener("click", function (e) {
+    var b = e.target.closest("button[data-trv]"); if (!b) return;
+    var k = b.dataset.trv;
+    if (k === "de" || k === "fx") { setMode(k); return; }
+    trView = k; trSort(k);
+    if (mode !== "tr") { setMode("tr"); return; }   // setMode ritar om; resetModeState sätter sorteringen efter trView
+    drawTrSub(); refresh(); toTop();
+  });
   $("ahsub").addEventListener("click", function (e) {
     var b = e.target.closest("button[data-sub]"); if (!b) return;
     var k = b.dataset.sub;
