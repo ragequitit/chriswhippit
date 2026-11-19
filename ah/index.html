@@ -4872,9 +4872,9 @@ body[data-mode=cl] .ttrees { gap: 8px; } body[data-mode=cl] .ttree { padding: 6p
     if (tde) { showTab("item"); deDetail(+tde.dataset.de); return; }
     // Classes (2026-11-19): klass, vy, segment, rader, rangerna i rutan, talangplanens knappar
     var clc = e.target.closest("[data-clc]");
-    if (clc && mode === "cl") { if (clc.dataset.clc !== clSel) { clSel = clc.dataset.clc; clRanks = clLoadSaved(); clSp = 0; clQ = 0; clTr = 0; clLine = ""; clPet = ""; if (clView === "pets" && !(clC() && clC().pets.length)) clView = "spells"; try { localStorage.setItem(CL_SEL_KEY, clSel); } catch (e9) {} } qFlush(); query = ""; $("q").value = ""; clShow(true); showTab("item"); return; }
+    if (clc && mode === "cl") { if (clc.dataset.clc === clSel) { clFold = !clFold; drawCats(); return; } clFold = false; if (clc.dataset.clc !== clSel) { clSel = clc.dataset.clc; clRanks = clLoadSaved(); clSp = 0; clQ = 0; clTr = 0; clLine = ""; clPet = ""; if (clView === "pets" && !(clC() && clC().pets.length)) clView = "spells"; try { localStorage.setItem(CL_SEL_KEY, clSel); } catch (e9) {} } qFlush(); query = ""; $("q").value = ""; clShow(true); showTab("item"); return; }
     var clv = e.target.closest("[data-clv]");
-    if (clv && mode === "cl") { clView = clv.dataset.clv; qFlush(); query = ""; $("q").value = ""; clShow(true); showTab("item"); return; }
+    if (clv && mode === "cl") { clView = clv.dataset.clv; clFold = false; qFlush(); query = ""; $("q").value = ""; clShow(true); showTab("item"); return; }
     var clln = e.target.closest("[data-clln]"), clpet = e.target.closest("[data-clpet]"), clfa = e.target.closest("[data-clfa]"), cltk = e.target.closest("[data-cltk]");
     if ((clln || clpet || clfa || cltk) && mode === "cl") { if (clln) { clLine = clln.dataset.clln; clSp = 0; } if (clpet) { clPet = clpet.dataset.clpet; clSp = 0; } if (clfa) { clFa = clfa.dataset.clfa; clFaSet = true; clQ = 0; clTr = 0; } if (cltk) { clTk = cltk.dataset.cltk; clTr = 0; } drawClSub(); refresh(); toTop(); clDetail(); setHash(clHash()); return; }
     var tcl = e.target.closest("tbody tr[data-clsp]");
@@ -6293,7 +6293,7 @@ body[data-mode=cl] .ttrees { gap: 8px; } body[data-mode=cl] .ttree { padding: 6p
   // hamta-klasser.js: Classic-databasens tränare, Forever-klientens texter), class quests (quests.json) och tränare.
   // Länk: #cls=warrior&cv=tal|spells|pets|quests|trainers, &t=<plan> (en siffra per talang, träden med - emellan),
   // &sp=<spell-id>, &ln=<skill line>, &pet=<namn>, &cq=<quest>, &tr=<npc>. Planen sparas per klass i webbläsaren.
-  var CL = null, clPromise = null, clSel = "", clView = "tal", clPet = "", clLine = "", clSp = 0, clQ = 0, clTr = 0, clRanks = {}, clFa = "", clFaSet = false, clTk = "";
+  var CL = null, clPromise = null, clSel = "", clView = "tal", clPet = "", clLine = "", clSp = 0, clQ = 0, clTr = 0, clRanks = {}, clFa = "", clFaSet = false, clTk = "", clFold = false;   // clFold: vald klass ihopfälld (klick på den igen, Joakim 2026-11-19)
   var CL_ORDER = ["Warrior", "Paladin", "Hunter", "Rogue", "Priest", "Shaman", "Mage", "Warlock", "Druid"], CL_VIEWS = ["tal", "spells", "pets", "quests", "trainers"];
   var CL_KEY = "whippit-ah-clplan-", CL_SEL_KEY = "whippit-ah-cls";
   var CL_BIT = { Warrior: 1, Paladin: 2, Hunter: 4, Rogue: 8, Priest: 16, Shaman: 64, Mage: 128, Warlock: 256, Druid: 1024 };
@@ -6426,8 +6426,8 @@ body[data-mode=cl] .ttrees { gap: 8px; } body[data-mode=cl] .ttree { padding: 6p
     CL_ORDER.forEach(function (n) {
       var c = clC(n); if (!c) return;
       var on = n.toLowerCase() === clSel, live = c.spells.filter(function (s) { return !s.x; }).length;
-      h += '<button class="cat" type="button" data-clc="' + n.toLowerCase() + '" aria-pressed="' + on + '">' + classIcon(n) + '<em class="nm" style="color:' + clCol(n) + '">' + n + "</em>" + (on ? "" : "<span>" + live + "</span>") + "</button>";
-      if (!on) return;
+      h += '<button class="cat" type="button" data-clc="' + n.toLowerCase() + '" aria-pressed="' + on + '">' + classIcon(n) + '<em class="nm" style="color:' + clCol(n) + '">' + n + "</em>" + (on && !clFold ? "" : "<span>" + live + "</span>") + "</button>";
+      if (!on || clFold) return;
       var sub = function (v, lbl, n2) { return '<button class="cat sub" type="button" data-clv="' + v + '" aria-pressed="' + (clView === v) + '"><em class="nm">' + lbl + "</em>" + (n2 != null ? "<span>" + n2 + "</span>" : "") + "</button>"; };
       var tc = clTal(), used = tc ? talTotal(tc.c, clRanks) : 0;
       h += sub("tal", t("cl_v_tal"), used + "/" + TAL_MAX);
