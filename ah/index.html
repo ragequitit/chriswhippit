@@ -918,6 +918,9 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
 .seg button { all: unset; cursor: pointer; height: 26px; padding: 0 11px; font-size: 13px; color: var(--grey); display: inline-flex; align-items: center; border-left: 1px solid var(--line); }
 .seg button:first-child { border-left: 0; } .seg button:hover { color: var(--fg); background: var(--hover); }
 .seg button[aria-pressed=true] { color: var(--edge); background: var(--sel); box-shadow: inset 0 -2px 0 var(--edge); }
+.sub .n { color: var(--grey); font-weight: 400; font-size: 12px; margin-left: 6px; } .sub .n:empty { display: none; } .sub button[aria-pressed=true] .n { color: inherit; opacity: .75; }
+.seg .lbl { display: inline-flex; align-items: center; gap: 6px; height: 26px; padding: 0 8px; font-size: 12.5px; color: var(--gold); white-space: nowrap; }
+.seg .lbl input { width: 54px; height: 20px; padding: 0 6px; border-radius: 3px; border: 1px solid var(--line); background: #0b0908; color: var(--fg); font: inherit; font-size: 12.5px; }
 #list th.bs, #list td.bs { text-align: left; white-space: nowrap; line-height: 1.2; padding-top: 3px; padding-bottom: 3px; }
 .sect { display: block; order: 0; margin: 0 8px 0 0; font: 600 26px/1.1 var(--display); color: var(--gold); white-space: nowrap; }
 .bar #q { order: 1; flex: 0 1 640px; height: 40px; }
@@ -1315,13 +1318,32 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
     var el = $("trsub"); if (!el) return;
     var on = mode === "tr" || mode === "de" || mode === "fx"; el.hidden = !on; if (!on) return;
     var cur = mode === "de" ? "de" : mode === "fx" ? "fx" : trView;
-    var b = function (k, html, tip) { return '<button type="button" data-trv="' + k + '" aria-pressed="' + (cur === k) + '" title="' + esc(tip || "") + '">' + html + "</button>"; };
+    var b = function (k, html, tip) { return '<button type="button" data-trv="' + k + '" aria-pressed="' + (cur === k) + '" title="' + esc(tip || "") + '">' + html + '<small class="n"></small></button>'; };
+    var sg = function (attr, cur2, items) { return '<span class="seg">' + items.map(function (it) { return '<button type="button" ' + attr + '="' + it[0] + '" aria-pressed="' + (cur2 === it[0]) + '">' + it[1] + "</button>"; }).join("") + "</span>"; };
     el.innerHTML = b("cheap", t("trv_cheap"), t("col_usual_p_tip")) + b("bs", t("col_bs"), t("col_bs_tip")) + b("vend", t("trv_vend"), t("col_vp_tip")) +
-      b("de", '<img class="ci" src="' + RICON + 'inv_enchant_disenchant.jpg" alt="">' + t("mode_de")) + b("fx", '<img class="ci" src="' + RICON + 'inv_misc_coin_02.jpg" alt="">' + t("fx_btn"), t("fx_how", (fxKeys().rg || "eu").toUpperCase() + " " + (MK_RSN[fxKeys().rs] || "")) + " " + t("fx_min"));
+      b("de", '<img class="ci" src="' + RICON + 'inv_enchant_disenchant.jpg" alt="">' + t("mode_de"), t("de_how") + " " + t("de_logs", num(DEL && DEL.n || 0)) + " " + t("de_ingame")) + b("fx", '<img class="ci" src="' + RICON + 'inv_misc_coin_02.jpg" alt="">' + t("fx_btn"), t("fx_how", (fxKeys().rg || "eu").toUpperCase() + " " + (MK_RSN[fxKeys().rs] || "")) + " " + t("fx_min"));
     if (mode === "fx") {   // filtren som segment till höger (Joakim 2026-11-19: inte chips i spalten)
-      var sg = function (attr, cur, items) { return '<span class="seg">' + items.map(function (it) { return '<button type="button" ' + attr + '="' + it[0] + '" aria-pressed="' + (cur === it[0]) + '">' + it[1] + "</button>"; }).join("") + "</span>"; };
       el.innerHTML += '<span class="segs">' + sg("data-fxdir", fxDir, [["here", t("fx_here")], ["there", t("fx_there")], ["all", t("fx_all")]]) + sg("data-fxkind", fxKind, [["all", t("fx_k_all")], ["stack", t("fx_k_stack")], ["gear", t("fx_k_gear")]]) + "</span>";
     }
+    if (mode === "de") {   // Disenchant: skill, kvalitet, bara vinst, ★ allt till Min lista
+      el.innerHTML += '<span class="segs"><span class="seg"><label class="lbl" title="' + esc(t("de_skill_tip")) + '">' + t("de_skill") + ' <input id="deskill" type="number" min="1" max="300" inputmode="numeric" value="' + (deSkill || "") + '" placeholder="1–300"></label></span>' +
+        sg("data-deq", deQ, [[0, t("de_q_all")], [2, '<span class="q2">' + t("de_q2") + "</span>"], [3, '<span class="q3">' + t("de_q3") + "</span>"], [4, '<span class="q4">' + t("de_q4") + "</span>"]]) +
+        '<span class="seg"><button type="button" data-deprofit="1" aria-pressed="' + deProfit + '">' + t("de_profit_only") + '</button></span><span class="seg"><button type="button" data-dewatch="1" title="' + esc(t("de_watch_tip")) + '">★ ' + t("de_watch") + "</button></span></span>";
+    }
+    trCounts();
+  }
+  // Antal per flik (Joakim 2026-11-19): så man ser var det finns något innan man klickar. Disenchant och
+  // Horde ⇄ Alliance först när deras data är laddad. Räknas om per scan (D.t) och enchanting-skill.
+  var trCnt = { t: 0, skill: -1, de: null, fx: null };
+  function trCounts() {
+    var el = $("trsub"); if (!el || el.hidden || !D) return;
+    var base = rows.filter(function (r) { return !r.gear && r.qty >= TR_MIN; });
+    var n = { cheap: base.length, bs: base.filter(btClear).length, vend: rows.filter(function (r) { return r.sp > 0 && (r.lo || r.min) > 0 && r.sp > (r.lo || r.min); }).length };
+    if (trCnt.t !== D.t || trCnt.skill !== deSkill) { trCnt = { t: D.t, skill: deSkill, de: null, fx: null }; }
+    if (DEX && trCnt.de == null) trCnt.de = Object.keys(DEX.items).filter(function (id) { var r = byId[id]; if (!r || !(r.qty > 0) || !(r.min > 0)) return false; var it = DEX.items[id]; if (deSkill && deSkillFor(it[2], it[1]) > deSkill) return false; var o = deOutcome(id); return !!(o && o.value > r.min); }).length;
+    if (FX.ok && FX.maps && trCnt.fx == null) trCnt.fx = Object.keys(FX.maps[0]).filter(function (id) { var a = FX.maps[1][id]; return a && FX.maps[0][id].qty >= FX_MIN && a.qty >= FX_MIN; }).length;
+    n.de = trCnt.de; n.fx = trCnt.fx;
+    Array.prototype.forEach.call(el.querySelectorAll("button[data-trv] .n"), function (sm) { var v = n[sm.parentNode.dataset.trv]; sm.textContent = v == null ? "" : num(v); });
   }
   function trSort(v) { if (v === "bs") { sortKey = "bs"; sortDir = -1; } else if (v === "vend") { sortKey = "vp"; sortDir = -1; } else { sortKey = "dip"; sortDir = -1; } }
   function houseFor(fa) { var hp = houseParts(house) || ["pvp", "horde", "eu"], k = mkKey(hp[2], hp[0], fa); return mkHas(k) ? k : mkNear(hp[2], hp[0], fa); }
@@ -3445,7 +3467,6 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
     if (mode === "dg") { $("cats").innerHTML = DG ? dgCats() : ""; $("cats").hidden = false; return; }
     if (mode === "hu") { $("cats").innerHTML = HU ? huCats() : ""; $("cats").hidden = false; return; }
     if (mode === "co") { $("cats").innerHTML = CO ? coCats() : ""; $("cats").hidden = false; return; }
-    if (mode === "de") { $("cats").innerHTML = DEX ? deCats() : ""; $("cats").hidden = false; return; }
     if (mode === "ar") {
       if (arLb) { $("cats").innerHTML = lbCats(); $("cats").hidden = false; return; }
       $("cats").innerHTML = arSection("friends", t("ar_friends"), arFriends) + arSection("recent", t("ar_recent"), arRecent);
@@ -3602,8 +3623,8 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
     if (mode === "dg") { if (DG) dgRefresh(q); else { view = []; shown = 0; } draw(); return; }
     if (mode === "hu") { if (HU) huRefresh(q); else { view = []; shown = 0; } draw(); if (HU && huMapOn) huMapView(); return; }
     if (mode === "co") { if (CO) coRefresh(q); else { view = []; shown = 0; } draw(); return; }
-    if (mode === "de") { if (DEX) deRefresh(q); else { view = []; shown = 0; } draw(); return; }
-    if (mode === "fx") { if (FX.ok) fxRefresh(q); else { view = []; shown = 0; } draw(); return; }
+    if (mode === "de") { if (DEX) deRefresh(q); else { view = []; shown = 0; } draw(); trCounts(); return; }
+    if (mode === "fx") { if (FX.ok) fxRefresh(q); else { view = []; shown = 0; } draw(); trCounts(); return; }
     if (mode === "cr") {
       var pid = catSel >= 0 && profList[catSel] ? profList[catSel].id : 0;
       var tier = subSel >= 1 ? TIERS[subSel - 1] : null;
@@ -4433,9 +4454,9 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
     var tfx = e.target.closest("tbody tr[data-fx]");
     if (tfx) { showTab("item"); fxDetail(+tfx.dataset.fx, tfx.dataset.fxg || ""); return; }
     var deq = e.target.closest("[data-deq]");
-    if (deq && mode === "de") { deQ = +deq.dataset.deq; drawCats(); refresh(); toTop(); return; }
+    if (deq && mode === "de") { deQ = +deq.dataset.deq; drawTrSub(); refresh(); toTop(); return; }
     if (e.target.closest("[data-dewatch]") && mode === "de") { toggleWatchAll(view.filter(function (x) { return x.profit > 0; }).map(function (x) { return x.de; })); showTab("watch"); return; }
-    if (e.target.closest("[data-deprofit]") && mode === "de") { deProfit = !deProfit; drawCats(); refresh(); toTop(); return; }
+    if (e.target.closest("[data-deprofit]") && mode === "de") { deProfit = !deProfit; drawTrSub(); refresh(); toTop(); return; }
     var tde = e.target.closest("tbody tr[data-de]");
     if (tde) { showTab("item"); deDetail(+tde.dataset.de); return; }
     var cok = e.target.closest("[data-cokind]");
@@ -5411,6 +5432,7 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
       var r = byId[id];
       if (!r || !(r.qty > 0) || !(r.min > 0)) return;
       var it = DEX.items[id];
+      if (!fxCatOk(+id)) return;   // vald kategori i spalten gäller även här
       if (deQ && it[1] !== deQ) return;
       if (deSkill && deSkillFor(it[2], it[1]) > deSkill) return;
       if (q && r.lower.indexOf(q) < 0) return;
