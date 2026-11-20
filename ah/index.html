@@ -1123,6 +1123,11 @@ body[data-home] .cols, body[data-home] #sect, body[data-home] #q, body[data-home
 .hxtip { position: fixed; z-index: 70; transform: translate(-50%, -100%); padding: 5px 9px; border-radius: 6px; background: #0E1821; border: 1px solid #465C69; color: #E9EEF2; font-size: 12.5px; white-space: nowrap; pointer-events: none; display: grid; gap: 1px; box-shadow: 0 6px 16px rgba(0, 0, 0, .5); }
 .hxtip[hidden] { display: none; } .hxtip b { font-size: 13.5px; } .hxtip span { color: #A6B4C1; font-size: 11.5px; }
 .hxico.bz { width: 52px; height: 52px; right: 16px; bottom: 16px; border-radius: 8px; border: 1px solid var(--hx-line); object-fit: cover; }
+/* Questrutan: kartan uppe till höger, halva bredden (Joakim 2026-11-21) */
+.qtop { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; align-items: start; }
+.qtl { display: grid; gap: 12px; align-content: start; min-width: 0; } .qtl .facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.qtr { min-width: 0; } .qtr h3 { margin-top: 0; }
+@media (max-width: 1250px) { .qtop { grid-template-columns: minmax(0, 1fr); } .qtl .facts { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
 /* Dungeons efter Joakims förslag (2026-11-20): välj dungeon → boss → loot */
 .dgbrowse { margin: 2px 0 8px; } .dgfind { display: grid; gap: 6px; margin: 0 0 8px; }
 .dgfind input, .dgfind select { box-sizing: border-box; width: 100%; height: 34px; padding: 0 10px; border-radius: 6px; border: 1px solid var(--line); background: rgba(0, 0, 0, .25); color: var(--fg); font: inherit; font-size: 13.5px; }
@@ -3556,11 +3561,12 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     $("detail").innerHTML = (inAr && arData && mode === "ar" ? '<button class="lnk back" type="button" data-aqback="1">‹ ' + esc(arData.name + " " + arData.surname) + "</button>" : "") +
       '<div class="strip"><button class="lnk" type="button" data-copyany="#quest=' + id + '" title="' + t("copy_link") + '">' + t("copy_link") + "</button>" +
       "<h2>" + esc(q[0]) + (q[6] ? ' <span class="tag el">' + t("qu_elite") + "</span>" : "") + "</h2><small>" + esc(QU.areas[q[1]] || "") + " · " + fac + "</small></div>" + done +
+      '<div class="qtop"><div class="qtl">' +
       '<dl class="facts"><div><dt>' + t("col_lvl") + "</dt><dd>" + (q[2] ? (q[4] ? "~" : "") + q[2] : "–") + "</dd></div><div><dt>" + t("qu_req") + "</dt><dd>" + (q[3] || "–") + "</dd></div>" +
       "<div><dt>" + t("col_xp") + "</dt><dd>" + (q[7] ? num(q[7]) : "–") + "</dd></div><div><dt>" + t("col_money") + "</dt><dd>" + (q[8] ? money(q[8]) : "–") + "</dd></div>" +
       (reps ? '<div class="wide"><dt>' + t("ar_rep") + "</dt><dd>" + reps + "</dd></div>" : "") + "</dl>" +
-      (req.length ? "<div><h3>" + t("qu_reqs") + '</h3><dl class="srcs">' + req.join("") + "</dl></div>" : "") + chainHtml +
-      "<div><h3>" + t("qm_where") + '</h3><div id="qmap" class="qmwrap"><div class="note">' + t("ar_loading") + "</div></div></div>" +
+      (req.length ? "<div><h3>" + t("qu_reqs") + '</h3><dl class="srcs">' + req.join("") + "</dl></div>" : "") + chainHtml + "</div>" +
+      '<div class="qtr"><h3>' + t("qm_where") + '</h3><div id="qmap" class="qmwrap"><div class="note">' + t("ar_loading") + "</div></div></div></div>" +
       (items ? "<div><h3>" + t("qu_rewards") + '</h3><div class="scroll"><table class="steps reag"><thead><tr><th></th><th style="text-align:left">' + t("col_item") + "</th><th>" + t("col_qty_s") + "</th><th>" + t("col_min") + "</th></tr></thead><tbody>" + quItems(q[9], false) + quItems(q[10], true) + "</tbody></table></div></div>" : "") +
       '<div><h3>' + t("qu_text") + '</h3><div class="qtext" id="qtext">' + t("ar_loading") + "</div></div>" +
       '<div class="note"><a class="wh" href="https://www.wowhead.com/forever/quest=' + id + '" target="_blank" rel="noopener">' + t("qu_wowhead_q") + "</a></div>";   // källraden flyttad till About (Joakim 2026-11-18)
