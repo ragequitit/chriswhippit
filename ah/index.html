@@ -1106,6 +1106,8 @@ body[data-home] .cols, body[data-home] #sect, body[data-home] #q, body[data-home
 .hli { display: grid; grid-template-columns: 26px minmax(0, 1fr) auto auto; gap: 8px; align-items: center; padding: 3px 6px; border-radius: 4px; text-decoration: none; color: var(--fg); font-size: 13px; }
 .hli:hover { background: var(--hover); } .hli .ic { margin: 0; vertical-align: middle; }
 .hli .nm { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.hli .ri, .hli .fe { width: 20px; height: 20px; border-radius: 3px; margin: 0; } .hli .hg { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 140px; }
+.hbox h4 { margin: 10px 0 4px; font-family: var(--display); color: var(--gold); font-size: 14px; font-weight: 400; }
 .hchips { display: flex; flex-wrap: wrap; gap: 6px; }
 .hchips a, .hchips button { all: unset; cursor: pointer; padding: 4px 11px; border: 1px solid var(--line); border-radius: 14px; color: var(--fg); font-size: 13px; }
 .hchips a:hover, .hchips button:hover { border-color: var(--gold); }
@@ -1712,7 +1714,7 @@ body[data-home] .cols, body[data-home] #sect, body[data-home] #q, body[data-home
       about_data: "Blizzard data older than 30 days is not kept.",
       npc_gives: "Gives", npc_ends: "Ends", npc_none: "No data for this NPC.", npc_fail: "The NPC could not be loaded.",
       npc_f_quest: "Quest giver", npc_f_vendor: "Vendor", npc_f_trainer: "Trainer", npc_f_flight: "Flight master", npc_f_inn: "Innkeeper", npc_f_bank: "Banker", npc_f_ah: "Auctioneer", npc_f_stable: "Stable master", npc_f_repair: "Repair",
-      scan_at: "Updated %1 at %2", m_faction: "Faction", m_ah: "Auction house", m_ah_own: "Faction AH", m_ah_bw: "Blackwater", m_realm: "Realm type", m_region: "Region", home_tip: "Start page", sect_tip: "Back to the start of this tab", h_title: "Welcome to Azeroth Atlas", h_sub: "Auction prices, players, quests and loot for WoW Forever. Pick a place to start.", h_search: "Search everything", h_n_items: "%1 items on the AH", h_n_cheap: "%1 cheaper than usual", h_n_friends: "%1 friends", h_cheap: "Cheap right now", h_rise: "Rising right now", h_hot: "Most traded", h_gph: "Gold per hour", h_craft: "Pays to craft", h_dayt: "Best day trades", h_all: "All ›", h_none: "Nothing right now.", h_per_day: "%1/day", h_cheap_none: "Prices are loading…", h_watch: "My list", h_watch_none: "Star ☆ an item and its price shows up here.", h_players: "Players", h_players_none: "Look someone up in the Armory and they show up here.", ar_land_lb: "Leaderboards ›", ar_land_recent: "Recent", ar_land_friends: "Friends", on_ah: "%1 items on the auction house", market_label: "Market", search_btn: "Search", col_fav: "Fav",
+      scan_at: "Updated %1 at %2", m_faction: "Faction", m_ah: "Auction house", m_ah_own: "Faction AH", m_ah_bw: "Blackwater", m_realm: "Realm type", m_region: "Region", home_tip: "Start page", sect_tip: "Back to the start of this tab", h_title: "Welcome to Azeroth Atlas", h_sub: "Auction prices, players, quests and loot for WoW Forever. Pick a place to start.", h_search: "Search everything", h_n_items: "%1 items on the AH", h_n_cheap: "%1 cheaper than usual", h_n_friends: "%1 friends", h_cheap: "Cheap right now", h_rise: "Rising right now", h_hot: "Most traded", h_gph: "Gold per hour", h_craft: "Pays to craft", h_dayt: "Best day trades", h_all: "All ›", h_none: "Nothing right now.", h_per_day: "%1/day", h_cheap_none: "Prices are loading…", h_watch: "My list", h_watch_none: "Star ☆ an item and its price shows up here.", h_players: "Players", h_guilds: "Guilds", h_lvl: "Lvl %1", h_members: "%1 members", h_players_none: "Look someone up in the Armory and they show up here.", ar_land_lb: "Leaderboards ›", ar_land_recent: "Recent", ar_land_friends: "Friends", on_ah: "%1 items on the auction house", market_label: "Market", search_btn: "Search", col_fav: "Fav",
       hist_loading: "Loading history…", hist_fail: "The history could not be loaded.", today: "today", item_n: "Item %1",
       copy_link: "Copy link", copied: "Link copied", star_add: "Watch this item", star_del: "Remove from my list", star_all: "All reagents to my list", star_all_del: "Remove reagents from my list", star_lbl_add: "Watch", star_lbl_on: "In my list",
       not_listed: "not listed now", remove: "Remove", watch_sub: "Saved in your browser, only you can see it.",
@@ -1914,9 +1916,14 @@ body[data-home] .cols, body[data-home] #sect, body[data-home] #q, body[data-home
   var arRecent = (function () { try { var a = JSON.parse(localStorage.getItem(AR_KEY) || "[]"); return Array.isArray(a) ? a : []; } catch (e) { return []; } })();
   var arData = null, arToken = 0, arVs = "";   // arVs: spelare B ur länken #player=a&vs=b
   var SLOT_L = ["HEAD", "NECK", "SHOULDER", "BACK", "CHEST", "SHIRT", "TABARD", "WRIST"], SLOT_R = ["HANDS", "WAIST", "LEGS", "FEET", "FINGER_1", "FINGER_2", "TRINKET_1", "TRINKET_2"], SLOT_B = ["MAIN_HAND", "OFF_HAND", "RANGED"];
-  function arRemember(kind, slug, label) {
+  // info (2026-11-20, startsidans lista): spelare { lv, c, g, gs, fa }, guild { n, fa }.
+  function arInfo(d) { return d.kind === "character" ? { lv: d.level || 0, c: d.cls || "", g: d.guild ? d.guild.name : "", gs: d.guild ? d.guild.slug : "", fa: d.faction || "" } : { n: d.count || 0, fa: d.faction || "" }; }
+  function arRemember(kind, slug, label, info) {
+    var old = null; arRecent.forEach(function (r) { if (r.kind === kind && r.slug === slug) old = r; });
     arRecent = arRecent.filter(function (r) { return !(r.kind === kind && r.slug === slug); });
-    arRecent.unshift({ kind: kind, slug: slug, label: label });
+    var e = { kind: kind, slug: slug, label: label }, inf = info || (old && old.i);
+    if (inf) e.i = inf;
+    arRecent.unshift(e);
     arRecent = arRecent.slice(0, 20);
     try { localStorage.setItem(AR_KEY, JSON.stringify(arRecent)); } catch (e) {}
   }
@@ -1972,7 +1979,7 @@ body[data-home] .cols, body[data-home] #sect, body[data-home] #q, body[data-home
       if (d.kind === "character") renderChar(d); else renderGuild(d);
       var vs = d.kind === "character" && arVs; arVs = "";
       if (vs) { arCmpPick = true; arCompare(vs); }
-      arRemember(d.kind === "character" ? "char" : "guild", d.slug, d.kind === "character" ? d.name + " " + d.surname : d.name);
+      arRemember(d.kind === "character" ? "char" : "guild", d.slug, d.kind === "character" ? d.name + " " + d.surname : d.name, arInfo(d));
       drawCats();
       setHash(d.kind === "character" ? arHash() : "#guild=" + d.slug);
     }).catch(function (e) {
@@ -2272,7 +2279,7 @@ body[data-home] .cols, body[data-home] #sect, body[data-home] #q, body[data-home
       if (my !== arCmpBusy || arData !== a) return;
       if (mode !== "ar") { arCmpBusy = 0; return; }   // bytt flik: ingen jämförelse eller adress (granskning 2026-11-18)
       arCmpBusy = 0; arCmpPick = false; arCmp = { b: b };
-      arRemember("char", b.slug, b.name + " " + b.surname); arRemember("char", a.slug, a.name + " " + a.surname); drawCats();
+      arRemember("char", b.slug, b.name + " " + b.surname, arInfo(b)); arRemember("char", a.slug, a.name + " " + a.surname, arInfo(a)); drawCats();
       setHash(arHash());   // F5 visar spelaren, inte jämförelsen (Joakim 2026-11-17); Copy link ger &vs=
       renderCompare(a, b);
     }).catch(function (e) {
@@ -5276,7 +5283,7 @@ body[data-home] .cols, body[data-home] #sect, body[data-home] #q, body[data-home
   $("sect").addEventListener("click", function () { tabHome(); });   // flikens rubrik: flikens start
   // Startsidan (Joakim 2026-11-20): flikarna som rutor, billigt just nu, din lista och dina spelare. Länkarna är vanliga
   // #-adresser, så bakåt, mittenklick och kopiera fungerar som överallt; popstate ritar sidan från adressen.
-  var homeRaf = 0, homeRecTry = false;
+  var homeRaf = 0, homeRecTry = false, homeKatIdx = null;
   // Rutornas bakgrunder: [eget motiv home-<namn>.webp, Blizzards bild som gäller tills det finns]. "" = din stads panorama.
   var HOME_BG = { hero: ["", ""], cheap: ["barrens", "dg-wailing-caverns"], rise: ["winterspring", "dg-scholomance"], hot: ["auction-house", ""], gph: ["ungoro", "dg-maraudon"],
     craft: ["ironforge", "dg-blackrock-depths"], dayt: ["booty-bay", "dg-zulgurub"], watch: ["ashenvale", "dg-blackfathom-deeps"], ppl: ["thunder-bluff", "dg-dire-maul"] };
@@ -5321,18 +5328,36 @@ body[data-home] .cols, body[data-home] #sect, body[data-home] #q, body[data-home
     var row = function (href, ic, nm, q, a, b) { return '<a class="hli" href="' + href + '">' + (ic || "<span></span>") + '<span class="nm ' + qcls(q) + '">' + esc(nm) + "</span><span>" + a + "</span><span>" + b + "</span></a>"; };
     var li = function (r, href) { return row(href, iconHtml(r), r.name, r.q, money(r.min), pctHtml(r)); };
     var traded = base.filter(function (r) { return r.day >= 10 && r.min > 0; });
-    var cheap = traded.filter(function (r) { return r.dip > 0; }).sort(function (a, b) { return b.dip - a.dip; }).slice(0, 8);
-    var rising = traded.filter(function (r) { return r.dip < 0 && r.dip >= -300 && r.us >= 100; })   /* högst +300 % och vanligt pris minst 1 s: inga skenhopp från nästan noll */.sort(function (a, b) { return a.dip - b.dip; }).slice(0, 8);
-    var hot = traded.slice().sort(function (a, b) { return b.day * b.min - a.day * a.min; }).slice(0, 8);   // mest guld som byter ägare per dag
-    var dayt = traded.filter(function (r) { return r.tg > 0 && btClear(r); }).sort(function (a, b) { return b.tg * Math.min(b.day, 100) - a.tg * Math.min(a.day, 100); }).slice(0, 8);   // dygnshandel: tydligt mönster, vinst × omsättning
+    var cheap = traded.filter(function (r) { return r.dip > 0; }).sort(function (a, b) { return b.dip - a.dip; }).slice(0, 10);
+    var rising = traded.filter(function (r) { return r.dip < 0 && r.dip >= -300 && r.us >= 100; })   /* högst +300 % och vanligt pris minst 1 s: inga skenhopp från nästan noll */.sort(function (a, b) { return a.dip - b.dip; }).slice(0, 10);
+    var hot = traded.slice().sort(function (a, b) { return b.day * b.min - a.day * a.min; }).slice(0, 10);   // mest guld som byter ägare per dag
+    var dayt = traded.filter(function (r) { return r.tg > 0 && btClear(r); }).sort(function (a, b) { return b.tg * Math.min(b.day, 100) - a.tg * Math.min(a.day, 100); }).slice(0, 10);   // dygnshandel: tydligt mönster, vinst × omsättning
     var gp = [];
     if (D) GATHER.forEach(function (g) { GA_BANDS.forEach(function (b, k) { var v = gaCalc(g, k).gph; if (v > 0) gp.push({ g: g, k: k, v: v }); }); });
-    gp.sort(function (a, b) { return b.v - a.v; }); gp = gp.slice(0, 8);
+    gp.sort(function (a, b) { return b.v - a.v; }); gp = gp.slice(0, 10);
     if (D && !RECEPT && !homeRecTry) { homeRecTry = true; loadRecept().then(function () { homeLater(); }).catch(function () {}); }   // receptdatan bara för rutan Pays to craft
     if (D && RECEPT) buildCr();
-    var craft = D && RECEPT ? crRows.filter(function (x) { var o = byId[x.rc.item]; return x.hasProfit && x.profit > 0 && x.day >= 5 && o && o.qty >= 3; }).sort(function (a, b) { return b.profit - a.profit; }).slice(0, 8) : [];
-    var wl = D ? watch.map(function (w) { return byId[w.id]; }).filter(Boolean).slice(0, 8) : [];
-    var seen = {}, ppl = arFriends.concat(arRecent).filter(function (r) { var k = (r.kind === "guild" ? "g" : "c") + r.slug; if (seen[k]) return false; seen[k] = 1; return true; }).slice(0, 14);
+    var craft = D && RECEPT ? crRows.filter(function (x) { var o = byId[x.rc.item]; return x.hasProfit && x.profit > 0 && x.day >= 5 && o && o.qty >= 3; }).sort(function (a, b) { return b.profit - a.profit; }).slice(0, 10) : [];
+    var wl = D ? watch.map(function (w) { return byId[w.id]; }).filter(Boolean).slice(0, 10) : [];
+    // Spelare (vänner först) och guilder ur dina uppslag; level/klass/guild ur uppslaget, annars ur katalogen om den är laddad.
+    var recBy = {}; arRecent.forEach(function (r) { recBy[(r.kind === "guild" ? "g" : "c") + r.slug] = r; });
+    if (KAT && !homeKatIdx) { homeKatIdx = { p: {}, g: {} }; KAT.players.forEach(function (p) { homeKatIdx.p[p.s] = p; }); KAT.guilds.forEach(function (g) { homeKatIdx.g[g.s] = g; }); }
+    var pInfo = function (slug) { var r = recBy["c" + slug]; if (r && r.i) return r.i; var p = homeKatIdx && homeKatIdx.p[slug]; return p ? { lv: p.lv, c: p.c, g: p.gn || "", fa: p.fa } : null; };
+    var gInfo = function (slug) { var r = recBy["g" + slug]; if (r && r.i) return r.i; var g = homeKatIdx && homeKatIdx.g[slug]; return g ? { n: g.n, fa: g.fa } : null; };
+    var seen = {}, chars = arFriends.map(function (f) { return { kind: "char", slug: f.slug, label: f.label, fr: 1 }; }).concat(arRecent.filter(function (r) { return r.kind !== "guild"; }))
+      .filter(function (r) { if (seen[r.slug]) return false; seen[r.slug] = 1; return true; }).slice(0, 5);
+    var guilds = arRecent.filter(function (r) { return r.kind === "guild" && !/^<?deleted>?$/i.test(r.label); }).slice(0, 5);
+    var pRow = function (r) {
+      var x = pInfo(r.slug) || {};
+      return '<a class="hli" href="#player=' + esc(r.slug) + '">' + (x.c ? classIcon(x.c) : "<span></span>") + '<span class="nm"' + (x.c && CLASS_COL[x.c] ? ' style="color:' + CLASS_COL[x.c] + '"' : "") + ">" + (r.fr ? "★ " : "") + esc(r.label) + "</span>" +
+        '<small class="dim hg">' + (x.g ? "&lt;" + esc(x.g) + "&gt;" : "") + "</small><span>" + (x.lv ? t("h_lvl", x.lv) : "") + "</span></a>";
+    };
+    var gRow = function (r) {
+      var x = gInfo(r.slug) || {};
+      return '<a class="hli" href="#guild=' + esc(r.slug) + '">' + (x.fa ? faIcon(x.fa) : "<span></span>") + '<span class="nm q1">&lt;' + esc(r.label) + "&gt;</span><span></span><span>" + (x.n ? t("h_members", num(x.n)) : "") + "</span></a>";
+    };
+    var pplHtml = chars.length || guilds.length ? (chars.length ? '<div class="hlist">' + chars.map(pRow).join("") + "</div>" : "") + (guilds.length ? "<h4>" + t("h_guilds") + '</h4><div class="hlist">' + guilds.map(gRow).join("") + "</div>" : "")
+      : '<div class="hnone">' + t("h_players_none") + "</div>";
     var box = function (h, all, body, k) { return '<div class="inset hbox' + (ASSET_BASE ? " hbg" : "") + '"' + hbgAttr(k) + "><h3><span>" + h + "</span>" + (all ? '<a href="' + all + '">' + t("h_all") + "</a>" : "") + "</h3>" + body + "</div>"; };
     var list = function (L, f2, none) { return L.length ? '<div class="hlist">' + L.map(f2).join("") + "</div>" : '<div class="hnone">' + t(D ? none || "h_none" : "h_cheap_none") + "</div>"; };
     el.innerHTML = '<div class="inset hhero' + (ASSET_BASE ? " hbg" : "") + '"' + hbgAttr("hero") + "><div><h2>" + t("h_title") + "</h2><p>" + t("h_sub") + '</p></div><button class="wowbtn" type="button" data-hsearch="1">' + t("h_search") + "</button></div>" +
@@ -5351,7 +5376,7 @@ body[data-home] .cols, body[data-home] #sect, body[data-home] #q, body[data-home
         }), "craft") +
         box(t("h_dayt"), "#tab=tr&v=bs" + mk, list(dayt, function (r) { return row("#tab=tr&v=bs&item=" + r.id + mk, iconHtml(r), r.name, r.q, money(r.min), tradeHtml(r)); }), "dayt") +
         box(t("h_watch"), "", wl.length ? '<div class="hlist">' + wl.map(function (r) { return li(r, "#item=" + r.id + mk); }).join("") + "</div>" : '<div class="hnone">' + t("h_watch_none") + "</div>", "watch") +
-        box(t("h_players"), "#tab=ar", ppl.length ? '<div class="hchips">' + ppl.map(function (r) { return '<a href="' + (r.kind === "guild" ? "#guild=" : "#player=") + esc(r.slug) + '">' + (r.kind === "guild" ? "&lt;" + esc(r.label) + "&gt;" : esc(r.label)) + "</a>"; }).join("") + "</div>" : '<div class="hnone">' + t("h_players_none") + "</div>", "ppl") +
+        box(t("h_players"), "#tab=ar", pplHtml, "ppl") +
       "</div>";
   }
   // Flikar och globala sökningen stänger startsidan; fliken som redan var vald skriver sin adress efteråt.
