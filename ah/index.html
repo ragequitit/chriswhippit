@@ -1097,7 +1097,7 @@ body[data-home] .cols, body[data-home] #sect, body[data-home] #q, body[data-home
   background: var(--hx-card); border: 1px solid var(--hx-line); border-radius: 10px; transition: border-color .15s; }
 .hxbig:hover, .hxbig:focus-within { border-color: var(--hx-acc); }
 .hxs { display: none; align-content: start; gap: 10px; text-decoration: none; color: inherit; outline: none; }
-.hxs.on { display: grid; animation: hxfade .35s ease; }
+.hxs.on { display: grid; }   /* ingen övertoning: i en dold flik stannar den halvvägs och kortet ser blekt ut */
 @keyframes hxfade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
 .hxs:focus-visible .hxbtn { outline: 2px solid var(--hx-acc); outline-offset: 2px; }
 .hxdots { position: absolute; left: 50%; bottom: 10px; transform: translateX(-50%); display: flex; gap: 2px; }
@@ -1109,6 +1109,21 @@ body[data-home] .cols, body[data-home] #sect, body[data-home] #q, body[data-home
 .hxspark polyline { fill: none; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; stroke: var(--hx-up); }
 .hxspark circle { fill: var(--hx-up); } .hxspark.rise polyline { stroke: #F2C14E; } .hxspark.rise circle { fill: #F2C14E; }
 .hxspark .us { stroke: var(--hx-fg2); stroke-width: 1; stroke-dasharray: 3 3; opacity: .55; }
+.hxspark { cursor: crosshair; } .hxspark .hov { fill: var(--hx-bg, #0f1820); stroke: var(--hx-fg); stroke-width: 2; }
+.hxtip { position: fixed; z-index: 70; transform: translate(-50%, -100%); padding: 5px 9px; border-radius: 6px; background: #0E1821; border: 1px solid #465C69; color: #E9EEF2; font-size: 12.5px; white-space: nowrap; pointer-events: none; display: grid; gap: 1px; box-shadow: 0 6px 16px rgba(0, 0, 0, .5); }
+.hxtip[hidden] { display: none; } .hxtip b { font-size: 13.5px; } .hxtip span { color: #A6B4C1; font-size: 11.5px; }
+.hxico.bz { width: 52px; height: 52px; right: 16px; bottom: 16px; border-radius: 8px; border: 1px solid var(--hx-line); object-fit: cover; }
+/* Classes startvy (Joakim 2026-11-20) */
+.clland { padding: 18px 20px; display: grid; gap: 16px; }
+.cllhead { display: flex; align-items: center; gap: 16px; } .cllbook { width: 76px; height: 76px; filter: drop-shadow(0 4px 8px rgba(0, 0, 0, .45)); }
+.cllhead h2 { margin: 0; font: 400 24px/1.2 var(--display); color: var(--fg); text-transform: none; } .cllhead p { margin: 4px 0 0; color: var(--grey); }
+.cllgrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.cllc { all: unset; box-sizing: border-box; cursor: pointer; display: grid; grid-template-columns: 40px minmax(0, 1fr); grid-template-rows: auto auto; column-gap: 12px; align-items: center; padding: 12px 14px;
+  border: 1px solid var(--line); border-left: 3px solid var(--cc); border-radius: 8px; background: rgba(255, 255, 255, .03); transition: border-color .15s, background .15s; }
+.cllc:hover, .cllc:focus-visible { background: rgba(255, 255, 255, .06); border-color: var(--cc); }
+.cllc .ri { grid-row: 1 / 3; width: 40px; height: 40px; border-radius: 6px; } .cllc b { font: 400 18px/1.15 var(--display); color: var(--cc); } .cllc small { color: var(--grey); font-size: 12.5px; }
+@media (max-width: 1250px) { .cllgrid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 560px) { .cllgrid { grid-template-columns: minmax(0, 1fr); } }
 .hxpic { position: absolute; z-index: -1; right: 0; top: 0; bottom: 0; width: 52%; height: 100%; object-fit: cover; opacity: .55;
   -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 45%); mask-image: linear-gradient(90deg, transparent 0, #000 45%); }
 .hxlbl { font-size: 12px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--hx-fg2); }
@@ -1781,7 +1796,10 @@ body[data-home] .cols, body[data-home] #sect, body[data-home] #q, body[data-home
       scan_at: "Updated %1 at %2", m_faction: "Faction", m_ah: "Auction house", m_ah_own: "Faction AH", m_ah_bw: "Blackwater", m_realm: "Realm type", m_region: "Region", home_tip: "Start page", sect_tip: "Back to the start of this tab", h_title: "Welcome to Azeroth Atlas", h_sub: "Auction prices, players, quests and loot for WoW Forever. Pick a place to start.", h_search: "Search everything", h_n_items: "%1 items on the AH", h_n_cheap: "%1 cheaper than usual", h_n_friends: "%1 friends", h_cheap: "Cheap right now", h_save: "Biggest saving right now", h_usual: "Usual price", h_listed: "Listed at", h_under: "under the usual price", h_n_sold: "%1 sold a day", h_open: "Open item",
       h_st_items: "On the auction house", h_st_items_s: "items with a price", h_st_cheap: "Cheaper than usual", h_st_cheap_s: "items that sell well", h_st_gold: "Traded per day", h_st_gold_s: "market price × sold a day", h_st_upd: "Prices updated", h_min_ago: "%1 min ago", h_h_ago: "%1 h ago",
       h_q_mount: "Which mount is next?", h_q_mount_s: "%1 mounts on Forever", h_q_tal: "Plan your talent build", h_points: "points", h_q_tal_s: "Build and share for every class",
-      h_q_farm: "What is worth farming?", h_q_craft: "Which craft pays most?", h_per_craft: "per craft", h_q_new: "What is new in Forever?", h_n_dungeons: "%1 new dungeons", h_q_new_s: "%1 new items with loot tables", h_rise: "Rising right now", h_hot: "Most traded", h_gph: "Gold per hour", h_craft: "Pays to craft", h_dayt: "Best day trades", h_all: "View all →", h_overview: "Market overview", h_show_n: "Show %1 of %2", h_rise_big: "Biggest rise right now", h_over: "over the usual price", h_none: "Nothing right now.", h_per_day: "%1/day", h_cheap_none: "Prices are loading…", h_watch: "My list", h_watch_none: "Star ☆ an item and its price shows up here.", h_players: "Players", h_guilds: "Guilds", h_lvl: "Lvl %1", h_members: "%1 members", h_players_none: "Look someone up in the Armory and they show up here.", ar_land_lb: "Leaderboards ›", ar_land_recent: "Recent", ar_land_friends: "Friends", on_ah: "%1 items on the auction house", market_label: "Market", search_btn: "Search", col_fav: "Fav",
+      h_q_farm: "What is worth farming?", h_q_craft: "Which craft pays most?", h_per_craft: "per craft", h_q_new: "What is new in Forever?", h_n_dungeons: "%1 new dungeons", h_q_new_s: "%1 new items with loot tables", h_rise: "Rising right now", h_hot: "Most traded", h_gph: "Gold per hour", h_craft: "Pays to craft", h_dayt: "Best day trades", h_all: "View all →", h_overview: "Market overview", h_craft_big: "Best craft right now", h_cost: "Cost", h_sells: "Sells for", h_open_rec: "Open recipe", h_skill: "skill %1", h_cd: "%1 h cooldown",
+      h_q_raid: "When do the raids open?", h_raid_in: "in %1 days", h_raid_1: "Tomorrow", h_raid_open: "Open now", h_raid_s: "9 December · new raids on Forever", h_raid_since: "Since 9 December",
+      cl_land_h: "Choose a class", cl_land_tip: "Talent calculator, spells with level and trainer cost, pet spells, class quests and trainers.", cl_land_n: "%1 spells", cl_land_pets: "%1 pets", cl_land_demons: "%1 demons",
+      cl_land_right: "Pick a class to open its talent calculator. Spells, pet spells, class quests and trainers are under the class in the list.", h_show_n: "Show %1 of %2", h_rise_big: "Biggest rise right now", h_over: "over the usual price", h_none: "Nothing right now.", h_per_day: "%1/day", h_cheap_none: "Prices are loading…", h_watch: "My list", h_watch_none: "Star ☆ an item and its price shows up here.", h_players: "Players", h_guilds: "Guilds", h_lvl: "Lvl %1", h_members: "%1 members", h_players_none: "Look someone up in the Armory and they show up here.", ar_land_lb: "Leaderboards ›", ar_land_recent: "Recent", ar_land_friends: "Friends", on_ah: "%1 items on the auction house", market_label: "Market", search_btn: "Search", col_fav: "Fav",
       hist_loading: "Loading history…", hist_fail: "The history could not be loaded.", today: "today", item_n: "Item %1",
       copy_link: "Copy link", copied: "Link copied", star_add: "Watch this item", star_del: "Remove from my list", star_all: "All reagents to my list", star_all_del: "Remove reagents from my list", star_lbl_add: "Watch", star_lbl_on: "In my list",
       not_listed: "not listed now", remove: "Remove", watch_sub: "Saved in your browser, only you can see it.",
@@ -5078,6 +5096,7 @@ body[data-home] .cols, body[data-home] #sect, body[data-home] #q, body[data-home
     }
     if (!e.target.closest("#clfly")) clFlyHide();
     var clc = e.target.closest("[data-clc]");
+    if (clc && mode === "cl" && clLand) { clLand = false; clFold = false; clView = "tal"; if (clc.dataset.clc === clSel) { clShow(true); showTab("item"); return; } }
     if (clc && mode === "cl") { if (clc.dataset.clc === clSel) { clFold = !clFold; drawCats(); return; } clFold = false; if (clc.dataset.clc !== clSel) { clSel = clc.dataset.clc; clRanks = clLoadSaved(); clSp = 0; clQ = 0; clTr = 0; clLine = ""; clPet = ""; if (clView === "pets" && !(clC() && clC().pets.length)) clView = "spells"; try { localStorage.setItem(CL_SEL_KEY, clSel); } catch (e9) {} } qFlush(); query = ""; $("q").value = ""; clShow(true); showTab("item"); return; }
     var clv = e.target.closest("[data-clv]");
     if (clv && mode === "cl") { clView = clv.dataset.clv; clFold = false; qFlush(); query = ""; $("q").value = ""; clShow(true); showTab("item"); return; }
@@ -5353,7 +5372,7 @@ body[data-home] .cols, body[data-home] #sect, body[data-home] #q, body[data-home
   var homeRaf = 0, homeRecTry = false, homeKatIdx = null, homeCoTry = false, homeAlTry = false, homeAL = null;
   // Stora korten: vilken av topp 3 som visas, prickarna byter utan att rita om sidan, och var 8:e s byts den av sig själv
   // (inte medan musen eller fokus är på kortet, inte i en dold flik).
-  var homeSlide = { save: 0, rise: 0 };
+  var homeSlide = { craft: 0, rise: 0 };
   function hxShow(kind, k) {
     var box = document.querySelector('.hxbig[data-hxk="' + kind + '"]'); if (!box) return;
     var sl = box.querySelectorAll(".hxs"), dt = box.querySelectorAll("[data-hxdot]"); if (!sl.length) return;
@@ -5361,13 +5380,34 @@ body[data-home] .cols, body[data-home] #sect, body[data-home] #q, body[data-home
     for (var i = 0; i < sl.length; i++) { var on = i === k; sl[i].classList.toggle("on", on); if (on) { sl[i].removeAttribute("tabindex"); sl[i].removeAttribute("aria-hidden"); } else { sl[i].setAttribute("tabindex", "-1"); sl[i].setAttribute("aria-hidden", "true"); } }
     for (var j = 0; j < dt.length; j++) dt[j].setAttribute("aria-pressed", j === k ? "true" : "false");
   }
+  // Prisgrafen: närmaste punkt under musen visar pris och halvdag (två punkter per dag, den sista = nu).
+  var hxTipEl = null;
+  function hxTipHide() { if (hxTipEl) hxTipEl.hidden = true; var hv = document.querySelectorAll(".hxspark .hov"); for (var i = 0; i < hv.length; i++) { hv[i].setAttribute("cx", "-9"); hv[i].setAttribute("cy", "-9"); } }
+  document.addEventListener("mousemove", function (e) {
+    var sv = e.target.closest && e.target.closest(".hxspark");
+    if (!sv) { if (hxTipEl && !hxTipEl.hidden) hxTipHide(); return; }
+    var v = (sv.getAttribute("data-sp") || "").split(",").map(Number), n = v.length - 1; if (n < 1) return;
+    var W = 150, H = 46, mn = +sv.getAttribute("data-mn"), rg = +sv.getAttribute("data-rg") || 1, r = sv.getBoundingClientRect();
+    var k = Math.round(((e.clientX - r.left) / r.width * W - 3) / (W - 6) * n); k = Math.max(0, Math.min(n, k));
+    var best = -1; for (var d = 0; d <= n && best < 0; d++) { if (v[k - d] > 0) best = k - d; else if (v[k + d] > 0) best = k + d; }
+    if (best < 0) return;
+    var cx = 3 + best / n * (W - 6), cy = H - 5 - (v[best] - mn) / rg * (H - 10), hv = sv.querySelector(".hov");
+    if (hv) { hv.setAttribute("cx", cx.toFixed(1)); hv.setAttribute("cy", cy.toFixed(1)); }
+    var now = new Date((D && D.t ? D.t * 1000 : Date.now())), half = new Date(now.getFullYear(), now.getMonth(), now.getDate(), now.getHours() < 12 ? 0 : 12);
+    var at = new Date(half.getTime() - (n - best) * 12 * 3600 * 1000);
+    var when = at.toLocaleDateString(locale(), { weekday: "short", day: "numeric", month: "numeric" }) + " · " + (at.getHours() < 12 ? "00–12" : "12–24");
+    if (!hxTipEl) { hxTipEl = document.createElement("div"); hxTipEl.className = "hxtip"; document.body.appendChild(hxTipEl); }
+    hxTipEl.innerHTML = "<b>" + moneyText(v[best]) + "</b><span>" + esc(when) + "</span>";
+    hxTipEl.hidden = false;
+    hxTipEl.style.left = Math.round(r.left + cx / W * r.width) + "px"; hxTipEl.style.top = Math.round(r.top + cy / H * r.height - 8) + "px";
+  });
   document.addEventListener("click", function (e) {
     var d = e.target.closest && e.target.closest("[data-hxdot]"); if (!d) return;
     e.preventDefault(); var p = d.getAttribute("data-hxdot").split(":"); hxShow(p[0], +p[1]);
   });
   setInterval(function () {
     if (!homeOn || document.hidden) return;
-    ["save", "rise"].forEach(function (kind) { var box = document.querySelector('.hxbig[data-hxk="' + kind + '"]'); if (box && !box.matches(":hover") && !box.contains(document.activeElement)) hxShow(kind, (homeSlide[kind] || 0) + 1); });
+    ["craft", "rise"].forEach(function (kind) { var box = document.querySelector('.hxbig[data-hxk="' + kind + '"]'); if (box && !box.matches(":hover") && !box.contains(document.activeElement)) hxShow(kind, (homeSlide[kind] || 0) + 1); });
   }, 8000);
   // Rutornas bakgrunder: [eget motiv home-<namn>.webp, Blizzards bild som gäller tills det finns]. "" = din stads panorama.
   var HOME_BG = { hero: ["", ""], cheap: ["barrens", "dg-wailing-caverns"], rise: ["winterspring", "dg-scholomance"], hot: ["auction-house", ""], gph: ["ungoro", "dg-maraudon"],
@@ -5456,9 +5496,9 @@ body[data-home] .cols, body[data-home] #sect, body[data-home] #q, body[data-home
       var W = 150, H = 46, rg = Math.max(1, mx - mn), n = Math.max(1, v.length - 1);
       var X = function (k) { return (3 + k / n * (W - 6)).toFixed(1); }, Y = function (val) { return (H - 5 - (val - mn) / rg * (H - 10)).toFixed(1); };
       var la = pts[pts.length - 1];
-      return '<svg class="hxspark ' + kind + '" viewBox="0 0 ' + W + " " + H + '" role="img" aria-label="' + t("trend") + '">' +
+      return '<svg class="hxspark ' + kind + '" viewBox="0 0 ' + W + " " + H + '" role="img" aria-label="' + t("trend") + '" data-sp="' + v.join(",") + '" data-mn="' + mn + '" data-rg="' + rg + '">' +
         (us > 0 ? '<line class="us" x1="0" x2="' + W + '" y1="' + Y(us) + '" y2="' + Y(us) + '"/>' : "") +
-        '<polyline points="' + pts.map(function (k) { return X(k) + "," + Y(v[k]); }).join(" ") + '"/><circle cx="' + X(la) + '" cy="' + Y(v[la]) + '" r="3"/></svg>';
+        '<polyline points="' + pts.map(function (k) { return X(k) + "," + Y(v[k]); }).join(" ") + '"/><circle cx="' + X(la) + '" cy="' + Y(v[la]) + '" r="3"/><circle class="hov" r="4" cx="-9" cy="-9"/></svg>';
     };
     var big = function (L, kind, pic) {
       var lbl = t(kind === "save" ? "h_save" : "h_rise_big"), img = B ? '<img class="hxpic" src="' + B + pic + '.webp" alt="" loading="lazy">' : "";
@@ -5476,7 +5516,23 @@ body[data-home] .cols, body[data-home] #sect, body[data-home] #q, body[data-home
       var dots = L.length > 1 ? '<div class="hxdots">' + L.map(function (r, k) { return '<button type="button" data-hxdot="' + kind + ":" + k + '" aria-label="' + esc(t("h_show_n", k + 1, L.length)) + '" aria-pressed="' + (k === cur) + '"></button>'; }).join("") + "</div>" : "";
       return '<div class="hxbig ' + kind + '" data-hxk="' + kind + '">' + img + slides + dots + "</div>";
     };
-    var top = big(cheap, "save", "dg-deadmines") + big(rising, "rise", "dg-zulfarrak");
+    var bigCraft = function (L) {
+      var lbl = t("h_craft_big"), img = B ? '<img class="hxpic" src="' + B + 'dg-blackrock-depths.webp" alt="" loading="lazy">' : "";
+      L = L.slice(0, 3);
+      if (!L.length) return '<div class="hxbig">' + img + '<span class="hxlbl">' + lbl + '</span><div class="hnone">' + t(D && RECEPT ? "h_none" : "h_cheap_none") + "</div></div>";
+      var cur = Math.min(homeSlide.craft || 0, L.length - 1);
+      var slides = L.map(function (x, k) {
+        var o = byId[x.rc.item], cd = cdRecipe(x.name), pn = RECEPT && RECEPT.profs[x.prof] || "";
+        return '<a class="hxs' + (k === cur ? " on" : "") + '" href="#recipe=' + x.rid + mk + '"' + (k === cur ? "" : ' tabindex="-1" aria-hidden="true"') + '><span class="hxlbl">' + lbl + "</span>" +
+          '<div class="hxit">' + (iconHtml(o, true) || "") + '<b class="' + qcls(o.q) + '">' + esc(x.name) + "</b></div>" +
+          '<div class="hxpr"><div><small>' + t("h_cost") + "</small><b>" + moneyText(x.cost) + '</b></div><div><small>' + t("h_sells") + "</small><b>" + moneyText(x.sell) + "</b></div>" +
+          bigSpark(o, "craft") + "<strong>+" + gaMoney(x.profit) + "</strong></div>" +
+          "<p>" + esc(pn) + (x.skill ? " · " + t("h_skill", x.skill) : "") + " · " + t("h_n_sold", num(x.day)) + (cd ? " · " + t("h_cd", cd) : "") + '</p><span class="hxbtn">' + t("h_open_rec") + " →</span></a>";
+      }).join("");
+      var dots = L.length > 1 ? '<div class="hxdots">' + L.map(function (x, k) { return '<button type="button" data-hxdot="craft:' + k + '" aria-label="' + esc(t("h_show_n", k + 1, L.length)) + '" aria-pressed="' + (k === cur) + '"></button>'; }).join("") + "</div>" : "";
+      return '<div class="hxbig craft" data-hxk="craft">' + img + slides + dots + "</div>";
+    };
+    var top = bigCraft(craft) + big(rising, "rise", "dg-zulfarrak");
     // Fem frågekort med Joakims ikoner (mount: dagens mount ur samlingarna).
     var I = ASSET_BASE ? ASSET_BASE + "icons/" : "";
     var card = function (href, q, bigv, sub, pic, cls) { return '<a class="hxcard" href="' + href + '"><span class="q">' + q + ' <i>→</i></span><b class="' + (cls || "") + '">' + bigv + "</b><small>" + sub + "</small>" + (pic || "") + "</a>"; };
@@ -5487,8 +5543,11 @@ body[data-home] .cols, body[data-home] #sect, body[data-home] #q, body[data-home
       card("#tab=cl", t("h_q_tal"), "51 " + t("h_points"), t("h_q_tal_s"), ico("home-talent")) +
       card(gp[0] ? "#gather=" + gp[0].g.key + "&band=" + (gp[0].k + 1) + mk : "#tab=cr" + mk, t("h_q_farm"), gp[0] ? gaMoney(gp[0].v) + "/h" : "…",
         gp[0] ? esc(gp[0].g.name) + " · " + t("ga_band", GA_BANDS[gp[0].k][0], GA_BANDS[gp[0].k][1]).toLowerCase() : t("ar_loading"), ico("home-farm"), "up") +
-      card(craft[0] ? "#recipe=" + craft[0].rid + mk : "#tab=cr" + mk, t("h_q_craft"), craft[0] ? "+" + gaMoney(craft[0].profit) : "…",
-        craft[0] ? esc(craft[0].name) + " · " + t("h_per_craft") : t("ar_loading"), ico("home-craft"), "up") +
+      (function () {   // raiderna öppnar 9 december (lokal tid); efter det: "Open now"
+        var at = new Date(2026, 11, 9).getTime(), dd = Math.ceil((at - Date.now()) / 864e5);
+        return card("#tab=dg", t("h_q_raid"), dd > 1 ? t("h_raid_in", dd) : dd === 1 ? t("h_raid_1") : t("h_raid_open"), t(dd > 0 ? "h_raid_s" : "h_raid_since"),
+          '<img class="hxico bz" src="' + RICON + 'inv_misc_head_dragon_01.jpg" alt="" loading="lazy">', dd > 0 ? "" : "up");
+      })() +
       card("#tab=dg", t("h_q_new"), homeAL ? t("h_n_dungeons", homeAL.dungeons.length) : "…", homeAL ? t("h_q_new_s", num(Object.keys(homeAL.items).length)) : t("ar_loading"), ico("home-new"));
     var upd = $("scanTime") ? $("scanTime").textContent : "";
     el.innerHTML = '<div class="hxhead"><h2>' + t("h_overview") + '</h2><span class="hxupd"><i></i>' + esc(upd) + "</span></div>" +
@@ -6710,6 +6769,7 @@ body[data-home] .cols, body[data-home] #sect, body[data-home] #q, body[data-home
   // hamta-klasser.js: Classic-databasens tränare, Forever-klientens texter), class quests (quests.json) och tränare.
   // Länk: #cls=warrior&cv=tal|spells|pets|quests|trainers, &t=<plan> (en siffra per talang, träden med - emellan),
   // &sp=<spell-id>, &ln=<skill line>, &pet=<namn>, &cq=<quest>, &tr=<npc>. Planen sparas per klass i webbläsaren.
+  var clLand = false;   // Classes-fliken utan vald klass i adressen: startvyn med boken och de nio klasserna (Joakim 2026-11-20)
   var CL = null, clPromise = null, clSel = "", clView = "tal", clPet = "", clLine = "", clSp = 0, clQ = 0, clTr = 0, clRanks = {}, clFa = "", clFaSet = false, clTk = "", clFold = false;   // clFold: vald klass ihopfälld (klick på den igen, Joakim 2026-11-19)
   var CL_ORDER = ["Warrior", "Paladin", "Hunter", "Rogue", "Priest", "Shaman", "Mage", "Warlock", "Druid"], CL_VIEWS = ["tal", "spells", "pets", "quests", "trainers"];
   var CL_KEY = "whippit-ah-clplan-", CL_SEL_KEY = "whippit-ah-cls";
@@ -6757,6 +6817,7 @@ body[data-home] .cols, body[data-home] #sect, body[data-home] #q, body[data-home
     if (!keep) $("detail").innerHTML = '<div class="note">' + t("ar_loading") + "</div>";
     Promise.all([loadCl(), loadTal().catch(function () {}), loadQuests().catch(function () {})]).then(function () {
       if (mode !== "cl") return;   // bytt flik medan filen laddades
+      if (!keep) clLand = !hp.cls;
       var want = (hp.cls || "").toLowerCase(), saved = "";
       try { saved = localStorage.getItem(CL_SEL_KEY) || ""; } catch (e) { saved = ""; }
       if (!CL_ORDER.some(function (n) { return n.toLowerCase() === want; })) want = clSel || (CL_ORDER.some(function (n) { return n.toLowerCase() === saved; }) ? saved : "warrior");
@@ -6778,8 +6839,18 @@ body[data-home] .cols, body[data-home] #sect, body[data-home] #q, body[data-home
       clShow(!keep);
     }).catch(function () { if (mode === "cl") $("detail").innerHTML = '<div class="note">' + t("qu_fail") + "</div>"; });
   }
-  function clShow(scroll) { drawCats(); refresh(); if (clView === "tal") $("armory").innerHTML = clTalPanel(); if (scroll) toTop(); clDetail(); setHash(clHash()); }
+  function clShow(scroll) { if (clLand) clView = "tal"; drawCats(); refresh(); if (clView === "tal") $("armory").innerHTML = clLand ? clLandHtml() : clTalPanel(); if (scroll) toTop(); clDetail(); setHash(clLand ? "#tab=cl" : clHash()); }
+  function clLandHtml() {
+    var bk = ASSET_BASE ? '<img class="cllbook" src="' + ASSET_BASE + 'icons/nav-classes.png" alt="">' : "";
+    return '<div class="clland"><div class="cllhead">' + bk + "<div><h2>" + t("cl_land_h") + "</h2><p>" + t("cl_land_tip") + '</p></div></div><div class="cllgrid">' +
+      CL_ORDER.map(function (n) {
+        var c = clC(n); if (!c) return "";
+        var live = c.spells.filter(function (sp) { return !sp.x; }).length;
+        return '<button type="button" class="cllc" data-clc="' + n.toLowerCase() + '" style="--cc:' + clCol(n) + '">' + classIcon(n) + "<b>" + n + "</b><small>" + t("cl_land_n", live) + (c.pets.length ? " · " + t(n === "Warlock" ? "cl_land_demons" : "cl_land_pets", c.pets.length) : "") + "</small></button>";
+      }).join("") + "</div></div>";
+  }
   function clRedraw(rep) {   // rep: talangpoäng ändrade adressen utan nytt historiksteg (51 poäng gav 51 steg)
+    if (clLand) { clShow(false); return; }
     if (clView === "tal") $("armory").innerHTML = clTalPanel(); drawCats(); clDetail();
     if (rep) { try { if (!sameHash(location.hash, clHash())) history.replaceState({ i: navPos }, "", clHash()); } catch (e) {} } else setHash(clHash());
   }
@@ -6862,7 +6933,7 @@ body[data-home] .cols, body[data-home] #sect, body[data-home] #q, body[data-home
     var h = "<h2>" + t("cl_classes") + "</h2>";
     CL_ORDER.forEach(function (n) {
       var c = clC(n); if (!c) return;
-      var on = n.toLowerCase() === clSel, live = c.spells.filter(function (s) { return !s.x; }).length;
+      var on = !clLand && n.toLowerCase() === clSel, live = c.spells.filter(function (s) { return !s.x; }).length;
       h += '<button class="cat" type="button" data-clc="' + n.toLowerCase() + '" aria-pressed="' + on + '">' + classIcon(n) + '<em class="nm" style="color:' + clCol(n) + '">' + n + "</em>" + (on && !clFold ? "" : "<span>" + live + "</span>") + "</button>";
       if (!on || clFold) return;
       var faL = clFa ? (clFa === "H" ? "Horde" : "Alliance") : "";
@@ -7088,6 +7159,7 @@ body[data-home] .cols, body[data-home] #sect, body[data-home] #q, body[data-home
   function clDetail() {
     if (!CL || !clC()) { $("detail").innerHTML = '<div class="note">' + t("qu_fail") + "</div>"; return; }
     $("detail").scrollTop = 0;
+    if (clLand) { $("detail").innerHTML = '<div class="strip"><h2>' + t("cl_land_h") + "</h2></div><div class=\"note\">" + t("cl_land_right") + "</div>"; return; }
     if (clView === "tal") { $("detail").innerHTML = clTalDetail(); return; }
     if (clView === "spells" || clView === "pets") { if (clSp && clFind(clSp)) clSpDetail(clSp); else { clSp = 0; $("detail").innerHTML = clOverview(); } return; }
     if (clView === "quests") {
