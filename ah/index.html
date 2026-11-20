@@ -5373,8 +5373,8 @@ body[data-home] .cols, body[data-home] #sect, body[data-home] #q, body[data-home
       : '<div class="hnone">' + t("h_players_none") + "</div>";
     var box = function (h, all, body, k) { return '<div class="inset hbox' + (ASSET_BASE ? " hbg" : "") + '"' + hbgAttr(k) + "><h3><span>" + h + "</span>" + (all ? '<a href="' + all + '">' + t("h_all") + "</a>" : "") + "</h3>" + body + "</div>"; };
     var list = function (L, f2, none) { return L.length ? '<div class="hlist">' + L.map(f2).join("") + "</div>" : '<div class="hnone">' + t(D ? none || "h_none" : "h_cheap_none") + "</div>"; };
-    el.innerHTML = '<div class="inset hhero' + (ASSET_BASE ? " hbg" : "") + '"' + hbgAttr("hero") + "><div><h2>" + t("h_title") + "</h2><p>" + t("h_sub") + '</p></div><button class="wowbtn" type="button" data-hsearch="1">' + t("h_search") + "</button></div>" +
-      '<div class="htiles">' + tiles + "</div>" +
+    // Välkomstrutan och flikrutorna togs bort (Joakim 2026-11-20: "testa att ta bort den"); flikraden ovanför räcker. Koden för dem (tiles, hbgAttr("hero")) finns kvar.
+    el.innerHTML = "" +
       '<div class="hrow">' +
         box(t("h_cheap"), "#tab=tr&v=cheap" + mk, list(cheap, function (r) { return li(r, "#tab=tr&v=cheap&item=" + r.id + mk); }), "cheap") +
         box(t("h_rise"), "", list(rising, function (r) { return li(r, "#item=" + r.id + mk); }), "rise") +
