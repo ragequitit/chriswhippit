@@ -1114,8 +1114,8 @@ body[data-home] .cols, body[data-home] #sect, body[data-home] #q, body[data-home
 .hcard > span { font-size: 13.5px; font-weight: 600; text-shadow: 0 1px 3px #000; display: flex; justify-content: space-between; gap: 6px; } .hcard > span i { font-style: normal; color: var(--grey); }
 .hcard > b { margin-top: 10px; font: 700 24px/1.1 var(--display); color: var(--gold); text-shadow: 0 2px 6px #000; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding-right: 0; }
 .hcard > small { color: #d8ccb4; font-size: 12px; text-shadow: 0 1px 2px #000; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.hcard .hpic { position: absolute; right: 8px; top: 30px; width: 58px; height: 58px; border-radius: 6px; border: 1px solid rgba(201, 162, 90, .6); object-fit: cover; z-index: 1; }
-.hcard:has(.hpic) > b, .hcard:has(.hpic) > small { padding-right: 66px; } .hcard > b.sm { font-size: 17px; white-space: normal; line-height: 1.15; }
+.hcard .hpic { position: absolute; right: 0; top: 0; bottom: 0; width: 34%; height: 100%; object-fit: cover; object-position: center 30%; z-index: 1; -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 22%); mask-image: linear-gradient(90deg, transparent 0, #000 22%); }   /* mountbilden en tredjedel av kortet (Joakim 2026-11-20) */
+.hcard:has(.hpic) > b, .hcard:has(.hpic) > small, .hcard:has(.hpic) > span { padding-right: 34%; } .hcard:has(.hpic) > span i { display: none; } .hcard > b.sm { font-size: 17px; white-space: normal; line-height: 1.15; }
 .hsave.hbg, .hcard.hbg { position: relative; isolation: isolate; background: var(--panel); }
 .hsave.hbg::before, .hcard.hbg::before { content: ""; position: absolute; inset: 0; z-index: -2; border-radius: inherit; background: var(--hbg) center 40% / cover no-repeat; }
 .hsave.hbg::after, .hcard.hbg::after { content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; }
