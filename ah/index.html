@@ -327,6 +327,10 @@ body[data-mode=hu] .facts dd { font-size: 15px; }
 .qmq.in, .qmk.in { position: static; display: inline-block; transform: none; margin: 0 6px 0 0; vertical-align: -1px; }
 .qmk.in { width: 9px; height: 9px; } .qmq.in { font-size: 16px; } .qmq.in.sm { font-size: 14px; }
 .huzbig .qmk { transform: scale(1.3); } .huzbig .qmq { font-size: 24px; }
+/* Malmådrorna (#node=, Joakim 2026-11-20): zonraden som Wowhead, rullgardin för zonen, små prickar */
+.ndfound { line-height: 1.6; } .ndfound > b { color: var(--gold); margin-right: 4px; } .ndpick { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+#ndbox .srct td:first-child { text-align: left; }
+.qmk.nd { width: 7px; height: 7px; margin: -4.5px 0 0 -4.5px; } .huchips a.huchip { display: inline-flex; align-items: center; gap: 5px; } .huchips a.huchip .ic { margin: 0; }
 /* ! och ? på samma punkt: ! strax till vänster, ? strax till höger, så båda syns (Joakim 2026-11-18) */
 .qmq.l { transform: translate(-108%, -60%); } .qmq.r { transform: translate(8%, -60%); }
 .qmq.l:hover { transform: translate(-108%, -60%) scale(1.3); } .qmq.r:hover { transform: translate(8%, -60%) scale(1.3); }
@@ -1853,7 +1857,7 @@ body[data-mode=dg] .left .scroll { padding-right: 14px; box-sizing: border-box; 
       hu_skin: "Skinning", hu_skin_note: "What skinning the beast gives, from the Classic database. Price is the auction house market price.", hu_skin_chance: "Chance", hu_skin_price: "Market price",
       dg_boss_loot: "Loot", dg_back: "‹ Back to the dungeon", dg_boss_noloot: "No loot of its own in the Classic database.",
       gs_ph: "Search everything: items, recipes, quests, NPCs, beasts, players…", gs_all: "All", gs_k_item: "Items", gs_k_rec: "Recipes", gs_k_quest: "Quests",
-      gs_k_npc: "NPCs", gs_k_beast: "Beasts", gs_k_col: "Collections", gs_k_dg: "Dungeons", gs_k_pl: "Players", gs_k_gl: "Guilds", gs_none: "Nothing found",
+      gs_k_npc: "NPCs", gs_k_beast: "Beasts", gs_k_col: "Collections", gs_k_dg: "Dungeons", gs_k_node: "Ore veins", nd_skill: "Mining %1", nd_spawns: "%1 spawns", nd_found: "Found in", nd_zone: "Zone", nd_map_tip: "%1 spawn points in %2. Click a point to copy its /way, click the map to open it large.", nd_loot: "Contains", nd_none: "The open Classic database has no spawn points for this one. It may still exist in Forever.", nd_inst_only: "Only inside dungeons, so there is no world map.", nd_src: "Spawn points from the open Classic database (cmangos 1.12). A spot that can spawn several ores counts for each of them, like on Wowhead.", nd_fail: "Could not load the ore veins.", nd_missing: "No ore vein with that id.", nd_where: "Where to mine", gs_k_pl: "Players", gs_k_gl: "Guilds", gs_none: "Nothing found",
       gs_ar: "Look up “%1” in the Armory", gs_ar_g: "Look up the guild “%1”", gs_more: "Show all %1", gs_loading: "Loading…",
       src_h: "Where to learn it", src_h_drop: "Where it drops", src_trainer: "Trainer", src_vendor: "Vendor", src_drop: "Drops from", src_quest: "Quest reward", src_none: "No known source in the Classic database.",
       limited: "limited stock", more_n: "and %1 more", requires: "requires %1", tier_1: "Apprentice", tier_2: "Journeyman", tier_3: "Expert", tier_4: "Artisan",
@@ -3335,8 +3339,9 @@ body[data-mode=dg] .left .scroll { padding-right: 14px; box-sizing: border-box; 
     $("detail").innerHTML = '<div class="strip">' + ic + '<h2>' + esc(g.name) + (g.de ? ' <small>' + t("ga_de") + "</small>" : "") + "</h2><small>" + t("ga_band", b[0], b[1]) + " · " + t("ga_skill", sk[0], sk[1]) + "</small></div>" +
       '<div id="gaout1">' + out[0] + "</div>" +
       '<div><h3>' + t("ga_assume") + '</h3><div class="gaas">' + inp("a", 1, 999) + inp("b", 0.1, 99) + '<button class="lnk" type="button" data-gareset="1">' + t("ga_reset") + "</button></div></div>" +
-      '<div id="gaout2">' + out[1] + "</div>" +
+      '<div id="gaout2">' + out[1] + "</div>" + (g.key === "mine" ? '<div id="ganodes"></div>' : "") +
       '<div class="note">' + t("ga_note") + "</div>";
+    if (g.key === "mine") ndFillGa();
   }
   function gaInput(el) {   // takten ändrad: räkna om rutan (inte fälten, så fokus hålls), spalten och listan
     var g = GATHER[gaSel]; if (!g) return;
@@ -3691,6 +3696,70 @@ body[data-mode=dg] .left .scroll { padding-right: 14px; box-sizing: border-box; 
     }).join("") + "</svg>";
   }
 
+  // ---- Malmådrorna (Joakim 2026-11-20: "Silver Vein" gav ingen träff i sökningen). nodes.json (hamta-noder.js, cmangos):
+  // [{ id, ids, name, skill, n, zones: [[zon, antal, [x, y, ...]]], inst: [[instans, antal]], loot: [[item, chans, min, max]] }].
+  // En sida per åder som Wowheads objektsida: zonerna med antal spawns på en rad, rullgardin för zonen, kartan med alla
+  // platser. Adress #node=<id>, visas i Crafting-fliken med Mining valt.
+  var NODES = null, nodesP = null, ndSel = 0, ndZone = "";
+  function loadNodes() {
+    if (!nodesP) nodesP = fetch(DATA_BASE + "nodes.json").then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+      .then(function (j) { NODES = j; return j; }).catch(function (e) { nodesP = null; throw e; });
+    return nodesP;
+  }
+  function ndFind(id) { var f = null; if (NODES) NODES.nodes.forEach(function (x) { if (!f && (x.id === id || x.ids.indexOf(id) >= 0)) f = x; }); return f; }
+  function ndItem(id) { var r = byId[id], m = (NODES && NODES.items[id]) || ["Item " + id, 1]; return { r: r, name: r && r.name ? r.name : m[0], q: r ? r.q : m[1] }; }
+  function ndIcon(nd) { var l = nd.loot[0]; if (!l) return ""; var it = ndItem(l[0]); return it.r ? iconHtml(it.r) : xIcon(l[0], it.q); }
+  function ndHtml(nd) {
+    var zs = nd.zones.filter(function (z) { return huHasZ(z[0]); });
+    var cur = zs.some(function (z) { return z[0] === ndZone; }) ? ndZone : zs[0] ? zs[0][0] : "";
+    var h = '<div class="strip"><button class="lnk" type="button" data-copyany="#node=' + nd.id + '" title="' + t("copy_link") + '">' + t("copy_link") + "</button>" +
+      "<h2>" + ndIcon(nd) + " " + esc(nd.name) + "</h2><small>" + t("nd_skill", nd.skill) + " · " + t("nd_spawns", num(nd.n)) + "</small></div>";
+    var where = nd.zones.map(function (z) { return esc(z[0]) + ' <span class="dim">(' + z[1] + ")</span>"; })
+      .concat(nd.inst.map(function (x) { return esc(x[0]) + ' <span class="dim">(' + x[1] + ")</span>"; }));
+    if (!where.length) h += '<div class="note">' + t("nd_none") + "</div>";
+    else h += '<div class="ndfound"><b>' + t("nd_found") + "</b>" + where.join(", ") + ".</div>";
+    if (cur) {
+      var z = zs.filter(function (x) { return x[0] === cur; })[0], P = z[2], dots = "";
+      for (var i = 0; i + 1 < P.length; i += 2) {
+        var w = qmWay(cur, P[i], P[i + 1]);
+        dots += '<i class="qmk nd" style="left:' + P[i] + "%;top:" + P[i + 1] + '%" data-way="' + esc(w) + '" title="' + esc(nd.name + " · " + P[i] + ", " + P[i + 1] + " · " + t("qm_click_copy")) + '"></i>';
+      }
+      h += "<div>" + (zs.length > 1 ? '<div class="ndpick"><select class="qmzsel" data-ndz="1" aria-label="' + t("nd_zone") + '">' + zs.map(function (x) { return '<option value="' + esc(x[0]) + '"' + (x[0] === cur ? " selected" : "") + ">" + esc(x[0]) + " (" + x[1] + ")</option>"; }).join("") + "</select></div>" : "") +
+        '<div class="huzm qmap"><img src="' + huZUrl(cur) + '" alt="' + esc(cur) + '" width="1002" height="668" decoding="async">' + qmTaxi(cur) + dots + "</div>" +
+        '<div class="dim">' + t("nd_map_tip", z[1], esc(cur)) + "</div></div>";
+    } else if (nd.inst.length) h += '<div class="note">' + t("nd_inst_only") + "</div>";
+    if (nd.loot.length) h += "<div><h3>" + t("nd_loot") + '</h3><table class="srct skin"><thead><tr><th></th><th>' + t("hu_skin_chance") + "</th><th>" + t("hu_skin_price") + "</th></tr></thead><tbody>" +
+      nd.loot.map(function (l) {
+        var it = ndItem(l[0]), n = l[3] > l[2] ? l[2] + "–" + l[3] : l[2] > 1 ? String(l[2]) : "";
+        return "<tr><td>" + (it.r ? iconHtml(it.r) : xIcon(l[0], it.q)) + '<a class="wh" href="#item=' + l[0] + '" data-upgo="' + l[0] + '"><span class="' + qcls(it.q) + '" data-tip="' + l[0] + '">' + esc(it.name) + "</span></a>" + (n ? ' <span class="dim">×' + n + "</span>" : "") +
+          "</td><td>" + (l[1] >= 10 ? Math.round(l[1]) : l[1]) + " %</td><td>" + (it.r && it.r.min > 0 ? money(it.r.min) : DASH) + "</td></tr>";
+      }).join("") + "</tbody></table></div>";
+    return h + '<div class="note">' + t("nd_src") + "</div>";
+  }
+  function nodeDetail(id) {
+    if (ndSel !== id) ndZone = "";
+    ndSel = id;
+    setHash("#node=" + id);
+    $("detail").scrollTop = 0;
+    $("detail").innerHTML = '<div id="ndbox" style="display:contents"><div class="note">' + t("ar_loading") + "</div></div>";   // contents: rutans rutnät gäller
+    var put = function (html) { var el = $("ndbox"); if (el && ndSel === id) el.innerHTML = html; };
+    Promise.all([loadNodes(), loadZmap(), qmIndex().catch(function () { return null; })]).then(function () { var nd = ndFind(id); put(nd ? ndHtml(nd) : '<div class="note">' + t("nd_missing") + "</div>"); }, function () { put('<div class="note">' + t("nd_fail") + "</div>"); });
+  }
+  // Mining i Crafting: alla ådror som chips till sina sidor.
+  function ndFillGa() {
+    loadNodes().then(function () {
+      var el = $("ganodes"); if (!el) return;
+      el.innerHTML = "<h3>" + t("nd_where") + '</h3><div class="huchips">' + NODES.nodes.filter(function (x) { return x.n > 0; }).map(function (x) {
+        return '<a class="huchip" href="#node=' + x.id + '" data-node="' + x.id + '" title="' + esc(t("nd_skill", x.skill) + " · " + t("nd_spawns", num(x.n))) + '">' + ndIcon(x) + esc(x.name) + ' <span class="dim">' + x.skill + "</span></a>";
+      }).join("") + "</div>";
+    }).catch(function () { /* utan ådrorna: inga chips */ });
+  }
+  document.addEventListener("change", function (e) {
+    if (!e.target || !e.target.dataset || !e.target.dataset.ndz) return;
+    ndZone = e.target.value;
+    var nd = ndFind(ndSel), b = $("ndbox");
+    if (nd && b) b.innerHTML = ndHtml(nd);
+  });
   // ---- NPC-sidan (Joakim 2026-11-18): namnet i questkartans lista öppnar NPC:n i högerrutan, länk #npc=<id>.
   // Data: npc/<id % 50>.json (hamta-questplatser.js) = [namn, titel, minLv, maxLv, rank, npcflags, [[zon, x, y, antal]],
   // [[instans, antal]], gångvägar [[zon, [[x, y]...]]], [quests den ger], [quests den tar emot], displayId].
@@ -4337,7 +4406,7 @@ body[data-mode=dg] .left .scroll { padding-right: 14px; box-sizing: border-box; 
     var hp0 = hashParams();
     // En länk bestämmer fliken (annars den som sparats): #quest, #dungeon, #player/#guild, #recipe, #item.
     if (hp0.tab === "lb") { hp0.top = lbGroup(arLb) ? arLb : "ilvl"; delete hp0.tab; }
-    var hm = /^(ah|tr|cr|ar|qu|dg|hu|co|cl)$/.test(hp0.tab || "") ? hp0.tab : hp0.cls ? "cl" : hp0.fx ? "fx" : hp0.de ? "de" : hp0.col ? "co" : hp0.beast ? "hu" : hp0.quest || hp0.npc ? "qu" : hp0.dungeon ? "dg" : hp0.player || hp0.guild || hp0.top ? "ar" : hp0.recipe || hp0.gather ? "cr" : hp0.item ? "ah" : "";
+    var hm = /^(ah|tr|cr|ar|qu|dg|hu|co|cl)$/.test(hp0.tab || "") ? hp0.tab : hp0.cls ? "cl" : hp0.fx ? "fx" : hp0.de ? "de" : hp0.col ? "co" : hp0.beast ? "hu" : hp0.quest || hp0.npc ? "qu" : hp0.dungeon ? "dg" : hp0.player || hp0.guild || hp0.top ? "ar" : hp0.recipe || hp0.gather || hp0.node ? "cr" : hp0.item ? "ah" : "";
     if (hm === "tr" && !keep && /^(cheap|bs|vend)$/.test(hp0.v || "")) { trView = hp0.v; trSort(trView); }   // Trading-adress: vald undervy (buggjakt 2026-11-20)
     var wantI = byId[+hp0.item];
     if (hm && !keep && mode !== hm && !(hm === "ah" && mode === "tr" && (!wantI || (!wantI.gear && wantI.qty >= TR_MIN)))) { if (fromNav) resetModeState(hm); mode = hm; drawCats(); refresh(); }   // trädet ritades för den sparade fliken
@@ -4360,11 +4429,12 @@ body[data-mode=dg] .left .scroll { padding-right: 14px; box-sizing: border-box; 
       else arLanding();
       return;
     }
-    if (mode === "cr" || (!keep && (hashParams().recipe || hashParams().gather))) {   // Crafting: recepten laddas först, sedan listan och rutan
+    if (mode === "cr" || (!keep && (hashParams().recipe || hashParams().gather || hashParams().node))) {   // Crafting: recepten laddas först, sedan listan och rutan
       mode = "cr"; if (!keep) { sortKey = "profit"; sortDir = -1; } $("q").placeholder = t("search_rc");
       var wantR = +hashParams().recipe;
-      var wantG = hashParams().gather;
-      loadRecept().then(function () { buildCr(); if (mode !== "cr") return; if (wantG) gaSet(wantG, hashParams().band); else if (!keep) gaSel = -1; if (!keep && !wantG && (fromNav || hp0.c != null)) catFromHash(hp0, profList.length); drawCats(); refresh(); if (gaSel >= 0) { gaDetail(); if (wantG && !keep) showTab("item"); } else if (wantR) { selectRecipe(wantR, true); showTab("item"); } else if (keep && selRec) selectRecipe(selRec, false); else if (view[0]) selectRecipe(view[0].rid, false); })
+      var wantN = +hashParams().node || 0;   // malmåder (#node=): Mining i spalten, ådern i rutan
+      var wantG = hashParams().gather || (wantN ? "mine" : "");
+      loadRecept().then(function () { buildCr(); if (mode !== "cr") return; if (wantG) gaSet(wantG, hashParams().band); else if (!keep) gaSel = -1; if (!keep && !wantG && (fromNav || hp0.c != null)) catFromHash(hp0, profList.length); drawCats(); refresh(); if (gaSel >= 0) { if (wantN) nodeDetail(wantN); else gaDetail(); if (wantG && !keep) showTab("item"); } else if (wantR) { selectRecipe(wantR, true); showTab("item"); } else if (keep && selRec) selectRecipe(selRec, false); else if (view[0]) selectRecipe(view[0].rid, false); })
         .catch(function () { if (mode === "cr") $("detail").innerHTML = '<div class="note">' + t("cr_fail") + "</div>"; });   // bytt flik under laddningen: rita inget (granskning 2026-11-18)
       return;
     }
@@ -5010,12 +5080,12 @@ body[data-mode=dg] .left .scroll { padding-right: 14px; box-sizing: border-box; 
   // vara laddad (topplistorna), spelare och guilder. Annars slås spelarnamn upp i Armory. Ett val går via adressen
   // (#item=, #quest= …), samma väg som bakåt/framåt, så det hamnar rätt i vilken flik som helst.
   var GS = { ix: null, p: null, q: "", kind: "", rows: [], timer: 0 };
-  var GS_KINDS = ["item", "rec", "quest", "beast", "npc", "col", "dg", "pl", "gl"];
+  var GS_KINDS = ["item", "rec", "quest", "beast", "node", "npc", "col", "dg", "pl", "gl"];
   function gsIndex() {
     if (GS.p) return GS.p;
     var npcs = fetch(DATA_BASE + "sok-npc.json").then(function (r) { return r.ok ? r.json() : []; }).catch(function () { return []; });
     var soft = function (p) { return p.catch(function () { return null; }); };
-    GS.p = Promise.all([npcs, soft(loadRecept()), soft(loadQuests()), soft(loadHunter()), soft(loadCo()), soft(loadDungeons())]).then(function (a) {
+    GS.p = Promise.all([npcs, soft(loadRecept()), soft(loadQuests()), soft(loadHunter()), soft(loadCo()), soft(loadDungeons()), soft(loadNodes())]).then(function (a) {
       var ix = [], lc = function (x) { return String(x || "").toLowerCase(); };
       Object.keys(byId).forEach(function (id) { var r = byId[id]; if (r.name) ix.push({ k: "item", n: r.name, l: lc(r.name), h: "#item=" + r.id, i: iconHtml(r), sh: r.min > 0 ? money(r.min) : "", c: qcls(r.q) }); });
       if (RECEPT) RECEPT.recipes.forEach(function (rc) { var it = byId[rc.item]; ix.push({ k: "rec", n: rc.name, l: lc(rc.name), h: "#recipe=" + rc.spell, i: it ? iconHtml(it) : xIcon(rc.item, 1), s: ((RECEPT.profs && RECEPT.profs[rc.prof]) || "") + (rc.skill ? " " + rc.skill : "") }); });
@@ -5024,6 +5094,7 @@ body[data-mode=dg] .left .scroll { padding-right: 14px; box-sizing: border-box; 
       if (HU) HU.beasts.forEach(function (b) { ix.push({ k: "beast", n: b.name, l: lc(b.name), h: "#beast=" + b.id, i: '<img class="hic" src="' + huFamIcon(b.fam) + '" alt="">', s: b.family + " · " + t("col_lvl") + " " + b.min + (b.max > b.min ? "–" + b.max : "") + (b.rank ? " · " + HU_RANK[b.rank] : ""), c: huIsRare(b) ? "hurn" : "", f: huIsRare(b) ? "s" : b.rank === 1 ? "g" : "" }); });
       if (CO) Object.keys(CO_LETTER).forEach(function (kind) { (CO[kind] || []).forEach(function (x) { ix.push({ k: "col", n: x.name, l: lc(x.name), h: "#col=" + CO_LETTER[kind] + x.id, i: x.img ? '<img src="' + esc(x.img) + '" alt="" loading="lazy">' : "", s: t("co_k_" + kind) }); }); });
       if (DG) DG.dungeons.forEach(function (d) { ix.push({ k: "dg", n: d.name, l: lc(d.name + " " + (d.short || "")), h: "#dungeon=" + d.map, s: (d.short ? d.short + " · " : "") + t("col_lvl") + " " + d.min + "–" + d.max }); if (d.bosses) d.bosses.forEach(function (b) { ix.push({ k: "npc", n: b.name, l: lc(b.name), h: "#dungeon=" + d.map, s: d.name }); }); });
+      if (NODES) NODES.nodes.forEach(function (nd) { ix.push({ k: "node", n: nd.name, l: lc(nd.name), h: "#node=" + nd.id, i: ndIcon(nd), s: t("nd_skill", nd.skill) + " · " + t("nd_spawns", num(nd.n)) }); });   // malmådrorna (Joakim 2026-11-20)
       GS.ix = ix; return ix;
     });
     return GS.p;
@@ -5240,6 +5311,8 @@ body[data-mode=dg] .left .scroll { padding-right: 14px; box-sizing: border-box; 
       if (mode === "cr") { if (gaSel >= 0) gaGoRecipe(rid); else selectRecipe(rid, true); } else setMode("cr");
       return;
     }
+    var ndl = e.target.closest("[data-node]");
+    if (ndl && !(e.ctrlKey || e.metaKey) && e.button === 0) { e.preventDefault(); gsGo("#node=" + ndl.dataset.node); return; }
     var npl = e.target.closest("[data-npc]");
     if (npl) { e.preventDefault(); huZBigClose(); if (qmOv) { qmOv = false; if (mode === "qu") drawCats(); } showTab("item"); npcDetail(+npl.dataset.npc); return; }
     var npz = e.target.closest("[data-npcz]");
