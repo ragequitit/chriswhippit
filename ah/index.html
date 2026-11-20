@@ -103,36 +103,44 @@ h1 { font-family: var(--display); font-weight: 500; font-size: 36px; margin: 0; 
 /* Marknaden (Joakims spec 2026-11-16): en kompakt väljare till vänster om uppdateringstiden. Stängd: fraktionsmärke,
    fraktion · servertyp och en pil. Öppen: panel under knappen med Faction (Horde/Alliance) och Realm type (Normal/PvP). */
 .mkt { position: relative; margin-left: auto; align-self: center; flex: 0 0 auto; }
-.mbtn { all: unset; box-sizing: border-box; min-width: 192px; cursor: pointer; height: 40px; padding: 0 12px 0 10px; border-radius: 0; background: #1B140F; border: 1px solid #7A5739;
-  display: inline-flex; align-items: center; gap: 8px; font-size: 14.5px; font-weight: 500; color: var(--fg);
-  box-shadow: inset 0 1px 0 rgba(229, 180, 106, .10), 0 1px 2px rgba(0, 0, 0, .5); }
-.mbtn:hover, .mbtn[aria-expanded=true] { border-color: var(--edge); }
-.mbtn:focus-visible { outline: 2px solid var(--edge); outline-offset: 2px; }
-.mbtn .dot { color: var(--grey); }
-.mbtn .caret { width: 10px; height: 6px; color: var(--grey); margin-left: 2px; transition: transform .15s; }
+/* Marknadsväljaren (Joakims referensbild 2026-11-20): färgerna som variabler, Original varm, Atlas blågrå nedan. */
+.mkt { --mk-bg: #1B140F; --mk-btn: #1B140F; --mk-line: #7A5739; --mk-div: #3A2B1F; --mk-fg: #F1E6D2; --mk-fg2: #B9A88F; --mk-acc: #F6C448; --mk-hover: rgba(255, 230, 190, .045); }
+.mbtn { all: unset; box-sizing: border-box; cursor: pointer; height: 38px; padding: 0 12px; border-radius: 6px; background: var(--mk-btn); border: 1px solid var(--mk-line);
+  display: inline-flex; align-items: center; gap: 8px; font: 500 14px/1 "Instrument Sans", "Segoe UI", system-ui, sans-serif; color: var(--mk-fg); white-space: nowrap;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, .45); }
+.mbtn:hover, .mbtn[aria-expanded=true] { border-color: var(--mk-acc); }
+.mbtn:focus-visible { outline: 2px solid var(--mk-acc); outline-offset: 2px; }
+.mbtn .dot { color: var(--mk-fg2); }
+.mbtn .caret { width: 10px; height: 6px; color: var(--mk-fg2); margin-left: 2px; transition: transform .15s; }
+.mbtn .rg { border: 0; padding: 0; margin: 0; font-size: 13px; color: var(--mk-fg2); }
+.mbtn .msep { width: 1px; height: 16px; background: var(--mk-line); }
+.mbtn .rt, .mbtn .rt.pvp { background: none; padding: 0; font-size: 13px; color: var(--mk-acc); }
+.mbtn .fi { width: 18px; height: 18px; }
 .mbtn[aria-expanded=true] .caret { transform: rotate(180deg); }
 .mkt .fi { width: 26px; height: 26px; object-fit: contain; display: block; }
 .mkt .fi:not([src]) { display: none; }
 .rt { font-size: 12.5px; padding: 2px 7px; border-radius: 0; background: rgba(255, 255, 255, .08); color: var(--grey); }
 .rt.pvp { background: rgba(246, 196, 72, .16); color: var(--gold); }
-.mpop { position: absolute; right: 0; top: calc(100% + 6px); z-index: 40; width: min(330px, calc(100vw - 52px)); padding: 8px; border-radius: 0;
-  background: #1B140F; border: 1px solid #7A5739; box-shadow: 0 12px 30px rgba(0, 0, 0, .55), inset 0 1px 0 rgba(229, 180, 106, .10); }
-.mrow { display: grid; grid-template-columns: 86px repeat(4, 1fr); gap: 6px; align-items: center; }
-.mrow:not(:first-child) { grid-template-columns: 86px repeat(3, 1fr); }
-.mpop { width: min(470px, calc(100vw - 52px)); }
-.mrow button[disabled] { opacity: .35; cursor: default; }
-.mrow button[disabled]:hover { background: none; color: var(--grey); }
+.mpop { position: absolute; right: 0; top: calc(100% + 8px); z-index: 40; box-sizing: border-box; width: min(336px, calc(100vw - 32px)); padding: 6px 18px; border-radius: 10px;
+  background: var(--mk-bg); border: 1px solid var(--mk-line); box-shadow: 0 14px 34px rgba(0, 0, 0, .55); font-family: "Instrument Sans", "Segoe UI", system-ui, sans-serif; color: var(--mk-fg); }
+.mgrp { border: 0; margin: 0; padding: 12px 0; min-width: 0; }
+.mgrp + .mgrp { border-top: 1px solid var(--mk-div); }
+.mgrp .mlbl { float: left; width: 100%; padding: 0 0 8px; margin: 0; font-size: 11.5px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--mk-fg2); }
+.mopts { clear: both; display: grid; gap: 2px 8px; }
+.mopts.r4 { grid-template-columns: repeat(4, minmax(0, 1fr)); } .mopts.r2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.mopt { display: flex; align-items: center; gap: 9px; min-height: 34px; padding: 0 6px; margin: 0 -6px; border-radius: 6px; cursor: pointer; font-size: 14px; color: var(--mk-fg2); }
+.mopt:hover { background: var(--mk-hover); }
+.mopt:has(input:checked) { color: var(--mk-fg); }
+.mopt:has(input:focus-visible) { outline: 2px solid var(--mk-acc); outline-offset: -2px; }
+.mopt:has(input:disabled) { opacity: .38; cursor: default; } .mopt:has(input:disabled):hover { background: none; }
+.mopt input { appearance: none; -webkit-appearance: none; flex: none; width: 15px; height: 15px; margin: 0; border-radius: 50%; border: 1.5px solid var(--mk-fg2); display: grid; place-content: center; cursor: inherit; outline: none; }
+.mopt input:checked { border-color: var(--mk-acc); }
+.mopt input:checked::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--mk-acc); }
+.mopt .fi { width: 18px; height: 18px; }
+@media (max-width: 760px) { .mopt { min-height: 44px; } .mbtn { height: 40px; } }
 .fi.bw { border-radius: 50%; }
 .rg { font-size: 12px; padding: 2px 6px; border: 1px solid var(--line); color: var(--grey); margin-left: 4px; }
 .rt.rp, .rt.rppvp { background: rgba(163, 53, 238, .18); color: #d8b4ff; }
-@media (max-width: 560px) { .mrow { grid-template-columns: repeat(4, 1fr); } .mlbl { grid-column: 1 / -1; } }
-.mrow + .mrow { margin-top: 6px; }
-.mlbl { font-size: 11.5px; letter-spacing: .07em; text-transform: uppercase; color: var(--grey); font-weight: 600; padding-left: 4px; }
-.mrow button { all: unset; cursor: pointer; height: 36px; padding: 0 10px; border-radius: 0; border: 1px solid transparent; color: var(--grey);
-  display: inline-flex; align-items: center; justify-content: center; gap: 7px; font-size: 14px; }
-.mrow button:hover { background: var(--hover); color: var(--fg); }
-.mrow button[aria-pressed=true] { color: var(--fg); background: linear-gradient(#39271A, #21170F); border-color: rgba(246, 196, 72, .6); }
-.mrow button:focus-visible { outline: 2px solid var(--edge); outline-offset: -2px; }
 /* Sökknappen som i spelets AH: röd platta, guldtext. */
 .wowbtn { height: 36px; padding: 0 22px; border-radius: 5px; cursor: pointer; font: inherit; font-size: 14px; font-weight: 500; color: var(--gold);
   background: linear-gradient(var(--btn-a), var(--btn-b)); border: 1px solid var(--bronze); box-shadow: inset 0 1px 0 rgba(255, 200, 160, .22), inset 0 -2px 0 rgba(0, 0, 0, .35), 0 1px 2px rgba(0, 0, 0, .6); }
@@ -1000,10 +1008,9 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
 [data-appearance=atlas] .navb:hover:not([disabled]), [data-appearance=atlas] .more:hover { filter: none; border-color: var(--edge); background: linear-gradient(#285669, #1B3949); }
 [data-appearance=atlas] .navb[disabled] { color: var(--grey); background: linear-gradient(#1A2530, #141D27); border-color: var(--line); }
 /* Fraktions-/realmväljaren. */
-[data-appearance=atlas] .mbtn, [data-appearance=atlas] .mpop { background: #142130; border-color: #3F5D6E; box-shadow: inset 0 1px 0 rgba(160, 220, 230, .10), 0 1px 2px rgba(0, 0, 0, .5); }
-[data-appearance=atlas] .mpop { box-shadow: 0 12px 30px rgba(0, 0, 0, .55); }
+[data-appearance=atlas] .mkt { --mk-bg: #14222D; --mk-btn: #172632; --mk-line: #465C69; --mk-div: #30414D; --mk-fg: #E9EEF2; --mk-fg2: #A6B4C1; --mk-acc: #75D9D4; --mk-hover: rgba(233, 238, 242, .04); }
 [data-appearance=atlas] .rt.pvp { background: rgba(67, 218, 209, .14); color: #9FEDE8; }
-[data-appearance=atlas] .mrow button[aria-pressed=true] { background: linear-gradient(#1C4850, #18343F); border-color: rgba(67, 218, 209, .6); }
+[data-appearance=atlas] .mbtn .rt, [data-appearance=atlas] .mbtn .rt.pvp { background: none; color: var(--mk-acc); }
 /* Paneler och markeringar som hade varm ton. */
 [data-appearance=atlas] .cat[aria-pressed=true] { background: linear-gradient(#1C4850, #18343F); box-shadow: inset 0 0 0 1px rgba(67, 218, 209, .25); color: #F4FBFA; }
 [data-appearance=atlas] .strip { background: linear-gradient(90deg, rgba(67, 218, 209, .13), rgba(67, 218, 209, .02)); }
@@ -1180,25 +1187,31 @@ body[data-home] .cols, body[data-home] #sect, body[data-home] #q, body[data-home
       </div>
     </div>
     <div class="mkt" id="mkt">
-      <button type="button" class="mbtn" id="mktBtn" aria-haspopup="true" aria-expanded="false" data-t-title="market_label" title="">
-        <img class="fi" id="mktIcon" data-icon="faction-horde.png" alt=""><span id="mktFa">Horde</span><span class="dot">·</span><span class="rt" id="mktRs">PvP</span><span class="rg" id="mktRg">EU</span>
+      <button type="button" class="mbtn" id="mktBtn" aria-haspopup="dialog" aria-expanded="false" aria-controls="mktPop" data-t-title="market_label" title="">
+        <span class="rg" id="mktRg">EU</span><span class="msep" aria-hidden="true"></span><img class="fi" id="mktIcon" data-icon="faction-horde.png" alt=""><span id="mktFa">Horde</span><span class="dot" aria-hidden="true">·</span><span class="rt" id="mktRs">PvP</span>
         <svg class="caret" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
       </button>
-      <div class="mpop" id="mktPop" hidden>
-        <div class="mrow"><span class="mlbl" data-t="m_region">Region</span>
-          <button type="button" data-rg="eu" aria-pressed="true">EU</button>
-          <button type="button" data-rg="us" aria-pressed="false">US</button>
-          <button type="button" data-rg="kr" aria-pressed="false">KR</button>
-          <button type="button" data-rg="tw" aria-pressed="false">TW</button>
-        </div>
-        <div class="mrow"><span class="mlbl" data-t="m_realm">Realm type</span>
-          <button type="button" data-rs="pvp" aria-pressed="true">PvP</button>
-          <button type="button" data-rs="normal" aria-pressed="false">Normal</button>
-        </div>
-        <div class="mrow"><span class="mlbl" data-t="m_faction">Faction</span>
-          <button type="button" data-fa="horde" aria-pressed="true"><img class="fi" data-icon="faction-horde.png" alt="">Horde</button>
-          <button type="button" data-fa="alliance" aria-pressed="false"><img class="fi" data-icon="faction-alliance.png" alt="">Alliance</button>
-        </div>
+      <div class="mpop" id="mktPop" role="dialog" data-t-aria="market_label" aria-label="Market" hidden>
+        <fieldset class="mgrp"><legend class="mlbl" data-t="m_region">Region</legend>
+          <div class="mopts r4">
+            <label class="mopt"><input type="radio" name="mkt-region" value="eu" data-rg="eu"><span>EU</span></label>
+            <label class="mopt"><input type="radio" name="mkt-region" value="us" data-rg="us"><span>US</span></label>
+            <label class="mopt"><input type="radio" name="mkt-region" value="kr" data-rg="kr"><span>KR</span></label>
+            <label class="mopt"><input type="radio" name="mkt-region" value="tw" data-rg="tw"><span>TW</span></label>
+          </div>
+        </fieldset>
+        <fieldset class="mgrp"><legend class="mlbl" data-t="m_faction">Faction</legend>
+          <div class="mopts r2">
+            <label class="mopt"><input type="radio" name="mkt-faction" value="horde" data-fa="horde"><img class="fi" data-icon="faction-horde.png" alt=""><span>Horde</span></label>
+            <label class="mopt"><input type="radio" name="mkt-faction" value="alliance" data-fa="alliance"><img class="fi" data-icon="faction-alliance.png" alt=""><span>Alliance</span></label>
+          </div>
+        </fieldset>
+        <fieldset class="mgrp"><legend class="mlbl" data-t="m_realm">Realm type</legend>
+          <div class="mopts r2">
+            <label class="mopt"><input type="radio" name="mkt-realm" value="normal" data-rs="normal"><span>Normal</span></label>
+            <label class="mopt"><input type="radio" name="mkt-realm" value="pvp" data-rs="pvp"><span>PvP</span></label>
+          </div>
+        </fieldset>
       </div>
     </div>
     <div class="scan"><b id="scanTime" data-t="loading">Läser in scannen…</b><span id="scanInfo"></span></div>
@@ -1439,11 +1452,11 @@ body[data-home] .cols, body[data-home] #sect, body[data-home] #q, body[data-home
     return mkKey(rg, "pvp", "horde");
   }
   function drawMarket() {
-    var hp = houseParts(house) || ["pvp", "horde", "eu"], bs = document.querySelectorAll(".mpop button"), bw = hp[1] === "blackwater", sd = mySide();
+    var hp = houseParts(house) || ["pvp", "horde", "eu"], bs = document.querySelectorAll(".mpop input[type=radio]"), bw = hp[1] === "blackwater", sd = mySide();
     applyPanorama(sd);
     for (var i = 0; i < bs.length; i++) {
       var rs = bs[i].getAttribute("data-rs"), fa = bs[i].getAttribute("data-fa"), rg = bs[i].getAttribute("data-rg"), ah = bs[i].getAttribute("data-ah");
-      bs[i].setAttribute("aria-pressed", (rs && rs === hp[0]) || (fa && fa === sd) || (rg && rg === hp[2]) || (ah && ah === (bw ? "bw" : "own")) ? "true" : "false");
+      bs[i].checked = !!((rs && rs === hp[0]) || (fa && fa === sd) || (rg && rg === hp[2]) || (ah && ah === (bw ? "bw" : "own")));
       // grått: kombinationen finns inte (eller har ingen data än) med de andra valen kvar
       var k = rg ? mkKey(rg, hp[0] in MK_RS ? hp[0] : "pvp", hp[1]) : rs ? mkKey(hp[2], rs, hp[1]) : ah ? mkKey(hp[2], hp[0], ah === "bw" ? "blackwater" : sd) : mkKey(hp[2], hp[0], bw ? "blackwater" : fa);
       var ok = rg ? mkHas(mkNear(rg, hp[0], hp[1])) : mkHas(k);
@@ -1508,7 +1521,20 @@ body[data-home] .cols, body[data-home] #sect, body[data-home] #q, body[data-home
   }
   function trSort(v) { if (v === "bs") { sortKey = "bs"; sortDir = -1; } else if (v === "vend") { sortKey = "vp"; sortDir = -1; } else { sortKey = "dip"; sortDir = -1; } }
   function houseFor(fa) { var hp = houseParts(house) || ["pvp", "horde", "eu"], k = mkKey(hp[2], hp[0], fa); return mkHas(k) ? k : mkNear(hp[2], hp[0], fa); }
-  function mktOpen(open) { $("mktPop").hidden = !open; $("mktBtn").setAttribute("aria-expanded", open ? "true" : "false"); }
+  function mktOpen(open) {
+    var p = $("mktPop");
+    p.hidden = !open; $("mktBtn").setAttribute("aria-expanded", open ? "true" : "false");
+    if (open) mktFit();
+  }
+  function mktFit() {   // panelen ska rymmas inom skärmens kanter (16 px marginal)
+    var p = $("mktPop"); if (p.hidden) return;
+    p.style.transform = "";
+    var r = p.getBoundingClientRect(), W = document.documentElement.clientWidth, dx = 0;
+    if (r.right > W - 16) dx = W - 16 - r.right;
+    if (r.left + dx < 16) dx = 16 - r.left;
+    if (dx) p.style.transform = "translateX(" + Math.round(dx) + "px)";
+  }
+  window.addEventListener("resize", function () { mktFit(); });
   var histCache = {};
   // data.json per hus i minnet (granskning 2026-11-18): byte fram och tillbaka hämtar inte 2 MB igen inom 10 minuter.
   // Kommer en nyare scan för huset tas dess dagsfiler från den senaste kända dagen och framåt bort ur histCache.
@@ -7199,10 +7225,9 @@ body[data-home] .cols, body[data-home] #sect, body[data-home] #q, body[data-home
   document.addEventListener("change", function (e) { if (e.target && e.target.id === "hulvl" && mode === "hu") drawCats(); });
   document.addEventListener("submit", function (e) { if (e.target && e.target.matches && e.target.matches("[data-cmpform]")) { e.preventDefault(); var q = $("cmpq"); arCompare(q ? q.value : ""); } });
   document.addEventListener("keydown", function (e) { if (e.key === "Escape" && !$("mktPop").hidden) { mktOpen(false); $("mktBtn").focus(); } });
-  $("mktPop").addEventListener("click", function (e) {   // panelen ligger kvar: fraktion och servertyp kan bytas i samma öppning
-    var b = e.target.closest("button");
-    if (!b) return;
-    if (b.disabled) return;
+  $("mktPop").addEventListener("change", function (e) {   // panelen ligger kvar: alla tre valen kan bytas i samma öppning
+    var b = e.target;
+    if (!b || b.type !== "radio" || b.disabled) return;
     var hp = houseParts(house) || ["pvp", "horde", "eu"], bw = hp[1] === "blackwater";
     if (b.getAttribute("data-fa")) { side = b.getAttribute("data-fa"); try { localStorage.setItem(SIDE_KEY, side); } catch (e3) {} }
     var rs = b.getAttribute("data-rs") || hp[0], fa = bw ? "blackwater" : (b.getAttribute("data-fa") || hp[1]), rg = b.getAttribute("data-rg") || hp[2];
