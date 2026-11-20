@@ -1094,6 +1094,37 @@ body[data-home] .cols, body[data-home] #sect, body[data-home] #q, body[data-home
 @media (max-width: 1250px) { .hrow { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 700px) { .hrow { grid-template-columns: minmax(0, 1fr); } }
 .hbox { padding: 12px 14px; }
+/* Överst: stort sparkort (2 × 2) och fyra siffror; sedan fem frågekort (Joakim 2026-11-20) */
+.htop { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); grid-auto-rows: minmax(84px, auto); gap: 10px; }
+.hsave { grid-column: span 2; grid-row: span 2; display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-rows: auto 1fr auto; gap: 8px 16px; padding: 14px 16px; text-decoration: none; color: var(--fg); border: 1px solid rgba(201, 162, 90, .45); border-radius: 8px; }
+.hsave .hchip { align-self: start; justify-self: start; padding: 3px 10px; border: 1px solid var(--gold); border-radius: 5px; font-size: 11.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--gold); background: rgba(0, 0, 0, .35); }
+.hsave .hpct { grid-column: 2; grid-row: 1 / 3; align-self: start; font: 700 46px/1 var(--display); color: #7be08a; text-shadow: 0 2px 8px rgba(0, 0, 0, .8); }
+.hbars { grid-column: 1; display: grid; gap: 6px; max-width: 420px; padding: 10px 12px; border-radius: 7px; background: rgba(0, 0, 0, .45); }
+.hbars > div { display: grid; grid-template-columns: 78px minmax(60px, 1fr) auto; align-items: center; gap: 10px; font-size: 12.5px; color: #d8ccb4; }
+.hbars > div > i { display: block; height: 10px; border-radius: 5px; background: rgba(255, 255, 255, .12); overflow: hidden; } .hbars > div > i u { display: block; height: 100%; border-radius: 5px; background: rgba(255, 255, 255, .5); }
+.hbars > div > i.lo u { background: #e7b84a; } .hbars em { font-style: normal; white-space: nowrap; text-align: right; } .hbars small { color: #d8ccb4; }
+.hsitem { grid-column: 1 / -1; display: flex; align-items: center; gap: 10px; min-width: 0; }
+.hsitem .ic.big { float: none; margin: 0; } .hsitem b { font: 400 20px/1.15 var(--display); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-shadow: 0 1px 3px #000; }
+.hsitem .wowbtn { margin-left: auto; white-space: nowrap; }
+.hstat { display: grid; align-content: center; gap: 2px; padding: 10px 14px; }
+.hstat small { color: var(--grey); font-size: 12px; text-transform: uppercase; letter-spacing: .05em; } .hstat b { font: 400 26px/1.1 var(--display); color: var(--gold); } .hstat span { color: var(--grey); font-size: 12px; }
+.hcards { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; }
+.hcard { position: relative; display: grid; align-content: start; gap: 4px; min-height: 112px; padding: 12px 14px; text-decoration: none; color: var(--fg); border: 1px solid rgba(201, 162, 90, .45); border-radius: 8px; overflow: hidden; transition: border-color .15s, transform .15s; }
+.hcard:hover { border-color: var(--gold); transform: translateY(-2px); }
+.hcard > span { font-size: 13.5px; font-weight: 600; text-shadow: 0 1px 3px #000; display: flex; justify-content: space-between; gap: 6px; } .hcard > span i { font-style: normal; color: var(--grey); }
+.hcard > b { margin-top: 10px; font: 700 24px/1.1 var(--display); color: var(--gold); text-shadow: 0 2px 6px #000; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding-right: 0; }
+.hcard > small { color: #d8ccb4; font-size: 12px; text-shadow: 0 1px 2px #000; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.hcard .hpic { position: absolute; right: 8px; top: 30px; width: 58px; height: 58px; border-radius: 6px; border: 1px solid rgba(201, 162, 90, .6); object-fit: cover; z-index: 1; }
+.hcard:has(.hpic) > b, .hcard:has(.hpic) > small { padding-right: 66px; } .hcard > b.sm { font-size: 17px; white-space: normal; line-height: 1.15; }
+.hsave.hbg, .hcard.hbg { position: relative; isolation: isolate; background: var(--panel); }
+.hsave.hbg::before, .hcard.hbg::before { content: ""; position: absolute; inset: 0; z-index: -2; border-radius: inherit; background: var(--hbg) center 40% / cover no-repeat; }
+.hsave.hbg::after, .hcard.hbg::after { content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; }
+.hsave.hbg::after { background: linear-gradient(90deg, rgba(15, 11, 8, .78) 0, rgba(15, 11, 8, .5) 60%, rgba(15, 11, 8, .35) 100%); }
+.hcard.hbg::after { background: linear-gradient(180deg, rgba(15, 11, 8, .45) 0, rgba(15, 11, 8, .78) 100%); }
+[data-appearance=atlas] .hsave.hbg::after { background: linear-gradient(90deg, color-mix(in srgb, var(--panel) 80%, transparent) 0, color-mix(in srgb, var(--panel) 50%, transparent) 60%, color-mix(in srgb, var(--panel) 30%, transparent) 100%); }
+[data-appearance=atlas] .hcard.hbg::after { background: linear-gradient(180deg, color-mix(in srgb, var(--panel) 40%, transparent) 0, color-mix(in srgb, var(--panel) 78%, transparent) 100%); }
+@media (max-width: 1250px) { .htop { grid-template-columns: repeat(2, minmax(0, 1fr)); } .hcards { grid-template-columns: repeat(3, minmax(0, 1fr)); } .hcards > :nth-child(n+4) { grid-column: span 1; } }
+@media (max-width: 700px) { .htop, .hcards { grid-template-columns: minmax(0, 1fr); } .hsave { grid-column: auto; } .hsave .hpct { font-size: 34px; } }
 /* Bakgrundsbild i rutan (Joakim 2026-11-20, som goldcap men ljusare): bilden syns i rubrikbandet och tonas bort under listan */
 .hbox.hbg, .hhero.hbg { position: relative; isolation: isolate; background: var(--panel); border-color: rgba(201, 162, 90, .45); }
 .hbox.hbg::before, .hhero.hbg::before { content: ""; position: absolute; inset: 0; z-index: -2; border-radius: inherit; background: var(--hbg) center 35% / cover no-repeat; }
@@ -1724,7 +1755,10 @@ body[data-home] .cols, body[data-home] #sect, body[data-home] #q, body[data-home
       about_data: "Blizzard data older than 30 days is not kept.",
       npc_gives: "Gives", npc_ends: "Ends", npc_none: "No data for this NPC.", npc_fail: "The NPC could not be loaded.",
       npc_f_quest: "Quest giver", npc_f_vendor: "Vendor", npc_f_trainer: "Trainer", npc_f_flight: "Flight master", npc_f_inn: "Innkeeper", npc_f_bank: "Banker", npc_f_ah: "Auctioneer", npc_f_stable: "Stable master", npc_f_repair: "Repair",
-      scan_at: "Updated %1 at %2", m_faction: "Faction", m_ah: "Auction house", m_ah_own: "Faction AH", m_ah_bw: "Blackwater", m_realm: "Realm type", m_region: "Region", home_tip: "Start page", sect_tip: "Back to the start of this tab", h_title: "Welcome to Azeroth Atlas", h_sub: "Auction prices, players, quests and loot for WoW Forever. Pick a place to start.", h_search: "Search everything", h_n_items: "%1 items on the AH", h_n_cheap: "%1 cheaper than usual", h_n_friends: "%1 friends", h_cheap: "Cheap right now", h_rise: "Rising right now", h_hot: "Most traded", h_gph: "Gold per hour", h_craft: "Pays to craft", h_dayt: "Best day trades", h_all: "All ›", h_none: "Nothing right now.", h_per_day: "%1/day", h_cheap_none: "Prices are loading…", h_watch: "My list", h_watch_none: "Star ☆ an item and its price shows up here.", h_players: "Players", h_guilds: "Guilds", h_lvl: "Lvl %1", h_members: "%1 members", h_players_none: "Look someone up in the Armory and they show up here.", ar_land_lb: "Leaderboards ›", ar_land_recent: "Recent", ar_land_friends: "Friends", on_ah: "%1 items on the auction house", market_label: "Market", search_btn: "Search", col_fav: "Fav",
+      scan_at: "Updated %1 at %2", m_faction: "Faction", m_ah: "Auction house", m_ah_own: "Faction AH", m_ah_bw: "Blackwater", m_realm: "Realm type", m_region: "Region", home_tip: "Start page", sect_tip: "Back to the start of this tab", h_title: "Welcome to Azeroth Atlas", h_sub: "Auction prices, players, quests and loot for WoW Forever. Pick a place to start.", h_search: "Search everything", h_n_items: "%1 items on the AH", h_n_cheap: "%1 cheaper than usual", h_n_friends: "%1 friends", h_cheap: "Cheap right now", h_save: "Biggest saving right now", h_usual: "Usual price", h_listed: "Listed at", h_under: "under the usual price", h_n_sold: "%1 sold a day", h_open: "Open the item",
+      h_st_items: "On the auction house", h_st_items_s: "items with a price", h_st_cheap: "Cheaper than usual", h_st_cheap_s: "items that sell well", h_st_gold: "Traded per day", h_st_gold_s: "market price × sold a day", h_st_upd: "Prices updated", h_min_ago: "%1 min ago", h_h_ago: "%1 h ago",
+      h_q_mount: "Which mount is next?", h_q_mount_s: "%1 mounts · %2 companions · %3 toys", h_q_tal: "Plan your talent build", h_points: "points", h_q_tal_s: "Every class · share the build as a link",
+      h_q_farm: "What is worth farming?", h_q_craft: "Which craft pays most?", h_per_craft: "per craft", h_q_new: "What is new in Forever?", h_n_dungeons: "%1 new dungeons", h_q_new_s: "%1 new items with loot tables", h_rise: "Rising right now", h_hot: "Most traded", h_gph: "Gold per hour", h_craft: "Pays to craft", h_dayt: "Best day trades", h_all: "All ›", h_none: "Nothing right now.", h_per_day: "%1/day", h_cheap_none: "Prices are loading…", h_watch: "My list", h_watch_none: "Star ☆ an item and its price shows up here.", h_players: "Players", h_guilds: "Guilds", h_lvl: "Lvl %1", h_members: "%1 members", h_players_none: "Look someone up in the Armory and they show up here.", ar_land_lb: "Leaderboards ›", ar_land_recent: "Recent", ar_land_friends: "Friends", on_ah: "%1 items on the auction house", market_label: "Market", search_btn: "Search", col_fav: "Fav",
       hist_loading: "Loading history…", hist_fail: "The history could not be loaded.", today: "today", item_n: "Item %1",
       copy_link: "Copy link", copied: "Link copied", star_add: "Watch this item", star_del: "Remove from my list", star_all: "All reagents to my list", star_all_del: "Remove reagents from my list", star_lbl_add: "Watch", star_lbl_on: "In my list",
       not_listed: "not listed now", remove: "Remove", watch_sub: "Saved in your browser, only you can see it.",
@@ -5293,7 +5327,7 @@ body[data-home] .cols, body[data-home] #sect, body[data-home] #q, body[data-home
   $("sect").addEventListener("click", function () { tabHome(); });   // flikens rubrik: flikens start
   // Startsidan (Joakim 2026-11-20): flikarna som rutor, billigt just nu, din lista och dina spelare. Länkarna är vanliga
   // #-adresser, så bakåt, mittenklick och kopiera fungerar som överallt; popstate ritar sidan från adressen.
-  var homeRaf = 0, homeRecTry = false, homeKatIdx = null;
+  var homeRaf = 0, homeRecTry = false, homeKatIdx = null, homeCoTry = false, homeAlTry = false, homeAL = null;
   // Rutornas bakgrunder: [eget motiv home-<namn>.webp, Blizzards bild som gäller tills det finns]. "" = din stads panorama.
   var HOME_BG = { hero: ["", ""], cheap: ["barrens", "dg-wailing-caverns"], rise: ["winterspring", "dg-scholomance"], hot: ["auction-house", ""], gph: ["ungoro", "dg-maraudon"],
     craft: ["ironforge", "dg-blackrock-depths"], dayt: ["booty-bay", "dg-zulgurub"], watch: ["ashenvale", "dg-blackfathom-deeps"], ppl: ["thunder-bluff", "dg-dire-maul"] };
@@ -5374,7 +5408,34 @@ body[data-home] .cols, body[data-home] #sect, body[data-home] #q, body[data-home
     var box = function (h, all, body, k) { return '<div class="inset hbox' + (ASSET_BASE ? " hbg" : "") + '"' + hbgAttr(k) + "><h3><span>" + h + "</span>" + (all ? '<a href="' + all + '">' + t("h_all") + "</a>" : "") + "</h3>" + body + "</div>"; };
     var list = function (L, f2, none) { return L.length ? '<div class="hlist">' + L.map(f2).join("") + "</div>" : '<div class="hnone">' + t(D ? none || "h_none" : "h_cheap_none") + "</div>"; };
     // Välkomstrutan och flikrutorna togs bort (Joakim 2026-11-20: "testa att ta bort den"); flikraden ovanför räcker. Koden för dem (tiles, hbgAttr("hero")) finns kvar.
-    el.innerHTML = "" +
+    // ---- Överst: största besparingen + fyra siffror, sedan fem frågekort (Joakim 2026-11-20: "bygg 1 och 3")
+    if (!CO && !homeCoTry) { homeCoTry = true; loadCo().then(function () { homeLater(); }).catch(function () {}); }
+    if (!homeAL && !homeAlTry) { homeAlTry = true; fetch(DATA_BASE + "atlasloot-forever.json").then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }).then(function (j) { homeAL = j; homeLater(); }).catch(function () {}); }
+    var B = ASSET_BASE ? ASSET_BASE + "backgrounds/" : "", bgs = function (n) { return B ? ' style="--hbg:url(&quot;' + B + n + '.webp&quot;)"' : ""; };
+    var sv = cheap[0], top = "";
+    if (sv) {
+      var us = sv.us || 0, wU = us > 0 ? 100 : 0, wL = us > 0 ? Math.max(6, Math.round(sv.min / us * 100)) : 0;
+      top += '<a class="hsave hbg" href="#item=' + sv.id + mk + '"' + bgs("dg-deadmines") + '><span class="hchip">' + t("h_save") + '</span><b class="hpct">−' + sv.dip + "%</b>" +
+        '<div class="hbars"><div><span>' + t("h_usual") + '</span><i><u style="width:' + wU + '%"></u></i><em>' + money(us) + '</em></div><div><span>' + t("h_listed") + '</span><i class="lo"><u style="width:' + wL + '%"></u></i><em>' + money(sv.min) + "</em></div>" +
+        '<small><b class="down2">' + moneyText(Math.max(0, us - sv.min)) + "</b> " + t("h_under") + " · " + t("h_n_sold", num(sv.day)) + "</small></div>" +
+        '<div class="hsitem">' + (iconHtml(sv, true) || "") + '<b class="' + qcls(sv.q) + '">' + esc(sv.name) + '</b><span class="wowbtn">' + t("h_open") + " →</span></div></a>";
+    } else top += '<div class="hsave hbg"' + bgs("dg-deadmines") + '><span class="hchip">' + t("h_save") + '</span><div class="hnone">' + t("h_cheap_none") + "</div></div>";
+    var gold = D ? rows.reduce(function (a, r) { return a + (r.day > 0 && r.min > 0 ? r.day * r.min : 0); }, 0) : 0, ago = D && D.t ? Math.max(0, Math.round((Date.now() / 1000 - D.t) / 60)) : -1;
+    var stat = function (lbl, val, sub) { return '<div class="inset hstat"><small>' + lbl + "</small><b>" + val + "</b>" + (sub ? "<span>" + sub + "</span>" : "") + "</div>"; };
+    top += stat(t("h_st_items"), D ? num(rows.length) : "–", t("h_st_items_s")) + stat(t("h_st_cheap"), D ? num(down.length) : "–", t("h_st_cheap_s")) +
+      stat(t("h_st_gold"), D ? num(Math.round(gold / 1e4)) + " g" : "–", t("h_st_gold_s")) + stat(t("h_st_upd"), ago < 0 ? "–" : ago < 60 ? t("h_min_ago", ago) : t("h_h_ago", Math.round(ago / 60)), $("scanTime") ? esc($("scanTime").textContent) : "");
+    // Fem frågekort: fråga, ett stort svar och en rad under; hela kortet är en länk.
+    var card = function (href, bg, q, big, sub, pic) { return '<a class="hcard hbg" href="' + href + '"' + bgs(bg) + "><span>" + q + ' <i>→</i></span><b' + (pic ? ' class="sm"' : "") + ">" + big + "</b><small>" + sub + "</small>" + (pic || "") + "</a>"; };
+    var mts = CO ? CO.mounts.filter(function (m) { return m.img; }) : [], mt = mts.length ? mts[Math.floor(Date.now() / 864e5) % mts.length] : null;   // dagens mount
+    var cards = card(mt ? "#col=" + CO_LETTER.mounts + mt.id : "#tab=co", "dg-scarlet-monastery", t("h_q_mount"), mt ? esc(mt.name) : CO ? num(CO.mounts.length) : "…",
+        CO ? t("h_q_mount_s", num(CO.mounts.length), num(CO.pets.length), num(CO.toys.length)) : t("ar_loading"), mt ? '<img class="hpic" src="' + esc(mt.img) + '" alt="" loading="lazy">' : "") +
+      card("#tab=cl", "dg-scholomance", t("h_q_tal"), "51 " + t("h_points"), t("h_q_tal_s")) +
+      card(gp[0] ? "#gather=" + gp[0].g.key + "&band=" + (gp[0].k + 1) + mk : "#tab=cr" + mk, "dg-uldaman", t("h_q_farm"), gp[0] ? gaMoney(gp[0].v) + "/h" : "…",
+        gp[0] ? esc(gp[0].g.name) + " · " + t("ga_band", GA_BANDS[gp[0].k][0], GA_BANDS[gp[0].k][1]).toLowerCase() : t("ar_loading")) +
+      card(craft[0] ? "#recipe=" + craft[0].rid + mk : "#tab=cr" + mk, "dg-blackrock-spire", t("h_q_craft"), craft[0] ? "+" + gaMoney(craft[0].profit) : "…",
+        craft[0] ? esc(craft[0].name) + " · " + t("h_per_craft") : t("ar_loading")) +
+      card("#tab=dg", "dg-gnomeregan", t("h_q_new"), homeAL ? t("h_n_dungeons", homeAL.dungeons.length) : "…", homeAL ? t("h_q_new_s", num(Object.keys(homeAL.items).length)) : t("ar_loading"));
+    el.innerHTML = '<div class="htop">' + top + '</div><div class="hcards">' + cards + "</div>" +
       '<div class="hrow">' +
         box(t("h_cheap"), "#tab=tr&v=cheap" + mk, list(cheap, function (r) { return li(r, "#tab=tr&v=cheap&item=" + r.id + mk); }), "cheap") +
         box(t("h_rise"), "", list(rising, function (r) { return li(r, "#item=" + r.id + mk); }), "rise") +
