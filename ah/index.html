@@ -1124,7 +1124,7 @@ body[data-home] .cols, body[data-home] #sect, body[data-home] #q, body[data-home
 #dglist { display: contents; } .dgnone { padding: 8px 10px; }
 body[data-mode=dg] #cats .cath { color: var(--gold); border-bottom: 1px solid var(--line); padding-bottom: 4px; }
 #dghead { display: grid; gap: 10px; padding: 0 0 8px; }
-body[data-mode=dg] .left .scroll { padding-right: 14px; box-sizing: border-box; }   /* texten ska inte gå in under scrollen */
+body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border-box; }   /* luft mot ramen på båda sidor (Joakim 2026-11-21: tight mot kanten) */   /* texten ska inte gå in under scrollen */
 .dgsel { top: 6px !important; left: 6px !important; font-size: 11px !important; } #dghead[hidden] { display: none; }
 .dgcard { position: relative; display: grid; align-content: center; gap: 6px; padding: 14px 20px; min-height: 112px; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; isolation: isolate; background: rgba(255, 255, 255, .03); }
 .dgcard.hasbg::before { content: ""; position: absolute; z-index: -1; right: 0; top: 0; bottom: 0; width: 60%; background: var(--dgbg) center 35% / cover no-repeat; opacity: .85;
@@ -1857,7 +1857,7 @@ body[data-mode=dg] .left .scroll { padding-right: 14px; box-sizing: border-box; 
       hu_skin: "Skinning", hu_skin_note: "What skinning the beast gives, from the Classic database. Price is the auction house market price.", hu_skin_chance: "Chance", hu_skin_price: "Market price",
       dg_boss_loot: "Loot", dg_back: "‹ Back to the dungeon", dg_boss_noloot: "No loot of its own in the Classic database.",
       gs_ph: "Search everything: items, recipes, quests, NPCs, beasts, players…", gs_all: "All", gs_k_item: "Items", gs_k_rec: "Recipes", gs_k_quest: "Quests",
-      gs_k_npc: "NPCs", gs_k_beast: "Beasts", gs_k_col: "Collections", gs_k_dg: "Dungeons", gs_k_node: "Ore veins", nd_skill: "Mining %1", nd_spawns: "%1 spawns", nd_found: "Found in", nd_zone: "Zone", nd_map_tip: "%1 spawn points in %2. Click a point to copy its /way, click the map to open it large.", nd_loot: "Contains", nd_none: "The open Classic database has no spawn points for this one. It may still exist in Forever.", nd_inst_only: "Only inside dungeons, so there is no world map.", nd_src: "Spawn points from the open Classic database (cmangos 1.12). A spot that can spawn several ores counts for each of them, like on Wowhead.", nd_fail: "Could not load the ore veins.", nd_missing: "No ore vein with that id.", nd_where: "Where to mine", gs_k_pl: "Players", gs_k_gl: "Guilds", gs_none: "Nothing found",
+      gs_k_npc: "NPCs", gs_k_beast: "Beasts", gs_k_col: "Collections", gs_k_dg: "Dungeons", gs_k_node: "Ore veins", gs_k_herb: "Herbs", nd_skill: "%1 %2", nd_where_h: "Where to pick", nd_spawns: "%1 spawns", nd_found: "Found in", nd_zone: "Zone", nd_map_tip: "%1 spawn points in %2. Click a point to copy its /way, click the map to open it large.", nd_loot: "Contains", nd_none: "The open Classic database has no spawn points for this one. It may still exist in Forever.", nd_inst_only: "Only inside dungeons, so there is no world map.", nd_src: "Spawn points from the open Classic database (cmangos 1.12). A spot that can spawn several ores or herbs counts for each of them, like on Wowhead.", nd_fail: "Could not load the ore veins and herbs.", nd_missing: "Nothing with that id.", nd_where: "Where to mine", gs_k_pl: "Players", gs_k_gl: "Guilds", gs_none: "Nothing found",
       gs_ar: "Look up “%1” in the Armory", gs_ar_g: "Look up the guild “%1”", gs_more: "Show all %1", gs_loading: "Loading…",
       src_h: "Where to learn it", src_h_drop: "Where it drops", src_trainer: "Trainer", src_vendor: "Vendor", src_drop: "Drops from", src_quest: "Quest reward", src_none: "No known source in the Classic database.",
       limited: "limited stock", more_n: "and %1 more", requires: "requires %1", tier_1: "Apprentice", tier_2: "Journeyman", tier_3: "Expert", tier_4: "Artisan",
@@ -3339,9 +3339,9 @@ body[data-mode=dg] .left .scroll { padding-right: 14px; box-sizing: border-box; 
     $("detail").innerHTML = '<div class="strip">' + ic + '<h2>' + esc(g.name) + (g.de ? ' <small>' + t("ga_de") + "</small>" : "") + "</h2><small>" + t("ga_band", b[0], b[1]) + " · " + t("ga_skill", sk[0], sk[1]) + "</small></div>" +
       '<div id="gaout1">' + out[0] + "</div>" +
       '<div><h3>' + t("ga_assume") + '</h3><div class="gaas">' + inp("a", 1, 999) + inp("b", 0.1, 99) + '<button class="lnk" type="button" data-gareset="1">' + t("ga_reset") + "</button></div></div>" +
-      '<div id="gaout2">' + out[1] + "</div>" + (g.key === "mine" ? '<div id="ganodes"></div>' : "") +
+      '<div id="gaout2">' + out[1] + "</div>" + (g.key === "mine" || g.key === "herb" ? '<div id="ganodes"></div>' : "") +
       '<div class="note">' + t("ga_note") + "</div>";
-    if (g.key === "mine") ndFillGa();
+    if (g.key === "mine" || g.key === "herb") ndFillGa(g.key === "herb" ? "Herbalism" : "Mining");
   }
   function gaInput(el) {   // takten ändrad: räkna om rutan (inte fälten, så fokus hålls), spalten och listan
     var g = GATHER[gaSel]; if (!g) return;
@@ -3713,7 +3713,7 @@ body[data-mode=dg] .left .scroll { padding-right: 14px; box-sizing: border-box; 
     var zs = nd.zones.filter(function (z) { return huHasZ(z[0]); });
     var cur = zs.some(function (z) { return z[0] === ndZone; }) ? ndZone : zs[0] ? zs[0][0] : "";
     var h = '<div class="strip"><button class="lnk" type="button" data-copyany="#node=' + nd.id + '" title="' + t("copy_link") + '">' + t("copy_link") + "</button>" +
-      "<h2>" + ndIcon(nd) + " " + esc(nd.name) + "</h2><small>" + t("nd_skill", nd.skill) + " · " + t("nd_spawns", num(nd.n)) + "</small></div>";
+      "<h2>" + ndIcon(nd) + " " + esc(nd.name) + "</h2><small>" + t("nd_skill", nd.prof, nd.skill) + " · " + t("nd_spawns", num(nd.n)) + "</small></div>";
     var where = nd.zones.map(function (z) { return esc(z[0]) + ' <span class="dim">(' + z[1] + ")</span>"; })
       .concat(nd.inst.map(function (x) { return esc(x[0]) + ' <span class="dim">(' + x[1] + ")</span>"; }));
     if (!where.length) h += '<div class="note">' + t("nd_none") + "</div>";
@@ -3745,12 +3745,12 @@ body[data-mode=dg] .left .scroll { padding-right: 14px; box-sizing: border-box; 
     var put = function (html) { var el = $("ndbox"); if (el && ndSel === id) el.innerHTML = html; };
     Promise.all([loadNodes(), loadZmap(), qmIndex().catch(function () { return null; })]).then(function () { var nd = ndFind(id); put(nd ? ndHtml(nd) : '<div class="note">' + t("nd_missing") + "</div>"); }, function () { put('<div class="note">' + t("nd_fail") + "</div>"); });
   }
-  // Mining i Crafting: alla ådror som chips till sina sidor.
-  function ndFillGa() {
+  // Mining/Herbalism i Crafting: yrkets ådror eller örter som chips till sina sidor.
+  function ndFillGa(prof) {
     loadNodes().then(function () {
       var el = $("ganodes"); if (!el) return;
-      el.innerHTML = "<h3>" + t("nd_where") + '</h3><div class="huchips">' + NODES.nodes.filter(function (x) { return x.n > 0; }).map(function (x) {
-        return '<a class="huchip" href="#node=' + x.id + '" data-node="' + x.id + '" title="' + esc(t("nd_skill", x.skill) + " · " + t("nd_spawns", num(x.n))) + '">' + ndIcon(x) + esc(x.name) + ' <span class="dim">' + x.skill + "</span></a>";
+      el.innerHTML = "<h3>" + t(prof === "Herbalism" ? "nd_where_h" : "nd_where") + '</h3><div class="huchips">' + NODES.nodes.filter(function (x) { return x.n > 0 && x.prof === prof; }).map(function (x) {
+        return '<a class="huchip" href="#node=' + x.id + '" data-node="' + x.id + '" title="' + esc(t("nd_skill", x.prof, x.skill) + " · " + t("nd_spawns", num(x.n))) + '">' + ndIcon(x) + esc(x.name) + ' <span class="dim">' + x.skill + "</span></a>";
       }).join("") + "</div>";
     }).catch(function () { /* utan ådrorna: inga chips */ });
   }
@@ -4432,9 +4432,9 @@ body[data-mode=dg] .left .scroll { padding-right: 14px; box-sizing: border-box; 
     if (mode === "cr" || (!keep && (hashParams().recipe || hashParams().gather || hashParams().node))) {   // Crafting: recepten laddas först, sedan listan och rutan
       mode = "cr"; if (!keep) { sortKey = "profit"; sortDir = -1; } $("q").placeholder = t("search_rc");
       var wantR = +hashParams().recipe;
-      var wantN = +hashParams().node || 0;   // malmåder (#node=): Mining i spalten, ådern i rutan
-      var wantG = hashParams().gather || (wantN ? "mine" : "");
-      loadRecept().then(function () { buildCr(); if (mode !== "cr") return; if (wantG) gaSet(wantG, hashParams().band); else if (!keep) gaSel = -1; if (!keep && !wantG && (fromNav || hp0.c != null)) catFromHash(hp0, profList.length); drawCats(); refresh(); if (gaSel >= 0) { if (wantN) nodeDetail(wantN); else gaDetail(); if (wantG && !keep) showTab("item"); } else if (wantR) { selectRecipe(wantR, true); showTab("item"); } else if (keep && selRec) selectRecipe(selRec, false); else if (view[0]) selectRecipe(view[0].rid, false); })
+      var wantN = +hashParams().node || 0;   // åder/ört (#node=): yrket i spalten, objektet i rutan
+      var wantG = hashParams().gather || "";
+      (wantN ? Promise.all([loadRecept(), loadNodes().catch(function () { return null; })]) : loadRecept()).then(function () { if (wantN && !wantG) { var wn = ndFind(wantN); wantG = wn && wn.prof === "Herbalism" ? "herb" : "mine"; } buildCr(); if (mode !== "cr") return; if (wantG) gaSet(wantG, hashParams().band); else if (!keep) gaSel = -1; if (!keep && !wantG && (fromNav || hp0.c != null)) catFromHash(hp0, profList.length); drawCats(); refresh(); if (gaSel >= 0) { if (wantN) nodeDetail(wantN); else gaDetail(); if (wantG && !keep) showTab("item"); } else if (wantR) { selectRecipe(wantR, true); showTab("item"); } else if (keep && selRec) selectRecipe(selRec, false); else if (view[0]) selectRecipe(view[0].rid, false); })
         .catch(function () { if (mode === "cr") $("detail").innerHTML = '<div class="note">' + t("cr_fail") + "</div>"; });   // bytt flik under laddningen: rita inget (granskning 2026-11-18)
       return;
     }
@@ -5080,7 +5080,7 @@ body[data-mode=dg] .left .scroll { padding-right: 14px; box-sizing: border-box; 
   // vara laddad (topplistorna), spelare och guilder. Annars slås spelarnamn upp i Armory. Ett val går via adressen
   // (#item=, #quest= …), samma väg som bakåt/framåt, så det hamnar rätt i vilken flik som helst.
   var GS = { ix: null, p: null, q: "", kind: "", rows: [], timer: 0 };
-  var GS_KINDS = ["item", "rec", "quest", "beast", "node", "npc", "col", "dg", "pl", "gl"];
+  var GS_KINDS = ["item", "rec", "quest", "beast", "node", "herb", "npc", "col", "dg", "pl", "gl"];
   function gsIndex() {
     if (GS.p) return GS.p;
     var npcs = fetch(DATA_BASE + "sok-npc.json").then(function (r) { return r.ok ? r.json() : []; }).catch(function () { return []; });
@@ -5094,7 +5094,7 @@ body[data-mode=dg] .left .scroll { padding-right: 14px; box-sizing: border-box; 
       if (HU) HU.beasts.forEach(function (b) { ix.push({ k: "beast", n: b.name, l: lc(b.name), h: "#beast=" + b.id, i: '<img class="hic" src="' + huFamIcon(b.fam) + '" alt="">', s: b.family + " · " + t("col_lvl") + " " + b.min + (b.max > b.min ? "–" + b.max : "") + (b.rank ? " · " + HU_RANK[b.rank] : ""), c: huIsRare(b) ? "hurn" : "", f: huIsRare(b) ? "s" : b.rank === 1 ? "g" : "" }); });
       if (CO) Object.keys(CO_LETTER).forEach(function (kind) { (CO[kind] || []).forEach(function (x) { ix.push({ k: "col", n: x.name, l: lc(x.name), h: "#col=" + CO_LETTER[kind] + x.id, i: x.img ? '<img src="' + esc(x.img) + '" alt="" loading="lazy">' : "", s: t("co_k_" + kind) }); }); });
       if (DG) DG.dungeons.forEach(function (d) { ix.push({ k: "dg", n: d.name, l: lc(d.name + " " + (d.short || "")), h: "#dungeon=" + d.map, s: (d.short ? d.short + " · " : "") + t("col_lvl") + " " + d.min + "–" + d.max }); if (d.bosses) d.bosses.forEach(function (b) { ix.push({ k: "npc", n: b.name, l: lc(b.name), h: "#dungeon=" + d.map, s: d.name }); }); });
-      if (NODES) NODES.nodes.forEach(function (nd) { ix.push({ k: "node", n: nd.name, l: lc(nd.name), h: "#node=" + nd.id, i: ndIcon(nd), s: t("nd_skill", nd.skill) + " · " + t("nd_spawns", num(nd.n)) }); });   // malmådrorna (Joakim 2026-11-20)
+      if (NODES) NODES.nodes.forEach(function (nd) { ix.push({ k: nd.prof === "Herbalism" ? "herb" : "node", n: nd.name, l: lc(nd.name), h: "#node=" + nd.id, i: ndIcon(nd), s: t("nd_skill", nd.prof, nd.skill) + " · " + t("nd_spawns", num(nd.n)) }); });   // malmådrorna (Joakim 2026-11-20) och örterna (2026-11-21)
       GS.ix = ix; return ix;
     });
     return GS.p;
