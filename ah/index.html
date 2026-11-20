@@ -1073,6 +1073,38 @@ body[data-mode=cl] .ttrees { gap: 8px; } body[data-mode=cl] .ttree { padding: 6p
 .cltr .facts { margin-top: 4px; }
 @media (max-width: 1250px) { body[data-mode=cl] .cols { grid-template-columns: 196px minmax(0, 1fr) minmax(0, 300px); } }
 @media (max-width: 1100px) { body[data-mode=cl] .cols { grid-template-columns: minmax(0, 1fr); } }
+/* Startsidan (Joakim 2026-11-20: "ingen början att gå till"): loggan leder hit, en adress utan # landar här */
+body[data-home] .cols, body[data-home] #sect, body[data-home] #q, body[data-home] #qbtn, body[data-home] .subrow, body[data-home] #count { display: none !important; }
+.homev { display: grid; gap: 12px; margin-top: 12px; }
+.homev[hidden] { display: none; }
+.hhero { display: flex; align-items: center; justify-content: space-between; gap: 10px 24px; flex-wrap: wrap; padding: 16px 20px; }
+.hhero h2 { margin: 0; font-family: var(--display); color: var(--gold); font-size: 26px; font-weight: 400; }
+.hhero p { margin: 4px 0 0; color: var(--grey); font-size: 14px; }
+.htiles { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; }   /* tio flikar: 5 × 2 eller 2 × 5, inga tomma hål */
+@media (max-width: 1250px) { .htiles { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 560px) { .htiles { grid-template-columns: minmax(0, 1fr); } }
+.htile { display: grid; grid-template-columns: 56px minmax(0, 1fr); grid-template-rows: auto 1fr auto; column-gap: 12px; padding: 12px 14px; text-decoration: none; color: var(--fg); border: 1px solid var(--line); border-radius: 8px; background: linear-gradient(#1d1610, #120d09); transition: border-color .15s, transform .15s; }
+.htile:hover { border-color: var(--gold); transform: translateY(-2px); }
+.htile > img, .htile > span { grid-row: 1 / 4; width: 56px; height: 56px; object-fit: contain; align-self: center; }
+.htile b { font-family: var(--display); color: var(--gold); font-size: 17px; font-weight: 400; }
+.htile small { color: var(--grey); font-size: 12px; line-height: 1.35; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.htile em { font-style: normal; color: var(--fg); font-size: 12.5px; font-weight: 700; margin-top: 4px; }
+.hrow { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 10px; }
+.hbox { padding: 12px 14px; }
+.hbox h3 { margin: 0 0 8px; font-family: var(--display); color: var(--gold); font-size: 16px; font-weight: 400; }
+.hlist { display: grid; gap: 1px; }
+.hli { display: grid; grid-template-columns: 26px minmax(0, 1fr) auto auto; gap: 8px; align-items: center; padding: 3px 6px; border-radius: 4px; text-decoration: none; color: var(--fg); font-size: 13px; }
+.hli:hover { background: var(--hover); } .hli .ic { margin: 0; vertical-align: middle; }
+.hli .nm { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.hchips { display: flex; flex-wrap: wrap; gap: 6px; }
+.hchips a, .hchips button { all: unset; cursor: pointer; padding: 4px 11px; border: 1px solid var(--line); border-radius: 14px; color: var(--fg); font-size: 13px; }
+.hchips a:hover, .hchips button:hover { border-color: var(--gold); }
+.hnone { color: var(--grey); font-size: 13px; }
+/* Armorys startvy och flikrubriken som leder till flikens start */
+.arland { padding: 18px 20px; display: grid; gap: 12px; }
+.arland h3 { margin: 0; font-family: var(--display); color: var(--gold); font-size: 16px; font-weight: 400; }
+.arland p { margin: 0; color: var(--grey); }
+#sect { cursor: pointer; } #sect:hover { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px; }
 </style>
 </head>
 <body>
@@ -1166,6 +1198,7 @@ body[data-mode=cl] .ttrees { gap: 8px; } body[data-mode=cl] .ttree { padding: 6p
       <div class="detail watch" id="watch" hidden></div>
     </aside>
   </div>
+  <section class="homev" id="homev" hidden></section>
 
   <footer class="foot">
     <div class="legal"><span data-t="foot3">Data from Blizzard's API and the game client</span> · <a class="wh" href="#about" data-about="1" data-t="about">About</a></div>
@@ -1281,7 +1314,7 @@ body[data-mode=cl] .ttrees { gap: 8px; } body[data-mode=cl] .ttree { padding: 6p
   // medan ett bakåt-steg ritas om skrivs adressen bara över.
   // navRestoring: sidan ritar själv (start, bakåt/framåt) och skriver bara över adressen; första klick eller tangent
   // stänger av det (även val som kommer efter en laddning, t.ex. arLoad). navSkip: ett mellansteg som inte ska synas.
-  var navRestoring = true, navSkip = false;
+  var navRestoring = true, navSkip = false, homeOn = false;   // homeOn: startsidan visas (Joakim 2026-11-20)
   function sameHash(a, b) { try { return decodeURIComponent(a) === decodeURIComponent(b); } catch (e) { return a === b; } }   // å/ä/ö i adressen är %-kodade
   // Tillbaka/Framåt-raden (Joakim 2026-11-18): varje historiksteg bär sin position {i}. navPos = där vi står, navMax =
   // längsta steget framåt, navStart = där sidan öppnades (Back längre bak lämnar sidan och är därför grå).
@@ -1294,7 +1327,7 @@ body[data-mode=cl] .ttrees { gap: 8px; } body[data-mode=cl] .ttree { padding: 6p
     if (f) f.disabled = navPos >= navMax;
   }
   function setHash(h) {
-    if (navSkip) return;
+    if (navSkip || homeOn) return;
     try {
       if (sameHash(location.hash, h)) return;
       if (navRestoring || !location.hash || location.hash === "#") history.replaceState({ i: navPos }, "", h);
@@ -1311,6 +1344,8 @@ body[data-mode=cl] .ttrees { gap: 8px; } body[data-mode=cl] .ttree { padding: 6p
     navDraw();
     if (location.hash === "#about") { aboutOpen(); return; }
     aboutClose();
+    if (location.hash === "#home" || !location.hash) { homeOpen(); return; }
+    if (homeOn) homeClose();
     if (!D) return;
     navRestoring = true;
     huZBigClose();   // stora zonkartan hör till steget man lämnar (granskning 2026-11-18)
@@ -1667,7 +1702,7 @@ body[data-mode=cl] .ttrees { gap: 8px; } body[data-mode=cl] .ttree { padding: 6p
       about_data: "Blizzard data older than 30 days is not kept.",
       npc_gives: "Gives", npc_ends: "Ends", npc_none: "No data for this NPC.", npc_fail: "The NPC could not be loaded.",
       npc_f_quest: "Quest giver", npc_f_vendor: "Vendor", npc_f_trainer: "Trainer", npc_f_flight: "Flight master", npc_f_inn: "Innkeeper", npc_f_bank: "Banker", npc_f_ah: "Auctioneer", npc_f_stable: "Stable master", npc_f_repair: "Repair",
-      scan_at: "Updated %1 at %2", m_faction: "Faction", m_ah: "Auction house", m_ah_own: "Faction AH", m_ah_bw: "Blackwater", m_realm: "Realm type", m_region: "Region", home_tip: "Back to the start: all items, latest prices", on_ah: "%1 items on the auction house", market_label: "Market", search_btn: "Search", col_fav: "Fav",
+      scan_at: "Updated %1 at %2", m_faction: "Faction", m_ah: "Auction house", m_ah_own: "Faction AH", m_ah_bw: "Blackwater", m_realm: "Realm type", m_region: "Region", home_tip: "Start page", sect_tip: "Back to the start of this tab", h_title: "Welcome to Azeroth Atlas", h_sub: "Auction prices, players, quests and loot for WoW Forever. Pick a place to start.", h_search: "Search everything", h_n_items: "%1 items on the AH", h_n_cheap: "%1 cheaper than usual", h_n_friends: "%1 friends", h_cheap: "Cheap right now", h_cheap_none: "Prices are loading…", h_watch: "My list", h_watch_none: "Star ☆ an item and its price shows up here.", h_players: "Players", h_players_none: "Look someone up in the Armory and they show up here.", ar_land_lb: "Leaderboards ›", ar_land_recent: "Recent", ar_land_friends: "Friends", on_ah: "%1 items on the auction house", market_label: "Market", search_btn: "Search", col_fav: "Fav",
       hist_loading: "Loading history…", hist_fail: "The history could not be loaded.", today: "today", item_n: "Item %1",
       copy_link: "Copy link", copied: "Link copied", star_add: "Watch this item", star_del: "Remove from my list", star_all: "All reagents to my list", star_all_del: "Remove reagents from my list", star_lbl_add: "Watch", star_lbl_on: "In my list",
       not_listed: "not listed now", remove: "Remove", watch_sub: "Saved in your browser, only you can see it.",
@@ -4032,7 +4067,7 @@ body[data-mode=cl] .ttrees { gap: 8px; } body[data-mode=cl] .ttree { padding: 6p
       if (keep && arData) { arRedraw(); return; }
       arLb = "";
       if (hp0.player) { arVs = hp0.vs || ""; arKeepSub = true; arQuest = +hp0.aq || 0; arUpg = hp0.up === "1"; arRec = 0; arLoad("char", hp0.player); } else if (hp0.guild) arLoad("guild", hp0.guild);
-      else if (arRecent[0]) arLoad(arRecent[0].kind, arRecent[0].slug); else arShow('<div class="hint">' + t("ar_hint") + "</div>", "");
+      else arLanding();
       return;
     }
     if (mode === "cr" || (!keep && (hashParams().recipe || hashParams().gather))) {   // Crafting: recepten laddas först, sedan listan och rutan
@@ -4363,6 +4398,8 @@ body[data-mode=cl] .ttrees { gap: 8px; } body[data-mode=cl] .ttree { padding: 6p
     drawTrSub(); drawLbSub(); drawClSub();
     $("sect").textContent = mode === "ah" ? ahName((houseParts(house) || [0, "horde"])[1]) : t(mode === "de" || mode === "fx" ? "mode_tr" : mode === "ar" && arLb ? "mode_lb" : "mode_" + mode);
     document.title = $("sect").textContent + " · Azeroth Atlas";   // fliken i webbläsaren heter som vyn (buggjakt 2026-11-20)
+    $("sect").title = t("sect_tip");
+    if (homeOn) { document.title = "Azeroth Atlas · WoW Forever"; Array.prototype.forEach.call(document.querySelectorAll(".mode > button"), function (b) { b.setAttribute("aria-pressed", "false"); }); homeLater(); }
     drawSub();
     $("q").setAttribute("aria-label", t(mode === "cr" ? "search_rc" : mode === "ar" ? "search_ar" : mode === "qu" ? "search_qu" : mode === "dg" ? "search_dg" : mode === "hu" ? "search_hu" : mode === "co" ? "search_co" : mode === "cl" ? "search_cl" : "search_ph"));
   }
@@ -5225,15 +5262,83 @@ body[data-mode=cl] .ttrees { gap: 8px; } body[data-mode=cl] .ttree { padding: 6p
   function toTop() { var lb = document.querySelector(".left .scroll"); if (lb) lb.scrollTop = 0; }
   // Hem (Joakim 2026-11-16): medaljongen eller rubriken = som Search med tom ruta: ingen sökning, ingen kategori, överst,
   // och de senaste uppgifterna hämtas.
-  $("home").addEventListener("click", function (e) {
-    e.preventDefault();
-    qFlush(); query = ""; $("q").value = "";
-    catSel = -1; subSel = -1; sub2Sel = -1;
-    openId = null;
-    if (D) { drawCats(); refresh(); }
-    toTop(); window.scrollTo(0, 0);
-    update();
-  });
+  $("home").addEventListener("click", function (e) { e.preventDefault(); homeOpen(); });   // loggan: startsidan (Joakim 2026-11-20)
+  $("sect").addEventListener("click", function () { tabHome(); });   // flikens rubrik: flikens start
+  // Startsidan (Joakim 2026-11-20): flikarna som rutor, billigt just nu, din lista och dina spelare. Länkarna är vanliga
+  // #-adresser, så bakåt, mittenklick och kopiera fungerar som överallt; popstate ritar sidan från adressen.
+  var homeRaf = 0;
+  function homeOpen() {
+    homeOn = true; document.body.setAttribute("data-home", "1"); $("homev").hidden = false;
+    try {
+      if (location.hash !== "#home") {
+        if (!location.hash || location.hash === "#") history.replaceState({ i: navPos }, "", "#home");
+        else { history.pushState({ i: navPos + 1 }, "", "#home"); navPos++; navMax = navPos; }
+      }
+    } catch (e) {}
+    navDraw(); homeDraw(); if (D) drawMode(); else document.title = "Azeroth Atlas · WoW Forever";
+    window.scrollTo(0, 0);
+  }
+  function homeClose() { if (!homeOn) return; homeOn = false; document.body.removeAttribute("data-home"); $("homev").hidden = true; if (D) drawMode(); }
+  function homeLater() { if (homeRaf) return; homeRaf = requestAnimationFrame(function () { homeRaf = 0; homeDraw(); }); }
+  function homeDraw() {
+    var el = $("homev"); if (!el || !homeOn) return;
+    var mk = house !== 113 ? "&m=" + house : "", A = ASSET_BASE ? ASSET_BASE + "icons/" : "";
+    var base = D ? rows.filter(function (r) { return !r.gear && r.qty >= TR_MIN; }) : [];
+    var down = base.filter(function (r) { return r.dip > 0 && r.min > 0; });
+    var T = [["ah", "#tab=ah" + mk, "nav-auction-house", D ? t("h_n_items", num(rows.length)) : ""], ["tr", "#tab=tr" + mk, "nav-trading", D ? t("h_n_cheap", num(down.length)) : ""],
+      ["cr", "#tab=cr" + mk, "nav-professions", ""], ["ar", "#tab=ar", "nav-armory", arFriends.length ? t("h_n_friends", arFriends.length) : ""], ["lb", "#top=ilvl", "nav-leaderboards", ""],
+      ["qu", "#tab=qu", "nav-quests", ""], ["dg", "#tab=dg", "nav-dungeons", ""], ["hu", "#tab=hu", "nav-hunter-pets", ""], ["co", "#tab=co", "nav-collections", ""], ["cl", "#tab=cl", "nav-classes", ""]];
+    var tiles = T.map(function (x) {
+      return '<a class="htile" href="' + x[1] + '">' + (A ? '<img src="' + A + x[2] + '.png" alt="" width="56" height="56">' : "<span></span>") + "<b>" + t("mode_" + x[0]) + "</b><small>" + t("mode_" + x[0] + "_tip") + "</small>" + (x[3] ? "<em>" + x[3] + "</em>" : "") + "</a>";
+    }).join("");
+    var li = function (r, href) { return '<a class="hli" href="' + href + '">' + (iconHtml(r) || "<span></span>") + '<span class="nm ' + qcls(r.q) + '">' + esc(r.name) + "</span><span>" + money(r.min) + "</span><span>" + pctHtml(r) + "</span></a>"; };
+    var cheap = down.filter(function (r) { return r.day >= 10; }).sort(function (a, b) { return b.dip - a.dip; }).slice(0, 8);
+    var wl = D ? watch.map(function (w) { return byId[w.id]; }).filter(Boolean).slice(0, 8) : [];
+    var seen = {}, ppl = arFriends.concat(arRecent).filter(function (r) { var k = (r.kind === "guild" ? "g" : "c") + r.slug; if (seen[k]) return false; seen[k] = 1; return true; }).slice(0, 14);
+    var box = function (h, body) { return '<div class="inset hbox"><h3>' + h + "</h3>" + body + "</div>"; };
+    el.innerHTML = '<div class="inset hhero"><div><h2>' + t("h_title") + "</h2><p>" + t("h_sub") + '</p></div><button class="wowbtn" type="button" data-hsearch="1">' + t("h_search") + "</button></div>" +
+      '<div class="htiles">' + tiles + "</div>" +
+      '<div class="hrow">' +
+        box(t("h_cheap"), cheap.length ? '<div class="hlist">' + cheap.map(function (r) { return li(r, "#tab=tr&v=cheap&item=" + r.id + mk); }).join("") + "</div>" : '<div class="hnone">' + t("h_cheap_none") + "</div>") +
+        box(t("h_watch"), wl.length ? '<div class="hlist">' + wl.map(function (r) { return li(r, "#item=" + r.id + mk); }).join("") + "</div>" : '<div class="hnone">' + t("h_watch_none") + "</div>") +
+        box(t("h_players"), ppl.length ? '<div class="hchips">' + ppl.map(function (r) { return '<a href="' + (r.kind === "guild" ? "#guild=" : "#player=") + esc(r.slug) + '">' + (r.kind === "guild" ? "&lt;" + esc(r.label) + "&gt;" : esc(r.label)) + "</a>"; }).join("") + "</div>" : '<div class="hnone">' + t("h_players_none") + "</div>") +
+      "</div>";
+  }
+  // Flikar och globala sökningen stänger startsidan; fliken som redan var vald skriver sin adress efteråt.
+  document.addEventListener("click", function (e) {
+    if (!homeOn) return;
+    if (e.target.closest("[data-hsearch]")) { $("gq").focus(); return; }
+    var mb = e.target.closest(".mode > button");
+    if (mb) {   // samma flik som redan var vald ritar inget nytt och skriver ingen adress: den skrivs här (annars av fliken själv)
+      var cur = mode === "ar" ? (arLb ? "modeLb" : "modeAr") : mode === "ah" ? "modeAh" : "mode" + mode.charAt(0).toUpperCase() + mode.slice(1);
+      homeClose(); if (mb.id === cur) setHash(navHashFor(mb)); return;
+    }
+    if (e.target.closest("#gsp")) homeClose();
+  }, true);
+  $("gq").addEventListener("keydown", function (e) { if (e.key === "Enter" && homeOn) homeClose(); }, true);
+  // Flikens start (Joakim 2026-11-20: klick på rubriken "Armory", "Quests" … ska till flikens början): inga val, ingen sökning.
+  function tabHome() {
+    var m = mode;
+    if (m === "ar") {
+      if (arLb) { lbFold = false; arLb = "ilvl"; drawMode(); drawCats(); lbShow(); toTop(); }
+      else arLanding();
+      return;
+    }
+    selQuest = 0; npcSel = 0; dgSel = -1; huSel = 0; clSp = 0; clQ = 0; clTr = 0; selRec = 0; gaSel = -1; fxSel = 0; deSel = 0; selId = null;
+    mode = ""; setMode(m); window.scrollTo(0, 0);
+  }
+  // Armorys start (Joakim 2026-11-20: efter F5 öppnade Armory den senaste spelaren): sökrutan, vänner och senaste som knappar.
+  function arLanding() {
+    arData = null; arLb = ""; arCmp = null; arCmpPick = false; ++arToken;
+    drawMode(); drawCats(); refresh();
+    var chips = function (L) { return '<div class="hchips">' + L.slice(0, 16).map(function (r) { return '<button type="button" data-ar="' + (r.kind === "guild" ? "guild" : "char") + '" data-slug="' + esc(r.slug) + '">' + (r.kind === "guild" ? "&lt;" + esc(r.label) + "&gt;" : esc(r.label)) + "</button>"; }).join("") + "</div>"; };
+    arShow('<div class="arland"><p>' + t("ar_hint") + "</p>" +
+      (arFriends.length ? "<h3>" + t("ar_land_friends") + "</h3>" + chips(arFriends) : "") +
+      (arRecent.length ? "<h3>" + t("ar_land_recent") + "</h3>" + chips(arRecent) : "") +
+      '<div class="hchips"><a href="#top=ilvl">' + t("ar_land_lb") + "</a></div></div>", "");
+    setHash("#tab=ar");
+    $("q").focus();
+  }
   // keep: ny data i samma läge (granskning 2026-11-18): ingen "Loading", ingen rullning upp, ingen flikväxling; questet
   // ritas om med de nya priserna, kartöversikten ligger kvar om den är öppen.
   function quStart(want, restore, keep, npc) {   // npc: #npc=<id>, NPC:n i högerrutan i stället för ett quest (Joakim 2026-11-18)
@@ -6847,8 +6952,7 @@ body[data-mode=cl] .ttrees { gap: 8px; } body[data-mode=cl] .ttree { padding: 6p
       drawCats(); refresh();
       if (arLb) { lbShow(); setHash(lbHash(arLb)); }
       else if (arData) { if (arData.kind === "character") renderChar(arData); else renderGuild(arData); setHash(arData.kind === "character" ? arHash() : "#guild=" + arData.slug); }
-      else if (arRecent[0]) arLoad(arRecent[0].kind, arRecent[0].slug);
-      else arShow('<div class="hint">' + t("ar_hint") + "</div>", "");
+      else arLanding();
       return;
     }
     if (m === "cr") {
@@ -6908,8 +7012,7 @@ body[data-mode=cl] .ttrees { gap: 8px; } body[data-mode=cl] .ttree { padding: 6p
   function arHome() {
     drawMode(); drawCats(); refresh();
     if (arData) { if (arData.kind === "character") renderChar(arData); else renderGuild(arData); setHash(arData.kind === "character" ? arHash() : "#guild=" + arData.slug); }
-    else if (arRecent[0]) arLoad(arRecent[0].kind, arRecent[0].slug);
-    else { arShow('<div class="hint">' + t("ar_hint") + "</div>", ""); setHash("#tab=ar"); }
+    else arLanding();
   }
   $("modeLb").addEventListener("click", function () { lbTab(); });
   $("modeQu").addEventListener("click", function () { setMode("qu"); });
@@ -6998,6 +7101,13 @@ body[data-mode=cl] .ttrees { gap: 8px; } body[data-mode=cl] .ttree { padding: 6p
   $("q").addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); $("qbtn").click(); } });
   document.addEventListener("keydown", function (e) { if (e.key === "Enter" && e.target && e.target.id === "clArm" && mode === "cl") { e.preventDefault(); clArmLoad(); } });
   if (location.hash === "#about") aboutOpen();   // länk direkt till About (Joakim 2026-11-18)
+  else if (!location.hash || location.hash === "#" || location.hash === "#home") homeOpen();   // startsidan (Joakim 2026-11-20)
+  // Ikoner som inte laddas (Joakim 2026-11-20: tomma rutor i listan): ett nytt försök efter en och en halv sekund.
+  document.addEventListener("error", function (e) {
+    var im = e.target; if (!im || im.tagName !== "IMG" || !im.classList.contains("ic") || im.getAttribute("data-retry")) return;
+    im.setAttribute("data-retry", "1"); var s0 = im.src;
+    setTimeout(function () { im.src = s0 + (s0.indexOf("?") < 0 ? "?r=1" : "&r=1"); }, 1500);
+  }, true);
   var tok0 = ++dataSeq, house0 = house;
   fetch(dataUrl()).then(function (r) {
     if (!r.ok) throw new Error(r.status);
