@@ -1095,10 +1095,19 @@ body[data-home] .cols, body[data-home] #sect, body[data-home] #q, body[data-home
 @media (max-width: 700px) { .hrow { grid-template-columns: minmax(0, 1fr); } }
 .hbox { padding: 12px 14px; }
 /* Bakgrundsbild i rutan (Joakim 2026-11-20, som goldcap men ljusare): bilden syns i rubrikbandet och tonas bort under listan */
-.hbox.hbg { background: linear-gradient(180deg, rgba(18, 13, 9, .33) 0, rgba(18, 13, 9, .80) 64px, rgba(15, 11, 8, .95) 150px), var(--hbg) center 35% / cover no-repeat, var(--panel); border-color: rgba(201, 162, 90, .45); }
+.hbox.hbg, .hhero.hbg { position: relative; isolation: isolate; background: var(--panel); border-color: rgba(201, 162, 90, .45); }
+.hbox.hbg::before, .hhero.hbg::before { content: ""; position: absolute; inset: 0; z-index: -2; border-radius: inherit; background: var(--hbg) center 35% / cover no-repeat; }
+.hbox.hbg::after, .hhero.hbg::after { content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; }
+.hbox.hbg::after { background: linear-gradient(180deg, rgba(18, 13, 9, .33) 0, rgba(18, 13, 9, .80) 64px, rgba(15, 11, 8, .95) 150px); }
+/* Atlas: ljusare och mer färg i bilden, toning mot Atlas egen panelfärg i stället för brunt */
+[data-appearance=atlas] .hbg::before { filter: saturate(1.55) brightness(1.22) contrast(1.04); }
+[data-appearance=atlas] .hbox.hbg { border-color: color-mix(in srgb, var(--gold) 45%, transparent); }
+[data-appearance=atlas] .hbox.hbg::after { background: linear-gradient(180deg, color-mix(in srgb, var(--panel) 30%, transparent) 0, color-mix(in srgb, var(--panel) 78%, transparent) 64px, color-mix(in srgb, var(--panel) 95%, transparent) 150px); }
+[data-appearance=atlas] .hhero.hbg::after { background: linear-gradient(90deg, color-mix(in srgb, var(--panel) 90%, transparent) 0, color-mix(in srgb, var(--panel) 62%, transparent) 50%, color-mix(in srgb, var(--panel) 22%, transparent) 100%); }
 .hbox.hbg h3 { text-shadow: 0 1px 3px #000, 0 0 10px rgba(0, 0, 0, .8); padding-bottom: 26px; }
 .hbox.hbg h3 a { color: #e8dcc4; }
-.hhero.hbg { background: linear-gradient(90deg, rgba(15, 11, 8, .92) 0, rgba(15, 11, 8, .68) 50%, rgba(15, 11, 8, .30) 100%), var(--hbg) center 42% / cover no-repeat, var(--panel); min-height: 120px; }
+.hhero.hbg { min-height: 120px; } .hhero.hbg::before { background-position: center 42%; }
+.hhero.hbg::after { background: linear-gradient(90deg, rgba(15, 11, 8, .92) 0, rgba(15, 11, 8, .68) 50%, rgba(15, 11, 8, .30) 100%); }
 .hhero.hbg h2, .hhero.hbg p { text-shadow: 0 1px 3px #000; } .hhero.hbg p { color: #d8ccb4; }
 .hbox h3 { margin: 0 0 8px; font-family: var(--display); color: var(--gold); font-size: 16px; font-weight: 400; display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
 .hbox h3 a { font-family: var(--body); font-size: 12.5px; color: var(--grey); text-decoration: none; } .hbox h3 a:hover { color: var(--gold); }
@@ -1272,6 +1281,7 @@ body[data-home] .cols, body[data-home] #sect, body[data-home] #q, body[data-home
       Array.prototype.forEach.call(document.querySelectorAll("img[data-ai]"), function (im) { if (!im.src) im.src = ASSET_BASE + "icons/" + im.getAttribute("data-ai") + ".png"; });
     }
     applyPanorama(document.body.classList.contains("fa-alliance") ? "alliance" : "horde");
+    if (typeof homeOn !== "undefined" && homeOn) homeLater();   // startsidans bilder följer stilen
   }
   Array.prototype.forEach.call(document.querySelectorAll("[data-app]"), function (b) {
     b.addEventListener("click", function () { appSet(b.getAttribute("data-app"), true); });
@@ -5292,9 +5302,12 @@ body[data-home] .cols, body[data-home] #sect, body[data-home] #q, body[data-home
     if (!ASSET_BASE) return "";
     var x = HOME_BG[k], B = ASSET_BASE + "backgrounds/", city = B + (mySide() === "alliance" ? "alliance-stormwind" : "horde-orgrimmar") + ".webp";
     if (x[0]) {
-      var want = B + "home-" + x[0] + ".webp";
-      if (homeBgOk[want] == null) { homeBgOk[want] = false; var im = new Image(); im.onload = function () { homeBgOk[want] = true; homeLater(); }; im.src = want; }
-      if (homeBgOk[want]) return want;
+      var wants = (appIs() === "atlas" ? [B + "home-" + x[0] + "-atlas.webp"] : []).concat([B + "home-" + x[0] + ".webp"]);
+      for (var wi = 0; wi < wants.length; wi++) {
+        var want = wants[wi];
+        if (homeBgOk[want] == null) { homeBgOk[want] = false; (function (u) { var im = new Image(); im.onload = function () { homeBgOk[u] = true; homeLater(); }; im.src = u; })(want); }
+        if (homeBgOk[want]) return want;
+      }
     }
     return x[1] ? B + x[1] + ".webp" : city;
   }
