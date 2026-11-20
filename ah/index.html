@@ -1113,6 +1113,27 @@ body[data-home] .cols, body[data-home] #sect, body[data-home] #q, body[data-home
 .hxtip { position: fixed; z-index: 70; transform: translate(-50%, -100%); padding: 5px 9px; border-radius: 6px; background: #0E1821; border: 1px solid #465C69; color: #E9EEF2; font-size: 12.5px; white-space: nowrap; pointer-events: none; display: grid; gap: 1px; box-shadow: 0 6px 16px rgba(0, 0, 0, .5); }
 .hxtip[hidden] { display: none; } .hxtip b { font-size: 13.5px; } .hxtip span { color: #A6B4C1; font-size: 11.5px; }
 .hxico.bz { width: 52px; height: 52px; right: 16px; bottom: 16px; border-radius: 8px; border: 1px solid var(--hx-line); object-fit: cover; }
+/* Raid-sidan (Joakim 2026-11-20) */
+.rdintro { margin: -4px 0 0; color: var(--hx-fg2); font-size: 14.5px; max-width: 900px; }
+.rdgrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.rdcard { display: grid; align-content: start; gap: 10px; padding: 16px 18px; background: var(--hx-card); border: 1px solid var(--hx-line); border-radius: 10px; }
+.rdtop { display: grid; grid-template-columns: 52px minmax(0, 1fr) auto; gap: 12px; align-items: center; }
+.rdtop img { width: 52px; height: 52px; border-radius: 8px; border: 1px solid var(--hx-line); }
+.rdtop h3 { margin: 0; font: 400 21px/1.15 var(--display); color: var(--hx-fg); text-transform: none; } .rdtop small { color: var(--hx-fg2); font-size: 12.5px; }
+.rdsize { display: grid; justify-items: center; padding: 6px 10px; border-radius: 8px; background: rgba(255, 255, 255, .05); color: var(--hx-fg2); font-size: 11px; text-transform: uppercase; letter-spacing: .06em; }
+.rdsize b { font: 700 24px/1 "Instrument Sans", system-ui, sans-serif; color: var(--hx-acc); }
+.rdfacts { margin: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; padding: 10px 0; border-top: 1px solid var(--hx-line); border-bottom: 1px solid var(--hx-line); }
+.rdfacts div { display: grid; gap: 2px; } .rdfacts dt { color: var(--hx-fg2); font-size: 11.5px; } .rdfacts dd { margin: 0; font-weight: 600; font-size: 14px; color: var(--hx-fg); }
+.rdcard h4, .rdchain h4 { margin: 0; font: 600 12px/1 "Instrument Sans", system-ui, sans-serif; letter-spacing: .08em; text-transform: uppercase; color: var(--hx-fg2); display: flex; align-items: center; gap: 6px; }
+.rdcard ul, .rdchain ol { margin: 0; padding-left: 18px; display: grid; gap: 6px; color: var(--hx-fg); font-size: 14px; line-height: 1.4; }
+.rdlink { color: var(--hx-acc); text-decoration: none; font-weight: 600; font-size: 13.5px; } .rdlink:hover { text-decoration: underline; }
+.rdrow { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: 12px; }
+.rdchains { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; } .rdchain { display: grid; align-content: start; gap: 8px; } .rdchain .fe { width: 18px; height: 18px; }
+.rdnote { margin: -2px 0 10px; color: var(--hx-fg2); font-size: 13px; }
+.rdsrc { margin: 0; color: var(--hx-fg2); font-size: 12.5px; } .rdsrc a { color: var(--hx-acc); }
+.hxli .nm small { font-size: 12px; }
+@media (max-width: 1250px) { .rdgrid { grid-template-columns: minmax(0, 1fr); } .rdrow { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 700px) { .rdfacts { grid-template-columns: repeat(2, minmax(0, 1fr)); } .rdchains { grid-template-columns: minmax(0, 1fr); } }
 /* Classes startvy (Joakim 2026-11-20) */
 .clland { padding: 18px 20px; display: grid; gap: 16px; }
 .cllhead { display: flex; align-items: center; gap: 16px; } .cllbook { width: 76px; height: 76px; filter: drop-shadow(0 4px 8px rgba(0, 0, 0, .45)); }
@@ -1121,7 +1142,18 @@ body[data-home] .cols, body[data-home] #sect, body[data-home] #q, body[data-home
 .cllc { all: unset; box-sizing: border-box; cursor: pointer; display: grid; grid-template-columns: 40px minmax(0, 1fr); grid-template-rows: auto auto; column-gap: 12px; align-items: center; padding: 12px 14px;
   border: 1px solid var(--line); border-left: 3px solid var(--cc); border-radius: 8px; background: rgba(255, 255, 255, .03); transition: border-color .15s, background .15s; }
 .cllc:hover, .cllc:focus-visible { background: rgba(255, 255, 255, .06); border-color: var(--cc); }
-.cllc .ri { grid-row: 1 / 3; width: 40px; height: 40px; border-radius: 6px; } .cllc b { font: 400 18px/1.15 var(--display); color: var(--cc); } .cllc small { color: var(--grey); font-size: 12.5px; }
+.cllc { grid-template-columns: 40px minmax(0, 1fr) auto; } .cllc .ri { grid-row: 1 / 3; width: 40px; height: 40px; border-radius: 6px; }
+.cllr { grid-column: 3; grid-row: 1 / 3; display: flex; gap: 3px; } .cllr img { width: 20px; height: 20px; border-radius: 4px; border: 1px solid var(--line); }
+.cllroles { display: grid; gap: 10px; padding-top: 6px; border-top: 1px solid var(--line); }
+.cllroles h3 { margin: 0; font: 400 18px/1.2 var(--display); color: var(--fg); text-transform: none; }
+.cllrg { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.cllrc { display: grid; align-content: start; gap: 8px; padding: 12px; border: 1px solid var(--line); border-radius: 8px; background: rgba(255, 255, 255, .03); }
+.cllrc h4 { margin: 0; display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--fg); } .cllrc h4 img { width: 26px; height: 26px; border-radius: 5px; }
+.cllrc > div { display: flex; flex-wrap: wrap; gap: 6px; }
+.cllrc button { all: unset; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; padding: 4px 8px 4px 4px; border-radius: 6px; background: rgba(255, 255, 255, .04); font-size: 13px; }
+.cllrc button:hover, .cllrc button:focus-visible { background: rgba(255, 255, 255, .09); } .cllrc .ri { width: 22px; height: 22px; border-radius: 4px; }
+.cllnote { margin: 0; color: var(--grey); font-size: 12.5px; }
+@media (max-width: 700px) { .cllrg { grid-template-columns: minmax(0, 1fr); } } .cllc b { font: 400 18px/1.15 var(--display); color: var(--cc); } .cllc small { color: var(--grey); font-size: 12.5px; }
 @media (max-width: 1250px) { .cllgrid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 560px) { .cllgrid { grid-template-columns: minmax(0, 1fr); } }
 .hxpic { position: absolute; z-index: -1; right: 0; top: 0; bottom: 0; width: 52%; height: 100%; object-fit: cover; opacity: .55;
@@ -1422,6 +1454,7 @@ body[data-home] .cols, body[data-home] #sect, body[data-home] #q, body[data-home
     navDraw();
     if (location.hash === "#about") { aboutOpen(); return; }
     aboutClose();
+    if (location.hash === "#raids") { homeOpen("raids"); return; }
     if (location.hash === "#home" || !location.hash) { homeOpen(); return; }
     if (homeOn) homeClose();
     if (!D) return;
@@ -1796,9 +1829,13 @@ body[data-home] .cols, body[data-home] #sect, body[data-home] #q, body[data-home
       scan_at: "Updated %1 at %2", m_faction: "Faction", m_ah: "Auction house", m_ah_own: "Faction AH", m_ah_bw: "Blackwater", m_realm: "Realm type", m_region: "Region", home_tip: "Start page", sect_tip: "Back to the start of this tab", h_title: "Welcome to Azeroth Atlas", h_sub: "Auction prices, players, quests and loot for WoW Forever. Pick a place to start.", h_search: "Search everything", h_n_items: "%1 items on the AH", h_n_cheap: "%1 cheaper than usual", h_n_friends: "%1 friends", h_cheap: "Cheap right now", h_save: "Biggest saving right now", h_usual: "Usual price", h_listed: "Listed at", h_under: "under the usual price", h_n_sold: "%1 sold a day", h_open: "Open item",
       h_st_items: "On the auction house", h_st_items_s: "items with a price", h_st_cheap: "Cheaper than usual", h_st_cheap_s: "items that sell well", h_st_gold: "Traded per day", h_st_gold_s: "market price × sold a day", h_st_upd: "Prices updated", h_min_ago: "%1 min ago", h_h_ago: "%1 h ago",
       h_q_mount: "Which mount is next?", h_q_mount_s: "%1 mounts on Forever", h_q_tal: "Plan your talent build", h_points: "points", h_q_tal_s: "Build and share for every class",
-      h_q_farm: "What is worth farming?", h_q_craft: "Which craft pays most?", h_per_craft: "per craft", h_q_new: "What is new in Forever?", h_n_dungeons: "%1 new dungeons", h_q_new_s: "%1 new items with loot tables", h_rise: "Rising right now", h_hot: "Most traded", h_gph: "Gold per hour", h_craft: "Pays to craft", h_dayt: "Best day trades", h_all: "View all →", h_overview: "Market overview", h_craft_big: "Best craft right now", h_cost: "Cost", h_sells: "Sells for", h_open_rec: "Open recipe", h_skill: "skill %1", h_cd: "%1 h cooldown",
+      h_q_farm: "What is worth farming?", h_q_craft: "Which craft pays most?", h_per_craft: "per craft", h_q_new: "What is new in Forever?", h_n_dungeons: "%1 new dungeons", h_q_new_s: "%1 new items with loot tables", h_rise: "Rising right now", h_hot: "Most traded", h_gph: "Gold per hour", h_craft: "Pays to craft", h_dayt: "Best day trades", h_all: "View all →", h_overview: "Market overview", rd_title: "Raids on Forever", rd_opens: "Opens 9 December", rd_players: "players", rd_bosses: "Bosses", rd_level: "Level", rd_att: "Attunement", rd_reset: "Reset", rd_weekly: "Weekly",
+      rd_know: "Good to know", rd_open_dg: "Open %1 in Dungeons", rd_ony_att: "Onyxia attunement", rd_ony_att_s: "Both chains end in Upper Blackrock Spire, so you need access there. Your faction first.",
+      rd_prep: "Stock up before the raids", rd_prep_s: "Flasks, potions and elixirs raiders buy. Prices from your auction house right now.",
+      rd_intro: "Three raids open on 9 December, one for each group size: 10, 20 and 40 players. All three reset weekly. Molten Core has no date yet.",
+      rd_src: "Facts from Blizzard's announcement as reported by", h_craft_big: "Best craft right now", h_cost: "Cost", h_sells: "Sells for", h_open_rec: "Open recipe", h_skill: "skill %1", h_cd: "%1 h cooldown",
       h_q_raid: "When do the raids open?", h_raid_in: "in %1 days", h_raid_1: "Tomorrow", h_raid_open: "Open now", h_raid_s: "9 December · new raids on Forever", h_raid_since: "Since 9 December",
-      cl_land_h: "Choose a class", cl_land_tip: "Talent calculator, spells with level and trainer cost, pet spells, class quests and trainers.", cl_land_n: "%1 spells", cl_land_pets: "%1 pets", cl_land_demons: "%1 demons",
+      cl_land_h: "Choose a class", cl_roles_h: "Who does what", cl_role_tank: "Tank", cl_role_heal: "Healer", cl_role_dps: "Damage", cl_roles_note: "Roles as in Classic. Every class can deal damage; tanks and healers are what groups look for.", cl_land_tip: "Talent calculator, spells with level and trainer cost, pet spells, class quests and trainers.", cl_land_n: "%1 spells", cl_land_pets: "%1 pets", cl_land_demons: "%1 demons",
       cl_land_right: "Pick a class to open its talent calculator. Spells, pet spells, class quests and trainers are under the class in the list.", h_show_n: "Show %1 of %2", h_rise_big: "Biggest rise right now", h_over: "over the usual price", h_none: "Nothing right now.", h_per_day: "%1/day", h_cheap_none: "Prices are loading…", h_watch: "My list", h_watch_none: "Star ☆ an item and its price shows up here.", h_players: "Players", h_guilds: "Guilds", h_lvl: "Lvl %1", h_members: "%1 members", h_players_none: "Look someone up in the Armory and they show up here.", ar_land_lb: "Leaderboards ›", ar_land_recent: "Recent", ar_land_friends: "Friends", on_ah: "%1 items on the auction house", market_label: "Market", search_btn: "Search", col_fav: "Fav",
       hist_loading: "Loading history…", hist_fail: "The history could not be loaded.", today: "today", item_n: "Item %1",
       copy_link: "Copy link", copied: "Link copied", star_add: "Watch this item", star_del: "Remove from my list", star_all: "All reagents to my list", star_all_del: "Remove reagents from my list", star_lbl_add: "Watch", star_lbl_on: "In my list",
@@ -4501,7 +4538,7 @@ body[data-home] .cols, body[data-home] #sect, body[data-home] #q, body[data-home
     $("sect").textContent = mode === "ah" ? ahName((houseParts(house) || [0, "horde"])[1]) : t(mode === "de" || mode === "fx" ? "mode_tr" : mode === "ar" && arLb ? "mode_lb" : "mode_" + mode);
     document.title = $("sect").textContent + " · Azeroth Atlas";   // fliken i webbläsaren heter som vyn (buggjakt 2026-11-20)
     $("sect").title = t("sect_tip");
-    if (homeOn) { document.title = "Azeroth Atlas · WoW Forever"; Array.prototype.forEach.call(document.querySelectorAll(".mode > button"), function (b) { b.setAttribute("aria-pressed", "false"); }); homeLater(); }
+    if (homeOn) { document.title = homePage === "raids" ? "Raids on Forever · Azeroth Atlas" : "Azeroth Atlas · WoW Forever"; Array.prototype.forEach.call(document.querySelectorAll(".mode > button"), function (b) { b.setAttribute("aria-pressed", "false"); }); homeLater(); }
     drawSub();
     $("q").setAttribute("aria-label", t(mode === "cr" ? "search_rc" : mode === "ar" ? "search_ar" : mode === "qu" ? "search_qu" : mode === "dg" ? "search_dg" : mode === "hu" ? "search_hu" : mode === "co" ? "search_co" : mode === "cl" ? "search_cl" : "search_ph"));
   }
@@ -5427,21 +5464,25 @@ body[data-home] .cols, body[data-home] #sect, body[data-home] #q, body[data-home
     return x[1] ? B + x[1] + ".webp" : city;
   }
   function hbgAttr(k) { var u = homeBg(k); return u ? ' style="--hbg:url(&quot;' + u + '&quot;)"' : ""; }
-  function homeOpen() {
-    homeOn = true; document.body.setAttribute("data-home", "1"); $("homev").hidden = false;
+  var homePage = "home";   // "home" = startsidan, "raids" = raid-sidan (Joakim 2026-11-20)
+  function homeOpen(pg) {
+    homePage = pg === "raids" ? "raids" : "home";
+    var want = homePage === "raids" ? "#raids" : "#home";
+    homeOn = true; document.body.setAttribute("data-home", "1"); $("homev").hidden = false; $("homev").scrollTop = 0;
     try {
-      if (location.hash !== "#home") {
-        if (!location.hash || location.hash === "#") history.replaceState({ i: navPos }, "", "#home");
-        else { history.pushState({ i: navPos + 1 }, "", "#home"); navPos++; navMax = navPos; }
+      if (location.hash !== want) {
+        if (!location.hash || location.hash === "#") history.replaceState({ i: navPos }, "", want);
+        else { history.pushState({ i: navPos + 1 }, "", want); navPos++; navMax = navPos; }
       }
     } catch (e) {}
-    navDraw(); homeDraw(); if (D) drawMode(); else document.title = "Azeroth Atlas · WoW Forever";
+    navDraw(); homeDraw(); if (D) drawMode(); else document.title = homePage === "raids" ? "Raids on Forever · Azeroth Atlas" : "Azeroth Atlas · WoW Forever";
     window.scrollTo(0, 0);
   }
   function homeClose() { if (!homeOn) return; homeOn = false; document.body.removeAttribute("data-home"); $("homev").hidden = true; if (D) drawMode(); }
   function homeLater() { if (homeRaf) return; homeRaf = setTimeout(function () { homeRaf = 0; homeDraw(); }, 0); }   // timer, inte rAF: rAF väntar i en dold flik
   function homeDraw() {
     var el = $("homev"); if (!el || !homeOn) return;
+    if (homePage === "raids") { el.innerHTML = raidsHtml(); return; }
     var mk = house !== 113 ? "&m=" + house : "";
     var base = D ? rows.filter(function (r) { return !r.gear && r.qty >= TR_MIN; }) : [];
     var down = base.filter(function (r) { return r.dip > 0 && r.min > 0; });
@@ -5545,7 +5586,7 @@ body[data-home] .cols, body[data-home] #sect, body[data-home] #q, body[data-home
         gp[0] ? esc(gp[0].g.name) + " · " + t("ga_band", GA_BANDS[gp[0].k][0], GA_BANDS[gp[0].k][1]).toLowerCase() : t("ar_loading"), ico("home-farm"), "up") +
       (function () {   // raiderna öppnar 9 december (lokal tid); efter det: "Open now"
         var at = new Date(2026, 11, 9).getTime(), dd = Math.ceil((at - Date.now()) / 864e5);
-        return card("#tab=dg", t("h_q_raid"), dd > 1 ? t("h_raid_in", dd) : dd === 1 ? t("h_raid_1") : t("h_raid_open"), t(dd > 0 ? "h_raid_s" : "h_raid_since"),
+        return card("#raids", t("h_q_raid"), dd > 1 ? t("h_raid_in", dd) : dd === 1 ? t("h_raid_1") : t("h_raid_open"), t(dd > 0 ? "h_raid_s" : "h_raid_since"),
           '<img class="hxico bz" src="' + RICON + 'inv_misc_head_dragon_01.jpg" alt="" loading="lazy">', dd > 0 ? "" : "up");
       })() +
       card("#tab=dg", t("h_q_new"), homeAL ? t("h_n_dungeons", homeAL.dungeons.length) : "…", homeAL ? t("h_q_new_s", num(Object.keys(homeAL.items).length)) : t("ar_loading"), ico("home-new"));
@@ -5568,6 +5609,49 @@ body[data-home] .cols, body[data-home] #sect, body[data-home] #q, body[data-home
         box(t("h_watch"), "", wl.length ? '<div class="hxlist">' + wl.map(function (r) { return li(r, "#item=" + r.id + mk); }).join("") + "</div>" : '<div class="hnone">' + t("h_watch_none") + "</div>") +
         box(t("h_players"), "#tab=ar", pplHtml) +
       "</div>";
+  }
+  // ---- Raid-sidan (#raids, Joakim 2026-11-20): bara bekräftat (Maxroll om Blizzards besked 2026-10-29); Classic-tips märkta.
+  var RAID_OPEN = new Date(2026, 11, 9).getTime(), RAID_SRC = "https://maxroll.gg/wow-forever/news/wow-forevers-first-raids-open-on-december-9";
+  var RAIDS = [
+    { name: "Barrow Deeps", size: 10, bosses: 8, icon: "inv_misc_bone_humanskull_01", where: "Beneath Mount Hyjal, once Illidan Stormrage's prison",
+      att: "None announced", know: ["Several entrances: from Mount Hyjal, Winterspring and Blackmaw Hold.", "Blackmaw Hold is one of Forever's new dungeons (level 50–60), so running it teaches you one way in.", "Boss names are not announced yet."], dg: "Blackmaw Hold" },
+    { name: "Hyjal Summit", size: 20, bosses: 13, icon: "spell_nature_protectionformnature", where: "Near Nordrassil, the World Tree, on Mount Hyjal",
+      att: "None announced", know: ["Starts with a fight against an ancient guardian.", "After that, groups choose between several paths through ruins above and below the mountain.", "Boss names are not announced yet."] },
+    { name: "Onyxia's Lair", size: 40, bosses: 1, icon: "inv_misc_head_dragon_01", where: "Dustwallow Marsh",
+      att: "Drakefire Amulet", know: ["Onyxia has three phases, according to Blizzard.", "The Drakefire Amulet must be in your bags to enter. It does not have to be equipped.", "As in Classic: in phase 2 she flies and breathes fire across the room, and in phase 3 she fears the raid and whelps pour in. Forever may change details."] }
+  ];
+  var RAID_CHAIN = {
+    HORDE: ["Badlands: \"Blood and Thunder\" from Warlord Goretooth in Kargath.", "Lower Blackrock Spire, then Eitrigg and Thrall in Orgrimmar.", "Bring back the head of Warchief Rend Blackhand (Upper Blackrock Spire).",
+      "Rexxar in Desolace, then Myranda the Hag in the Western Plaguelands (\"Oculus Illusions\", Black Dragonspawn Eyes).", "Emberstrife in Dustwallow Marsh: four \"The Test of Skulls\" quests (Scryer, Somnus, Chronalis, Axtroz).",
+      "The Dull Drakefire Amulet goes back to Rexxar.", "Upper Blackrock Spire: the Blood of the Black Dragon Champion from General Drakkisath gives the Drakefire Amulet."],
+    ALLIANCE: ["Burning Steppes: \"Dragonkin Menace\" from Helendis Riverhorn.", "Six \"The True Masters\" quests, ending with Marshal Maxwell at Morgan's Vigil.", "Blackrock Depths: find Marshal Windsor and break him out (\"Jail Break!\").",
+      "Stormwind: \"Stormwind Rendezvous\" and \"The Great Masquerade\".", "Highlord Bolvar Fordragon: \"The Dragon's Eye\".", "Upper Blackrock Spire: the Blood of the Black Dragon Champion from General Drakkisath gives the Drakefire Amulet."]
+  };
+  // Förbrukningsvaror inför raiderna (id, varför); pris och förändring ur AH-datan
+  var RAID_PREP = [[13457, "Fire resistance for Onyxia's breath"], [13510, "Health for tanks"], [13512, "Spell damage"], [13446, "Healing in a pinch"], [13444, "Mana for healers and casters"],
+    [13452, "Agility and crit for melee and hunters"], [13454, "Spell damage for casters"], [3825, "Health for everyone"]];
+  function fvId(name) { var h = 0; for (var i = 0; i < name.length; i++) h = (h * 31 + name.charCodeAt(i)) % 8999; return 1000 + h; }   // samma id som Dungeons ger Forever-instanserna
+  function raidsHtml() {
+    var dd = Math.ceil((RAID_OPEN - Date.now()) / 864e5), mk = house !== 113 ? "&m=" + house : "";
+    var when = dd > 1 ? t("h_raid_in", dd) : dd === 1 ? t("h_raid_1") : t("h_raid_open");
+    var cards = RAIDS.map(function (r) {
+      return '<section class="rdcard"><div class="rdtop"><img src="' + RICON + r.icon + '.jpg" alt="" loading="lazy"><div><h3>' + esc(r.name) + "</h3><small>" + esc(r.where) + '</small></div><span class="rdsize"><b>' + r.size + "</b>" + t("rd_players") + "</span></div>" +
+        '<dl class="rdfacts"><div><dt>' + t("rd_bosses") + "</dt><dd>" + r.bosses + "</dd></div><div><dt>" + t("rd_level") + "</dt><dd>60</dd></div><div><dt>" + t("rd_att") + "</dt><dd>" + esc(r.att) + "</dd></div><div><dt>" + t("rd_reset") + "</dt><dd>" + t("rd_weekly") + "</dd></div></dl>" +
+        "<h4>" + t("rd_know") + "</h4><ul>" + r.know.map(function (k) { return "<li>" + esc(k) + "</li>"; }).join("") + "</ul>" +
+        (r.dg ? '<a class="rdlink" href="#dungeon=' + fvId(r.dg) + '">' + t("rd_open_dg", esc(r.dg)) + " →</a>" : "") + "</section>";
+    }).join("");
+    var mine = myFaction() === "A" ? "ALLIANCE" : "HORDE", other = mine === "HORDE" ? "ALLIANCE" : "HORDE";
+    var chain = function (fa) { return '<div class="rdchain"><h4>' + faIcon(fa) + (fa === "HORDE" ? "Horde" : "Alliance") + "</h4><ol>" + RAID_CHAIN[fa].map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("") + "</ol></div>"; };
+    var prep = RAID_PREP.map(function (p) {
+      var r = byId[p[0]]; if (!r) return "";
+      return '<a class="hxli" href="#item=' + r.id + mk + '">' + (iconHtml(r) || "<span></span>") + '<span class="nm ' + qcls(r.q) + '">' + esc(r.name) + ' <small class="dim">' + esc(p[1]) + '</small></span><span class="pr">' + moneyText(r.min) + '</span><span class="ch">' + pctHtml(r) + "</span></a>";
+    }).join("");
+    return '<div class="hxhead"><h2>' + t("rd_title") + '</h2><span class="hxupd"><i></i>' + t("rd_opens") + " · " + when + "</span></div>" +
+      '<p class="rdintro">' + t("rd_intro") + "</p>" +
+      '<div class="rdgrid">' + cards + "</div>" +
+      '<div class="rdrow"><section class="hxbox"><h3><span>' + t("rd_ony_att") + "</span></h3><p class=\"rdnote\">" + t("rd_ony_att_s") + '</p><div class="rdchains">' + chain(mine) + chain(other) + "</div></section>" +
+      '<section class="hxbox"><h3><span>' + t("rd_prep") + '</span><a href="#tab=ah' + mk + '">' + t("h_all") + "</a></h3><p class=\"rdnote\">" + t("rd_prep_s") + '</p><div class="hxlist">' + (prep || '<div class="hnone">' + t("h_cheap_none") + "</div>") + "</div></section></div>" +
+      '<p class="rdsrc">' + t("rd_src") + ' <a href="' + RAID_SRC + '" target="_blank" rel="noopener">Maxroll</a></p>';
   }
   // Flikar och globala sökningen stänger startsidan; fliken som redan var vald skriver sin adress efteråt.
   document.addEventListener("click", function (e) {
@@ -6039,7 +6123,7 @@ body[data-home] .cols, body[data-home] #sect, body[data-home] #q, body[data-home
   function lbCats() {
     var apAny = !KAT || KAT.players.some(function (p) { return p.ap > 0; });   // Forever ger inga achievement points (2026-11-20)
     return "<h2>" + t("lb_cats") + "</h2>" + LB.filter(function (b) { return b[0] !== "ach" || apAny || arLb === "ach"; }).map(function (b) {
-      return '<button class="cat" type="button" data-lb="' + b[0] + '" aria-pressed="' + (b[0] === arLb) + '"><img class="ci" src="' + RICON + (LB_ICON[b[0]] || "inv_misc_questionmark") + '.jpg" alt="" onerror="this.style.visibility=\'hidden\'"><em class="nm">' + t(b[3] === "s" ? "lb_server" : b[2]) + "</em></button>" + (b[0] === arLb && !lbFold ? lbSubHtml : "");
+      return '<button class="cat" type="button" data-lb="' + b[0] + '" aria-pressed="' + (b[0] === arLb) + '"><img class="ci" src="' + (b[0] === "ilvl" && ASSET_BASE ? ASSET_BASE + "icons/nav-leaderboards.png" : RICON + (LB_ICON[b[0]] || "inv_misc_questionmark") + ".jpg") + '" alt="" onerror="this.style.visibility=\'hidden\'"><em class="nm">' + t(b[3] === "s" ? "lb_server" : b[2]) + "</em></button>" + (b[0] === arLb && !lbFold ? lbSubHtml : "");
     }).join("") + (KAT ? '<div class="dim" style="padding:8px 10px;font-size:12px">' + num(KAT.players.length) + " " + t("gs_k_pl").toLowerCase() + " · " + num(KAT.guilds.length) + " " + t("gs_k_gl").toLowerCase() + "</div>" : "");
   }
   // Underlistan i adressen (#top=pvp&s=rank, buggjakt 2026-11-20): bakåt, kopierad länk och mittenklick visar samma lista.
@@ -6769,7 +6853,10 @@ body[data-home] .cols, body[data-home] #sect, body[data-home] #q, body[data-home
   // hamta-klasser.js: Classic-databasens tränare, Forever-klientens texter), class quests (quests.json) och tränare.
   // Länk: #cls=warrior&cv=tal|spells|pets|quests|trainers, &t=<plan> (en siffra per talang, träden med - emellan),
   // &sp=<spell-id>, &ln=<skill line>, &pet=<namn>, &cq=<quest>, &tr=<npc>. Planen sparas per klass i webbläsaren.
-  var clLand = false;   // Classes-fliken utan vald klass i adressen: startvyn med boken och de nio klasserna (Joakim 2026-11-20)
+  var clLand = false;
+  // Roller som i Classic (Joakim 2026-11-20, idé 1): vad varje klass brukar göra i grupp och raid
+  var CL_ROLES = { Warrior: ["tank", "dps"], Paladin: ["heal", "tank", "dps"], Hunter: ["dps"], Rogue: ["dps"], Priest: ["heal", "dps"], Shaman: ["heal", "dps"], Mage: ["dps"], Warlock: ["dps"], Druid: ["tank", "heal", "dps"] };
+  var CL_ROLE_IC = { tank: "ability_warrior_defensivestance", heal: "spell_holy_flashheal", dps: "inv_sword_04" };   // Classes-fliken utan vald klass i adressen: startvyn med boken och de nio klasserna (Joakim 2026-11-20)
   var CL = null, clPromise = null, clSel = "", clView = "tal", clPet = "", clLine = "", clSp = 0, clQ = 0, clTr = 0, clRanks = {}, clFa = "", clFaSet = false, clTk = "", clFold = false;   // clFold: vald klass ihopfälld (klick på den igen, Joakim 2026-11-19)
   var CL_ORDER = ["Warrior", "Paladin", "Hunter", "Rogue", "Priest", "Shaman", "Mage", "Warlock", "Druid"], CL_VIEWS = ["tal", "spells", "pets", "quests", "trainers"];
   var CL_KEY = "whippit-ah-clplan-", CL_SEL_KEY = "whippit-ah-cls";
@@ -6846,8 +6933,14 @@ body[data-home] .cols, body[data-home] #sect, body[data-home] #q, body[data-home
       CL_ORDER.map(function (n) {
         var c = clC(n); if (!c) return "";
         var live = c.spells.filter(function (sp) { return !sp.x; }).length;
-        return '<button type="button" class="cllc" data-clc="' + n.toLowerCase() + '" style="--cc:' + clCol(n) + '">' + classIcon(n) + "<b>" + n + "</b><small>" + t("cl_land_n", live) + (c.pets.length ? " · " + t(n === "Warlock" ? "cl_land_demons" : "cl_land_pets", c.pets.length) : "") + "</small></button>";
-      }).join("") + "</div></div>";
+        return '<button type="button" class="cllc" data-clc="' + n.toLowerCase() + '" style="--cc:' + clCol(n) + '">' + classIcon(n) + "<b>" + n + "</b><small>" + t("cl_land_n", live) + (c.pets.length ? " · " + t(n === "Warlock" ? "cl_land_demons" : "cl_land_pets", c.pets.length) : "") + "</small>" +
+          '<span class="cllr">' + (CL_ROLES[n] || []).map(function (r) { return '<img src="' + RICON + CL_ROLE_IC[r] + '.jpg" alt="' + t("cl_role_" + r) + '" title="' + t("cl_role_" + r) + '" loading="lazy">'; }).join("") + "</span></button>";
+      }).join("") + "</div>" +
+      '<div class="cllroles"><h3>' + t("cl_roles_h") + '</h3><div class="cllrg">' + ["tank", "heal", "dps"].map(function (r) {
+        return '<div class="cllrc"><h4><img src="' + RICON + CL_ROLE_IC[r] + '.jpg" alt="">' + t("cl_role_" + r) + "</h4><div>" + CL_ORDER.filter(function (n) { return (CL_ROLES[n] || []).indexOf(r) >= 0; }).map(function (n) {
+          return '<button type="button" data-clc="' + n.toLowerCase() + '" title="' + n + '">' + classIcon(n) + '<span style="color:' + clCol(n) + '">' + n + "</span></button>";
+        }).join("") + "</div></div>";
+      }).join("") + '</div><p class="cllnote">' + t("cl_roles_note") + "</p></div></div>";
   }
   function clRedraw(rep) {   // rep: talangpoäng ändrade adressen utan nytt historiksteg (51 poäng gav 51 steg)
     if (clLand) { clShow(false); return; }
@@ -7379,6 +7472,7 @@ body[data-home] .cols, body[data-home] #sect, body[data-home] #q, body[data-home
   document.addEventListener("keydown", function (e) { if (e.key === "Enter" && e.target && e.target.id === "clArm" && mode === "cl") { e.preventDefault(); clArmLoad(); } });
   if (location.hash === "#about") aboutOpen();   // länk direkt till About (Joakim 2026-11-18)
   else if (!location.hash || location.hash === "#" || location.hash === "#home") homeOpen();   // startsidan (Joakim 2026-11-20)
+  else if (location.hash === "#raids") homeOpen("raids");
   // Ikoner som inte laddas (Joakim 2026-11-20: tomma rutor i listan): ett nytt försök efter en och en halv sekund.
   document.addEventListener("error", function (e) {
     var im = e.target; if (!im || im.tagName !== "IMG" || !im.classList.contains("ic") || im.getAttribute("data-retry")) return;
