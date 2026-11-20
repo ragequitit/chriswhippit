@@ -1061,6 +1061,15 @@ body[data-mode=cl] .armory { padding: 8px; } body[data-mode=cl] .talpanel { padd
 .cats .cat.sub small .ri, .strip small .ri { width: 15px; height: 15px; vertical-align: -3px; margin-right: 3px; border-radius: 3px; }
 .cats .cat.sub[data-clv] em.nm::after { content: "›"; margin-left: 6px; color: var(--grey); opacity: .6; } .cats .cat.sub[data-clv=tal] em.nm::after { content: ""; }
 body[data-mode=cl] .ttrees { gap: 8px; } body[data-mode=cl] .ttree { padding: 6px 6px 8px; }
+/* Classes-talangräknaren (Joakim 2026-11-20): raden ovanför träden lika bred som dem och centrerad, rutorna större när det får plats */
+.cltal .talwrap { width: fit-content; max-width: 100%; margin: 0 auto; }
+.cltal .talhd { margin-bottom: 8px; flex-wrap: nowrap; }
+.cltal .talhint { font-size: 12.5px; color: var(--grey); white-space: nowrap; }
+.cltal .ttrees { flex-wrap: nowrap; }
+.cltal { container-type: inline-size; }   /* storleken efter rutans bredd, inte skärmens */
+@container (min-width: 810px) { .cltal .ttg { zoom: 1.15; } }
+@container (max-width: 719px) { .cltal .ttrees, .cltal .talhd { flex-wrap: wrap; } }
+.clrh { margin-top: 12px; }
 .cltr .facts { margin-top: 4px; }
 @media (max-width: 1250px) { body[data-mode=cl] .cols { grid-template-columns: 196px minmax(0, 1fr) minmax(0, 300px); } }
 @media (max-width: 1100px) { body[data-mode=cl] .cols { grid-template-columns: minmax(0, 1fr); } }
@@ -1305,7 +1314,11 @@ body[data-mode=cl] .ttrees { gap: 8px; } body[data-mode=cl] .ttree { padding: 6p
     if (!D) return;
     navRestoring = true;
     huZBigClose();   // stora zonkartan hör till steget man lämnar (granskning 2026-11-18)
-    arCmp = null; arCmpPick = false; load(D, false, true);
+    arCmp = null; arCmpPick = false;
+    // Marknaden följer med bakåt/framåt (buggjakt 2026-11-20): adresser för varor, recept och handel bär &m= (saknas = EU PvP Horde).
+    var mkN = /^#(item|recipe|fx|de|gather)=|^#tab=(ah|tr|cr|fx|de)\b/.test(location.hash) ? (+hashParams().m || 113) : 0;
+    if (mkN && mkN !== house && mkHas(mkN)) { switchHouse(mkN, true); return; }
+    load(D, false, true);
   });
   var HP0 = hashParams();
   // Alla marknader (markets.js, 2026-11-18): EU = Blizzards hus-id, US 1000+, KR 2000+, TW 3000+. Trion per realmtyp
@@ -1401,7 +1414,7 @@ body[data-mode=cl] .ttrees { gap: 8px; } body[data-mode=cl] .ttree { padding: 6p
     var n = { cheap: base.length, bs: base.filter(btClear).length, vend: rows.filter(function (r) { return r.sp > 0 && (r.lo || r.min) > 0 && r.sp > (r.lo || r.min); }).length };
     if (trCnt.t !== D.t || trCnt.h !== house || trCnt.fk !== FX.key || trCnt.skill !== deSkill) { trCnt = { t: D.t, h: house, fk: FX.key, skill: deSkill, de: null, fx: null }; }
     if (DEX && trCnt.de == null) trCnt.de = Object.keys(DEX.items).filter(function (id) { var r = byId[id]; if (!r || !(r.qty > 0) || !(r.min > 0)) return false; var it = DEX.items[id]; if (deSkill && deSkillFor(it[2], it[1]) > deSkill) return false; var o = deOutcome(id); return !!(o && o.value > r.min); }).length;
-    if (FX.ok && FX.maps && trCnt.fx == null) trCnt.fx = Object.keys(FX.maps[0]).filter(function (id) { var a = FX.maps[1][id]; return a && FX.maps[0][id].qty >= FX_MIN && a.qty >= FX_MIN; }).length;
+    if (fxReady() && FX.maps && trCnt.fx == null) trCnt.fx = Object.keys(FX.maps[0]).filter(function (id) { var a = FX.maps[1][id]; return a && FX.maps[0][id].qty >= FX_MIN && a.qty >= FX_MIN; }).length;
     n.de = trCnt.de; n.fx = trCnt.fx;
     Array.prototype.forEach.call(el.querySelectorAll("button[data-trv] .n"), function (sm) { var v = n[sm.parentNode.dataset.trv]; sm.textContent = v == null ? "" : num(v); });
   }
@@ -1536,7 +1549,7 @@ body[data-mode=cl] .ttrees { gap: 8px; } body[data-mode=cl] .ttree { padding: 6p
       cl_w_demon: "Demon trainers (%1 on your side, e.g. %2).", cl_w_beast: "Learned from a tamed %1 that already knows it (Beast Training).", cl_w_other: "From a book, an item or a quest.",
       cl_load_h: "Load from Armory", cl_load_ph: "Player name", cl_load_btn: "Load", cl_load_note: "Type a player's name to copy their talents into the calculator.",
       cl_load_ok: "Loaded %1 (level %2): %3.", cl_load_cls: "%1 is a %2, which has no talent trees here.",
-      cl_pts: "Points", cl_level_need: "Level needed", cl_trees: "Talent trees", cl_lvls: "level %1–%2", cl_races: "Races that can play this class",
+      cl_pts: "Points", cl_level_need: "Level needed", cl_trees: "Talent trees", cl_lvls: "level %1–%2", cl_races: "Races that can play this class", cl_races_h: "Races",
       cl_tal_note: "51 points at level 60, one per level from 10. Left-click adds, right-click removes. The link holds the plan.",
       cl_note_src: "Spell list, levels and prices from the open Classic database (1.12); texts, icons and numbers from WoW Forever's game data. Forever's own class changes may be missing.",
       cl_q_note: "Class quests on your side. Click a quest for the details and the map.", cl_class_tr: "%1 trainer", cl_tr_missing: "Forever lets %1 play this class too, but their trainers are new on Forever and not in the Classic database, so they are missing here.", cl_fv: "New on Forever", cl_changed_short: "Changed", cl_lvl6: "to level 6",
@@ -1609,7 +1622,7 @@ body[data-mode=cl] .ttrees { gap: 8px; } body[data-mode=cl] .ttree { padding: 6p
       ga_assume: "Your pace", ga_reset: "Reset", ga_nodes: "Nodes / hour", ga_per_node: "Items / node", ga_kills: "Kills / hour", ga_per_kill: "Skins / kill", ga_greens: "Greens / hour", ga_per_green: "Materials / green",
       ga_what: "What it brings", ga_more: "and %1 more", ga_recipes: "Best recipes to craft", ga_rec_none: "No recipe in this skill range sells at a profit right now.", ga_rec_tip: "Open the recipe",
       ga_missing: "%1 item(s) have no price on this market right now and count as 0.", ga_note: "The shares per band are what the zones of that level typically give, not measured in Forever. Change your pace above and everything is recalculated.",
-      f_cost: "Cost to craft", f_sellf: "Sells for", f_profit: "Profit after 5%", f_trainer: "Trainer price", f_makes: "Makes", cr_notindb: "This recipe is not in the recipe database yet (new on Forever).", f_cd: "Cooldown", cd_tag: "%1 cooldown", cd_tip: "Made on a cooldown (%1), so few are made and the price stays high", reagents: "Reagents", col_each: "Each", col_total: "Total", col_qty_s: "Qty",
+      f_cost: "Cost to craft", f_sellf: "Sells for", f_profit: "Profit after 5%", f_trainer: "Trainer price", f_makes: "Makes", cr_notindb: "This recipe is not in the recipe database yet (new on Forever).", dg_notfound: "That dungeon link doesn't match any dungeon any more. Showing the first one instead.", f_cd: "Cooldown", cd_tag: "%1 cooldown", cd_tip: "Made on a cooldown (%1), so few are made and the price stays high", reagents: "Reagents", col_each: "Each", col_total: "Total", col_qty_s: "Qty",
       vendor_tag: "vendor", missing_n: "No price for %1 reagent(s): the cost is incomplete.", not_on_ah: "The crafted item is not on the auction house right now, so there is no selling price.",
       it_find: "Where to find it", it_gather: "Gathered from", it_chests: "Also in chests", it_drop: "Dropped by", it_drop_more: "and %1 more mobs",
       it_skin: "Skinned from", it_pick: "Pickpocketed from", it_vendor: "Sold by", it_vendor_lim: "limited stock", it_in: "Found in", it_used: "Reagent for",
@@ -2143,12 +2156,22 @@ body[data-mode=cl] .ttrees { gap: 8px; } body[data-mode=cl] .ttree { padding: 6p
     if (d.reputations && d.reputations.length) { var ex = 0; d.reputations.forEach(function (r) { if (r.standing === "Exalted") ex++; }); me.rep = { ex: ex }; }
     return me;
   }
+  // Lika värde: samma ordning som topplistan själv sorterar (buggjakt 2026-11-20). > 0: p står före spelaren.
+  function lbTie(b, p, me) {
+    var f0 = function (x, k) { return x[k] ? x[k][0] || 0 : 0; };
+    if (b === "pvp") return (p.hk || 0) - (me.hk || 0) || p.lv - me.lv;
+    if (b === "pve") return f0(p, "pve") - f0(me, "pve");
+    if (b === "fish") return f0(p, "fish") - f0(me, "fish");
+    if (b === "quests" || b === "travel") return p.lv - me.lv;
+    if (b === "titles" || b === "rep") return (p.il || 0) - (me.il || 0);
+    return p.lv - me.lv || (p.il || 0) - (me.il || 0);
+  }
   function lbMeRows(me) {
     var P = KAT.players, out = [];
     lbMeDefs().forEach(function (df) {
       var fn = df[3], v = fn(me); if (!(v > 0)) return;
       var ahead = 0, n = 1;   // n: spelaren själv plus alla andra med värde (katalogens egen post för spelaren räknas inte, live-siffran gäller)
-      for (var i = 0; i < P.length; i++) { var p = P[i]; if (p.s === me.s) continue; var w = fn(p); if (!(w > 0)) continue; n++; if (w > v || (w === v && (p.lv > me.lv || (p.lv === me.lv && p.il > me.il)))) ahead++; }
+      for (var i = 0; i < P.length; i++) { var p = P[i]; if (p.s === me.s) continue; var w = fn(p); if (!(w > 0)) continue; n++; if (w > v || (w === v && lbTie(df[0], p, me) > 0)) ahead++; }
       out.push({ b: df[0], sub: df[1], lbl: Array.isArray(df[2]) ? t(df[2][0]) + ": " + t(df[2][1]).toLowerCase() : t(df[2]), rank: ahead + 1, n: n, v: v });
     });
     out.sort(function (a, b) { return a.rank - b.rank || b.n - a.n; });
@@ -2160,7 +2183,7 @@ body[data-mode=cl] .ttrees { gap: 8px; } body[data-mode=cl] .ttree { padding: 6p
     var me = lbMeLive(d, kat), rows = lbMeRows(me);
     var html = rows.length ? '<div class="lbme">' + rows.map(function (r) {
       var val = r.b === "pvp" && r.sub === "rank" ? "<em>" + esc(rankName(d.faction, r.v) || String(r.v)) + "</em>" : r.b === "pvp" && r.sub === "duelr" ? r.v + " %" : num(r.v);
-      return '<a class="lbmer' + (r.rank <= 3 ? " top" + r.rank : r.rank <= 100 ? " t100" : "") + '" href="#top=' + r.b + '" data-lbme="' + r.b + '" data-lbsub="' + esc(String(r.sub)) + '"><span class="nm">' + esc(r.lbl) + "</span><b>#" + num(r.rank) + "</b><small>" + t("lb_me_of", num(r.n)) + " · " + val + "</small></a>";
+      return '<a class="lbmer' + (r.rank <= 3 ? " top" + r.rank : r.rank <= 100 ? " t100" : "") + '" href="' + esc(lbHash(r.b, r.sub)) + '" data-lbme="' + r.b + '" data-lbsub="' + esc(String(r.sub)) + '"><span class="nm">' + esc(r.lbl) + "</span><b>#" + num(r.rank) + "</b><small>" + t("lb_me_of", num(r.n)) + " · " + val + "</small></a>";
     }).join("") + "</div>" : '<div class="note">' + t("lb_me_none") + "</div>";
     return arToggle("lb", t("lb"), rows.length) + (arOpen.lb ? html : "");
   }
@@ -3206,16 +3229,20 @@ body[data-mode=cl] .ttrees { gap: 8px; } body[data-mode=cl] .ttree { padding: 6p
       '<small class="dim">' + t(myFaction() === "A" ? "qu_fac_a" : "qu_fac_h") + "</small>" +
       '<button class="chip' + (qmOv ? " on" : "") + '" type="button" data-qmov="1" aria-pressed="' + qmOv + '" title="' + t("qm_map_tip") + '">+ ' + t("hu_map") + "</button></div>";
     h += "<h2>" + t("qu_zones") + "</h2>";
+    var lf = null;   // "hide done" (buggjakt 2026-11-20): räknarna visar quests som är kvar, ✓ när zonen är klar
+    if (quHideDone && quPlayer && quPlayer.set) { lf = {}; quMine().forEach(function (r) { if (quDone(r.qid)) return; var o = lf[r.area] = lf[r.area] || { n: 0, g: [0, 0, 0, 0, 0, 0, 0] }; o.n++; o.g[r.grp]++; }); }
+    var zn = function (z) { return lf ? (lf[z.area] ? lf[z.area].n : 0) : z.n; }, zg = function (z, g) { return lf ? (lf[z.area] ? lf[z.area].g[g] : 0) : z.g[g]; };
+    var zr = function (z) { return lf && !zn(z) ? "✓" : z.med ? zoneRange(z) : num(zn(z)); };
     quZoneList().forEach(function (e, i) {
       if (e.group) {   // samlad rubrik: zonerna som underkategori
-        h += '<button class="cat grp" type="button" data-cat="' + i + '" aria-pressed="' + (catSel === i && subSel < 0) + '"><em class="nm">' + t(e.group) + "</em><span>" + num(e.n) + " " + (catSel === i ? "▾" : "▸") + "</span></button>";
-        if (catSel === i) e.zones.forEach(function (z, j) { h += '<button class="cat sub" type="button" data-cat="' + i + '" data-sub="' + j + '" aria-pressed="' + (subSel === j) + '" title="' + esc(z.name) + '"><em class="nm">' + esc(z.name) + "</em><span>" + zoneRange(z) + "</span></button>"; });
+        h += '<button class="cat grp" type="button" data-cat="' + i + '" aria-pressed="' + (catSel === i && subSel < 0) + '"><em class="nm">' + t(e.group) + "</em><span>" + num(lf ? e.zones.reduce(function (a, z) { return a + zn(z); }, 0) : e.n) + " " + (catSel === i ? "▾" : "▸") + "</span></button>";
+        if (catSel === i) e.zones.forEach(function (z, j) { h += '<button class="cat sub" type="button" data-cat="' + i + '" data-sub="' + j + '" aria-pressed="' + (subSel === j) + '" title="' + esc(z.name) + '"><em class="nm">' + esc(z.name) + "</em><span>" + zr(z) + "</span></button>"; });
         return;
       }
       var z = e.zone;
-      h += '<button class="cat" type="button" data-cat="' + i + '" aria-pressed="' + (catSel === i && subSel < 0) + '" title="' + esc(z.name) + '"><em class="nm">' + esc(z.name) + "</em><span>" + zoneRange(z) + "</span></button>";
+      h += '<button class="cat" type="button" data-cat="' + i + '" aria-pressed="' + (catSel === i && subSel < 0) + '" title="' + esc(z.name) + '"><em class="nm">' + esc(z.name) + "</em><span>" + zr(z) + "</span></button>";
       if (catSel !== i) return;
-      for (var g = 0; g < 7; g++) if (z.g[g]) h += '<button class="cat sub" type="button" data-cat="' + i + '" data-sub="' + g + '" aria-pressed="' + (subSel === g) + '">' + quGroupName(g) + "<span>" + num(z.g[g]) + "</span></button>";
+      for (var g = 0; g < 7; g++) if (zg(z, g)) h += '<button class="cat sub" type="button" data-cat="' + i + '" data-sub="' + g + '" aria-pressed="' + (subSel === g) + '">' + quGroupName(g) + "<span>" + num(zg(z, g)) + "</span></button>";
     });
     return h;
   }
@@ -3724,8 +3751,11 @@ body[data-mode=cl] .ttrees { gap: 8px; } body[data-mode=cl] .ttree { padding: 6p
         if (AL) {
           Object.keys(AL.items).forEach(function (id) { if (!j.items[id]) j.items[id] = AL.items[id]; });
           j.dungeons.forEach(function (d) { d.bosses.forEach(function (b) { if (AL.bosses[b.id]) b.al = AL.bosses[b.id]; }); });
+          var fvUsed = {}; j.dungeons.forEach(function (d) { fvUsed[d.map] = 1; });
           AL.dungeons.forEach(function (x, i) {
-            j.dungeons.push({ map: 900 + i, name: x.name, short: x.name, min: x.rec || x.min, max: x.max, players: x.raid ? 20 : 5, raid: x.raid, forever: true,
+            var hsh = 0; for (var hc = 0; hc < x.name.length; hc++) hsh = (hsh * 31 + x.name.charCodeAt(hc)) % 8999;
+            var mid = 1000 + hsh; while (fvUsed[mid]) mid++; fvUsed[mid] = 1;   // stabilt id av namnet (buggjakt 2026-11-20); old = länkarna före bytet
+            j.dungeons.push({ map: mid, old: 900 + i, name: x.name, short: x.name, min: x.rec || x.min, max: x.max, players: x.raid ? 20 : 5, raid: x.raid, forever: true,
               bosses: x.bosses.map(function (b) { return { name: b.name, id: 0, lvl: 0, loot: [], al: b.items }; }) });
           });
         }
@@ -3867,6 +3897,7 @@ body[data-mode=cl] .ttrees { gap: 8px; } body[data-mode=cl] .ttree { padding: 6p
       '<div class="note"><a class="wh" href="https://www.wowhead.com/forever/item=' + id + '" target="_blank" rel="noopener">' + t("qu_wowhead") + "</a></div>";   // källan i About (Joakim 2026-11-18)
   }
   function drawCats() {
+    stripLater();
     drawLbSub();
     if (mode === "qu") { $("cats").innerHTML = QU ? quCats() : ""; $("cats").hidden = false; return; }
     if (mode === "dg") { $("cats").innerHTML = DG ? dgCats() : ""; $("cats").hidden = false; return; }
@@ -3982,6 +4013,7 @@ body[data-mode=cl] .ttrees { gap: 8px; } body[data-mode=cl] .ttree { padding: 6p
     // En länk bestämmer fliken (annars den som sparats): #quest, #dungeon, #player/#guild, #recipe, #item.
     if (hp0.tab === "lb") { hp0.top = lbGroup(arLb) ? arLb : "ilvl"; delete hp0.tab; }
     var hm = /^(ah|tr|cr|ar|qu|dg|hu|co|cl)$/.test(hp0.tab || "") ? hp0.tab : hp0.cls ? "cl" : hp0.fx ? "fx" : hp0.de ? "de" : hp0.col ? "co" : hp0.beast ? "hu" : hp0.quest || hp0.npc ? "qu" : hp0.dungeon ? "dg" : hp0.player || hp0.guild || hp0.top ? "ar" : hp0.recipe || hp0.gather ? "cr" : hp0.item ? "ah" : "";
+    if (hm === "tr" && !keep && /^(cheap|bs|vend)$/.test(hp0.v || "")) { trView = hp0.v; trSort(trView); }   // Trading-adress: vald undervy (buggjakt 2026-11-20)
     var wantI = byId[+hp0.item];
     if (hm && !keep && mode !== hm && !(hm === "ah" && mode === "tr" && (!wantI || (!wantI.gear && wantI.qty >= TR_MIN)))) { if (fromNav) resetModeState(hm); mode = hm; drawCats(); refresh(); }   // trädet ritades för den sparade fliken
     // keep (ny scan eller annan marknad): lägesvyerna visar inte "Loading" och rullar inte upp, de ritar om listan (granskning 2026-11-18)
@@ -3995,7 +4027,7 @@ body[data-mode=cl] .ttrees { gap: 8px; } body[data-mode=cl] .ttree { padding: 6p
     if (mode === "ar" || (!keep && (hp0.player || hp0.guild || hp0.top))) {
       mode = "ar"; $("q").placeholder = t("search_ar");
       drawCats(); refresh();
-      if (hp0.top && !keep) { arLb = hp0.top; drawMode(); drawCats(); lbShow(); return; }
+      if (hp0.top && !keep) { arLb = hp0.top; if (hp0.s != null) lbSetSub(arLb, hp0.s); drawMode(); drawCats(); lbShow(); return; }
       if (keep && arLb) { lbShow(); return; }
       if (keep && arData) { arRedraw(); return; }
       arLb = "";
@@ -4007,14 +4039,15 @@ body[data-mode=cl] .ttrees { gap: 8px; } body[data-mode=cl] .ttree { padding: 6p
       mode = "cr"; if (!keep) { sortKey = "profit"; sortDir = -1; } $("q").placeholder = t("search_rc");
       var wantR = +hashParams().recipe;
       var wantG = hashParams().gather;
-      loadRecept().then(function () { buildCr(); if (mode !== "cr") return; if (wantG) gaSet(wantG, hashParams().band); else if (!keep) gaSel = -1; drawCats(); refresh(); if (gaSel >= 0) { gaDetail(); if (wantG && !keep) showTab("item"); } else if (wantR) { selectRecipe(wantR, true); showTab("item"); } else if (keep && selRec) selectRecipe(selRec, false); else if (view[0]) selectRecipe(view[0].rid, false); })
+      loadRecept().then(function () { buildCr(); if (mode !== "cr") return; if (wantG) gaSet(wantG, hashParams().band); else if (!keep) gaSel = -1; if (!keep && !wantG && (fromNav || hp0.c != null)) catFromHash(hp0, profList.length); drawCats(); refresh(); if (gaSel >= 0) { gaDetail(); if (wantG && !keep) showTab("item"); } else if (wantR) { selectRecipe(wantR, true); showTab("item"); } else if (keep && selRec) selectRecipe(selRec, false); else if (view[0]) selectRecipe(view[0].rid, false); })
         .catch(function () { if (mode === "cr") $("detail").innerHTML = '<div class="note">' + t("cr_fail") + "</div>"; });   // bytt flik under laddningen: rita inget (granskning 2026-11-18)
       return;
     }
     if (keep && selId && byId[selId]) { select(selId, false); return; }
     var want = +hashParams().item;
-    if (fromNav && want && byId[want]) { select(want, true); return; }   // bakåt/framåt: visa varan, rör inte sökningen
+    if (fromNav && want && byId[want]) { catFromHash(hp0, cats.length); drawCats(); refresh(); select(want, true); return; }   // bakåt/framåt: visa varan i kategorin den valdes i, rör inte sökningen
     if (!keep && want && byId[want]) {   // länk till en vara: sök fram den och visa den
+      if (hp0.c != null) { catFromHash(hp0, cats.length); drawCats(); }
       query = byId[want].name.toLowerCase(); $("q").value = byId[want].name; qAuto = query; refresh();
       select(want, true); showTab("item");
       return;
@@ -4033,7 +4066,7 @@ body[data-mode=cl] .ttrees { gap: 8px; } body[data-mode=cl] .ttree { padding: 6p
     if (mode === "co") { if (CO) coRefresh(q); else { view = []; shown = 0; } draw(); return; }
     if (mode === "cl") { if (CL) clRefresh(q); else { view = []; shown = 0; } draw(); return; }
     if (mode === "de") { if (DEX) deRefresh(q); else { view = []; shown = 0; } draw(); trCounts(); return; }
-    if (mode === "fx") { if (FX.ok) fxRefresh(q); else { view = []; shown = 0; } draw(); trCounts(); return; }
+    if (mode === "fx") { if (fxReady()) fxRefresh(q); else { view = []; shown = 0; } draw(); trCounts(); return; }
     if (mode === "cr") {
       if (gaSel >= 0) { gaRefresh(q); draw(); return; }
       var pid = catSel >= 0 && profList[catSel] ? profList[catSel].id : 0;
@@ -4298,7 +4331,21 @@ body[data-mode=cl] .ttrees { gap: 8px; } body[data-mode=cl] .ttree { padding: 6p
     }).join("") + "</tr>";
   }
   // Lägesknapparna. I Trading sorterar man på kolumnrubrikerna (Nu, Dygn, Bästa tid), inga extra knappar (Joakim 2026-11-16).
+  // Mobil (buggjakt 2026-11-20): flikraden och kategoriraden rullar vågrätt; det valda rullas fram om det ligger utanför.
+  var stripRaf = 0;
+  function stripShow(box, sel) {
+    if (!box || box.scrollWidth <= box.clientWidth + 2) return;
+    var el = box.querySelector(sel); if (!el) return;
+    var r = el.getBoundingClientRect(), b = box.getBoundingClientRect();
+    if (r.left >= b.left && r.right <= b.right) return;
+    box.scrollLeft += r.left - b.left - 8;
+  }
+  function stripLater() {
+    if (stripRaf) return;
+    stripRaf = requestAnimationFrame(function () { stripRaf = 0; stripShow(document.querySelector(".mode"), ':scope > button[aria-pressed="true"]'); stripShow($("cats"), '.cat[aria-pressed="true"]'); });
+  }
   function drawMode() {
+    stripLater();
     document.body.setAttribute("data-mode", mode);
     // Min lista hör till varorna (AH, Trading, Professions); i de andra flikarna syns bara rutan (Joakim 2026-11-18).
     var tabsOn = /^(ah|tr|cr|de|fx)$/.test(mode), tabs = document.querySelector(".right .tabs");
@@ -4315,6 +4362,7 @@ body[data-mode=cl] .ttrees { gap: 8px; } body[data-mode=cl] .ttree { padding: 6p
     $("modeCl").setAttribute("aria-pressed", mode === "cl" ? "true" : "false");
     drawTrSub(); drawLbSub(); drawClSub();
     $("sect").textContent = mode === "ah" ? ahName((houseParts(house) || [0, "horde"])[1]) : t(mode === "de" || mode === "fx" ? "mode_tr" : mode === "ar" && arLb ? "mode_lb" : "mode_" + mode);
+    document.title = $("sect").textContent + " · Azeroth Atlas";   // fliken i webbläsaren heter som vyn (buggjakt 2026-11-20)
     drawSub();
     $("q").setAttribute("aria-label", t(mode === "cr" ? "search_rc" : mode === "ar" ? "search_ar" : mode === "qu" ? "search_qu" : mode === "dg" ? "search_dg" : mode === "hu" ? "search_hu" : mode === "co" ? "search_co" : mode === "cl" ? "search_cl" : "search_ph"));
   }
@@ -4552,18 +4600,24 @@ body[data-mode=cl] .ttrees { gap: 8px; } body[data-mode=cl] .ttree { padding: 6p
     crRows.forEach(function (x) { if (x.rid === rid) r = x; });
     if (!r) return;
     selRec = rid;
-    setHash("#recipe=" + rid + (house !== 113 ? "&m=" + house : ""));
+    setHash("#recipe=" + rid + (mode === "cr" && gaSel < 0 ? catHash() : "") + (house !== 113 ? "&m=" + house : ""));
     var trs = $("rows").children;
     for (var j = 0; j < trs.length; j++) { if (+trs[j].dataset.rid === rid) trs[j].setAttribute("aria-selected", "true"); else trs[j].removeAttribute("aria-selected"); }
     $("detail").innerHTML = recipeHtml(r);
     if (scroll && window.matchMedia("(max-width: 1100px)").matches) $("tabItem").scrollIntoView({ block: "start", behavior: "smooth" });
+  }
+  // Vald kategori i adressen (buggjakt 2026-11-20): bakåt till en vara eller ett recept visar samma lista som när den valdes.
+  function catHash() { return catSel >= 0 ? "&c=" + catSel + (subSel >= 0 ? "." + subSel + (sub2Sel >= 0 ? "." + sub2Sel : "") : "") : ""; }
+  function catFromHash(hp, max) {
+    var c = String(hp.c == null ? "" : hp.c).split(".").map(function (x) { return x === "" || isNaN(+x) ? -1 : +x; });
+    catSel = c[0] >= 0 && c[0] < max ? c[0] : -1; subSel = catSel >= 0 && c[1] >= 0 ? c[1] : -1; sub2Sel = subSel >= 0 && c[2] >= 0 ? c[2] : -1;
   }
   function select(id, scroll) {
     if (id !== selId) $("detail").scrollTop = 0;
     selId = id;
     var r = byId[id];
     if (!r) { if (id > 0 && mode !== "dg" && mode !== "qu") itemPage(id); return; }
-    if (mode !== "dg" && mode !== "qu") setHash("#item=" + id + (house !== 113 ? "&m=" + house : ""));
+    if (mode !== "dg" && mode !== "qu") setHash((mode === "tr" ? "#tab=tr&v=" + trView + "&item=" : "#item=") + id + (mode === "ah" || mode === "tr" ? catHash() : "") + (house !== 113 ? "&m=" + house : ""));
     var trs = $("rows").children;
     for (var j = 0; j < trs.length; j++) {
       if (+trs[j].dataset.id === id) trs[j].setAttribute("aria-selected", "true"); else trs[j].removeAttribute("aria-selected");
@@ -4821,11 +4875,12 @@ body[data-mode=cl] .ttrees { gap: 8px; } body[data-mode=cl] .ttree { padding: 6p
       e.preventDefault();
       var mb = lbme.dataset.lbme, ms = lbme.dataset.lbsub;
       if (mb === "pvp") lbPvp = ms; else if (mb === "pve") lbPve = +ms; else if (mb === "quests") lbQuest = +ms; else if (mb === "travel") lbTravel = +ms; else if (mb === "fish") lbFish = ms; else if (mb === "titles") lbTitle = ""; else if (mb === "rep") lbRep = "";
+      if (!lbSaved) lbSaved = [lbFa, lbRs, lbCls, lbRaceF];   // dina filter kommer tillbaka när du väljer en lista i menyn (buggjakt 2026-11-20)
       lbFa = ""; lbRs = "all"; lbCls = ""; lbRaceF = "";   // placeringen räknades bland alla
-      arLb = mb; lbFold = false; drawMode(); drawCats(); lbShow(); setHash("#top=" + mb); showTab("item"); toTop(); return;
+      arLb = mb; lbFold = false; drawMode(); drawCats(); lbShow(); showTab("item"); toTop(); return;
     }
     var lbb = e.target.closest("[data-lb]");
-    if (lbb && mode === "ar") { lbFold = arLb === lbb.dataset.lb ? !lbFold : false; arLb = lbb.dataset.lb; drawMode(); drawCats(); lbShow(); setHash("#top=" + arLb); showTab("item"); return; }
+    if (lbb && mode === "ar") { if (lbSaved) { lbFa = lbSaved[0]; lbRs = lbSaved[1]; lbCls = lbSaved[2]; lbRaceF = lbSaved[3]; lbSaved = null; } lbFold = arLb === lbb.dataset.lb ? !lbFold : false; arLb = lbb.dataset.lb; drawMode(); drawCats(); lbShow(); setHash(lbHash(arLb)); showTab("item"); return; }
     var cb = e.target.closest(".cat:not(.gahd), .catlink");
     if (cb && qAuto && query === qAuto) { query = ""; $("q").value = ""; }   // sökningen kom från en länk, inte från användaren
     qAuto = "";
@@ -5003,13 +5058,13 @@ body[data-mode=cl] .ttrees { gap: 8px; } body[data-mode=cl] .ttree { padding: 6p
     var lbrp = e.target.closest("[data-lbrep]");
     if (lbrp && mode === "ar") { lbRep = lbrp.dataset.lbrep; lbShow(); return; }
     var lbr = e.target.closest("[data-lbrs]");
-    if (lbr && mode === "ar") { lbRs = lbr.dataset.lbrs; lbShow(); return; }
+    if (lbr && mode === "ar") { lbSaved = null; lbRs = lbr.dataset.lbrs; lbShow(); return; }
     var lbf = e.target.closest("[data-lbfa]");
-    if (lbf && mode === "ar") { lbFa = lbf.dataset.lbfa; lbShow(); return; }
+    if (lbf && mode === "ar") { lbSaved = null; lbFa = lbf.dataset.lbfa; lbShow(); return; }
     var lbc = e.target.closest("[data-lbcls]");
-    if (lbc && mode === "ar") { e.preventDefault(); lbCls = lbCls === lbc.dataset.lbcls ? "" : lbc.dataset.lbcls; lbShow(); return; }
+    if (lbc && mode === "ar") { e.preventDefault(); lbSaved = null; lbCls = lbCls === lbc.dataset.lbcls ? "" : lbc.dataset.lbcls; lbShow(); return; }
     var lbrc = e.target.closest("[data-lbrace]");
-    if (lbrc && mode === "ar") { e.preventDefault(); lbRaceF = lbRaceF === lbrc.dataset.lbrace ? "" : lbrc.dataset.lbrace; lbShow(); return; }
+    if (lbrc && mode === "ar") { e.preventDefault(); lbSaved = null; lbRaceF = lbRaceF === lbrc.dataset.lbrace ? "" : lbrc.dataset.lbrace; lbShow(); return; }
     var pb = e.target.closest("[data-prof]");
     if (pb && arData && arData.kind === "character") { arOpenProf = arOpenProf === +pb.dataset.prof ? 0 : +pb.dataset.prof; renderChar(arData); return; }
     var fb = e.target.closest("[data-friend]");
@@ -5070,7 +5125,11 @@ body[data-mode=cl] .ttrees { gap: 8px; } body[data-mode=cl] .ttree { padding: 6p
     if (tnb && mode === "cl") { clTalClick(+tnb.dataset.tal, e.shiftKey); return; }
     if (tnb) { talClick(+tnb.dataset.tal, e.shiftKey); return; }
     var tg = e.target.closest("[data-artoggle]");
-    if (tg && arData && arData.kind === "character") { arOpen[tg.dataset.artoggle] = !arOpen[tg.dataset.artoggle]; arRedraw(); return; }
+    if (tg && arData && arData.kind === "character") {
+      var tgk = tg.dataset.artoggle; arOpen[tgk] = !arOpen[tgk]; arRedraw();
+      if (tgk === "talents" && arOpen.talents) { var tpn = document.querySelector("#armory .talpanel"); if (tpn) tpn.scrollIntoView({ block: "nearest", behavior: "smooth" }); }   // buggjakt 2026-11-20
+      return;
+    }
     var ab = e.target.closest("[data-arback]");
     if (ab && arData && arData.kind === "character") { arRec = 0; renderChar(arData); return; }
     if (e.target.closest("[data-upg]") && arData && arData.kind === "character") { arUpg = true; arRec = 0; arQuest = 0; renderChar(arData); setHash(arHash()); showTab("item"); $("detail").scrollTop = 0; return; }
@@ -5555,7 +5614,7 @@ body[data-mode=cl] .ttrees { gap: 8px; } body[data-mode=cl] .ttree { padding: 6p
   var KAT = null, katPromise = null, arLb = "", lbFa = "", lbFold = false;   // lbFold: vald kategoris undermeny ihopfälld
   // Ruleset (Joakim 2026-11-17): Blizzards API har alla Forever-spelare, PvP och Normal i samma katalog. "" = följer vald
   // AH-marknad (PvP eller Normal), "all" = båda. Guildens ruleset = det flest kända medlemmar har.
-  var lbRs = "", lb60 = false, lbCls = "", lbRaceF = "";   // lbRaceF: rasfilter via rasikonen   // lbCls: klassfilter via klassikonen (Joakim 2026-11-19)
+  var lbRs = "", lb60 = false, lbCls = "", lbRaceF = "", lbSaved = null;   // lbRaceF: rasfilter via rasikonen   // lbCls: klassfilter via klassikonen (Joakim 2026-11-19)
   function lbRuleset() { var r = houseParts(house)[0]; return lbRs === "all" ? "" : lbRs || (r === "pvp" || r === "normal" ? r : ""); }   // RP-marknader: topplistorna (bara PvP/Normal i katalogen) visar alla
   // "First to 60" borttagen ur listan (Joakim 2026-11-18); koden för #top=first60 finns kvar.
   // [nyckel, fält, text, grupp]: b = topplistor, s = serverstatistik (Joakim 2026-11-18: klasser är inte en topplista;
@@ -5613,6 +5672,18 @@ body[data-mode=cl] .ttrees { gap: 8px; } body[data-mode=cl] .ttree { padding: 6p
       return '<button class="cat" type="button" data-lb="' + b[0] + '" aria-pressed="' + (b[0] === arLb) + '"><img class="ci" src="' + RICON + (LB_ICON[b[0]] || "inv_misc_questionmark") + '.jpg" alt="" onerror="this.style.visibility=\'hidden\'"><em class="nm">' + t(b[3] === "s" ? "lb_server" : b[2]) + "</em></button>" + (b[0] === arLb && !lbFold ? lbSubHtml : "");
     }).join("") + (KAT ? '<div class="dim" style="padding:8px 10px;font-size:12px">' + num(KAT.players.length) + " " + t("gs_k_pl").toLowerCase() + " · " + num(KAT.guilds.length) + " " + t("gs_k_gl").toLowerCase() + "</div>" : "");
   }
+  // Underlistan i adressen (#top=pvp&s=rank, buggjakt 2026-11-20): bakåt, kopierad länk och mittenklick visar samma lista.
+  function lbSubOf(b) { return b === "pvp" ? lbPvp : b === "pve" ? String(lbPve) : b === "quests" ? String(lbQuest) : b === "travel" ? String(lbTravel) : b === "fish" ? lbFish : b === "prog" ? lbProg : b === "gath" ? lbGath : b === "titles" ? lbTitle : b === "achc" ? lbAchc : b === "rep" ? lbRep : ""; }
+  function lbHash(b, sv) { var x = String(sv == null ? lbSubOf(b) : sv); return "#top=" + b + (x !== "" ? "&s=" + encodeURIComponent(x) : ""); }
+  function lbSetSub(b, sv) {
+    sv = String(sv);
+    if (b === "pvp") { if (LB_PVP.some(function (c) { return c[0] === sv; })) lbPvp = sv; }
+    else if (b === "pve") { if (+sv >= 0 && +sv <= 7) lbPve = +sv; }
+    else if (b === "quests") lbQuest = +sv || 0; else if (b === "travel") lbTravel = +sv || 0;
+    else if (b === "fish") { if (/^[nks]$/.test(sv)) lbFish = sv; }
+    else if (b === "prog") lbProg = sv === "raids" ? "raids" : "dungeons";
+    else if (b === "gath") lbGath = sv; else if (b === "titles") lbTitle = sv; else if (b === "achc") lbAchc = sv; else if (b === "rep") lbRep = sv;
+  }
   function lbGroup(k) { var d = LB.filter(function (b) { return b[0] === k; })[0]; return d ? d[3] : ""; }
   function loadKat() {
     // katalog.json: vanlig cache räcker, filen byts en gång per dygn (granskning 2026-11-18)
@@ -5651,6 +5722,7 @@ body[data-mode=cl] .ttrees { gap: 8px; } body[data-mode=cl] .ttree { padding: 6p
     ++arToken; ++arCmpBusy; arKeepSub = false;   // topplistan visas (arCmpBusy: väntande jämförelse släpps, buggjakt 2026-11-20): ett sent spelarsvar får inte skriva över den (granskning 2026-11-18)
     if (!KAT) { arShow('<div class="hint">' + t("ar_loading") + "</div>", ""); loadKat().then(function () { if (mode === "ar" && arLb) { drawCats(); lbShow(); } }).catch(function () { if (mode === "ar" && arLb) arShow('<div class="hint">' + t("lb_fail") + "</div>", ""); }); return; }
     var def = LB.filter(function (b) { return b[0] === arLb; })[0] || LB[0];
+    setHash(lbHash(arLb));   // varje underlista är ett eget steg i historiken
     var rs = lbRuleset(), gRs = {};
     if (rs) { var cnt = {}; KAT.players.forEach(function (p) { if (p.g && p.rs) { var c = cnt[p.g] = cnt[p.g] || { pvp: 0, normal: 0 }; c[p.rs]++; } }); Object.keys(cnt).forEach(function (g) { gRs[g] = cnt[g].pvp >= cnt[g].normal ? "pvp" : "normal"; }); }
     var faOk = function (x) { return (!lbFa || x.fa === lbFa) && (!lbCls || !x.c || x.c === lbCls) && (!lbRaceF || !x.r || raceDisp(x.r) === lbRaceF) && (!rs || (x.rs || gRs[x.s] || gRs[x.g] || "") === rs); };
@@ -5999,6 +6071,7 @@ body[data-mode=cl] .ttrees { gap: 8px; } body[data-mode=cl] .ttree { padding: 6p
     (d && d.items || []).forEach(function (r) { if (r[3] > 0 && r[21] !== 1) m[r[0]] = { id: r[0], name: r[1] || "", q: r[2], ic: r[12] || "", min: r[3], qty: r[7] || r[4] || 0, day: r[8] || 0 }; });
     return m;
   }
+  function fxReady() { return FX.ok && FX.key === fxKeys().keys.join(","); }   // buggjakt 2026-11-20
   function fxLoad() {
     var fk = fxKeys(), pk = fk.keys.join(",");
     if (FX.ok && FX.key === pk) return Promise.resolve(FX);
@@ -6487,11 +6560,11 @@ body[data-mode=cl] .ttrees { gap: 8px; } body[data-mode=cl] .ttree { padding: 6p
       h += sub("tal", t("cl_v_tal"), used + "/" + TAL_MAX);
       h += sub("spells", t("cl_v_spells"), live, clLine === "x" ? t("cl_changed_short") : clLine ? clLineIc(clLine) + esc(clLine) : "");
       if (c.pets.length) h += sub("pets", t("cl_v_pets"), c.pets.reduce(function (a, p) { return a + p.spells.length; }, 0), clPet ? clPetIc(clPet) + esc(clPet) : "");
-      h += sub("quests", t("cl_v_quests"), QU ? clQuestsAll(n).length : null, faL);
-      h += sub("trainers", t("cl_v_trainers"), c.trainers.length, [faL, clTk === "c" ? t("cl_tk_class") : clTk === "p" ? t(n === "Warlock" ? "cl_tk_demon" : "cl_tk_pet") : ""].filter(Boolean).join(" · "));
+      h += sub("quests", t("cl_v_quests"), QU ? clQuests().length : null, faL);   // med fraktionsfiltret, som listan (buggjakt 2026-11-20)
+      h += sub("trainers", t("cl_v_trainers"), clTrainers().length, [faL, clTk === "c" ? t("cl_tk_class") : clTk === "p" ? t(n === "Warlock" ? "cl_tk_demon" : "cl_tk_pet") : ""].filter(Boolean).join(" · "));
     });
     var c0 = clC();
-    if (c0) h += '<div class="clraces" title="' + t("cl_races") + '">' + c0.races.map(function (r) { return '<span title="' + esc(r[0]) + (r[1] === "H" ? " · Horde" : " · Alliance") + '">' + raceIcon(r[0], "MALE") + "</span>"; }).join("") + "</div>";
+    if (c0) h += '<h2 class="clrh">' + t("cl_races_h") + '</h2><div class="clraces" title="' + t("cl_races") + '">' + c0.races.map(function (r) { return '<span title="' + esc(r[0]) + (r[1] === "H" ? " · Horde" : " · Alliance") + '">' + raceIcon(r[0], "MALE") + "</span>"; }).join("") + "</div>";
     return h;
   }
   // Rullgardinen (Joakim 2026-11-20): hovra över Spells/Pet spells/Class quests/Trainers i spalten så ligger samma val som
@@ -6512,8 +6585,8 @@ body[data-mode=cl] .ttrees { gap: 8px; } body[data-mode=cl] .ttree { padding: 6p
       var qs = clQuestsAll(clName());
       ["", "H", "A"].forEach(function (f) { it.push(["fa", f, fa(f), qs.filter(function (x) { return !f || !x.q[5] || x.q[5] === f; }).length, clFa === f]); });
     } else if (v === "trainers") {
-      ["", "H", "A"].forEach(function (f) { it.push(["fa", f, fa(f), c.trainers.filter(function (x) { return !f || !x.f || x.f === f; }).length, clFa === f]); });
-      if (c.pets.length) { it.push(["tk", "c", t("cl_tk_class"), c.trainers.filter(function (x) { return x.k === "c"; }).length, clTk === "c"]); it.push(["tk", "p", t(clName() === "Warlock" ? "cl_tk_demon" : "cl_tk_pet"), c.trainers.filter(function (x) { return x.k === "p"; }).length, clTk === "p"]); }
+      ["", "H", "A"].forEach(function (f) { it.push(["fa", f, fa(f), c.trainers.filter(function (x) { return (!f || !x.f || x.f === f) && (!clTk || x.k === clTk); }).length, clFa === f]); });
+      if (c.pets.length) { it.push(["tk", "c", t("cl_tk_class"), c.trainers.filter(function (x) { return x.k === "c" && (!clFa || !x.f || x.f === clFa); }).length, clTk === "c"]); it.push(["tk", "p", t(clName() === "Warlock" ? "cl_tk_demon" : "cl_tk_pet"), c.trainers.filter(function (x) { return x.k === "p" && (!clFa || !x.f || x.f === clFa); }).length, clTk === "p"]); }
     }
     return it;
   }
@@ -6559,8 +6632,8 @@ body[data-mode=cl] .ttrees { gap: 8px; } body[data-mode=cl] .ttree { padding: 6p
     if (!tc) return '<div class="talpanel"><div class="note">' + t("tal_nocls") + "</div></div>";
     var used = talTotal(tc.c, clRanks);
     var head = '<div class="talhd"><div class="talinfo"><span>' + t("tal_left", TAL_MAX - used) + "</span><span>" + t("tal_lvl", used ? used + 9 : 10) + "</span>" +
-      '<button type="button" class="lnk" data-clreset="1">' + t("tal_reset") + '</button><button type="button" class="lnk" data-copyany="' + esc(clHash()) + '" title="' + t("copy_link") + '">' + t("copy_link") + "</button></div></div>";
-    return '<div class="talpanel cls-' + clSel + '">' + head + '<div class="ttrees">' + tc.c.trees.map(function (tr, ti) { return talTreeHtml(tr, ti, clRanks, true); }).join("") + '</div><div class="note">' + t("tal_hint") + "</div></div>";
+      '<button type="button" class="lnk" data-clreset="1">' + t("tal_reset") + '</button><button type="button" class="lnk" data-copyany="' + esc(clHash()) + '" title="' + t("copy_link") + '">' + t("copy_link") + '</button></div><span class="talhint">' + t("tal_hint") + "</span></div>";
+    return '<div class="talpanel cltal cls-' + clSel + '"><div class="talwrap">' + head + '<div class="ttrees">' + tc.c.trees.map(function (tr, ti) { return talTreeHtml(tr, ti, clRanks, true); }).join("") + "</div></div></div>";
   }
   function clTalClick(id, remove) {
     var tc = clTal(), f = tc && talById(tc.c, id); if (!f) return;
@@ -6696,8 +6769,8 @@ body[data-mode=cl] .ttrees { gap: 8px; } body[data-mode=cl] .ttree { padding: 6p
     if (x.fv) return;   // Forever-ny: ingen NPC-sida i Classic-databasen
     npcLoad(id).then(function (np) {   // NPC-sidan (quests, karta) finns för tränare som också ger quests
       if (!np || mode !== "cl" || clTr !== id) return;
-      npcCur = { id: id, n: np };
-      $("detail").innerHTML = back + npcHtml(id, np) + facts;
+      npcCur = { id: id, n: np }; if (npcSel !== id) npcZone = ""; npcSel = id;   // zonflikarna kräver npcSel och #npcbox (buggjakt 2026-11-20)
+      $("detail").innerHTML = back + '<div id="npcbox" style="display:contents">' + npcHtml(id, np) + "</div>" + facts;
       m3Auto();
     }).catch(function () {});
   }
@@ -6737,9 +6810,16 @@ body[data-mode=cl] .ttrees { gap: 8px; } body[data-mode=cl] .ttree { padding: 6p
     if (!keep) $("detail").innerHTML = '<div class="note">' + t("ar_loading") + "</div>";
     Promise.all([loadDungeons(), loadXIcons()]).then(function () {
       if (mode !== "dg") return;
-      if (wantMap) dgList.forEach(function (d, i) { if (d.map === wantMap) dgSel = i; });
+      var dgMiss = false;
+      if (wantMap) {
+        var dgHit = -1;
+        dgList.forEach(function (d, i) { if (d.map === wantMap) dgHit = i; });
+        if (dgHit < 0) dgList.forEach(function (d, i) { if (d.old === wantMap) dgHit = i; });
+        if (dgHit >= 0) dgSel = dgHit; else dgMiss = true;
+      }
       if (dgSel < 0) dgSel = 0;
       drawCats(); refresh(); if (!keep) toTop(); dgDetail();
+      if (dgMiss) $("detail").insertAdjacentHTML("afterbegin", '<div class="note">' + t("dg_notfound") + "</div>");
     }).catch(function () { if (mode === "dg") $("detail").innerHTML = '<div class="note">' + t("qu_fail") + "</div>"; });
   }
   function resetModeState(m) {   // ny flik: egen sortering, inga kvarglömda filter från förra fliken
@@ -6765,7 +6845,7 @@ body[data-mode=cl] .ttrees { gap: 8px; } body[data-mode=cl] .ttree { padding: 6p
     if (m === "ar") {
       arCmp = null; arCmpPick = false;   // en gammal jämförelse ska inte dyka upp igen (granskning 2026-11-18)
       drawCats(); refresh();
-      if (arLb) { lbShow(); setHash("#top=" + arLb); }
+      if (arLb) { lbShow(); setHash(lbHash(arLb)); }
       else if (arData) { if (arData.kind === "character") renderChar(arData); else renderGuild(arData); setHash(arData.kind === "character" ? arHash() : "#guild=" + arData.slug); }
       else if (arRecent[0]) arLoad(arRecent[0].kind, arRecent[0].slug);
       else arShow('<div class="hint">' + t("ar_hint") + "</div>", "");
@@ -6785,7 +6865,7 @@ body[data-mode=cl] .ttrees { gap: 8px; } body[data-mode=cl] .ttree { padding: 6p
   function navHashFor(el) {
     if (!el || !el.closest || el.closest("a[href]")) return "";
     var mk = house !== 113 ? "&m=" + house : "", x;
-    if ((x = el.closest(".mode > button[id^=mode]"))) return x.id === "modeLb" ? "#top=" + (lbGroup(arLb) ? arLb : "ilvl") : "#tab=" + x.id.slice(4).toLowerCase() + mk;
+    if ((x = el.closest(".mode > button[id^=mode]"))) return x.id === "modeLb" ? (lbGroup(arLb) ? lbHash(arLb) : "#top=ilvl") : "#tab=" + x.id.slice(4).toLowerCase() + mk;
     if ((x = el.closest("tr[data-hu]"))) return "#beast=" + x.dataset.hu;
     if ((x = el.closest("tr[data-dgboss]"))) return "#dungeon=" + x.dataset.dgmap + "&boss=" + x.dataset.dgboss;
     if ((x = el.closest("tr[data-co]"))) return "#col=" + x.dataset.co;
@@ -6797,7 +6877,7 @@ body[data-mode=cl] .ttrees { gap: 8px; } body[data-mode=cl] .ttree { padding: 6p
     if ((x = el.closest("tr[data-qid]"))) return "#quest=" + x.dataset.qid;
     if ((x = el.closest("[data-ga]")) && GATHER[+x.dataset.ga]) return "#gather=" + GATHER[+x.dataset.ga].key + "&band=" + ((x.hasAttribute("data-gab") ? +x.dataset.gab : gaBand) + 1) + mk;
     if ((x = el.closest("tr[data-rid]"))) return "#recipe=" + x.dataset.rid + mk;
-    if ((x = el.closest("tr[data-id]"))) return "#item=" + x.dataset.id + mk;
+    if ((x = el.closest("tr[data-id]"))) return (mode === "tr" ? "#tab=tr&v=" + trView + "&item=" : "#item=") + x.dataset.id + mk;
     if ((x = el.closest("button[data-ar][data-slug]"))) return (x.dataset.ar === "guild" ? "#guild=" : "#player=") + x.dataset.slug;
     return "";
   }
@@ -6823,7 +6903,7 @@ body[data-mode=cl] .ttrees { gap: 8px; } body[data-mode=cl] .ttree { padding: 6p
     if (mode === "ar" && arLb) return;
     arLb = lbGroup(arLb) ? arLb : "ilvl";
     if (mode !== "ar") setMode("ar"); else { drawCats(); refresh(); lbShow(); }
-    setHash("#top=" + arLb); drawMode(); showTab("item");
+    setHash(lbHash(arLb)); drawMode(); showTab("item");
   }
   function arHome() {
     drawMode(); drawCats(); refresh();
@@ -6877,7 +6957,7 @@ body[data-mode=cl] .ttrees { gap: 8px; } body[data-mode=cl] .ttree { padding: 6p
     var h = mkHas(mkKey(rg, rs, fa)) && (rg === "eu" || rg === "us" || rs === "pvp" || rs === "normal") ? mkKey(rg, rs, fa) : mkNear(rg, rs, fa);
     switchHouse(h);
   });
-  function switchHouse(h) {
+  function switchHouse(h, nav) {   // nav: bakåt/framåt, sidan ritas från adressen
     if (h === house) { drawMarket(); drawSub(); if (mode === "fx" || mode === "ah") refresh(); return; }   // bara sidan bytt medan Blackwater visas: tinten och underflikarna följer med
     var prev = house;
     house = h;
@@ -6886,9 +6966,9 @@ body[data-mode=cl] .ttrees { gap: 8px; } body[data-mode=cl] .ttree { padding: 6p
     lastUpdate = null;
     var tok = ++dataSeq, hh = house, c = dataCache[hh];
     // Huset i minnet om det hämtades för mindre än 10 minuter sedan, annars no-cache (304 om filen inte ändrats) (granskning 2026-11-18)
-    if (c && Date.now() - c.t < DATA_TTL) { load(c.d, !!D); return; }
+    if (c && Date.now() - c.t < DATA_TTL) { load(c.d, nav ? false : !!D, nav); return; }
     fetch(dataUrl(), { cache: "no-cache" }).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
-      .then(function (d) { gotData(hh, d); if (tok === dataSeq) load(d, !!D); }).catch(function () {
+      .then(function (d) { gotData(hh, d); if (tok === dataSeq) load(d, nav ? false : !!D, nav); }).catch(function () {
         if (tok !== dataSeq) return;
         house = prev; try { localStorage.setItem(MARKET_KEY, String(prev)); } catch (e3) {} drawMarket(); drawSub(); showError();   // buggjakt 2026-11-20
       });
