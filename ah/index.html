@@ -1113,6 +1113,53 @@ body[data-home] .cols, body[data-home] #sect, body[data-home] #q, body[data-home
 .hxtip { position: fixed; z-index: 70; transform: translate(-50%, -100%); padding: 5px 9px; border-radius: 6px; background: #0E1821; border: 1px solid #465C69; color: #E9EEF2; font-size: 12.5px; white-space: nowrap; pointer-events: none; display: grid; gap: 1px; box-shadow: 0 6px 16px rgba(0, 0, 0, .5); }
 .hxtip[hidden] { display: none; } .hxtip b { font-size: 13.5px; } .hxtip span { color: #A6B4C1; font-size: 11.5px; }
 .hxico.bz { width: 52px; height: 52px; right: 16px; bottom: 16px; border-radius: 8px; border: 1px solid var(--hx-line); object-fit: cover; }
+/* Dungeons efter Joakims förslag (2026-11-20): välj dungeon → boss → loot */
+.dgbrowse { margin: 2px 0 8px; } .dgfind { display: grid; gap: 6px; margin: 0 0 8px; }
+.dgfind input, .dgfind select { box-sizing: border-box; width: 100%; height: 34px; padding: 0 10px; border-radius: 6px; border: 1px solid var(--line); background: rgba(0, 0, 0, .25); color: var(--fg); font: inherit; font-size: 13.5px; }
+.dgfind input:focus-visible, .dgfind select:focus-visible { outline: 2px solid var(--edge); outline-offset: 1px; }
+#dglist { display: contents; } .dgnone { padding: 8px 10px; }
+body[data-mode=dg] #cats .cath { color: var(--gold); border-bottom: 1px solid var(--line); padding-bottom: 4px; }
+#dghead { display: grid; gap: 12px; padding: 0 0 10px; } #dghead[hidden] { display: none; }
+.dgcard { position: relative; display: grid; gap: 6px; padding: 16px 20px; min-height: 150px; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; isolation: isolate; background: rgba(255, 255, 255, .03); }
+.dgcard.hasbg::before { content: ""; position: absolute; z-index: -1; right: 0; top: 0; bottom: 0; width: 60%; background: var(--dgbg) center 35% / cover no-repeat; opacity: .85;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 45%); mask-image: linear-gradient(90deg, transparent 0, #000 45%); }
+.dgcrumb { color: var(--grey); font-size: 13px; } .dgcopy { position: absolute; top: 12px; right: 14px; text-shadow: 0 1px 3px #000; }
+.dgcard h1 { margin: 0; font: 400 40px/1.05 var(--display); color: var(--fg); text-shadow: 0 2px 8px rgba(0, 0, 0, .6); max-width: 70%; }
+.dgmeta { display: flex; flex-wrap: wrap; gap: 0; font-size: 15px; color: var(--fg); text-shadow: 0 1px 3px #000; }
+.dgmeta span + span::before { content: "|"; margin: 0 12px; color: var(--grey); }
+.dgfv { display: flex; align-items: center; gap: 8px; color: var(--fg); font-size: 14px; }
+.dgbh, .dglh { display: flex; align-items: baseline; gap: 12px; } .dgbh h2, .dglh h2 { margin: 0; font: 400 22px/1.2 var(--display); color: var(--gold); text-transform: none; }
+.dgbh span { color: var(--grey); font-size: 13.5px; } .dglh span { margin-left: auto; color: var(--grey); font-size: 13px; }
+.dgbosses { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(150px, 1fr); gap: 8px; overflow-x: auto; scrollbar-width: thin; padding-bottom: 2px; }
+.dgbc { all: unset; cursor: pointer; position: relative; display: grid; align-content: end; min-height: 150px; border-radius: 8px; overflow: hidden; border: 1px solid var(--line); background: #10161c; }
+.dgbc img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 25%; }
+.dgbc.noimg { background: var(--dgbg, linear-gradient(#22303b, #121a21)) center / cover no-repeat; } .dgbc.noimg::before { content: ""; position: absolute; inset: 0; background: rgba(10, 14, 18, .45); }
+.dgbc span { position: relative; padding: 18px 10px 8px; text-align: center; font: 400 16px/1.15 var(--display); color: #F4EEDF; background: linear-gradient(transparent, rgba(0, 0, 0, .85) 45%); }
+.dgbc:hover, .dgbc:focus-visible { border-color: var(--edge); } .dgbc[aria-pressed=true] { border: 2px solid var(--edge); box-shadow: 0 0 0 1px var(--edge), 0 0 14px rgba(67, 218, 209, .25); }
+.dgsel { position: absolute; top: 8px; left: 8px; z-index: 1; padding: 2px 8px; border-radius: 4px; font-style: normal; font-size: 12px; font-weight: 600; background: var(--edge); color: #0B1A1F; }
+.dgtools { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; } .dgtools select { margin-left: auto; height: 32px; padding: 0 10px; border-radius: 6px; border: 1px solid var(--line); background: rgba(0, 0, 0, .25); color: var(--fg); font: inherit; font-size: 13.5px; }
+.dgseg { display: inline-flex; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
+.dgseg button { all: unset; cursor: pointer; padding: 6px 14px; font-size: 13.5px; color: var(--grey); } .dgseg button[aria-pressed=true] { background: var(--edge); color: #0B1A1F; font-weight: 600; }
+.dgseg button:focus-visible { outline: 2px solid var(--edge); outline-offset: -2px; }
+.dgnorates { margin: 0; }
+#list.dg td, #list.dg th { padding-top: 9px; padding-bottom: 9px; } #list.dg tbody tr[data-dgitem] { cursor: pointer; }
+#list.dg td.nm .ic, #list.dg td.nm img { float: none; width: 34px; height: 34px; margin: 0 10px 0 0; vertical-align: middle; border-radius: 5px; } #list.dg td.nm { font-size: 15px; }
+#list.dg tr[aria-selected=true] td { background: rgba(67, 218, 209, .08); } #list.dg tr[aria-selected=true] td:first-child { box-shadow: inset 3px 0 0 var(--edge); }
+.dgitem { display: grid; gap: 12px; } .dgih { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 14px; align-items: center; }
+.dgbig { width: 64px; height: 64px; border-radius: 8px; border: 2px solid currentColor; } .dgih h2 { margin: 0; font: 400 24px/1.15 var(--display); }
+.dgiq { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; margin-top: 6px; color: var(--grey); font-size: 13.5px; } .dgiq span + span::before { content: "|"; margin-right: 12px; color: var(--line); }
+.dgiq .qb { padding: 1px 8px; border-radius: 4px; border: 1px solid currentColor; font-size: 12.5px; }
+.dgtip { display: grid; gap: 2px; padding: 10px 12px; border-radius: 8px; background: rgba(0, 0, 0, .25); border: 1px solid var(--line); font-size: 13px; }
+.dgtl { display: flex; justify-content: space-between; gap: 10px; }
+.dgitem h4 { margin: 4px 0 0; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--grey); }
+.dgfrom { display: grid; grid-template-columns: 52px minmax(0, 1fr); gap: 12px; align-items: center; text-decoration: none; color: var(--fg); padding: 6px; border-radius: 8px; }
+.dgfrom:hover { background: rgba(255, 255, 255, .05); } .dgfrom img, .dgfrom > span { width: 52px; height: 52px; border-radius: 6px; object-fit: cover; border: 1px solid var(--line); background: #10161c; }
+.dgfrom b { display: block; font: 400 18px/1.2 var(--display); } .dgfrom small { color: var(--grey); font-size: 13px; }
+.dgbtns { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; padding-top: 10px; border-top: 1px solid var(--line); }
+.dgview { padding: 8px 18px; border-radius: 6px; border: 1px solid var(--edge); color: var(--fg); text-decoration: none; font-weight: 600; } .dgview:hover { background: rgba(67, 218, 209, .12); }
+.dgwatch { all: unset; cursor: pointer; padding: 8px 10px; color: var(--fg); font-size: 14px; } .dgwatch:hover { color: var(--gold); } .dgwatch:focus-visible { outline: 2px solid var(--edge); }
+.dgah { padding: 10px 12px; border: 1px solid var(--line); border-radius: 8px; color: var(--grey); font-size: 13.5px; }
+@media (max-width: 1100px) { .dgfind, .dgbrowse { display: none; } .dgcard h1 { font-size: 30px; max-width: 100%; } .dgcard.hasbg::before { width: 100%; opacity: .3; } }
 /* Raid-sidan (Joakim 2026-11-20) */
 .rdintro { margin: -4px 0 0; color: var(--hx-fg2); font-size: 14.5px; max-width: 900px; }
 .rdgrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
@@ -1287,6 +1334,7 @@ body[data-home] .cols, body[data-home] #sect, body[data-home] #q, body[data-home
     <nav class="inset cats" id="cats" data-t-aria="cats_label" aria-label="Kategorier"></nav>
     <section class="inset left">
       <div class="scroll">
+        <div id="dghead" hidden></div>
         <table id="list">
           <thead id="head"></thead>
           <tbody id="rows"></tbody>
@@ -1737,7 +1785,7 @@ body[data-home] .cols, body[data-home] #sect, body[data-home] #q, body[data-home
       hu_map_note: "Hover a point for the name, click to open the beast. The land is drawn from every spawn in the Classic database, place names from the graveyards.",
       hu_for: "Pets for you", hu_for_sub: "tameable around level %1", hu_near: "near you", hu_near_tip: "In a zone where this hunter has quests right now",
       hu_for_note: "Up to the hunter's level, rares and fast attackers first. Blizzard doesn't share where a character is, so the zones of the quests in progress count as 'near'.",
-      mode_dg: "Dungeons", mode_dg_tip: "Dungeons and raids by level: bosses in order and what they drop, priced on the auction house", search_dg: "Search loot in every dungeon, e.g. Cape of the Brotherhood",
+      mode_dg: "Dungeons", mode_dg_tip: "Dungeons and raids by level: bosses in order and what they drop, priced on the auction house", search_dg: "Find loot across all dungeons…",
       qu_h: "Level", qu_zones: "Zones", qu_g_dungeons: "Dungeons & raids", qu_g_other: "Other (1–2 quests)", qu_after: "Complete first", qu_during: "While on", qu_skill: "Profession", qu_class: "Class", qu_reqs: "Requirements", qu_chain: "Quest chain (%1)", qu_also: "Also leads to:", qu_lv: "Level %1–%2", qu_unknown: "New in Forever (level unknown)", qu_count: "%1 quests", qu_empty: "No quest matches.", qu_fail: "Could not be loaded.",
       qu_check: "Check a player", qu_nobody: "— nobody —", qu_check_tip: "Look up a player in Armory first, then pick them here to tick off their done quests.", qu_hide: "Hide done (%1)",
       qu_fac_h: "Showing Horde and neutral quests (your market).", qu_fac_a: "Showing Alliance and neutral quests (your market).", qu_done_by: "Done by %1", qu_notdone: "Not done by %1 yet",
@@ -1747,7 +1795,13 @@ body[data-home] .cols, body[data-home] #sect, body[data-home] #q, body[data-home
       col_reward: "Best reward", col_reward_tip: "The most valuable reward item on the auction house right now", col_drop: "Drop", col_drop_tip: "Drop chance from the boss (Classic 1.12 data)",
       dg_al: "New in Forever", dg_al_new: "Loot", dg_al_tip: "Drop chance not known yet: WhippitPanel logs it as bosses die",
       dg_fv: "Seen in Forever · %1 kills logged", dg_cl: "Classic 1.12 list (may be outdated in Forever)", dg_fv_tip: "Seen in %1 of the logged kills", dg_logged: "Logged in Forever", dg_logged_n: "%1 of %2 bosses",
-      dg_lv: "Level %1", dg_raids: "Raids", dg_count: "%1 drops", dg_empty: "No drop matches the search.", dg_pick: "Pick a dungeon on the left.", dg_boss_lvl: "level %1", dg_noloot: "no listed loot",
+      dg_lv: "Level %1", dg_browse: "Browse dungeons", dg_find: "Find a dungeon…", dg_all_lv: "All levels", dg_find_none: "No dungeon matches.", dg_crumb: "Dungeons",
+      dg_meta_lv: "Level %1", dg_n_players: "%1 players", dg_n_bosses: "%1 bosses", dg_n_drops: "%1 drops", dg_bosses_h: "Bosses", dg_bosses_s: "Choose a boss to see their loot", dg_loot: "Loot",
+      dg_n_items: "%1 items", dg_this: "This boss", dg_allb: "All bosses (%1)", dg_types: "All item types", dg_other: "Other", col_slot: "Slot", col_drop2: "Drop chance",
+      col_drop_tip2: "Seen in Forever (our log) when logged, otherwise Classic 1.12 data; Unknown = new in Forever without a known rate", dg_unknown: "Unknown", dg_selected: "Selected",
+      dg_drops_from: "Drops from", dg_view: "View item", dg_watch_add: "Add to watchlist", dg_watch_on: "On your watchlist", dg_ah_none: "No current auction listings",
+      dg_ah_on: "%1 on the auction house · %2 listed", dg_search_res: "Loot across all dungeons", dg_no_rates: "Drop rates are not available for this dungeon.",
+      dg_boss_hint: "The loot is listed in the middle. Click an item to see it here.", dg_raids: "Raids", dg_count: "%1 drops", dg_empty: "No drop matches the search.", dg_pick: "Pick a dungeon on the left.", dg_boss_lvl: "level %1", dg_noloot: "no listed loot",
       dg_raid: "Raid · %1 players", dg_party: "Dungeon · 5 players", dg_bosses: "Bosses", dg_players: "Players", dg_onah: "Drops on the AH", dg_ilvl: "Item level", dg_dropsfrom: "Drops from",
       mode_lb: "Leaderboards", mode_lb_tip: "Top players and guilds in the catalog: item level, honorable kills, PvP rank, achievements", mode_ar: "Armory", mode_ar_tip: "Look up any player or guild: gear, professions, reputation and guild roster",
       search_ar: "Player: first and last name – or a guild", ar_hint: "Type a player's first and last name (e.g. Alisee Alistar), or a guild name, and press Search.",
@@ -3910,7 +3964,8 @@ body[data-home] .cols, body[data-home] #sect, body[data-home] #q, body[data-home
 
   // ---- Dungeons (Joakim 2026-11-16): instanserna ur den öppna Classic-databasen (dungeons.json, dungeon-db.js, 1.12):
   // nivå först, sedan instans; bossarna i spelordning med sin loot och dropchans, priset från vald marknad. ----
-  var DG = null, FL = {}, AL = null, dgPromise = null, dgList = [], dgSel = -1;   // FL = bossloot loggad i Forever (forever-loot.json)
+  var DG = null, FL = {}, AL = null, dgPromise = null, dgList = [], dgSel = -1;
+  var dgBoss = 0, dgAllB = false, dgType = "", dgQ = "", dgLv = "", dgItem = 0;   // vald boss (0 = första), alla bossar, typfilter, sök och nivå i spalten, valt föremål   // FL = bossloot loggad i Forever (forever-loot.json)
   var DG_RAID_ORDER = [309, 509, 249, 409, 469, 531, 533];
   function dgGroup(d) { return d.raid ? 5 : d.min < 20 ? 0 : d.min < 30 ? 1 : d.min < 40 ? 2 : d.min < 50 ? 3 : 4; }
   function loadDungeons() {
@@ -3951,46 +4006,70 @@ body[data-home] .cols, body[data-home] #sect, body[data-home] #q, body[data-home
     }).catch(function (e) { dgPromise = null; throw e; });   // (granskning 2026-11-18)
     return dgPromise;
   }
-  function dgCats() {
-    var h = "", last = -1;
+  var DG_LV = ["10–19", "20–29", "30–39", "40–49", "50–60"];
+  function dgGroupName(g) { return g === 5 ? t("dg_raids") : t("dg_lv", DG_LV[g]); }
+  function dgListHtml() {
+    var h = "", last = -1, q = dgQ.trim().toLowerCase(), n = 0;
     dgList.forEach(function (d, i) {
       var g = dgGroup(d);
-      if (g !== last) { last = g; h += '<div class="cath">' + (g === 5 ? t("dg_raids") : t("dg_lv", ["10–19", "20–29", "30–39", "40–49", "50–60"][g])) + "</div>"; }
+      if (dgLv !== "" && String(g) !== dgLv) return;
+      if (q && d.name.toLowerCase().indexOf(q) < 0) return;
+      if (g !== last) { last = g; h += '<div class="cath">' + dgGroupName(g) + "</div>"; }
+      n++;
       h += '<button class="cat" type="button" data-dg="' + i + '" aria-pressed="' + (dgSel === i) + '" title="' + esc(d.name) + '"><em class="nm">' + esc(d.name) + "</em>" + (d.forever ? '<b class="tag fv" title="Forever">FV</b>' : "") + "<span>" + (d.raid ? d.players + "p" : d.min + "–" + d.max) + "</span></button>";
     });
-    return h;
+    return n ? h : '<div class="note dgnone">' + t("dg_find_none") + "</div>";
   }
+  function dgCats() {   // Joakims förslag 2026-11-20: rubrik, sökruta och nivåfilter överst, listan grupperad per nivå
+    return '<h2 class="dgbrowse">' + t("dg_browse") + '</h2><div class="dgfind"><input id="dgq" type="search" autocomplete="off" placeholder="' + esc(t("dg_find")) + '" aria-label="' + esc(t("dg_find")) + '" value="' + esc(dgQ) + '">' +
+      '<select id="dglv" aria-label="' + esc(t("dg_all_lv")) + '"><option value="">' + t("dg_all_lv") + "</option>" + [0, 1, 2, 3, 4, 5].map(function (g) { return '<option value="' + g + '"' + (dgLv === String(g) ? " selected" : "") + ">" + dgGroupName(g) + "</option>"; }).join("") + "</select></div>" +
+      '<div id="dglist">' + dgListHtml() + "</div>";
+  }
+  // Allt en boss tappar, en rad per föremål: loggat i Forever först (chans ur vår logg), annars Classic-chansen, annars AtlasLoot (okänd chans).
+  function dgBossItems(b) {
+    var out = [], seen = {}, fl = FL[b.id], den = fl ? (fl.loots || fl.kills) : 0;
+    if (fl) Object.keys(fl.items).forEach(function (k) { var it = fl.items[k]; FLN[k] = [it[1], it[2]]; seen[k] = 1; out.push({ item: +k, ch: den ? Math.round(it[0] / den * 1000) / 10 : 0, seen: it[0], den: den, fv: 1 }); });
+    b.loot.forEach(function (l) { if (seen[l[0]]) return; seen[l[0]] = 1; out.push({ item: l[0], ch: l[1], mn: l[2], mx: l[3] }); });
+    (b.al || []).forEach(function (id) { if (seen[id]) return; seen[id] = 1; out.push({ item: id, al: 1 }); });
+    out.sort(function (a, c) { return (a.al ? -1 : a.ch) > (c.al ? -1 : c.ch) ? -1 : (a.al ? -1 : a.ch) < (c.al ? -1 : c.ch) ? 1 : 0; });
+    return out;
+  }
+  var DG_SLOTS = ["Head", "Neck", "Shoulder", "Back", "Chest", "Shirt", "Tabard", "Wrist", "Hands", "Waist", "Legs", "Feet", "Finger", "Trinket", "One-Hand", "Two-Hand", "Main Hand", "Off Hand", "Held In Off-hand", "Ranged", "Thrown", "Relic"];
+  function dgSlot(id) { var m = DG && DG.items[id], L = m && m[4] || []; for (var i = 0; i < L.length; i++) if (DG_SLOTS.indexOf(L[i][0]) >= 0) return L[i][0]; return ""; }
+  function dgCurBoss(d) { if (!d || dgAllB) return null; var b = null; d.bosses.forEach(function (x) { if (x.id === dgBoss) b = x; }); return b || d.bosses[0] || null; }
+  function dgPicImg(d, b) { return b && b.disp ? "https://render.worldofwarcraft.com/eu/npcs/zoom/creature-display-" + b.disp + ".jpg" : ""; }
   var FLN = {};   // namn och kvalitet för föremål som bara finns i Forever-loggen
   function dgName(id) { var r = byId[id], m = DG && DG.items[id]; return r && r.name ? r.name : m ? m[0] : FLN[id] ? FLN[id][0] : "Item " + id; }
   function dgRefresh(q) {
-    var list = q ? dgList : dgSel >= 0 ? [dgList[dgSel]] : [];
     view = [];
-    list.forEach(function (d) {
-      d.bosses.forEach(function (b) {
-        var fl = FL[b.id], fv = [];
-        var den = fl ? (fl.loots || fl.kills) : 0;   // nämnaren: kills där loot sågs
-        if (fl) Object.keys(fl.items).forEach(function (k) { var it = fl.items[k]; FLN[k] = [it[1], it[2]]; fv.push([+k, Math.round(it[0] / den * 1000) / 10, it[0], den]); });
-        var hit = function (id) { return !q || dgName(id).toLowerCase().indexOf(q) >= 0; };
-        fv = fv.filter(function (l) { return hit(l[0]); }).sort(function (a, c) { return c[1] - a[1]; });
-        var loot = b.loot.filter(function (l) { return hit(l[0]); });
-        var al = (b.al || []).filter(function (id) { return hit(id) && !fv.some(function (l) { return l[0] === id; }); });
-        if (q && !loot.length && !fv.length && !al.length) return;
-        view.push({ hd: 1, boss: b, d: d, n: loot.length + fv.length + al.length });
-        if (fl) {
-          view.push({ sub: "fv", kills: den });
-          fv.forEach(function (l) { view.push({ id: byId[l[0]] ? l[0] : undefined, item: l[0], ch: l[1], seen: l[2], den: l[3], fv: 1, d: d, boss: b }); });
-        }
-        if (al.length) {
-          view.push({ sub: "al", fresh: !b.loot.length });
-          al.forEach(function (id) { view.push({ id: byId[id] ? id : undefined, item: id, al: 1, d: d, boss: b }); });
-        }
-        if ((fl || al.length) && loot.length) view.push({ sub: "cl" });
-        loot.forEach(function (l) { view.push({ id: byId[l[0]] ? l[0] : undefined, item: l[0], ch: l[1], mn: l[2], mx: l[3], d: d, boss: b, cl: !!(fl || al.length) }); });
-      });
-    });
+    var hit = function (id) { return !q || dgName(id).toLowerCase().indexOf(q) >= 0; }, typ = function (id) { return !dgType || (dgType === "-" ? !dgSlot(id) : dgSlot(id) === dgType); };
+    if (q) {   // sökning i alla dungeons: bossrubrik + träffar
+      dgList.forEach(function (d) { d.bosses.forEach(function (b) {
+        var L = dgBossItems(b).filter(function (x) { return hit(x.item) && typ(x.item); }); if (!L.length) return;
+        view.push({ hd: 1, boss: b, d: d, n: L.length });
+        L.forEach(function (x) { x.d = d; x.boss = b; view.push(x); });
+      }); });
+    } else {
+      var d = dgList[dgSel]; if (d) {
+        (dgAllB ? d.bosses : [dgCurBoss(d)]).forEach(function (b) {
+          if (!b) return;
+          var L = dgBossItems(b).filter(function (x) { return typ(x.item); });
+          if (dgAllB) view.push({ hd: 1, boss: b, d: d, n: L.length });
+          L.forEach(function (x) { x.d = d; x.boss = b; view.push(x); });
+        });
+      }
+    }
     shown = Math.min(PAGE, view.length);   // sida för sida som övriga lägen; draw() och visa fler klarar boss- och rubrikraderna (granskning 2026-11-18)
   }
   function dgRow(r) {
+    if (r.hd) return '<tr class="bosshd" data-dgboss="' + r.boss.id + '" data-dgmap="' + r.d.map + '"><td colspan="4"><b>' + esc(r.boss.name) + '</b> <span class="dim">' + (r.boss.lvl ? t("dg_boss_lvl", r.boss.lvl) : "") + (query ? " · " + esc(r.d.name) : "") + (r.n ? " · " + t("dg_n_items", r.n) : " · " + t("dg_noloot")) + "</span></td></tr>";
+    var ahr = byId[r.item], mm = DG.items[r.item] || ["", FLN[r.item] ? FLN[r.item][1] : -1, 0, 0], qq = ahr ? ahr.q : hasGameTip(r.item) ? GQ[r.item] : mm[1];
+    var chT = r.al ? '<span class="dim" title="' + esc(t("dg_al_tip")) + '">' + t("dg_unknown") + "</span>" : r.fv && r.den < 3 ? '<span title="' + esc(t("dg_fv_tip", r.seen)) + '">' + r.seen + "/" + r.den + "</span>" : (r.fv ? '<span title="' + esc(t("dg_fv_tip", r.seen)) + '">' : "<span>") + (r.ch >= 10 ? Math.round(r.ch) : r.ch) + "%</span>";
+    return '<tr tabindex="0" data-dgitem="' + r.item + '" data-dgb="' + r.boss.id + '"' + (r.item === dgItem ? ' aria-selected="true"' : "") + '><td class="nm">' + (ahr && ahr.ic && ICON_BASE ? iconHtml(ahr, true) : xIcon(r.item, qq)) +
+      '<span class="' + qcls(qq) + '"' + (ahr || hasGameTip(r.item) ? ' data-tip="' + r.item + '"' : ' data-dgtip="' + r.item + '"') + ">" + esc(dgName(r.item)) + "</span>" + (r.mx > 1 ? ' <span class="dim">×' + r.mn + (r.mx > r.mn ? "–" + r.mx : "") + "</span>" : "") +
+      "</td><td>" + (esc(dgSlot(r.item)) || DASH) + "</td><td>" + chT + '</td><td class="fav">' + (ahr ? starHtml(r.item) : "") + "</td></tr>";
+  }
+  function dgRowOld(r) {
     if (r.sub) return '<tr class="fvhd' + (r.sub === "cl" ? " cl" : r.sub === "al" ? " al" : "") + '"><td colspan="5">' + (r.sub === "fv" ? t("dg_fv", r.kills) : r.sub === "al" ? t(r.fresh ? "dg_al_new" : "dg_al") : t("dg_cl")) + "</td></tr>";
     if (r.hd) return '<tr class="bosshd" data-dgboss="' + r.boss.id + '" data-dgmap="' + r.d.map + '"><td colspan="5"><b>' + esc(r.boss.name) + '</b> <span class="dim">' + (r.boss.lvl ? t("dg_boss_lvl", r.boss.lvl) : "") + (query ? " · " + esc(r.d.name) : "") + (r.n ? "" : " · " + t("dg_noloot")) + "</span></td></tr>";
     var ah = byId[r.item], m = DG.items[r.item] || ["", FLN[r.item] ? FLN[r.item][1] : -1, 0, 0], q = ah ? ah.q : hasGameTip(r.item) ? GQ[r.item] : m[1];
@@ -4005,6 +4084,50 @@ body[data-home] .cols, body[data-home] #sect, body[data-home] #q, body[data-home
     "Onyxia's Lair": "onyxia", "Stratholme": "stratholme", "Blackwing Lair": "blackwing-lair" };
   var DG_BG_OK = null;   // vilka bilder som finns (assets/backgrounds/dg-index.json), null = okänt: alla antas finnas
   function dgBg(d) { var k = DG_BG[d.name]; return k && (!DG_BG_OK || DG_BG_OK[k]) ? ASSET_BASE + "backgrounds/dg-" + k + ".webp" : ""; }
+  function dgHeadHtml() {
+    if (query) return '<div class="dglh"><h2>' + t("dg_search_res") + "</h2><span>" + t("dg_n_items", view.filter(function (x) { return !x.hd; }).length) + "</span></div>";
+    var d = dgList[dgSel]; if (!d) return "";
+    var drops = {}; d.bosses.forEach(function (b) { dgBossItems(b).forEach(function (x) { drops[x.item] = 1; }); });
+    var nDrops = Object.keys(drops).length, b = dgCurBoss(d), bg = dgBg(d), g = dgGroup(d);
+    var types = {}; (dgAllB ? d.bosses : b ? [b] : []).forEach(function (x) { dgBossItems(x).forEach(function (y) { types[dgSlot(y.item) || "-"] = 1; }); });
+    var tlist = Object.keys(types).sort(function (a, c) { return a === "-" ? 1 : c === "-" ? -1 : DG_SLOTS.indexOf(a) - DG_SLOTS.indexOf(c); });
+    var shownN = view.filter(function (x) { return !x.hd; }).length;
+    return '<div class="dgcard' + (bg ? " hasbg" : "") + '"' + (bg ? ' style="--dgbg:url(&quot;' + esc(bg) + '&quot;)"' : "") + '><div class="dgcrumb">' + t("dg_crumb") + " / " + esc(dgGroupName(g)) + "</div>" +
+      '<button class="lnk dgcopy" type="button" data-copyany="#dungeon=' + d.map + '" title="' + t("copy_link") + '">' + t("copy_link") + "</button>" +
+      "<h1>" + esc(d.name) + '</h1><div class="dgmeta"><span><b>' + t("dg_meta_lv", d.min + "–" + d.max) + "</b></span><span>" + t("dg_n_players", d.players) + "</span><span>" + t("dg_n_bosses", d.bosses.length) + "</span><span>" + t("dg_n_drops", nDrops) + "</span></div>" +
+      (d.forever ? '<div class="dgfv"><b class="tag fv">FV</b> Forever</div>' : "") + "</div>" +
+      '<div class="dgbh"><h2>' + t("dg_bosses_h") + "</h2><span>" + t("dg_bosses_s") + '</span></div><div class="dgbosses">' + d.bosses.map(function (x) {
+        var on = !dgAllB && b && x.id === b.id, img = dgPicImg(d, x);
+        return '<button type="button" class="dgbc' + (img ? "" : " noimg") + '" data-dgpick="' + x.id + '" aria-pressed="' + on + '"' + (!img && bg ? ' style="--dgbg:url(&quot;' + esc(bg) + '&quot;)"' : "") + ">" +
+          (img ? '<img src="' + img + '" alt="" loading="lazy" onerror="this.remove()">' : "") + (on ? '<i class="dgsel">✓ ' + t("dg_selected") + "</i>" : "") + "<span>" + esc(x.name) + "</span></button>";
+      }).join("") + "</div>" +
+      '<div class="dglh"><h2>' + esc(dgAllB ? d.name : b ? b.name : d.name) + " — " + t("dg_loot") + "</h2><span>" + t("dg_n_items", shownN) + "</span></div>" +
+      '<div class="dgtools"><div class="seg dgseg"><button type="button" data-dgall="0" aria-pressed="' + !dgAllB + '">' + t("dg_this") + '</button><button type="button" data-dgall="1" aria-pressed="' + dgAllB + '">' + t("dg_allb", nDrops) + "</button></div>" +
+      '<select id="dgtype" aria-label="' + esc(t("dg_types")) + '"><option value="">' + t("dg_types") + "</option>" + tlist.map(function (x) { return '<option value="' + esc(x) + '"' + (dgType === x ? " selected" : "") + ">" + esc(x === "-" ? t("dg_other") : x) + "</option>"; }).join("") + "</select></div>" +
+      (shownN && view.every(function (x) { return x.hd || x.al; }) ? '<div class="note dgnorates">' + t("dg_no_rates") + "</div>" : "");
+  }
+  // Föremålet i högerrutan (Joakims förslag): ikon, namn, kvalitet, plats, stats, var det droppar, knappar och AH-läget.
+  var QNAME = ["Poor", "Common", "Uncommon", "Rare", "Epic", "Legendary"];
+  function dgItemCard(id, bossId) {
+    dgItem = id;
+    var trs = $("rows").children; for (var j = 0; j < trs.length; j++) { if (+trs[j].dataset.dgitem === id) trs[j].setAttribute("aria-selected", "true"); else trs[j].removeAttribute("aria-selected"); }
+    var r = byId[id], m = DG.items[id] || (FLN[id] ? [FLN[id][0], FLN[id][1], 0, 0, []] : ["Item " + id, -1, 0, 0, []]), q = r ? r.q : hasGameTip(id) ? GQ[id] : m[1], slot = dgSlot(id);
+    var from = [];
+    dgList.forEach(function (d) { d.bosses.forEach(function (b) { dgBossItems(b).forEach(function (x) { if (x.item === id) from.push({ d: d, b: b, x: x }); }); }); });
+    from.sort(function (a, c) { return (c.b.id === bossId) - (a.b.id === bossId); });
+    var lines = (m[4] || []).filter(function (l) { return l[0] && l[0] !== m[0]; }).map(function (l) { return '<div class="dgtl"><span' + (l[2] === "g" ? ' class="q2"' : "") + ">" + esc(l[0]) + "</span><span>" + esc(l[1] || "") + "</span></div>"; }).join("");
+    var big = r && r.ic && ICON_BASE ? '<img class="dgbig ' + qcls(q) + '" src="' + ICON_BASE + r.ic + '.jpg" alt="">' : xIcon(id, q).replace('class="', 'class="dgbig ');
+    $("detail").scrollTop = 0;
+    $("detail").innerHTML = '<div class="dgitem"><div class="dgih">' + big + '<div><h2 class="' + qcls(q) + '"' + (r || hasGameTip(id) ? ' data-tip="' + id + '"' : ' data-dgtip="' + id + '"') + ">" + esc(r && r.name ? r.name : m[0]) + '</h2><div class="dgiq">' + (q >= 0 ? '<span class="qb ' + qcls(q) + '">' + QNAME[q] + "</span>" : "") + (slot ? "<span>" + esc(slot) + "</span>" : "") + (m[2] ? "<span>" + t("dg_ilvl") + " " + m[2] + "</span>" : "") + "</div></div></div>" +
+      (lines ? '<div class="dgtip">' + lines + "</div>" : "") +
+      (from.length ? "<h4>" + t("dg_drops_from") + "</h4>" + from.slice(0, 4).map(function (f) {
+        var img = dgPicImg(f.d, f.b), ch = f.x.al ? t("dg_unknown") : f.x.fv && f.x.den < 3 ? f.x.seen + "/" + f.x.den : (f.x.ch >= 10 ? Math.round(f.x.ch) : f.x.ch) + "%";
+        return '<a class="dgfrom" href="#dungeon=' + f.d.map + "&boss=" + f.b.id + '" data-dgboss="' + f.b.id + '" data-dgmap="' + f.d.map + '">' + (img ? '<img src="' + img + '" alt="" loading="lazy" onerror="this.remove()">' : "<span></span>") + "<div><b>" + esc(f.b.name) + "</b><small>" + esc(f.d.name) + " · " + ch + "</small></div></a>";
+      }).join("") : "") +
+      '<div class="dgbtns">' + (r ? '<a class="dgview" href="#item=' + id + (house !== 113 ? "&m=" + house : "") + '">' + t("dg_view") + " →</a>" : '<a class="dgview" href="https://www.wowhead.com/forever/item=' + id + '" target="_blank" rel="noopener">' + t("qu_wowhead") + "</a>") +
+        (r ? '<button type="button" class="dgwatch" data-star="' + id + '" aria-pressed="' + watched(id) + '">' + (watched(id) ? "★ " + t("dg_watch_on") : "☆ " + t("dg_watch_add")) + "</button>" : "") + "</div>" +
+      '<div class="dgah">' + (r && r.min > 0 ? t("dg_ah_on", money(r.min), num(r.qty)) : t("dg_ah_none")) + "</div></div>";
+  }
   function dgBossDetail(d, b) {
     setHash("#dungeon=" + d.map + "&boss=" + b.id);
     $("detail").scrollTop = 0;
@@ -4020,7 +4143,7 @@ body[data-home] .cols, body[data-home] #sect, body[data-home] #q, body[data-home
       esc(d.name) + (b.lvl ? " · " + t("dg_boss_lvl", b.lvl) : "") + "</small></div>" +
       (b.m3 ? portraitHtml(b.disp, false, b.m3, "", dgBg(d)).replace('<div class="portr', '<div data-snap="#detail .strip h2 .drk .rn img" class="portr') : dgBg(d) ? '<div class="portr hasbg banner" style="--pbg:url(' + esc(dgBg(d)) + ')"></div>' : "") +   // utan modell: bara dungeonbilden
       '<div><button class="lnk" type="button" data-dg="' + dgSel + '">' + t("dg_back") + "</button></div>" +
-      "<div><h3>" + t("dg_boss_loot") + "</h3>" + (loot ? '<table class="srct skin"><thead><tr><th></th><th>' + t("hu_skin_chance") + "</th><th>" + t("hu_skin_price") + "</th></tr></thead><tbody>" + loot + "</tbody></table>" : '<div class="note">' + t("dg_boss_noloot") + "</div>") + "</div>";
+      '<div class="note">' + t("dg_boss_hint") + "</div>";
     m3Auto();
   }
   function dgDetail() {
@@ -4475,6 +4598,7 @@ body[data-home] .cols, body[data-home] #sect, body[data-home] #q, body[data-home
   }
   // Kolumnerna efter läget. [nyckel, text, tips, klass]
   function headHtml() {
+    if (mode === "dg") return '<tr><th class="nm">' + t("col_item") + "</th><th>" + t("col_slot") + '</th><th title="' + esc(t("col_drop_tip2")) + '">' + t("col_drop2") + '</th><th class="fav"></th></tr>';
     var cols = mode === "qu"
       ? [["name", "col_quest"], ["lvl", "col_lvl"]]   // smal lista, allt annat står i rutan till höger (Joakim 2026-11-18)
       : mode === "fx"
@@ -4582,6 +4706,7 @@ body[data-home] .cols, body[data-home] #sect, body[data-home] #q, body[data-home
     drawMoreBtn();
     $("count").textContent = t(mode === "fx" ? "fx_count" : mode === "de" ? "de_count" : mode === "co" ? "co_count" : mode === "cl" ? "cl_count" : mode === "hu" ? "hu_count" : mode === "cr" ? (gaSel >= 0 ? "ga_count" : "cr_count") : mode === "qu" ? "qu_count" : mode === "dg" ? "dg_count" : "count", num(mode === "dg" ? view.filter(function (x) { return !x.hd && !x.sub; }).length : view.length));
     $("head").innerHTML = mode === "ar" || (mode === "cl" && clView === "tal") ? "" : headHtml();
+    $("dghead").hidden = mode !== "dg"; if (mode === "dg") $("dghead").innerHTML = DG ? dgHeadHtml() : "";
     $("list").className = mode === "tr" || mode === "cr" || mode === "qu" || mode === "dg" || mode === "hu" || mode === "co" || mode === "cl" || mode === "de" || mode === "fx" ? mode + (mode === "cr" && gaSel >= 0 ? " ga" : "") : "";
     var ar = mode === "ar" || (mode === "cl" && clView === "tal");   // Classes: talangräknaren ritas i samma ruta som Armory
     $("armory").hidden = !ar;
@@ -5162,7 +5287,7 @@ body[data-home] .cols, body[data-home] #sect, body[data-home] #q, body[data-home
     var gb = e.target.closest("[data-gobeast]");
     if (gb) { e.preventDefault(); huSel = +gb.dataset.gobeast; if (huMapOn) { huMapOn = false; if (mode === "hu") drawCats(); } if (mode !== "hu") setMode("hu"); else huDetail(huSel); showTab("item"); return; }
     var dgb = e.target.closest("[data-dg]");
-    if (dgb) { dgSel = +dgb.dataset.dg; query = ""; $("q").value = ""; drawCats(); refresh(); toTop(); dgDetail(); showTab("item"); return; }
+    if (dgb) { dgSel = +dgb.dataset.dg; dgBoss = 0; dgAllB = false; dgType = ""; dgItem = 0; query = ""; $("q").value = ""; drawCats(); refresh(); toTop(); dgDetail(); showTab("item"); return; }
     var gab = e.target.closest("[data-ga]");
     if (gab && mode === "cr") { gaPick(+gab.dataset.ga, gab.hasAttribute("data-gab") ? +gab.dataset.gab : -1); return; }
     var garc = e.target.closest("[data-garec]");
@@ -5189,7 +5314,7 @@ body[data-home] .cols, body[data-home] #sect, body[data-home] #q, body[data-home
       return;
     }
     var st = e.target.closest("[data-star]");
-    if (st) { e.stopPropagation(); toggleWatch(+st.dataset.star); return; }
+    if (st) { e.stopPropagation(); toggleWatch(+st.dataset.star); if (mode === "dg" && dgItem === +st.dataset.star && $("detail").querySelector(".dgitem")) dgItemCard(dgItem); return; }
     var sa = e.target.closest("[data-starall]");
     if (sa) { e.stopPropagation(); toggleWatchAll(sa.dataset.starall.split(",").map(Number)); return; }
     var cp = e.target.closest("[data-copy]");
@@ -5346,9 +5471,15 @@ body[data-home] .cols, body[data-home] #sect, body[data-home] #q, body[data-home
       var bmap = +dgb.dataset.dgmap, bid = +dgb.dataset.dgboss, bd = null, bb2 = null;
       dgList.forEach(function (x, i) { if (x.map === bmap) { bd = x; if (dgSel !== i) { dgSel = i; drawCats(); } } });
       if (bd) bd.bosses.forEach(function (x) { if (x.id === bid) bb2 = x; });
-      if (bb2) { showTab("item"); dgBossDetail(bd, bb2); }
+      if (bb2) { dgBoss = bb2.id; dgAllB = false; dgType = ""; dgItem = 0; if (!query) refresh(); showTab("item"); dgBossDetail(bd, bb2); }
       return;
     }
+    var dgp = e.target.closest("[data-dgpick]");
+    if (dgp && mode === "dg" && DG) { var dpd = dgList[dgSel], dpb = null; if (dpd) dpd.bosses.forEach(function (x) { if (x.id === +dgp.dataset.dgpick) dpb = x; }); if (dpb) { dgBoss = dpb.id; dgAllB = false; dgType = ""; dgItem = 0; refresh(); showTab("item"); dgBossDetail(dpd, dpb); } return; }
+    var dga = e.target.closest("[data-dgall]");
+    if (dga && mode === "dg" && DG) { dgAllB = dga.dataset.dgall === "1"; dgType = ""; dgItem = 0; refresh(); if (dgAllB) dgDetail(); else { var dad = dgList[dgSel], dab = dgCurBoss(dad); if (dab) dgBossDetail(dad, dab); } return; }
+    var dgit = e.target.closest("tbody tr[data-dgitem]");
+    if (dgit && mode === "dg" && DG) { showTab("item"); dgItemCard(+dgit.dataset.dgitem, +dgit.dataset.dgb); return; }
     var tdi = e.target.closest("tbody tr[data-dgi]");
     if (tdi) { showTab("item"); dgItemDetail(+tdi.dataset.dgi); return; }
     var qh = e.target.closest("[data-quhide]");
@@ -7286,6 +7417,7 @@ body[data-home] .cols, body[data-home] #sect, body[data-home] #q, body[data-home
     if (!keep) $("detail").innerHTML = '<div class="note">' + t("ar_loading") + "</div>";
     Promise.all([loadDungeons(), loadXIcons()]).then(function () {
       if (mode !== "dg") return;
+      if (!keep) { dgBoss = +hashParams().boss || 0; dgAllB = false; dgType = ""; dgItem = 0; }   // boss ur adressen (bakåt/länk)
       var dgMiss = false;
       if (wantMap) {
         var dgHit = -1;
@@ -7419,6 +7551,13 @@ body[data-home] .cols, body[data-home] #sect, body[data-home] #q, body[data-home
     if (e.target && e.target.id === "hulvl") { var v = parseInt(e.target.value, 10); huLvl = v >= 1 && v <= 60 ? v : 0; try { localStorage.setItem(HU_LKEY, String(huLvl)); } catch (e2) {} if (sortKey === "lvl") sortDir = huLvl ? -1 : 1; refresh(); }
   });
   document.addEventListener("change", function (e) { if (e.target && e.target.id === "hulvl" && mode === "hu") drawCats(); });
+  // Dungeons (Joakims förslag 2026-11-20): sök och nivåfilter i spalten ritar bara listan (rutan behåller fokus), typfiltret listan i mitten
+  document.addEventListener("input", function (e) { if (e.target && e.target.id === "dgq" && mode === "dg") { dgQ = e.target.value; var dl = $("dglist"); if (dl) dl.innerHTML = dgListHtml(); } });
+  document.addEventListener("change", function (e) {
+    if (!e.target || mode !== "dg") return;
+    if (e.target.id === "dglv") { dgLv = e.target.value; var dl = $("dglist"); if (dl) dl.innerHTML = dgListHtml(); }
+    if (e.target.id === "dgtype") { dgType = e.target.value; dgItem = 0; refresh(); }
+  });
   document.addEventListener("submit", function (e) { if (e.target && e.target.matches && e.target.matches("[data-cmpform]")) { e.preventDefault(); var q = $("cmpq"); arCompare(q ? q.value : ""); } });
   document.addEventListener("keydown", function (e) { if (e.key === "Escape" && !$("mktPop").hidden) { mktOpen(false); $("mktBtn").focus(); } });
   $("mktPop").addEventListener("change", function (e) {   // panelen ligger kvar: alla tre valen kan bytas i samma öppning
