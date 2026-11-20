@@ -1093,9 +1093,22 @@ body[data-home] .cols, body[data-home] #sect, body[data-home] #q, body[data-home
 .hxupd { display: inline-flex; align-items: center; gap: 8px; color: var(--hx-fg2); font-size: 13.5px; }
 .hxupd i { width: 8px; height: 8px; border-radius: 50%; background: #3DD68C; box-shadow: 0 0 6px rgba(61, 214, 140, .6); }
 .hxtop { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
-.hxbig { position: relative; display: grid; align-content: start; gap: 10px; min-height: 196px; padding: 18px 20px; overflow: hidden; isolation: isolate; text-decoration: none; color: var(--hx-fg);
+.hxbig { position: relative; display: grid; align-content: start; gap: 10px; min-height: 212px; padding: 18px 20px 34px; overflow: hidden; isolation: isolate; text-decoration: none; color: var(--hx-fg);
   background: var(--hx-card); border: 1px solid var(--hx-line); border-radius: 10px; transition: border-color .15s; }
-.hxbig:hover { border-color: var(--hx-acc); }
+.hxbig:hover, .hxbig:focus-within { border-color: var(--hx-acc); }
+.hxs { display: none; align-content: start; gap: 10px; text-decoration: none; color: inherit; outline: none; }
+.hxs.on { display: grid; animation: hxfade .35s ease; }
+@keyframes hxfade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+.hxs:focus-visible .hxbtn { outline: 2px solid var(--hx-acc); outline-offset: 2px; }
+.hxdots { position: absolute; left: 50%; bottom: 10px; transform: translateX(-50%); display: flex; gap: 2px; }
+.hxdots button { all: unset; cursor: pointer; width: 22px; height: 22px; display: grid; place-content: center; border-radius: 50%; }
+.hxdots button::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--hx-fg2); opacity: .45; transition: opacity .15s, background .15s; }
+.hxdots button[aria-pressed=true]::before { background: var(--hx-acc); opacity: 1; }
+.hxdots button:hover::before { opacity: .9; } .hxdots button:focus-visible { outline: 2px solid var(--hx-acc); }
+.hxspark { width: 150px; height: 46px; flex: none; overflow: visible; }
+.hxspark polyline { fill: none; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; stroke: var(--hx-up); }
+.hxspark circle { fill: var(--hx-up); } .hxspark.rise polyline { stroke: #F2C14E; } .hxspark.rise circle { fill: #F2C14E; }
+.hxspark .us { stroke: var(--hx-fg2); stroke-width: 1; stroke-dasharray: 3 3; opacity: .55; }
 .hxpic { position: absolute; z-index: -1; right: 0; top: 0; bottom: 0; width: 52%; height: 100%; object-fit: cover; opacity: .55;
   -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 45%); mask-image: linear-gradient(90deg, transparent 0, #000 45%); }
 .hxlbl { font-size: 12px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--hx-fg2); }
@@ -1105,7 +1118,7 @@ body[data-home] .cols, body[data-home] #sect, body[data-home] #q, body[data-home
 .hxpr { display: flex; align-items: center; gap: 18px; }
 .hxpr > div { display: grid; gap: 2px; } .hxpr > div + div { padding-left: 18px; border-left: 1px solid var(--hx-line); }
 .hxpr small { color: var(--hx-fg2); font-size: 13px; } .hxpr b { font-size: 17px; font-weight: 600; }
-.hxpr strong { margin-left: 8px; font: 700 40px/1 "Instrument Sans", system-ui, sans-serif; color: var(--hx-up); letter-spacing: -.01em; }
+.hxpr strong { margin-left: 0; font: 700 40px/1 "Instrument Sans", system-ui, sans-serif; color: var(--hx-up); letter-spacing: -.01em; }
 .hxbig.rise .hxpr strong { color: #F2C14E; }
 .hxbig p { margin: 0; color: var(--hx-fg2); font-size: 13.5px; }
 .hxbtn { justify-self: start; margin-top: 2px; padding: 8px 16px; border-radius: 6px; background: var(--hx-btn); color: var(--hx-btnfg); font-weight: 700; font-size: 14.5px; box-shadow: 0 2px 6px rgba(0, 0, 0, .35); }
@@ -1137,7 +1150,8 @@ body[data-home] .cols, body[data-home] #sect, body[data-home] #q, body[data-home
 .hxli .ch { min-width: 52px; text-align: right; white-space: nowrap; font-size: 13.5px; }
 @media (max-width: 1250px) { .hxrow { grid-template-columns: repeat(2, minmax(0, 1fr)); } .hxcards { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 @media (max-width: 900px) { .hxtop { grid-template-columns: minmax(0, 1fr); } }
-@media (max-width: 700px) { .hxrow, .hxcards { grid-template-columns: minmax(0, 1fr); } .hxpr strong { font-size: 32px; } .hxit { max-width: 100%; } .hxit b { font-size: 20px; } .hxpic { width: 60%; opacity: .35; } }
+@media (max-width: 1400px) { .hxspark { width: 110px; } }
+@media (max-width: 700px) { .hxspark { display: none; } .hxrow, .hxcards { grid-template-columns: minmax(0, 1fr); } .hxpr strong { font-size: 32px; } .hxit { max-width: 100%; } .hxit b { font-size: 20px; } .hxpic { width: 60%; opacity: .35; } }
 .hchips { display: flex; flex-wrap: wrap; gap: 6px; }
 .hchips a, .hchips button { all: unset; cursor: pointer; padding: 4px 11px; border: 1px solid var(--line); border-radius: 14px; color: var(--fg); font-size: 13px; }
 .hchips a:hover, .hchips button:hover { border-color: var(--gold); }
@@ -1767,7 +1781,7 @@ body[data-home] .cols, body[data-home] #sect, body[data-home] #q, body[data-home
       scan_at: "Updated %1 at %2", m_faction: "Faction", m_ah: "Auction house", m_ah_own: "Faction AH", m_ah_bw: "Blackwater", m_realm: "Realm type", m_region: "Region", home_tip: "Start page", sect_tip: "Back to the start of this tab", h_title: "Welcome to Azeroth Atlas", h_sub: "Auction prices, players, quests and loot for WoW Forever. Pick a place to start.", h_search: "Search everything", h_n_items: "%1 items on the AH", h_n_cheap: "%1 cheaper than usual", h_n_friends: "%1 friends", h_cheap: "Cheap right now", h_save: "Biggest saving right now", h_usual: "Usual price", h_listed: "Listed at", h_under: "under the usual price", h_n_sold: "%1 sold a day", h_open: "Open item",
       h_st_items: "On the auction house", h_st_items_s: "items with a price", h_st_cheap: "Cheaper than usual", h_st_cheap_s: "items that sell well", h_st_gold: "Traded per day", h_st_gold_s: "market price × sold a day", h_st_upd: "Prices updated", h_min_ago: "%1 min ago", h_h_ago: "%1 h ago",
       h_q_mount: "Which mount is next?", h_q_mount_s: "%1 mounts on Forever", h_q_tal: "Plan your talent build", h_points: "points", h_q_tal_s: "Build and share for every class",
-      h_q_farm: "What is worth farming?", h_q_craft: "Which craft pays most?", h_per_craft: "per craft", h_q_new: "What is new in Forever?", h_n_dungeons: "%1 new dungeons", h_q_new_s: "%1 new items with loot tables", h_rise: "Rising right now", h_hot: "Most traded", h_gph: "Gold per hour", h_craft: "Pays to craft", h_dayt: "Best day trades", h_all: "View all →", h_overview: "Market overview", h_rise_big: "Biggest rise right now", h_over: "over the usual price", h_none: "Nothing right now.", h_per_day: "%1/day", h_cheap_none: "Prices are loading…", h_watch: "My list", h_watch_none: "Star ☆ an item and its price shows up here.", h_players: "Players", h_guilds: "Guilds", h_lvl: "Lvl %1", h_members: "%1 members", h_players_none: "Look someone up in the Armory and they show up here.", ar_land_lb: "Leaderboards ›", ar_land_recent: "Recent", ar_land_friends: "Friends", on_ah: "%1 items on the auction house", market_label: "Market", search_btn: "Search", col_fav: "Fav",
+      h_q_farm: "What is worth farming?", h_q_craft: "Which craft pays most?", h_per_craft: "per craft", h_q_new: "What is new in Forever?", h_n_dungeons: "%1 new dungeons", h_q_new_s: "%1 new items with loot tables", h_rise: "Rising right now", h_hot: "Most traded", h_gph: "Gold per hour", h_craft: "Pays to craft", h_dayt: "Best day trades", h_all: "View all →", h_overview: "Market overview", h_show_n: "Show %1 of %2", h_rise_big: "Biggest rise right now", h_over: "over the usual price", h_none: "Nothing right now.", h_per_day: "%1/day", h_cheap_none: "Prices are loading…", h_watch: "My list", h_watch_none: "Star ☆ an item and its price shows up here.", h_players: "Players", h_guilds: "Guilds", h_lvl: "Lvl %1", h_members: "%1 members", h_players_none: "Look someone up in the Armory and they show up here.", ar_land_lb: "Leaderboards ›", ar_land_recent: "Recent", ar_land_friends: "Friends", on_ah: "%1 items on the auction house", market_label: "Market", search_btn: "Search", col_fav: "Fav",
       hist_loading: "Loading history…", hist_fail: "The history could not be loaded.", today: "today", item_n: "Item %1",
       copy_link: "Copy link", copied: "Link copied", star_add: "Watch this item", star_del: "Remove from my list", star_all: "All reagents to my list", star_all_del: "Remove reagents from my list", star_lbl_add: "Watch", star_lbl_on: "In my list",
       not_listed: "not listed now", remove: "Remove", watch_sub: "Saved in your browser, only you can see it.",
@@ -5337,6 +5351,24 @@ body[data-home] .cols, body[data-home] #sect, body[data-home] #q, body[data-home
   // Startsidan (Joakim 2026-11-20): flikarna som rutor, billigt just nu, din lista och dina spelare. Länkarna är vanliga
   // #-adresser, så bakåt, mittenklick och kopiera fungerar som överallt; popstate ritar sidan från adressen.
   var homeRaf = 0, homeRecTry = false, homeKatIdx = null, homeCoTry = false, homeAlTry = false, homeAL = null;
+  // Stora korten: vilken av topp 3 som visas, prickarna byter utan att rita om sidan, och var 8:e s byts den av sig själv
+  // (inte medan musen eller fokus är på kortet, inte i en dold flik).
+  var homeSlide = { save: 0, rise: 0 };
+  function hxShow(kind, k) {
+    var box = document.querySelector('.hxbig[data-hxk="' + kind + '"]'); if (!box) return;
+    var sl = box.querySelectorAll(".hxs"), dt = box.querySelectorAll("[data-hxdot]"); if (!sl.length) return;
+    k = ((k % sl.length) + sl.length) % sl.length; homeSlide[kind] = k;
+    for (var i = 0; i < sl.length; i++) { var on = i === k; sl[i].classList.toggle("on", on); if (on) { sl[i].removeAttribute("tabindex"); sl[i].removeAttribute("aria-hidden"); } else { sl[i].setAttribute("tabindex", "-1"); sl[i].setAttribute("aria-hidden", "true"); } }
+    for (var j = 0; j < dt.length; j++) dt[j].setAttribute("aria-pressed", j === k ? "true" : "false");
+  }
+  document.addEventListener("click", function (e) {
+    var d = e.target.closest && e.target.closest("[data-hxdot]"); if (!d) return;
+    e.preventDefault(); var p = d.getAttribute("data-hxdot").split(":"); hxShow(p[0], +p[1]);
+  });
+  setInterval(function () {
+    if (!homeOn || document.hidden) return;
+    ["save", "rise"].forEach(function (kind) { var box = document.querySelector('.hxbig[data-hxk="' + kind + '"]'); if (box && !box.matches(":hover") && !box.contains(document.activeElement)) hxShow(kind, (homeSlide[kind] || 0) + 1); });
+  }, 8000);
   // Rutornas bakgrunder: [eget motiv home-<namn>.webp, Blizzards bild som gäller tills det finns]. "" = din stads panorama.
   var HOME_BG = { hero: ["", ""], cheap: ["barrens", "dg-wailing-caverns"], rise: ["winterspring", "dg-scholomance"], hot: ["auction-house", ""], gph: ["ungoro", "dg-maraudon"],
     craft: ["ironforge", "dg-blackrock-depths"], dayt: ["booty-bay", "dg-zulgurub"], watch: ["ashenvale", "dg-blackfathom-deeps"], ppl: ["thunder-bluff", "dg-dire-maul"] };
@@ -5414,17 +5446,37 @@ body[data-home] .cols, body[data-home] #sect, body[data-home] #q, body[data-home
     if (!CO && !homeCoTry) { homeCoTry = true; loadCo().then(function () { homeLater(); }).catch(function () {}); }
     if (!homeAL && !homeAlTry) { homeAlTry = true; fetch(DATA_BASE + "atlasloot-forever.json").then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }).then(function (j) { homeAL = j; homeLater(); }).catch(function () {}); }
     var B = ASSET_BASE ? ASSET_BASE + "backgrounds/" : "";
-    // Två stora kort: köp (största rabatten) och sälj (största uppgången), bild till höger som tonas in.
-    var big = function (r, kind, pic) {
-      var lbl = t(kind === "save" ? "h_save" : "h_rise_big"), img = B ? '<img class="hxpic" src="' + B + pic + '.webp" alt="" loading="lazy">' : "";
-      if (!r) return '<div class="hxbig">' + img + '<span class="hxlbl">' + lbl + '</span><div class="hnone">' + t("h_cheap_none") + "</div></div>";
-      var us = r.us || 0, diff = Math.abs(us - r.min);
-      return '<a class="hxbig ' + kind + '" href="#item=' + r.id + mk + '">' + img + '<span class="hxlbl">' + lbl + "</span>" +
-        '<div class="hxit">' + (iconHtml(r, true) || "") + '<b class="' + qcls(r.q) + '">' + esc(r.name) + "</b></div>" +
-        '<div class="hxpr"><div><small>' + t("h_usual") + "</small><b>" + moneyText(us) + '</b></div><div><small>' + t("h_listed") + "</small><b>" + moneyText(r.min) + '</b></div><strong>' + (kind === "save" ? "−" : "+") + Math.abs(r.dip) + "%</strong></div>" +
-        '<p>' + moneyText(diff) + " " + t(kind === "save" ? "h_under" : "h_over") + " · " + t("h_n_sold", num(r.day)) + '</p><span class="hxbtn">' + t("h_open") + " →</span></a>";
+    // Två stora kort: köp (största rabatten) och sälj (största uppgången), bild till höger som tonas in. Topp 3 per kort
+    // med prickar (idé 1) och en prisgraf mellan priserna och procenten (idé 2, Joakim 2026-11-20).
+    var bigSpark = function (r, kind) {
+      var v = r.spk || [], pts = [], mx = 0, mn = Infinity, us = r.us || 0;
+      for (var i = 0; i < v.length; i++) if (v[i] > 0) { pts.push(i); mx = Math.max(mx, v[i]); mn = Math.min(mn, v[i]); }
+      if (pts.length < 2) return "";
+      if (us > 0) { mx = Math.max(mx, us); mn = Math.min(mn, us); }
+      var W = 150, H = 46, rg = Math.max(1, mx - mn), n = Math.max(1, v.length - 1);
+      var X = function (k) { return (3 + k / n * (W - 6)).toFixed(1); }, Y = function (val) { return (H - 5 - (val - mn) / rg * (H - 10)).toFixed(1); };
+      var la = pts[pts.length - 1];
+      return '<svg class="hxspark ' + kind + '" viewBox="0 0 ' + W + " " + H + '" role="img" aria-label="' + t("trend") + '">' +
+        (us > 0 ? '<line class="us" x1="0" x2="' + W + '" y1="' + Y(us) + '" y2="' + Y(us) + '"/>' : "") +
+        '<polyline points="' + pts.map(function (k) { return X(k) + "," + Y(v[k]); }).join(" ") + '"/><circle cx="' + X(la) + '" cy="' + Y(v[la]) + '" r="3"/></svg>';
     };
-    var top = big(cheap[0], "save", "dg-deadmines") + big(rising[0], "rise", "dg-zulfarrak");
+    var big = function (L, kind, pic) {
+      var lbl = t(kind === "save" ? "h_save" : "h_rise_big"), img = B ? '<img class="hxpic" src="' + B + pic + '.webp" alt="" loading="lazy">' : "";
+      L = L.slice(0, 3);
+      if (!L.length) return '<div class="hxbig">' + img + '<span class="hxlbl">' + lbl + '</span><div class="hnone">' + t("h_cheap_none") + "</div></div>";
+      var cur = Math.min(homeSlide[kind] || 0, L.length - 1);
+      var slides = L.map(function (r, k) {
+        var us = r.us || 0, diff = Math.abs(us - r.min);
+        return '<a class="hxs' + (k === cur ? " on" : "") + '" href="#item=' + r.id + mk + '"' + (k === cur ? "" : ' tabindex="-1" aria-hidden="true"') + '><span class="hxlbl">' + lbl + "</span>" +
+          '<div class="hxit">' + (iconHtml(r, true) || "") + '<b class="' + qcls(r.q) + '">' + esc(r.name) + "</b></div>" +
+          '<div class="hxpr"><div><small>' + t("h_usual") + "</small><b>" + moneyText(us) + '</b></div><div><small>' + t("h_listed") + "</small><b>" + moneyText(r.min) + "</b></div>" +
+          bigSpark(r, kind) + "<strong>" + (kind === "save" ? "−" : "+") + Math.abs(r.dip) + "%</strong></div>" +
+          "<p>" + moneyText(diff) + " " + t(kind === "save" ? "h_under" : "h_over") + " · " + t("h_n_sold", num(r.day)) + '</p><span class="hxbtn">' + t("h_open") + " →</span></a>";
+      }).join("");
+      var dots = L.length > 1 ? '<div class="hxdots">' + L.map(function (r, k) { return '<button type="button" data-hxdot="' + kind + ":" + k + '" aria-label="' + esc(t("h_show_n", k + 1, L.length)) + '" aria-pressed="' + (k === cur) + '"></button>'; }).join("") + "</div>" : "";
+      return '<div class="hxbig ' + kind + '" data-hxk="' + kind + '">' + img + slides + dots + "</div>";
+    };
+    var top = big(cheap, "save", "dg-deadmines") + big(rising, "rise", "dg-zulfarrak");
     // Fem frågekort med Joakims ikoner (mount: dagens mount ur samlingarna).
     var I = ASSET_BASE ? ASSET_BASE + "icons/" : "";
     var card = function (href, q, bigv, sub, pic, cls) { return '<a class="hxcard" href="' + href + '"><span class="q">' + q + ' <i>→</i></span><b class="' + (cls || "") + '">' + bigv + "</b><small>" + sub + "</small>" + (pic || "") + "</a>"; };
