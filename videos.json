@@ -1,19 +1,12 @@
 {
- "t": "2026-11-20T09:07:54.804Z",
+ "t": "2026-11-20T17:59:08.848Z",
  "videos": [
   {
-   "id": "AnYva92PX68",
-   "title": "GTA 6 #2: POLISEN JAGAR MIG i Grand Theft Auto VI",
+   "id": "Zt3gL3oIies",
+   "title": "Vi bygger VÅR STÖRSTA FABRIK i Moon Sweepers med UfoSXM",
    "channel": "ChrisWhippit",
    "handle": "@chriswhippit",
-   "at": "2026-11-20T05:30:31Z"
-  },
-  {
-   "id": "EsatraGPFfk",
-   "title": "Vi FYLLER HELA HYLLAN i Megastore Tidy Up Together med UfoSXM",
-   "channel": "ChrisWhippit",
-   "handle": "@chriswhippit",
-   "at": "2026-11-19T05:30:32Z"
+   "at": "2026-11-20T16:00:07Z"
   },
   {
    "id": "u4FhXhrNdgE",
@@ -21,6 +14,13 @@
    "channel": "ChrisWhippit",
    "handle": "@chriswhippit",
    "at": "2026-11-19T14:30:26Z"
+  },
+  {
+   "id": "AnYva92PX68",
+   "title": "GTA 6 #2: POLISEN JAGAR MIG i Grand Theft Auto VI",
+   "channel": "ChrisWhippit",
+   "handle": "@chriswhippit",
+   "at": "2026-11-20T05:30:31Z"
   },
   {
    "id": "9XSzCQFFMyc",
@@ -38,10 +38,10 @@
   }
  ],
  "counts": {
-  "chriswhippit": 4607,
+  "chriswhippit": 4610,
   "whippitsson": 534,
   "figgwhipp": 2848,
-  "whippitextra": 126
+  "whippitextra": 129
  },
  "subs": {
   "chriswhippit": 299000,
@@ -563,9 +563,9 @@
   },
   "whippitextra": {
    "views": 310000,
-   "avgViews": 2600,
-   "avgSample": 18,
-   "uploads30": 47
+   "avgViews": 2500,
+   "avgSample": 17,
+   "uploads30": 48
   }
  }
 }
