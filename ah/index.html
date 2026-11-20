@@ -1119,22 +1119,24 @@ body[data-home] .cols, body[data-home] #sect, body[data-home] #q, body[data-home
 .dgfind input:focus-visible, .dgfind select:focus-visible { outline: 2px solid var(--edge); outline-offset: 1px; }
 #dglist { display: contents; } .dgnone { padding: 8px 10px; }
 body[data-mode=dg] #cats .cath { color: var(--gold); border-bottom: 1px solid var(--line); padding-bottom: 4px; }
-#dghead { display: grid; gap: 12px; padding: 0 0 10px; } #dghead[hidden] { display: none; }
-.dgcard { position: relative; display: grid; gap: 6px; padding: 16px 20px; min-height: 150px; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; isolation: isolate; background: rgba(255, 255, 255, .03); }
+#dghead { display: grid; gap: 10px; padding: 0 0 8px; }
+body[data-mode=dg] .left .scroll { padding-right: 14px; box-sizing: border-box; }   /* texten ska inte gå in under scrollen */
+.dgsel { top: 6px !important; left: 6px !important; font-size: 11px !important; } #dghead[hidden] { display: none; }
+.dgcard { position: relative; display: grid; align-content: center; gap: 6px; padding: 14px 20px; min-height: 112px; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; isolation: isolate; background: rgba(255, 255, 255, .03); }
 .dgcard.hasbg::before { content: ""; position: absolute; z-index: -1; right: 0; top: 0; bottom: 0; width: 60%; background: var(--dgbg) center 35% / cover no-repeat; opacity: .85;
   -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 45%); mask-image: linear-gradient(90deg, transparent 0, #000 45%); }
 .dgcrumb { color: var(--grey); font-size: 13px; } .dgcopy { position: absolute; top: 12px; right: 14px; text-shadow: 0 1px 3px #000; }
-.dgcard h1 { margin: 0; font: 400 40px/1.05 var(--display); color: var(--fg); text-shadow: 0 2px 8px rgba(0, 0, 0, .6); max-width: 70%; }
+.dgcard h1 { margin: 0; font: 400 34px/1.05 var(--display); color: var(--fg); text-shadow: 0 2px 8px rgba(0, 0, 0, .6); max-width: 70%; }
 .dgmeta { display: flex; flex-wrap: wrap; gap: 0; font-size: 15px; color: var(--fg); text-shadow: 0 1px 3px #000; }
 .dgmeta span + span::before { content: "|"; margin: 0 12px; color: var(--grey); }
 .dgfv { display: flex; align-items: center; gap: 8px; color: var(--fg); font-size: 14px; }
 .dgbh, .dglh { display: flex; align-items: baseline; gap: 12px; } .dgbh h2, .dglh h2 { margin: 0; font: 400 22px/1.2 var(--display); color: var(--gold); text-transform: none; }
 .dgbh span { color: var(--grey); font-size: 13.5px; } .dglh span { margin-left: auto; color: var(--grey); font-size: 13px; }
-.dgbosses { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(150px, 1fr); gap: 8px; overflow-x: auto; scrollbar-width: thin; padding-bottom: 2px; }
-.dgbc { all: unset; cursor: pointer; position: relative; display: grid; align-content: end; min-height: 150px; border-radius: 8px; overflow: hidden; border: 1px solid var(--line); background: #10161c; }
+.dgbosses { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(124px, 1fr); gap: 8px; overflow-x: auto; scrollbar-width: thin; padding-bottom: 2px; }
+.dgbc { all: unset; cursor: pointer; position: relative; display: grid; align-content: end; min-height: 100px; border-radius: 8px; overflow: hidden; border: 1px solid var(--line); background: #10161c; }
 .dgbc img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 25%; }
 .dgbc.noimg { background: var(--dgbg, linear-gradient(#22303b, #121a21)) center / cover no-repeat; } .dgbc.noimg::before { content: ""; position: absolute; inset: 0; background: rgba(10, 14, 18, .45); }
-.dgbc span { position: relative; padding: 18px 10px 8px; text-align: center; font: 400 16px/1.15 var(--display); color: #F4EEDF; background: linear-gradient(transparent, rgba(0, 0, 0, .85) 45%); }
+.dgbc span { position: relative; padding: 14px 8px 7px; text-align: center; font: 400 14.5px/1.15 var(--display); color: #F4EEDF; background: linear-gradient(transparent, rgba(0, 0, 0, .85) 45%); }
 .dgbc:hover, .dgbc:focus-visible { border-color: var(--edge); } .dgbc[aria-pressed=true] { border: 2px solid var(--edge); box-shadow: 0 0 0 1px var(--edge), 0 0 14px rgba(67, 218, 209, .25); }
 .dgsel { position: absolute; top: 8px; left: 8px; z-index: 1; padding: 2px 8px; border-radius: 4px; font-style: normal; font-size: 12px; font-weight: 600; background: var(--edge); color: #0B1A1F; }
 .dgtools { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; } .dgtools select { margin-left: auto; height: 32px; padding: 0 10px; border-radius: 6px; border: 1px solid var(--line); background: rgba(0, 0, 0, .25); color: var(--fg); font: inherit; font-size: 13.5px; }
@@ -1142,7 +1144,7 @@ body[data-mode=dg] #cats .cath { color: var(--gold); border-bottom: 1px solid va
 .dgseg button { all: unset; cursor: pointer; padding: 6px 14px; font-size: 13.5px; color: var(--grey); } .dgseg button[aria-pressed=true] { background: var(--edge); color: #0B1A1F; font-weight: 600; }
 .dgseg button:focus-visible { outline: 2px solid var(--edge); outline-offset: -2px; }
 .dgnorates { margin: 0; }
-#list.dg td, #list.dg th { padding-top: 9px; padding-bottom: 9px; } #list.dg tbody tr[data-dgitem] { cursor: pointer; }
+#list.dg td, #list.dg th { padding-top: 7px; padding-bottom: 7px; } #list.dg tbody tr[data-dgitem] { cursor: pointer; }
 #list.dg td.nm .ic, #list.dg td.nm img { float: none; width: 34px; height: 34px; margin: 0 10px 0 0; vertical-align: middle; border-radius: 5px; } #list.dg td.nm { font-size: 15px; }
 #list.dg tr[aria-selected=true] td { background: rgba(67, 218, 209, .08); } #list.dg tr[aria-selected=true] td:first-child { box-shadow: inset 3px 0 0 var(--edge); }
 .dgitem { display: grid; gap: 12px; } .dgih { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 14px; align-items: center; }
@@ -4016,7 +4018,7 @@ body[data-mode=dg] #cats .cath { color: var(--gold); border-bottom: 1px solid va
       if (q && d.name.toLowerCase().indexOf(q) < 0) return;
       if (g !== last) { last = g; h += '<div class="cath">' + dgGroupName(g) + "</div>"; }
       n++;
-      h += '<button class="cat" type="button" data-dg="' + i + '" aria-pressed="' + (dgSel === i) + '" title="' + esc(d.name) + '"><em class="nm">' + esc(d.name) + "</em>" + (d.forever ? '<b class="tag fv" title="Forever">FV</b>' : "") + "<span>" + (d.raid ? d.players + "p" : d.min + "–" + d.max) + "</span></button>";
+      h += '<button class="cat" type="button" data-dg="' + i + '" aria-pressed="' + (dgSel === i) + '" title="' + esc(d.name) + '"><em class="nm">' + esc(d.name) + "</em><span>" + (d.raid ? d.players + "p" : d.min + "–" + d.max) + "</span></button>";
     });
     return n ? h : '<div class="note dgnone">' + t("dg_find_none") + "</div>";
   }
@@ -4095,7 +4097,7 @@ body[data-mode=dg] #cats .cath { color: var(--gold); border-bottom: 1px solid va
     return '<div class="dgcard' + (bg ? " hasbg" : "") + '"' + (bg ? ' style="--dgbg:url(&quot;' + esc(bg) + '&quot;)"' : "") + '><div class="dgcrumb">' + t("dg_crumb") + " / " + esc(dgGroupName(g)) + "</div>" +
       '<button class="lnk dgcopy" type="button" data-copyany="#dungeon=' + d.map + '" title="' + t("copy_link") + '">' + t("copy_link") + "</button>" +
       "<h1>" + esc(d.name) + '</h1><div class="dgmeta"><span><b>' + t("dg_meta_lv", d.min + "–" + d.max) + "</b></span><span>" + t("dg_n_players", d.players) + "</span><span>" + t("dg_n_bosses", d.bosses.length) + "</span><span>" + t("dg_n_drops", nDrops) + "</span></div>" +
-      (d.forever ? '<div class="dgfv"><b class="tag fv">FV</b> Forever</div>' : "") + "</div>" +
+      "</div>" +
       '<div class="dgbh"><h2>' + t("dg_bosses_h") + "</h2><span>" + t("dg_bosses_s") + '</span></div><div class="dgbosses">' + d.bosses.map(function (x) {
         var on = !dgAllB && b && x.id === b.id, img = dgPicImg(d, x);
         return '<button type="button" class="dgbc' + (img ? "" : " noimg") + '" data-dgpick="' + x.id + '" aria-pressed="' + on + '"' + (!img && bg ? ' style="--dgbg:url(&quot;' + esc(bg) + '&quot;)"' : "") + ">" +
