@@ -802,6 +802,7 @@ h3 { font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-t
   .win { flex: 1 1 auto; min-height: 0; width: 100%; display: flex; flex-direction: column; }
   .win > .top, .win > .bar, .win > .foot { flex: none; }   /* sidhuvudet får inte krympa när innehållet växer (Joakim 2026-11-17: strecket under emblemet hoppade) */
   .cols { flex: 1 1 auto; min-height: 0; grid-template-rows: minmax(0, 1fr); align-items: stretch; }
+  .win > .homev { position: relative; flex: 1 1 auto; min-height: 0; overflow: auto; align-content: start; scrollbar-width: thin; scrollbar-color: var(--edge) var(--inset); }   /* startsidan rullar (Joakim 2026-11-20: "den stoppar") */
   .left, .right { display: flex; flex-direction: column; min-height: 0; }
   .cats { align-self: stretch; min-height: 0; overflow: auto; scrollbar-width: thin; scrollbar-color: var(--edge) var(--inset); }
   .left .scroll, .left .armory, .right .detail { flex: 1 1 auto; min-height: 0; overflow: auto; scrollbar-width: thin; scrollbar-color: var(--edge) var(--inset); }
@@ -1075,7 +1076,7 @@ body[data-mode=cl] .ttrees { gap: 8px; } body[data-mode=cl] .ttree { padding: 6p
 @media (max-width: 1100px) { body[data-mode=cl] .cols { grid-template-columns: minmax(0, 1fr); } }
 /* Startsidan (Joakim 2026-11-20: "ingen början att gå till"): loggan leder hit, en adress utan # landar här */
 body[data-home] .cols, body[data-home] #sect, body[data-home] #q, body[data-home] #qbtn, body[data-home] .subrow, body[data-home] #count { display: none !important; }
-.homev { display: grid; gap: 12px; margin-top: 12px; }
+.homev { display: grid; gap: 12px; margin-top: 0; padding: 12px 18px 18px; }
 .homev[hidden] { display: none; }
 .hhero { display: flex; align-items: center; justify-content: space-between; gap: 10px 24px; flex-wrap: wrap; padding: 16px 20px; }
 .hhero h2 { margin: 0; font-family: var(--display); color: var(--gold); font-size: 26px; font-weight: 400; }
@@ -1093,6 +1094,12 @@ body[data-home] .cols, body[data-home] #sect, body[data-home] #q, body[data-home
 @media (max-width: 1250px) { .hrow { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 700px) { .hrow { grid-template-columns: minmax(0, 1fr); } }
 .hbox { padding: 12px 14px; }
+/* Bakgrundsbild i rutan (Joakim 2026-11-20, som goldcap men ljusare): bilden syns i rubrikbandet och tonas bort under listan */
+.hbox.hbg { background: linear-gradient(180deg, rgba(18, 13, 9, .18) 0, rgba(18, 13, 9, .72) 64px, rgba(15, 11, 8, .93) 150px), var(--hbg) center 35% / cover no-repeat, var(--panel); border-color: rgba(201, 162, 90, .45); }
+.hbox.hbg h3 { text-shadow: 0 1px 3px #000, 0 0 10px rgba(0, 0, 0, .8); padding-bottom: 26px; }
+.hbox.hbg h3 a { color: #e8dcc4; }
+.hhero.hbg { background: linear-gradient(90deg, rgba(15, 11, 8, .92) 0, rgba(15, 11, 8, .6) 50%, rgba(15, 11, 8, .15) 100%), var(--hbg) center 42% / cover no-repeat, var(--panel); min-height: 120px; }
+.hhero.hbg h2, .hhero.hbg p { text-shadow: 0 1px 3px #000; } .hhero.hbg p { color: #d8ccb4; }
 .hbox h3 { margin: 0 0 8px; font-family: var(--display); color: var(--gold); font-size: 16px; font-weight: 400; display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
 .hbox h3 a { font-family: var(--body); font-size: 12.5px; color: var(--grey); text-decoration: none; } .hbox h3 a:hover { color: var(--gold); }
 .hlist { display: grid; gap: 1px; }
@@ -5270,6 +5277,21 @@ body[data-home] .cols, body[data-home] #sect, body[data-home] #q, body[data-home
   // Startsidan (Joakim 2026-11-20): flikarna som rutor, billigt just nu, din lista och dina spelare. Länkarna är vanliga
   // #-adresser, så bakåt, mittenklick och kopiera fungerar som överallt; popstate ritar sidan från adressen.
   var homeRaf = 0, homeRecTry = false;
+  // Rutornas bakgrunder: [eget motiv home-<namn>.webp, Blizzards bild som gäller tills det finns]. "" = din stads panorama.
+  var HOME_BG = { hero: ["", ""], cheap: ["barrens", "dg-wailing-caverns"], rise: ["winterspring", "dg-scholomance"], hot: ["auction-house", ""], gph: ["ungoro", "dg-maraudon"],
+    craft: ["ironforge", "dg-blackrock-depths"], dayt: ["booty-bay", "dg-zulgurub"], watch: ["ashenvale", "dg-blackfathom-deeps"], ppl: ["thunder-bluff", "dg-dire-maul"] };
+  var homeBgOk = {};
+  function homeBg(k) {
+    if (!ASSET_BASE) return "";
+    var x = HOME_BG[k], B = ASSET_BASE + "backgrounds/", city = B + (mySide() === "alliance" ? "alliance-stormwind" : "horde-orgrimmar") + ".webp";
+    if (x[0]) {
+      var want = B + "home-" + x[0] + ".webp";
+      if (homeBgOk[want] == null) { homeBgOk[want] = false; var im = new Image(); im.onload = function () { homeBgOk[want] = true; homeLater(); }; im.src = want; }
+      if (homeBgOk[want]) return want;
+    }
+    return x[1] ? B + x[1] + ".webp" : city;
+  }
+  function hbgAttr(k) { var u = homeBg(k); return u ? ' style="--hbg:url(&quot;' + u + '&quot;)"' : ""; }
   function homeOpen() {
     homeOn = true; document.body.setAttribute("data-home", "1"); $("homev").hidden = false;
     try {
@@ -5311,25 +5333,25 @@ body[data-home] .cols, body[data-home] #sect, body[data-home] #q, body[data-home
     var craft = D && RECEPT ? crRows.filter(function (x) { var o = byId[x.rc.item]; return x.hasProfit && x.profit > 0 && x.day >= 5 && o && o.qty >= 3; }).sort(function (a, b) { return b.profit - a.profit; }).slice(0, 8) : [];
     var wl = D ? watch.map(function (w) { return byId[w.id]; }).filter(Boolean).slice(0, 8) : [];
     var seen = {}, ppl = arFriends.concat(arRecent).filter(function (r) { var k = (r.kind === "guild" ? "g" : "c") + r.slug; if (seen[k]) return false; seen[k] = 1; return true; }).slice(0, 14);
-    var box = function (h, all, body) { return '<div class="inset hbox"><h3><span>' + h + "</span>" + (all ? '<a href="' + all + '">' + t("h_all") + "</a>" : "") + "</h3>" + body + "</div>"; };
+    var box = function (h, all, body, k) { return '<div class="inset hbox' + (ASSET_BASE ? " hbg" : "") + '"' + hbgAttr(k) + "><h3><span>" + h + "</span>" + (all ? '<a href="' + all + '">' + t("h_all") + "</a>" : "") + "</h3>" + body + "</div>"; };
     var list = function (L, f2, none) { return L.length ? '<div class="hlist">' + L.map(f2).join("") + "</div>" : '<div class="hnone">' + t(D ? none || "h_none" : "h_cheap_none") + "</div>"; };
-    el.innerHTML = '<div class="inset hhero"><div><h2>' + t("h_title") + "</h2><p>" + t("h_sub") + '</p></div><button class="wowbtn" type="button" data-hsearch="1">' + t("h_search") + "</button></div>" +
+    el.innerHTML = '<div class="inset hhero' + (ASSET_BASE ? " hbg" : "") + '"' + hbgAttr("hero") + "><div><h2>" + t("h_title") + "</h2><p>" + t("h_sub") + '</p></div><button class="wowbtn" type="button" data-hsearch="1">' + t("h_search") + "</button></div>" +
       '<div class="htiles">' + tiles + "</div>" +
       '<div class="hrow">' +
-        box(t("h_cheap"), "#tab=tr&v=cheap" + mk, list(cheap, function (r) { return li(r, "#tab=tr&v=cheap&item=" + r.id + mk); })) +
-        box(t("h_rise"), "", list(rising, function (r) { return li(r, "#item=" + r.id + mk); })) +
-        box(t("h_hot"), "", list(hot, function (r) { return row("#item=" + r.id + mk, iconHtml(r), r.name, r.q, money(r.min), '<small class="dim">' + t("h_per_day", num(r.day)) + "</small>"); })) +
+        box(t("h_cheap"), "#tab=tr&v=cheap" + mk, list(cheap, function (r) { return li(r, "#tab=tr&v=cheap&item=" + r.id + mk); }), "cheap") +
+        box(t("h_rise"), "", list(rising, function (r) { return li(r, "#item=" + r.id + mk); }), "rise") +
+        box(t("h_hot"), "", list(hot, function (r) { return row("#item=" + r.id + mk, iconHtml(r), r.name, r.q, money(r.min), '<small class="dim">' + t("h_per_day", num(r.day)) + "</small>"); }), "hot") +
         box(t("h_gph"), "#tab=cr" + mk, list(gp, function (x) {
           return row("#gather=" + x.g.key + "&band=" + (x.k + 1) + mk, ASSET_BASE ? '<img class="ic" src="' + ASSET_BASE + "icons/" + x.g.icon + '.jpg" width="18" height="18" alt="">' : "", x.g.name + (x.g.de ? " · " + t("ga_de") : ""), -1,
             '<small class="dim">' + t("ga_band", GA_BANDS[x.k][0], GA_BANDS[x.k][1]) + "</small>", '<span class="down2">' + gaMoney(x.v) + "/h</span>");
-        })) +
+        }), "gph") +
         box(t("h_craft"), "#tab=cr" + mk, D && !RECEPT ? '<div class="hnone">' + t("h_cheap_none") + "</div>" : list(craft, function (x) {
           var o = byId[x.rc.item];
           return row("#recipe=" + x.rid + mk, iconHtml(o), x.name, o.q, money(x.sell), '<span class="down2">+' + moneyText(x.profit) + "</span>");
-        })) +
-        box(t("h_dayt"), "#tab=tr&v=bs" + mk, list(dayt, function (r) { return row("#tab=tr&v=bs&item=" + r.id + mk, iconHtml(r), r.name, r.q, money(r.min), tradeHtml(r)); })) +
-        box(t("h_watch"), "", wl.length ? '<div class="hlist">' + wl.map(function (r) { return li(r, "#item=" + r.id + mk); }).join("") + "</div>" : '<div class="hnone">' + t("h_watch_none") + "</div>") +
-        box(t("h_players"), "#tab=ar", ppl.length ? '<div class="hchips">' + ppl.map(function (r) { return '<a href="' + (r.kind === "guild" ? "#guild=" : "#player=") + esc(r.slug) + '">' + (r.kind === "guild" ? "&lt;" + esc(r.label) + "&gt;" : esc(r.label)) + "</a>"; }).join("") + "</div>" : '<div class="hnone">' + t("h_players_none") + "</div>") +
+        }), "craft") +
+        box(t("h_dayt"), "#tab=tr&v=bs" + mk, list(dayt, function (r) { return row("#tab=tr&v=bs&item=" + r.id + mk, iconHtml(r), r.name, r.q, money(r.min), tradeHtml(r)); }), "dayt") +
+        box(t("h_watch"), "", wl.length ? '<div class="hlist">' + wl.map(function (r) { return li(r, "#item=" + r.id + mk); }).join("") + "</div>" : '<div class="hnone">' + t("h_watch_none") + "</div>", "watch") +
+        box(t("h_players"), "#tab=ar", ppl.length ? '<div class="hchips">' + ppl.map(function (r) { return '<a href="' + (r.kind === "guild" ? "#guild=" : "#player=") + esc(r.slug) + '">' + (r.kind === "guild" ? "&lt;" + esc(r.label) + "&gt;" : esc(r.label)) + "</a>"; }).join("") + "</div>" : '<div class="hnone">' + t("h_players_none") + "</div>", "ppl") +
       "</div>";
   }
   // Flikar och globala sökningen stänger startsidan; fliken som redan var vald skriver sin adress efteråt.
