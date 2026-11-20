@@ -1,19 +1,12 @@
 {
- "t": "2026-11-19T18:38:23.664Z",
+ "t": "2026-11-20T09:07:54.804Z",
  "videos": [
   {
-   "id": "u4FhXhrNdgE",
-   "title": "GTA 6 #1: Äntligen är det HÄR!",
+   "id": "AnYva92PX68",
+   "title": "GTA 6 #2: POLISEN JAGAR MIG i Grand Theft Auto VI",
    "channel": "ChrisWhippit",
    "handle": "@chriswhippit",
-   "at": "2026-11-19T14:30:26Z"
-  },
-  {
-   "id": "CZJIMzrNqWo",
-   "title": "Vi bygger om ALLT i Waterpark Simulator med UfoSXM",
-   "channel": "ChrisWhippit",
-   "handle": "@chriswhippit",
-   "at": "2026-11-18T05:30:10Z"
+   "at": "2026-11-20T05:30:31Z"
   },
   {
    "id": "EsatraGPFfk",
@@ -21,6 +14,13 @@
    "channel": "ChrisWhippit",
    "handle": "@chriswhippit",
    "at": "2026-11-19T05:30:32Z"
+  },
+  {
+   "id": "u4FhXhrNdgE",
+   "title": "GTA 6 #1: Äntligen är det HÄR!",
+   "channel": "ChrisWhippit",
+   "handle": "@chriswhippit",
+   "at": "2026-11-19T14:30:26Z"
   },
   {
    "id": "9XSzCQFFMyc",
@@ -38,7 +38,7 @@
   }
  ],
  "counts": {
-  "chriswhippit": 4606,
+  "chriswhippit": 4607,
   "whippitsson": 534,
   "figgwhipp": 2848,
   "whippitextra": 126
@@ -162,6 +162,12 @@
   ],
   "gta-5": [
    {
+    "id": "AnYva92PX68",
+    "title": "GTA 6 #2: POLISEN JAGAR MIG i Grand Theft Auto VI",
+    "at": "2026-11-20T05:30:31Z",
+    "list": ""
+   },
+   {
     "id": "u4FhXhrNdgE",
     "title": "GTA 6 #1: Äntligen är det HÄR!",
     "at": "2026-11-19T14:30:26Z",
@@ -225,12 +231,6 @@
     "id": "7j1GkHNt4l4",
     "title": "TVÅ 40-ÅRINGAR GNÄLLAR I GTA V *Race med figgehn & Sowi*",
     "at": "2023-08-04T07:00:06Z",
-    "list": "PLpinm9x4zUokXmRLV02nlqJUlFDnRn9vB"
-   },
-   {
-    "id": "PWjmf5XIq9g",
-    "title": "JAG GLITCHAR & BUGGAR GENOM VÄGEN I GTA V",
-    "at": "2023-07-26T07:00:12Z",
     "list": "PLpinm9x4zUokXmRLV02nlqJUlFDnRn9vB"
    }
   ],
@@ -544,9 +544,9 @@
  },
  "media": {
   "chriswhippit": {
-   "views": 244374000,
-   "avgViews": 5600,
-   "avgSample": 9,
+   "views": 244402000,
+   "avgViews": 5400,
+   "avgSample": 10,
    "uploads30": 50
   },
   "whippitsson": {
@@ -556,16 +556,16 @@
    "uploads30": 0
   },
   "figgwhipp": {
-   "views": 97260000,
+   "views": 97262000,
    "avgViews": 0,
    "avgSample": 0,
    "uploads30": 0
   },
   "whippitextra": {
-   "views": 309000,
+   "views": 310000,
    "avgViews": 2600,
    "avgSample": 18,
-   "uploads30": 48
+   "uploads30": 47
   }
  }
 }
