@@ -1405,6 +1405,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
 .mstats > summary::-webkit-details-marker { display: none; }
 .mstats > summary::before { content: "›"; font-size: 20px; line-height: 1; transition: transform .15s; } .mstats[open] > summary::before { transform: rotate(90deg); }
 .dgwtip { margin: 2px 0 4px; }
+.dgfvpic { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 8px; border: 1px solid var(--line); margin: 6px 0 4px; }
 .wtip.inl { position: static; pointer-events: auto; max-width: none; min-width: 0; width: auto; box-shadow: none; margin-top: 4px; }
 @media (max-width: 1100px) {
   .win { overflow: clip; }   /* clip i stället för hidden: Tillbaka-raden kan stå kvar överst (sticky) */
@@ -5169,7 +5170,11 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
   var DG_SLOTS = ["Head", "Neck", "Shoulder", "Back", "Chest", "Shirt", "Tabard", "Wrist", "Hands", "Waist", "Legs", "Feet", "Finger", "Trinket", "One-Hand", "Two-Hand", "Main Hand", "Off Hand", "Held In Off-hand", "Ranged", "Thrown", "Relic"];
   function dgSlot(id) { var m = DG && DG.items[id], L = m && m[4] || []; for (var i = 0; i < L.length; i++) if (DG_SLOTS.indexOf(L[i][0]) >= 0) return L[i][0]; return ""; }
   function dgCurBoss(d) { if (!d || dgAllB) return null; var b = null; d.bosses.forEach(function (x) { if (x.id === dgBoss) b = x; }); return b || d.bosses[0] || null; }
-  function dgPicImg(d, b) { return b && b.disp ? "https://render.worldofwarcraft.com/eu/npcs/zoom/creature-display-" + b.disp + ".jpg" : ""; }
+  // Forevers nya dungeons har inga bilder hos Blizzard: Joakims egna (2026-11-22, PROMPT-DUNGEON-BILDER.md) i
+  // publik/assets/dungeons/<dungeon>/ (banner.webp 1600×533, boss-<namn>.webp 640×480).
+  var DG_FV_PIC = { "Hall of Thanes": { dir: "hall-of-thanes", boss: { "Faldrim Anvilmar": "boss-faldrim-anvilmar", "Magmatus": "boss-magmatus", "Plunder": "boss-plunder", "Durgen Dirgehammer": "boss-durgen-dirgehammer" } } };
+  function dgFvPic(d, b) { var f = d && DG_FV_PIC[d.name], k = f && b && f.boss[b.name]; return k && ASSET_BASE ? ASSET_BASE + "dungeons/" + f.dir + "/" + k + ".webp" : ""; }
+  function dgPicImg(d, b) { return b && b.disp ? "https://render.worldofwarcraft.com/eu/npcs/zoom/creature-display-" + b.disp + ".jpg" : dgFvPic(d, b); }
   var FLN = {};   // namn och kvalitet för föremål som bara finns i Forever-loggen
   function dgName(id) { var r = byId[id], m = DG && DG.items[id]; return r && r.name ? r.name : m ? m[0] : FLN[id] ? FLN[id][0] : "Item " + id; }
   function dgRefresh(q) {
@@ -5215,7 +5220,8 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     "The Deadmines": "deadmines", "The Stockade": "stockade", "Gnomeregan": "gnomeregan", "Scholomance": "scholomance", "Ragefire Chasm": "ragefire-chasm", "Molten Core": "molten-core", "Naxxramas": "naxxramas", "Ruins of Ahn'Qiraj": "ahnqiraj-20", "Temple of Ahn'Qiraj": "ahnqiraj-40",
     "Onyxia's Lair": "onyxia", "Stratholme": "stratholme", "Blackwing Lair": "blackwing-lair" };
   var DG_BG_OK = null;   // vilka bilder som finns (assets/backgrounds/dg-index.json), null = okänt: alla antas finnas
-  function dgBg(d) { var k = DG_BG[d.name]; return k && (!DG_BG_OK || DG_BG_OK[k]) ? ASSET_BASE + "backgrounds/dg-" + k + ".webp" : ""; }
+  function dgBg(d) { var fv = DG_FV_PIC[d.name]; if (fv && ASSET_BASE) return ASSET_BASE + "dungeons/" + fv.dir + "/banner.webp";
+    var k = DG_BG[d.name]; return k && (!DG_BG_OK || DG_BG_OK[k]) ? ASSET_BASE + "backgrounds/dg-" + k + ".webp" : ""; }
   function dgHeadHtml() {
     if (query) return '<div class="dglh"><h2>' + t("dg_search_res") + "</h2><span>" + t("dg_n_items", view.filter(function (x) { return !x.hd; }).length) + "</span></div>";
     var d = dgList[dgSel]; if (!d) return "";
@@ -5295,7 +5301,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     }).join("");
     $("detail").innerHTML = '<div class="strip"><button class="lnk" type="button" data-copyany="#dungeon=' + d.map + "&boss=" + b.id + '" title="' + t("copy_link") + '">' + t("copy_link") + "</button><h2>" + (b.disp ? drk(false, true, '<img class="ci" src="https://render.worldofwarcraft.com/eu/npcs/zoom/creature-display-' + b.disp + '.jpg" alt="" onerror="this.parentNode.parentNode.remove()">', true) : "") + esc(b.name) + "</h2><small>" +
       esc(d.name) + (b.lvl ? " · " + t("dg_boss_lvl", b.lvl) : "") + "</small></div>" +
-      (b.m3 ? portraitHtml(b.disp, false, b.m3, "", dgBg(d)).replace('<div class="portr', '<div data-snap="#detail .strip h2 .drk .rn img" class="portr') : dgBg(d) ? '<div class="portr hasbg banner" style="--pbg:url(' + esc(dgBg(d)) + ')"></div>' : "") +   // utan modell: bara dungeonbilden
+      (b.m3 ? portraitHtml(b.disp, false, b.m3, "", dgBg(d)).replace('<div class="portr', '<div data-snap="#detail .strip h2 .drk .rn img" class="portr') : dgFvPic(d, b) ? '<img class="dgfvpic" src="' + esc(dgFvPic(d, b)) + '" alt="" loading="lazy">' : dgBg(d) ? '<div class="portr hasbg banner" style="--pbg:url(' + esc(dgBg(d)) + ')"></div>' : "") +   // utan modell: bara dungeonbilden
       '<div><button class="lnk" type="button" data-dg="' + dgSel + '">' + t("dg_back") + "</button></div>" +
       '<div id="dgab">' + dgAbHtml(b) + "</div>";
     if (!BOSSAB) loadBossAb().then(function () { var el = $("dgab"); if (el && mode === "dg") el.innerHTML = dgAbHtml(b); }).catch(function () {});
