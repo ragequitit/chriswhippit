@@ -1400,6 +1400,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
 .mstats { margin: 0; } .mstats > summary { list-style: none; cursor: pointer; display: flex; align-items: center; gap: 6px; min-height: 40px; font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: var(--gold); }
 .mstats > summary::-webkit-details-marker { display: none; }
 .mstats > summary::before { content: "›"; font-size: 20px; line-height: 1; transition: transform .15s; } .mstats[open] > summary::before { transform: rotate(90deg); }
+.dgwtip { margin: 2px 0 4px; }
 .wtip.inl { position: static; pointer-events: auto; max-width: none; min-width: 0; width: auto; box-shadow: none; margin-top: 4px; }
 @media (max-width: 1100px) {
   .win { overflow: clip; }   /* clip i stället för hidden: Tillbaka-raden kan stå kvar överst (sticky) */
@@ -5235,11 +5236,15 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     var big = r && r.ic && ICON_BASE ? '<img class="dgbig ' + qcls(q) + '" src="' + ICON_BASE + r.ic + '.jpg" alt="">' : xIcon(id, q).replace('class="', 'class="dgbig ');
     $("detail").scrollTop = 0;
     $("detail").innerHTML = '<div class="dgitem"><div class="dgih">' + big + '<div><h2 class="' + qcls(q) + '"' + (r || hasGameTip(id) ? ' data-tip="' + id + '"' : ' data-dgtip="' + id + '"') + ">" + esc(r && r.name ? r.name : m[0]) + '</h2><div class="dgiq">' + (q >= 0 ? '<span class="qb ' + qcls(q) + '">' + QNAME[q] + "</span>" : "") + (slot ? "<span>" + esc(slot) + "</span>" : "") + (styp ? "<span>" + esc(styp) + "</span>" : "") + (m[2] ? "<span>" + t("dg_ilvl") + " " + m[2] + "</span>" : "") + "</div></div></div>" +
-      (lines ? '<div class="dgtip">' + lines + "</div>" : "") +
+      (r || hasGameTip(id) ? '<div id="dgtipbox">' + (lines ? '<div class="dgtip">' + lines + "</div>" : "") + "</div>" : lines ? '<div class="dgtip">' + lines + "</div>" : "") +
       (from.length ? "<h4>" + t("dg_drops_from") + "</h4>" + dgFromHtml(from) : "") +
       '<div class="dgbtns">' + (r ? '<a class="dgview" href="#item=' + id + (house !== 113 ? "&m=" + house : "") + '">' + t("dg_view") + " →</a>" : '<a class="dgview" href="https://www.wowhead.com/forever/item=' + id + '" target="_blank" rel="noopener">' + t("qu_wowhead") + "</a>") +
         (r ? '<button type="button" class="dgwatch" data-star="' + id + '" aria-pressed="' + watched(id) + '">' + (watched(id) ? "★ " + t("dg_watch_on") : "☆ " + t("dg_watch_add")) + "</button>" : "") + "</div>" +
       '<div class="dgah">' + (r && r.min > 0 ? t("dg_ah_on", money(r.min), num(r.qty)) : t("dg_ah_none")) + "</div></div>";
+    if (TIP_BASE && (r || hasGameTip(id))) tipFile(id % 100).then(function (tm) {
+      var h = tm && tm[id], el = $("dgtipbox");
+      if (h && el && mode === "dg" && dgItem === id) el.innerHTML = '<div class="wtip inl dgwtip">' + h + "</div>";
+    });
   }
   // Bossens förmågor (hamta-bossformagor.js: cmangos + Forevers klientdata), laddas första gången en boss visas.
   var BOSSAB = null, bossAbPromise = null;
