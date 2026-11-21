@@ -1384,6 +1384,11 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
    (data-sx). ≤ 760 px dessutom: kant till kant, sidhuvudet i två rader (Style-valet i sidfoten), flikarna med ikon över
    text, klickytor minst 44 px. ≤ 520 px: kolumner som inte ryms döljs. Granskning 2026-11-21: nio granskare. */
 .mbar, .mwatch { display: none; }
+/* spelstats som hopfällbar sektion (bara på touch/mobil, mobStats i JS) */
+.mstats { margin: 0; } .mstats > summary { list-style: none; cursor: pointer; display: flex; align-items: center; gap: 6px; min-height: 40px; font-family: var(--display); font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: var(--gold); }
+.mstats > summary::-webkit-details-marker { display: none; }
+.mstats > summary::before { content: "›"; font-size: 20px; line-height: 1; transition: transform .15s; } .mstats[open] > summary::before { transform: rotate(90deg); }
+.wtip.inl { position: static; pointer-events: auto; max-width: none; min-width: 0; width: auto; box-shadow: none; margin-top: 4px; }
 @media (max-width: 1100px) {
   .win { overflow: clip; }   /* clip i stället för hidden: Tillbaka-raden kan stå kvar överst (sticky) */
   /* kategorierna: panelerna (spelarval, filter) i full bredd, knapparna i rader som rullar i sidled */
@@ -1503,6 +1508,21 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
   td { border-bottom-color: rgba(255, 255, 255, .06); }   /* radlinjen syns på telefon */
   .qplayer select, .dgtools select, .crq, .seg .lbl input { font-size: 16px; }   /* iPhone zoomar inte in i fält med 16 px */
   :root { --q3: #2f8df0; --q4: #b45ff5; }   /* blå/lila varunamn läsbara på telefon (kontrast ≥ 4,5:1) */
+  /* bottennavigering: fem flikar fast i underkanten (mobNav i JS), resten i rutan "More" ovanför */
+  .mode, [data-appearance=atlas] .mode { position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; margin: 0; padding: 0 0 env(safe-area-inset-bottom, 0px); border-bottom: 0; border-top: 1px solid var(--bronze); overflow: visible; -webkit-mask-image: none; mask-image: none; }
+  .mode button, [data-appearance=atlas] .mode button { flex: 1 1 0; min-width: 0; height: 56px; padding: 4px 2px 2px; font-size: 11px; letter-spacing: 0; }
+  .mode button > span { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .mode button[aria-pressed=true], [data-appearance=atlas] .mode button[aria-pressed=true] { box-shadow: inset 0 3px 0 var(--edge); }
+  .mode .mdots { display: block; height: 28px; font-size: 26px; line-height: 26px; }
+  body { padding-bottom: calc(58px + env(safe-area-inset-bottom, 0px)); }
+  .subrow { margin-top: 0; } .sub2 { margin-top: -8px; }
+  .qmtoast { bottom: calc(74px + env(safe-area-inset-bottom, 0px)); }
+  .mmore { position: fixed; left: 8px; right: 8px; bottom: calc(66px + env(safe-area-inset-bottom, 0px)); z-index: 29; display: grid; grid-template-columns: 1fr 1fr; gap: 6px; padding: 8px; background: #1B140F; border: 1px solid #7A5739; border-radius: 8px; box-shadow: 0 12px 30px rgba(0, 0, 0, .55); }
+  [data-appearance=atlas] .mmore { background: #142130; border-color: #3F5D6E; }
+  .mmore[hidden] { display: none; }
+  .mmore button { all: unset; box-sizing: border-box; cursor: pointer; display: flex; align-items: center; gap: 8px; min-height: 48px; padding: 0 10px; border-radius: 6px; border: 1px solid var(--line); font-size: 14px; font-weight: 600; color: var(--fg); background: linear-gradient(#1F1813, #161210); }
+  .mmore button[aria-pressed=true] { color: var(--edge); background: var(--sel); border-color: var(--edge); }
+  .mmore .ai { display: block; width: 28px; height: 28px; object-fit: contain; } .mmore .mi { display: none; } .mmore .ai:not([src]) { visibility: hidden; }
 }
 @media (max-width: 520px) {
   /* namnet tar den bredd som blir över, siffrorna så smala de kan */
@@ -2136,7 +2156,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
       gone_tag: "left out", f_usual: "Usual price", f_gear: "Sold one by one, like gear and recipes: the cheapest price, no percent (prices differ in gold).",
       empty: "No item matches the search.", more: "Show more (%1 more)", count: "%1 items",
       tab_item: "Item", tab_watch: "My list", pick: "Pick an item in the list.",
-      foot3: "Data from Blizzard's API and the game client", about: "About", about_close: "Close", nav_back: "‹ Back", nav_fwd: "Forward ›", m_list: "‹ Back", m_back_aria: "Back to the list",
+      foot3: "Data from Blizzard's API and the game client", about: "About", about_close: "Close", nav_back: "‹ Back", nav_fwd: "Forward ›", m_list: "‹ Back", m_back_aria: "Back to the list", m_more: "More", m_stats: "Item details",
       about_src_h: "Sources", about_legal_h: "Legal", about_data_h: "Data",
       about_s1: "Blizzard's API: auction prices, characters, guilds, quests, rewards and creature portraits.",
       about_s2: "The game client via <a href=\"https://github.com/Kruithne/wow.export\" target=\"_blank\" rel=\"noopener\">wow.export</a>: zone maps, flight paths, dungeon portals.",
@@ -5428,7 +5448,11 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
   // Tooltipen som i spelet när musen är över en varas namn eller ikon (data-tip = varu-id). Texten ligger bredvid
   // ikonerna (tips/<id % 100>.json, från Wowhead via build.js); utan ikoner (Claude-sidan) finns ingen tooltip.
   var TIP_BASE = ICON_BASE ? ICON_BASE.replace(/icons\/$/, "tips/") : "";
-  var tipBox = null, tipFiles = {}, tipId = 0, tipX = 0, tipY = 0;
+  var tipBox = null, tipFiles = {}, tipId = 0, tipX = 0, tipY = 0, NOHOVER = window.matchMedia("(hover: none)");
+  function mobStats(id) {   // touch/mobil (Joakim 2026-11-21): tooltipens stats (rustning, skada, kravnivå) som hopfällbar sektion i rutan
+    if (!$("mstats") || !TIP_BASE) return;
+    tipFile(id % 100).then(function (m) { var h = m && m[id], b = $("mstats"); if (b && h && selId === id) b.innerHTML = '<details class="mstats"><summary>' + t("m_stats") + '</summary><div class="wtip inl">' + h + "</div></details>"; });
+  }
   function tipFile(n) {
     if (!tipFiles[n]) tipFiles[n] = fetch(TIP_BASE + n + ".json").then(function (r) { return r.ok ? r.json() : {}; }).catch(function () { return {}; });
     return tipFiles[n];
@@ -5455,6 +5479,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     });
   }
   document.addEventListener("mouseover", function (e) {
+    if (NOHOVER.matches) return;   // touch: tryck ger ett låtsas-mouseover som skulle lämna tooltipen hängande
     var el = e.target && e.target.closest ? e.target.closest("[data-tip]") : null;
     if (el) showTip(+el.getAttribute("data-tip"));
     else {
@@ -5956,7 +5981,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     $("detail").innerHTML =
       '<div class="strip">' + starHtml(r.id, t(watched(r.id) ? "star_lbl_on" : "star_lbl_add")) +
       '<button class="lnk" type="button" data-copy="' + r.id + '" title="' + t("copy_link") + '"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M6.5 9.5l3-3M5 11l-1 1a2.5 2.5 0 01-3.5-3.5l2-2A2.5 2.5 0 016 6M11 5l1-1a2.5 2.5 0 013.5 3.5l-2 2A2.5 2.5 0 0110 10"/></svg>' + t("copy_link") + "</button>" + iconHtml(r, true) + '<h2 data-tip="' + r.id + '" class="' + qcls(r.q) + '">' + name + "</h2><small>" + t("item_n", r.id) + "</small></div>" +
-      '<dl class="facts">' + facts + "</dl>" + '<div id="ndfarm" style="display:contents"></div>' +
+      '<dl class="facts">' + facts + "</dl>" + (MOB.matches || NOHOVER.matches ? '<div id="mstats"></div>' : "") + '<div id="ndfarm" style="display:contents"></div>' +
       '<div><h3 class="row">' + t("per_scan") + rangeHtml() + '</h3><div id="chartBox"><div class="note">' + t("hist_loading") + "</div></div>" +
       '<div class="legend"><span><i style="background:#d6a83b"></i>' + t("col_min") + '</span><span><i style="background:#7ea2d6"></i>' + t("lg_qty") + "</span></div>" +
       '<div class="read" id="read">' + t("hover") + "</div></div>" +
@@ -5966,6 +5991,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
       "<div>" + stepsHtml(r) + "</div>" + '<div id="srcBox"></div>';
     srcFill(r.id);
     ndFarmFill(r.id);
+    mobStats(r.id);
     if (scroll && window.matchMedia("(max-width: 1100px)").matches) $("tabItem").scrollIntoView({ block: "start", behavior: "smooth" });
     // Historiken hämtas per dag (cache i histFile); bara det valda spannet, "Allt" = alla dagar.
     var secs = 0;
@@ -6622,7 +6648,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     }).observe(right, { childList: true, subtree: true, characterData: true, attributes: true, attributeFilter: ["hidden"] });
     // Flikar, underflikar, rubriken och sökningen visar listan igen – i capture-fasen, så vyn är borta innan appen pushar nästa steg.
     document.addEventListener("click", function (e) {
-      if (document.body.classList.contains("mdet") && e.target.closest && e.target.closest(".mode button, .subrow button, #sect, #qbtn, #home")) mobDet(false, true);
+      if (document.body.classList.contains("mdet") && e.target.closest && e.target.closest(".mode button, .mmore button, .subrow button, #sect, #qbtn, #home")) mobDet(false, true);
     }, true);
     $("q").addEventListener("input", function () { mobDet(false, true); });
     window.addEventListener("popstate", function (e) {
@@ -6636,13 +6662,15 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     var cats = $("cats");
     function mobCats() {
       if (!MOB.matches) return;
-      var kids = cats.querySelector(":scope > .cat, :scope > .cath") ? Array.prototype.slice.call(cats.children) : [], row = null;
+      var kids = cats.querySelector(":scope > .cat, :scope > .cath") ? Array.prototype.slice.call(cats.children) : [], rows = {}, row = null;
       kids.forEach(function (k) {
-        if (k.matches(".cat.hd")) { row = null; return; }   // rubriken på egen rad, så yrkena börjar på en ny
+        if (k.matches(".cat.hd")) { row = null; rows = {}; return; }   // rubriken på egen rad, så yrkena börjar på en ny
         if (k.matches(".cat, .cath, h2")) {
-          if (!row) { row = document.createElement("div"); row.className = "mcatrow"; cats.insertBefore(row, k); }
+          var L = k.classList.contains("sub2") ? 2 : k.classList.contains("sub") ? 1 : 0;   // en rad per nivå: kategorier, underkategorier, filter
+          row = rows[L];
+          if (!row) { row = rows[L] = document.createElement("div"); row.className = "mcatrow"; cats.insertBefore(row, k); }
           row.appendChild(k);
-        } else row = null;
+        } else { row = null; rows = {}; }
       });
       Array.prototype.forEach.call(cats.querySelectorAll(":scope > .mcatrow, :scope > #dglist"), function (r) {
         var on = r.querySelector('.cat[aria-pressed="true"]');
@@ -6663,6 +6691,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
         sxRaf = 0;
         Array.prototype.forEach.call(document.querySelectorAll(".subrow:not([hidden])"), function (sr) { stripShow(sr, ':scope > button[aria-pressed="true"]'); });
         Array.prototype.forEach.call(document.querySelectorAll(MOB_SX), mobSx);
+        if (mMore) mobShort();   // om texterna skrivits om (data-t)
       });
     }
     document.addEventListener("scroll", function (e) { if (MOB.matches && e.target && e.target.matches && e.target.matches(MOB_SX)) mobSx(e.target); }, true);
@@ -6675,6 +6704,40 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
       if (MOB7.matches) { if (appsel.parentNode !== foot) foot.insertBefore(appsel, foot.firstChild); }
       else if (appsel.parentNode !== appHome) appHome.insertBefore(appsel, appNext);
     }
+    // Bottennavigering på telefon (Joakim 2026-11-21): Auction, Crafting, Armory, Ranks, Quests fast i underkanten så tummen når
+    // dem och de syns i detaljvyn; Dungeons, Hunter pets, Collections, Classes i rutan "More". På datorn flyttas allt tillbaka.
+    var modeEl = document.querySelector(".mode"), mMore = null, mMoreBox = null, MOB_MORE = ["modeDg", "modeHu", "modeCo", "modeCl"], MOB_SHORT = { modeAh: "Auction", modeCr: "Crafting", modeLb: "Ranks" }, mobLbl = {};
+    function mobShort() { Object.keys(MOB_SHORT).forEach(function (id) { var sp = $(id) && $(id).querySelector("span"); if (sp && sp.textContent !== MOB_SHORT[id]) { if (!(id in mobLbl)) mobLbl[id] = sp.textContent; sp.textContent = MOB_SHORT[id]; } }); }
+    function mobMoreSync() {
+      if (!mMore) return;
+      var on = mMoreBox.querySelector('button[aria-pressed="true"]');
+      mMore.setAttribute("aria-pressed", on ? "true" : "false");
+      mMore.lastElementChild.textContent = on ? on.querySelector("span").textContent : t("m_more");
+    }
+    function mobMoreOpen(open) { if (!mMore) return; mMoreBox.hidden = !open; mMore.setAttribute("aria-expanded", open ? "true" : "false"); }
+    function mobNav() {
+      if (!modeEl) return;
+      if (MOB7.matches) {
+        if (mMore) return;
+        mMoreBox = document.createElement("div"); mMoreBox.className = "mmore"; mMoreBox.hidden = true; mMoreBox.setAttribute("role", "group");
+        MOB_MORE.forEach(function (id) { var b = $(id); if (b) mMoreBox.appendChild(b); });
+        document.body.appendChild(mMoreBox);
+        mMore = document.createElement("button"); mMore.type = "button"; mMore.id = "mMore"; mMore.setAttribute("aria-pressed", "false"); mMore.setAttribute("aria-expanded", "false"); mMore.setAttribute("aria-haspopup", "true");
+        mMore.innerHTML = '<span class="mdots" aria-hidden="true">⋯</span><span></span>';
+        modeEl.appendChild(mMore);
+        mobShort();
+        mMore.addEventListener("click", function () { mobMoreOpen(mMoreBox.hidden); });
+        mMoreBox.addEventListener("click", function (e) { if (e.target.closest("button")) mobMoreOpen(false); });
+        new MutationObserver(mobMoreSync).observe(mMoreBox, { attributes: true, subtree: true, attributeFilter: ["aria-pressed"] });
+        mobMoreSync();
+      } else if (mMore) {
+        MOB_MORE.forEach(function (id) { var b = $(id); if (b) modeEl.appendChild(b); });   // de fyra sista, i samma ordning som förut
+        Object.keys(mobLbl).forEach(function (id) { var sp = $(id) && $(id).querySelector("span"); if (sp) sp.textContent = mobLbl[id]; });
+        mMore.remove(); mMoreBox.remove(); mMore = null; mMoreBox = null; mobLbl = {};
+      }
+    }
+    document.addEventListener("click", function (e) { if (mMore && !mMoreBox.hidden && e.target.closest && !e.target.closest("#mMore, .mmore")) mobMoreOpen(false); }, true);
+    function mob7() { mobApp(); mobNav(); mobSxLater(); }
     // Kolumner som döljs på telefon, efter rubrikernas sorteringsnyckel (data-k).
     var MOB_HIDE = { cr: ["skill", "cost"], ga: ["skill", "units"], hu: ["speed", "zone"], tr: ["cat", "qty"], de: ["lvl"] };
     function mobCols() {
@@ -6687,16 +6750,16 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
       for (var i = 0; i < ths.length; i++) { var k = ths[i].querySelector("button[data-k]"); if (k && hide.indexOf(k.getAttribute("data-k")) >= 0) l.classList.add("mh" + (i + 1)); }
     }
     new MutationObserver(mobCols).observe($("head"), { childList: true });
-    mobCats(); mobApp(); mobSxLater();
+    mobCats(); mobApp(); mobNav(); mobSxLater();
     var mq = function () {
       if (MOB.matches) { mobCats(); if (!document.body.classList.contains("mdet") && history.state && history.state.md) mobState(0); }
       else {
-        mobUncats(); mobDet(false, true);
+        mobUncats(); try { drawCats(); } catch (e) {} mobDet(false, true);   // raderna hade ändrat ordningen: rita om spalten
         Array.prototype.forEach.call(document.querySelectorAll("[data-sx]"), function (x) { x.removeAttribute("data-sx"); });
         try { var st = Object.assign({}, history.state); if ("md" in st) { delete st.md; delete st.d; history.replaceState(st, ""); } } catch (e) {}   // datorn: bara { i }
       }
     };
-    if (MOB.addEventListener) { MOB.addEventListener("change", mq); MOB7.addEventListener("change", mobApp); } else if (MOB.addListener) { MOB.addListener(mq); MOB7.addListener(mobApp); }
+    if (MOB.addEventListener) { MOB.addEventListener("change", mq); MOB7.addEventListener("change", mob7); } else if (MOB.addListener) { MOB.addListener(mq); MOB7.addListener(mob7); }
   })();
   navDraw();
   document.addEventListener("keydown", function (e) {
@@ -8364,7 +8427,11 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
       h += '<button class="cat" type="button" data-clc="' + n.toLowerCase() + '" aria-pressed="' + on + '">' + classIcon(n) + '<em class="nm" style="color:' + clCol(n) + '">' + n + "</em>" + (on && !clFold ? "" : "<span>" + live + "</span>") + "</button>";
       if (!on || clFold) return;
       var faL = clFa ? (clFa === "H" ? "Horde" : "Alliance") : "";
-      var sub = function (v, lbl, n2, cur) { return '<button class="cat sub" type="button" data-clv="' + v + '" aria-pressed="' + (clView === v) + '"><em class="nm">' + lbl + (cur ? ' <small class="dim">' + cur + "</small>" : "") + "</em>" + (n2 != null ? "<span>" + n2 + "</span>" : "") + "</button>"; };
+      var sub = function (v, lbl, n2, cur) {
+        var h2 = '<button class="cat sub" type="button" data-clv="' + v + '" aria-pressed="' + (clView === v) + '"><em class="nm">' + lbl + (cur ? ' <small class="dim">' + cur + "</small>" : "") + "</em>" + (n2 != null ? "<span>" + n2 + "</span>" : "") + "</button>";
+        if (MOB.matches && clView === v) h2 += clFlyItems(v).map(function (x) { return '<button class="cat sub2" type="button" data-clfly="' + v + "|" + x[0] + "|" + esc(String(x[1])) + '" aria-pressed="' + x[4] + '"><em class="nm">' + x[2] + "</em>" + (x[3] != null ? "<span>" + num(x[3]) + "</span>" : "") + "</button>"; }).join("");   // mobil: samma val som rullgardinen, som en rad (hover finns inte på touch)
+        return h2;
+      };
       var tc = clTal(), used = tc ? talTotal(tc.c, clRanks) : 0;
       h += sub("guide", t("cl_v_guide"), KG && KG.classes && KG.classes[n] ? "1–60" : null);
       h += sub("tal", t("cl_v_tal"), used + "/" + TAL_MAX);
@@ -8415,7 +8482,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     clFlyEl.style.left = left + "px"; clFlyEl.style.top = top + "px";
   }
   document.addEventListener("mouseover", function (e) {
-    if (mode !== "cl" || !CL || !e.target.closest) return;
+    if (mode !== "cl" || !CL || !e.target.closest || MOB.matches) return;   // mobil: filtren ligger som rad i spalten
     var row = e.target.closest("#cats .cat.sub[data-clv]");
     clearTimeout(clFlyTimer);
     if (row) { if (row !== clFlyRow) clFlyTimer = setTimeout(function () { clFlyShow(row); }, 120); return; }
