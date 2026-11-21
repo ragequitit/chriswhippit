@@ -1141,6 +1141,8 @@ body[data-home] .cols, body[data-home] #sect, body[data-home] #q, body[data-home
 body[data-mode=qu] #detail .strip { padding: 7px 14px; } body[data-mode=qu] #detail .strip h2 { display: inline; font-size: 19px; }
 body[data-mode=qu] #detail .strip h2 + small { margin-left: 10px; white-space: nowrap; }
 .qtl > .qfacts { margin-top: 2px; } .qtl > .qrew { margin-top: 0; }
+.qmzc .huchip { display: inline-flex; align-items: center; gap: 8px; } .qmzs { display: inline-flex; align-items: center; gap: 3px; }
+.qmzs .qmq.in, .qmzs .qmk.in { margin: 0; } .qmzs .qmq.in.sm { font-size: 14px; line-height: 1; }
 .qchainw .qchain { columns: 2 260px; column-gap: 40px; } .qchainw .qchain li { break-inside: avoid; }
 @media (max-width: 1250px) { .qtop { grid-template-columns: minmax(0, 1fr); } .qtr { order: -1; } }
 /* Dungeons efter Joakims förslag (2026-11-20): välj dungeon → boss → loot */
@@ -3698,7 +3700,19 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     qmCur = { id: id, r: r };
     var zs = zones.indexOf(qmZone) >= 0 ? qmZone : zones[0] || "", h = "";
     qmCur.zs = zs;
-    if (zones.length > 1) h += '<div class="huchips">' + zones.map(function (z) { return '<button type="button" class="huchip' + (z === zs ? " on" : "") + '" data-qmz="' + esc(z) + '" aria-pressed="' + (z === zs) + '">' + esc(z) + "</button>"; }).join("") + "</div>";
+    // Zonflikarna visar vad som finns i varje zon: ! givaren, prickar i målens färger, ? inlämningen (Joakim 2026-11-21)
+    var zSyms = function (z) {
+      var out = "", seen = {};
+      P.forEach(function (p) {
+        var here = p.ents.some(function (e) { return e[4].some(function (pt) { return pt[0] === z; }); });
+        if (!here) return;
+        var k = p.k === "s" || p.k === "e" ? p.k : "o" + p.col;
+        if (seen[k]) return; seen[k] = 1;
+        out += p.k === "s" || p.k === "e" ? '<b class="qmq ' + p.k + ' in sm">' + (p.k === "s" ? "!" : "?") + "</b>" : '<i class="qmk in" style="--c:' + p.col + '"></i>';
+      });
+      return out;
+    };
+    if (zones.length > 1) h += '<div class="huchips qmzc">' + zones.map(function (z) { return '<button type="button" class="huchip' + (z === zs ? " on" : "") + '" data-qmz="' + esc(z) + '" aria-pressed="' + (z === zs) + '">' + esc(z) + '<span class="qmzs">' + zSyms(z) + "</span></button>"; }).join("") + "</div>";
     if (zs) {
       // Spelets questområden: målindex 0–3 = döda/använda i ordning, 4–7 = föremålen, −1 = inlämningen.
       var kIdx = [], iIdx = [];
