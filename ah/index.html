@@ -1243,6 +1243,59 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
 .hxli .nm small { font-size: 12px; }
 @media (max-width: 1250px) { .rdgrid { grid-template-columns: minmax(0, 1fr); } .rdrow { grid-template-columns: minmax(0, 1fr); } }
 @media (max-width: 700px) { .rdfacts { grid-template-columns: repeat(2, minmax(0, 1fr)); } .rdchains { grid-template-columns: minmax(0, 1fr); } }
+/* Nybörjarguiden 1–60 i Classes (Joakim 2026-11-21): huvud, block per tiotal level, en rad per level */
+.clguide { padding: 16px 18px 24px; display: grid; gap: 16px; container-type: inline-size; }
+.kghead { display: flex; gap: 14px; align-items: flex-start; }
+.kghead > .ri { width: 58px; height: 58px; border-radius: 8px; border: 1px solid #000; box-shadow: 0 0 0 1px var(--cc), 0 6px 14px rgba(0, 0, 0, .45); flex: none; }
+.kghead h2 { margin: 0; font: 400 24px/1.2 var(--display); color: var(--fg); text-transform: none; }
+.kghead p { margin: 6px 0 0; color: var(--fg); font-size: 14.5px; line-height: 1.5; max-width: 72ch; }
+.kgfacts { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.kgfacts > div { padding: 9px 12px; border: 1px solid var(--line); border-radius: 7px; background: rgba(255, 255, 255, .03); min-width: 0; }
+.kgfacts dt { font: 500 11.5px var(--display); letter-spacing: .06em; text-transform: uppercase; color: var(--grey); margin-bottom: 4px; }
+.kgfacts dd { margin: 0; font-size: 14px; color: var(--fg); } .kgfacts dd small { color: var(--grey); margin-left: 4px; }
+.kgfacts .ri { width: 18px; height: 18px; vertical-align: -4px; margin-right: 6px; border-radius: 3px; }
+.kgdiff { display: inline-flex; gap: 3px; margin-right: 8px; vertical-align: 1px; } .kgdiff i { width: 9px; height: 9px; border-radius: 50%; background: rgba(255, 255, 255, .14); }
+.kgdiff.d1 i:nth-child(-n+1), .kgdiff.d2 i:nth-child(-n+2), .kgdiff.d3 i:nth-child(-n+3) { background: var(--gold); }
+.kgpros { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 8px; }
+.kgpros ul { margin: 0; padding: 9px 12px; list-style: none; display: grid; gap: 4px; border: 1px solid var(--line); border-radius: 7px; background: rgba(255, 255, 255, .03); font-size: 13.5px; }
+.kgpros li::before { content: "✓"; color: var(--green); font-weight: 700; margin-right: 8px; } .kgpros ul.no li::before { content: "!"; color: var(--red); }
+.kgnav { display: flex; flex-wrap: wrap; gap: 6px; position: sticky; top: 0; z-index: 2; padding: 6px 0; background: var(--panel); }
+.kgnav button { all: unset; cursor: pointer; padding: 6px 12px; border: 1px solid var(--line); border-radius: 999px; font-size: 13px; color: var(--fg); background: rgba(255, 255, 255, .03); }
+.kgnav button:hover, .kgnav button:focus-visible { border-color: var(--edge); color: var(--gold); }
+.kgbr { border: 1px solid var(--line); border-top: 3px solid var(--cc); border-radius: 8px; background: rgba(255, 255, 255, .02); scroll-margin-top: 48px; }
+.kgbr > header { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px; padding: 10px 14px; border-bottom: 1px solid var(--line); }
+.kgbr h3 { margin: 0; font: 400 19px/1.2 var(--display); color: var(--fg); text-transform: none; } .kgbr h3 .kgr { color: var(--cc); margin-right: 10px; }
+.kgbr header small { color: var(--grey); font-size: 12.5px; } .kgbr header small .ri { width: 15px; height: 15px; vertical-align: -3px; border-radius: 3px; }
+.kgtop { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 12px; padding: 12px 14px; }
+.kgtips { margin: 0; padding: 0 0 0 18px; display: grid; gap: 6px; font-size: 14px; line-height: 1.45; } .kgtips li::marker { color: var(--gold); }
+.kgrot { padding: 8px 10px; border-radius: 7px; background: rgba(0, 0, 0, .28); border: 1px solid var(--line); align-self: start; }
+.kgrot h4 { margin: 0 0 8px; font: 500 11.5px var(--display); letter-spacing: .06em; text-transform: uppercase; color: var(--grey); }
+.kgrot > div { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 4px; }
+.kgrot .kgri { display: grid; justify-items: center; gap: 3px; width: 62px; text-align: center; font-size: 11.5px; line-height: 1.2; color: var(--fg); cursor: default; }
+.kgrot .kgri img { width: 38px; height: 38px; border-radius: 6px; border: 1px solid #000; box-shadow: 0 0 0 1px rgba(255, 255, 255, .12); }
+.kgrot .kgar { color: var(--gold); opacity: .7; font-size: 16px; line-height: 38px; }
+.kglv { margin: 0; padding: 0 0 6px; list-style: none; }
+.kglv li { display: grid; grid-template-columns: 44px minmax(0, 250px) minmax(0, 1fr); align-items: center; column-gap: 10px; padding: 5px 14px; border-top: 1px solid rgba(255, 255, 255, .05); }
+.kglv li:nth-child(odd) { background: rgba(255, 255, 255, .02); }
+.kgl { font: 400 17px var(--display); color: var(--gold); text-align: center; }
+.kgtal, .kgsp { display: inline-flex; align-items: center; gap: 7px; min-width: 0; font-size: 13.5px; color: var(--fg); }
+.kgtal img, .kgsp img { width: 26px; height: 26px; border-radius: 4px; border: 1px solid #000; flex: none; }
+.kgtal span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; } .kgtal i { font-style: normal; color: var(--green); font-size: 12px; }
+.kgtal.t0 img { box-shadow: 0 0 0 1px var(--cc); }
+.kgs { display: flex; flex-wrap: wrap; gap: 4px 12px; }
+.kgsp { all: unset; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; padding: 2px 6px 2px 2px; border-radius: 5px; font-size: 13px; }
+.kgsp:hover, .kgsp:focus-visible { background: var(--hover); color: var(--gold); } .kgsp i { font-style: normal; color: var(--grey); font-size: 11.5px; }
+.kgsp.key { box-shadow: inset 0 0 0 1px rgba(246, 196, 72, .55); background: rgba(246, 196, 72, .08); } .kgsp.q i { color: var(--gold); }
+.kgn { grid-column: 2 / 4; font-style: normal; font-size: 13px; color: var(--gold); padding: 2px 0 1px; } .kgn::before { content: "★ "; }
+.kgcard { display: grid; gap: 8px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 7px; background: rgba(255, 255, 255, .03); }
+.kgcard h3 { margin: 0; } .kgcard p { margin: 0; font-size: 13.5px; line-height: 1.45; color: var(--fg); } .kgcard .wowbtn { justify-self: start; }
+.kgorder { display: flex; flex-wrap: wrap; gap: 4px; } .kgorder span { position: relative; } .kgorder img { width: 30px; height: 30px; border-radius: 4px; border: 1px solid #000; display: block; }
+.kgorder b { position: absolute; right: -3px; bottom: -3px; min-width: 14px; padding: 0 2px; border-radius: 3px; background: #000; color: var(--green); font: 600 10.5px/14px var(--body); text-align: center; }
+@container (max-width: 760px) { .kgfacts { grid-template-columns: repeat(2, minmax(0, 1fr)); } .kgtop { grid-template-columns: minmax(0, 1fr); } }
+@container (max-width: 520px) {
+  .clguide { padding: 12px 10px 20px; } .kgpros { grid-template-columns: minmax(0, 1fr); } .kghead > .ri { width: 44px; height: 44px; } .kghead h2 { font-size: 20px; }
+  .kglv li { grid-template-columns: 34px minmax(0, 1fr); row-gap: 4px; padding: 6px 10px; } .kgs, .kgn { grid-column: 2; } .kgtal:empty { display: none; }
+}
 /* Classes startvy (Joakim 2026-11-20) */
 .clland { padding: 18px 20px; display: grid; gap: 16px; }
 .cllhead { display: flex; align-items: center; gap: 16px; } .cllbook { width: 76px; height: 76px; filter: drop-shadow(0 4px 8px rgba(0, 0, 0, .45)); }
@@ -1885,8 +1938,13 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
       co_count: "%1 shown", co_empty: "Nothing matches.", co_item: "Item", co_open_ah: "Open on the AH", co_where: "Where to get it", co_price_ah: "On the AH", co_price_vendor: "Vendor price", co_pvprank: "PvP rank %1",
       co_forever: "New on Forever: not in the Classic database, so the source is unknown here.", co_nosrc: "No known source in the Classic database.",
       co_place: "Place = nearest graveyard or the dungeon.",
-      mode_cl: "Classes", mode_cl_tip: "Every class: talent calculator, spells with level and trainer cost, pet spells, class quests and trainers.", search_cl: "Search spell, quest or trainer",
-      cl_classes: "Classes", cl_v_tal: "Talent calculator", cl_v_spells: "Spells", cl_v_pets: "Pet spells", cl_v_quests: "Class quests", cl_v_trainers: "Trainers",
+      mode_cl: "Classes", mode_cl_tip: "Every class: beginner guide 1–60, talent calculator, spells with level and trainer cost, pet spells, class quests and trainers.", search_cl: "Search spell, quest or trainer",
+      cl_classes: "Classes", cl_v_guide: "Beginner guide", cl_v_tal: "Talent calculator",
+      kg_h: "%1 from level 1 to 60", kg_diff: "For beginners", kg_diff_1: "Easy", kg_diff_2: "Medium", kg_diff_3: "Hard", kg_spec: "Leveling spec", kg_stats: "Look for", kg_role: "Roles",
+      kg_rot: "On a normal mob", kg_cost: "Training %1", kg_tal_at: "Talents at %1: %2", kg_none: "The beginner guide for %1 is on its way. The talent calculator and spells are in the list meanwhile.",
+      kg_sub: "Beginner guide · level 1–60", kg_lvbuild: "Leveling build", kg_open: "Open in talent calculator", kg_order: "Talent order, first point first", kg_back: "Guide",
+      kg_note: "Written for WoW Forever's own talent trees, which differ from Classic. Spells, levels and trainer costs come from the game's data. Hover an icon for its tooltip; click a spell for details.",
+      kg_quest: "From a quest", kg_key: "Don't miss this one", cl_v_spells: "Spells", cl_v_pets: "Pet spells", cl_v_quests: "Class quests", cl_v_trainers: "Trainers",
       cl_col_spell: "Spell", cl_col_cost: "Cost", cl_col_cost_tip: "What the trainer charges in the Classic database (prices may differ on Forever)", cl_col_line: "Tree", cl_col_pet: "Pet", cl_col_trainer: "Trainer",
       cl_count: "%1 shown", cl_empty: "Nothing matches.", cl_rank: "Rank %1", cl_free: "Free", cl_quest: "Quest", cl_beast: "From a beast", cl_demon_tr: "Demon trainer", cl_pet_tr: "Pet trainer",
       cl_tk_class: "Class trainers", cl_tk_pet: "Pet trainers", cl_tk_demon: "Demon trainers", cl_changed: "Changed on Forever (%1)",
@@ -1985,7 +2043,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
       hu_skin: "Skinning", hu_skin_note: "What skinning the beast gives, from the Classic database. Price is the auction house market price.", hu_skin_chance: "Chance", hu_skin_price: "Market price",
       dg_boss_loot: "Loot", dg_back: "‹ Back to the dungeon", dg_boss_noloot: "No loot of its own in the Classic database.",
       gs_ph: "Search everything: items, recipes, quests, NPCs, beasts, players…", gs_all: "All", gs_k_item: "Items", gs_k_rec: "Recipes", gs_k_quest: "Quests",
-      gs_k_npc: "NPCs", gs_k_beast: "Beasts", gs_k_col: "Collections", gs_k_dg: "Dungeons", gs_k_node: "Ore veins", gs_k_herb: "Herbs", nd_skill: "%1 %2", nd_where_h: "Where to pick", nd_pin: "Where to farm: %1", fa_h: "Best zones for your skill", fa_skill: "%1 skill", fa_both: "Herbs + ores on one map", fa_col_n: "Spawns", fa_col_val: "Per node", fa_col_val_tip: "Average auction house value of one node you can gather in the zone", fa_col_gph: "Gold/h", fa_sort_n: "Most spawns", fa_sort_g: "Most gold", fa_ores: "Ores", fa_herbs: "Herbs", fa_map_tip: "Click a point to copy its /way.", fa_none: "Nothing to gather at this skill yet.", fa_note: "Spawns you can gather at your skill, from the open Classic database. Gold/h = your nodes per hour above × the average auction house value of a node in the zone, after the 5 % AH cut.", fa_note_both: "Spawns you can gather at your skills, from the open Classic database. Gold/h = the nodes per hour of both professions added together × the average auction house value of a node in the zone, after the 5 % AH cut.", nd_spawns: "%1 spawns", nd_found: "Found in", nd_also: "Also in", nd_zone: "Zone", nd_map_tip: "%1 spawn points in %2. Click a point to copy its /way, click the map to open it large.", nd_loot: "Contains", nd_none: "The open Classic database has no spawn points for this one. It may still exist in Forever.", nd_inst_only: "Only inside dungeons, so there is no world map.", nd_src: "Spawn points from the open Classic database (cmangos 1.12). A spot that can spawn several ores or herbs counts for each of them, like on Wowhead.", nd_fail: "Could not load the ore veins and herbs.", nd_missing: "Nothing with that id.", nd_where: "Where to mine", fa_or: "Orange", fa_ye: "Yellow", fa_gr: "Green", sg_h: "Skill-up 1–300", sg_sub: "Step by step from 1 to 300: what to make or gather, what it costs on the AH and where to go", sg_n: "%1 that give skill", sg_learn: "Learn %1", sg_learn_txt: "Find a %2 trainer and learn %1 %2.",sg_learn_tool: "Buy a %1 from a trade supplies vendor.", sg_right: "See the trainers and vendors for your faction.", sg_rank: "Before you pass %4: learn %1 from a trainer who teaches it (needs skill %2 and level %3).", sg_rank_g: "Before you pass %4: learn %1 from the trainer (needs skill %2).", sg_rank_none: "No trainer for your faction in the open world teaches it.", sg_rank_ench: "Annora inside Uldaman teaches it.", sg_rank_book: "Before you pass %3: %1 comes from a book, not a trainer. Buy and read %2.", sg_rank_q_cook: "Before you pass %1: Artisan Cooking is a quest, Clamlette Surprise from Dirge Quikcleave in Gadgetzan, Tanaris.", sg_rank_q_aid: "Before you pass %1: Artisan First Aid is a quest, Triage, from Doctor Gregory Victor in Hammerfall (Horde) or Doctor Gustaf VanHowzen in Theramore (Alliance).", sg_cap_tip: "Teaches up to skill %1", sg_make: "Make about %1 × %2", sg_or_smelt: "Or buy on the AH and smelt:",sg_sell: "Sell %1 × %2: about %3", sg_keep: "Keep %1 × %2 for later steps.", sg_own: "%1 of your own", sg_more: "+%1", sg_mine: "Mine about %1 nodes along the route in %2.", sg_pick: "Pick about %1 herbs along the route in %2.", sg_skin: "Skin about %1 beasts along the route in %2.", sg_nocraft: "No trainer or vendor recipe gives skill here. Look for a drop recipe in the recipe list.", sg_vend_rec: "Vendor recipe", sg_vend_tip: "The trainer does not teach this one: buy the recipe from a vendor first.", sg_nogather: "Nothing to gather at this skill on the maps.", sg_vendor: "vendor", sg_tot_buy: "Buy on the AH", sg_tot_sell: "Sell back", sg_tot_net: "Net cost", sg_tot_gain: "Net profit", sg_shop: "Shopping list 1–300", sg_trainers: "Trainers", sg_vendors: "%1 vendors", sg_none: "None found for your faction.", sg_col_n: "Count", sg_your_skill: "Your skill", sg_next: "%1 at %2", sg_maxed: "Maxed", sg_lvl35: "300 needs level 35", sg_p_mine: "Mine it yourself", sg_p_mine_small: "Costs time, not gold", sg_veins: "≈ %1 veins", sg_p_smelt: "Buy ore & smelt", sg_p_smelt_end: "Smelting gives skill to %1, then you mine", sg_p_buy: "Buy the mats", sg_p_small: "Buy %1 · sell back up to %2", sg_p_farm: "Farm the mats", sg_p_farm_big: "%1 vendor", sg_p_farm_small: "Gather %1 mats, worth %2 on the AH", sg_net: "%1 net", sg_gain: "%1 profit", sg_done_all: "Done", sg_fact_herb: "Gathering only: it costs time, not gold. About %1 herbs to pick from here to 300.", sg_fact_skin: "Gathering only: it costs time, not gold. About %1 beasts to skin from here to 300.",sg_legend: "a point every time", sg_legend_y: "most times", sg_legend_g: "now and then", sg_legend_tip: "≈ is an average, so bring a few extra. Click a dot on a map to copy its /way.", sg_t_mine: "Mine ≈ %1 veins · %2", sg_t_pick: "Pick ≈ %1 · %2", sg_t_skin: "Skin ≈ %1 · %2", sg_t_make: "%1 × %2", sg_t_gap: "No recipe here", sg_strikes: "≈ %1 strikes. A vein gives 2–3, and each can give a point.", sg_done_btn: "Done, I'm at %1", sg_alt_buy: "Rather buy? %1 × %2 · %3", sg_alt_mine: "Rather mine? ≈ %1 veins in %2", sg_nosmelt: "No smelting gives skill here. Mine this step.", sg_col_mat: "Materials", sg_col_need: "Need", sg_col_get: "Get it", sg_gather: "gather", sg_worth: "worth %1", sg_from_step: "from step %1", sg_keep2: "Keep %1 for step %2.", sg_sell2: "Sell %1: up to %2", sg_low: "only %1 listed", sg_train: "Train %1", sg_rank2: "From skill %1 and level %2. Your skill stops at %3 until you do.", sg_rank2_g: "From skill %1. Your skill stops at %2 until you do.", sg_how: "How is this calculated?", sg_route_plan: "Route plan", sg_buy_vendor: "Buy from vendors", sg_gather_h: "Gather yourself", sg_fees: "Trainer fees", sg_to: "to %1", sg_vend_at: "Recipe: %1, %2", sg_tot_time: "Costs", sg_time: "Time", sg_tot_gather: "To gather", sg_tot_worth: "Worth on the AH", sg_tot_vend: "From vendors", sg_tot_left: "Left to 300", sg_tot_sell2: "Sell back up to", sg_from: "from skill %1", sg_beasts_lv1: "Beasts level %1",sg_beasts_lv: "Beasts level %1–%2",sg_col_each: "Each", sg_col_sum: "Total", sg_way_tip: "Click to copy the /way", sg_note_c: "Computed from current prices: each step is the trainer recipe that gives skill cheapest right now. Counts are averages, so buy a few extra. What you made in an earlier step is used before buying. Sell-back counts what the AH moves in a week after the 5 % cut; the rest goes to a vendor. Recipes come from the trainer; where none gives skill a vendor recipe fills in, tagged (sources from Warcraft Wiki).", sg_note_g: "Each map is the zone where you level on the fewest nodes or beasts, without the other faction's home lands. Orange gives a point every time; after that the chance falls steadily to zero at grey. Rare veins (silver, gold, truesilver) are a bonus and not counted. Spawn points from the open Classic database.", sg_side_note: "Trainers and vendors from the open Classic database; click one to copy its /way.", fa_route: "Farm route", fa_route_tip: "The dashed line is a short loop through every node on the map. Run it round and round.", nd_farm_h: "Where to farm", nd_farm_tip: "Open the %1 map", nd_farm_note: "Top zones by spawn points. Click a map for all of them.", gs_k_pl: "Players", gs_k_gl: "Guilds", gs_none: "Nothing found",
+      gs_k_npc: "NPCs", gs_k_beast: "Beasts", gs_k_col: "Collections", gs_k_dg: "Dungeons", gs_k_node: "Ore veins", gs_k_herb: "Herbs", nd_skill: "%1 %2", nd_where_h: "Where to pick", nd_pin: "Where to farm: %1", fa_h: "Best zones for your skill", fa_skill: "%1 skill", fa_both: "Herbs + ores on one map", fa_col_n: "Spawns", fa_col_val: "Per node", fa_col_val_tip: "Average auction house value of one node you can gather in the zone", fa_col_gph: "Gold/h", fa_sort_n: "Most spawns", fa_sort_g: "Most gold", fa_ores: "Ores", fa_herbs: "Herbs", fa_map_tip: "Click a point to copy its /way.", fa_none: "Nothing to gather at this skill yet.", fa_note: "Spawns you can gather at your skill, from the open Classic database. Gold/h = your nodes per hour above × the average auction house value of a node in the zone, after the 5 % AH cut.", fa_note_both: "Spawns you can gather at your skills, from the open Classic database. Gold/h = the nodes per hour of both professions added together × the average auction house value of a node in the zone, after the 5 % AH cut.", nd_spawns: "%1 spawns", nd_found: "Found in", nd_also: "Also in", nd_zone: "Zone", nd_map_tip: "%1 spawn points in %2. Click a point to copy its /way, click the map to open it large.", nd_loot: "Contains", nd_none: "The open Classic database has no spawn points for this one. It may still exist in Forever.", nd_inst_only: "Only inside dungeons, so there is no world map.", nd_src: "Spawn points from the open Classic database (cmangos 1.12). A spot that can spawn several ores or herbs counts for each of them, like on Wowhead.", nd_fail: "Could not load the ore veins and herbs.", nd_missing: "Nothing with that id.", nd_where: "Where to mine", fa_or: "Orange", fa_ye: "Yellow", fa_gr: "Green", sg_h: "Skill-up 1–300", sg_sub: "Step by step from 1 to 300: what to make or gather, what it costs on the AH and where to go", sg_n: "%1 that give skill", sg_learn: "Learn %1", sg_learn_txt: "Find a %2 trainer and learn %1 %2.",sg_learn_tool: "Buy a %1 from a trade supplies vendor.", sg_right: "See the trainers and vendors for your faction.", sg_rank: "Before you pass %4: learn %1 from a trainer who teaches it (needs skill %2 and level %3).", sg_rank_g: "Before you pass %4: learn %1 from the trainer (needs skill %2).", sg_rank_none: "No trainer for your faction in the open world teaches it.", sg_rank_ench: "Annora inside Uldaman teaches it.", sg_rank_book: "Before you pass %3: %1 comes from a book, not a trainer. Buy and read %2.", sg_rank_q_cook: "Before you pass %1: Artisan Cooking is a quest, Clamlette Surprise from Dirge Quikcleave in Gadgetzan, Tanaris.", sg_rank_q_aid: "Before you pass %1: Artisan First Aid is a quest, Triage, from Doctor Gregory Victor in Hammerfall (Horde) or Doctor Gustaf VanHowzen in Theramore (Alliance).", sg_cap_tip: "Teaches up to skill %1", sg_make: "Make about %1 × %2", sg_or_smelt: "Or buy on the AH and smelt:",sg_sell: "Sell %1 × %2: about %3", sg_keep: "Keep %1 × %2 for later steps.", sg_own: "%1 of your own", sg_more: "+%1", sg_mine: "Mine about %1 nodes along the route in %2.", sg_pick: "Pick about %1 herbs along the route in %2.", sg_skin: "Skin about %1 beasts along the route in %2.", sg_nocraft: "No trainer or vendor recipe gives skill here. Look for a drop recipe in the recipe list.", sg_vend_rec: "Vendor recipe", sg_vend_tip: "The trainer does not teach this one: buy the recipe from a vendor first.", sg_nogather: "Nothing to gather at this skill on the maps.", sg_vendor: "vendor", sg_tot_buy: "Buy on the AH", sg_tot_sell: "Sell back", sg_tot_net: "Net cost", sg_tot_gain: "Net profit", sg_shop: "Shopping list 1–300", sg_trainers: "Trainers", sg_vendors: "%1 vendors", sg_none: "None found for your faction.", sg_col_n: "Count", sg_your_skill: "Your skill", sg_next: "%1 at %2", sg_maxed: "Maxed", sg_lvl35: "300 needs level 35", sg_p_mine: "Mine it yourself", sg_p_mine_small: "Costs time, not gold", sg_veins: "≈ %1 veins", sg_p_smelt: "Buy ore & smelt", sg_p_smelt_end: "Smelting gives skill to %1, then you mine", sg_p_buy: "Buy the mats", sg_p_small: "Buy %1 · sell back up to %2", sg_p_farm: "Farm the mats", sg_p_farm_big: "%1 vendor", sg_p_farm_small: "Gather %1 mats, worth %2 on the AH", sg_net: "%1 net", sg_gain: "%1 profit", sg_done_all: "Done", sg_fact_herb: "Gathering only: it costs time, not gold. About %1 herbs to pick from here to 300.", sg_fact_skin: "Gathering only: it costs time, not gold. About %1 beasts to skin from here to 300.",sg_legend: "a point every time", sg_legend_y: "most times", sg_legend_g: "now and then", sg_legend_tip: "≈ is an average, so bring a few extra. Click a dot on a map to copy its /way.", sg_t_mine: "Mine ≈ %1 veins · %2", sg_t_pick: "Pick ≈ %1 · %2", sg_t_skin: "Skin ≈ %1 · %2", sg_t_make: "%1 × %2", sg_t_gap: "No recipe here", sg_done_btn: "Done, I'm at %1", sg_alt_buy: "Rather buy? %1 × %2 · %3", sg_alt_mine: "Rather mine? ≈ %1 veins in %2", sg_nosmelt: "No smelting gives skill here. Mine this step.", sg_col_mat: "Materials", sg_col_need: "Need", sg_col_get: "Get it", sg_gather: "gather", sg_worth: "worth %1", sg_from_step: "from step %1", sg_keep2: "Keep %1 for step %2.", sg_sell2: "Sell %1: up to %2", sg_low: "only %1 listed", sg_train: "Train %1", sg_rank2: "From skill %1 and level %2. Your skill stops at %3 until you do.", sg_rank2_g: "From skill %1. Your skill stops at %2 until you do.", sg_how: "How is this calculated?", sg_route_plan: "Route plan", sg_buy_vendor: "Buy from vendors", sg_gather_h: "Gather yourself", sg_fees: "Trainer fees", sg_to: "to %1", sg_vend_at: "Recipe: %1, %2", sg_tot_time: "Costs", sg_time: "Time", sg_tot_gather: "To gather", sg_tot_worth: "Worth on the AH", sg_tot_vend: "From vendors", sg_tot_left: "Left to 300", sg_tot_sell2: "Sell back up to", sg_from: "from skill %1", sg_beasts_lv1: "Beasts level %1",sg_beasts_lv: "Beasts level %1–%2",sg_col_each: "Each", sg_col_sum: "Total", sg_way_tip: "Click to copy the /way", sg_note_c: "Computed from current prices: each step is the trainer recipe that gives skill cheapest right now. Counts are averages, so buy a few extra. What you made in an earlier step is used before buying. Sell-back counts what the AH moves in a week after the 5 % cut; the rest goes to a vendor. Recipes come from the trainer; where none gives skill a vendor recipe fills in, tagged (sources from Warcraft Wiki).", sg_note_g: "Each map is the zone where you level on the fewest nodes or beasts, without the other faction's home lands. Orange gives a point every time; after that the chance falls steadily to zero at grey. Rare veins (silver, gold, truesilver) are a bonus and not counted. Spawn points from the open Classic database.", sg_side_note: "Trainers and vendors from the open Classic database; click one to copy its /way.", fa_route: "Farm route", fa_route_tip: "The dashed line is a short loop through every node on the map. Run it round and round.", nd_farm_h: "Where to farm", nd_farm_tip: "Open the %1 map", nd_farm_note: "Top zones by spawn points. Click a map for all of them.", gs_k_pl: "Players", gs_k_gl: "Guilds", gs_none: "Nothing found",
       gs_ar: "Look up “%1” in the Armory", gs_ar_g: "Look up the guild “%1”", gs_more: "Show all %1", gs_loading: "Loading…",
       src_h: "Where to learn it", src_h_drop: "Where it drops", src_trainer: "Trainer", src_vendor: "Vendor", src_drop: "Drops from", src_quest: "Quest reward", src_none: "No known source in the Classic database.",
       limited: "limited stock", more_n: "and %1 more", requires: "requires %1", tier_1: "Apprentice", tier_2: "Journeyman", tier_3: "Expert", tier_4: "Artisan",
@@ -2030,8 +2088,8 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
       rd_intro: "Three raids open on 9 December, one for each group size: 10, 20 and 40 players. All three reset weekly. Molten Core has no date yet.",
       rd_src: "Facts from Blizzard's announcement as reported by", h_craft_big: "Best craft right now", h_cost: "Cost", h_sells: "Sells for", h_open_rec: "Open recipe", h_skill: "skill %1", h_cd: "%1 h cooldown",
       h_q_raid: "When do the raids open?", h_raid_in: "in %1 days", h_raid_1: "Tomorrow", h_raid_open: "Open now", h_raid_s: "9 December · new raids on Forever", h_raid_since: "Since 9 December",
-      cl_land_h: "Choose a class", cl_roles_h: "Who does what", cl_role_tank: "Tank", cl_role_heal: "Healer", cl_role_dps: "Damage", cl_roles_note: "Roles as in Classic. Every class can deal damage; tanks and healers are what groups look for.", cl_land_tip: "Talent calculator, spells with level and trainer cost, pet spells, class quests and trainers.", cl_land_n: "%1 spells", cl_land_pets: "%1 pets", cl_land_demons: "%1 demons",
-      cl_land_right: "Pick a class to open its talent calculator. Spells, pet spells, class quests and trainers are under the class in the list.", h_show_n: "Show %1 of %2", h_rise_big: "Biggest rise right now", h_over: "over the usual price", h_none: "Nothing right now.", h_per_day: "%1/day", h_cheap_none: "Prices are loading…", h_watch: "My list", h_watch_none: "Star ☆ an item and its price shows up here.", h_players: "Players", h_guilds: "Guilds", h_lvl: "Lvl %1", h_members: "%1 members", h_players_none: "Look someone up in the Armory and they show up here.", ar_land_lb: "Leaderboards ›", ar_land_recent: "Recent", ar_land_friends: "Friends", on_ah: "%1 items on the auction house", market_label: "Market", search_btn: "Search", col_fav: "Fav",
+      cl_land_h: "Choose a class", cl_roles_h: "Who does what", cl_role_tank: "Tank", cl_role_heal: "Healer", cl_role_dps: "Damage", cl_roles_note: "Roles as in Classic. Every class can deal damage; tanks and healers are what groups look for.", cl_land_tip: "A beginner guide from 1 to 60, talent calculator, spells with level and trainer cost, pet spells, class quests and trainers.", cl_land_n: "%1 spells", cl_land_pets: "%1 pets", cl_land_demons: "%1 demons",
+      cl_land_right: "Pick a class to open its beginner guide: how to play it from level 1 to 60 and where every talent point goes. The talent calculator, spells, pet spells, class quests and trainers are under the class in the list.", h_show_n: "Show %1 of %2", h_rise_big: "Biggest rise right now", h_over: "over the usual price", h_none: "Nothing right now.", h_per_day: "%1/day", h_cheap_none: "Prices are loading…", h_watch: "My list", h_watch_none: "Star ☆ an item and its price shows up here.", h_players: "Players", h_guilds: "Guilds", h_lvl: "Lvl %1", h_members: "%1 members", h_players_none: "Look someone up in the Armory and they show up here.", ar_land_lb: "Leaderboards ›", ar_land_recent: "Recent", ar_land_friends: "Friends", on_ah: "%1 items on the auction house", market_label: "Market", search_btn: "Search", col_fav: "Fav",
       hist_loading: "Loading history…", hist_fail: "The history could not be loaded.", today: "today", item_n: "Item %1",
       copy_link: "Copy link", copied: "Link copied", star_add: "Watch this item", star_del: "Remove from my list", star_all: "All reagents to my list", star_all_del: "Remove reagents from my list", star_lbl_add: "Watch", star_lbl_on: "In my list",
       not_listed: "not listed now", remove: "Remove", watch_sub: "Saved in your browser, only you can see it.",
@@ -4281,7 +4339,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
         if (!seen[c.r.rid]) { seen[c.r.rid] = 1; if (!c.c.vend && c.r.rc.cost > 0) G.fees += c.r.rc.cost; }
         if (c.b > G.smeltEnd) G.smeltEnd = c.b;
       });
-      if (st.gath && !st.done && st.gath.zones.length) { st.n = st.gath.cnt(sgZone(p, st), st.from); G.count += p.key === "mine" ? Math.ceil(st.n / 2.5) : st.n; }
+      if (st.gath && !st.done && st.gath.zones.length) { st.n = st.gath.cnt(sgZone(p, st), st.from); G.count += st.n; }   // en åder = en skillchans (bara första hugget kan ge skill)
     });
     SG_CACHE = { k: ck, G: G };
     return G;
@@ -4343,9 +4401,9 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
   }
   function sgStepHtml(S, open, altOpen) {   // ett steg: rubriken är handlingen, kroppen visar den valda vägen; klara steg är en rad
     var G = SG_LAST, p = G.p, mode = sgMode(p), key = p.key + S.i, zone = sgZone(p, S), hasCraft = !!(S.craft && S.craft.length);
-    var gview = !!S.gath && zone && (mode === "self" || !hasCraft || !p.pid), title, right = "", body = "", n = gview ? S.gath.cnt(zone, S.from) : 0, veins = Math.ceil(n / 2.5);
+    var gview = !!S.gath && zone && (mode === "self" || !hasCraft || !p.pid), title, right = "", body = "", n = gview ? S.gath.cnt(zone, S.from) : 0;
     if (gview) {
-      title = S.done ? esc(sgGatherWhat(p, S, zone)) : t(p.key === "mine" ? "sg_t_mine" : p.key === "herb" ? "sg_t_pick" : "sg_t_skin", num(p.key === "mine" ? veins : n), esc(sgGatherWhat(p, S, zone)));
+      title = S.done ? esc(sgGatherWhat(p, S, zone)) : t(p.key === "mine" ? "sg_t_mine" : p.key === "herb" ? "sg_t_pick" : "sg_t_skin", num(n), esc(sgGatherWhat(p, S, zone)));
       right = esc(zone);
     } else if (S.done || hasCraft) {
       var c0 = hasCraft ? S.craft[0] : null, more = (hasCraft ? S.craft.length : S.names.length) - 1;
@@ -4359,7 +4417,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
         if (hasCraft) body += '<details class="sgalt"' + (altOpen ? " open" : "") + "><summary>" + t("sg_alt_buy", num(S.craft[0].made), esc(S.craft[0].r.name), S.buy > 0 ? money(S.buy) : DASH) + "</summary>" + sgCraftHtml(S, "buy") + "</details>";
       } else if (hasCraft) {
         body += sgCraftHtml(S, mode);
-        if (S.gath && zone) { var n2 = S.gath.cnt(zone, S.from); body += '<details class="sgalt"' + (altOpen ? " open" : "") + "><summary>" + t("sg_alt_mine", num(Math.ceil(n2 / 2.5)), esc(zone)) + "</summary>" + sgGatherHtml(S, zone, key, n2) + "</details>"; }
+        if (S.gath && zone) { var n2 = S.gath.cnt(zone, S.from); body += '<details class="sgalt"' + (altOpen ? " open" : "") + "><summary>" + t("sg_alt_mine", num(n2), esc(zone)) + "</summary>" + sgGatherHtml(S, zone, key, n2) + "</details>"; }
       } else body += '<div class="sgline dim">' + t(S.gath ? "sg_nogather" : "sg_nocraft") + "</div>";
       body += '<div class="sgfoot"><button type="button" class="sgdone" data-sgdone="' + S.b + '">' + t("sg_done_btn", S.b) + "</button></div>";
     }
@@ -4402,7 +4460,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     list = list.filter(function (x) { return x.x.req <= S.a; }).concat(list.filter(function (x) { return x.x.req > S.a; }).sort(function (x, y) { return x.x.req - y.x.req; }));   // det som går nu först, sedan i den ordning det blir möjligt
     rest = list.length - 12;   // orange och gult, högst tolv; gröna syns bara på kartan
     var what = list.slice(0, 12).map(function (x) { return '<a href="' + x.x.href + '"' + (x.x.nd ? ' data-node="' + x.x.id + '" data-ndzone="' + esc(zone) + '"' : "") + ' title="' + esc(t("nd_skill", p.name, x.x.req)) + '">' + (x.x.nd ? ndIcon(x.x.nd) : "") + '<span class="' + SG_Q[x.c] + '">' + esc(x.x.name) + "</span>" + (x.x.req > S.a ? '<span class="dim">' + t("sg_from", x.x.req) + "</span>" : "") + "</a>"; }).join("") + (rest > 0 ? '<span class="dim">' + t("more_n", rest) + "</span>" : "");
-    return (p.key === "mine" ? '<div class="sgline dim">' + t("sg_strikes", num(n)) + "</div>" : "") + '<div class="sgnodes">' + what + "</div>" +
+    return '<div class="sgnodes">' + what + "</div>" +
       '<div class="huchips">' + gs.zones.map(function (z) { return '<button type="button" class="huchip' + (z === zone ? " on" : "") + '" data-sgz="' + esc(key) + '" data-sgzn="' + esc(z) + '" data-sgi="' + S.i + '" aria-pressed="' + (z === zone) + '">' + esc(z) + ' <span class="dim">' + num(gs.n[z] || 0) + "</span></button>"; }).join("") + (pts.length > 2 ? faRouteBtn() : "") + "</div>" +
       '<div class="huzm qmap"><img src="' + huZUrl(zone) + '" alt="' + esc(zone) + '" width="1002" height="668" loading="lazy" decoding="async">' + qmTaxi(zone) + (FA.route && pts.length > 2 ? faRoute(pts) : "") + dots + "</div>" +
       '<div class="dim">' + ["or", "ye", "gr"].filter(function (c) { return cnt[c]; }).map(function (c) { return '<span class="falg"><i style="background:' + SG_C[c] + '"></i>' + t("fa_" + c) + ' <span class="dim">' + num(cnt[c]) + "</span></span>"; }).join("") + "</div>";
@@ -4421,7 +4479,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     var gpath = !p.pid || (p.key === "mine" && mode === "self");
     if (gpath) {
       h += '<dl class="facts">' + sgFact(t("sg_tot_left"), (p.key === "mine" ? t("sg_veins", num(G.count)) : "≈ " + num(G.count))) + sgFact(t("sg_tot_time"), t("sg_time")) + "</dl>";
-      h += "<div><h3>" + t("sg_route_plan") + '</h3><div class="sgplan">' + G.steps.map(function (S) { var z = sgZone(p, S); return '<div class="' + (S.done ? "dn" : "") + '"><b>' + S.a + "–" + S.b + "</b><span>" + esc(z || "–") + "</span><span>" + (S.done ? "✓" : z ? "≈ " + num(p.key === "mine" ? Math.ceil(S.n / 2.5) : S.n) : "") + "</span></div>"; }).join("") + "</div></div>";
+      h += "<div><h3>" + t("sg_route_plan") + '</h3><div class="sgplan">' + G.steps.map(function (S) { var z = sgZone(p, S); return '<div class="' + (S.done ? "dn" : "") + '"><b>' + S.a + "–" + S.b + "</b><span>" + esc(z || "–") + "</span><span>" + (S.done ? "✓" : z ? "≈ " + num(S.n) : "") + "</span></div>"; }).join("") + "</div></div>";
     } else if (mode === "buy") {
       h += '<dl class="facts">' + sgFact(t("sg_tot_buy"), G.buy > 0 ? money(G.buy) : DASH) + sgFact(t("sg_tot_sell2"), G.sell > 0 ? money(G.sell) : DASH) + sgFact(t(net >= 0 ? "sg_tot_net" : "sg_tot_gain"), G.buy > 0 ? money(Math.abs(net)) : DASH, net > 0 ? "down" : "up") + (G.fees > 0 ? sgFact(t("sg_fees"), money(G.fees)) : "") + "</dl>";
       if (ids.length) h += "<div><h3>" + t("sg_shop") + '</h3><table class="srct sgmats">' + sgMatHead("buy", " ") + "<tbody>" + sgMatRows(G.mats, ids, "buy") + "</tbody></table></div>";
@@ -5285,6 +5343,11 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
         tipBox.hidden = false; placeTip();
         return;
       }
+      var ekg = e.target && e.target.closest && mode === "cl" ? e.target.closest("[data-kgtip]") : null;
+      if (ekg) {
+        var kh = kgTip(ekg.getAttribute("data-kgtip"));
+        if (kh) { tipId = -1; if (!tipBox) { tipBox = document.createElement("div"); tipBox.className = "wtip"; document.body.appendChild(tipBox); } tipBox.innerHTML = kh; tipBox.hidden = false; placeTip(); return; }
+      }
       var etl = e.target && e.target.closest ? e.target.closest("[data-tal]") : null;
       if (etl) {
         var th = talTip(+etl.dataset.tal);
@@ -5535,10 +5598,10 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     $("empty").textContent = t(mode === "fx" ? "fx_empty" : mode === "de" ? "de_empty" : mode === "co" ? "co_empty" : mode === "cl" ? "cl_empty" : mode === "hu" ? "hu_empty" : mode === "cr" ? (gaSel >= 0 ? "ga_empty" : "cr_empty") : mode === "qu" ? "qu_empty" : mode === "dg" ? (query || dgSel >= 0 ? "dg_empty" : "dg_pick") : "empty");
     drawMoreBtn();
     $("count").textContent = t(mode === "fx" ? "fx_count" : mode === "de" ? "de_count" : mode === "co" ? "co_count" : mode === "cl" ? "cl_count" : mode === "hu" ? "hu_count" : mode === "cr" ? (gaSel >= 0 ? "ga_count" : "cr_count") : mode === "qu" ? "qu_count" : mode === "dg" ? "dg_count" : "count", num(mode === "dg" ? view.filter(function (x) { return !x.hd && !x.sub; }).length : view.length));
-    $("head").innerHTML = mode === "ar" || (mode === "cl" && clView === "tal") || (mode === "cr" && sgSel) ? "" : headHtml();
+    $("head").innerHTML = mode === "ar" || (mode === "cl" && (clView === "tal" || clView === "guide")) || (mode === "cr" && sgSel) ? "" : headHtml();
     $("dghead").hidden = mode !== "dg"; if (mode === "dg") $("dghead").innerHTML = DG ? dgHeadHtml() : "";
     $("list").className = mode === "tr" || mode === "cr" || mode === "qu" || mode === "dg" || mode === "hu" || mode === "co" || mode === "cl" || mode === "de" || mode === "fx" ? mode + (mode === "cr" && gaSel >= 0 ? " ga" : "") : "";
-    var ar = mode === "ar" || (mode === "cl" && clView === "tal") || (mode === "cr" && !!sgSel);   // Classes: talangräknaren och skillguiden ritas i samma ruta som Armory
+    var ar = mode === "ar" || (mode === "cl" && (clView === "tal" || clView === "guide")) || (mode === "cr" && !!sgSel);   // Classes: talangräknaren och skillguiden ritas i samma ruta som Armory
     $("armory").hidden = !ar;
     document.querySelector(".left .scroll").hidden = ar;
     if (ar) { $("empty").hidden = true; $("more").hidden = true; $("count").textContent = ""; }
@@ -6090,12 +6153,12 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     if (clfly && mode === "cl") {
       var fp = clfly.dataset.clfly.split("|");
       clView = fp[0]; clFold = false; clSp = 0; clQ = 0; clTr = 0;
-      if (fp[1] === "ln") clLine = fp[2]; else if (fp[1] === "pet") clPet = fp[2]; else if (fp[1] === "fa") { clFa = fp[2]; clFaSet = true; } else if (fp[1] === "tk") clTk = fp[2];
+      if (fp[1] === "ln") clLine = fp[2]; else if (fp[1] === "kg") clKgGo = +fp[2]; else if (fp[1] === "pet") clPet = fp[2]; else if (fp[1] === "fa") { clFa = fp[2]; clFaSet = true; } else if (fp[1] === "tk") clTk = fp[2];
       clFlyHide(); qFlush(); query = ""; $("q").value = ""; clShow(true); showTab("item"); return;
     }
     if (!e.target.closest("#clfly")) clFlyHide();
     var clc = e.target.closest("[data-clc]");
-    if (clc && mode === "cl" && clLand) { clLand = false; clFold = false; clView = "tal"; if (clc.dataset.clc === clSel) { clShow(true); showTab("item"); return; } }
+    if (clc && mode === "cl" && clLand) { clLand = false; clFold = false; clView = "guide"; if (clc.dataset.clc === clSel) { clShow(true); showTab("item"); return; } }
     if (clc && mode === "cl") { if (clc.dataset.clc === clSel) { clFold = !clFold; drawCats(); return; } clFold = false; if (clc.dataset.clc !== clSel) { clSel = clc.dataset.clc; clRanks = clLoadSaved(); clSp = 0; clQ = 0; clTr = 0; clLine = ""; clPet = ""; if (clView === "pets" && !(clC() && clC().pets.length)) clView = "spells"; try { localStorage.setItem(CL_SEL_KEY, clSel); } catch (e9) {} } qFlush(); query = ""; $("q").value = ""; clShow(true); showTab("item"); return; }
     var clv = e.target.closest("[data-clv]");
     if (clv && mode === "cl") { clView = clv.dataset.clv; clFold = false; qFlush(); query = ""; $("q").value = ""; clShow(true); showTab("item"); return; }
@@ -6112,6 +6175,13 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     if (e.target.closest("[data-clback]") && mode === "cl") { clQ = 0; clTr = 0; clDetail(); setHash(clHash()); return; }
     if (e.target.closest("[data-clreset]") && mode === "cl") { clRanks = {}; clSave(); clRedraw(); return; }
     if (e.target.closest("[data-clload]") && mode === "cl") { clArmLoad(); return; }
+    var kgl = e.target.closest("[data-kgload]");
+    if (kgl && mode === "cl") { var kr = kgRanks(kgl.dataset.kgload === "end"); if (kr) { clRanks = kr; clSave(); clView = "tal"; clSp = 0; clShow(true); showTab("item"); } return; }
+    var kgs = e.target.closest("[data-kgsp]");
+    if (kgs && mode === "cl") { hideTip(); showTab("item"); clSpDetail(+kgs.dataset.kgsp); return; }
+    if (e.target.closest("[data-kgback]") && mode === "cl") { clSp = 0; clDetail(); return; }
+    var kgj = e.target.closest("[data-kgjump]");
+    if (kgj && mode === "cl") { clKgGo = +kgj.dataset.kgjump; kgJump(); return; }
     var cok = e.target.closest("[data-cokind]");
     if (cok && mode === "co") { coFold = coKind === cok.dataset.cokind ? !coFold : false; coKind = cok.dataset.cokind; coSrc = ""; if (sortKey === "req" && coKind === "titles") sortKey = "name"; drawCats(); refresh(); toTop(); if (view[0]) coDetail(CO_LETTER[coKind] + view[0].co.id); return; }
     var cos = e.target.closest("[data-cosrc]");
@@ -7926,7 +7996,16 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
   var CL_ROLES = { Warrior: ["tank", "dps"], Paladin: ["heal", "tank", "dps"], Hunter: ["dps"], Rogue: ["dps"], Priest: ["heal", "dps"], Shaman: ["heal", "dps"], Mage: ["dps"], Warlock: ["dps"], Druid: ["tank", "heal", "dps"] };
   var CL_ROLE_IC = { tank: "ability_warrior_defensivestance", heal: "spell_holy_flashheal", dps: "inv_sword_04" };   // Classes-fliken utan vald klass i adressen: startvyn med boken och de nio klasserna (Joakim 2026-11-20)
   var CL = null, clPromise = null, clSel = "", clView = "tal", clPet = "", clLine = "", clSp = 0, clQ = 0, clTr = 0, clRanks = {}, clFa = "", clFaSet = false, clTk = "", clFold = false;   // clFold: vald klass ihopfälld (klick på den igen, Joakim 2026-11-19)
-  var CL_ORDER = ["Warrior", "Paladin", "Hunter", "Rogue", "Priest", "Shaman", "Mage", "Warlock", "Druid"], CL_VIEWS = ["tal", "spells", "pets", "quests", "trainers"];
+  var CL_ORDER = ["Warrior", "Paladin", "Hunter", "Rogue", "Priest", "Shaman", "Mage", "Warlock", "Druid"], CL_VIEWS = ["guide", "tal", "spells", "pets", "quests", "trainers"];
+  // Nybörjarguiden 1–60 per klass (Joakim 2026-11-21): klassguide.json, ihopskriven av klassguide-koll.js ur klassguide/<klass>.json
+  // efter att talangordningen kollats mot Forevers träd. Egen text, inte kopierad ur andra guider (Joakim).
+  var KG = null, kgPromise = null, clKgGo = 0;
+  function loadKg() {
+    if (!kgPromise) kgPromise = fetch(DATA_BASE + "klassguide.json").then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }).then(function (j) { KG = j; return j; })
+      .catch(function (e) { kgPromise = null; throw e; });
+    return kgPromise;
+  }
+  function kgC() { return KG && KG.classes ? KG.classes[clName()] || null : null; }
   var CL_KEY = "whippit-ah-clplan-", CL_SEL_KEY = "whippit-ah-cls";
   var CL_BIT = { Warrior: 1, Paladin: 2, Hunter: 4, Rogue: 8, Priest: 16, Shaman: 64, Mage: 128, Warlock: 256, Druid: 1024 };
   function loadCl() {
@@ -7970,7 +8049,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
   function clStart(hp, keep) {
     hp = hp || {};
     if (!keep) $("detail").innerHTML = '<div class="note">' + t("ar_loading") + "</div>";
-    Promise.all([loadCl(), loadTal().catch(function () {}), loadQuests().catch(function () {})]).then(function () {
+    Promise.all([loadCl(), loadTal().catch(function () {}), loadQuests().catch(function () {}), loadKg().catch(function () {})]).then(function () {
       if (mode !== "cl") return;   // bytt flik medan filen laddades
       if (!keep) clLand = !hp.cls;
       var want = (hp.cls || "").toLowerCase(), saved = "";
@@ -7994,7 +8073,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
       clShow(!keep);
     }).catch(function () { if (mode === "cl") $("detail").innerHTML = '<div class="note">' + t("qu_fail") + "</div>"; });
   }
-  function clShow(scroll) { if (clLand) clView = "tal"; drawCats(); refresh(); if (clView === "tal") $("armory").innerHTML = clLand ? clLandHtml() : clTalPanel(); if (scroll) toTop(); clDetail(); setHash(clLand ? "#tab=cl" : clHash()); }
+  function clShow(scroll) { if (clLand) clView = "tal"; drawCats(); refresh(); if (clView === "tal" || clView === "guide") $("armory").innerHTML = clLand ? clLandHtml() : clView === "guide" ? clGuideHtml() : clTalPanel(); if (scroll) toTop(); clDetail(); setHash(clLand ? "#tab=cl" : clHash()); if (clKgGo) setTimeout(kgJump, 0); }
   function clLandHtml() {
     var bk = ASSET_BASE ? '<img class="cllbook" src="' + ASSET_BASE + 'icons/nav-classes.png" alt="">' : "";
     return '<div class="clland"><div class="cllhead">' + bk + "<div><h2>" + t("cl_land_h") + "</h2><p>" + t("cl_land_tip") + '</p></div></div><div class="cllgrid">' +
@@ -8012,7 +8091,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
   }
   function clRedraw(rep) {   // rep: talangpoäng ändrade adressen utan nytt historiksteg (51 poäng gav 51 steg)
     if (clLand) { clShow(false); return; }
-    if (clView === "tal") $("armory").innerHTML = clTalPanel(); drawCats(); clDetail();
+    if (clView === "tal") $("armory").innerHTML = clTalPanel(); else if (clView === "guide") $("armory").innerHTML = clGuideHtml(); drawCats(); clDetail();
     if (rep) { try { if (!sameHash(location.hash, clHash())) history.replaceState({ i: navPos }, "", clHash()); } catch (e) {} } else setHash(clHash());
   }
   function clQuestsAll(name) { var bit = CL_BIT[name] || 0, out = []; if (!QU || !bit) return out; Object.keys(QU.quests).forEach(function (id) { var q = QU.quests[id]; if (q[15] & bit) out.push({ q: q, id: +id }); }); return out; }
@@ -8100,6 +8179,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
       var faL = clFa ? (clFa === "H" ? "Horde" : "Alliance") : "";
       var sub = function (v, lbl, n2, cur) { return '<button class="cat sub" type="button" data-clv="' + v + '" aria-pressed="' + (clView === v) + '"><em class="nm">' + lbl + (cur ? ' <small class="dim">' + cur + "</small>" : "") + "</em>" + (n2 != null ? "<span>" + n2 + "</span>" : "") + "</button>"; };
       var tc = clTal(), used = tc ? talTotal(tc.c, clRanks) : 0;
+      h += sub("guide", t("cl_v_guide"), KG && KG.classes && KG.classes[n] ? "1–60" : null);
       h += sub("tal", t("cl_v_tal"), used + "/" + TAL_MAX);
       h += sub("spells", t("cl_v_spells"), live, clLine === "x" ? t("cl_changed_short") : clLine ? clLineIc(clLine) + esc(clLine) : "");
       if (c.pets.length) h += sub("pets", t("cl_v_pets"), c.pets.reduce(function (a, p) { return a + p.spells.length; }, 0), clPet ? clPetIc(clPet) + esc(clPet) : "");
@@ -8116,6 +8196,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
   function clFlyItems(v) {
     var c = clC(), it = [], fa = function (f) { return f === "H" ? faIcon("HORDE") + "Horde" : f === "A" ? faIcon("ALLIANCE") + "Alliance" : t("lb_both"); };
     if (!c) return it;
+    if (v === "guide") { var kg = kgC(); if (kg) kg.levels.forEach(function (b) { it.push(["kg", b.from, "<b>" + (b.from === 1 ? 1 : b.from + 1) + "–" + b.to + "</b>&nbsp; " + esc(b.title), null, false]); }); }
     if (v === "spells") {
       var live = c.spells.filter(function (s) { return !s.x; }), xs = c.spells.length - live.length;
       it.push(["ln", "", t("co_s_all"), live.length, clLine === ""]);
@@ -8167,6 +8248,112 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
       if (clView === "trainers" && c.pets.length) h += sg("data-cltk", clTk, [["", t("co_s_all")], ["c", t("cl_tk_class")], ["p", t(clName() === "Warlock" ? "cl_tk_demon" : "cl_tk_pet")]]);
     }
     el.innerHTML = h + "</span>";
+  }
+  // ---- Nybörjarguiden (Joakim 2026-11-21) ----
+  var KG_IC = "https://render.worldofwarcraft.com/forever-eu/icons/56/";
+  // Ordningen spelas upp poäng för poäng: level 10 får första poängen, 60 den sista.
+  function kgPlay(list) {
+    var tc = clTal(), steps = [], ranks = {}, lvl = 10;
+    if (!tc || !list) return { steps: steps, ranks: ranks };
+    list.forEach(function (it) {
+      var f = null;
+      tc.c.trees.forEach(function (tr, ti) { tr.nodes.forEach(function (n) { if (n.name === it[0]) f = { ti: ti, n: n }; }); });
+      if (!f) return;
+      for (var k = 0; k < it[1] && lvl <= 60; k++) { ranks[f.n.id] = (ranks[f.n.id] || 0) + 1; steps.push({ lvl: lvl++, n: f.n, ti: f.ti, rank: ranks[f.n.id] }); }
+    });
+    return { steps: steps, ranks: ranks };
+  }
+  function kgRanks(end) { var g = kgC(); if (!g) return null; return kgPlay(end && g.end ? g.end.talents : g.talents).ranks; }
+  function kgSplit(ranks) { var tc = clTal(); return tc ? tc.c.trees.map(function (tr) { return talSpent(tr, ranks); }).join(" / ") : ""; }
+  function kgTalIc(n) { return n.icon ? KG_IC + n.icon + ".jpg" : RICON + "inv_misc_questionmark.jpg"; }
+  function kgSpell(name, lvl) {   // högsta rangen man kan ha vid den leveln
+    var c = clC(), best = null; if (!c) return null;
+    c.spells.forEach(function (s) { if (!s.x && s.n === name && (s.l || 1) <= lvl && (!best || (s.l || 1) >= (best.l || 1))) best = s; });
+    if (!best) c.pets.forEach(function (p) { p.spells.forEach(function (s) { if (!best && s.n === name) best = s; }); });
+    return best;
+  }
+  function kgTalByName(name) { var tc = clTal(), f = null; if (tc) tc.c.trees.forEach(function (tr) { tr.nodes.forEach(function (n) { if (n.name === name) f = n; }); }); return f; }
+  function kgTip(k) {
+    if (k.charAt(0) === "s") {
+      var f = clFind(+k.slice(1)); if (!f) return "";
+      var s = f.sp;
+      return '<div class="ln"><b class="q1">' + esc(s.n) + "</b>" + (s.r ? '<span class="r">' + t("cl_rank", s.r) + "</span>" : "") + "</div>" +
+        (s.ct || s.rg ? '<div class="ln"><span>' + esc(s.ct || "") + "</span>" + (s.rg ? '<span class="r">' + s.rg + " yd</span>" : "") + "</div>" : "") +
+        (s.d ? '<div class="ln"><span class="tipy">' + esc(s.d) + "</span></div>" : "") +
+        '<div class="ln"><span>' + t("col_lvl") + " " + (s.l || 1) + " · " + clCost(s) + "</span></div>";
+    }
+    var p = k.slice(1).split(":"), tc = clTal(), f2 = tc && talById(tc.c, +p[0]); if (!f2) return "";
+    var n = f2.n, rk = Math.min(n.max, +p[1] || 1);
+    return '<div class="ln"><b class="q1">' + esc(n.name) + '</b></div><div class="ln"><span>' + t("tal_rank", rk, n.max) + " · " + esc(f2.tr.spec) + "</span></div>" +
+      (n.cast ? '<div class="ln"><span>' + esc(n.cast) + "</span></div>" : "") + '<div class="ln"><span class="tipy">' + esc(n.desc[rk - 1] || "") + "</span></div>";
+  }
+  function kgJump() {
+    if (clView !== "guide" || !clKgGo) return;
+    var el = document.getElementById("kg-" + clKgGo); clKgGo = 0;
+    if (el) el.scrollIntoView({ block: "start", behavior: "smooth" });
+  }
+  function kgRotIc(name, lvl) {
+    var s = kgSpell(name, lvl), n = s ? null : kgTalByName(name);
+    var src = s ? (s.i ? KG_IC + s.i + ".jpg" : RICON + "inv_misc_questionmark.jpg") : n ? kgTalIc(n) : RICON + "inv_misc_questionmark.jpg";
+    var tip = s ? ' data-kgtip="s' + s.id + '"' : n ? ' data-kgtip="t' + n.id + ':' + n.max + '"' : "";
+    return '<span class="kgri"' + tip + '><img src="' + src + '" alt="" loading="lazy">' + esc(name) + "</span>";
+  }
+  function clGuideHtml() {
+    var n = clName(), c = clC(), g = kgC();
+    if (!KG) { loadKg().then(function () { if (mode === "cl" && clView === "guide") clRedraw(true); }).catch(function () {}); return '<div class="clguide"><div class="note">' + t("ar_loading") + "</div></div>"; }
+    if (!g || !c || !clTal()) return '<div class="clguide"><div class="note">' + t("kg_none", esc(n)) + "</div></div>";
+    var p = kgPlay(g.talents), byLv = {};
+    p.steps.forEach(function (st) { byLv[st.lvl] = st; });
+    var specTi = clTal().c.trees.map(function (x) { return x.spec; }).indexOf(g.spec);
+    var h = '<div class="clguide cls-' + clSel + '" style="--cc:' + clCol(n) + '">';
+    h += '<div class="kghead">' + classIcon(n) + "<div><h2>" + t("kg_h", '<span style="color:' + clCol(n) + '">' + n + "</span>") + "</h2><p>" + esc(g.intro) + "</p></div></div>";
+    h += '<dl class="kgfacts"><div><dt>' + t("kg_diff") + '</dt><dd><span class="kgdiff d' + g.diff + '"><i></i><i></i><i></i></span>' + t("kg_diff_" + g.diff) + "</dd></div>" +
+      "<div><dt>" + t("kg_spec") + "</dt><dd>" + clLineIc(g.spec) + esc(g.spec) + "<small>" + kgSplit(p.ranks) + "</small></dd></div>" +
+      "<div><dt>" + t("kg_role") + "</dt><dd>" + (CL_ROLES[n] || []).map(function (r) { return t("cl_role_" + r); }).join(" · ") + "</dd></div>" +
+      "<div><dt>" + t("kg_stats") + "</dt><dd>" + g.stats.map(esc).join(" › ") + "</dd></div></dl>";
+    h += '<div class="kgpros"><ul>' + g.good.map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("") + '</ul><ul class="no">' + g.bad.map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("") + "</ul></div>";
+    h += '<nav class="kgnav">' + g.levels.map(function (b) { return '<button type="button" data-kgjump="' + b.from + '">' + (b.from === 1 ? 1 : b.from + 1) + "–" + b.to + "</button>"; }).join("") + "</nav>";
+    g.levels.forEach(function (b) {
+      var a = b.from === 1 ? 1 : b.from + 1, cost = 0, rows = "", key = {}, at = {};
+      (b.train || []).forEach(function (x) { key[x] = 1; });
+      p.steps.forEach(function (st) { if (st.lvl <= b.to) at[st.n.id] = st.rank; });
+      for (var L = a; L <= b.to; L++) {
+        var sp = c.spells.filter(function (s) { return !s.x && (s.s === "t" || s.s === "q") && (s.l || 1) === L; }).sort(function (x, y) { return (key[y.n] || 0) - (key[x.n] || 0) || x.n.localeCompare(y.n); });
+        sp.forEach(function (s) { cost += s.c || 0; });
+        var st = byLv[L], note = g.notes && g.notes[L];
+        if (!st && !sp.length && !note) continue;   // tomma levlar (2–3 osv. utan något nytt) tar ingen plats
+        rows += '<li><b class="kgl">' + L + "</b>" +
+          '<span class="kgtal' + (st && st.ti === specTi ? " t0" : "") + '"' + (st ? ' data-kgtip="t' + st.n.id + ":" + st.rank + '"><img src="' + kgTalIc(st.n) + '" alt="" loading="lazy"><span>' + esc(st.n.name) + "</span><i>" + st.rank + "/" + st.n.max + "</i>" : ">") + "</span>" +
+          '<span class="kgs">' + sp.map(function (s) {
+            return '<button type="button" class="kgsp' + (key[s.n] ? " key" : "") + (s.s === "q" ? " q" : "") + '" data-kgsp="' + s.id + '" data-kgtip="s' + s.id + '"' + (key[s.n] ? ' aria-label="' + esc(s.n) + ", " + t("kg_key") + '"' : "") + '><img src="' + (s.i ? KG_IC + s.i + ".jpg" : RICON + "inv_misc_questionmark.jpg") + '" alt="" loading="lazy">' + esc(s.n) + (s.s === "q" ? " <i>" + t("kg_quest") + "</i>" : s.r ? " <i>" + s.r + "</i>" : "") + "</button>";
+          }).join("") + "</span>" + (note ? '<em class="kgn">' + esc(note) + "</em>" : "") + "</li>";
+      }
+      var rot = b.rot.map(function (x) { return kgRotIc(x, b.to); }).join('<span class="kgar">›</span>');
+      h += '<section class="kgbr" id="kg-' + b.from + '"><header><h3><span class="kgr">' + a + "–" + b.to + "</span>" + esc(b.title) + "</h3><small>" +
+        (cost ? t("kg_cost", money(cost)) + " · " : "") + t("kg_tal_at", b.to, kgSplit(at)) + "</small></header>" +
+        '<div class="kgtop"><ul class="kgtips">' + b.tips.map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("") + '</ul><div class="kgrot"><h4>' + t("kg_rot") + "</h4><div>" + rot + "</div></div></div>" +
+        '<ol class="kglv">' + rows + "</ol></section>";
+    });
+    return h + "</div>";
+  }
+  function kgBars(ranks) {
+    var tc = clTal(), mx = 0; if (!tc) return "";
+    var bars = tc.c.trees.map(function (tr) { var v = talSpent(tr, ranks); mx = Math.max(mx, v); return [tr.spec, v]; });
+    return '<div class="lbbars cltrees">' + bars.map(function (b) { return '<div class="lbb"><span class="nm">' + clLineIc(b[0]) + "<b>" + esc(b[0]) + '</b></span><span class="lbfill"><i style="width:' + (mx ? b[1] / mx * 100 : 0).toFixed(1) + "%;background:" + clCol() + '"></i></span><em>' + b[1] + "</em></div>"; }).join("") + "</div>";
+  }
+  function kgOrder(steps) {   // varje talang en gång, i den ordning första poängen läggs, med antalet poäng till slut
+    var seen = {}, list = [];
+    steps.forEach(function (st) { if (!seen[st.n.id]) { seen[st.n.id] = { n: st.n, k: 0 }; list.push(seen[st.n.id]); } seen[st.n.id].k = st.rank; });
+    return '<div class="kgorder">' + list.map(function (x) { return '<span data-kgtip="t' + x.n.id + ":" + x.k + '"><img src="' + kgTalIc(x.n) + '" alt="' + esc(x.n.name) + '" loading="lazy"><b>' + x.k + "</b></span>"; }).join("") + "</div>";
+  }
+  function clGuideDetail() {
+    var g = kgC();
+    if (!g || !clTal()) return clOverview();
+    var p = kgPlay(g.talents), e2 = g.end ? kgPlay(g.end.talents) : null;
+    return clStrip(t("kg_sub")) +
+      '<div class="kgcard"><h3>' + t("kg_lvbuild") + " · " + esc(g.spec) + "</h3>" + kgBars(p.ranks) + "<small class=\"dim\">" + t("kg_order") + "</small>" + kgOrder(p.steps) + '<button class="wowbtn" type="button" data-kgload="lvl">' + t("kg_open") + "</button></div>" +
+      (e2 ? '<div class="kgcard"><h3>' + esc(g.end.title) + "</h3><p>" + esc(g.end.text) + "</p>" + kgBars(e2.ranks) + kgOrder(e2.steps) + '<button class="wowbtn" type="button" data-kgload="end">' + t("kg_open") + "</button></div>" : "") +
+      '<div class="note">' + t("kg_note") + "</div>";
   }
   // Talangräknaren i mittenrutan: samma träd som Armorys planerare (talTreeHtml), poängen i clRanks.
   function clTalPanel() {
@@ -8273,7 +8460,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     else where = t("cl_w_other");
     if (s.x) where += " " + t("cl_changed_note");
     $("detail").scrollTop = 0;
-    $("detail").innerHTML = '<div class="strip"><button class="lnk" type="button" data-copyany="' + esc(clHash()) + '" title="' + t("copy_link") + '">' + t("copy_link") + "</button><h2>" + clIcon(s, true) + esc(s.n) + '</h2><small><span style="color:' + clCol(n) + '">' + n + "</span>" + (f.pet ? " · " + clPetIc(f.pet) + esc(f.pet) : s.ln ? " · " + clLineIc(s.ln) + esc(s.ln) : "") + (s.r ? " · " + t("cl_rank", s.r) : "") + (s.pa ? " · " + t("cl_passive") : "") + "</small></div>" +
+    $("detail").innerHTML = (clView === "guide" ? '<button class="lnk back" type="button" data-kgback="1">‹ ' + t("kg_back") + "</button>" : "") + '<div class="strip"><button class="lnk" type="button" data-copyany="' + esc(clHash()) + '" title="' + t("copy_link") + '">' + t("copy_link") + "</button><h2>" + clIcon(s, true) + esc(s.n) + '</h2><small><span style="color:' + clCol(n) + '">' + n + "</span>" + (f.pet ? " · " + clPetIc(f.pet) + esc(f.pet) : s.ln ? " · " + clLineIc(s.ln) + esc(s.ln) : "") + (s.r ? " · " + t("cl_rank", s.r) : "") + (s.pa ? " · " + t("cl_passive") : "") + "</small></div>" +
       '<dl class="facts">' + facts.map(function (x) { return "<div><dt>" + x[0] + "</dt><dd>" + x[1] + "</dd></div>"; }).join("") + "</dl>" +
       (s.d ? '<div class="cldesc">' + esc(s.d) + "</div>" : '<div class="note">' + t("cl_nodesc") + "</div>") +
       "<div><h3>" + t("cl_where") + '</h3><div class="srcs1">' + where + "</div></div>" + ranksHtml +
@@ -8322,6 +8509,8 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     $("detail").scrollTop = 0;
     if (clLand) { $("detail").innerHTML = '<div class="strip"><h2>' + t("cl_land_h") + "</h2></div><div class=\"note\">" + t("cl_land_right") + "</div>"; return; }
     if (clView === "tal") { $("detail").innerHTML = clTalDetail(); return; }
+    if (clView === "guide" && !clSp) { $("detail").innerHTML = clGuideDetail(); return; }
+    if (clView === "guide") { clSpDetail(clSp); return; }
     if (clView === "spells" || clView === "pets") { if (clSp && clFind(clSp)) clSpDetail(clSp); else { clSp = 0; $("detail").innerHTML = clOverview(); } return; }
     if (clView === "quests") {
       if (clQ && QU && QU.quests[clQ]) {
