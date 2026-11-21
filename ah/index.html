@@ -1124,8 +1124,14 @@ body[data-home] .cols, body[data-home] #sect, body[data-home] #q, body[data-home
 .hxtip[hidden] { display: none; } .hxtip b { font-size: 13.5px; } .hxtip span { color: #A6B4C1; font-size: 11.5px; }
 .hxico.bz { width: 52px; height: 52px; right: 16px; bottom: 16px; border-radius: 8px; border: 1px solid var(--hx-line); object-fit: cover; }
 /* Questrutan (Joakim 2026-11-21): fakta i en rad överst, listan till vänster om kartan, kedjan under i två spalter */
-.qfacts { grid-template-columns: repeat(auto-fit, minmax(96px, 1fr)); padding: 10px 14px; border: 1px solid var(--line); border-radius: 8px; background: rgba(255, 255, 255, .02); }
-.qfacts .qrep { grid-column: span 2; } .qfacts .qrep dd { font-size: 14px; font-weight: 500; }
+.qfacts { display: flex; flex-wrap: wrap; gap: 6px 20px; margin-top: 10px; padding: 8px 12px; border: 1px solid var(--line); border-radius: 8px; background: rgba(255, 255, 255, .02); }
+.qfacts dt { font-size: 11px; } .qfacts dd { font-size: 15px; } .qfacts .qrep dd { font-size: 13.5px; font-weight: 500; }
+.qrew { margin-top: 12px; } .qrew h3 { margin: 0 0 6px; } .qrew table { width: 100%; }
+.qmleg li[data-qpl] { cursor: pointer; padding: 4px 6px; border-radius: 6px; border-left: 2px solid transparent; }
+.qmleg li[data-qpl]:hover { background: rgba(255, 255, 255, .04); } .qmleg li[data-qpl].on { background: rgba(236, 193, 120, .08); border-left-color: var(--gold); }
+.qmap.hashl .qmk:not(.hl), .qmap.hashl .qmq:not(.hl) { opacity: .3; }
+.qmk.hl { transform: scale(1.8); z-index: 4; box-shadow: 0 0 0 2px #fff, 0 0 8px rgba(0, 0, 0, .9); }
+.qmq.hl { transform: translate(-50%, -60%) scale(1.35); z-index: 5; } .qmq.l.hl { transform: translate(-108%, -60%) scale(1.35); } .qmq.r.hl { transform: translate(8%, -60%) scale(1.35); }
 .qtop { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); gap: 18px; align-items: start; }
 .qtl { display: grid; gap: 12px; align-content: start; min-width: 0; } .qtl h3 { margin: 0; } .qtl .qmleg { margin-top: 0; }
 .qtr { min-width: 0; } .qtr .qmwrap > .huchips { margin-top: 0; }
@@ -1797,7 +1803,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
       up_how: "Score = the item's stats weighted for the class (a simple leveling profile, not a simulation), compared with what is worn now. Same armor type rules as the game: mail from 40 for hunters and shamans, plate from 40. Prices are the lowest on the AH in the last scan. Click an item for its price history.",
       hu_map: "Map", hu_map_tip: "Show the beasts in the list on a map", hu_map_title: "Where they are", hu_map_sub: "%1 beasts on this continent", hu_map_lvl: "up to level %1",
       hu_map_rare: "Rare", hu_map_elite: "Elite", hu_map_beast: "Beast", hu_map_none: "No beast in the list lives here.", hu_map_zsub: "%1 beasts in %2", hu_route: "The line is the shortest round between its spawn points.",
-      qm_where: "Where to go", qm_giver: "Quest giver", qm_turnin: "Turn in", qm_kill: "Kill", qm_use: "Use", qm_get: "Get", qm_start_item: "Starts from",
+      qm_where: "Where to go", qm_pick: "Click to show it on the map", qm_giver: "Quest giver", qm_turnin: "Turn in", qm_kill: "Kill", qm_use: "Use", qm_get: "Get", qm_start_item: "Starts from",
       qm_vendor: "vendor", qm_object: "object", qm_inst: "in %1", qm_more: "+%1 more places", qm_nosrc: "No place in the database (new or changed in Forever).",
       qm_none: "No map for this quest: it is new or changed in Forever and not in the Classic database.", qm_copied: "Copied:", qm_click_copy: "click to copy /way",
       qm_copy_tip: "Copy %1 for TomTom or another waypoint addon",
@@ -3561,17 +3567,18 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     }).join("") + "</ol></div>" : "";
     var nextOther = (q[13] || []).filter(function (n) { return chain.indexOf(n) < 0; });
     if (nextOther.length) chainHtml += '<div class="note">' + t("qu_also") + " " + nextOther.map(qlink).join(", ") + "</div>";
+    // Under kartan (Joakim 2026-11-21): fakta i en kompakt rad och belöningarna med ikoner, så listan och kartan står högst upp.
+    var factsHtml = '<dl class="facts qfacts"><div><dt>' + t("col_lvl") + "</dt><dd>" + (q[2] ? (q[4] ? "~" : "") + q[2] : "–") + "</dd></div><div><dt>" + t("qu_req") + "</dt><dd>" + (q[3] || "–") + "</dd></div>" +
+      "<div><dt>" + t("col_xp") + "</dt><dd>" + (q[7] ? num(q[7]) : "–") + "</dd></div><div><dt>" + t("col_money") + "</dt><dd>" + (q[8] ? money(q[8]) : "–") + "</dd></div>" +
+      (reps ? '<div class="qrep"><dt>' + t("ar_rep") + "</dt><dd>" + reps + "</dd></div>" : "") + "</dl>";
+    var rewHtml = items ? '<div class="qrew"><h3>' + t("qu_rewards") + '</h3><table class="steps reag"><thead><tr><th></th><th style="text-align:left">' + t("col_item") + "</th><th>" + t("col_qty_s") + "</th><th>" + t("col_min") + "</th></tr></thead><tbody>" + quItems(q[9], false) + quItems(q[10], true) + "</tbody></table></div>" : "";
     $("detail").innerHTML = (inAr && arData && mode === "ar" ? '<button class="lnk back" type="button" data-aqback="1">‹ ' + esc(arData.name + " " + arData.surname) + "</button>" : "") +
       '<div class="strip"><button class="lnk" type="button" data-copyany="#quest=' + id + '" title="' + t("copy_link") + '">' + t("copy_link") + "</button>" +
       "<h2>" + esc(q[0]) + (q[6] ? ' <span class="tag el">' + t("qu_elite") + "</span>" : "") + "</h2><small>" + esc(QU.areas[q[1]] || "") + " · " + fac + "</small></div>" + done +
-      '<dl class="facts qfacts"><div><dt>' + t("col_lvl") + "</dt><dd>" + (q[2] ? (q[4] ? "~" : "") + q[2] : "–") + "</dd></div><div><dt>" + t("qu_req") + "</dt><dd>" + (q[3] || "–") + "</dd></div>" +
-      "<div><dt>" + t("col_xp") + "</dt><dd>" + (q[7] ? num(q[7]) : "–") + "</dd></div><div><dt>" + t("col_money") + "</dt><dd>" + (q[8] ? money(q[8]) : "–") + "</dd></div>" +
-      (reps ? '<div class="qrep"><dt>' + t("ar_rep") + "</dt><dd>" + reps + "</dd></div>" : "") + "</dl>" +
       '<div class="qtop"><div class="qtl"><h3>' + t("qm_where") + '</h3><div id="qleg"></div>' +
       (req.length ? "<div><h3>" + t("qu_reqs") + '</h3><dl class="srcs">' + req.join("") + "</dl></div>" : "") + "</div>" +
-      '<div class="qtr"><div id="qmap" class="qmwrap"><div class="note">' + t("ar_loading") + "</div></div></div></div>" +
+      '<div class="qtr"><div id="qmap" class="qmwrap"><div class="note">' + t("ar_loading") + "</div></div>" + factsHtml + rewHtml + "</div></div>" +
       (chainHtml ? '<div class="qchainw">' + chainHtml + "</div>" : "") +
-      (items ? "<div><h3>" + t("qu_rewards") + '</h3><div class="scroll"><table class="steps reag"><thead><tr><th></th><th style="text-align:left">' + t("col_item") + "</th><th>" + t("col_qty_s") + "</th><th>" + t("col_min") + "</th></tr></thead><tbody>" + quItems(q[9], false) + quItems(q[10], true) + "</tbody></table></div></div>" : "") +
       '<div><h3>' + t("qu_text") + '</h3><div class="qtext" id="qtext">' + t("ar_loading") + "</div></div>" +
       '<div class="note"><a class="wh" href="https://www.wowhead.com/forever/quest=' + id + '" target="_blank" rel="noopener">' + t("qu_wowhead_q") + "</a></div>";   // källraden flyttad till About (Joakim 2026-11-18)
     quTextOf(id, function (tx) {
@@ -3587,7 +3594,21 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
   // koordinater att kopiera till waypoint-addonet med ett tryck). Data: questmap/<id % 50>.json (hamta-questplatser.js,
   // cmangos classic-db), spelets egna zonkartor. ! = ger questen, ? = lämna in, färgade prickar = målen, ytor = spelets
   // questområden. Koordinaterna kopieras som "/way Zon x y" (TomTom-formatet, som de flesta waypoint-addons läser).
-  var QM = {}, QMIX = null, qmIxP = null, qmCur = null, qmZone = "", qmOv = false, qmOvZone = "";
+  var QM = {}, QMIX = null, qmIxP = null, qmCur = null, qmZone = "", qmOv = false, qmOvZone = "", qmHl = -1;   // qmHl: markerat steg i listan
+  // Klick på ett steg i listan: dess punkter lyser på kartan, resten tonas ner; kartan byter zon om punkterna ligger i en
+  // annan. Ett klick till släcker (Joakim 2026-11-21).
+  function qmPick(pi) {
+    if (!qmCur) return;
+    var p = qmParts(qmCur.r)[pi];
+    if (!p) return;
+    qmHl = qmHl === pi ? -1 : pi;
+    if (qmHl >= 0) {
+      var zl = [];
+      p.ents.forEach(function (e) { e[4].forEach(function (pt) { if (huHasZ(pt[0]) && zl.indexOf(pt[0]) < 0) zl.push(pt[0]); }); });
+      if (zl.length && zl.indexOf(qmCur.zs) < 0) qmZone = zl[0];
+    }
+    var el = $("qmap"); if (el) el.innerHTML = qmHtml(qmCur.id, qmCur.r);
+  }
   var QM_COL = ["#ff6b5a", "#5aa0ff", "#7ad35a", "#d48cff", "#ffb347", "#4fd6cf", "#ff8ad8", "#e2e2e2"];
   function qmLoad(id) {
     var k = id % 50;
@@ -3650,9 +3671,10 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     P.forEach(function (p) { p.ents.forEach(function (e) { e[4].forEach(function (pt) { add(pt[0], p.k === "s" || p.k === "e" ? 1 : 3); }); }); });
     (r.p || []).forEach(function (pp) { add(pp[1], 2); });
     var zones = Object.keys(cnt).sort(function (a, b) { return cnt[b] - cnt[a] || a.localeCompare(b); });
-    if (!qmCur || qmCur.id !== id) qmZone = "";
+    if (!qmCur || qmCur.id !== id) { qmZone = ""; qmHl = -1; }
     qmCur = { id: id, r: r };
     var zs = zones.indexOf(qmZone) >= 0 ? qmZone : zones[0] || "", h = "";
+    qmCur.zs = zs;
     if (zones.length > 1) h += '<div class="huchips">' + zones.map(function (z) { return '<button type="button" class="huchip' + (z === zs ? " on" : "") + '" data-qmz="' + esc(z) + '" aria-pressed="' + (z === zs) + '">' + esc(z) + "</button>"; }).join("") + "</div>";
     if (zs) {
       // Spelets questområden: målindex 0–3 = döda/använda i ordning, 4–7 = föremålen, −1 = inlämningen.
@@ -3669,8 +3691,8 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
         if (p.k !== "s" && p.k !== "e") return;
         p.ents.forEach(function (e) { e[4].forEach(function (pt) { if (pt[0] === zs) (p.k === "s" ? sKey : eKey)[pt[1] + "," + pt[2]] = 1; }); });
       });
-      P.forEach(function (p) {
-        var qe = p.k === "s" || p.k === "e";
+      P.forEach(function (p, pi) {
+        var qe = p.k === "s" || p.k === "e", hl = qmHl === pi ? " hl" : "";
         p.ents.forEach(function (e) {
           // Gångvägar för vandrande NPC:er (e[6]) i målets färg, guld för givare och inlämnare (Joakim 2026-11-18).
           (e[6] || []).forEach(function (gw, gi) {
@@ -3682,12 +3704,12 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
             if (pt[0] !== zs) return;
             var way = esc(qmWay(pt[0], pt[1], pt[2])), tip = esc(e[2] + " · " + pt[1] + ", " + pt[2] + " · " + t("qm_click_copy"));
             var pos = "left:" + pt[1] + "%;top:" + pt[2] + "%", both = sKey[pt[1] + "," + pt[2]] && eKey[pt[1] + "," + pt[2]];
-            if (qe) top += '<b class="qmq ' + p.k + (both ? (p.k === "s" ? " l" : " r") : "") + '" style="' + pos + '" data-way="' + way + '" title="' + tip + '">' + (p.k === "s" ? "!" : "?") + "</b>";
-            else mk += '<i class="qmk" style="' + pos + ";--c:" + p.col + '" data-way="' + way + '" title="' + tip + '"></i>';
+            if (qe) top += '<b class="qmq ' + p.k + (both ? (p.k === "s" ? " l" : " r") : "") + hl + '" style="' + pos + '" data-way="' + way + '" title="' + tip + '">' + (p.k === "s" ? "!" : "?") + "</b>";
+            else mk += '<i class="qmk' + hl + '" style="' + pos + ";--c:" + p.col + '" data-way="' + way + '" title="' + tip + '"></i>';
           });
         });
       });
-      h += '<div class="huzm qmap"><img src="' + huZUrl(zs) + '" alt="' + esc(zs) + '" width="1002" height="668" decoding="async">' +
+      h += '<div class="huzm qmap' + (qmHl >= 0 ? " hashl" : "") + '"><img src="' + huZUrl(zs) + '" alt="' + esc(zs) + '" width="1002" height="668" decoding="async">' +
         qmTaxi(zs) + (svg ? '<svg class="qmpoly" viewBox="0 0 100 100" preserveAspectRatio="none">' + svg + "</svg>" : "") + qmPaths(paths) + mk + top + "</div>";
     }
     var verb = { k: "qm_kill", u: "qm_use", i: "qm_get" };
@@ -3698,11 +3720,12 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
         (chance && e[3] ? ' <span class="dim">' + e[3] + " %</span>" : "") + "</span>" + (e[4][0] ? qmChip(e[4][0], zs) : "") +
         e[5].map(function (x) { return ' <span class="tag v">' + esc(t("qm_inst", x[0])) + "</span>"; }).join("") + "</li>";
     };
-    var leg = '<ul class="qmleg">' + P.map(function (p) {
-      if (p.k === "s" || p.k === "e") return '<li class="qmrow"><b class="qmq ' + p.k + ' in">' + (p.k === "s" ? "!" : "?") + "</b>" + t(p.k === "s" ? "qm_giver" : "qm_turnin") + "<ul>" + p.ents.map(function (e) { return line(e, false); }).join("") + "</ul></li>";
+    var leg = '<ul class="qmleg">' + P.map(function (p, pi) {
+      var liA = '<li class="qmrow' + (qmHl === pi ? " on" : "") + '" data-qpl="' + pi + '" title="' + esc(t("qm_pick")) + '">';
+      if (p.k === "s" || p.k === "e") return liA + '<b class="qmq ' + p.k + ' in">' + (p.k === "s" ? "!" : "?") + "</b>" + t(p.k === "s" ? "qm_giver" : "qm_turnin") + "<ul>" + p.ents.map(function (e) { return line(e, false); }).join("") + "</ul></li>";
       var head = '<i class="qmk in" style="--c:' + p.col + '"></i>' + t(p.k === "si" ? "qm_start_item" : verb[p.t]) + " <b>" + esc(p.name) + "</b>" + (p.cnt > 1 ? " ×" + p.cnt : "");
       var body = p.ents.length ? "<ul>" + p.ents.map(function (e) { return line(e, p.k === "si" || p.t === "i"); }).join("") + "</ul>" + (p.tot > p.ents.length ? '<div class="dim">' + t("qm_more", p.tot - p.ents.length) + "</div>" : "") : '<div class="dim">' + t("qm_nosrc") + "</div>";
-      return '<li class="qmrow">' + head + body + "</li>";
+      return liA + head + body + "</li>";
     }).join("") + "</ul>";   // förklaringsraden borta, koordinaterna har tooltip (Joakim 2026-11-18)
     if (legEl) { legEl.innerHTML = leg; return h; }   // questrutan: listan till vänster om kartan (Joakim 2026-11-21)
     return h + leg;
@@ -5404,6 +5427,8 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     if (wy) { e.preventDefault(); qmCopy(wy.dataset.way); return; }
     var qmz = e.target.closest("[data-qmz]");
     if (qmz && qmCur) { qmZone = qmz.dataset.qmz; var qme = $("qmap"); if (qme) qme.innerHTML = qmHtml(qmCur.id, qmCur.r); return; }
+    var qpl = e.target.closest("[data-qpl]");
+    if (qpl && qmCur && !e.target.closest("a, button")) { qmPick(+qpl.dataset.qpl); return; }
     // NPC-sidan (Joakim 2026-11-18): namnet i questkartans lista, zonflikarna på NPC:ns karta
     var sn = e.target.closest("[data-srcn]"), sz = e.target.closest("[data-srcz]");
     if ((sn || sz) && $("srcBox") && SRC.id) {
