@@ -16,6 +16,13 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#130F0D">
 <link rel="icon" type="image/png" href="https://ragequitit.github.io/ah/assets/icons/auction-house-logo.png">
+<link rel="apple-touch-icon" href="https://ragequitit.github.io/ah/assets/icons/auction-house-logo.png">
+<meta name="apple-mobile-web-app-title" content="Azeroth Atlas">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<link rel="manifest" href='data:application/manifest+json,{"name":"Azeroth Atlas","short_name":"Atlas","start_url":"https://www.chriswhippit.com/ah/","scope":"https://www.chriswhippit.com/ah/","display":"standalone","background_color":"%23130F0D","theme_color":"%23130F0D","icons":[{"src":"https://ragequitit.github.io/ah/assets/icons/auction-house-logo.png","sizes":"384x384","type":"image/png"}]}'>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <style>html{color-scheme:dark}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 <title>Auction House</title>
 <meta name="claude:viewport-fit-sides" content="cover">
@@ -1372,10 +1379,11 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
 .arland p { margin: 0; color: var(--grey); }
 #sect { cursor: pointer; } #sect:hover { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px; }
 /* ===== Mobil och surfplatta (Joakim 2026-11-21: "oanvändbar i mobilen") =====
-   Datorn (> 1100 px) påverkas inte. ≤ 1100 px: listan först och den valda raden som en egen vy (body.mdet) med "‹ List"
-   överst, kategorierna i rader som rullar i sidled (.mcatrow, görs i JS). ≤ 760 px dessutom: sidhuvudet i tre korta
-   rader, klickytor minst 44 px. ≤ 520 px: kolumner som inte ryms döljs. */
-.mbar { display: none; }
+   Datorn (> 1100 px) påverkas inte. ≤ 1100 px: listan först och den valda raden som en egen vy (body.mdet) med "‹ Back"
+   och rubriken överst, kategorierna i rader som rullar i sidled (.mcatrow, görs i JS) och tonar i kanten där det finns mer
+   (data-sx). ≤ 760 px dessutom: kant till kant, sidhuvudet i två rader (Style-valet i sidfoten), flikarna med ikon över
+   text, klickytor minst 44 px. ≤ 520 px: kolumner som inte ryms döljs. Granskning 2026-11-21: nio granskare. */
+.mbar, .mwatch { display: none; }
 @media (max-width: 1100px) {
   .win { overflow: clip; }   /* clip i stället för hidden: Tillbaka-raden kan stå kvar överst (sticky) */
   /* kategorierna: panelerna (spelarval, filter) i full bredd, knapparna i rader som rullar i sidled */
@@ -1397,6 +1405,39 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
   [data-appearance=atlas] body.mdet .mbar { background: linear-gradient(#17222E, #121B26); }
   .mbar .navb { flex: 0 1 auto; height: 44px; padding: 0 20px; }
   .tab { min-height: 44px; }
+  html { -webkit-tap-highlight-color: transparent; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+  .top { z-index: 9; }   /* sök överallt-rullgardinen och marknadsrutan ovanpå "‹ Back"-raden */
+  .cols, .bar, .mbar, .homev { touch-action: manipulation; }
+  .aboutbox { max-height: calc(100dvh - 32px); }
+  .cat.hd { height: 44px; margin: 0; }
+  .mcatrow .cath, .cats > #dglist > .cath { align-self: center; padding: 0 8px; border: 0; white-space: nowrap; }
+  .detail { overflow-x: auto; }   /* breda tabeller i rutan rullar i stället för att klippas */
+  body.mdet .detail th { position: static; }
+  /* detaljvyn: bara "‹ Back" + rubrik ovanför innehållet; flikens sök, rubrik och antal göms */
+  body.mdet .bar > .sect, body.mdet .bar > #q, body.mdet .bar > #qbtn, body.mdet .bar > .count, body.mdet .subrow, body.mdet .mwatch, body[data-home] .mwatch { display: none; }
+  .mwatch { order: 2; display: inline-flex; align-items: center; height: 40px; padding: 0 14px; }
+  body.mdet .mbar { align-items: center; gap: 8px; }
+  .mbar .mttl { flex: 1 1 auto; min-width: 0; font: 500 16px/1.2 var(--display); color: var(--gold); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .mbar .navb { padding: 0 14px; }
+  /* rader som rullar i sidled tonar i den kant där det finns mer (data-sx sätts i JS) */
+  [data-sx=start] { -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 44px), transparent); mask-image: linear-gradient(90deg, #000 calc(100% - 44px), transparent); }
+  [data-sx=mid] { -webkit-mask-image: linear-gradient(90deg, transparent, #000 36px, #000 calc(100% - 44px), transparent); mask-image: linear-gradient(90deg, transparent, #000 36px, #000 calc(100% - 44px), transparent); }
+  [data-sx=end] { -webkit-mask-image: linear-gradient(90deg, transparent, #000 36px); mask-image: linear-gradient(90deg, transparent, #000 36px); }
+  .qmk::after { content: ""; position: absolute; inset: -14px; }   /* kartmarkörerna: ~36 px träffyta */
+}
+@media (max-width: 1100px) and (hover: none) {   /* touch: hover-färgen ska inte fastna på raden man tryckte */
+  tbody tr:hover { background: transparent; }
+  #rows tr:nth-child(even):not(.exp):hover { background: var(--alt); }
+  tbody tr[aria-selected=true]:hover, #rows tr[aria-selected=true]:nth-child(even):hover { background: var(--sel); }
+  .known .craft tbody tr:hover td { background: transparent; } .known .craft tbody tr[aria-selected=true]:hover td { background: var(--sel); }
+}
+@media (max-width: 1100px) and (pointer: coarse) {   /* telefon på tvären: klickytorna gäller ändå */
+  td, .lbt td { height: 44px; }
+  .seg button, .seg .lbl { height: 40px; }
+  .range button { padding: 6px 12px; }
+  .star { padding: 10px; }
+  .strip .star, .strip .lnk { height: 40px; }
+  .mbtn { height: 44px; }
 }
 @media (max-width: 760px) {
   body { padding-top: 8px; padding-bottom: 8px; padding-left: max(8px, env(safe-area-inset-left, 0px)); padding-right: max(8px, env(safe-area-inset-right, 0px)); }
@@ -1436,12 +1477,39 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
   .star { padding: 10px; } .p3d { padding: 10px 12px; } .qmc { padding: 8px 10px; }
   .hxli { min-height: 44px; } .hxdots button { width: 32px; height: 32px; }
   .lbt td.nm a { padding: 12px 0; } .lbt .lbci { min-height: 40px; min-width: 32px; }
+  /* kant till kant, sidhuvudet i två rader: [bok + titel | marknad], [sök överallt]; Style-valet står i sidfoten (mobApp i JS) */
+  body { padding: 0 0 env(safe-area-inset-bottom, 0px); }
+  .win { border-left: 0; border-right: 0; border-radius: 0; box-shadow: none; }
+  .top, .foot { border-radius: 0; }
+  .top { padding-top: max(8px, env(safe-area-inset-top, 0px)); }
+  .scan { display: none; }
+  .home { flex: 1 1 0; }
+  h1, [data-appearance=atlas] .title h1 { font-size: 17px; }
+  .top .mkt { margin-left: auto; flex: 0 0 auto; order: 0; }
+  .mbtn .rg, .mbtn .msep { display: none; }   /* regionen står i rutan */
+  .bar #q, [data-appearance=atlas] .bar #q { flex: 1 1 150px; }   /* sök, Search och ☆ på en rad */
+  .mpop { left: auto; right: 0; }   /* rutan hänger under knappen i högerkanten */
+  .foot .appsel { margin: 0 0 6px; display: flex; align-items: center; gap: 10px; }
+  .foot .applbl { display: inline; position: static; margin: 0; font-size: 12.5px; }
+  .qmtoast { bottom: calc(24px + env(safe-area-inset-bottom, 0px)); }
+  /* flikarna som app-flikar: ikon över text, fem i bild */
+  .mode button, [data-appearance=atlas] .mode button { flex: 0 0 auto; min-width: 72px; height: 58px; padding: 4px 8px 2px; flex-direction: column; justify-content: center; gap: 2px; font-size: 11.5px; font-weight: 600; letter-spacing: .01em; }
+  .mode .ai, [data-appearance=atlas] .mode .ai { width: 28px; height: 28px; margin: 0; }
+  .subrow .segs { margin-left: 0; flex: none; }
+  .seg button, .seg .lbl { height: 40px; white-space: nowrap; } .seg button { padding: 0 12px; }
+  .strip .star, .strip .lnk { height: 40px; }
+  .chip { min-height: 40px; }
+  .hxdots { gap: 6px; } .hxdots button { width: 40px; height: 40px; }
+  td { border-bottom-color: rgba(255, 255, 255, .06); }   /* radlinjen syns på telefon */
+  .qplayer select, .dgtools select, .crq, .seg .lbl input { font-size: 16px; }   /* iPhone zoomar inte in i fält med 16 px */
+  :root { --q3: #2f8df0; --q4: #b45ff5; }   /* blå/lila varunamn läsbara på telefon (kontrast ≥ 4,5:1) */
 }
 @media (max-width: 520px) {
   /* namnet tar den bredd som blir över, siffrorna så smala de kan */
   #list th.nm, #list td.nm { width: 100% !important; max-width: 0 !important; }
   #list td.bs { white-space: normal; min-width: 104px; font-size: 12.5px; }
   .lbt th.rc, .lbt td.rc { display: none; }   /* topplistorna: namnet före rasen (raserna finns i rutan under) */
+  .mwatch span { display: none; } .mwatch { padding: 0 12px; }   /* bara stjärnan, så sökraden ryms */
   /* kolumner som inte ryms (mobCols sätter mhN efter rubrikernas data-k) */
   #list.mh2 tr > :nth-child(2), #list.mh3 tr > :nth-child(3), #list.mh4 tr > :nth-child(4), #list.mh5 tr > :nth-child(5),
   #list.mh6 tr > :nth-child(6), #list.mh7 tr > :nth-child(7), #list.mh8 tr > :nth-child(8) { display: none; }
@@ -2044,7 +2112,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
       hu_skin: "Skinning", hu_skin_note: "What skinning the beast gives, from the Classic database. Price is the auction house market price.", hu_skin_chance: "Chance", hu_skin_price: "Market price",
       dg_boss_loot: "Loot", dg_back: "‹ Back to the dungeon", dg_boss_noloot: "No loot of its own in the Classic database.",
       gs_ph: "Search everything: items, recipes, quests, NPCs, beasts, players…", gs_all: "All", gs_k_item: "Items", gs_k_rec: "Recipes", gs_k_quest: "Quests",
-      gs_k_npc: "NPCs", gs_k_beast: "Beasts", gs_k_col: "Collections", gs_k_dg: "Dungeons", gs_k_node: "Ore veins", gs_k_herb: "Herbs", nd_skill: "%1 %2", nd_where_h: "Where to pick", nd_pin: "Where to farm: %1", fa_h: "Best zones for your skill", fa_skill: "%1 skill", fa_both: "Herbs + ores on one map", fa_col_n: "Spawns", fa_col_val: "Per node", fa_col_val_tip: "Average auction house value of one node you can gather in the zone", fa_col_gph: "Gold/h", fa_sort_n: "Most spawns", fa_sort_g: "Most gold", fa_ores: "Ores", fa_herbs: "Herbs", fa_map_tip: "Click a point to copy its /way.", fa_none: "Nothing to gather at this skill yet.", fa_note: "Spawns you can gather at your skill, from the open Classic database. Gold/h = your nodes per hour above × the average auction house value of a node in the zone, after the 5 % AH cut.", fa_note_both: "Spawns you can gather at your skills, from the open Classic database. Gold/h = the nodes per hour of both professions added together × the average auction house value of a node in the zone, after the 5 % AH cut.", nd_spawns: "%1 spawns", nd_found: "Found in", nd_also: "Also in", nd_zone: "Zone", nd_map_tip: "%1 spawn points in %2. Click a point to copy its /way, click the map to open it large.", nd_loot: "Contains", nd_none: "The open Classic database has no spawn points for this one. It may still exist in Forever.", nd_inst_only: "Only inside dungeons, so there is no world map.", nd_src: "Spawn points from the open Classic database (cmangos 1.12). A spot that can spawn several ores or herbs counts for each of them, like on Wowhead.", nd_fail: "Could not load the ore veins and herbs.", nd_missing: "Nothing with that id.", nd_where: "Where to mine", fa_or: "Orange", fa_ye: "Yellow", fa_gr: "Green", sg_h: "Skill-up 1–300", sg_sub: "Step by step from 1 to 300: what to make or gather, what it costs on the AH and where to go", sg_n: "%1 that give skill", sg_learn: "Learn %1", sg_learn_txt: "Find a %2 trainer and learn %1 %2.",sg_learn_tool: "Buy a %1 from a trade supplies vendor.", sg_right: "See the trainers and vendors for your faction.", sg_rank: "Before you pass %4: learn %1 from a trainer who teaches it (needs skill %2 and level %3).", sg_rank_g: "Before you pass %4: learn %1 from the trainer (needs skill %2).", sg_rank_none: "No trainer for your faction in the open world teaches it.", sg_rank_ench: "Annora inside Uldaman teaches it.", sg_rank_book: "Before you pass %3: %1 comes from a book, not a trainer. Buy and read %2.", sg_rank_q_cook: "Before you pass %1: Artisan Cooking is a quest, Clamlette Surprise from Dirge Quikcleave in Gadgetzan, Tanaris.", sg_rank_q_aid: "Before you pass %1: Artisan First Aid is a quest, Triage, from Doctor Gregory Victor in Hammerfall (Horde) or Doctor Gustaf VanHowzen in Theramore (Alliance).", sg_cap_tip: "Teaches up to skill %1", sg_make: "Make about %1 × %2", sg_or_smelt: "Or buy on the AH and smelt:",sg_sell: "Sell %1 × %2: about %3", sg_keep: "Keep %1 × %2 for later steps.", sg_own: "%1 of your own", sg_more: "+%1", sg_mine: "Mine about %1 nodes along the route in %2.", sg_pick: "Pick about %1 herbs along the route in %2.", sg_skin: "Skin about %1 beasts along the route in %2.", sg_nocraft: "No trainer or vendor recipe gives skill here. Look for a drop recipe in the recipe list.", sg_vend_rec: "Vendor recipe", sg_vend_tip: "The trainer does not teach this one: buy the recipe from a vendor first.", sg_nogather: "Nothing to gather at this skill on the maps.", sg_vendor: "vendor", sg_tot_buy: "Buy on the AH", sg_tot_sell: "Sell back", sg_tot_net: "Net cost", sg_tot_gain: "Net profit", sg_shop: "Shopping list 1–300", sg_trainers: "Trainers", sg_vendors: "%1 vendors", sg_none: "None found for your faction.", sg_col_n: "Count", sg_your_skill: "Your skill", sg_next: "%1 at %2", sg_maxed: "Maxed", sg_lvl35: "300 needs level 35", sg_p_mine: "Mine and smelt it yourself", sg_smelt_too: "Smelt what you mine: %1 gives skill too, until %2.", sg_p_mine_small: "Costs time, not gold", sg_veins: "≈ %1 veins", sg_p_smelt: "Buy ore & smelt", sg_p_smelt_end: "Smelting gives skill to %1, then you mine", sg_p_buy: "Buy the mats", sg_p_small: "Buy %1 · sell back up to %2", sg_p_farm: "Farm the mats", sg_p_farm_big: "%1 vendor", sg_p_farm_small: "Gather %1 mats, worth %2 on the AH", sg_net: "%1 net", sg_gain: "%1 profit", sg_done_all: "Done", sg_fact_herb: "Gathering only: it costs time, not gold. About %1 herbs to pick from here to 300.", sg_fact_skin: "Gathering only: it costs time, not gold. About %1 beasts to skin from here to 300.",sg_legend: "a point every time", sg_legend_y: "most times", sg_legend_g: "now and then", sg_legend_tip: "≈ includes a margin for bad luck. Click a dot on a map to copy its /way.", sg_t_mine: "Mine ≈ %1 veins · %2", sg_t_pick: "Pick ≈ %1 · %2", sg_t_skin: "Skin ≈ %1 · %2", sg_t_make: "%1 × %2", sg_t_gap: "No recipe here", sg_done_btn: "Done, I'm at %1", sg_alt_buy: "Rather buy? %1 × %2 · %3", sg_alt_mine: "Rather mine? ≈ %1 veins in %2", sg_nosmelt: "No smelting gives skill here. Mine this step.", sg_col_mat: "Materials", sg_col_need: "Need", sg_col_get: "Get it", sg_gather: "gather", sg_worth: "worth %1", sg_from_step: "from step %1", sg_keep2: "Keep %1 for step %2.", sg_sell2: "Sell %1: up to %2", sg_low: "only %1 listed", sg_train: "Train %1", sg_rank2: "From skill %1 and level %2. Your skill stops at %3 until you do.", sg_rank2_g: "From skill %1. Your skill stops at %2 until you do.", sg_how: "How is this calculated?", sg_route_plan: "Route plan", sg_buy_vendor: "Buy from vendors", sg_gather_h: "Gather yourself", sg_fees: "Trainer fees", sg_to: "to %1", sg_vend_at: "Recipe: %1, %2", sg_tot_time: "Costs", sg_time: "Time", sg_tot_gather: "To gather", sg_tot_worth: "Worth on the AH", sg_tot_vend: "From vendors", sg_tot_left: "Left to 300", sg_tot_sell2: "Sell back up to", sg_from: "from skill %1", sg_beasts_lv1: "Beasts level %1",sg_beasts_lv: "Beasts level %1–%2",sg_col_each: "Each", sg_col_sum: "Total", sg_way_tip: "Click to copy the /way", sg_note_c: "Computed from current prices: each step is the trainer recipe that gives skill cheapest right now. Yellow and green often miss, so every count is the average plus a margin for bad luck: enough about five times out of six. What you made in an earlier step is used before buying. Sell-back counts what the AH moves in a week after the 5 % cut; the rest goes to a vendor. Recipes come from the trainer; where none gives skill a vendor recipe fills in, tagged (sources from Warcraft Wiki).", sg_note_g: "Each map is the zone where you level on the fewest nodes or beasts, without the other faction's home lands. Orange gives a point every time; after that the chance falls steadily to zero at grey. Rare veins (silver, gold, truesilver) are a bonus and not counted. Mining counts one chance per vein (only the first strike can give a point) plus the bars you smelt from its ore, about 3 per vein. Spawn points from the open Classic database.", sg_side_note: "Trainers and vendors from the open Classic database; click one to copy its /way.", fa_route: "Farm route", fa_route_tip: "The dashed line is a short loop through every node on the map. Run it round and round.", nd_farm_h: "Where to farm", nd_farm_tip: "Open the %1 map", nd_farm_note: "Top zones by spawn points. Click a map for all of them.", gs_k_pl: "Players", gs_k_gl: "Guilds", gs_none: "Nothing found",
+      gs_k_npc: "NPCs", gs_k_beast: "Beasts", gs_k_col: "Collections", gs_k_dg: "Dungeons", gs_k_node: "Ore veins", gs_k_herb: "Herbs", nd_skill: "%1 %2", nd_where_h: "Where to pick", nd_pin: "Where to farm: %1", fa_h: "Best zones for your skill", fa_skill: "%1 skill", fa_both: "Herbs + ores on one map", fa_col_n: "Spawns", fa_col_val: "Per node", fa_col_val_tip: "Average auction house value of one node you can gather in the zone", fa_col_gph: "Gold/h", fa_sort_n: "Most spawns", fa_sort_g: "Most gold", fa_ores: "Ores", fa_herbs: "Herbs", fa_map_tip: "Click a point to copy its /way.", fa_none: "Nothing to gather at this skill yet.", fa_note: "Spawns you can gather at your skill, from the open Classic database. Gold/h = your nodes per hour above × the average auction house value of a node in the zone, after the 5 % AH cut.", fa_note_both: "Spawns you can gather at your skills, from the open Classic database. Gold/h = the nodes per hour of both professions added together × the average auction house value of a node in the zone, after the 5 % AH cut.", nd_spawns: "%1 spawns", nd_found: "Found in", nd_also: "Also in", nd_zone: "Zone", nd_map_tip: "%1 spawn points in %2. Click a point to copy its /way, click the map to open it large.", nd_loot: "Contains", nd_none: "The open Classic database has no spawn points for this one. It may still exist in Forever.", nd_inst_only: "Only inside dungeons, so there is no world map.", nd_src: "Spawn points from the open Classic database (cmangos 1.12). A spot that can spawn several ores or herbs counts for each of them, like on Wowhead.", nd_fail: "Could not load the ore veins and herbs.", nd_missing: "Nothing with that id.", nd_where: "Where to mine", fa_or: "Orange", fa_ye: "Yellow", fa_gr: "Green", sg_h: "Skill-up 1–300", sg_sub: "Step by step from 1 to 300: what to make or gather, what it costs on the AH and where to go", sg_n: "%1 that give skill", sg_learn: "Learn %1", sg_learn_txt: "Find %3 %2 trainer and learn %1 %2.", sg_ench_tip: "Enchants can be cast on your own gear again and again: every cast can give a point.", sg_then_mine: "From skill %1 no smelting gives a point. Mine ≈ %2 veins in %3 for the rest:", sg_learn_tool: "Buy a %1 from a trade supplies vendor.", sg_right: "See the trainers and vendors for your faction.", sg_rank: "Before you pass %4: learn %1 from a trainer who teaches it (needs skill %2 and level %3).", sg_rank_g: "Before you pass %4: learn %1 from the trainer (needs skill %2).", sg_rank_none: "No trainer for your faction in the open world teaches it.", sg_rank_ench: "Annora inside Uldaman teaches it.", sg_rank_book: "Before you pass %3: %1 comes from a book, not a trainer. Buy and read %2.", sg_rank_q_cook: "Before you pass %1: Artisan Cooking is a quest, Clamlette Surprise from Dirge Quikcleave in Gadgetzan, Tanaris.", sg_rank_q_aid: "Before you pass %1: Artisan First Aid is a quest, Triage, from Doctor Gregory Victor in Hammerfall (Horde) or Doctor Gustaf VanHowzen in Theramore (Alliance).", sg_cap_tip: "Teaches up to skill %1", sg_make: "Make about %1 × %2", sg_or_smelt: "Or buy on the AH and smelt:",sg_sell: "Sell %1 × %2: about %3", sg_keep: "Keep %1 × %2 for later steps.", sg_own: "%1 of your own", sg_more: "+%1", sg_mine: "Mine about %1 nodes along the route in %2.", sg_pick: "Pick about %1 herbs along the route in %2.", sg_skin: "Skin about %1 beasts along the route in %2.", sg_nocraft: "No trainer or vendor recipe gives skill here. Look for a drop recipe in the recipe list.", sg_vend_rec: "Vendor recipe", sg_vend_tip: "The trainer does not teach this one: buy the recipe from a vendor first.", sg_nogather: "Nothing to gather at this skill on the maps.", sg_vendor: "vendor", sg_tot_buy: "Buy on the AH", sg_tot_sell: "Sell back", sg_tot_net: "Net cost", sg_tot_gain: "Net profit", sg_shop: "Shopping list 1–300", sg_trainers: "Trainers", sg_vendors: "%1 vendors", sg_none: "None found for your faction.", sg_col_n: "Count", sg_your_skill: "Your skill", sg_next: "%1 at %2", sg_maxed: "Maxed", sg_lvl35: "300 needs level 35", sg_p_mine: "Mine and smelt it yourself", sg_smelt_too: "Smelt what you mine: %1 gives skill too, until %2.", sg_p_mine_small: "Costs time, not gold", sg_veins: "≈ %1 veins", sg_p_smelt: "Buy ore & smelt", sg_p_smelt_end: "Smelting gives skill to %1, then you mine", sg_p_buy: "Buy the mats", sg_p_small: "Buy %1 · sell back up to %2", sg_p_farm: "Farm the mats", sg_p_farm_big: "%1 vendor", sg_p_farm_small: "Gather %1 mats, worth %2 on the AH", sg_net: "%1 net", sg_gain: "%1 profit", sg_done_all: "Done", sg_fact_herb: "Gathering only: it costs time, not gold. About %1 herbs to pick from here to 300.", sg_fact_skin: "Gathering only: it costs time, not gold. About %1 beasts to skin from here to 300.",sg_legend: "a point every time", sg_legend_y: "most times", sg_legend_g: "now and then", sg_legend_tip: "≈ includes a margin for bad luck. Click a dot on a map to copy its /way.", sg_t_mine: "Mine ≈ %1 veins · %2", sg_t_pick: "Pick ≈ %1 · %2", sg_t_skin: "Skin ≈ %1 · %2", sg_t_make: "%1 × %2", sg_t_gap: "No recipe here", sg_done_btn: "Done, I'm at %1", sg_alt_buy: "Rather buy? %1 × %2 · %3", sg_alt_mine: "Rather mine? ≈ %1 veins in %2", sg_nosmelt: "No smelting gives skill here. Mine this step.", sg_col_mat: "Materials", sg_col_need: "Need", sg_col_get: "Get it", sg_gather: "gather", sg_worth: "worth %1", sg_from_step: "from step %1", sg_keep2: "Keep %1 for step %2.", sg_sell2: "Sell %1: up to %2", sg_low: "only %1 listed", sg_train: "Train %1", sg_rank2: "From skill %1 and level %2. Your skill stops at %3 until you do.", sg_rank2_g: "From skill %1. Your skill stops at %2 until you do.", sg_how: "How is this calculated?", sg_route_plan: "Route plan", sg_buy_vendor: "Buy from vendors", sg_gather_h: "Gather yourself", sg_fees: "Trainer fees", sg_to: "to %1", sg_vend_at: "Recipe: %1, %2", sg_tot_time: "Costs", sg_time: "Time", sg_tot_gather: "To gather", sg_tot_worth: "Worth on the AH", sg_tot_vend: "From vendors", sg_tot_left: "Left to 300", sg_tot_sell2: "Sell back up to", sg_from: "from skill %1", sg_beasts_lv1: "Beasts level %1",sg_beasts_lv: "Beasts level %1–%2",sg_col_each: "Each", sg_col_sum: "Total", sg_way_tip: "Click to copy the /way", sg_note_c: "Computed from current prices: each step is the trainer recipe that gives skill cheapest right now. Yellow and green often miss, so every count is the average plus a margin for bad luck: enough about nineteen times out of twenty. Nobody outside Blizzard knows the exact chances: yellow is counted as falling from 100 % to 50 %, green as at most 25 %. What you made in an earlier step is used before buying. Sell-back counts what the AH moves in a week after the 5 % cut; the rest goes to a vendor. Recipes come from the trainer; where none gives skill a vendor recipe fills in, tagged (sources from Warcraft Wiki).", sg_note_g: "Each map is the zone where you level on the fewest nodes or beasts, without the other faction's home lands. Orange gives a point every time, yellow about 3 times in 4, green about 1 in 4. Rare veins (silver, gold, truesilver) are a bonus and not counted. Mining counts one chance per vein (only the first strike can give a point) plus the bars you smelt from its ore, about 3 per vein. Spawn points from the open Classic database.", sg_side_note: "Trainers and vendors from the open Classic database; click one to copy its /way.", fa_route: "Farm route", fa_route_tip: "The dashed line is a short loop through every node on the map. Run it round and round.", nd_farm_h: "Where to farm", nd_farm_tip: "Open the %1 map", nd_farm_note: "Top zones by spawn points. Click a map for all of them.", gs_k_pl: "Players", gs_k_gl: "Guilds", gs_none: "Nothing found",
       gs_ar: "Look up “%1” in the Armory", gs_ar_g: "Look up the guild “%1”", gs_more: "Show all %1", gs_loading: "Loading…",
       src_h: "Where to learn it", src_h_drop: "Where it drops", src_trainer: "Trainer", src_vendor: "Vendor", src_drop: "Drops from", src_quest: "Quest reward", src_none: "No known source in the Classic database.",
       limited: "limited stock", more_n: "and %1 more", requires: "requires %1", tier_1: "Apprentice", tier_2: "Journeyman", tier_3: "Expert", tier_4: "Artisan",
@@ -2068,7 +2136,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
       gone_tag: "left out", f_usual: "Usual price", f_gear: "Sold one by one, like gear and recipes: the cheapest price, no percent (prices differ in gold).",
       empty: "No item matches the search.", more: "Show more (%1 more)", count: "%1 items",
       tab_item: "Item", tab_watch: "My list", pick: "Pick an item in the list.",
-      foot3: "Data from Blizzard's API and the game client", about: "About", about_close: "Close", nav_back: "‹ Back", nav_fwd: "Forward ›", m_list: "‹ List",
+      foot3: "Data from Blizzard's API and the game client", about: "About", about_close: "Close", nav_back: "‹ Back", nav_fwd: "Forward ›", m_list: "‹ Back", m_back_aria: "Back to the list",
       about_src_h: "Sources", about_legal_h: "Legal", about_data_h: "Data",
       about_s1: "Blizzard's API: auction prices, characters, guilds, quests, rewards and creature portraits.",
       about_s2: "The game client via <a href=\"https://github.com/Kruithne/wow.export\" target=\"_blank\" rel=\"noopener\">wow.export</a>: zone maps, flight paths, dungeon portals.",
@@ -4153,8 +4221,9 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
   var SG_RANKS = [[75, 50, 10, "tier_2"], [150, 125, 20, "tier_3"], [225, 200, 35, "tier_4"]];   // [gräns, lärs vid skill, level, rangens namn]
   function sgFac() { return mySide() === "alliance" ? "A" : "H"; }   // spelarens fraktion (Blackwater: den valda sidan)
   function sgCol(d) { return d < 0 ? "" : d < 25 ? "or" : d < 50 ? "ye" : d < 100 ? "gr" : ""; }
-  function sgPc(s, ye, gr) { return s < ye ? 1 : s < gr ? (gr - s) / (gr - ye) : 0; }   // tillverkning: chans till skill vid skill s, (grå − skill)/(grå − gul)
-  function sgPg(s, req) { var d = s - req; return d < 25 ? 1 : d < 100 ? (100 - d) / 75 : 0; }   // samlande: gult vid krav+25, grått vid krav+100
+  // Tillverkning: 100 % under gult, sedan linjärt (grå − skill)/(grå − gul); i grönt (från mitten mellan gult och grått) högst 25 %.
+  function sgPc(s, ye, gr) { if (s < ye) return 1; if (s >= gr) return 0; var lin = (gr - s) / (gr - ye); return s >= (ye + gr) / 2 ? Math.min(lin, 0.25) : lin; }
+  function sgPg(s, req) { var d = s - req; return d < 25 ? 1 : d < 50 ? 0.75 : d < 100 ? 0.25 : 0; }   // samlande: trappan i emulatorernas källkod (orange, gult vid krav+25, grönt +50, grått +100)
   function sgSkinReq(l) { return l < 10 ? 1 : l < 20 ? Math.max(1, (l - 10) * 10) : l * 5; }   // skinning-krav ur djurets level
   function sgProfs() {   // guidens yrken i spalten: samlaryrkena först, sedan tillverkningsyrkena ur recept.json
     var L = Object.keys(SG_GATHER).map(function (k) { var g = SG_GATHER[k]; return { key: k, name: g.name, icon: g.icon, sk: g.sk, pid: g.pid }; });
@@ -4179,8 +4248,16 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
   function sgCands(pid) {   // recepten som kan ge skill, med kända priser: det tränaren lär ut (vend 0) och i andra hand handlarrecept (vend 1)
     var out = [], sub = {};
     (SKU.trainers[pid] || []).forEach(function (x) { sub[x[0]] = x[2]; });
-    crRows.forEach(function (r) {
-      var rc = r.rc, th = SKU.th[r.rid];
+    var rows = crRows;
+    if (pid === 333 && SKU.ench) rows = crRows.concat(SKU.ench.map(function (e) {   // förtrollningar: ingen vara, så de står inte i receptlistan
+      var cost = 0, miss = 0;
+      e[6].forEach(function (rg) { var pr = recPrice(rg[0]); if (pr > 0) cost += pr * rg[1]; else miss++; });
+      return { rid: e[0], name: e[1], prof: 333, skill: e[2], cost: cost, miss: miss, sell: 0, day: 0, th: [e[3], e[4]], w: [e[2], e[5]],
+        rc: { spell: e[0], name: e[1], prof: 333, skill: e[2], item: 0, n: 1, reagents: e[6], cost: 0, recipeItem: 0, src: { trainer: [], trainers: 0, vendor: [], drop: [], quest: [] } } };
+    }));
+    rows.forEach(function (r) {
+      var rc = r.rc, th = r.th || SKU.th[r.rid];
+      if (pid === 333 && /^Runed .* Rod$/.test(r.name)) return;   // stavarna är verktyg: man gör en, inte sextiotre
       if (r.prof !== pid || !(r.skill >= 1) || !th || r.miss || !(r.cost > 0) || /^(Transmute|Mooncloth$|Cured Rugged Hide$|Refined Deeprock Salt$)/.test(r.name)) return;   // recept med flera dagars väntetid går inte att levla på
       // specialistrecept (Weaponsmith, Goblin/Gnomish Engineering, Dragonscale …) kräver ett vägval och hör inte hemma i en allmän stege
       var TL = rc.src.trainer || [];
@@ -4188,7 +4265,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
       // Källan: wikin säger tränare (T), automatiskt (A) eller handlare (V); okänt (?) eller utan wikirad: Classic-databasens tränare
       // eller handlare, eller ett gammalt recept utan någon källa alls (lärs med yrket). Drop- och questrecept och Forever-nya
       // recept utan känd källa tas inte med (faktagranskning 2026-11-21: de nya recepten köps mest hos handlare).
-      var w = SKU.wk && SKU.wk[r.rid], fv = r.rid > 50000 || rc.item > 100000, code = w && w[1] !== "?" ? w[1] : "";
+      var w = r.w || (SKU.wk && SKU.wk[r.rid]), fv = r.rid > 50000 || rc.item > 100000, code = w && w[1] !== "?" ? w[1] : "";
       var tr = code ? code === "T" || code === "A" : rc.src.trainers > 0 || (!fv && !rc.recipeItem && !rc.src.vendor.length && !rc.src.drop.length && !rc.src.quest.length);
       var ve = !tr && (code ? code === "V" : rc.src.vendor.length > 0);
       if (!tr && !ve) return;
@@ -4275,7 +4352,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
       var reqs = el.filter(function (x) { return x.x.zones.some(function (z) { return z[0] === zone && z[1] >= 8; }); }).map(function (x) { return x.x.req; }), tot = 0, va = 0;
       if (!reqs.length) reqs = el.filter(function (x) { return x.x.zones.some(function (z) { return z[0] === zone; }); }).map(function (x) { return x.x.req; });
       for (var s = Math.max(a, from || a); s < b; s++) { var best = -1; reqs.forEach(function (r) { if (r <= s && r > best) best = r; }); var pg = (best >= 0 ? sgPg(s, best) : 0) + (extra && best >= 0 ? extra(s, best) : 0); tot += pg >= 0.1 ? 1 / pg : 10; va += pg >= 1 ? 0 : pg >= 0.1 ? (1 - pg) / (pg * pg) : 90; }   // inget plockbart eller nästan grått: tio plock per poäng
-      return Math.round(tot + Math.sqrt(va));   // samma marginal som för tillverkning
+      return Math.round(tot + 1.65 * Math.sqrt(va));   // samma marginal som för tillverkning
     }, CZ = {};
     // zonen där man går upp på färst noder/djur vinner, sedan den med mest orange och gult (Mulgores 489 grisar ska inte slå Barrens)
     var zones = Object.keys(Z).filter(function (z) { return A[z] && N[z] > 0; }), green = !zones.length;
@@ -4341,10 +4418,10 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     });
     // eget lager: det man tillverkar i ett steg används i senare steg före köp (kopparstängerna blir brons), bara resten säljs; hela tal rakt igenom
     G.steps.forEach(function (st) { (st.craft || []).forEach(function (c) {
-      c.st = st; c.made = Math.ceil(c.e + Math.sqrt(c.v || 0) - 0.01); /* medel + en standardavvikelse: marginal för otur */ c.out = c.made * c.r.rc.n; c.mats = {}; c.ownFrom = {}; c.keptFor = "";
+      c.st = st; c.made = Math.ceil(c.e + 1.65 * Math.sqrt(c.v || 0) - 0.01); /* medel + 1,65 standardavvikelser: räcker ungefär 19 gånger av 20 */ c.out = c.made * c.r.rc.n; c.mats = {}; c.ownFrom = {}; c.keptFor = "";
       c.r.rc.reagents.forEach(function (rg) { c.mats[rg[0]] = (c.mats[rg[0]] || 0) + rg[1] * c.made; });
       Object.keys(c.mats).forEach(function (id) { var need = c.mats[id]; (stock[id] || []).forEach(function (x) { var u = Math.min(need, x.out - x.kept); if (u > 0) { x.kept += u; need -= u; c.own[id] = (c.own[id] || 0) + u; if (!c.ownFrom[id]) c.ownFrom[id] = x.st.a + "–" + x.st.b; if (!x.keptFor) x.keptFor = st.a + "–" + st.b; } }); });
-      (stock[c.r.rc.item] = stock[c.r.rc.item] || []).push(c);
+      if (c.r.rc.item) (stock[c.r.rc.item] = stock[c.r.rc.item] || []).push(c);
     }); });
     G.steps.forEach(function (st) {
       (st.craft || []).forEach(function (c) {
@@ -4377,6 +4454,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     else if (p.pid) h += '<div class="sgpaths">' + tile("buy", t("sg_p_buy"), sgNet(G.buy, G.sell), t("sg_p_small", money(G.buy), money(G.sell))) +
       tile("self", t("sg_p_farm"), t("sg_p_farm_big", G.vend > 0 ? money(G.vend) : "0"), t("sg_p_farm_small", num(G.gatherN), money(G.worth))) + "</div>";
     else h += '<div class="sgline">' + t(p.key === "herb" ? "sg_fact_herb" : "sg_fact_skin", num(G.count)) + "</div>";
+    if (p.sk === 333) h += '<div class="sgline dim">' + t("sg_ench_tip") + "</div>";
     h += '<div class="sglegend">' + ["or", "ye", "gr"].map(function (c, k) { return '<span><i style="background:' + SG_C[c] + '"></i>' + t("fa_" + c) + ": " + t(["sg_legend", "sg_legend_y", "sg_legend_g"][k]) + "</span>"; }).join("") + t("sg_legend_tip") + "</div>";
     return h + "</div>";
   }
@@ -4385,7 +4463,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     var h = '<div class="sgwrap">' + sgTopHtml(G) + '<div class="sgsteps">';
     // lär dig yrket: två tränare och närmaste verktygshandlare direkt i kortet (i mobilen ligger sidorutan långt ner)
     h += '<div class="sgstep tr' + (G.sk > 1 ? " done" : "") + '"><div class="sghd"><span class="sgchk' + (G.sk > 1 ? " ok" : " rk") + '">' + (G.sk > 1 ? "✓" : "◆") + '</span><span class="sgz">' + t("sg_learn", esc(p.name)) + "</span></div>" +
-      (G.sk > 1 ? "" : '<div class="sgline">' + t("sg_learn_txt", t("tier_1"), esc(p.name)) + (tool ? " " + t("sg_learn_tool", esc(sgItemName(tool))) : "") + "</div>" + sgNpcList((SKU.trainers[p.sk] || []).filter(same), 2, true) + (tool && SKU.vendors[tool] ? sgNpcList(SKU.vendors[tool].filter(same), 1, true) : "")) + "</div>";
+      (G.sk > 1 ? "" : '<div class="sgline">' + t("sg_learn_txt", t("tier_1"), esc(p.name), /^[AEIOU]/.test(p.name) ? "an" : "a") + (tool ? " " + t("sg_learn_tool", esc(sgItemName(tool))) : "") + "</div>" + sgNpcList((SKU.trainers[p.sk] || []).filter(same), 2, true) + (tool && SKU.vendors[tool] ? sgNpcList(SKU.vendors[tool].filter(same), 1, true) : "")) + "</div>";
     var rankAt = {};   // rangkortet visas när rangen går att lära (50/125/200): före första steget som börjar där eller senare, annars vid taket
     SG_RANKS.forEach(function (R) {
       var k = -1;
@@ -4435,7 +4513,9 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
         if (hasCraft) body += '<details class="sgalt"' + (altOpen ? " open" : "") + "><summary>" + t("sg_alt_buy", num(S.craft[0].made), esc(S.craft[0].r.name), S.buy > 0 ? money(S.buy) : DASH) + "</summary>" + sgCraftHtml(S, "buy") + "</details>";
       } else if (hasCraft) {
         body += sgCraftHtml(S, mode);
-        if (S.gath && zone) { var n2 = S.gath.cnt(zone, S.from, G.smelt); body += '<details class="sgalt"' + (altOpen ? " open" : "") + "><summary>" + t("sg_alt_mine", num(n2), esc(zone)) + "</summary>" + sgGatherHtml(S, zone, key, n2) + "</details>"; }
+        var end = 0; S.craft.forEach(function (c) { if (c.b > end) end = c.b; });
+        if (S.gath && zone && end < S.b) { var n3 = S.gath.cnt(zone, Math.max(end, S.from), G.smelt); body += '<div class="sgline">' + t("sg_then_mine", end, num(n3), esc(zone)) + "</div>" + sgGatherHtml(S, zone, key, n3); }
+        else if (S.gath && zone) { var n2 = S.gath.cnt(zone, S.from, G.smelt); body += '<details class="sgalt"' + (altOpen ? " open" : "") + "><summary>" + t("sg_alt_mine", num(n2), esc(zone)) + "</summary>" + sgGatherHtml(S, zone, key, n2) + "</details>"; }
       } else body += '<div class="sgline dim">' + t(S.gath ? "sg_nogather" : "sg_nocraft") + "</div>";
       body += '<div class="sgfoot"><button type="button" class="sgdone" data-sgdone="' + S.b + '">' + t("sg_done_btn", S.b) + "</button></div>";
     }
@@ -4457,7 +4537,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     var multi = S.craft.length > 1;
     return S.craft.map(function (c) {
       var r = c.r, ids = r.rc.reagents.map(function (rg) { return rg[0]; }), left = Math.max(0, c.out - c.kept), item = esc(sgItemName(r.rc.item)), rv = c.c.rv && c.c.rv[0];
-      return '<div class="sgcraft"><div class="sgline">' + (multi ? num(c.made) + " × " : "") + '<a class="wh" href="#recipe=' + r.rid + '" data-sgrec="' + r.rid + '">' + recName(r) + "</a>" +
+      return '<div class="sgcraft"><div class="sgline">' + (multi ? num(c.made) + " × " : "") + (r.rc.item ? '<a class="wh" href="#recipe=' + r.rid + '" data-sgrec="' + r.rid + '">' + recName(r) + "</a>" : "<b>" + esc(r.name) + "</b>") +
         (c.c.vend ? ' <span class="cosrc s-other" title="' + esc(t("sg_vend_tip")) + '">' + t("sg_vend_rec") + "</span>" : "") + (c.c.fv ? ' <span class="cosrc s-forever">Forever</span>' : "") + (multi || c.a > S.from || c.b < S.b ? ' <span class="dim">' + c.a + "–" + c.b + "</span>" : "") +
         (rv ? ' <button type="button" class="lnk" data-way="' + esc(qmWay(rv[3], rv[4], rv[5])) + '" title="' + esc(t("sg_way_tip")) + '">' + t("sg_vend_at", esc(rv[1]), esc(rv[3])) + "</button>" : "") + "</div>" +
         '<table class="srct sgmats">' + sgMatHead(view) + "<tbody>" + sgMatRows(c.mats, ids, view, c.own, c.ownFrom) + "</tbody></table>" +
@@ -5957,10 +6037,12 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
   function gsGo(h) {
     $("gsp").hidden = true; $("gq").blur();
     huZBigClose();
-    if (location.hash !== h) history.pushState(null, "", h);
+    var hs0 = history.state || {}, pushed = location.hash !== h, d0 = document.body.classList.contains("mdet") && hs0.md === 1 ? (hs0.d || 0) : -1;   // mobilen: djupet före steget
+    if (pushed) history.pushState(null, "", h);
     navRestoring = true; arCmp = null; arCmpPick = false;
     load(D, false, true);
     toTop();
+    if (MOB.matches && MOB_DEEP.test(h) && !homeOn) { mobState(pushed ? 1 : 2, pushed ? (d0 >= 0 ? d0 + 1 : 1) : 0); mobDet(true); } else mobDet(false, true);   // mobilen: rutan som egen vy
   }
   $("gq").addEventListener("input", function () {
     var v = $("gq").value.trim().toLowerCase();
@@ -6440,73 +6522,102 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
   $("navFwd").addEventListener("click", function () { if (navPos < navMax) history.forward(); });
 
   // Mobil (Joakim 2026-11-21): i smal bredd (≤ 1100 px, surfplatta och telefon) visas listan först och raden man trycker på som en egen vy
-  // (body.mdet) med "‹ List" överst. Vyn är ett eget historiksteg (state.md = 1), så telefonens bakåtknapp stänger den.
-  // md = 2: detaljen öppnades från en länk (startsidan, sök överallt, delad adress): "‹ List" stänger den på stället.
-  var MOB = window.matchMedia("(max-width: 1100px)"), mobY = 0, mobArm = null;
+  // (body.mdet) med "‹ Back" och rubriken överst. Vyn är ett eget historiksteg (state.md = 1, d = steg tillbaka till listan), så
+  // telefonens bakåtknapp stänger den. md = 2: detaljen öppnades från en länk (startsidan, delad adress): "‹ Back" stänger den på stället.
+  // Granskning 2026-11-21 (nio granskare): knappar som ritar i högerrutan utan att vara rader (MOB_OPEN) öppnar också vyn, listans
+  // längd och rullposition kommer tillbaka (mobN/mobY), flikbyte stänger vyn i capture-fasen innan appen pushar steget, rader som
+  // rullar i sidled tonar i kanten (data-sx), Style-valet står i sidfoten på telefon (mobApp).
+  var MOB = window.matchMedia("(max-width: 1100px)"), MOB7 = window.matchMedia("(max-width: 760px)"), mobY = 0, mobN = 0, mobArm = null;
   var MOB_ROW = "tr[data-id], tr[data-rid], tr[data-qid], tr[data-hu], tr[data-co], tr[data-de], tr[data-fx], tr[data-dgitem], tr[data-clsp], tr[data-clq], tr[data-cltr], tr[data-arrec]";
-  var MOB_DEEP = /^#(item|recipe|quest|beast|col|fx|de|npc|node)=|&(item|sp|cq|tr)=/;
+  var MOB_OPEN = ".cat[data-ga], [data-qmov], [data-dewatch], tr[data-dgboss], [data-dgpick], [data-upgo], [data-gobeast], [data-gorec], [data-recgo], #mWatch";
+  var MOB_DEEP = /^#(item|recipe|quest|beast|col|fx|de|npc|node|gather)=|&(item|sp|cq|tr|boss)=/;
   function mobState(md, d) { try { history.replaceState(Object.assign({}, history.state, { i: navPos, md: md, d: d || 0 }), ""); } catch (e) {} }
   function mobTop() {   // detaljrutan överst på skärmen
-    requestAnimationFrame(function () { var r = document.querySelector(".cols > .right"); if (r && MOB.matches) window.scrollTo(0, Math.max(0, r.getBoundingClientRect().top + window.scrollY - 4)); });
+    setTimeout(function () { var r = document.querySelector(".cols > .right"); if (r && MOB.matches) window.scrollTo(0, Math.max(0, r.getBoundingClientRect().top + window.scrollY - 4)); }, 0);
+  }
+  function mobTitle() {   // rubriken i "‹ Back"-raden: det som visas i rutan
+    var el = $("mTtl"); if (!el) return;
+    var w = $("watch"), h = w && !w.hidden ? null : document.querySelector("#detail .strip h2, #detail h2");
+    var txt = w && !w.hidden ? t("tab_watch") : h ? h.textContent.trim() : "";
+    if (el.textContent !== txt) el.textContent = txt;   // bara vid ändring: skrivningen är själv en mutation som observern ser
   }
   function mobDet(on, keep) {
     var b = document.body;
-    if (on === b.classList.contains("mdet")) { if (on) mobTop(); return; }
+    if (on === b.classList.contains("mdet")) { if (on) { mobTop(); mobTitle(); } return; }
     if (on) {
-      mobY = window.scrollY; b.classList.add("mdet");
-      mobTop();
+      mobY = window.scrollY; mobN = shown; b.classList.add("mdet");
+      mobTop(); mobTitle();
+      var mb = $("mBack"); if (mb) { try { mb.focus({ preventScroll: true }); } catch (e) {} }
     } else {
       b.classList.remove("mdet");
-      if (!keep) { var y = mobY; requestAnimationFrame(function () { window.scrollTo(0, y); }); }
+      if (qmOv) { qmOv = false; if (mode === "qu" && !keep) drawCats(); }   // questöversiktens chip ska inte stå kvar tänd
+      if (!keep) { var y = mobY; setTimeout(function () { window.scrollTo(0, y); }, 0); }
     }
+  }
+  function mobList() {   // tillbaka till listan som den såg ut: lika många rader, samma rullposition
+    if (document.body.classList.contains("mdet") && mobN > shown && mobN <= view.length) { shown = mobN; draw(); }
+    mobDet(false);
   }
   (function () {
     var right = document.querySelector(".cols > .right"), bar = document.createElement("div");
     bar.className = "mbar";
-    bar.innerHTML = '<button type="button" class="navb" id="mBack" data-t="m_list">' + esc(t("m_list")) + "</button>";
+    bar.innerHTML = '<button type="button" class="navb" id="mBack" data-t="m_list" data-t-aria="m_back_aria" aria-label="' + esc(t("m_back_aria")) + '">' + esc(t("m_list")) + '</button><b class="mttl" id="mTtl"></b>';
     right.insertBefore(bar, right.firstChild);
     $("mBack").addEventListener("click", function () {
       var st = history.state;
       if (st && st.md === 1 && st.d > 0 && navPos - st.d >= navStart) history.go(-st.d);   // tillbaka till listan, även efter klick inne i detaljen
-      else { mobState(0); mobDet(false); }
+      else { mobState(0); mobList(); }
     });
-    // Tryck på en rad i listan: när detaljrutan ritas om öppnas den som egen vy (och blir ett historiksteg).
+    // "☆ My list" bredvid sökknappen: bevakningslistan ligger i högerrutan, som är dold tills man öppnat något.
+    var mw = document.createElement("button"); mw.type = "button"; mw.className = "wowbtn mwatch"; mw.id = "mWatch"; mw.innerHTML = "☆ <span>" + esc(t("tab_watch")) + "</span>";
+    $("qbtn").insertAdjacentElement("afterend", mw);
+    mw.addEventListener("click", function () { showTab("watch"); });
+    // Tryck på en rad i listan (eller en knapp som ritar i högerrutan): när rutan ritas om öppnas den som egen vy (och blir ett historiksteg).
     document.addEventListener("click", function (e) {
       mobArm = null;
       if (!MOB.matches || e.button !== 0 || e.ctrlKey || e.metaKey || !e.target.closest) return;
       var row = e.target.closest(MOB_ROW);
-      if (!row || !row.closest(".cols > .left") || row.closest("thead")) return;
-      var ctl = e.target.closest("a[href], input, select, label, button");
-      if (ctl && row.contains(ctl)) return;   // stjärnan, länkar och knappar i raden gör sitt eget
+      if (row) {
+        if (!row.closest(".cols > .left") || row.closest("thead") || row.closest("#armory")) return;   // Armory: rutan syns redan under spelaren
+        var ctl = e.target.closest("a[href], input, select, label, button");
+        if (ctl && row.contains(ctl)) return;   // stjärnan, länkar och knappar i raden gör sitt eget
+      } else {
+        var op = e.target.closest(MOB_OPEN);
+        if (!op || op.matches('[aria-pressed="true"]')) return;   // ett tänt val som släcks ritar listans första post, inte något att öppna
+      }
       mobArm = { t: Date.now(), pos: navPos };
     }, true);
     new MutationObserver(function () {
+      var inDet = document.body.classList.contains("mdet");
+      if (inDet) mobTitle();
       var a = mobArm;
       if (!a) return;
       mobArm = null;
-      if (Date.now() - a.t > 1500 || !MOB.matches || homeOn) return;
+      if (Date.now() - a.t > 3000 || !MOB.matches || homeOn) return;
+      if (inDet) { mobDet(true); return; }   // redan i vyn: steget sköts av setHash (md och d följer med)
       if (navPos !== a.pos) mobState(1, 1);
       else if (!(history.state && history.state.md)) { try { history.pushState({ i: navPos + 1, md: 1, d: 1 }, "", location.hash || location.pathname + location.search); navPos++; navMax = navPos; navDraw(); } catch (e) {} }
       mobDet(true);
-    }).observe(right, { childList: true, subtree: true, characterData: true });
-    // Flikar, underflikar, rubriken och sökningen visar listan igen.
+    }).observe(right, { childList: true, subtree: true, characterData: true, attributes: true, attributeFilter: ["hidden"] });
+    // Flikar, underflikar, rubriken och sökningen visar listan igen – i capture-fasen, så vyn är borta innan appen pushar nästa steg.
     document.addEventListener("click", function (e) {
       if (document.body.classList.contains("mdet") && e.target.closest && e.target.closest(".mode button, .subrow button, #sect, #qbtn, #home")) mobDet(false, true);
-    });
+    }, true);
     $("q").addEventListener("input", function () { mobDet(false, true); });
     window.addEventListener("popstate", function (e) {
       if (!MOB.matches) { mobDet(false, true); return; }
-      if (e.state && typeof e.state.i === "number") mobDet(!!e.state.md);
+      if (e.state && typeof e.state.i === "number") { if (e.state.md) mobDet(true); else mobList(); }
       else if (MOB_DEEP.test(mobPopHash)) { mobState(2); mobDet(true); }
-      else mobDet(false, true);
+      else mobList();
     });
     if (MOB.matches && MOB_DEEP.test(location.hash)) { mobState(2); document.body.classList.add("mdet"); }
-    // Kategorierna: knapparna i rader som rullar i sidled, panelerna (spelarval, filter) i full bredd mellan dem.
+    // Kategorierna: knapparna i rader som rullar i sidled, panelerna (spelarval, filter) och rubrikknapparna (.cat.hd) i full bredd mellan dem.
     var cats = $("cats");
     function mobCats() {
       if (!MOB.matches) return;
       var kids = cats.querySelector(":scope > .cat, :scope > .cath") ? Array.prototype.slice.call(cats.children) : [], row = null;
       kids.forEach(function (k) {
+        if (k.matches(".cat.hd")) { row = null; return; }   // rubriken på egen rad, så yrkena börjar på en ny
         if (k.matches(".cat, .cath, h2")) {
           if (!row) { row = document.createElement("div"); row.className = "mcatrow"; cats.insertBefore(row, k); }
           row.appendChild(k);
@@ -6516,24 +6627,55 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
         var on = r.querySelector('.cat[aria-pressed="true"]');
         if (on) r.scrollLeft = Math.max(0, on.offsetLeft - 8);
       });
+      mobSxLater();
     }
     function mobUncats() {
       Array.prototype.forEach.call(cats.querySelectorAll(":scope > .mcatrow"), function (r) { while (r.firstChild) cats.insertBefore(r.firstChild, r); r.remove(); });
     }
     new MutationObserver(mobCats).observe(cats, { childList: true });
+    // Rader som rullar i sidled tonar i den kant där det finns mer (data-sx), och den valda underfliken rullas i bild.
+    var MOB_SX = ".mode, .subrow, .mcatrow, #dglist", sxRaf = 0;
+    function mobSx(el) { var m = el.scrollWidth - el.clientWidth - 1; el.setAttribute("data-sx", m <= 0 ? "none" : el.scrollLeft <= 1 ? "start" : el.scrollLeft >= m ? "end" : "mid"); }
+    function mobSxLater() {
+      if (!MOB.matches || sxRaf) return;
+      sxRaf = setTimeout(function () {
+        sxRaf = 0;
+        Array.prototype.forEach.call(document.querySelectorAll(".subrow:not([hidden])"), function (sr) { stripShow(sr, ':scope > button[aria-pressed="true"]'); });
+        Array.prototype.forEach.call(document.querySelectorAll(MOB_SX), mobSx);
+      });
+    }
+    document.addEventListener("scroll", function (e) { if (MOB.matches && e.target && e.target.matches && e.target.matches(MOB_SX)) mobSx(e.target); }, true);
+    new MutationObserver(mobSxLater).observe(document.querySelector(".bar"), { childList: true, subtree: true, attributes: true, attributeFilter: ["aria-pressed", "hidden"] });
+    window.addEventListener("resize", mobSxLater);
+    // Style-valet (Original/Atlas) flyttar till sidfoten på telefon, så sidhuvudet blir två rader.
+    var appsel = document.querySelector(".top .appsel"), appNext = appsel ? appsel.nextElementSibling : null, appHome = appsel ? appsel.parentNode : null, foot = document.querySelector(".foot");
+    function mobApp() {
+      if (!appsel || !foot) return;
+      if (MOB7.matches) { if (appsel.parentNode !== foot) foot.insertBefore(appsel, foot.firstChild); }
+      else if (appsel.parentNode !== appHome) appHome.insertBefore(appsel, appNext);
+    }
     // Kolumner som döljs på telefon, efter rubrikernas sorteringsnyckel (data-k).
-    var MOB_HIDE = { cr: ["skill", "cost"], ga: ["skill", "units"], hu: ["speed", "zone"], tr: ["cat", "qty"] };
+    var MOB_HIDE = { cr: ["skill", "cost"], ga: ["skill", "units"], hu: ["speed", "zone"], tr: ["cat", "qty"], de: ["lvl"] };
     function mobCols() {
-      var l = $("list"), hide = MOB_HIDE[mode === "cr" && gaSel >= 0 ? "ga" : mode] || [], ths = $("head").querySelectorAll("tr:first-child > th");
+      var l = $("list");
+      l.className = l.className.replace(/\s*\bmh\d\b/g, "");
+      if (!MOB.matches) return;
+      var hide = MOB_HIDE[mode === "cr" && gaSel >= 0 ? "ga" : mode] || [], ths = $("head").querySelectorAll("tr:first-child > th");
       if (mode === "tr") hide = hide.concat(trView === "bs" ? ["dip", "vp"] : ["bs"]);   // Trading: bara vyns egen kolumn
       if (mode === "fx") { var fme = fxKeys().mine; hide = fme === "horde" ? ["h"] : fme === "alliance" ? ["a"] : []; }   // Horde ⇄ Alliance: andra sidans pris och skillnaden
-      l.className = l.className.replace(/\s*\bmh\d\b/g, "");
       for (var i = 0; i < ths.length; i++) { var k = ths[i].querySelector("button[data-k]"); if (k && hide.indexOf(k.getAttribute("data-k")) >= 0) l.classList.add("mh" + (i + 1)); }
     }
     new MutationObserver(mobCols).observe($("head"), { childList: true });
-    mobCats();
-    var mq = function () { if (MOB.matches) mobCats(); else { mobUncats(); mobDet(false, true); } };
-    if (MOB.addEventListener) MOB.addEventListener("change", mq); else if (MOB.addListener) MOB.addListener(mq);
+    mobCats(); mobApp(); mobSxLater();
+    var mq = function () {
+      if (MOB.matches) { mobCats(); if (!document.body.classList.contains("mdet") && history.state && history.state.md) mobState(0); }
+      else {
+        mobUncats(); mobDet(false, true);
+        Array.prototype.forEach.call(document.querySelectorAll("[data-sx]"), function (x) { x.removeAttribute("data-sx"); });
+        try { var st = Object.assign({}, history.state); if ("md" in st) { delete st.md; delete st.d; history.replaceState(st, ""); } } catch (e) {}   // datorn: bara { i }
+      }
+    };
+    if (MOB.addEventListener) { MOB.addEventListener("change", mq); MOB7.addEventListener("change", mobApp); } else if (MOB.addListener) { MOB.addListener(mq); MOB7.addListener(mobApp); }
   })();
   navDraw();
   document.addEventListener("keydown", function (e) {
@@ -8116,7 +8258,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
   function clRedraw(rep) {   // rep: talangpoäng ändrade adressen utan nytt historiksteg (51 poäng gav 51 steg)
     if (clLand) { clShow(false); return; }
     if (clView === "tal") $("armory").innerHTML = clTalPanel(); else if (clView === "guide") $("armory").innerHTML = clGuideHtml(); drawCats(); clDetail();
-    if (rep) { try { if (!sameHash(location.hash, clHash())) history.replaceState({ i: navPos }, "", clHash()); } catch (e) {} } else setHash(clHash());
+    if (rep) { try { if (!sameHash(location.hash, clHash())) history.replaceState(Object.assign({}, history.state, { i: navPos }), "", clHash()); } catch (e) {} } else setHash(clHash());
   }
   function clQuestsAll(name) { var bit = CL_BIT[name] || 0, out = []; if (!QU || !bit) return out; Object.keys(QU.quests).forEach(function (id) { var q = QU.quests[id]; if (q[15] & bit) out.push({ q: q, id: +id }); }); return out; }
   function clQuests() { return clQuestsAll(clName()).filter(function (x) { return !clFa || !x.q[5] || x.q[5] === clFa; }); }
