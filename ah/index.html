@@ -1636,7 +1636,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     huZBigClose();   // stora zonkartan hör till steget man lämnar (granskning 2026-11-18)
     arCmp = null; arCmpPick = false;
     // Marknaden följer med bakåt/framåt (buggjakt 2026-11-20): adresser för varor, recept och handel bär &m= (saknas = EU PvP Horde).
-    var mkN = /^#(item|recipe|fx|de|gather)=|^#tab=(ah|tr|cr|fx|de)\b/.test(location.hash) ? (+hashParams().m || 113) : 0;
+    var mkN = /^#(item|recipe|fx|de|gather|skillup)=|^#tab=(ah|tr|cr|fx|de)\b/.test(location.hash) ? (+hashParams().m || 113) : 0;
     if (mkN && mkN !== house && mkHas(mkN)) { switchHouse(mkN, true); return; }
     load(D, false, true);
   });
@@ -4074,6 +4074,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
   var SG_GATHER = { mine: { name: "Mining", icon: "yrke-mining", sk: 186, pid: 186, prof: "Mining", tool: 2901 }, herb: { name: "Herbalism", icon: "yrke-herbalism", sk: 182, pid: 0, prof: "Herbalism", tool: 0 }, skin: { name: "Skinning", icon: "yrke-skinning", sk: 393, pid: 0, prof: "", tool: 7005 } };
   var SG_TOOL = { 164: 5956, 202: 5956 };   // Blacksmith Hammer till Blacksmithing och Engineering
   var SG_RANKS = [[75, 50, 10, "tier_2"], [150, 125, 20, "tier_3"], [225, 200, 35, "tier_4"]];   // [gräns, lärs vid skill, level, rangens namn]
+  function sgFac() { return mySide() === "alliance" ? "A" : "H"; }   // spelarens fraktion (Blackwater: den valda sidan)
   function sgCol(d) { return d < 0 ? "" : d < 25 ? "or" : d < 50 ? "ye" : d < 100 ? "gr" : ""; }
   function sgPc(s, ye, gr) { return s < ye ? 1 : s < gr ? (gr - s) / (gr - ye) : 0; }   // tillverkning: chans till skill vid skill s, (grå − skill)/(grå − gul)
   function sgPg(s, req) { var d = s - req; return d < 25 ? 1 : d < 100 ? (100 - d) / 75 : 0; }   // samlande: gult vid krav+25, grått vid krav+100
@@ -4099,10 +4100,14 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
   function sgItemHtml(id) { var r = byId[id]; return (r ? iconHtml(r) : xIcon(id, sgItemQ(id))) + '<a class="wh" href="#item=' + id + '" data-upgo="' + id + '"><span class="' + qcls(sgItemQ(id)) + '" data-tip="' + id + '">' + esc(sgItemName(id)) + "</span></a>"; }
   function sgVend(id) { var r = byId[id], it = RECEPT && RECEPT.items[id]; return !!(it && it[2] > 0 && (!r || !(r.min > 0) || it[2] <= r.min)); }   // handlaren är billigast
   function sgCands(pid) {   // recepten som kan ge skill, med kända priser: det tränaren lär ut (vend 0) och i andra hand handlarrecept (vend 1)
-    var out = [];
+    var out = [], sub = {};
+    (SKU.trainers[pid] || []).forEach(function (x) { sub[x[0]] = x[2]; });
     crRows.forEach(function (r) {
       var rc = r.rc, th = SKU.th[r.rid];
-      if (r.prof !== pid || !(r.skill >= 1) || !th || th[0] >= th[1] || r.miss || !(r.cost > 0) || /^(Transmute|Mooncloth$|Cured Rugged Hide$|Refined Deeprock Salt$)/.test(r.name)) return;   // gul = grå: ger aldrig skill; recept med flera dagars väntetid går inte att levla på
+      if (r.prof !== pid || !(r.skill >= 1) || !th || r.miss || !(r.cost > 0) || /^(Transmute|Mooncloth$|Cured Rugged Hide$|Refined Deeprock Salt$)/.test(r.name)) return;   // recept med flera dagars väntetid går inte att levla på
+      // specialistrecept (Weaponsmith, Goblin/Gnomish Engineering, Dragonscale …) kräver ett vägval och hör inte hemma i en allmän stege
+      var TL = rc.src.trainer || [];
+      if ((TL.length && TL.every(function (x) { return SG_SPEC.test(sub[x[1]] || ""); })) || (pid === 202 && /^(Gnomish|Goblin) /.test(r.name))) return;
       // Källan: wikin säger tränare (T), automatiskt (A) eller handlare (V); okänt (?) eller utan wikirad: Classic-databasens tränare
       // eller handlare, eller ett gammalt recept utan någon källa alls (lärs med yrket). Drop- och questrecept och Forever-nya
       // recept utan känd källa tas inte med (faktagranskning 2026-11-21: de nya recepten köps mest hos handlare).
@@ -4113,11 +4118,13 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
       // Skillen man lär sig receptet vid. Forever har sänkt kravet på hundratals gamla recept, så wikins skill gäller först (när den
       // ligger under grått och inte bara upprepar gult för ett recept utan känd källa). Annars receptlistans skill, eller strax
       // under gult när receptlistans Classic-värde ligger över klientens gula tröskel. Smältningen följer tränarens krav.
-      var min;
+      var min, sure = true;
       if (pid === 186) min = r.name === "Smelt Copper" ? 1 : r.skill;   // Smelt Copper följer med Apprentice Mining
       else if (w && w[0] > 0 && w[0] < th[1] && !((w[1] === "?" || w[1] === "A") && w[0] >= th[0])) min = w[0];
-      else min = r.skill <= th[0] ? r.skill : Math.max(1, th[0] - 20);
-      if (min <= 1 && th[0] > 61) min = th[0] - 25;   // okänd skill i receptlistan (står som 1): orange brukar vara ~25 poäng
+      else { sure = r.skill <= th[0]; min = sure ? r.skill : Math.max(1, th[0] - 20); }
+      if (min <= 1 && th[0] > 61) { min = th[0] - 25; sure = false; }   // okänd skill i receptlistan (står som 1): orange brukar vara ~25 poäng
+      // gul = grå: ger bara skill mellan lärd skill och gult, så det räknas bara när skillen man lär sig receptet vid är känd
+      if (min >= th[1] || (th[0] >= th[1] && !sure)) return;
       // valet räknar försäljningen som i visningen (sgSellVal, på tjugo tillverkningar), men aldrig mer än 75 % av materialet:
       // en levelguide ska välja billigt material, inte jaga vinst på hundra plåtaxlar som ingen köper (buggjakt 2026-11-21)
       out.push({ r: r, min: min, ye: th[0], gr: th[1], fv: fv, vend: ve ? 1 : 0, net: r.cost - Math.min(sgSellVal(r, 20 * r.rc.n) / 20, r.cost * 0.75) });
@@ -4132,6 +4139,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     var ah = each && out.day > 0 ? Math.min(units, out.day * 7) : 0;
     return ah * each + (units - ah) * sp;
   }
+  var SG_SPEC = /Weapon Crafter|Armor Crafter|Weaponsmith|Armorsmith|Swordsmith|Hammersmith|Axesmith|Gnom(e|ish) Engineer|Goblin Engineer|Elemental Leather|Dragonscale Leather|Tribal Leather|Shadoweave/i;
   var SG_PMIN = 0.12;   // under 12 % chans räknas receptet som grått: annars föreslår guiden hundratals tillverkningar för de sista poängen
   var SG_TIME = 200;   // varje tillverkning "kostar" också 2 silver i tid, annars vinner ett grönt recept som går jämnt ut över ett orange
   function sgPlanPts(pid) {   // P[s] = receptet att göra vid skill s (billigast per väntad skill-up; byts bara när ett annat är klart bättre)
@@ -4144,7 +4152,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     }
     // korta hopp (under 5 poäng) jämnas ut: grannens recept får ta dem om det fortfarande ger skill där
     // (bara om grannen ger skill nästan lika ofta: ett nästan grått recept får inte ta över, buggjakt 2026-11-21)
-    var ok = function (c, a, b, orig) { if (!c || c.min > a) return false; for (var k2 = a; k2 < b; k2++) if (sgPc(k2, c.ye, c.gr) < Math.max(SG_PMIN, 0.6 * sgPc(k2, orig.ye, orig.gr))) return false; return true; };
+    var ok = function (c, a, b, orig) { if (!c || c.min > a) return false; for (var k2 = a; k2 < b; k2++) if (sgPc(k2, c.ye, c.gr) < Math.max(SG_PMIN, b - a <= 2 ? 0 : 0.6 * sgPc(k2, orig.ye, orig.gr))) return false; return true; };
     for (s = 1; s < 300;) {
       var e = s; while (e < 300 && P[e] === P[s]) e++;
       if (P[s] && e - s < 5) { var fill = null, k; if (ok(P[s - 1], s, e, P[s])) fill = P[s - 1]; else if (ok(P[e], s, e, P[s])) fill = P[e]; if (fill) for (k = s; k < e; k++) P[k] = fill; }
@@ -4180,38 +4188,39 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     return B;
   }
   function sgGatherStep(things, a, b, skip) {   // zonerna med mest som ger skill mitt i steget (orange 1, gul 0,6, grön 0,05), utan fiendens hemzoner
-    var m = (a + b) / 2, Z = {}, N = {}, NG = {}, el = [];
+    var m = (a + b) / 2, Z = {}, N = {}, NG = {}, A = {}, el = [];   // A: zoner där något går att plocka redan vid stegets början
     things.forEach(function (x) {
-      if (x.req > a) return; var c = sgCol(m - x.req); if (!c) return;
+      if (x.req >= b) return; var c = sgCol(Math.max(m, x.req) - x.req); if (!c) return;   // nytt inne i steget: orange från sin gräns
       el.push({ x: x, c: c });
       // fler än 80 platser av samma sak hjälper inte mer (489 Mulgore-grisar ska inte slå Barrens orange djur)
-      x.zones.forEach(function (z) { if (!huHasZ(z[0]) || skip.indexOf(z[0]) >= 0) return; Z[z[0]] = (Z[z[0]] || 0) + Math.min(z[1], 80) * SG_W[c]; if (c !== "gr") N[z[0]] = (N[z[0]] || 0) + z[1]; else NG[z[0]] = (NG[z[0]] || 0) + z[1]; });
+      x.zones.forEach(function (z) { if (!huHasZ(z[0]) || skip.indexOf(z[0]) >= 0) return; if (x.req <= a && z[1] >= 8) A[z[0]] = 1; Z[z[0]] = (Z[z[0]] || 0) + Math.min(z[1], 80) * SG_W[c]; if (c !== "gr") N[z[0]] = (N[z[0]] || 0) + z[1]; else NG[z[0]] = (NG[z[0]] || 0) + z[1]; });
     });
     el.sort(function (x, y) { return y.x.req - x.x.req; });
     var cnt = function (zone) {   // väntat antal i zonen: varje poäng med det bästa (högsta krav) som finns där i minst 8 exemplar
       var reqs = el.filter(function (x) { return x.x.zones.some(function (z) { return z[0] === zone && z[1] >= 8; }); }).map(function (x) { return x.x.req; }), tot = 0;
       if (!reqs.length) reqs = el.filter(function (x) { return x.x.zones.some(function (z) { return z[0] === zone; }); }).map(function (x) { return x.x.req; });
-      for (var s = a; s < b; s++) { var best = -1; reqs.forEach(function (r) { if (r <= s && r > best) best = r; }); if (best >= 0) tot += 1 / (sgPg(s, best) || 0.25); }
+      for (var s = a; s < b; s++) { var best = -1; reqs.forEach(function (r) { if (r <= s && r > best) best = r; }); var pg = best >= 0 ? sgPg(s, best) : 0; tot += pg >= 0.1 ? 1 / pg : 10; }   // inget plockbart eller nästan grått: tio plock per poäng
       return Math.round(tot);
     }, CZ = {};
     // zonen där man går upp på färst noder/djur vinner, sedan den med mest orange och gult (Mulgores 489 grisar ska inte slå Barrens)
-    var zones = Object.keys(Z).filter(function (z) { return N[z] > 0; }), green = !zones.length;
-    if (green) { zones = Object.keys(Z); N = NG; }   // bara grönt kvar (Mithril 225–245): det ger fortfarande skill, bara långsammare
+    var zones = Object.keys(Z).filter(function (z) { return A[z] && N[z] > 0; }), green = !zones.length;
+    if (green) { zones = Object.keys(Z).filter(function (z) { return A[z]; }); if (!zones.length) zones = Object.keys(Z); N = NG; }   // bara grönt kvar (Mithril 225–245): det ger fortfarande skill, bara långsammare
     zones.forEach(function (z) { CZ[z] = cnt(z); });
-    zones.sort(function (x, y) { var d = CZ[x] - CZ[y]; return Math.abs(d) > 0.2 * Math.min(CZ[x], CZ[y]) ? d : Z[y] - Z[x] || N[y] - N[x]; });   // ungefär lika snabbt: den med mest vinner
+    var bucket = function (z) { return Math.round(Math.log(Math.max(1, CZ[z])) / Math.log(1.2)); };
+    zones.sort(function (x, y) { return bucket(x) - bucket(y) || Z[y] - Z[x] || (N[y] || 0) - (N[x] || 0) || (x < y ? -1 : 1); });   // ungefär lika snabbt: den med mest vinner
     return { el: el, n: N, zones: zones.slice(0, 4), cnt: cnt, green: green };
   }
   function sgBuild(p) {
-    var ck = p.key + "|" + house + "|" + (D ? D.t : 0);
+    var ck = p.key + "|" + house + "|" + sgFac() + "|" + (D ? D.t : 0);
     if (SG_CACHE.k === ck) return SG_CACHE.G;
-    var P = p.pid ? sgPlanPts(p.pid) : null, things = SG_GATHER[p.key] ? sgThings(p.key) : null, skip = SG_HOME[myFaction()] || [];
+    var P = p.pid ? sgPlanPts(p.pid) : null, things = SG_GATHER[p.key] ? sgThings(p.key) : null, skip = SG_HOME[sgFac()] || [];
     var B = [1, 75, 150, 225, 300], s;
     var HARD = { 75: 1, 150: 1, 225: 1, 300: 1 };   // gränser som alltid står kvar: rangerna och där recepten tar slut eller börjar igen
     if (P) for (s = 2; s < 300; s++) if (P[s] !== P[s - 1]) { B.push(s); if (!things && !P[s] !== !P[s - 1]) HARD[s] = 1; }   // (Mining har kartstegen kvar när smältningen tar slut)
     if (things) sgGatherBounds(things, p.key === "skin" ? 25 : 20).forEach(function (x) { B.push(x); });
     var B2 = [];   // inga pyttesteg: minst 8 poäng från senast behållna gräns (rangerna och 300 står alltid kvar)
     B.filter(function (x, i, arr) { return x >= 1 && x <= 300 && arr.indexOf(x) === i; }).sort(function (x, y) { return x - y; })
-      .forEach(function (x) { var hard = HARD[x] === 1; if (!B2.length || x - B2[B2.length - 1] >= 8 || hard) { if (hard && B2.length > 1 && x - B2[B2.length - 1] < 5 && !HARD[B2[B2.length - 1]]) B2.pop(); B2.push(x); } });
+      .forEach(function (x) { var hard = HARD[x] === 1; if (!B2.length || x - B2[B2.length - 1] >= 8 || hard) { if (hard && B2.length > 1 && x - B2[B2.length - 1] < 8 && !HARD[B2[B2.length - 1]]) B2.pop(); B2.push(x); } });
     B = B2;
     var steps = [], buy = 0, sell = 0, mats = {}, stock = {};
     for (var i = 0; i + 1 < B.length; i++) {
@@ -4222,12 +4231,13 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     }
     // eget lager: det man tillverkat i ett tidigare steg används före köp på AH (kopparstängerna blir brons), bara resten säljs
     steps.forEach(function (st) { (st.craft || []).forEach(function (c) {
-      c.out = c.e * c.r.rc.n;
-      Object.keys(c.mats).forEach(function (id) { var need = c.mats[id]; (stock[id] || []).forEach(function (x) { var u = Math.min(need, x.out - x.kept); if (u > 0.01) { x.kept += u; need -= u; c.own[id] = (c.own[id] || 0) + u; } }); });
+      c.made = Math.ceil(c.e - 0.01); c.out = c.made * c.r.rc.n; c.mats = {};
+      c.r.rc.reagents.forEach(function (rg) { c.mats[rg[0]] = (c.mats[rg[0]] || 0) + rg[1] * c.made; });
+      Object.keys(c.mats).forEach(function (id) { var need = c.mats[id]; (stock[id] || []).forEach(function (x) { var u = Math.min(need, x.out - x.kept); if (u > 0) { x.kept += u; need -= u; c.own[id] = (c.own[id] || 0) + u; } }); });
       (stock[c.r.rc.item] = stock[c.r.rc.item] || []).push(c);
     }); });
     steps.forEach(function (st) { (st.craft || []).forEach(function (c) {
-      Object.keys(c.mats).forEach(function (id) { var q = Math.max(0, c.mats[id] - (c.own[id] || 0)); c.buy += q * recPrice(id); if (q > 0.01) mats[id] = (mats[id] || 0) + q; });
+      Object.keys(c.mats).forEach(function (id) { var q = Math.max(0, c.mats[id] - (c.own[id] || 0)); c.buy += q * recPrice(id); if (q > 0) mats[id] = (mats[id] || 0) + q; });
       c.sell = sgSellVal(c.r, c.out - c.kept);
       buy += c.buy; sell += c.sell;
     }); });
@@ -4251,7 +4261,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     return h + '<div class="note">' + (g ? t("sg_note_g") + " " : "") + (p.pid ? t("sg_note_c") : "") + "</div></div>";
   }
   function sgRankHtml(p, R) {   // R = [gräns, lärs vid skill, level, rangens namn]
-    var f = myFaction(), same = function (x) { return !x[6] || x[6] === f; }, cap = R[0] + 75, book = { 185: 16072, 129: 16084 }[p.sk], h;
+    var f = sgFac(), same = function (x) { return !x[6] || x[6] === f; }, cap = R[0] + 75, book = { 185: 16072, 129: 16084 }[p.sk], h;
     if (book && R[0] === 150) return '<div class="sgline">' + t("sg_rank_book", t(R[3]), esc(sgItemName(book)), R[0]) + "</div>" + sgNpcList((SKU.vendors[book] || []).filter(same), 4);
     if (book && R[0] === 225) return '<div class="sgline">' + t(p.sk === 185 ? "sg_rank_q_cook" : "sg_rank_q_aid", R[0]) + "</div>";
     var L = (SKU.trainers[p.sk] || []).filter(function (x) { return same(x) && x[7] >= cap; });
@@ -4277,12 +4287,12 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     return '<div class="sgstep"><div class="sghd"><span class="sgno">' + S.no + '</span><span class="sgr">' + S.a + "–" + S.b + '</span><span class="sgz">' + esc(title) + "</span></div>" + body + "</div>";
   }
   function sgMatRows(mats, ids, own) {   // own: det som tas ur egna lagret från tidigare steg
-    return ids.map(function (id) { var o = (own && own[id]) || 0, q = Math.max(0, Math.ceil(mats[id] - o - 0.01)), on = q > 0 ? Math.floor(o + 0.01) : Math.ceil(o - 0.01), pr = recPrice(id); return "<tr><td>" + sgItemHtml(id) + "</td><td>" + (q > 0 || !on ? num(q) : "") + (on > 0 ? ' <span class="dim">' + (q > 0 ? "+ " : "") + t("sg_own", num(on)) + "</span>" : "") + "</td><td>" + (pr ? money(pr) : DASH) + (pr && sgVend(id) ? ' <span class="dim">' + t("sg_vendor") + "</span>" : "") + "</td><td>" + (pr ? money(pr * q) : DASH) + "</td></tr>"; }).join("");
+    return ids.map(function (id) { var o = (own && own[id]) || 0, q = Math.max(0, Math.round(mats[id] - o)), on = Math.round(o), pr = recPrice(id); return "<tr><td>" + sgItemHtml(id) + "</td><td>" + (q > 0 || !on ? num(q) : "") + (on > 0 ? ' <span class="dim">' + (q > 0 ? "+ " : "") + t("sg_own", num(on)) + "</span>" : "") + "</td><td>" + (pr ? money(pr) : DASH) + (pr && sgVend(id) ? ' <span class="dim">' + t("sg_vendor") + "</span>" : "") + "</td><td>" + (pr ? money(pr * q) : DASH) + "</td></tr>"; }).join("");
   }
   function sgCraftHtml(S, alt) {
     if (!S.craft.length) return alt ? "" : '<div class="sgline dim">' + t("sg_nocraft") + "</div>";
     return S.craft.map(function (c) {
-      var r = c.r, ids = r.rc.reagents.map(function (rg) { return rg[0]; }), made = Math.ceil(c.e - 0.01), kept = Math.ceil(c.kept - 0.01), left = Math.max(0, made * r.rc.n - kept);
+      var r = c.r, ids = r.rc.reagents.map(function (rg) { return rg[0]; }), made = c.made, kept = c.kept, left = Math.max(0, c.out - c.kept);
       return '<div class="sgcraft"><div class="sgline">' + (alt ? t("sg_or_smelt") + " " : "") + t("sg_make", num(made), '<a class="wh" href="#recipe=' + r.rid + '" data-sgrec="' + r.rid + '">' + recName(r) + "</a>") + (c.c.vend ? ' <span class="cosrc s-other" title="' + esc(t("sg_vend_tip")) + '">' + t("sg_vend_rec") + "</span>" : "") + (c.c.fv ? ' <span class="cosrc s-forever">Forever</span>' : "") + (c.a > S.a || c.b < S.b ? ' <span class="dim">' + c.a + "–" + c.b + "</span>" : "") + "</div>" +
         '<table class="srct sgmats"><thead><tr><th>' + t("sg_tot_buy") + "</th><th>" + t("sg_col_n") + "</th><th>" + t("sg_col_each") + "</th><th>" + t("sg_col_sum") + "</th></tr></thead><tbody>" + sgMatRows(c.mats, ids, c.own) + "</tbody></table>" +
         (kept > 0 || (left > 0 && c.sell > 0) ? '<div class="sgline dim">' + (kept > 0 ? t("sg_keep", num(kept), esc(sgItemName(r.rc.item))) + " " : "") + (left > 0 && c.sell > 0 ? t("sg_sell", num(left), esc(sgItemName(r.rc.item)), money(c.sell)) : "") + "</div>" : "") + "</div>";
@@ -4314,7 +4324,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     return '<div class="sgnpcs">' + L.map(function (x) { var w = qmWay(x[3], x[4], x[5]); return '<button type="button" class="sgnpc" data-way="' + esc(w) + '" title="' + esc(w + " · " + t("sg_way_tip")) + '"><span><b>' + esc(x[1]) + "</b>" + (x[2] ? ' <span class="dim">' + esc(x[2]) + "</span>" : "") + '</span><span class="sgwhere">' + (x[7] ? '<em title="' + esc(t("sg_cap_tip", x[7])) + '">' + x[7] + "</em> " : "") + esc(x[3]) + " " + x[4] + ", " + x[5] + "</span></button>"; }).join("") + "</div>";
   }
   function sgSideHtml(G) {
-    var p = G.p, f = myFaction(), h = "", g = SG_GATHER[p.key], tool = g ? g.tool : SG_TOOL[p.pid];
+    var p = G.p, f = sgFac(), h = "", g = SG_GATHER[p.key], tool = g ? g.tool : SG_TOOL[p.pid];
     if (p.pid) {
       h += sgTotHtml(G);
       var ids = Object.keys(G.mats).sort(function (a, b) { return recPrice(b) * G.mats[b] - recPrice(a) * G.mats[a]; });
@@ -4341,9 +4351,14 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
   function sgDetail() {   // högerrutan
     var p = sgProf(sgSel); if (!p) return;
     var ic = p.icon && ASSET_BASE ? '<img class="ic big" src="' + ASSET_BASE + "icons/" + p.icon + '.jpg" width="36" height="36" alt="">' : "";
-    $("detail").scrollTop = 0;
-    $("detail").innerHTML = '<div class="strip">' + ic + "<h2>" + esc(p.name) + "</h2><small>" + t("sg_h") + '</small></div><div id="sgside" style="display:contents"><div class="note">' + t("ar_loading") + "</div></div>";
-    sgLoad(p).then(function () { var el = $("sgside"); if (el && sgSel === p.key) el.innerHTML = sgSideHtml(sgBuild(p)); }, function () { var el = $("sgside"); if (el) el.innerHTML = '<div class="note">' + t("nd_fail") + "</div>"; });
+    var old = $("sgside"), same = !!(old && old.dataset.sgk === p.key), top = $("detail").scrollTop;
+    if (!same) {
+      $("detail").scrollTop = 0;
+      $("detail").innerHTML = '<div class="strip">' + ic + "<h2>" + esc(p.name) + "</h2><small>" + t("sg_h") + '</small></div><div id="sgside" data-sgk="' + esc(p.key) + '" style="display:contents"><div class="note">' + t("ar_loading") + "</div></div>";
+    }
+    var mine = function () { var el = $("sgside"); return el && sgSel === p.key && el.dataset.sgk === p.key ? el : null; };
+    sgLoad(p).then(function () { var el = mine(); if (!el) return; el.innerHTML = sgSideHtml(sgBuild(p)); if (same) $("detail").scrollTop = top; },
+      function () { var el = mine(); if (el) el.innerHTML = '<div class="note">' + t("nd_fail") + "</div>"; });
   }
   // Mining/Herbalism i Crafting: farmplaneringen och yrkets ådror eller örter som chips till sina sidor.
   function ndFillGa(prof) {
@@ -4989,6 +5004,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     });
     byId = {};
     rows.forEach(function (r) { byId[r.id] = r; });
+    if (RECEPT) buildCr();   // före refresh(): skillguiden väljer recept ur crRows
     if (sortKey === "day" && !rows.some(function (r) { return r.day > 0; })) sortKey = "qty";   // sålda/dag kommer efter ett dygns timdata
     var cats = d.cats || [];
     countCats();
@@ -5009,7 +5025,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     var hp0 = hashParams();
     // En länk bestämmer fliken (annars den som sparats): #quest, #dungeon, #player/#guild, #recipe, #item.
     if (hp0.tab === "lb") { hp0.top = lbGroup(arLb) ? arLb : "ilvl"; delete hp0.tab; }
-    var hm = /^(ah|tr|cr|ar|qu|dg|hu|co|cl)$/.test(hp0.tab || "") ? hp0.tab : hp0.cls ? "cl" : hp0.fx ? "fx" : hp0.de ? "de" : hp0.col ? "co" : hp0.beast ? "hu" : hp0.quest || hp0.npc ? "qu" : hp0.dungeon ? "dg" : hp0.player || hp0.guild || hp0.top ? "ar" : hp0.recipe || hp0.gather || hp0.node ? "cr" : hp0.item ? "ah" : "";
+    var hm = /^(ah|tr|cr|ar|qu|dg|hu|co|cl)$/.test(hp0.tab || "") ? hp0.tab : hp0.cls ? "cl" : hp0.fx ? "fx" : hp0.de ? "de" : hp0.col ? "co" : hp0.beast ? "hu" : hp0.quest || hp0.npc ? "qu" : hp0.dungeon ? "dg" : hp0.player || hp0.guild || hp0.top ? "ar" : hp0.recipe || hp0.gather || hp0.node || hp0.skillup ? "cr" : hp0.item ? "ah" : "";
     if (hm === "tr" && !keep && /^(cheap|bs|vend)$/.test(hp0.v || "")) { trView = hp0.v; trSort(trView); }   // Trading-adress: vald undervy (buggjakt 2026-11-20)
     var wantI = byId[+hp0.item];
     if (hm && !keep && mode !== hm && !(hm === "ah" && mode === "tr" && (!wantI || (!wantI.gear && wantI.qty >= TR_MIN)))) { if (fromNav) resetModeState(hm); mode = hm; drawCats(); refresh(); }   // trädet ritades för den sparade fliken
@@ -5037,7 +5053,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
       var wantR = +hashParams().recipe;
       var wantN = +hashParams().node || 0;   // åder/ört (#node=): yrket i spalten, objektet i rutan
       var wantG = hashParams().gather || "";
-      (wantN ? Promise.all([loadRecept(), loadNodes().catch(function () { return null; })]) : loadRecept()).then(function () { if (wantN && !wantG && !sgSel) { var wn = ndFind(wantN); wantG = wn && wn.prof === "Herbalism" ? "herb" : "mine"; } buildCr(); if (mode !== "cr") return; var wantS = hashParams().skillup || (hashParams().guide === "1" ? wantG : ""); if (wantS) sgSet(wantS); else if (wantG) gaSet(wantG, hashParams().band); else if (!keep && !(wantN && sgSel)) { gaSel = -1; sgSel = ""; } if (!keep && !wantG && !wantS && !wantN && (fromNav || hp0.c != null)) catFromHash(hp0, profList.length); drawCats(); refresh(); if (sgSel) { if (wantN) nodeDetail(wantN); else sgDetail(); if (!keep) showTab("item"); } else if (gaSel >= 0) { if (wantN) nodeDetail(wantN); else gaDetail(); if (wantG && !keep) showTab("item"); } else if (wantR) { selectRecipe(wantR, true); showTab("item"); } else if (keep && selRec) selectRecipe(selRec, false); else if (view[0]) selectRecipe(view[0].rid, false); })
+      (wantN ? Promise.all([loadRecept(), loadNodes().catch(function () { return null; })]) : loadRecept()).then(function () { if (wantN && !wantG && !sgSel) { var wn = ndFind(wantN); wantG = wn && wn.prof === "Herbalism" ? "herb" : "mine"; } buildCr(); if (mode !== "cr") return; var wantS = hashParams().skillup || (hashParams().guide === "1" ? wantG : ""); if (wantS) sgSet(wantS); else if (wantG) gaSet(wantG, hashParams().band); else if (!keep && !(wantN && sgSel)) { gaSel = -1; sgSel = ""; } if (!keep && !wantG && !wantS && !wantN && (fromNav || hp0.c != null)) catFromHash(hp0, profList.length); drawCats(); refresh(); if (sgSel) { if (wantN) nodeDetail(wantN); else { sgDetail(); if (keep) setHash(sgHash()); } if (!keep) showTab("item"); } else if (gaSel >= 0) { if (wantN) nodeDetail(wantN); else gaDetail(); if (wantG && !keep) showTab("item"); } else if (wantR) { selectRecipe(wantR, true); showTab("item"); } else if (keep && selRec) selectRecipe(selRec, false); else if (view[0]) selectRecipe(view[0].rid, false); })
         .catch(function () { if (mode === "cr") $("detail").innerHTML = '<div class="note">' + t("cr_fail") + "</div>"; });   // bytt flik under laddningen: rita inget (granskning 2026-11-18)
       return;
     }
