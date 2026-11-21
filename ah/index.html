@@ -338,8 +338,12 @@ body[data-mode=hu] .facts dd { font-size: 15px; }
 .falg { display: inline-flex; align-items: center; gap: 4px; margin-right: 8px; } .falg i { display: inline-block; width: 8px; height: 8px; border-radius: 50%; border: 1px solid #000; }
 .ndfarm { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; } .ndfz { display: block; color: inherit; text-decoration: none; font-size: 13px; line-height: 1.4; } .ndfz:hover b, .ndfz:focus-visible b { color: var(--gold); }
 .ndmini { position: relative; display: block; margin-bottom: 4px; border-radius: 6px; overflow: hidden; border: 1px solid var(--line, #333); } .ndmini img { display: block; width: 100%; height: auto; } .ndmini .qmk { width: 5px; height: 5px; margin: -3.5px 0 0 -3.5px; cursor: pointer; } .ndmini .qmk:hover { transform: none; }
-.sgsteps { display: grid; gap: 12px; } .sgstep { border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px 12px; display: grid; gap: 8px; }
-.sghd { display: flex; align-items: baseline; gap: 4px 12px; flex-wrap: wrap; } .sgr { font-size: 20px; font-weight: 700; color: var(--gold); min-width: 84px; font-variant-numeric: tabular-nums; } .sgz { font-size: 15px; font-weight: 600; }
+.sgwrap { display: grid; gap: 12px; } .sgwrap .strip .huchips { margin-left: auto; align-self: center; } .sgsteps { display: grid; gap: 12px; } .sgstep { border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px 12px; display: grid; gap: 8px; background: var(--inset); } .sgstep.tr { border-style: dashed; background: none; padding: 8px 12px; }
+.sgno { display: inline-grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; background: var(--gold); color: #1a1208; font-weight: 700; font-size: 13px; flex: none; } .sgline { font-size: 14px; line-height: 1.45; } .sgline a.wh { text-decoration: none; } .sgline a.wh:hover span { text-decoration: underline; } .sgline .ic { width: 18px; height: 18px; margin: 0 4px 0 2px; vertical-align: -4px; }
+.sgcraft { display: grid; gap: 6px; } .sgmats { width: auto; min-width: 60%; } .sgmats td { padding: 2px 10px 2px 0; } .sgmats td:nth-child(n+2) { text-align: right; white-space: nowrap; } .sgmats th { font-size: 11px; color: var(--grey); font-weight: 500; text-align: right; padding: 0 10px 3px 0; } .sgmats th:first-child { text-align: left; } .sgmats .ic { width: 18px; height: 18px; margin: 0 5px 0 0; vertical-align: -4px; }
+.sgnpcs { display: grid; gap: 4px; } .sgnpc { all: unset; box-sizing: border-box; cursor: pointer; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0 10px; align-items: center; padding: 5px 8px; border: 1px solid var(--line); border-radius: 6px; font-size: 13px; } .sgnpc:hover { background: var(--hover); } .sgnpc b { font-weight: 600; } .sgnpc .dim { font-size: 12px; } .sgwhere { color: var(--grey); font-size: 12px; white-space: nowrap; }
+.armory .huzm.qmap { max-width: 720px; } .armory .sgstep .huchips { margin-top: 2px; }
+.sghd { display: flex; align-items: center; gap: 4px 12px; flex-wrap: wrap; } .sgr { font-size: 20px; font-weight: 700; color: var(--gold); min-width: 84px; font-variant-numeric: tabular-nums; } .sgz { font-size: 15px; font-weight: 600; }
 .sgnodes { display: flex; flex-wrap: wrap; gap: 4px 12px; font-size: 13px; } .sgnodes a { display: inline-flex; align-items: center; gap: 5px; text-decoration: none; } .sgnodes a:hover span { text-decoration: underline; } .sgnodes .ic { width: 18px; height: 18px; margin: 0; }
 .huchip.rt { margin-left: auto; } .huchip.rt svg { width: 14px; height: 10px; vertical-align: -1px; margin-right: 4px; }
 .qmk.nd { width: 7px; height: 7px; margin: -4.5px 0 0 -4.5px; } .huchips a.huchip { display: inline-flex; align-items: center; gap: 5px; } .huchips a.huchip .ic { margin: 0; }
@@ -1299,6 +1303,75 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
 .arland h3 { margin: 0; font-family: var(--display); color: var(--gold); font-size: 16px; font-weight: 400; }
 .arland p { margin: 0; color: var(--grey); }
 #sect { cursor: pointer; } #sect:hover { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px; }
+/* ===== Mobil (Joakim 2026-11-21: "oanvändbar i mobilen") =====
+   Gäller bara ≤ 760 px, datorn påverkas inte. Listan först och den valda raden som en egen vy (body.mdet) med Tillbaka
+   överst; kategorierna i rullbara rader (.mcatrow, görs i JS); sidhuvudet i tre korta rader; klickytor minst 44 px. */
+.mbar { display: none; }
+@media (max-width: 760px) {
+  body { padding-top: 8px; padding-bottom: 8px; padding-left: max(8px, env(safe-area-inset-left, 0px)); padding-right: max(8px, env(safe-area-inset-right, 0px)); }
+  .win { overflow: clip; }   /* clip i stället för hidden: Tillbaka-raden kan stå kvar överst (sticky) */
+  /* sidhuvudet: [bok + titel | uppdaterad], [Style | marknad], [sök överallt] */
+  .top { min-height: 0; padding: 8px 10px 10px; gap: 8px; }
+  .home { flex: 1 1 186px; min-width: 0; gap: 8px; }
+  .alogo, [data-appearance=atlas] .alogo { width: 56px; height: 44px; margin: -4px -2px -4px -6px; }
+  .title { overflow: hidden; }
+  h1, [data-appearance=atlas] .title h1 { font-size: 18px; letter-spacing: .03em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .sub { font-size: 12.5px; margin-top: 1px; }
+  .scan { flex: 0 1 118px; min-width: 0; }
+  .scan b { font-size: 12.5px; line-height: 1.25; }
+  #scanInfo, .applbl { display: none; }
+  .appseg button { padding: 0 10px; font-size: 13.5px; }
+  .appsel + .mkt { margin-left: 0; flex: 1 1 auto; min-width: 0; display: flex; justify-content: flex-end; }
+  .mbtn { height: 44px; padding: 0 10px; gap: 6px; }
+  .gs input { height: 44px; font-size: 16px; }   /* 16 px: iPhone zoomar inte in i fältet */
+  .gs svg { top: 14px; }
+  /* flikraden, rubriken med antalet, sökfältet med knappen på samma rad */
+  .bar, [data-appearance=atlas] .bar { padding: 0 10px 10px; row-gap: 8px; column-gap: 8px; }
+  .mode, [data-appearance=atlas] .mode { margin: 0 -10px; }
+  .subrow { margin: -8px -10px 0; } .sub2 { margin-top: -8px; }
+  .subrow button, .sub2 button { height: 44px; padding: 0 12px; }
+  .seg button, .seg .lbl { height: 36px; }
+  .sect, [data-appearance=atlas] .sect { flex: 1 1 auto; min-width: 0; font-size: 20px; overflow: hidden; text-overflow: ellipsis; }
+  .bar .count, [data-appearance=atlas] .bar .count { order: 0; min-width: 0; font-size: 12.5px; }
+  .bar #q, [data-appearance=atlas] .bar #q { flex: 1 1 180px; height: 44px; font-size: 16px; }
+  .bar #qbtn { height: 44px; padding: 0 16px; }
+  /* kategorierna: panelerna (spelarval, filter) i full bredd, knapparna i rader som rullar i sidled */
+  .cols { padding: 0 10px 10px; gap: 10px; }
+  .cats { flex-direction: column; flex-wrap: nowrap; overflow: visible; padding: 6px; }
+  .cats > :not(.mcatrow) { max-width: 100%; }
+  .cats select { max-width: 100%; }
+  .mcatrow { display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none; position: relative; overscroll-behavior-x: contain; }
+  .mcatrow::-webkit-scrollbar { display: none; }
+  .mcatrow + .mcatrow { margin-top: 4px; }
+  .mcatrow > * { flex: none; }
+  .cat, .cat.sub, .cat.sub2 { height: 44px; margin: 0; }
+  /* listan först, den valda raden som egen vy */
+  .right { order: 0; }
+  body:not(.mdet) .cols > .right { display: none; }
+  body.mdet .cols > .cats, body.mdet .cols > .left { display: none; }
+  .navrow { display: none; }
+  body.mdet .mbar { display: flex; position: sticky; top: 0; z-index: 8; padding: 6px 8px; border-bottom: 1px solid var(--line); border-radius: 5px 5px 0 0; background: linear-gradient(#22180f, #15100c); }
+  [data-appearance=atlas] body.mdet .mbar { background: linear-gradient(#17222E, #121B26); }
+  .mbar .navb { flex: 0 1 auto; height: 44px; padding: 0 20px; }
+  .tab { min-height: 44px; }
+  /* klickytor */
+  td, .lbt td { height: 44px; }
+  .more { min-height: 44px; }
+  .strip .star, .strip .lnk { height: 36px; }
+  h3.row { flex-wrap: wrap; row-gap: 6px; } .range { flex-wrap: wrap; } .range button { padding: 6px 12px; font-size: 13px; }
+  .qplayer select { height: 44px; width: 100%; }
+  .huchip { padding: 9px 12px; font-size: 13px; } .huseg button { padding: 11px 6px; } .hulvl input { height: 40px; font-size: 16px; }
+  .star { padding: 10px; } .p3d { padding: 10px 12px; } .qmc { padding: 8px 10px; }
+  .lbt td.nm a { display: inline-block; padding: 12px 0; } .lbt .lbci { min-height: 40px; min-width: 32px; }
+}
+@media (max-width: 520px) {
+  /* namnet tar den bredd som blir över, siffrorna så smala de kan */
+  #list th.nm, #list td.nm { width: 100% !important; max-width: 0 !important; }
+  #list td.bs { white-space: normal; min-width: 104px; font-size: 12.5px; }
+  /* kolumner som inte ryms (mobCols sätter mhN efter rubrikernas data-k) */
+  #list.mh2 tr > :nth-child(2), #list.mh3 tr > :nth-child(3), #list.mh4 tr > :nth-child(4), #list.mh5 tr > :nth-child(5),
+  #list.mh6 tr > :nth-child(6), #list.mh7 tr > :nth-child(7), #list.mh8 tr > :nth-child(8) { display: none; }
+}
 </style>
 </head>
 <body>
@@ -1538,6 +1611,8 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     navDraw();
   }
   ["pointerdown", "keydown"].forEach(function (ev) { document.addEventListener(ev, function () { navRestoring = false; }, true); });
+  var mobPopHash = "";   // mobilen (längre ner): adressen som bakåt/länken gick till, innan sidan skriver om den
+  window.addEventListener("popstate", function () { mobPopHash = location.hash; });
   window.addEventListener("popstate", function (e) {
     // Steg utan position (en vanlig #-länk eller adress inskriven för hand) är ett nytt steg framåt: det får nästa position.
     var si = e.state && e.state.i;
@@ -1747,7 +1822,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
       lb_att: "Raid ready", lb_att_sub: "Guilds by level 60s attuned for Molten Core, Onyxia and Blackwing Lair", lb_att_all: "All three", lb_att_n: "60s checked", lb_att_none: "No level 60s checked yet – the catalog fetches completed quests once a day.",
       lb_att_note: "Counts level 60s whose completed quests the catalog has fetched. Naxxramas is not counted: it needs Argent Dawn reputation, not a quest.",
       lb_rep: "Reputation", lb_rep_sub: "Players by reputation", lb_rep_ex: "Most Exalted", lb_rep_exn: "exalted", lb_rep_note: "Reputation is fetched for level 60s once a week; the list grows as the catalog gets to everyone.",
-      lb: "Leaderboards", lb_server: "Server stats", lb_sub: "%1 players and %2 guilds found so far · %3", lb_ilvl: "Item level", lb_level: "Level", lb_hk: "Honorable kills", lb_rank: "PvP rank", lb_ach: "Achievement points", lb_guilds: "Guilds",
+      lb: "Leaderboards", lb_server: "Server stats", lb_srv_head: "Server overview", lb_srv_sub: "Players, classes and races", lb_sub: "%1 players and %2 guilds found so far · %3", lb_ilvl: "Item level", lb_level: "Level", lb_hk: "Honorable kills", lb_rank: "PvP rank", lb_ach: "Achievement points", lb_guilds: "Guilds",
       lb_cls: "Classes", lb_only60: "Only level 60", lb_cls_note: "%1 players with a known class. Top bar = Horde, bottom bar = Alliance, on the same scale.",
       lb_meter_tip: "How many Horde and Alliance players the catalog has found on this realm type. Alliance grows with enemy nameplates on (Ctrl+V) and battlegrounds.",
       lb_rs_auto: "%1 (your AH)", lb_rs_all: "All realms", lb_rs_partial: "Some players are still being sorted into PvP or Normal; they show under All realms until the next update.",
@@ -1889,7 +1964,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
       hu_skin: "Skinning", hu_skin_note: "What skinning the beast gives, from the Classic database. Price is the auction house market price.", hu_skin_chance: "Chance", hu_skin_price: "Market price",
       dg_boss_loot: "Loot", dg_back: "‹ Back to the dungeon", dg_boss_noloot: "No loot of its own in the Classic database.",
       gs_ph: "Search everything: items, recipes, quests, NPCs, beasts, players…", gs_all: "All", gs_k_item: "Items", gs_k_rec: "Recipes", gs_k_quest: "Quests",
-      gs_k_npc: "NPCs", gs_k_beast: "Beasts", gs_k_col: "Collections", gs_k_dg: "Dungeons", gs_k_node: "Ore veins", gs_k_herb: "Herbs", nd_skill: "%1 %2", nd_where_h: "Where to pick", nd_pin: "Where to farm: %1", fa_h: "Best zones for your skill", fa_skill: "%1 skill", fa_both: "Herbs + ores on one map", fa_col_n: "Spawns", fa_col_val: "Per node", fa_col_val_tip: "Average auction house value of one node you can gather in the zone", fa_col_gph: "Gold/h", fa_sort_n: "Most spawns", fa_sort_g: "Most gold", fa_ores: "Ores", fa_herbs: "Herbs", fa_map_tip: "Click a point to copy its /way.", fa_none: "Nothing to gather at this skill yet.", fa_note: "Spawns you can gather at your skill, from the open Classic database. Gold/h = your nodes per hour above × the average auction house value of a node in the zone, after the 5 % AH cut.", fa_note_both: "Spawns you can gather at your skills, from the open Classic database. Gold/h = the nodes per hour of both professions added together × the average auction house value of a node in the zone, after the 5 % AH cut.", nd_spawns: "%1 spawns", nd_found: "Found in", nd_also: "Also in", nd_zone: "Zone", nd_map_tip: "%1 spawn points in %2. Click a point to copy its /way, click the map to open it large.", nd_loot: "Contains", nd_none: "The open Classic database has no spawn points for this one. It may still exist in Forever.", nd_inst_only: "Only inside dungeons, so there is no world map.", nd_src: "Spawn points from the open Classic database (cmangos 1.12). A spot that can spawn several ores or herbs counts for each of them, like on Wowhead.", nd_fail: "Could not load the ore veins and herbs.", nd_missing: "Nothing with that id.", nd_where: "Where to mine", fa_or: "Orange", fa_ye: "Yellow", fa_gr: "Green", sg_h: "Skill-up 1–300", sg_sub: "Where to gather at every skill, step by step", sg_n: "%1 nodes that give skill", sg_also: "Also good:", sg_note: "Each step shows the zone with the most nodes that still give skill at that point: orange gives a point every time, yellow usually, green now and then. Zones in the other faction's home lands are left out. Spawn points from the open Classic database (cmangos 1.12).", fa_route: "Farm route", fa_route_tip: "The dashed line is a short loop through every node on the map. Run it round and round.", nd_farm_h: "Where to farm", nd_farm_tip: "Open the %1 map", nd_farm_note: "Top zones by spawn points. Click a map for all of them.", gs_k_pl: "Players", gs_k_gl: "Guilds", gs_none: "Nothing found",
+      gs_k_npc: "NPCs", gs_k_beast: "Beasts", gs_k_col: "Collections", gs_k_dg: "Dungeons", gs_k_node: "Ore veins", gs_k_herb: "Herbs", nd_skill: "%1 %2", nd_where_h: "Where to pick", nd_pin: "Where to farm: %1", fa_h: "Best zones for your skill", fa_skill: "%1 skill", fa_both: "Herbs + ores on one map", fa_col_n: "Spawns", fa_col_val: "Per node", fa_col_val_tip: "Average auction house value of one node you can gather in the zone", fa_col_gph: "Gold/h", fa_sort_n: "Most spawns", fa_sort_g: "Most gold", fa_ores: "Ores", fa_herbs: "Herbs", fa_map_tip: "Click a point to copy its /way.", fa_none: "Nothing to gather at this skill yet.", fa_note: "Spawns you can gather at your skill, from the open Classic database. Gold/h = your nodes per hour above × the average auction house value of a node in the zone, after the 5 % AH cut.", fa_note_both: "Spawns you can gather at your skills, from the open Classic database. Gold/h = the nodes per hour of both professions added together × the average auction house value of a node in the zone, after the 5 % AH cut.", nd_spawns: "%1 spawns", nd_found: "Found in", nd_also: "Also in", nd_zone: "Zone", nd_map_tip: "%1 spawn points in %2. Click a point to copy its /way, click the map to open it large.", nd_loot: "Contains", nd_none: "The open Classic database has no spawn points for this one. It may still exist in Forever.", nd_inst_only: "Only inside dungeons, so there is no world map.", nd_src: "Spawn points from the open Classic database (cmangos 1.12). A spot that can spawn several ores or herbs counts for each of them, like on Wowhead.", nd_fail: "Could not load the ore veins and herbs.", nd_missing: "Nothing with that id.", nd_where: "Where to mine", fa_or: "Orange", fa_ye: "Yellow", fa_gr: "Green", sg_h: "Skill-up 1–300", sg_sub: "Step by step from 1 to 300: what to make or gather, what it costs on the AH and where to go", sg_n: "%1 that give skill", sg_learn: "Learn %1", sg_learn_txt: "Find a %2 trainer and learn %1 %2.",sg_learn_tool: "Buy a %1 from a trade supplies vendor.", sg_right: "Trainers and vendors for your faction are listed on the right.", sg_rank: "Before you pass %4: go back to the trainer and learn %1 (needs skill %2 and level %3).", sg_make: "Make about %1 × %2", sg_or_smelt: "Or buy on the AH and smelt:",sg_sell: "Sell the %1 × %2 back: about %3 after the AH cut", sg_mine: "Mine about %1 nodes along the route in %2.", sg_pick: "Pick about %1 herbs along the route in %2.", sg_skin: "Skin about %1 beasts along the route in %2.", sg_nocraft: "No trainer recipe gives skill here. Use a drop or vendor recipe from the list, or gather.", sg_nogather: "Nothing to gather at this skill on the maps.", sg_vendor: "vendor", sg_tot_buy: "Buy on the AH", sg_tot_sell: "Sell back", sg_tot_net: "Net cost", sg_tot_gain: "Net profit", sg_shop: "Shopping list 1–300", sg_trainers: "Trainers", sg_vendors: "%1 vendors", sg_none: "None found for your faction.", sg_col_n: "Count", sg_beasts_lv1: "Beasts level %1",sg_beasts_lv: "Beasts level %1–%2",sg_col_each: "Each", sg_col_sum: "Total", sg_way_tip: "Click to copy the /way", sg_note: "The ladder is computed, not hand-written: at every skill point it picks the trainer recipe that gives a skill-up cheapest right now (orange gives a point every time, yellow 3 in 4, green 1 in 4, grey never, thresholds from the Forever client). Counts are averages, so buy a few extra. Prices are the current average on this market, the vendor price when cheaper; selling back counts the 5 % AH cut and assumes everything sells. Recipes new in Forever (purple tag) are assumed to come from the trainer.Gathering steps show the zone with the most orange and yellow spawns, without the other faction's home lands; spawn points from the open Classic database (cmangos 1.12), skinnable beasts from the tameable ones.", sg_side_note: "Trainers and vendors from the open Classic database; click one to copy its /way.", fa_route: "Farm route", fa_route_tip: "The dashed line is a short loop through every node on the map. Run it round and round.", nd_farm_h: "Where to farm", nd_farm_tip: "Open the %1 map", nd_farm_note: "Top zones by spawn points. Click a map for all of them.", gs_k_pl: "Players", gs_k_gl: "Guilds", gs_none: "Nothing found",
       gs_ar: "Look up “%1” in the Armory", gs_ar_g: "Look up the guild “%1”", gs_more: "Show all %1", gs_loading: "Loading…",
       src_h: "Where to learn it", src_h_drop: "Where it drops", src_trainer: "Trainer", src_vendor: "Vendor", src_drop: "Drops from", src_quest: "Quest reward", src_none: "No known source in the Classic database.",
       limited: "limited stock", more_n: "and %1 more", requires: "requires %1", tier_1: "Apprentice", tier_2: "Journeyman", tier_3: "Expert", tier_4: "Artisan",
@@ -1913,7 +1988,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
       gone_tag: "left out", f_usual: "Usual price", f_gear: "Sold one by one, like gear and recipes: the cheapest price, no percent (prices differ in gold).",
       empty: "No item matches the search.", more: "Show more (%1 more)", count: "%1 items",
       tab_item: "Item", tab_watch: "My list", pick: "Pick an item in the list.",
-      foot3: "Data from Blizzard's API and the game client", about: "About", about_close: "Close", nav_back: "‹ Back", nav_fwd: "Forward ›",
+      foot3: "Data from Blizzard's API and the game client", about: "About", about_close: "Close", nav_back: "‹ Back", nav_fwd: "Forward ›", m_list: "‹ List",
       about_src_h: "Sources", about_legal_h: "Legal", about_data_h: "Data",
       about_s1: "Blizzard's API: auction prices, characters, guilds, quests, rewards and creature portraits.",
       about_s2: "The game client via <a href=\"https://github.com/Kruithne/wow.export\" target=\"_blank\" rel=\"noopener\">wow.export</a>: zone maps, flight paths, dungeon portals.",
@@ -3265,7 +3340,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
   ];
   var GA_KEY = "whippit-ah-gather", GA_AKEY = "whippit-ah-gather-pace";
   var gaSel = -1;   // -1 = vanliga recept, annars index i GATHER
-  var gaGuide = false;   // true = Skill-up 1–300 för GATHER[gaSel] (bara Mining/Herbalism), annars Gold per hour
+  var sgSel = "";   // Skill-up 1–300: valt yrke ("mine", "herb", "skin" eller yrkets id som text), "" = ingen guide
   var gaBand = (function () { try { var o = JSON.parse(localStorage.getItem(GA_KEY) || "{}"); return o && o.b >= 0 && o.b < 5 ? (o.b | 0) : 0; } catch (e) { return 0; } })();
   var gaAs = (function () { try { var o = JSON.parse(localStorage.getItem(GA_AKEY) || "{}"); return o && typeof o === "object" ? o : {}; } catch (e) { return {}; } })();
   function gaSave() { try { localStorage.setItem(GA_AKEY, JSON.stringify(gaAs)); } catch (e) { /* gäller tills sidan stängs */ } }
@@ -3286,42 +3361,55 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     rows.forEach(function (x) { sum += x.gph; });
     return { rows: rows, gph: sum, units: per, miss: miss };
   }
-  function gaSet(key, band) {   // ur länken #gather=herb&band=2 (&guide=1 = skillguiden)
-    gaSel = -1; gaGuide = hashParams().guide === "1" && (key === "herb" || key === "mine");
+  function gaSet(key, band) {   // ur länken #gather=herb&band=2
+    gaSel = -1; sgSel = "";
     GATHER.forEach(function (g, i) { if (g.key === key) gaSel = i; });
     var b = parseInt(band, 10) - 1;
     if (b >= 0 && b < GA_BANDS.length) gaBand = b;
-    if (gaSel >= 0) { catSel = -1; subSel = -1; sub2Sel = -1; sortKey = gaGuide ? "skill" : "gph"; sortDir = gaGuide ? 1 : -1; }
+    if (gaSel >= 0) { catSel = -1; subSel = -1; sub2Sel = -1; sortKey = "gph"; sortDir = -1; }
   }
-  function gaHash() { return "#gather=" + GATHER[gaSel].key + (gaGuide ? "&guide=1" : "&band=" + (gaBand + 1)) + (house !== 113 ? "&m=" + house : ""); }
-  function gaPick(i, band, guide) {
-    guide = !!guide;
-    if (band < 0 && gaSel === i && gaGuide === guide) {   // klick på det valda igen: hopfällt, tillbaka till recepten
+  function gaHash() { return "#gather=" + GATHER[gaSel].key + "&band=" + (gaBand + 1) + (house !== 113 ? "&m=" + house : ""); }
+  function gaPick(i, band) {
+    if (band < 0 && gaSel === i) {   // klick på det valda igen: hopfällt, tillbaka till recepten
       gaSel = -1; sortKey = "profit"; sortDir = -1;
       drawCats(); refresh(); toTop();
       if (view[0]) selectRecipe(view[0].rid, false);
       setHash("#tab=cr" + (house !== 113 ? "&m=" + house : ""));
       return;
     }
-    gaSel = i; gaGuide = guide; if (band >= 0) gaBand = band;
-    catSel = -1; subSel = -1; sub2Sel = -1; sortKey = guide ? "skill" : "gph"; sortDir = guide ? 1 : -1;
+    gaSel = i; sgSel = ""; if (band >= 0) gaBand = band;
+    catSel = -1; subSel = -1; sub2Sel = -1; sortKey = "gph"; sortDir = -1;
     try { localStorage.setItem(GA_KEY, JSON.stringify({ g: GATHER[i].key, b: gaBand })); } catch (e) { /* gäller tills sidan stängs */ }
     drawCats(); refresh(); toTop(); gaDetail(); showTab("item");
     setHash(gaHash());
   }
+  // Skill-up 1–300 (Joakim 2026-11-21): guiden i mittenrutan, sidoinfon i högerrutan. Länk #skillup=<nyckel>.
+  function sgSet(key) { sgSel = sgProf(key) ? key : ""; if (sgSel) { gaSel = -1; catSel = -1; subSel = -1; sub2Sel = -1; } }
+  function sgHash() { return "#skillup=" + sgSel + (house !== 113 ? "&m=" + house : ""); }
+  function sgPick(key) {
+    if (sgSel === key) {   // klick på det valda igen: hopfällt, tillbaka till recepten
+      sgSel = ""; sortKey = "profit"; sortDir = -1;
+      drawCats(); refresh(); toTop();
+      if (view[0]) selectRecipe(view[0].rid, false);
+      setHash("#tab=cr" + (house !== 113 ? "&m=" + house : ""));
+      return;
+    }
+    sgSel = key; gaSel = -1; catSel = -1; subSel = -1; sub2Sel = -1;
+    drawCats(); refresh(); toTop(); sgDetail(); showTab("item");
+    setHash(sgHash());
+  }
   function gaCatsHtml() {   // Skill-up 1–300 (Mining, Herbalism), sedan Gold per hour: samlaryrkena med bästa band, banden under det valda
     var h = '<div class="cat hd gahd">' + t("sg_h") + "</div>";
-    GATHER.forEach(function (g, i) {
-      if (g.key !== "mine" && g.key !== "herb") return;
-      var ic = ASSET_BASE ? '<img class="ci" src="' + ASSET_BASE + "icons/" + g.icon + '.jpg" alt="">' : "";
-      h += '<button class="cat" type="button" data-ga="' + i + '" data-gaguide="1" aria-pressed="' + (gaSel === i && gaGuide) + '" title="' + esc(g.name + " " + t("sg_h")) + '">' + ic + '<em class="nm">' + esc(g.name) + '</em><span class="dim">1–300</span></button>';
+    sgProfs().forEach(function (p) {
+      var ic = p.icon && ASSET_BASE ? '<img class="ci" src="' + ASSET_BASE + "icons/" + p.icon + '.jpg" alt="">' : "";
+      h += '<button class="cat" type="button" data-sg="' + p.key + '" aria-pressed="' + (sgSel === p.key) + '" title="' + esc(p.name + " " + t("sg_h")) + '">' + ic + '<em class="nm">' + esc(p.name) + '</em><span class="dim">1–300</span></button>';
     });
     h += '<div class="cat hd gahd">' + t("ga_h") + "</div>";
     GATHER.forEach(function (g, i) {
       var best = 0, per = GA_BANDS.map(function (b, k) { var v = gaCalc(g, k).gph; if (v > best) best = v; return v; });
       var ic = ASSET_BASE ? '<img class="ci" src="' + ASSET_BASE + "icons/" + g.icon + '.jpg" alt="">' : "";
-      h += '<button class="cat" type="button" data-ga="' + i + '" aria-pressed="' + (gaSel === i && !gaGuide) + '" title="' + esc(g.name) + (g.de ? " · " + t("ga_de") : "") + '">' + ic + '<em class="nm">' + esc(g.name) + (g.de ? ' <span class="dim">' + t("ga_de") + "</span>" : "") + "</em><span>" + gaMoney(best) + "/h</span></button>";
-      if (gaSel !== i || gaGuide) return;
+      h += '<button class="cat" type="button" data-ga="' + i + '" aria-pressed="' + (gaSel === i) + '" title="' + esc(g.name) + (g.de ? " · " + t("ga_de") : "") + '">' + ic + '<em class="nm">' + esc(g.name) + (g.de ? ' <span class="dim">' + t("ga_de") + "</span>" : "") + "</em><span>" + gaMoney(best) + "/h</span></button>";
+      if (gaSel !== i) return;
       GA_BANDS.forEach(function (b, k) {
         h += '<button class="cat sub" type="button" data-ga="' + i + '" data-gab="' + k + '" aria-pressed="' + (gaBand === k) + '" title="' + esc(t("ga_skill", GA_SKILL[k][0], GA_SKILL[k][1])) + '">' + t("ga_band", b[0], b[1]) + "<span>" + gaMoney(per[k]) + "/h</span></button>";
       });
@@ -3330,11 +3418,6 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
   }
   function gaRefresh(q) {
     var c = gaCalc(GATHER[gaSel], gaBand), ck = sortKey, cd = sortDir;
-    if (gaGuide) {
-      var best = {};
-      GA_BANDS.forEach(function (b, k) { gaCalc(GATHER[gaSel], k).rows.forEach(function (r) { if (!best[r.id] || best[r.id].gph < r.gph) best[r.id] = r; }); });
-      c = { rows: Object.keys(best).map(function (k) { return best[k]; }) };
-    }
     view = c.rows.filter(function (r) { return !q || r.lower.indexOf(q) >= 0; });
     view.sort(function (a, b) {
       if (ck === "name") return cd * a.name.localeCompare(b.name);
@@ -3376,7 +3459,6 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
       "<div><h3>" + t("ga_recipes") + "</h3>" + recHtml + "</div>"];
   }
   function gaDetail() {
-    if (gaGuide) { sgDetail(); return; }
     var g = GATHER[gaSel]; if (!g) return;
     var b = GA_BANDS[gaBand], sk = GA_SKILL[gaBand];
     var ic = ASSET_BASE ? '<img class="ic big" src="' + ASSET_BASE + "icons/" + g.icon + '.jpg" width="36" height="36" alt="">' : "";
@@ -3404,7 +3486,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
   }
   function gaGoRecipe(rid) {   // recept i rutan: öppna det i yrkets vanliga lista
     var r = null; crRows.forEach(function (x) { if (x.rid === rid) r = x; }); if (!r) return;
-    gaSel = -1; catSel = -1; profList.forEach(function (p, i) { if (p.id === r.prof) catSel = i; });
+    gaSel = -1; sgSel = ""; catSel = -1; profList.forEach(function (p, i) { if (p.id === r.prof) catSel = i; });
     subSel = r.skill >= 1 ? tierOf(r.skill) + 1 : 0; sub2Sel = -1; sortKey = "profit"; sortDir = -1;
     drawCats(); refresh(); selectRecipe(rid, true); showTab("item");
   }
@@ -3966,60 +4048,239 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
       return;
     }
     var sgz = e.target.closest("[data-sgz]");
-    if (sgz) { SG_Z[sgz.dataset.sgz] = sgz.dataset.sgzn; var st = sgz.closest(".sgstep"), S = SG_LAST && SG_LAST[+sgz.dataset.sgi]; if (st && S) st.outerHTML = sgStepHtml(S, +sgz.dataset.sgi); }
+    if (sgz) { SG_Z[sgz.dataset.sgz] = sgz.dataset.sgzn; var st = sgz.closest(".sgstep"), S = SG_LAST && SG_LAST.steps[+sgz.dataset.sgi]; if (st && S) st.outerHTML = sgStepHtml(S); return; }
+    var sr = e.target.closest("[data-sgrec]");
+    if (sr && mode === "cr") { e.preventDefault(); gaGoRecipe(+sr.dataset.sgrec); }
   });
-  // ---- Skill-up 1–300 (Joakim 2026-11-21: "plockar ut skillguiden från gold per hour-guiden"). Stegen räknas ur nodes.json:
-  // stegen börjar där en ny ört/åder blir plockbar (minst 20 skill per steg), varje steg väger noderna efter färgen mitt i
-  // steget (orange 1, gul 0,6, grön 0,05, grå 0; Barrens stora Peacebloom-fält ska inte vinna till 150) och visar zonen med mest, utan den andra fraktionens hemzoner.
-  var SG_W = { or: 1, ye: 0.6, gr: 0.05 }, SG_C = { or: "#ff8040", ye: "#ffd200", gr: "#40c040" }, SG_Q = { or: "qd-orange", ye: "qd-yellow", gr: "qd-green" }, SG_Z = {}, SG_LAST = null;
+  // ---- Skill-up 1–300 (Joakim 2026-11-21: "en skillguide ska gå till så här"): en stege i mittenrutan, steg för steg från 1 till
+  // 300 för varje yrke; sidoinfon (kostnad, inköpslista, tränare, handlare) i högerrutan. Underlag: recept.json + skillup.json
+  // (hamta-skillup.js: gul/grå tröskel per recept ur Forevers klient, tränare och handlare ur Classic-databasen), nodes.json
+  // (ådror, örter) och hunter.json (skinnbara djur). Chans till skill per gång som i cmangos: orange 100 %, gul 75 %, grön 25 %,
+  // grå 0; samlande blir gult vid krav+25, grönt +50, grått +100. Varje skillpoäng får det tränarrecept som ger skill billigast
+  // (nettokostnad per väntad skill-up, med lite tröghet), stegen bryts där receptet byts, där något nytt blir plockbart och vid 75/150/225.
+  var SG_C = { or: "#ff8040", ye: "#ffd200", gr: "#40c040" }, SG_Q = { or: "qd-orange", ye: "qd-yellow", gr: "qd-green" }, SG_W = { or: 1, ye: 0.6, gr: 0.05 };
+  var SG_Z = {}, SG_LAST = null, SG_CACHE = {}, SKU = null, skuP = null;
   var SG_HOME = { H: ["Elwynn Forest", "Westfall", "Dun Morogh", "Loch Modan", "Teldrassil", "Darkshore", "Redridge Mountains", "Duskwood"],
-    A: ["Durotar", "Mulgore", "Tirisfal Glades", "Silverpine Forest", "The Barrens"] };   // fienden hemzoner, per egen fraktion
+    A: ["Durotar", "Mulgore", "Tirisfal Glades", "Silverpine Forest", "The Barrens"] };   // fiendens hemzoner, per egen fraktion
+  var SG_GATHER = { mine: { name: "Mining", icon: "yrke-mining", sk: 186, pid: 186, prof: "Mining", tool: 2901 }, herb: { name: "Herbalism", icon: "yrke-herbalism", sk: 182, pid: 0, prof: "Herbalism", tool: 0 }, skin: { name: "Skinning", icon: "yrke-skinning", sk: 393, pid: 0, prof: "", tool: 7005 } };
+  var SG_TOOL = { 164: 5956, 202: 5956 };   // Blacksmith Hammer till Blacksmithing och Engineering
+  var SG_RANKS = [[75, 50, 10, "tier_2"], [150, 125, 20, "tier_3"], [225, 200, 35, "tier_4"]];   // [gräns, lärs vid skill, level, rangens namn]
   function sgCol(d) { return d < 0 ? "" : d < 25 ? "or" : d < 50 ? "ye" : d < 100 ? "gr" : ""; }
-  function sgSteps(prof) {
-    var ns = NODES.nodes.filter(function (n) { return n.prof === prof && n.n > 0 && n.zones.length; }), th = [], steps = [], a = 1, skip = SG_HOME[myFaction()] || [];
-    ns.forEach(function (n) { if (th.indexOf(n.skill) < 0) th.push(n.skill); });
-    th.sort(function (x, y) { return x - y; });
-    while (a < 300) {
-      var b = 300; for (var i = 0; i < th.length; i++) if (th[i] >= a + 20) { b = th[i]; break; }
-      if (300 - b < 15) b = 300;
-      steps.push([a, b]); a = b;
-    }
-    return steps.map(function (ab) {
-      var m = (ab[0] + ab[1]) / 2, Z = {}, N = {};
-      var el = ns.filter(function (n) { return n.skill <= ab[0]; }).map(function (n) { return { nd: n, c: sgCol(m - n.skill) }; }).filter(function (x) { return SG_W[x.c]; });
-      el.forEach(function (x) { x.nd.zones.forEach(function (z) { if (!huHasZ(z[0]) || skip.indexOf(z[0]) >= 0) return; Z[z[0]] = (Z[z[0]] || 0) + z[1] * SG_W[x.c]; if (x.c !== "gr") N[z[0]] = (N[z[0]] || 0) + z[1]; }); });
-      el.sort(function (x, y) { return y.nd.skill - x.nd.skill; });
-      return { a: ab[0], b: ab[1], prof: prof, el: el, n: N, zones: Object.keys(Z).sort(function (x, y) { return Z[y] - Z[x]; }).slice(0, 3) };
+  function sgPc(s, ye, gr) { return s < ye ? 1 : s < (ye + gr) / 2 ? 0.75 : s < gr ? 0.25 : 0; }   // tillverkning: chans till skill vid skill s
+  function sgPg(s, req) { var d = s - req; return d < 25 ? 1 : d < 50 ? 0.75 : d < 100 ? 0.25 : 0; }   // samlande
+  function sgSkinReq(l) { return l < 10 ? 1 : l < 20 ? Math.max(1, (l - 10) * 10) : l * 5; }   // skinning-krav ur djurets level
+  function sgProfs() {   // guidens yrken i spalten: samlaryrkena först, sedan tillverkningsyrkena ur recept.json
+    var L = Object.keys(SG_GATHER).map(function (k) { var g = SG_GATHER[k]; return { key: k, name: g.name, icon: g.icon, sk: g.sk, pid: g.pid }; });
+    profList.forEach(function (p) { if (p.id === 186) return; var pi = PROF_ICON[p.name]; L.push({ key: String(p.id), name: p.name, icon: pi ? pi[0] : "", sk: p.id, pid: p.id }); });
+    return L;
+  }
+  function sgProf(key) { var f = null; sgProfs().forEach(function (p) { if (p.key === key) f = p; }); return f; }
+  function loadSkillup() {
+    if (!skuP) skuP = fetch(DATA_BASE + "skillup.json").then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }).then(function (j) { SKU = j; return j; }).catch(function (e) { skuP = null; throw e; });
+    return skuP;
+  }
+  function sgLoad(p) {
+    var L = [loadSkillup(), loadZmap(), qmIndex().catch(function () { return null; })];
+    if (p.key === "mine" || p.key === "herb") L.push(loadNodes());
+    if (p.key === "skin") L.push(loadHunter());
+    return Promise.all(L);
+  }
+  function sgItemName(id) { var r = byId[id], it = RECEPT && RECEPT.items[id]; return r && r.name ? r.name : it ? it[0] : ndItem(id).name; }
+  function sgItemQ(id) { var r = byId[id], it = RECEPT && RECEPT.items[id]; return r ? r.q : it ? it[1] : ndItem(id).q; }
+  function sgItemHtml(id) { var r = byId[id]; return (r ? iconHtml(r) : xIcon(id, sgItemQ(id))) + '<a class="wh" href="#item=' + id + '" data-upgo="' + id + '"><span class="' + qcls(sgItemQ(id)) + '" data-tip="' + id + '">' + esc(sgItemName(id)) + "</span></a>"; }
+  function sgVend(id) { var r = byId[id], it = RECEPT && RECEPT.items[id]; return !!(it && it[2] > 0 && (!r || !(r.min > 0) || it[2] <= r.min)); }   // handlaren är billigast
+  function sgCands(pid) {   // recepten som kan ge skill: tränarrecept (eller Forever-nya utan känd källa) med kända priser
+    return crRows.filter(function (r) {
+      var rc = r.rc, th = SKU.th[r.rid];
+      if (r.prof !== pid || !(r.skill >= 1) || !th || th[0] >= th[1] || r.miss || !(r.cost > 0) || /^Transmute/.test(r.name)) return false;   // gul = grå: ger aldrig skill
+      return rc.src.trainers > 0 || (!rc.recipeItem && !rc.src.vendor.length && !rc.src.drop.length && !rc.src.quest.length);
+    }).map(function (r) {
+      var th = SKU.th[r.rid], min = pid === 186 && r.name === "Smelt Copper" ? 1 : r.skill;   // Smelt Copper följer med Apprentice Mining
+      if (min <= 1 && th[0] > 61) min = th[0] - 25;   // okänd skill i receptlistan (står som 1): orange brukar vara ~25 poäng
+      // valet räknar bara halva försäljningen (hundra likadana säljer inte till listpriset), visningen räknar hela
+      return { r: r, min: min, ye: th[0], gr: th[1], fv: r.rid > 50000 || r.rc.item > 100000, net: r.cost - (r.day > 0 ? r.sell * 0.95 * 0.5 : 0) };
     });
   }
-  function sgStepHtml(S, i) {
-    var key = S.prof + i, zone = S.zones.indexOf(SG_Z[key]) >= 0 ? SG_Z[key] : S.zones[0];
-    if (!zone) return '<div class="sgstep"><div class="sghd"><span class="sgr">' + S.a + "–" + S.b + "</span></div></div>";
-    var dots = "", pts = [], cnt = {}, RANK = { gr: 0, ye: 1, or: 2 };
-    S.el.slice().sort(function (x, y) { return RANK[x.c] - RANK[y.c]; }).forEach(function (x) {   // gröna först: gula och orange ligger överst där platserna delas
-      x.nd.zones.forEach(function (z) {
+  var SG_TIME = 200;   // varje tillverkning "kostar" också 2 silver i tid, annars vinner ett grönt recept som går jämnt ut över ett orange
+  function sgPlanPts(pid) {   // P[s] = receptet att göra vid skill s (billigast per väntad skill-up; byts bara när ett annat är klart bättre)
+    var C = sgCands(pid), P = [], cur = null, s;
+    for (s = 1; s < 300; s++) {
+      var best = null, bv = Infinity, cv = Infinity;
+      C.forEach(function (c) { if (c.min > s) return; var p = sgPc(s, c.ye, c.gr); if (!p) return; var v = (c.net + SG_TIME) / p; if (v < bv) { bv = v; best = c; } if (c === cur) cv = v; });
+      cur = cur && cv < Infinity && cv - bv <= Math.max(50, Math.abs(bv) * 0.15) ? cur : best;
+      P[s] = cur;
+    }
+    // korta hopp (under 5 poäng) jämnas ut: grannens recept får ta dem om det fortfarande ger skill där
+    var ok = function (c, s) { return c && c.min <= s && sgPc(s, c.ye, c.gr) > 0; };
+    for (s = 1; s < 300;) {
+      var e = s; while (e < 300 && P[e] === P[s]) e++;
+      if (P[s] && e - s < 5) { var fill = null, k; if (ok(P[s - 1], e - 1)) fill = P[s - 1]; else if (ok(P[e], s)) fill = P[e]; if (fill) for (k = s; k < e; k++) P[k] = fill; }
+      s = e;
+    }
+    return P;
+  }
+  function sgAgg(P, a, b) {   // recepten i ett steg med väntat antal, inköp, försäljning och material
+    var out = [], cur = null;
+    for (var s = a; s < b; s++) {
+      var c = P[s]; if (!c) { cur = null; continue; }
+      if (!cur || cur.c !== c) { cur = { c: c, r: c.r, a: s, b: s + 1, e: 0, buy: 0, sell: 0, mats: {} }; out.push(cur); }
+      cur.b = s + 1;
+      var e = 1 / sgPc(s, c.ye, c.gr);
+      cur.e += e; cur.buy += c.r.cost * e; cur.sell += c.r.sell * 0.95 * e;
+      c.r.rc.reagents.forEach(function (rg) { cur.mats[rg[0]] = (cur.mats[rg[0]] || 0) + rg[1] * e; });
+    }
+    return out;
+  }
+  function sgThings(key) {   // det som ger skill när man samlar: ådror/örter ur nodes.json, skinnbara djur ur hunter.json – samma form
+    if (key === "skin") return HU.beasts.filter(function (b) { return b.skin && b.skin.length && b.zones && b.zones.length; }).map(function (b) {
+      return { id: b.id, name: b.name + " " + b.min + (b.max > b.min ? "–" + b.max : ""), lv: b.min, req: sgSkinReq(b.min), href: "#beast=" + b.id, zones: b.zones.map(function (z) { var P = []; z.pts.forEach(function (p) { P.push(p[0], p[1]); }); return [z.zone, z.n, P]; }) };
+    });
+    var prof = SG_GATHER[key].prof;
+    return NODES.nodes.filter(function (n) { return n.prof === prof && n.n > 0 && n.zones.length && !/Incendicite|Indurium|Bloodstone/.test(n.name); })   // questmalmerna leder ingen rätt
+      .map(function (n) { return { id: n.id, name: n.name, req: n.skill, href: "#node=" + n.id, nd: n, zones: n.zones }; });
+  }
+  function sgGatherBounds(things, gap) {   // nytt steg där något nytt blir plockbart (minst gap skill per steg)
+    var th = [], B = [], a = 1;
+    things.forEach(function (x) { if (th.indexOf(x.req) < 0) th.push(x.req); });
+    th.sort(function (x, y) { return x - y; });
+    while (a < 300) { var b = 300; for (var i = 0; i < th.length; i++) if (th[i] >= a + gap) { b = th[i]; break; } if (300 - b < 15) b = 300; B.push(b); a = b; }
+    return B;
+  }
+  function sgGatherStep(things, a, b, skip) {   // zonerna med mest som ger skill mitt i steget (orange 1, gul 0,6, grön 0,05), utan fiendens hemzoner
+    var m = (a + b) / 2, Z = {}, N = {}, el = [];
+    things.forEach(function (x) {
+      if (x.req > a) return; var c = sgCol(m - x.req); if (!c) return;
+      el.push({ x: x, c: c });
+      // fler än 80 platser av samma sak hjälper inte mer (489 Mulgore-grisar ska inte slå Barrens orange djur)
+      x.zones.forEach(function (z) { if (!huHasZ(z[0]) || skip.indexOf(z[0]) >= 0) return; Z[z[0]] = (Z[z[0]] || 0) + Math.min(z[1], 80) * SG_W[c]; if (c !== "gr") N[z[0]] = (N[z[0]] || 0) + z[1]; });
+    });
+    el.sort(function (x, y) { return y.x.req - x.x.req; });
+    var cnt = function (zone) {   // väntat antal i zonen: varje poäng med det bästa (högsta krav) som finns där i minst 8 exemplar
+      var reqs = el.filter(function (x) { return x.x.zones.some(function (z) { return z[0] === zone && z[1] >= 8; }); }).map(function (x) { return x.x.req; }), tot = 0;
+      if (!reqs.length) reqs = el.filter(function (x) { return x.x.zones.some(function (z) { return z[0] === zone; }); }).map(function (x) { return x.x.req; });
+      for (var s = a; s < b; s++) { var best = -1; reqs.forEach(function (r) { if (r <= s && r > best) best = r; }); if (best >= 0) tot += 1 / (sgPg(s, best) || 0.25); }
+      return Math.round(tot);
+    }, CZ = {};
+    // zonen där man går upp på färst noder/djur vinner, sedan den med mest orange och gult (Mulgores 489 grisar ska inte slå Barrens)
+    var zones = Object.keys(Z).filter(function (z) { return N[z] > 0; });
+    zones.forEach(function (z) { CZ[z] = cnt(z); });
+    zones.sort(function (x, y) { var d = CZ[x] - CZ[y]; return Math.abs(d) > 0.2 * Math.min(CZ[x], CZ[y]) ? d : Z[y] - Z[x] || N[y] - N[x]; });   // ungefär lika snabbt: den med mest vinner
+    return { el: el, n: N, zones: zones.slice(0, 4), cnt: cnt };
+  }
+  function sgBuild(p) {
+    var ck = p.key + "|" + house + "|" + (D ? D.t : 0);
+    if (SG_CACHE.k === ck) return SG_CACHE.G;
+    var P = p.pid ? sgPlanPts(p.pid) : null, things = SG_GATHER[p.key] ? sgThings(p.key) : null, skip = SG_HOME[myFaction()] || [];
+    var B = [1, 75, 150, 225, 300], s;
+    if (P) for (s = 2; s < 300; s++) if (P[s] !== P[s - 1]) B.push(s);
+    if (things) sgGatherBounds(things, p.key === "skin" ? 25 : 20).forEach(function (x) { B.push(x); });
+    B = B.filter(function (x, i, arr) { return x >= 1 && x <= 300 && arr.indexOf(x) === i; }).sort(function (x, y) { return x - y; })
+      .filter(function (x, i, arr) { return i === 0 || x - arr[i - 1] >= 8 || x === 75 || x === 150 || x === 225 || x === 300; });   // inga pyttesteg
+    var steps = [], buy = 0, sell = 0, mats = {};
+    for (var i = 0; i + 1 < B.length; i++) {
+      var st = { a: B[i], b: B[i + 1], i: steps.length, craft: null, gath: null };
+      if (P) { st.craft = sgAgg(P, st.a, st.b); st.craft.forEach(function (c) { buy += c.buy; sell += c.sell; Object.keys(c.mats).forEach(function (id) { mats[id] = (mats[id] || 0) + c.mats[id]; }); }); }
+      if (things) st.gath = sgGatherStep(things, st.a, st.b, skip);
+      steps.push(st);
+    }
+    var G = { p: p, steps: steps, buy: buy, sell: sell, mats: mats };
+    SG_CACHE = { k: ck, G: G };
+    return G;
+  }
+  function sgCard(no, cls, title, body) { return '<div class="sgstep' + (cls ? " " + cls : "") + '"><div class="sghd"><span class="sgno">' + no + '</span><span class="sgz">' + title + "</span></div>" + body + "</div>"; }
+  function sgMainHtml(G) {
+    var p = G.p, g = SG_GATHER[p.key], n = 0, tool = g ? g.tool : SG_TOOL[p.pid];
+    var ic = p.icon && ASSET_BASE ? '<img class="ic big" src="' + ASSET_BASE + "icons/" + p.icon + '.jpg" width="36" height="36" alt="">' : "";
+    var h = '<div class="sgwrap"><div class="strip">' + ic + "<h2>" + esc(p.name) + " " + t("sg_h") + "</h2><small>" + t("sg_sub") + "</small>" + (g ? '<span class="huchips">' + faRouteBtn() + "</span>" : "") + "</div>";
+    h += '<div class="sgsteps">' + sgCard(++n, "", t("sg_learn", esc(p.name)), '<div class="sgline">' + t("sg_learn_txt", t("tier_1"), esc(p.name)) + " " + (tool ? t("sg_learn_tool", esc(sgItemName(tool))) + " " : "") + t("sg_right") + "</div>");
+    G.steps.forEach(function (S) {
+      SG_RANKS.forEach(function (R) { if (S.a === R[0]) h += sgCard(++n, "tr", t(R[3]), '<div class="sgline">' + t("sg_rank", t(R[3]), R[1], R[2], R[0]) + "</div>"); });
+      S.no = ++n;
+      h += sgStepHtml(S);
+    });
+    h += "</div>";
+    if (p.pid) h += sgTotHtml(G);
+    return h + '<div class="note">' + t("sg_note") + "</div></div>";
+  }
+  function sgTotHtml(G) {
+    var net = G.buy - G.sell;
+    return '<dl class="facts"><div><dt>' + t("sg_tot_buy") + "</dt><dd>" + (G.buy > 0 ? money(G.buy) : DASH) + "</dd></div><div><dt>" + t("sg_tot_sell") + "</dt><dd>" + (G.sell > 0 ? money(G.sell) : DASH) + "</dd></div>" +
+      "<div><dt>" + t(net >= 0 ? "sg_tot_net" : "sg_tot_gain") + '</dt><dd class="' + (net > 0 ? "down" : "up") + '">' + (G.buy > 0 ? money(Math.abs(net)) : DASH) + "</dd></div></dl>";
+  }
+  function sgStepHtml(S) {
+    var p = SG_LAST.p, key = p.key + S.i, body = "", title = "";
+    var zone = S.gath && S.gath.zones.length ? (S.gath.zones.indexOf(SG_Z[key]) >= 0 ? SG_Z[key] : S.gath.zones[0]) : "";
+    if (S.gath && zone) {
+      var main = S.gath.el.filter(function (x) { return x.c !== "gr" && x.x.zones.some(function (z) { return z[0] === zone; }); });
+      if (p.key === "skin" && main.length) { var lv = main.map(function (x) { return x.x.lv; }); var l1 = Math.min.apply(null, lv), l2 = Math.max.apply(null, lv); title = l2 > l1 ? t("sg_beasts_lv", l1, l2) : t("sg_beasts_lv1", l1); }
+      else title = main.slice(0, 3).map(function (x) { return x.x.name; }).join(", ");
+    }
+    if (!title && S.craft && S.craft.length) title = S.craft.map(function (c) { return c.r.name; }).join(", ");
+    if (S.gath) body += sgGatherHtml(S, zone, key);
+    if (S.craft) body += sgCraftHtml(S, !!S.gath);
+    return '<div class="sgstep"><div class="sghd"><span class="sgno">' + S.no + '</span><span class="sgr">' + S.a + "–" + S.b + '</span><span class="sgz">' + esc(title) + "</span></div>" + body + "</div>";
+  }
+  function sgMatRows(mats, ids) {
+    return ids.map(function (id) { var q = Math.ceil(mats[id]), pr = recPrice(id); return "<tr><td>" + sgItemHtml(id) + "</td><td>" + num(q) + "</td><td>" + (pr ? money(pr) : DASH) + (pr && sgVend(id) ? ' <span class="dim">' + t("sg_vendor") + "</span>" : "") + "</td><td>" + (pr ? money(pr * q) : DASH) + "</td></tr>"; }).join("");
+  }
+  function sgCraftHtml(S, alt) {
+    if (!S.craft.length) return alt ? "" : '<div class="sgline dim">' + t("sg_nocraft") + "</div>";
+    return S.craft.map(function (c) {
+      var r = c.r, ids = r.rc.reagents.map(function (rg) { return rg[0]; });
+      return '<div class="sgcraft"><div class="sgline">' + (alt ? t("sg_or_smelt") + " " : "") + t("sg_make", num(Math.ceil(c.e)), '<a class="wh" href="#recipe=' + r.rid + '" data-sgrec="' + r.rid + '">' + recName(r) + "</a>") + (c.c.fv ? ' <span class="cosrc s-forever">Forever</span>' : "") + (c.a > S.a || c.b < S.b ? ' <span class="dim">' + c.a + "–" + c.b + "</span>" : "") + "</div>" +
+        '<table class="srct sgmats"><thead><tr><th>' + t("sg_tot_buy") + "</th><th>" + t("sg_col_n") + "</th><th>" + t("sg_col_each") + "</th><th>" + t("sg_col_sum") + "</th></tr></thead><tbody>" + sgMatRows(c.mats, ids) + "</tbody></table>" +
+        (c.sell > 0 ? '<div class="sgline dim">' + t("sg_sell", num(Math.ceil(c.e * r.rc.n)), esc(sgItemName(r.rc.item)), money(c.sell)) + "</div>" : "") + "</div>";
+    }).join("");
+  }
+  function sgGatherHtml(S, zone, key) {
+    var p = SG_LAST.p, gs = S.gath;
+    if (!zone) return '<div class="sgline dim">' + t("sg_nogather") + "</div>";
+    var here = gs.el.filter(function (x) { return x.x.zones.some(function (z) { return z[0] === zone; }); }), dots = "", pts = [], cnt = {}, RANK = { gr: 0, ye: 1, or: 2 };
+    here.slice().sort(function (x, y) { return RANK[x.c] - RANK[y.c]; }).forEach(function (x) {   // gröna först: gula och orange ligger överst där platserna delas
+      x.x.zones.forEach(function (z) {
         if (z[0] !== zone) return;
         var P = z[2]; cnt[x.c] = (cnt[x.c] || 0) + z[1];
-        for (var k = 0; k + 1 < P.length; k += 2) { pts.push([P[k], P[k + 1]]); dots += '<i class="qmk nd" style="left:' + P[k] + "%;top:" + P[k + 1] + "%;--c:" + SG_C[x.c] + '" data-way="' + esc(qmWay(zone, P[k], P[k + 1])) + '" title="' + esc(x.nd.name + " (" + x.nd.skill + ") · " + P[k] + ", " + P[k + 1] + " · " + t("qm_click_copy")) + '"></i>'; }
+        for (var k = 0; k + 1 < P.length; k += 2) { pts.push([P[k], P[k + 1]]); dots += '<i class="qmk nd" style="left:' + P[k] + "%;top:" + P[k + 1] + "%;--c:" + SG_C[x.c] + '" data-way="' + esc(qmWay(zone, P[k], P[k + 1])) + '" title="' + esc(x.x.name + " (" + x.x.req + ") · " + P[k] + ", " + P[k + 1] + " · " + t("qm_click_copy")) + '"></i>'; }
       });
     });
-    var here = S.el.filter(function (x) { return x.nd.zones.some(function (z) { return z[0] === zone; }); });
-    return '<div class="sgstep"><div class="sghd"><span class="sgr">' + S.a + "–" + S.b + '</span><span class="sgz">' + esc(zone) + '</span><span class="dim">' + t("sg_n", num(S.n[zone] || 0)) + "</span></div>" +
-      '<div class="sgnodes">' + here.map(function (x) { return '<a href="#node=' + x.nd.id + '" data-node="' + x.nd.id + '" data-ndzone="' + esc(zone) + '" title="' + esc(t("nd_skill", x.nd.prof, x.nd.skill)) + '">' + ndIcon(x.nd) + '<span class="' + SG_Q[x.c] + '">' + esc(x.nd.name) + "</span></a>"; }).join("") + "</div>" +
-      (S.zones.length > 1 ? '<div class="huchips">' + S.zones.map(function (z) { return '<button type="button" class="huchip' + (z === zone ? " on" : "") + '" data-sgz="' + esc(key) + '" data-sgzn="' + esc(z) + '" data-sgi="' + i + '" aria-pressed="' + (z === zone) + '">' + esc(z) + ' <span class="dim">' + num(S.n[z] || 0) + "</span></button>"; }).join("") + "</div>" : "") +
-      '<div class="huzm qmap"><img src="' + huZUrl(zone) + '" alt="' + esc(zone) + '" width="1002" height="668" loading="lazy" decoding="async">' + qmTaxi(zone) + (FA.route ? faRoute(pts) : "") + dots + "</div>" +
-      '<div class="dim">' + ["or", "ye", "gr"].filter(function (c) { return cnt[c]; }).map(function (c) { return '<span class="falg"><i style="background:' + SG_C[c] + '"></i>' + t("fa_" + c) + ' <span class="dim">' + num(cnt[c]) + "</span></span>"; }).join("") + (FA.route ? t("fa_route_tip") + " " : "") + t("fa_map_tip") + "</div></div>";
+    var list = here.filter(function (x) { return x.c !== "gr"; }), rest = list.length - 12;   // orange och gult, högst tolv; gröna syns bara på kartan
+    var what = list.slice(0, 12).map(function (x) { return '<a href="' + x.x.href + '"' + (x.x.nd ? ' data-node="' + x.x.id + '" data-ndzone="' + esc(zone) + '"' : "") + ' title="' + esc(t("nd_skill", p.name, x.x.req)) + '">' + (x.x.nd ? ndIcon(x.x.nd) : "") + '<span class="' + SG_Q[x.c] + '">' + esc(x.x.name) + "</span></a>"; }).join("") + (rest > 0 ? '<span class="dim">' + t("more_n", rest) + "</span>" : "");
+    return '<div class="sgline">' + t(p.key === "mine" ? "sg_mine" : p.key === "herb" ? "sg_pick" : "sg_skin", num(gs.cnt(zone)), esc(zone)) + "</div>" +
+      '<div class="sgnodes">' + what + "</div>" +
+      (gs.zones.length > 1 ? '<div class="huchips">' + gs.zones.map(function (z) { return '<button type="button" class="huchip' + (z === zone ? " on" : "") + '" data-sgz="' + esc(key) + '" data-sgzn="' + esc(z) + '" data-sgi="' + S.i + '" aria-pressed="' + (z === zone) + '">' + esc(z) + ' <span class="dim">' + num(gs.n[z] || 0) + "</span></button>"; }).join("") + "</div>" : "") +
+      '<div class="huzm qmap"><img src="' + huZUrl(zone) + '" alt="' + esc(zone) + '" width="1002" height="668" loading="lazy" decoding="async">' + qmTaxi(zone) + (FA.route && pts.length > 2 ? faRoute(pts) : "") + dots + "</div>" +
+      '<div class="dim">' + ["or", "ye", "gr"].filter(function (c) { return cnt[c]; }).map(function (c) { return '<span class="falg"><i style="background:' + SG_C[c] + '"></i>' + t("fa_" + c) + ' <span class="dim">' + num(cnt[c]) + "</span></span>"; }).join("") + (FA.route && pts.length > 2 ? t("fa_route_tip") + " " : "") + t("fa_map_tip") + "</div>";
   }
-  function sgHtml(prof) {
-    SG_LAST = sgSteps(prof);
-    return '<div class="huchips">' + faRouteBtn() + '</div><div class="sgsteps">' + SG_LAST.map(sgStepHtml).join("") + '</div><div class="note">' + t("sg_note") + "</div>";
+  function sgNpcList(L, max) {   // tränare/handlare: städerna först, högst max; klick kopierar /way
+    if (!L.length) return '<div class="note">' + t("sg_none") + "</div>";
+    var CITY = ["Orgrimmar", "Undercity", "Thunder Bluff", "Stormwind City", "Ironforge", "Darnassus"];
+    L = L.slice().sort(function (a, b) { return (CITY.indexOf(b[3]) >= 0) - (CITY.indexOf(a[3]) >= 0) || a[3].localeCompare(b[3]) || a[1].localeCompare(b[1]); }).slice(0, max || 99);
+    return '<div class="sgnpcs">' + L.map(function (x) { var w = qmWay(x[3], x[4], x[5]); return '<button type="button" class="sgnpc" data-way="' + esc(w) + '" title="' + esc(w + " · " + t("sg_way_tip")) + '"><span><b>' + esc(x[1]) + "</b>" + (x[2] ? ' <span class="dim">' + esc(x[2]) + "</span>" : "") + '</span><span class="sgwhere">' + esc(x[3]) + " " + x[4] + ", " + x[5] + "</span></button>"; }).join("") + "</div>";
   }
-  function sgDraw() { var el = $("sgbox"), g = GATHER[gaSel]; if (el && gaGuide && g && NODES) el.innerHTML = sgHtml(g.key === "herb" ? "Herbalism" : "Mining"); }
-  function sgDetail() {
-    var g = GATHER[gaSel]; if (!g) return;
-    var ic = ASSET_BASE ? '<img class="ic big" src="' + ASSET_BASE + "icons/" + g.icon + '.jpg" width="36" height="36" alt="">' : "";
-    $("detail").innerHTML = '<div class="strip">' + ic + "<h2>" + esc(g.name) + " " + t("sg_h") + "</h2><small>" + t("sg_sub") + '</small></div><div id="sgbox" style="display:contents"><div class="note">' + t("ar_loading") + "</div></div>";
-    Promise.all([loadNodes(), loadZmap(), qmIndex().catch(function () { return null; })]).then(sgDraw, function () { var el = $("sgbox"); if (el) el.innerHTML = '<div class="note">' + t("nd_fail") + "</div>"; });
+  function sgSideHtml(G) {
+    var p = G.p, f = myFaction(), h = "", g = SG_GATHER[p.key], tool = g ? g.tool : SG_TOOL[p.pid];
+    if (p.pid) {
+      h += sgTotHtml(G);
+      var ids = Object.keys(G.mats).sort(function (a, b) { return recPrice(b) * G.mats[b] - recPrice(a) * G.mats[a]; });
+      if (ids.length) h += "<div><h3>" + t("sg_shop") + '</h3><table class="srct sgmats"><thead><tr><th></th><th>' + t("sg_col_n") + "</th><th>" + t("sg_col_each") + "</th><th>" + t("sg_col_sum") + "</th></tr></thead><tbody>" + sgMatRows(G.mats, ids) + "</tbody></table></div>";
+    }
+    var same = function (x) { return !x[6] || x[6] === f; };
+    h += "<div><h3>" + t("sg_trainers") + "</h3>" + sgNpcList((SKU.trainers[p.sk] || []).filter(same)) + "</div>";
+    if (tool && SKU.vendors[tool]) h += "<div><h3>" + t("sg_vendors", esc(sgItemName(tool))) + "</h3>" + sgNpcList(SKU.vendors[tool].filter(same), 8) + "</div>";
+    return h + '<div class="note">' + t("sg_side_note") + "</div>";
+  }
+  function sgMain() {   // mittenrutan
+    var p = sgProf(sgSel); if (!p) return;
+    $("armory").innerHTML = '<div class="note">' + t("ar_loading") + "</div>";
+    sgLoad(p).then(function () { if (sgSel !== p.key || mode !== "cr") return; SG_LAST = sgBuild(p); $("armory").innerHTML = sgMainHtml(SG_LAST); }, function () { if (sgSel === p.key && mode === "cr") $("armory").innerHTML = '<div class="note">' + t("nd_fail") + "</div>"; });
+  }
+  function sgDraw() { if (sgSel && SG_LAST && mode === "cr" && SG_LAST.p.key === sgSel) $("armory").innerHTML = sgMainHtml(SG_LAST); }
+  function sgDetail() {   // högerrutan
+    var p = sgProf(sgSel); if (!p) return;
+    var ic = p.icon && ASSET_BASE ? '<img class="ic big" src="' + ASSET_BASE + "icons/" + p.icon + '.jpg" width="36" height="36" alt="">' : "";
+    $("detail").scrollTop = 0;
+    $("detail").innerHTML = '<div class="strip">' + ic + "<h2>" + esc(p.name) + "</h2><small>" + t("sg_h") + '</small></div><div id="sgside" style="display:contents"><div class="note">' + t("ar_loading") + "</div></div>";
+    sgLoad(p).then(function () { var el = $("sgside"); if (el && sgSel === p.key) el.innerHTML = sgSideHtml(sgBuild(p)); }, function () { var el = $("sgside"); if (el) el.innerHTML = '<div class="note">' + t("nd_fail") + "</div>"; });
   }
   // Mining/Herbalism i Crafting: farmplaneringen och yrkets ådror eller örter som chips till sina sidor.
   function ndFillGa(prof) {
@@ -4708,12 +4969,12 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
       else arLanding();
       return;
     }
-    if (mode === "cr" || (!keep && (hashParams().recipe || hashParams().gather || hashParams().node))) {   // Crafting: recepten laddas först, sedan listan och rutan
+    if (mode === "cr" || (!keep && (hashParams().recipe || hashParams().gather || hashParams().node || hashParams().skillup))) {   // Crafting: recepten laddas först, sedan listan och rutan
       mode = "cr"; if (!keep) { sortKey = "profit"; sortDir = -1; } $("q").placeholder = t("search_rc");
       var wantR = +hashParams().recipe;
       var wantN = +hashParams().node || 0;   // åder/ört (#node=): yrket i spalten, objektet i rutan
       var wantG = hashParams().gather || "";
-      (wantN ? Promise.all([loadRecept(), loadNodes().catch(function () { return null; })]) : loadRecept()).then(function () { if (wantN && !wantG) { var wn = ndFind(wantN); wantG = wn && wn.prof === "Herbalism" ? "herb" : "mine"; } buildCr(); if (mode !== "cr") return; if (wantG) gaSet(wantG, hashParams().band); else if (!keep) gaSel = -1; if (!keep && !wantG && (fromNav || hp0.c != null)) catFromHash(hp0, profList.length); drawCats(); refresh(); if (gaSel >= 0) { if (wantN) nodeDetail(wantN); else gaDetail(); if (wantG && !keep) showTab("item"); } else if (wantR) { selectRecipe(wantR, true); showTab("item"); } else if (keep && selRec) selectRecipe(selRec, false); else if (view[0]) selectRecipe(view[0].rid, false); })
+      (wantN ? Promise.all([loadRecept(), loadNodes().catch(function () { return null; })]) : loadRecept()).then(function () { if (wantN && !wantG && !sgSel) { var wn = ndFind(wantN); wantG = wn && wn.prof === "Herbalism" ? "herb" : "mine"; } buildCr(); if (mode !== "cr") return; var wantS = hashParams().skillup || (hashParams().guide === "1" ? wantG : ""); if (wantS) sgSet(wantS); else if (wantG) gaSet(wantG, hashParams().band); else if (!keep && !(wantN && sgSel)) { gaSel = -1; sgSel = ""; } if (!keep && !wantG && !wantS && !wantN && (fromNav || hp0.c != null)) catFromHash(hp0, profList.length); drawCats(); refresh(); if (sgSel) { if (wantN) nodeDetail(wantN); else sgDetail(); if (!keep) showTab("item"); } else if (gaSel >= 0) { if (wantN) nodeDetail(wantN); else gaDetail(); if (wantG && !keep) showTab("item"); } else if (wantR) { selectRecipe(wantR, true); showTab("item"); } else if (keep && selRec) selectRecipe(selRec, false); else if (view[0]) selectRecipe(view[0].rid, false); })
         .catch(function () { if (mode === "cr") $("detail").innerHTML = '<div class="note">' + t("cr_fail") + "</div>"; });   // bytt flik under laddningen: rita inget (granskning 2026-11-18)
       return;
     }
@@ -4742,6 +5003,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     if (mode === "de") { if (DEX) deRefresh(q); else { view = []; shown = 0; } draw(); trCounts(); return; }
     if (mode === "fx") { if (fxReady()) fxRefresh(q); else { view = []; shown = 0; } draw(); trCounts(); return; }
     if (mode === "cr") {
+      if (sgSel) { view = []; shown = 0; draw(); sgMain(); return; }   // Skill-up 1–300: guiden i mittenrutan
       if (gaSel >= 0) { gaRefresh(q); draw(); return; }
       var pid = catSel >= 0 && profList[catSel] ? profList[catSel].id : 0;
       var tier = subSel >= 1 ? TIERS[subSel - 1] : null;
@@ -5082,10 +5344,10 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     $("empty").textContent = t(mode === "fx" ? "fx_empty" : mode === "de" ? "de_empty" : mode === "co" ? "co_empty" : mode === "cl" ? "cl_empty" : mode === "hu" ? "hu_empty" : mode === "cr" ? (gaSel >= 0 ? "ga_empty" : "cr_empty") : mode === "qu" ? "qu_empty" : mode === "dg" ? (query || dgSel >= 0 ? "dg_empty" : "dg_pick") : "empty");
     drawMoreBtn();
     $("count").textContent = t(mode === "fx" ? "fx_count" : mode === "de" ? "de_count" : mode === "co" ? "co_count" : mode === "cl" ? "cl_count" : mode === "hu" ? "hu_count" : mode === "cr" ? (gaSel >= 0 ? "ga_count" : "cr_count") : mode === "qu" ? "qu_count" : mode === "dg" ? "dg_count" : "count", num(mode === "dg" ? view.filter(function (x) { return !x.hd && !x.sub; }).length : view.length));
-    $("head").innerHTML = mode === "ar" || (mode === "cl" && clView === "tal") ? "" : headHtml();
+    $("head").innerHTML = mode === "ar" || (mode === "cl" && clView === "tal") || (mode === "cr" && sgSel) ? "" : headHtml();
     $("dghead").hidden = mode !== "dg"; if (mode === "dg") $("dghead").innerHTML = DG ? dgHeadHtml() : "";
     $("list").className = mode === "tr" || mode === "cr" || mode === "qu" || mode === "dg" || mode === "hu" || mode === "co" || mode === "cl" || mode === "de" || mode === "fx" ? mode + (mode === "cr" && gaSel >= 0 ? " ga" : "") : "";
-    var ar = mode === "ar" || (mode === "cl" && clView === "tal");   // Classes: talangräknaren ritas i samma ruta som Armory
+    var ar = mode === "ar" || (mode === "cl" && clView === "tal") || (mode === "cr" && !!sgSel);   // Classes: talangräknaren och skillguiden ritas i samma ruta som Armory
     $("armory").hidden = !ar;
     document.querySelector(".left .scroll").hidden = ar;
     if (ar) { $("empty").hidden = true; $("more").hidden = true; $("count").textContent = ""; }
@@ -5672,8 +5934,10 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     if (gb) { e.preventDefault(); huSel = +gb.dataset.gobeast; if (huMapOn) { huMapOn = false; if (mode === "hu") drawCats(); } if (mode !== "hu") setMode("hu"); else huDetail(huSel); showTab("item"); return; }
     var dgb = e.target.closest("[data-dg]");
     if (dgb) { dgSel = +dgb.dataset.dg; dgBoss = 0; dgAllB = false; dgType = ""; dgItem = 0; query = ""; $("q").value = ""; drawCats(); refresh(); toTop(); dgDetail(); showTab("item"); return; }
+    var sgb = e.target.closest("[data-sg]");
+    if (sgb && mode === "cr") { sgPick(sgb.dataset.sg); return; }
     var gab = e.target.closest("[data-ga]");
-    if (gab && mode === "cr") { gaPick(+gab.dataset.ga, gab.hasAttribute("data-gab") ? +gab.dataset.gab : -1, gab.hasAttribute("data-gaguide")); return; }
+    if (gab && mode === "cr") { gaPick(+gab.dataset.ga, gab.hasAttribute("data-gab") ? +gab.dataset.gab : -1); return; }
     var garc = e.target.closest("[data-garec]");
     if (garc && mode === "cr") { e.preventDefault(); gaGoRecipe(+garc.dataset.garec); return; }
     if (e.target.closest("[data-gareset]") && mode === "cr" && gaSel >= 0) { delete gaAs[GATHER[gaSel].key]; gaSave(); drawCats(); refresh(); gaDetail(); return; }
@@ -5687,8 +5951,8 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
       if (same && cb.classList.contains("cat")) {   // klick på den valda igen: ett steg upp (toppen: allt)
         if (nu >= 0) { sub2Sel = -1; } else if (ns >= 0) { subSel = -1; sub2Sel = -1; } else { catSel = -1; subSel = -1; sub2Sel = -1; }
       } else { catSel = nc; subSel = ns; sub2Sel = nu; }
-      var wasGa = mode === "cr" && gaSel >= 0;
-      if (wasGa) { gaSel = -1; sortKey = "profit"; sortDir = -1; }   // ett vanligt yrke valt: räknaren stängs
+      var wasGa = mode === "cr" && (gaSel >= 0 || !!sgSel);
+      if (wasGa) { gaSel = -1; sgSel = ""; sortKey = "profit"; sortDir = -1; }   // ett vanligt yrke valt: räknaren stängs
       drawCats(); refresh();
       if (mode === "cr" && (wasGa || !selRec) && view[0]) selectRecipe(view[0].rid, false);
       var top = document.querySelector('#cats .cat[data-cat="' + catSel + '"]:not(.sub):not(.sub2)');
@@ -5889,6 +6153,99 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
   // Tillbaka/Framåt-raden (Joakim 2026-11-18): samma steg som mus 4/5, popstate ritar om sidan och raden
   $("navBack").addEventListener("click", function () { if (navPos > navStart) history.back(); });
   $("navFwd").addEventListener("click", function () { if (navPos < navMax) history.forward(); });
+
+  // Mobil (Joakim 2026-11-21): i smal bredd (≤ 760 px) visas listan först och raden man trycker på som en egen vy
+  // (body.mdet) med "‹ List" överst. Vyn är ett eget historiksteg (state.md = 1), så telefonens bakåtknapp stänger den.
+  // md = 2: detaljen öppnades från en länk (startsidan, sök överallt, delad adress): "‹ List" stänger den på stället.
+  var MOB = window.matchMedia("(max-width: 760px)"), mobY = 0, mobArm = null;
+  var MOB_ROW = "tr[data-id], tr[data-rid], tr[data-qid], tr[data-hu], tr[data-co], tr[data-de], tr[data-fx], tr[data-dgitem], tr[data-clsp], tr[data-clq], tr[data-cltr], tr[data-arrec]";
+  var MOB_DEEP = /^#(item|recipe|quest|beast|col|fx|de)=|&(item|sp|cq|tr)=/;
+  function mobState(md) { try { history.replaceState(Object.assign({}, history.state, { i: navPos, md: md }), ""); } catch (e) {} }
+  function mobDet(on, keep) {
+    var b = document.body;
+    if (on === b.classList.contains("mdet")) return;
+    if (on) {
+      mobY = window.scrollY; b.classList.add("mdet");
+      requestAnimationFrame(function () { var r = document.querySelector(".cols > .right"); if (r && MOB.matches) window.scrollTo(0, Math.max(0, r.getBoundingClientRect().top + window.scrollY - 4)); });
+    } else {
+      b.classList.remove("mdet");
+      if (!keep) { var y = mobY; requestAnimationFrame(function () { window.scrollTo(0, y); }); }
+    }
+  }
+  (function () {
+    var right = document.querySelector(".cols > .right"), bar = document.createElement("div");
+    bar.className = "mbar";
+    bar.innerHTML = '<button type="button" class="navb" id="mBack" data-t="m_list">' + esc(t("m_list")) + "</button>";
+    right.insertBefore(bar, right.firstChild);
+    $("mBack").addEventListener("click", function () {
+      var st = history.state;
+      if (st && st.md === 1 && navPos > navStart) history.back();
+      else { mobState(0); mobDet(false); }
+    });
+    // Tryck på en rad i listan: när detaljrutan ritas om öppnas den som egen vy (och blir ett historiksteg).
+    document.addEventListener("click", function (e) {
+      mobArm = null;
+      if (!MOB.matches || e.button !== 0 || e.ctrlKey || e.metaKey || !e.target.closest) return;
+      var row = e.target.closest(MOB_ROW);
+      if (!row || !row.closest(".cols > .left") || row.closest("thead")) return;
+      var ctl = e.target.closest("a[href], input, select, label, button");
+      if (ctl && row.contains(ctl)) return;   // stjärnan, länkar och knappar i raden gör sitt eget
+      mobArm = { t: Date.now(), pos: navPos };
+    }, true);
+    new MutationObserver(function () {
+      var a = mobArm;
+      if (!a) return;
+      mobArm = null;
+      if (Date.now() - a.t > 1500 || !MOB.matches || homeOn) return;
+      if (navPos !== a.pos) mobState(1);
+      else if (!(history.state && history.state.md)) { try { history.pushState({ i: navPos + 1, md: 1 }, "", location.hash || location.pathname + location.search); navPos++; navMax = navPos; navDraw(); } catch (e) {} }
+      mobDet(true);
+    }).observe(right, { childList: true, subtree: true, characterData: true });
+    // Flikar, underflikar, rubriken och sökningen visar listan igen.
+    document.addEventListener("click", function (e) {
+      if (document.body.classList.contains("mdet") && e.target.closest && e.target.closest(".mode button, .subrow button, #sect, #qbtn, #home")) mobDet(false, true);
+    });
+    $("q").addEventListener("input", function () { mobDet(false, true); });
+    window.addEventListener("popstate", function (e) {
+      if (!MOB.matches) { mobDet(false, true); return; }
+      if (e.state && typeof e.state.i === "number") mobDet(!!e.state.md);
+      else if (MOB_DEEP.test(mobPopHash)) { mobState(2); mobDet(true); }
+      else mobDet(false, true);
+    });
+    if (MOB.matches && MOB_DEEP.test(location.hash)) { mobState(2); document.body.classList.add("mdet"); }
+    // Kategorierna: knapparna i rader som rullar i sidled, panelerna (spelarval, filter) i full bredd mellan dem.
+    var cats = $("cats");
+    function mobCats() {
+      if (!MOB.matches || !cats.querySelector(":scope > .cat, :scope > .cath")) return;
+      var kids = Array.prototype.slice.call(cats.children), row = null;
+      kids.forEach(function (k) {
+        if (k.matches(".cat, .cath, h2")) {
+          if (!row) { row = document.createElement("div"); row.className = "mcatrow"; cats.insertBefore(row, k); }
+          row.appendChild(k);
+        } else row = null;
+      });
+      Array.prototype.forEach.call(cats.querySelectorAll(":scope > .mcatrow"), function (r) {
+        var on = r.querySelector('.cat[aria-pressed="true"]');
+        if (on) r.scrollLeft = Math.max(0, on.offsetLeft - 8);
+      });
+    }
+    function mobUncats() {
+      Array.prototype.forEach.call(cats.querySelectorAll(":scope > .mcatrow"), function (r) { while (r.firstChild) cats.insertBefore(r.firstChild, r); r.remove(); });
+    }
+    new MutationObserver(mobCats).observe(cats, { childList: true });
+    // Kolumner som döljs på telefon, efter rubrikernas sorteringsnyckel (data-k).
+    var MOB_HIDE = { cr: ["skill", "cost"], ga: ["skill", "units"], hu: ["speed", "zone"], tr: ["cat", "qty"] };
+    function mobCols() {
+      var l = $("list"), hide = MOB_HIDE[mode === "cr" && gaSel >= 0 ? "ga" : mode] || [], ths = $("head").querySelectorAll("tr:first-child > th");
+      if (mode === "tr") hide = hide.concat(trView === "bs" ? ["dip", "vp"] : ["bs"]);   // Trading: bara vyns egen kolumn
+      l.className = l.className.replace(/\s*\bmh\d\b/g, "");
+      for (var i = 0; i < ths.length; i++) { var k = ths[i].querySelector("button[data-k]"); if (k && hide.indexOf(k.getAttribute("data-k")) >= 0) l.classList.add("mh" + (i + 1)); }
+    }
+    new MutationObserver(mobCols).observe($("head"), { childList: true });
+    mobCats();
+    var mq = function () { if (MOB.matches) mobCats(); else { mobUncats(); mobDet(false, true); } };
+    if (MOB.addEventListener) MOB.addEventListener("change", mq); else if (MOB.addListener) MOB.addListener(mq);
+  })();
   navDraw();
   document.addEventListener("keydown", function (e) {
     if (e.key !== "Enter" && e.key !== " ") return;
@@ -6188,7 +6545,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
       else arLanding();
       return;
     }
-    selQuest = 0; npcSel = 0; dgSel = -1; huSel = 0; clSp = 0; clQ = 0; clTr = 0; selRec = 0; gaSel = -1; fxSel = 0; deSel = 0; selId = null;
+    selQuest = 0; npcSel = 0; dgSel = -1; huSel = 0; clSp = 0; clQ = 0; clTr = 0; selRec = 0; gaSel = -1; sgSel = ""; fxSel = 0; deSel = 0; selId = null;
     mode = ""; setMode(m); window.scrollTo(0, 0);
   }
   // Armorys start (Joakim 2026-11-20: efter F5 öppnade Armory den senaste spelaren): sökrutan, vänner och senaste som knappar.
@@ -6912,7 +7269,8 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
         }).join("") + "</tbody></table>" + (pl.length ? "" : '<div class="note">' + t("lb_none") + "</div>");
     }
     h += "</div>";   // snöbollstexten borttagen (Joakim 2026-11-18); står i About
-    arShow(h, '<div class="strip"><h2>' + t(def[3] === "s" ? "lb_server" : def[2]) + "</h2><small>" + t("lb") + "</small></div>" + meter + (def[0] === "cls" ? "" : lbSideBars(faOk)) + '<div class="note">' + t("lb_how") + "</div>");
+    // Högerrutan: serverns läge, inte samma rubrik som mittenrutan (Joakim 2026-11-21)
+    arShow(h, '<div class="strip"><h2>' + t("lb_srv_head") + "</h2><small>" + t("lb_srv_sub") + "</small></div>" + meter + (def[0] === "cls" ? "" : lbSideBars(faOk)) + '<div class="note">' + t("lb_how") + "</div>");
     drawCats(); drawLbSub();
   }
   // ---- Disenchant (Joakim 2026-11-17: "vad som är värt att disenchanta på AH för att få essence som är värt mer"):
@@ -7815,7 +8173,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     }).catch(function () { if (mode === "dg") $("detail").innerHTML = '<div class="note">' + t("qu_fail") + "</div>"; });
   }
   function resetModeState(m) {   // ny flik: egen sortering, inga kvarglömda filter från förra fliken
-    if (m === "tr") { trSort(trView); } else if (m === "cr") { sortKey = "profit"; sortDir = -1; gaSel = -1; } else if (m === "qu" || m === "cl") { sortKey = "lvl"; sortDir = 1; } else { sortKey = "day"; sortDir = -1; }
+    if (m === "tr") { trSort(trView); } else if (m === "cr") { sortKey = "profit"; sortDir = -1; gaSel = -1; sgSel = ""; } else if (m === "qu" || m === "cl") { sortKey = "lvl"; sortDir = 1; } else { sortKey = "day"; sortDir = -1; }
     openId = null;
     catSel = -1; subSel = -1; sub2Sel = -1;   // kategorierna och yrkena är olika listor
     qFlush(); query = ""; $("q").value = "";   // väntande sökning från förra fliken stryks (granskning 2026-11-18)
@@ -7866,7 +8224,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     if ((x = el.closest("tr[data-fx]"))) return "#fx=" + x.dataset.fx + (x.dataset.fxg ? "&g=" + x.dataset.fxg : "") + mk;
     if ((x = el.closest("tr[data-de]"))) return "#de=" + x.dataset.de + mk;
     if ((x = el.closest("tr[data-qid]"))) return "#quest=" + x.dataset.qid;
-    if ((x = el.closest("[data-ga][data-gaguide]")) && GATHER[+x.dataset.ga]) return "#gather=" + GATHER[+x.dataset.ga].key + "&guide=1" + mk;
+    if ((x = el.closest("[data-sg]"))) return "#skillup=" + x.dataset.sg + mk;
     if ((x = el.closest("[data-ga]")) && GATHER[+x.dataset.ga]) return "#gather=" + GATHER[+x.dataset.ga].key + "&band=" + ((x.hasAttribute("data-gab") ? +x.dataset.gab : gaBand) + 1) + mk;
     if ((x = el.closest("tr[data-rid]"))) return "#recipe=" + x.dataset.rid + mk;
     if ((x = el.closest("tr[data-id]"))) return (mode === "tr" ? "#tab=tr&v=" + trView + "&item=" : "#item=") + x.dataset.id + mk;
