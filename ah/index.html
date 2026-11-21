@@ -4115,13 +4115,9 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
       var tr = code ? code === "T" || code === "A" : rc.src.trainers > 0 || (!fv && !rc.recipeItem && !rc.src.vendor.length && !rc.src.drop.length && !rc.src.quest.length);
       var ve = !tr && (code ? code === "V" : rc.src.vendor.length > 0);
       if (!tr && !ve) return;
-      // Skillen man lär sig receptet vid. Forever har sänkt kravet på hundratals gamla recept, så wikins skill gäller först (när den
-      // ligger under grått och inte bara upprepar gult för ett recept utan känd källa). Annars receptlistans skill, eller strax
-      // under gult när receptlistans Classic-värde ligger över klientens gula tröskel. Smältningen följer tränarens krav.
-      var min, sure = true;
-      if (pid === 186) min = r.name === "Smelt Copper" ? 1 : r.skill;   // Smelt Copper följer med Apprentice Mining
-      else if (w && w[0] > 0 && w[0] < th[1] && !((w[1] === "?" || w[1] === "A") && w[0] >= th[0])) min = w[0];
-      else { sure = r.skill <= th[0]; min = sure ? r.skill : Math.max(1, th[0] - 20); }
+      // Skillen man lär sig receptet vid står i recept.json: recept-merge.js tar Forevers egna krav ur wikin (Forever har sänkt
+      // dem på över fyrahundra gamla recept), samma tal som Crafting-listan visar.
+      var min = r.skill, sure = true;
       if (min <= 1 && th[0] > 61) { min = th[0] - 25; sure = false; }   // okänd skill i receptlistan (står som 1): orange brukar vara ~25 poäng
       // gul = grå: ger bara skill mellan lärd skill och gult, så det räknas bara när skillen man lär sig receptet vid är känd
       if (min >= th[1] || (th[0] >= th[1] && !sure)) return;
