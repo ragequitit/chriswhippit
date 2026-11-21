@@ -338,6 +338,9 @@ body[data-mode=hu] .facts dd { font-size: 15px; }
 .falg { display: inline-flex; align-items: center; gap: 4px; margin-right: 8px; } .falg i { display: inline-block; width: 8px; height: 8px; border-radius: 50%; border: 1px solid #000; }
 .ndfarm { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; } .ndfz { display: block; color: inherit; text-decoration: none; font-size: 13px; line-height: 1.4; } .ndfz:hover b, .ndfz:focus-visible b { color: var(--gold); }
 .ndmini { position: relative; display: block; margin-bottom: 4px; border-radius: 6px; overflow: hidden; border: 1px solid var(--line, #333); } .ndmini img { display: block; width: 100%; height: auto; } .ndmini .qmk { width: 5px; height: 5px; margin: -3.5px 0 0 -3.5px; cursor: pointer; } .ndmini .qmk:hover { transform: none; }
+.sgsteps { display: grid; gap: 12px; } .sgstep { border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px 12px; display: grid; gap: 8px; }
+.sghd { display: flex; align-items: baseline; gap: 4px 12px; flex-wrap: wrap; } .sgr { font-size: 20px; font-weight: 700; color: var(--gold); min-width: 84px; font-variant-numeric: tabular-nums; } .sgz { font-size: 15px; font-weight: 600; }
+.sgnodes { display: flex; flex-wrap: wrap; gap: 4px 12px; font-size: 13px; } .sgnodes a { display: inline-flex; align-items: center; gap: 5px; text-decoration: none; } .sgnodes a:hover span { text-decoration: underline; } .sgnodes .ic { width: 18px; height: 18px; margin: 0; }
 .huchip.rt { margin-left: auto; } .huchip.rt svg { width: 14px; height: 10px; vertical-align: -1px; margin-right: 4px; }
 .qmk.nd { width: 7px; height: 7px; margin: -4.5px 0 0 -4.5px; } .huchips a.huchip { display: inline-flex; align-items: center; gap: 5px; } .huchips a.huchip .ic { margin: 0; }
 /* ! och ? på samma punkt: ! strax till vänster, ? strax till höger, så båda syns (Joakim 2026-11-18) */
@@ -1886,7 +1889,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
       hu_skin: "Skinning", hu_skin_note: "What skinning the beast gives, from the Classic database. Price is the auction house market price.", hu_skin_chance: "Chance", hu_skin_price: "Market price",
       dg_boss_loot: "Loot", dg_back: "‹ Back to the dungeon", dg_boss_noloot: "No loot of its own in the Classic database.",
       gs_ph: "Search everything: items, recipes, quests, NPCs, beasts, players…", gs_all: "All", gs_k_item: "Items", gs_k_rec: "Recipes", gs_k_quest: "Quests",
-      gs_k_npc: "NPCs", gs_k_beast: "Beasts", gs_k_col: "Collections", gs_k_dg: "Dungeons", gs_k_node: "Ore veins", gs_k_herb: "Herbs", nd_skill: "%1 %2", nd_where_h: "Where to pick", nd_pin: "Where to farm: %1", fa_h: "Best zones for your skill", fa_skill: "%1 skill", fa_both: "Herbs + ores on one map", fa_col_n: "Spawns", fa_col_val: "Per node", fa_col_val_tip: "Average auction house value of one node you can gather in the zone", fa_col_gph: "Gold/h", fa_sort_n: "Most spawns", fa_sort_g: "Most gold", fa_ores: "Ores", fa_herbs: "Herbs", fa_map_tip: "Click a point to copy its /way.", fa_none: "Nothing to gather at this skill yet.", fa_note: "Spawns you can gather at your skill, from the open Classic database. Gold/h = your nodes per hour above × the average auction house value of a node in the zone, after the 5 % AH cut.", fa_note_both: "Spawns you can gather at your skills, from the open Classic database. Gold/h = the nodes per hour of both professions added together × the average auction house value of a node in the zone, after the 5 % AH cut.", nd_spawns: "%1 spawns", nd_found: "Found in", nd_also: "Also in", nd_zone: "Zone", nd_map_tip: "%1 spawn points in %2. Click a point to copy its /way, click the map to open it large.", nd_loot: "Contains", nd_none: "The open Classic database has no spawn points for this one. It may still exist in Forever.", nd_inst_only: "Only inside dungeons, so there is no world map.", nd_src: "Spawn points from the open Classic database (cmangos 1.12). A spot that can spawn several ores or herbs counts for each of them, like on Wowhead.", nd_fail: "Could not load the ore veins and herbs.", nd_missing: "Nothing with that id.", nd_where: "Where to mine", fa_sort_s: "Skill-ups", fa_or: "Orange", fa_ye: "Yellow", fa_note_s: "Skill-ups: only nodes that are orange (a skill point every time) or yellow (usually one) at your skill. Green and grey ones are left out.", fa_route: "Farm route", fa_route_tip: "The dashed line is a short loop through every node on the map. Run it round and round.", nd_farm_h: "Where to farm", nd_farm_tip: "Open the %1 map", nd_farm_note: "Top zones by spawn points. Click a map for all of them.", gs_k_pl: "Players", gs_k_gl: "Guilds", gs_none: "Nothing found",
+      gs_k_npc: "NPCs", gs_k_beast: "Beasts", gs_k_col: "Collections", gs_k_dg: "Dungeons", gs_k_node: "Ore veins", gs_k_herb: "Herbs", nd_skill: "%1 %2", nd_where_h: "Where to pick", nd_pin: "Where to farm: %1", fa_h: "Best zones for your skill", fa_skill: "%1 skill", fa_both: "Herbs + ores on one map", fa_col_n: "Spawns", fa_col_val: "Per node", fa_col_val_tip: "Average auction house value of one node you can gather in the zone", fa_col_gph: "Gold/h", fa_sort_n: "Most spawns", fa_sort_g: "Most gold", fa_ores: "Ores", fa_herbs: "Herbs", fa_map_tip: "Click a point to copy its /way.", fa_none: "Nothing to gather at this skill yet.", fa_note: "Spawns you can gather at your skill, from the open Classic database. Gold/h = your nodes per hour above × the average auction house value of a node in the zone, after the 5 % AH cut.", fa_note_both: "Spawns you can gather at your skills, from the open Classic database. Gold/h = the nodes per hour of both professions added together × the average auction house value of a node in the zone, after the 5 % AH cut.", nd_spawns: "%1 spawns", nd_found: "Found in", nd_also: "Also in", nd_zone: "Zone", nd_map_tip: "%1 spawn points in %2. Click a point to copy its /way, click the map to open it large.", nd_loot: "Contains", nd_none: "The open Classic database has no spawn points for this one. It may still exist in Forever.", nd_inst_only: "Only inside dungeons, so there is no world map.", nd_src: "Spawn points from the open Classic database (cmangos 1.12). A spot that can spawn several ores or herbs counts for each of them, like on Wowhead.", nd_fail: "Could not load the ore veins and herbs.", nd_missing: "Nothing with that id.", nd_where: "Where to mine", fa_or: "Orange", fa_ye: "Yellow", fa_gr: "Green", sg_h: "Skill-up 1–300", sg_sub: "Where to gather at every skill, step by step", sg_n: "%1 nodes that give skill", sg_also: "Also good:", sg_note: "Each step shows the zone with the most nodes that still give skill at that point: orange gives a point every time, yellow usually, green now and then. Zones in the other faction's home lands are left out. Spawn points from the open Classic database (cmangos 1.12).", fa_route: "Farm route", fa_route_tip: "The dashed line is a short loop through every node on the map. Run it round and round.", nd_farm_h: "Where to farm", nd_farm_tip: "Open the %1 map", nd_farm_note: "Top zones by spawn points. Click a map for all of them.", gs_k_pl: "Players", gs_k_gl: "Guilds", gs_none: "Nothing found",
       gs_ar: "Look up “%1” in the Armory", gs_ar_g: "Look up the guild “%1”", gs_more: "Show all %1", gs_loading: "Loading…",
       src_h: "Where to learn it", src_h_drop: "Where it drops", src_trainer: "Trainer", src_vendor: "Vendor", src_drop: "Drops from", src_quest: "Quest reward", src_none: "No known source in the Classic database.",
       limited: "limited stock", more_n: "and %1 more", requires: "requires %1", tier_1: "Apprentice", tier_2: "Journeyman", tier_3: "Expert", tier_4: "Artisan",
@@ -3262,6 +3265,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
   ];
   var GA_KEY = "whippit-ah-gather", GA_AKEY = "whippit-ah-gather-pace";
   var gaSel = -1;   // -1 = vanliga recept, annars index i GATHER
+  var gaGuide = false;   // true = Skill-up 1–300 för GATHER[gaSel] (bara Mining/Herbalism), annars Gold per hour
   var gaBand = (function () { try { var o = JSON.parse(localStorage.getItem(GA_KEY) || "{}"); return o && o.b >= 0 && o.b < 5 ? (o.b | 0) : 0; } catch (e) { return 0; } })();
   var gaAs = (function () { try { var o = JSON.parse(localStorage.getItem(GA_AKEY) || "{}"); return o && typeof o === "object" ? o : {}; } catch (e) { return {}; } })();
   function gaSave() { try { localStorage.setItem(GA_AKEY, JSON.stringify(gaAs)); } catch (e) { /* gäller tills sidan stängs */ } }
@@ -3282,35 +3286,42 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     rows.forEach(function (x) { sum += x.gph; });
     return { rows: rows, gph: sum, units: per, miss: miss };
   }
-  function gaSet(key, band) {   // ur länken #gather=herb&band=2
-    gaSel = -1;
+  function gaSet(key, band) {   // ur länken #gather=herb&band=2 (&guide=1 = skillguiden)
+    gaSel = -1; gaGuide = hashParams().guide === "1" && (key === "herb" || key === "mine");
     GATHER.forEach(function (g, i) { if (g.key === key) gaSel = i; });
     var b = parseInt(band, 10) - 1;
     if (b >= 0 && b < GA_BANDS.length) gaBand = b;
-    if (gaSel >= 0) { catSel = -1; subSel = -1; sub2Sel = -1; sortKey = "gph"; sortDir = -1; }
+    if (gaSel >= 0) { catSel = -1; subSel = -1; sub2Sel = -1; sortKey = gaGuide ? "skill" : "gph"; sortDir = gaGuide ? 1 : -1; }
   }
-  function gaHash() { return "#gather=" + GATHER[gaSel].key + "&band=" + (gaBand + 1) + (house !== 113 ? "&m=" + house : ""); }
-  function gaPick(i, band) {
-    if (band < 0 && gaSel === i) {   // klick på det valda igen: hopfällt, tillbaka till recepten
+  function gaHash() { return "#gather=" + GATHER[gaSel].key + (gaGuide ? "&guide=1" : "&band=" + (gaBand + 1)) + (house !== 113 ? "&m=" + house : ""); }
+  function gaPick(i, band, guide) {
+    guide = !!guide;
+    if (band < 0 && gaSel === i && gaGuide === guide) {   // klick på det valda igen: hopfällt, tillbaka till recepten
       gaSel = -1; sortKey = "profit"; sortDir = -1;
       drawCats(); refresh(); toTop();
       if (view[0]) selectRecipe(view[0].rid, false);
       setHash("#tab=cr" + (house !== 113 ? "&m=" + house : ""));
       return;
     }
-    gaSel = i; if (band >= 0) gaBand = band;
-    catSel = -1; subSel = -1; sub2Sel = -1; sortKey = "gph"; sortDir = -1;
+    gaSel = i; gaGuide = guide; if (band >= 0) gaBand = band;
+    catSel = -1; subSel = -1; sub2Sel = -1; sortKey = guide ? "skill" : "gph"; sortDir = guide ? 1 : -1;
     try { localStorage.setItem(GA_KEY, JSON.stringify({ g: GATHER[i].key, b: gaBand })); } catch (e) { /* gäller tills sidan stängs */ }
     drawCats(); refresh(); toTop(); gaDetail(); showTab("item");
     setHash(gaHash());
   }
-  function gaCatsHtml() {   // spaltens rubrik Gold per hour, de fyra samlaryrkena med bästa band, banden under det valda
-    var h = '<div class="cat hd gahd">' + t("ga_h") + "</div>";
+  function gaCatsHtml() {   // Skill-up 1–300 (Mining, Herbalism), sedan Gold per hour: samlaryrkena med bästa band, banden under det valda
+    var h = '<div class="cat hd gahd">' + t("sg_h") + "</div>";
+    GATHER.forEach(function (g, i) {
+      if (g.key !== "mine" && g.key !== "herb") return;
+      var ic = ASSET_BASE ? '<img class="ci" src="' + ASSET_BASE + "icons/" + g.icon + '.jpg" alt="">' : "";
+      h += '<button class="cat" type="button" data-ga="' + i + '" data-gaguide="1" aria-pressed="' + (gaSel === i && gaGuide) + '" title="' + esc(g.name + " " + t("sg_h")) + '">' + ic + '<em class="nm">' + esc(g.name) + '</em><span class="dim">1–300</span></button>';
+    });
+    h += '<div class="cat hd gahd">' + t("ga_h") + "</div>";
     GATHER.forEach(function (g, i) {
       var best = 0, per = GA_BANDS.map(function (b, k) { var v = gaCalc(g, k).gph; if (v > best) best = v; return v; });
       var ic = ASSET_BASE ? '<img class="ci" src="' + ASSET_BASE + "icons/" + g.icon + '.jpg" alt="">' : "";
-      h += '<button class="cat" type="button" data-ga="' + i + '" aria-pressed="' + (gaSel === i) + '" title="' + esc(g.name) + (g.de ? " · " + t("ga_de") : "") + '">' + ic + '<em class="nm">' + esc(g.name) + (g.de ? ' <span class="dim">' + t("ga_de") + "</span>" : "") + "</em><span>" + gaMoney(best) + "/h</span></button>";
-      if (gaSel !== i) return;
+      h += '<button class="cat" type="button" data-ga="' + i + '" aria-pressed="' + (gaSel === i && !gaGuide) + '" title="' + esc(g.name) + (g.de ? " · " + t("ga_de") : "") + '">' + ic + '<em class="nm">' + esc(g.name) + (g.de ? ' <span class="dim">' + t("ga_de") + "</span>" : "") + "</em><span>" + gaMoney(best) + "/h</span></button>";
+      if (gaSel !== i || gaGuide) return;
       GA_BANDS.forEach(function (b, k) {
         h += '<button class="cat sub" type="button" data-ga="' + i + '" data-gab="' + k + '" aria-pressed="' + (gaBand === k) + '" title="' + esc(t("ga_skill", GA_SKILL[k][0], GA_SKILL[k][1])) + '">' + t("ga_band", b[0], b[1]) + "<span>" + gaMoney(per[k]) + "/h</span></button>";
       });
@@ -3319,6 +3330,11 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
   }
   function gaRefresh(q) {
     var c = gaCalc(GATHER[gaSel], gaBand), ck = sortKey, cd = sortDir;
+    if (gaGuide) {
+      var best = {};
+      GA_BANDS.forEach(function (b, k) { gaCalc(GATHER[gaSel], k).rows.forEach(function (r) { if (!best[r.id] || best[r.id].gph < r.gph) best[r.id] = r; }); });
+      c = { rows: Object.keys(best).map(function (k) { return best[k]; }) };
+    }
     view = c.rows.filter(function (r) { return !q || r.lower.indexOf(q) >= 0; });
     view.sort(function (a, b) {
       if (ck === "name") return cd * a.name.localeCompare(b.name);
@@ -3360,6 +3376,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
       "<div><h3>" + t("ga_recipes") + "</h3>" + recHtml + "</div>"];
   }
   function gaDetail() {
+    if (gaGuide) { sgDetail(); return; }
     var g = GATHER[gaSel]; if (!g) return;
     var b = GA_BANDS[gaBand], sk = GA_SKILL[gaBand];
     var ic = ASSET_BASE ? '<img class="ic big" src="' + ASSET_BASE + "icons/" + g.icon + '.jpg" width="36" height="36" alt="">' : "";
@@ -3854,7 +3871,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
   var FA_KEY = "whippit-ah-farm", FA_COL = { Mining: "#f0c040", Herbalism: "#5fdc5a" };
   var FA = (function () {
     var o = {}; try { o = JSON.parse(localStorage.getItem(FA_KEY) || "{}") || {}; } catch (e) { o = {}; }
-    return { s: o.s && typeof o.s === "object" ? o.s : {}, both: !!o.both, sort: o.sort === "n" || o.sort === "s" ? o.sort : "g", route: !!o.route, zone: "", prof: "Mining" };   // standard: mest guld (flest spawns lyfter lågnivåzonerna)
+    return { s: o.s && typeof o.s === "object" ? o.s : {}, both: !!o.both, sort: o.sort === "n" ? "n" : "g", route: !!o.route, zone: "", prof: "Mining" };   // standard: mest guld (flest spawns lyfter lågnivåzonerna)
   })();
   function faSave() { try { localStorage.setItem(FA_KEY, JSON.stringify({ s: FA.s, both: FA.both, sort: FA.sort, route: FA.route })); } catch (e) { /* gäller tills sidan stängs */ } }
   function faSkill(prof) { var v = +FA.s[prof]; return v >= 1 && v <= 300 ? v : GA_SKILL[gaBand][1]; }   // inte ändrad: bandets övre skill
@@ -3865,11 +3882,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     nd.loot.forEach(function (l) { var r = byId[l[0]]; if (r && r.min > 0) v += l[1] / 100 * (l[2] + l[3]) / 2 * r.min; });
     return v;
   }
-  // Färgen på noden vid din skill (Classic: orange till krav+25, gul till +50, grön till +100, sedan grå). Skill-ups (Joakim
-  // 2026-11-21): bara orange och gula räknas, för den som levlar yrket.
-  var ND_CC = { or: "#ff8040", ye: "#ffd200" };
-  function ndCol(nd) { var d = faSkill(nd.prof) - nd.skill; return d < 0 ? "" : d < 25 ? "or" : d < 50 ? "ye" : d < 100 ? "gr" : "gy"; }
-  function faEach(fn) { var profs = faProfs(); NODES.nodes.forEach(function (nd) { if (profs.indexOf(nd.prof) >= 0 && nd.skill <= faSkill(nd.prof) && (FA.sort !== "s" || ND_CC[ndCol(nd)])) fn(nd); }); }
+  function faEach(fn) { var profs = faProfs(); NODES.nodes.forEach(function (nd) { if (profs.indexOf(nd.prof) >= 0 && nd.skill <= faSkill(nd.prof)) fn(nd); }); }
   // Farmrundan (Joakim 2026-11-21): närmaste granne och sedan 2-opt till en sluten runda genom alla prickar. Kartan är
   // 1002 × 668, så x-procenten väger 1,5 gånger mer än y.
   function faRoute(pts) {
@@ -3902,20 +3915,19 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     });
     faProfs().forEach(function (p) { var g = faGather(p); if (g) pace += gaVal(g, "a"); });
     var list = Object.keys(Z).map(function (k) { var e = Z[k]; e.avg = e.val / e.n; e.gph = pace * e.avg * 0.95; return e; }).filter(function (e) { return e.n >= 5; });
-    list.sort(FA.sort === "g" ? function (a, b) { return b.gph - a.gph || b.n - a.n; } : function (a, b) { return b.n - a.n || b.gph - a.gph; });   // "s": filtret i faEach, flest spawns
+    list.sort(FA.sort === "g" ? function (a, b) { return b.gph - a.gph || b.n - a.n; } : function (a, b) { return b.n - a.n || b.gph - a.gph; });
     return list;
   }
   function faMap(zone) {
-    var dots = "", cnt = {}, pts = [], sk = FA.sort === "s";
+    var dots = "", cnt = {}, pts = [];
     faEach(function (nd) {
       nd.zones.forEach(function (z) {
         if (z[0] !== zone) return;
-        var P = z[2], ck = sk ? ndCol(nd) : nd.prof; cnt[ck] = (cnt[ck] || 0) + z[1];
-        for (var i = 0; i + 1 < P.length; i += 2) pts.push([P[i], P[i + 1]]), dots += '<i class="qmk nd" style="left:' + P[i] + "%;top:" + P[i + 1] + "%;--c:" + (sk ? ND_CC[ck] : FA_COL[nd.prof]) + '" data-way="' + esc(qmWay(zone, P[i], P[i + 1])) + '" title="' + esc(nd.name + " (" + nd.skill + ") · " + P[i] + ", " + P[i + 1] + " · " + t("qm_click_copy")) + '"></i>';
+        var P = z[2]; cnt[nd.prof] = (cnt[nd.prof] || 0) + z[1];
+        for (var i = 0; i + 1 < P.length; i += 2) pts.push([P[i], P[i + 1]]), dots += '<i class="qmk nd" style="left:' + P[i] + "%;top:" + P[i + 1] + "%;--c:" + FA_COL[nd.prof] + '" data-way="' + esc(qmWay(zone, P[i], P[i + 1])) + '" title="' + esc(nd.name + " (" + nd.skill + ") · " + P[i] + ", " + P[i + 1] + " · " + t("qm_click_copy")) + '"></i>';
       });
     });
-    var leg = (sk ? [["or", ND_CC.or, "fa_or"], ["ye", ND_CC.ye, "fa_ye"]] : faProfs().map(function (p) { return [p, FA_COL[p], p === "Herbalism" ? "fa_herbs" : "fa_ores"]; }))
-      .map(function (g) { return '<span class="falg"><i style="background:' + g[1] + '"></i>' + t(g[2]) + ' <span class="dim">' + num(cnt[g[0]] || 0) + "</span></span>"; }).join("");
+    var leg = faProfs().map(function (p) { return [p, FA_COL[p], p === "Herbalism" ? "fa_herbs" : "fa_ores"]; }).map(function (g) { return '<span class="falg"><i style="background:' + g[1] + '"></i>' + t(g[2]) + ' <span class="dim">' + num(cnt[g[0]] || 0) + "</span></span>"; }).join("");
     return '<div class="huzm qmap"><img src="' + huZUrl(zone) + '" alt="' + esc(zone) + '" width="1002" height="668" decoding="async">' + qmTaxi(zone) + (FA.route ? faRoute(pts) : "") + dots + "</div>" +
       '<div class="dim">' + leg + (FA.route ? t("fa_route_tip") + " " : "") + t("fa_map_tip") + " " + t("hu_map_big") + "</div>";
   }
@@ -3924,7 +3936,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     if (!list.length) return '<div class="note">' + t("fa_none") + "</div>";
     if (!list.some(function (e) { return e.zone === FA.zone; })) FA.zone = list[0].zone;
     var sortB = function (k, lbl) { return '<button type="button" class="huchip' + (FA.sort === k ? " on" : "") + '" data-farmsort="' + k + '" aria-pressed="' + (FA.sort === k) + '">' + t(lbl) + "</button>"; };
-    return '<div class="huchips">' + sortB("g", "fa_sort_g") + sortB("n", "fa_sort_n") + sortB("s", "fa_sort_s") + faRouteBtn() + "</div>" +
+    return '<div class="huchips">' + sortB("g", "fa_sort_g") + sortB("n", "fa_sort_n") + faRouteBtn() + "</div>" +
       '<table class="srct fat"><thead><tr><th>' + t("nd_zone") + "</th><th>" + t("fa_col_n") + '</th><th title="' + esc(t("fa_col_val_tip")) + '">' + t("fa_col_val") + "</th><th>" + t("fa_col_gph") + "</th></tr></thead><tbody>" +
       list.slice(0, 8).map(function (e) {
         return '<tr data-farmz="' + esc(e.zone) + '"' + (e.zone === FA.zone ? ' aria-selected="true"' : "") + "><td>" + esc(e.zone) + "</td><td>" + num(e.n) + "</td><td>" + gaMoney(e.avg) + '</td><td><span class="down2">' + gaMoney(e.gph) + "/h</span></td></tr>";
@@ -3937,7 +3949,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
       '<label class="fachk"><input type="checkbox" data-farmboth="1"' + (FA.both ? " checked" : "") + "> " + t("fa_both") + "</label></div>" +
       '<div id="farmout">' + faOutHtml() + '</div><div class="note" id="farmnote">' + faNote() + "</div>";
   }
-  function faNote() { return (FA.sort === "s" ? t("fa_note_s") + " " : "") + t(FA.both ? "fa_note_both" : "fa_note"); }
+  function faNote() { return t(FA.both ? "fa_note_both" : "fa_note"); }
   function faDraw(all) { var el = $(all ? "gafarm" : "farmout"); if (el && NODES) el.innerHTML = all ? faHtml() : faOutHtml(); var no = $("farmnote"); if (no && !all) no.textContent = faNote(); }
   document.addEventListener("input", function (e) {
     var p = e.target && e.target.dataset && e.target.dataset.farmsk; if (!p) return;
@@ -3950,8 +3962,65 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     if (e.target.closest("[data-farmroute]")) {   // samma val på farmkartan och på nodens sida
       FA.route = !FA.route; faSave(); faDraw(false);
       var rn = ndFind(ndSel), rb = $("ndbox"); if (rn && rb) rb.innerHTML = ndHtml(rn);
+      sgDraw();
+      return;
     }
+    var sgz = e.target.closest("[data-sgz]");
+    if (sgz) { SG_Z[sgz.dataset.sgz] = sgz.dataset.sgzn; var st = sgz.closest(".sgstep"), S = SG_LAST && SG_LAST[+sgz.dataset.sgi]; if (st && S) st.outerHTML = sgStepHtml(S, +sgz.dataset.sgi); }
   });
+  // ---- Skill-up 1–300 (Joakim 2026-11-21: "plockar ut skillguiden från gold per hour-guiden"). Stegen räknas ur nodes.json:
+  // stegen börjar där en ny ört/åder blir plockbar (minst 20 skill per steg), varje steg väger noderna efter färgen mitt i
+  // steget (orange 1, gul 0,6, grön 0,05, grå 0; Barrens stora Peacebloom-fält ska inte vinna till 150) och visar zonen med mest, utan den andra fraktionens hemzoner.
+  var SG_W = { or: 1, ye: 0.6, gr: 0.05 }, SG_C = { or: "#ff8040", ye: "#ffd200", gr: "#40c040" }, SG_Q = { or: "qd-orange", ye: "qd-yellow", gr: "qd-green" }, SG_Z = {}, SG_LAST = null;
+  var SG_HOME = { H: ["Elwynn Forest", "Westfall", "Dun Morogh", "Loch Modan", "Teldrassil", "Darkshore", "Redridge Mountains", "Duskwood"],
+    A: ["Durotar", "Mulgore", "Tirisfal Glades", "Silverpine Forest", "The Barrens"] };   // fienden hemzoner, per egen fraktion
+  function sgCol(d) { return d < 0 ? "" : d < 25 ? "or" : d < 50 ? "ye" : d < 100 ? "gr" : ""; }
+  function sgSteps(prof) {
+    var ns = NODES.nodes.filter(function (n) { return n.prof === prof && n.n > 0 && n.zones.length; }), th = [], steps = [], a = 1, skip = SG_HOME[myFaction()] || [];
+    ns.forEach(function (n) { if (th.indexOf(n.skill) < 0) th.push(n.skill); });
+    th.sort(function (x, y) { return x - y; });
+    while (a < 300) {
+      var b = 300; for (var i = 0; i < th.length; i++) if (th[i] >= a + 20) { b = th[i]; break; }
+      if (300 - b < 15) b = 300;
+      steps.push([a, b]); a = b;
+    }
+    return steps.map(function (ab) {
+      var m = (ab[0] + ab[1]) / 2, Z = {}, N = {};
+      var el = ns.filter(function (n) { return n.skill <= ab[0]; }).map(function (n) { return { nd: n, c: sgCol(m - n.skill) }; }).filter(function (x) { return SG_W[x.c]; });
+      el.forEach(function (x) { x.nd.zones.forEach(function (z) { if (!huHasZ(z[0]) || skip.indexOf(z[0]) >= 0) return; Z[z[0]] = (Z[z[0]] || 0) + z[1] * SG_W[x.c]; if (x.c !== "gr") N[z[0]] = (N[z[0]] || 0) + z[1]; }); });
+      el.sort(function (x, y) { return y.nd.skill - x.nd.skill; });
+      return { a: ab[0], b: ab[1], prof: prof, el: el, n: N, zones: Object.keys(Z).sort(function (x, y) { return Z[y] - Z[x]; }).slice(0, 3) };
+    });
+  }
+  function sgStepHtml(S, i) {
+    var key = S.prof + i, zone = S.zones.indexOf(SG_Z[key]) >= 0 ? SG_Z[key] : S.zones[0];
+    if (!zone) return '<div class="sgstep"><div class="sghd"><span class="sgr">' + S.a + "–" + S.b + "</span></div></div>";
+    var dots = "", pts = [], cnt = {}, RANK = { gr: 0, ye: 1, or: 2 };
+    S.el.slice().sort(function (x, y) { return RANK[x.c] - RANK[y.c]; }).forEach(function (x) {   // gröna först: gula och orange ligger överst där platserna delas
+      x.nd.zones.forEach(function (z) {
+        if (z[0] !== zone) return;
+        var P = z[2]; cnt[x.c] = (cnt[x.c] || 0) + z[1];
+        for (var k = 0; k + 1 < P.length; k += 2) { pts.push([P[k], P[k + 1]]); dots += '<i class="qmk nd" style="left:' + P[k] + "%;top:" + P[k + 1] + "%;--c:" + SG_C[x.c] + '" data-way="' + esc(qmWay(zone, P[k], P[k + 1])) + '" title="' + esc(x.nd.name + " (" + x.nd.skill + ") · " + P[k] + ", " + P[k + 1] + " · " + t("qm_click_copy")) + '"></i>'; }
+      });
+    });
+    var here = S.el.filter(function (x) { return x.nd.zones.some(function (z) { return z[0] === zone; }); });
+    return '<div class="sgstep"><div class="sghd"><span class="sgr">' + S.a + "–" + S.b + '</span><span class="sgz">' + esc(zone) + '</span><span class="dim">' + t("sg_n", num(S.n[zone] || 0)) + "</span></div>" +
+      '<div class="sgnodes">' + here.map(function (x) { return '<a href="#node=' + x.nd.id + '" data-node="' + x.nd.id + '" data-ndzone="' + esc(zone) + '" title="' + esc(t("nd_skill", x.nd.prof, x.nd.skill)) + '">' + ndIcon(x.nd) + '<span class="' + SG_Q[x.c] + '">' + esc(x.nd.name) + "</span></a>"; }).join("") + "</div>" +
+      (S.zones.length > 1 ? '<div class="huchips">' + S.zones.map(function (z) { return '<button type="button" class="huchip' + (z === zone ? " on" : "") + '" data-sgz="' + esc(key) + '" data-sgzn="' + esc(z) + '" data-sgi="' + i + '" aria-pressed="' + (z === zone) + '">' + esc(z) + ' <span class="dim">' + num(S.n[z] || 0) + "</span></button>"; }).join("") + "</div>" : "") +
+      '<div class="huzm qmap"><img src="' + huZUrl(zone) + '" alt="' + esc(zone) + '" width="1002" height="668" loading="lazy" decoding="async">' + qmTaxi(zone) + (FA.route ? faRoute(pts) : "") + dots + "</div>" +
+      '<div class="dim">' + ["or", "ye", "gr"].filter(function (c) { return cnt[c]; }).map(function (c) { return '<span class="falg"><i style="background:' + SG_C[c] + '"></i>' + t("fa_" + c) + ' <span class="dim">' + num(cnt[c]) + "</span></span>"; }).join("") + (FA.route ? t("fa_route_tip") + " " : "") + t("fa_map_tip") + "</div></div>";
+  }
+  function sgHtml(prof) {
+    SG_LAST = sgSteps(prof);
+    return '<div class="huchips">' + faRouteBtn() + '</div><div class="sgsteps">' + SG_LAST.map(sgStepHtml).join("") + '</div><div class="note">' + t("sg_note") + "</div>";
+  }
+  function sgDraw() { var el = $("sgbox"), g = GATHER[gaSel]; if (el && gaGuide && g && NODES) el.innerHTML = sgHtml(g.key === "herb" ? "Herbalism" : "Mining"); }
+  function sgDetail() {
+    var g = GATHER[gaSel]; if (!g) return;
+    var ic = ASSET_BASE ? '<img class="ic big" src="' + ASSET_BASE + "icons/" + g.icon + '.jpg" width="36" height="36" alt="">' : "";
+    $("detail").innerHTML = '<div class="strip">' + ic + "<h2>" + esc(g.name) + " " + t("sg_h") + "</h2><small>" + t("sg_sub") + '</small></div><div id="sgbox" style="display:contents"><div class="note">' + t("ar_loading") + "</div></div>";
+    Promise.all([loadNodes(), loadZmap(), qmIndex().catch(function () { return null; })]).then(sgDraw, function () { var el = $("sgbox"); if (el) el.innerHTML = '<div class="note">' + t("nd_fail") + "</div>"; });
+  }
   // Mining/Herbalism i Crafting: farmplaneringen och yrkets ådror eller örter som chips till sina sidor.
   function ndFillGa(prof) {
     FA.prof = prof;
@@ -5604,7 +5673,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     var dgb = e.target.closest("[data-dg]");
     if (dgb) { dgSel = +dgb.dataset.dg; dgBoss = 0; dgAllB = false; dgType = ""; dgItem = 0; query = ""; $("q").value = ""; drawCats(); refresh(); toTop(); dgDetail(); showTab("item"); return; }
     var gab = e.target.closest("[data-ga]");
-    if (gab && mode === "cr") { gaPick(+gab.dataset.ga, gab.hasAttribute("data-gab") ? +gab.dataset.gab : -1); return; }
+    if (gab && mode === "cr") { gaPick(+gab.dataset.ga, gab.hasAttribute("data-gab") ? +gab.dataset.gab : -1, gab.hasAttribute("data-gaguide")); return; }
     var garc = e.target.closest("[data-garec]");
     if (garc && mode === "cr") { e.preventDefault(); gaGoRecipe(+garc.dataset.garec); return; }
     if (e.target.closest("[data-gareset]") && mode === "cr" && gaSel >= 0) { delete gaAs[GATHER[gaSel].key]; gaSave(); drawCats(); refresh(); gaDetail(); return; }
@@ -7797,6 +7866,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     if ((x = el.closest("tr[data-fx]"))) return "#fx=" + x.dataset.fx + (x.dataset.fxg ? "&g=" + x.dataset.fxg : "") + mk;
     if ((x = el.closest("tr[data-de]"))) return "#de=" + x.dataset.de + mk;
     if ((x = el.closest("tr[data-qid]"))) return "#quest=" + x.dataset.qid;
+    if ((x = el.closest("[data-ga][data-gaguide]")) && GATHER[+x.dataset.ga]) return "#gather=" + GATHER[+x.dataset.ga].key + "&guide=1" + mk;
     if ((x = el.closest("[data-ga]")) && GATHER[+x.dataset.ga]) return "#gather=" + GATHER[+x.dataset.ga].key + "&band=" + ((x.hasAttribute("data-gab") ? +x.dataset.gab : gaBand) + 1) + mk;
     if ((x = el.closest("tr[data-rid]"))) return "#recipe=" + x.dataset.rid + mk;
     if ((x = el.closest("tr[data-id]"))) return (mode === "tr" ? "#tab=tr&v=" + trView + "&item=" : "#item=") + x.dataset.id + mk;
