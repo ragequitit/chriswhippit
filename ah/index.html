@@ -1316,6 +1316,10 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
   .kglv li { grid-template-columns: 34px minmax(0, 1fr); row-gap: 4px; padding: 6px 10px; } .kgs, .kgn { grid-column: 2; } .kgtal:empty { display: none; }
   .kgnav { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; gap: 5px; } .kgnav button { flex: none; padding: 5px 10px; font-size: 12.5px; }
 }
+/* Trading-rutten (Joakim 2026-11-21): köpkolumnen och säljkolumnen syns i raden */
+#list.fx td.fxb { box-shadow: inset 2px 0 0 rgba(127, 212, 154, .55); } #list.fx td.fxs { box-shadow: inset 2px 0 0 rgba(246, 196, 72, .6); }
+.subrow .segs [data-fxdir], .subrow .segs [data-fxbuy], .subrow .segs [data-fxsell] { white-space: nowrap; }
+.subrow .segs .lbl { align-self: center; margin: 0 2px 0 8px; color: var(--grey); font-size: 12.5px; }
 /* Classes startvy (Joakim 2026-11-20) */
 .clland { padding: 18px 20px; display: grid; gap: 16px; }
 .cllhead { display: flex; align-items: center; gap: 16px; } .cllbook { width: 76px; height: 76px; filter: drop-shadow(0 4px 8px rgba(0, 0, 0, .45)); }
@@ -1885,7 +1889,10 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     el.innerHTML = b("cheap", t("trv_cheap"), t("col_usual_p_tip")) + b("bs", t("col_bs"), t("col_bs_tip")) + b("vend", t("trv_vend"), t("col_vp_tip")) +
       b("de", '<img class="ci" src="' + RICON + 'inv_enchant_disenchant.jpg" alt="">' + t("mode_de"), t("de_how") + " " + t("de_logs", num(DEL && DEL.n || 0)) + " " + t("de_ingame")) + b("fx", '<img class="ci" src="' + RICON + 'inv_misc_coin_02.jpg" alt="">' + t("fx_btn"), t("fx_how", (fxKeys().rg || "eu").toUpperCase() + " " + (MK_RSN[fxKeys().rs] || "")) + " " + t("fx_min"));
     if (mode === "fx") {   // filtren som segment till höger (Joakim 2026-11-19: inte chips i spalten)
-      el.innerHTML += '<span class="segs">' + sg("data-fxdir", fxDir, [["here", t("fx_here")], ["there", t("fx_there")], ["all", t("fx_all")]]) + sg("data-fxkind", fxKind, [["all", t("fx_k_all")], ["stack", t("fx_k_stack")], ["gear", t("fx_k_gear")]]) + "</span>";
+      var fxMe = fxName(fxKeys().mine), fxOt = fxName(fxKeys().mine === "alliance" ? "horde" : "alliance");
+      el.innerHTML += '<span class="segs"><span class="lbl">' + t("fx_buy") + "</span>" + sg("data-fxbuy", fxBuy, [["me", fxMe], ["bw", "Blackwater"]]) +
+        '<span class="lbl">' + t("fx_sell") + "</span>" + sg("data-fxsell", fxSell, [["other", fxOt], ["me", fxMe], ["bw", "Blackwater"]].filter(function (o) { return !(o[0] === "me" && fxBuy === "me") && !(o[0] === "bw" && fxBuy === "bw"); })) +
+        sg("data-fxdir", fxDir, [["profit", t("fx_only_profit")], ["all", t("fx_all")]]) + sg("data-fxkind", fxKind, [["all", t("fx_k_all")], ["stack", t("fx_k_stack")], ["gear", t("fx_k_gear")]]) + "</span>";
     }
     if (mode === "de") {   // Disenchant: skill, kvalitet, bara vinst, ★ allt till Min lista
       el.innerHTML += '<span class="segs"><span class="seg"><label class="lbl" title="' + esc(t("de_skill_tip")) + '">' + t("de_skill") + ' <input id="deskill" type="number" min="1" max="300" inputmode="numeric" value="' + (deSkill || "") + '" placeholder="1–300"></label></span>' +
@@ -2009,13 +2016,14 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
       de_ingame: "In game: WhippitPanel makes the Auctionator list WhippitPanel DE of the best ones, shows DE value in item tooltips and tells you in chat when the AH has one below its disenchant value.",
       fx_gear: "Gear", fx_gear_tip: "Compared with exactly the same suffix on both sides", fx_k_all: "All", fx_k_stack: "Stackable", fx_k_gear: "Gear",
       fx_price_gear: "Cheapest", fx_gear_note: "Gear has no market price: this is the cheapest listing of exactly this item and suffix on each side.",
-      fx_btn: "Horde ⇄ Alliance", fx_h: "Horde", fx_a: "Alliance", fx_b: "Blackwater", fx_count: "%1 items on both sides", fx_empty: "No item with a difference in this direction right now.",
-      fx_here: "Cheaper here", fx_there: "Cheaper there", fx_all: "All", fx_col_gap: "Difference", fx_col_gap_tip: "How much more the item costs on the other side than here",
-      fx_col_profit: "Profit", fx_col_profit_tip: "Per item if you sell it to the other side via Blackwater at their price (or Blackwater's, if it is already cheaper there), after Blackwater's 15 % cut",
-      fx_col_day: "Sold/day there", fx_price: "Market price", fx_listed: "Listed", fx_sold: "Sold/day", fx_you: "You",
+      fx_btn: "Horde ⇄ Alliance", fx_h: "Horde", fx_a: "Alliance", fx_b: "Blackwater", fx_count: "%1 items on both sides", fx_empty: "Nothing with a profit along this route right now.",
+      fx_buy: "Buy", fx_sell: "Sell", fx_only_profit: "Profit only", fx_all: "All", fx_col_gap: "Difference", fx_col_gap_tip: "How much more the item sells for than it costs, along the route you picked (Buy → Sell)",
+      fx_col_profit: "Profit", fx_col_profit_tip: "Per item along the route you picked: sell price after the cut (5 % on your own side, 15 % on Blackwater) minus what you pay",
+      fx_col_day: "Sold/day where you sell", fx_price: "Market price", fx_listed: "Listed", fx_sold: "Sold/day", fx_you: "You",
       fx_route: "Buy on %1 for %2, list it on Blackwater a little under %3, and a player from %4 buys it to sell on their side.",
       fx_route_back: "It is cheaper on %1 (%2) than here (%3): buy it from the other side via Blackwater instead of here.",
-      fx_profit: "Up to %1 per item after Blackwater's 15 % cut.", fx_min: "Stackable items need at least 2 listed on both sides. Gear is compared with exactly the same suffix, by the cheapest listing.",
+      fx_profit: "Up to %1 per item after Blackwater's 15 % cut.", fx_route2: "Buy on %1 for %2 and sell on %3 for %4.",
+      fx_profit2: "Profit %1 per item after the %2 % cut.", fx_loss2: "Loss %1 per item after the %2 % cut.", fx_min: "Stackable items need at least 2 listed on both sides. Gear is compared with exactly the same suffix, by the cheapest listing.",
       fx_how: "Market price on each side's auction house in %1, updated every hour. Blackwater is the neutral auction house both sides can use.",
       fx_nobw: "Not on Blackwater right now", fx_fail: "Could not load the other side's prices.",
       mode_de: "Disenchant", mode_de_tip: "Gear on the AH that is worth more as dust, essences and shards than it costs.",
@@ -6408,6 +6416,13 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     if (e.target.closest("[data-gofx]") && mode === "tr") { setMode("fx"); return; }
     var fxd = e.target.closest("[data-fxdir]");
     if (fxd && mode === "fx") { fxDir = fxd.dataset.fxdir; drawTrSub(); refresh(); toTop(); return; }
+    var fxbu = e.target.closest("[data-fxbuy]"), fxse = e.target.closest("[data-fxsell]");
+    if ((fxbu || fxse) && mode === "fx") {
+      if (fxbu) fxBuy = fxbu.dataset.fxbuy; if (fxse) fxSell = fxse.dataset.fxsell; fxRouteFix();
+      try { localStorage.setItem(FX_RKEY, JSON.stringify({ b: fxBuy, s: fxSell })); } catch (e2) { /* bara den här gången */ }
+      if (sortKey !== "profit") { sortKey = "profit"; sortDir = -1; }   // rutten byts för att se vinsten: störst först
+      drawTrSub(); refresh(); toTop(); if (fxSel) fxDetail(fxSel, fxSelG); return;
+    }
     var fxk = e.target.closest("[data-fxkind]");
     if (fxk && mode === "fx") { fxKind = fxk.dataset.fxkind; drawTrSub(); refresh(); toTop(); return; }
     var tfx = e.target.closest("tbody tr[data-fx]");
@@ -8009,7 +8024,26 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
   // ---- Horde ⇄ Alliance ----
   // Alla tre husen i samma region och realmtyp: [Horde, Alliance, Blackwater]. "Här" = den sida marknadsknappen står på
   // (Blackwater vald: Horde). Riktpriset (marknadspris) per sida; minst 2 ute på båda sidor (ensamma listningar räknas inte).
-  var FX = { ok: false, key: "", maps: null }, fxPromise = null, fxPKey = "", fxSel = 0, fxSelG = "", fxDir = "here", fxKind = "all", FX_CUT = 0.85, FX_MIN = 2;
+  var FX = { ok: false, key: "", maps: null }, fxPromise = null, fxPKey = "", fxSel = 0, fxSelG = "", fxDir = "profit", fxKind = "all", FX_CUT = 0.85, FX_MIN = 2;
+  // Rutten (Joakim 2026-11-21: "köpa på Blackwater och se vad som ger vinst om jag säljer på Hordes AH"): var du köper
+  // (din sida eller Blackwater) och var du säljer (din sida, andra sidan via Blackwater, eller Blackwater). Avgiften är
+  // 5 % på din egen sidas AH och 15 % på Blackwater. Andra sidan når du bara via Blackwater: deras pris, eller
+  // Blackwaters om det redan är lägre. Sparas i webbläsaren.
+  var fxBuy = "me", fxSell = "other", FX_RKEY = "whippit-ah-fxroute";
+  try { var fxr0 = JSON.parse(localStorage.getItem(FX_RKEY) || "null"); if (fxr0 && /^(me|bw)$/.test(fxr0.b) && /^(me|other|bw)$/.test(fxr0.s)) { fxBuy = fxr0.b; fxSell = fxr0.s; } } catch (e) { /* standardrutten */ }
+  function fxRouteFix() { if (fxBuy === "bw" && fxSell === "bw") fxSell = "me"; if (fxBuy === "me" && fxSell === "me") fxSell = "other"; }
+  fxRouteFix();
+  function fxRoute(mi) {
+    var oi = 1 - mi, b = fxBuy === "bw" ? 2 : mi, sI = fxSell === "bw" ? 2 : fxSell === "me" ? mi : oi;
+    return { b: b, s: sI, oi: oi, cut: sI === mi ? 0.95 : FX_CUT };
+  }
+  // Köp- och säljpris längs rutten, skillnad och vinst per st. null när ett av husen saknar varan.
+  function fxCalc(p, mi) {
+    var r = fxRoute(mi), buy = p[r.b], sell = p[r.s];
+    if (r.s === r.oi && p[2] > 0 && p[2] < sell) sell = p[2];   // andra sidan köper på Blackwater om det redan är billigare där
+    if (!(buy > 0) || !(sell > 0)) return null;
+    return { buy: buy, sell: sell, gap: (sell - buy) / buy, profit: Math.round(sell * r.cut - buy), b: r.b, s: r.s, cut: r.cut };
+  }
   var FX_SUF = null;   // suffix.json: bonuskod → "of the Monkey"
   function fxGear(k) { return fetch(DATA_BASE + "gear-" + k + ".json", { cache: "no-cache" }).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; }); }
   // Namn för gear (fxMap tar bara stapelbart): id → { namn, kvalitet, ikon } ur alla tre filerna.
@@ -8057,7 +8091,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     var chip = function (d, lbl) { return '<button type="button" class="huchip' + (fxDir === d ? " on" : "") + '" data-fxdir="' + d + '" aria-pressed="' + (fxDir === d) + '">' + lbl + "</button>"; };
     var fk = fxKeys();
     var kchip = function (d, lbl) { return '<button type="button" class="huchip' + (fxKind === d ? " on" : "") + '" data-fxkind="' + d + '" aria-pressed="' + (fxKind === d) + '">' + lbl + "</button>"; };
-    return '<div class="hufil"><div class="huchips">' + chip("here", t("fx_here")) + chip("there", t("fx_there")) + chip("all", t("fx_all")) + "</div></div>" +
+    return '<div class="hufil"><div class="huchips">' + chip("profit", t("fx_only_profit")) + chip("all", t("fx_all")) + "</div></div>" +
       '<div class="hufil"><div class="huchips">' + kchip("all", t("fx_k_all")) + kchip("stack", t("fx_k_stack")) + kchip("gear", t("fx_k_gear")) + "</div></div>" +
       '<div class="note">' + t("fx_how", fk.rg.toUpperCase() + " " + (MK_RSN[fk.rs] || "")) + "</div><div class='note'>" + t("fx_min") + "</div>";
   }
@@ -8075,19 +8109,18 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
       var me = mi ? a : h, ot = mi ? h : a, b = M[2] && M[2][id];
       if (q && (me.name || ot.name).toLowerCase().indexOf(q) < 0) return;
       if (!fxCatOk(+id)) return;
-      var eff = b && b.min > 0 && b.min < ot.min ? b.min : ot.min;   // ligger det billigare på Blackwater köper andra sidan där
-      var gap = (ot.min - me.min) / me.min, profit = Math.round(eff * FX_CUT - me.min);
-      if (fxDir === "here" && !(gap > 0.05)) return;
-      if (fxDir === "there" && !(gap < -0.05)) return;
+      var p = [h.min, a.min, b ? b.min : 0], c = fxCalc(p, mi);
+      if (!c) return;
+      if (fxDir === "profit" && !(c.profit > 0)) return;
       if (fxKind === "gear") return;
-      view.push({ fx: +id, gk: "", it: me.name ? me : ot, p: [h.min, a.min, b ? b.min : 0], n: [h.qty, a.qty, b ? b.qty : 0], d: [h.day, a.day, b ? b.day : 0], gap: gap, profit: profit, mi: mi, oi: oi });
+      view.push({ fx: +id, gk: "", it: me.name ? me : ot, p: p, n: [h.qty, a.qty, b ? b.qty : 0], d: [h.day, a.day, b ? b.day : 0], gap: c.gap, profit: c.profit, rb: c.b, rs: c.s, mi: mi, oi: oi });
     });
     if (fxKind !== "stack") fxGearRows(q, mi, oi).forEach(function (x) { if (fxCatOk(x.fx)) view.push(x); });
     var k = sortKey, dir = sortDir;
     view.sort(function (x, y) {
       var d = k === "name" ? x.it.name.localeCompare(y.it.name) : k === "h" ? x.p[0] - y.p[0] : k === "a" ? x.p[1] - y.p[1] : k === "b" ? x.p[2] - y.p[2]
-        : k === "profit" ? x.profit - y.profit : k === "day" ? x.d[x.oi] - y.d[y.oi] : x.gap - y.gap;
-      return d * dir || y.gap - x.gap;
+        : k === "profit" ? x.profit - y.profit : k === "day" ? x.d[x.rs] - y.d[y.rs] : x.gap - y.gap;
+      return d * dir || y.profit - x.profit;
     });
     shown = Math.min(PAGE, view.length);
   }
@@ -8096,14 +8129,15 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     var G = FX.gear || [], h = G[0] && G[0][id] && G[0][id][k], a = G[1] && G[1][id] && G[1][id][k], b = G[2] && G[2][id] && G[2][id][k];
     var nm = FX.names && FX.names[id];
     if (!h || !a || !nm || nm.q === 0) return null;
-    var me = mi ? a : h, ot = mi ? h : a, eff = b && b[0] > 0 && b[0] < ot[0] ? b[0] : ot[0];
-    // Orimliga listningar (en ensam 125g-listning som ingen köper): mer än 4 × medianen av samma vara (alla suffix) på
-    // den sidan, eller mer än 6 × priset här när varan har för få suffix för en median.
-    var med = fxGearMed(oi, id);
-    if (med ? ot[0] > med * 4 : ot[0] > me[0] * 6) return null;
-    var suf = fxSufName(k);
-    return { fx: +id, gk: k, gear: true, it: { id: nm.id, name: nm.name + (suf ? " " + suf : ""), q: nm.q, ic: nm.ic }, p: [h[0], a[0], b ? b[0] : 0], n: [h[1], a[1], b ? b[1] : 0], d: [0, 0, 0],
-      gap: (ot[0] - me[0]) / me[0], profit: Math.round(eff * FX_CUT - me[0]), mi: mi, oi: oi };
+    var suf = fxSufName(k), gp = [h[0], a[0], b ? b[0] : 0], gc = fxCalc(gp, mi);
+    if (!gc) return null;
+    // Säljsidans pris i rutten (Joakim 2026-11-21: köp var som helst, sälj var som helst): en ensam orimlig listning
+    // (81g-stövlar som ingen köper) är inget säljpris. Över 4 × medianen av samma vara (alla suffix) på den sidan, eller över
+    // 6 × köppriset när varan har för få suffix för en median.
+    var med = fxGearMed(gc.s, id);
+    if (med ? gc.sell > med * 4 : gc.sell > gc.buy * 6) return null;
+    return { fx: +id, gk: k, gear: true, it: { id: nm.id, name: nm.name + (suf ? " " + suf : ""), q: nm.q, ic: nm.ic }, p: gp, n: [h[1], a[1], b ? b[1] : 0], d: [0, 0, 0],
+      gap: gc.gap, profit: gc.profit, rb: gc.b, rs: gc.s, mi: mi, oi: oi };
   }
   function fxGearMed(side, id) {
     var c = FX.gmed || (FX.gmed = [{}, {}, {}]);
@@ -8121,8 +8155,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
         var x = fxGearRow(id, k, mi, oi);
         if (!x) return;
         if (q && x.it.name.toLowerCase().indexOf(q) < 0) return;
-        if (fxDir === "here" && !(x.gap > 0.05)) return;
-        if (fxDir === "there" && !(x.gap < -0.05)) return;
+        if (fxDir === "profit" && !(x.profit > 0)) return;
         out.push(x);
       });
     });
@@ -8130,11 +8163,11 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
   }
   function fxGapHtml(g) { var pc = Math.round(g * 100); return '<span class="' + (pc > 0 ? "pos" : pc < 0 ? "neg" : "") + '">' + (pc > 0 ? "▲ +" : pc < 0 ? "▼ " : "") + pc + " %</span>"; }
   function fxRow(x) {
-    var it = x.it, cell = function (i, cls) { return '<td class="' + (i === x.mi ? "me" : "") + (cls ? " " + cls : "") + '">' + (x.p[i] ? money(x.p[i]) : "–") + "</td>"; };
+    var it = x.it, cell = function (i, cls) { return '<td class="' + (i === x.mi ? "me" : "") + (i === x.rb ? " fxb" : i === x.rs ? " fxs" : "") + (cls ? " " + cls : "") + '">' + (x.p[i] ? money(x.p[i]) : "–") + "</td>"; };
     return '<tr tabindex="0" data-fx="' + x.fx + '" data-fxg="' + esc(x.gk || "") + '"' + (x.fx === fxSel && (x.gk || "") === fxSelG ? ' aria-selected="true"' : "") + '><td class="fav"></td>' +
       '<td class="nm">' + iconHtml(it) + '<span class="' + qcls(it.q) + '" data-tip="' + it.id + '">' + esc(it.name) + "</span>" + (x.gear ? ' <span class="tag" title="' + t("fx_gear_tip") + '">' + t("fx_gear") + "</span>" : "") + "</td>" +
       cell(0) + cell(1) + cell(2, "hide-s") + "<td>" + fxGapHtml(x.gap) + "</td>" +
-      '<td class="hide-s ' + (x.profit > 0 ? "pos" : "neg") + '">' + (x.profit > 0 ? "" : "−") + money(Math.abs(x.profit)) + '</td><td class="hide-s">' + (x.d[x.oi] > 0 ? num(Math.round(x.d[x.oi])) : "–") + "</td></tr>";
+      '<td class="hide-s ' + (x.profit > 0 ? "pos" : "neg") + '">' + (x.profit > 0 ? "" : "−") + money(Math.abs(x.profit)) + '</td><td class="hide-s">' + (x.d[x.rs] > 0 ? num(Math.round(x.d[x.rs])) : "–") + "</td></tr>";
   }
   function fxDetail(id, gk) {
     gk = gk || "";
@@ -8143,20 +8176,22 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     if (!x && FX.ok && gk) { var mi0 = fxKeys().mine === "alliance" ? 1 : 0; x = fxGearRow(id, gk, mi0, 1 - mi0); }
     if (!x && FX.ok && !gk) {   // inte i den filtrerade listan (direktlänk): räkna fram raden ändå
       var M = FX.maps, h = M[0][id], a = M[1][id], b = M[2] && M[2][id], mi = fxKeys().mine === "alliance" ? 1 : 0;
-      if (h && a) { var me = mi ? a : h, ot = mi ? h : a, ef = b && b.min > 0 && b.min < ot.min ? b.min : ot.min; x = { fx: id, it: me, p: [h.min, a.min, b ? b.min : 0], n: [h.qty, a.qty, b ? b.qty : 0], d: [h.day, a.day, b ? b.day : 0], gap: (ot.min - me.min) / me.min, profit: Math.round(ef * FX_CUT - me.min), mi: mi, oi: 1 - mi }; }
+      if (h && a) { var me = mi ? a : h, dp = [h.min, a.min, b ? b.min : 0], dc = fxCalc(dp, mi) || { gap: 0, profit: 0, b: mi, s: 1 - mi }; x = { fx: id, it: me, p: dp, n: [h.qty, a.qty, b ? b.qty : 0], d: [h.day, a.day, b ? b.day : 0], gap: dc.gap, profit: dc.profit, rb: dc.b, rs: dc.s, mi: mi, oi: 1 - mi }; }
     }
     if (!x) { $("detail").innerHTML = '<div class="note">' + t("fx_empty") + "</div>"; return; }
     fxSel = id; fxSelG = gk;
     var trs = $("rows").children;
     for (var j = 0; j < trs.length; j++) { if (+trs[j].dataset.fx === id && (trs[j].dataset.fxg || "") === gk) trs[j].setAttribute("aria-selected", "true"); else trs[j].removeAttribute("aria-selected"); }
     setHash("#fx=" + id + (gk ? "&g=" + gk : "") + (house !== 113 ? "&m=" + house : ""));
-    var it = x.it, mine = x.p[x.mi], fas = [0, 1, 2];
+    var it = x.it, fas = [0, 1, 2];
     var vs = function (i, vals) { if (i === x.mi || !vals[i] || !vals[x.mi]) return ""; return "<small>" + fxGapHtml((vals[i] - vals[x.mi]) / vals[x.mi]) + "</small>"; };
     var row = function (lbl, vals, fmt, diff) { return "<div>" + lbl + "</div>" + fas.map(function (i) { return '<div class="' + (i === x.mi ? "me" : "") + '">' + (vals[i] ? fmt(vals[i]) : "–") + (diff ? vs(i, vals) : "") + "</div>"; }).join(""); };
-    var here = fxName(fxFa(x.mi)), there = fxName(fxFa(x.oi));
-    var route = x.gap > 0.05
-      ? t("fx_route", here, money(mine), money(x.p[x.oi]), there) + (x.profit > 0 ? " " + t("fx_profit", money(x.profit)) : "")
-      : x.gap < -0.05 ? t("fx_route_back", there, money(x.p[x.oi]), money(mine)) : "";
+    var there = fxName(fxFa(x.oi)), rc = fxCalc(x.p, x.mi), route = "";
+    if (rc) {
+      var bn = fxName(fxFa(rc.b)), sn = fxName(fxFa(rc.s));
+      route = (rc.s === x.oi ? t("fx_route", bn, money(rc.buy), money(rc.sell), there) : t("fx_route2", bn, money(rc.buy), sn, money(rc.sell))) + " " +
+        t(rc.profit > 0 ? "fx_profit2" : "fx_loss2", money(Math.abs(rc.profit)), Math.round((1 - rc.cut) * 100));
+    }
     $("detail").scrollTop = 0;
     $("detail").innerHTML = '<div class="strip"><button class="lnk" type="button" data-copyany="#fx=' + id + (gk ? "&g=" + gk : "") + (house !== 113 ? "&m=" + house : "") + '" title="' + t("copy_link") + '">' + t("copy_link") + "</button>" +
       '<h2 class="' + qcls(it.q) + '">' + iconHtml(it, true) + " " + esc(it.name) + "</h2><small>" + t("fx_how", fxKeys().rg.toUpperCase() + " " + (MK_RSN[fxKeys().rs] || "")).split(".")[0] + "</small></div>" +
