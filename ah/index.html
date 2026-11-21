@@ -1118,6 +1118,14 @@ body[data-mode=cl] .ttrees { gap: 8px; } body[data-mode=cl] .ttree { padding: 6p
 .cltal .talwrap { width: fit-content; max-width: 100%; margin: 0 auto; }
 .cltal .talhd { margin-bottom: 8px; flex-wrap: nowrap; }
 .cltal .talhint { font-size: 12.5px; color: var(--grey); white-space: nowrap; }
+/* Guidens talanger på en viss level (Joakim 2026-11-21: "skriva in vilken level, t.ex. 29") */
+.kglvl { display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; color: var(--gold); font-size: 13px; }
+.kglvl input { width: 46px; height: 26px; padding: 0 4px; text-align: center; border-radius: 4px; border: 1px solid var(--line); background: #0b0908; color: var(--fg); font: inherit; -moz-appearance: textfield; }
+.kglvl input::-webkit-outer-spin-button, .kglvl input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.kglvl input:focus { outline: none; border-color: var(--edge); }
+.kglvl button { all: unset; cursor: pointer; width: 24px; height: 26px; display: inline-grid; place-items: center; border: 1px solid var(--line); border-radius: 4px; color: var(--fg); }
+.kglvl button:hover, .kglvl button:focus-visible { border-color: var(--edge); color: var(--gold); }
+.kgcard .kglvl { justify-self: start; } .kgcard .kglvl .wowbtn { width: auto; height: auto; }
 .cltal .ttrees { flex-wrap: nowrap; }
 .cltal { container-type: inline-size; }   /* storleken efter rutans bredd, inte skärmens */
 @container (min-width: 810px) { .cltal .ttg { zoom: 1.15; } }
@@ -2037,7 +2045,8 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
       kg_rot: "On a normal mob", kg_cost: "Training %1", kg_tal_at: "Talents at %1: %2", kg_none: "The beginner guide for %1 is on its way. The talent calculator and spells are in the list meanwhile.",
       kg_sub: "Beginner guide · level 1–60", kg_lvbuild: "Leveling build", kg_open: "Open in talent calculator", kg_order: "Talent order, first point first", kg_back: "Guide",
       kg_note: "Written for WoW Forever's own talent trees, which differ from Classic. Spells, levels and trainer costs come from the game's data. Hover an icon for its tooltip; click a spell for details.",
-      kg_quest: "From a quest", kg_key: "Don't miss this one", cl_v_spells: "Spells", cl_v_pets: "Pet spells", cl_v_quests: "Class quests", cl_v_trainers: "Trainers",
+      kg_quest: "From a quest", kg_key: "Don't miss this one",
+      kg_at: "Guide at level", kg_at_tip: "Type a level (10–60): the calculator shows the beginner guide's talents as they should be at that level.", kg_at_card: "Talents at level", kg_show: "Show", cl_v_spells: "Spells", cl_v_pets: "Pet spells", cl_v_quests: "Class quests", cl_v_trainers: "Trainers",
       cl_col_spell: "Spell", cl_col_cost: "Cost", cl_col_cost_tip: "What the trainer charges in the Classic database (prices may differ on Forever)", cl_col_line: "Tree", cl_col_pet: "Pet", cl_col_trainer: "Trainer",
       cl_count: "%1 shown", cl_empty: "Nothing matches.", cl_rank: "Rank %1", cl_free: "Free", cl_quest: "Quest", cl_beast: "From a beast", cl_demon_tr: "Demon trainer", cl_pet_tr: "Pet trainer",
       cl_tk_class: "Class trainers", cl_tk_pet: "Pet trainers", cl_tk_demon: "Demon trainers", cl_changed: "Changed on Forever (%1)",
@@ -4770,6 +4779,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     }).catch(function () { /* utan ådrorna: inga chips */ });
   }
   document.addEventListener("change", function (e) {
+    if (e.target && e.target.id === "kgLv" && mode === "cl") { kgSetLv(+e.target.value, "kgLv"); return; }
     if (e.target && e.target.dataset && e.target.dataset.sgskill) { sgSetSkill(String(e.target.value).trim() === "" ? NaN : +e.target.value, true); return; }
     if (e.target && e.target.dataset && e.target.dataset.farmboth) { FA.both = e.target.checked; faSave(); faDraw(true); return; }
     if (!e.target || !e.target.dataset || !e.target.dataset.ndz) return;
@@ -6396,7 +6406,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     if (!e.target.closest("#clfly")) clFlyHide();
     var clc = e.target.closest("[data-clc]");
     if (clc && mode === "cl" && clLand) { clLand = false; clFold = false; clView = "guide"; if (clc.dataset.clc === clSel) { clShow(true); showTab("item"); return; } }
-    if (clc && mode === "cl") { if (clc.dataset.clc === clSel) { clFold = !clFold; drawCats(); return; } clFold = false; if (clc.dataset.clc !== clSel) { clSel = clc.dataset.clc; clRanks = clLoadSaved(); clSp = 0; clQ = 0; clTr = 0; clLine = ""; clPet = ""; if (clView === "pets" && !(clC() && clC().pets.length)) clView = "spells"; try { localStorage.setItem(CL_SEL_KEY, clSel); } catch (e9) {} } qFlush(); query = ""; $("q").value = ""; clShow(true); showTab("item"); return; }
+    if (clc && mode === "cl") { if (clc.dataset.clc === clSel) { clFold = !clFold; drawCats(); return; } clFold = false; if (clc.dataset.clc !== clSel) { clSel = clc.dataset.clc; clRanks = clLoadSaved(); clKgLv = 0; clSp = 0; clQ = 0; clTr = 0; clLine = ""; clPet = ""; if (clView === "pets" && !(clC() && clC().pets.length)) clView = "spells"; try { localStorage.setItem(CL_SEL_KEY, clSel); } catch (e9) {} } qFlush(); query = ""; $("q").value = ""; clShow(true); showTab("item"); return; }
     var clv = e.target.closest("[data-clv]");
     if (clv && mode === "cl") { clView = clv.dataset.clv; clFold = false; qFlush(); query = ""; $("q").value = ""; clShow(true); showTab("item"); return; }
     var clln = e.target.closest("[data-clln]"), clpet = e.target.closest("[data-clpet]"), clfa = e.target.closest("[data-clfa]"), cltk = e.target.closest("[data-cltk]");
@@ -6410,10 +6420,13 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     var clgo = e.target.closest("[data-clgo]");
     if (clgo && mode === "cl") { clSpDetail(+clgo.dataset.clgo); return; }
     if (e.target.closest("[data-clback]") && mode === "cl") { clQ = 0; clTr = 0; clDetail(); setHash(clHash()); return; }
-    if (e.target.closest("[data-clreset]") && mode === "cl") { clRanks = {}; clSave(); clRedraw(); return; }
+    if (e.target.closest("[data-clreset]") && mode === "cl") { clRanks = {}; clKgLv = 0; clSave(); clRedraw(); return; }
+    var kgst = e.target.closest("[data-kgstep]");
+    if (kgst && mode === "cl") { var kin = kgst.parentNode.querySelector("input"), kv = +(kin && kin.value) || clKgLv || 9; if (kin && kin.id === "kgLv2") { kin.value = Math.max(10, Math.min(60, kv + +kgst.dataset.kgstep)); return; } kgSetLv(kv + +kgst.dataset.kgstep); return; }
+    if (e.target.closest("[data-kgat]") && mode === "cl") { var k2 = $("kgLv2"); kgSetLv(k2 ? +k2.value || 60 : 60); return; }
     if (e.target.closest("[data-clload]") && mode === "cl") { clArmLoad(); return; }
     var kgl = e.target.closest("[data-kgload]");
-    if (kgl && mode === "cl") { var kr = kgRanks(kgl.dataset.kgload === "end"); if (kr) { clRanks = kr; clSave(); clView = "tal"; clSp = 0; clShow(true); showTab("item"); } return; }
+    if (kgl && mode === "cl") { var kr = kgRanks(kgl.dataset.kgload === "end"); if (kr) { clRanks = kr; clKgLv = kgl.dataset.kgload === "end" ? 0 : 60; clSave(); clView = "tal"; clSp = 0; clShow(true); showTab("item"); } return; }
     var kgs = e.target.closest("[data-kgsp]");
     if (kgs && mode === "cl") { hideTip(); showTab("item"); clSpDetail(+kgs.dataset.kgsp); return; }
     if (e.target.closest("[data-kgback]") && mode === "cl") { clSp = 0; clDetail(); return; }
@@ -8333,7 +8346,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
   var CL_ORDER = ["Warrior", "Paladin", "Hunter", "Rogue", "Priest", "Shaman", "Mage", "Warlock", "Druid"], CL_VIEWS = ["guide", "tal", "spells", "pets", "quests", "trainers"];
   // Nybörjarguiden 1–60 per klass (Joakim 2026-11-21): klassguide.json, ihopskriven av klassguide-koll.js ur klassguide/<klass>.json
   // efter att talangordningen kollats mot Forevers träd. Egen text, inte kopierad ur andra guider (Joakim).
-  var KG = null, kgPromise = null, clKgGo = 0;
+  var KG = null, kgPromise = null, clKgGo = 0, clKgLv = 0;   // clKgLv: räknaren visar guidens build på den leveln (0 = egen plan)
   function loadKg() {
     if (!kgPromise) kgPromise = fetch(DATA_BASE + "klassguide.json").then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }).then(function (j) { KG = j; return j; })
       .catch(function (e) { kgPromise = null; throw e; });
@@ -8389,7 +8402,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
       var want = (hp.cls || "").toLowerCase(), saved = "";
       try { saved = localStorage.getItem(CL_SEL_KEY) || ""; } catch (e) { saved = ""; }
       if (!CL_ORDER.some(function (n) { return n.toLowerCase() === want; })) want = clSel || (CL_ORDER.some(function (n) { return n.toLowerCase() === saved; }) ? saved : "warrior");
-      if (want !== clSel) { clSel = want; clRanks = clLoadSaved(); clSp = 0; clQ = 0; clTr = 0; clLine = ""; clPet = ""; }
+      if (want !== clSel) { clSel = want; clRanks = clLoadSaved(); clKgLv = 0; clSp = 0; clQ = 0; clTr = 0; clLine = ""; clPet = ""; }
       if (!clFa && !clFaSet) { clFa = myFaction(); clFaSet = true; }   // din sida förvald i quests och tränare
       if (hp.cv && CL_VIEWS.indexOf(hp.cv) >= 0) clView = hp.cv; else if (hp.cls) clView = "tal";
       if (hp.cls && hp.cls.toLowerCase() === clSel) {   // samma klass i adressen (bakåt/framåt, länk): adressen gäller helt
@@ -8573,7 +8586,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     if (clFlyEl && !clFlyEl.hidden && !e.target.closest("#clfly")) clFlyTimer = setTimeout(clFlyHide, 150);
   });
   document.addEventListener("scroll", function () { if (clFlyEl && !clFlyEl.hidden) clFlyHide(); }, true);
-  document.addEventListener("keydown", function (e) { if (e.key === "Escape") clFlyHide(); });
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape") clFlyHide(); if (e.key === "Enter" && e.target && e.target.id === "kgLv2" && mode === "cl") kgSetLv(+e.target.value || 60); });
   function drawClSub() {   // segmenten ovanför listan: skill line / pet / fraktion / tränarsort
     var el = $("clsub"); if (!el) return;
     var on = false; el.hidden = true; if (!on) return;   // segmenten ersatta av rullgardinen i spalten (Joakim 2026-11-20)
@@ -8602,6 +8615,24 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     return { steps: steps, ranks: ranks };
   }
   function kgRanks(end) { var g = kgC(); if (!g) return null; return kgPlay(end && g.end ? g.end.talents : g.talents).ranks; }
+  function kgRanksAt(L) {   // guidens levelbuild som den ska se ut på level L (poängen från 10 och uppåt)
+    var g = kgC(), r = {}; if (!g) return null;
+    kgPlay(g.talents).steps.forEach(function (st) { if (st.lvl <= L) r[st.n.id] = st.rank; });
+    return r;
+  }
+  function kgLvHtml(id, card) {
+    var v = clKgLv || "";
+    return '<span class="kglvl" title="' + esc(t("kg_at_tip")) + '">' + t(card ? "kg_at_card" : "kg_at") + ' <button type="button" data-kgstep="-1" aria-label="-1">‹</button><input id="' + id + '" type="number" inputmode="numeric" min="10" max="60" value="' + v + '" placeholder="–" data-kglv="1" aria-label="' + esc(t("kg_at")) + '"><button type="button" data-kgstep="1" aria-label="+1">›</button>' +
+      (card ? '<button type="button" class="wowbtn" data-kgat="1">' + t("kg_show") + "</button>" : "") + "</span>";
+  }
+  function kgSetLv(L, focusId) {   // fyller räknaren med guidens build på level L och visar räknaren
+    if (!(L >= 1)) return;
+    L = Math.max(10, Math.min(60, Math.round(L)));
+    var r = kgRanksAt(L); if (!r) return;
+    clKgLv = L; clRanks = r; clSave();
+    if (clView !== "tal") { clView = "tal"; clSp = 0; clShow(true); showTab("item"); } else clRedraw(true);
+    var el = focusId && $(focusId); if (el) { el.focus(); try { el.select(); } catch (e) {} }
+  }
   function kgSplit(ranks) { var tc = clTal(); return tc ? tc.c.trees.map(function (tr) { return talSpent(tr, ranks); }).join(" / ") : ""; }
   function kgTalIc(n) { return n.icon ? KG_IC + n.icon + ".jpg" : RICON + "inv_misc_questionmark.jpg"; }
   function kgSpell(name, lvl) {   // högsta rangen man kan ha vid den leveln
@@ -8689,7 +8720,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     if (!g || !clTal()) return clOverview();
     var p = kgPlay(g.talents), e2 = g.end ? kgPlay(g.end.talents) : null;
     return clStrip(t("kg_sub")) +
-      '<div class="kgcard"><h3>' + t("kg_lvbuild") + " · " + esc(g.spec) + "</h3>" + kgBars(p.ranks) + "<small class=\"dim\">" + t("kg_order") + "</small>" + kgOrder(p.steps) + '<button class="wowbtn" type="button" data-kgload="lvl">' + t("kg_open") + "</button></div>" +
+      '<div class="kgcard"><h3>' + t("kg_lvbuild") + " · " + esc(g.spec) + "</h3>" + kgBars(p.ranks) + "<small class=\"dim\">" + t("kg_order") + "</small>" + kgOrder(p.steps) + '<button class="wowbtn" type="button" data-kgload="lvl">' + t("kg_open") + "</button>" + kgLvHtml("kgLv2", true) + "</div>" +
       (e2 ? '<div class="kgcard"><h3>' + esc(g.end.title) + "</h3><p>" + esc(g.end.text) + "</p>" + kgBars(e2.ranks) + kgOrder(e2.steps) + '<button class="wowbtn" type="button" data-kgload="end">' + t("kg_open") + "</button></div>" : "") +
       '<div class="note">' + t("kg_note") + "</div>";
   }
@@ -8700,7 +8731,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     if (!tc) return '<div class="talpanel"><div class="note">' + t("tal_nocls") + "</div></div>";
     var used = talTotal(tc.c, clRanks);
     var head = '<div class="talhd"><div class="talinfo"><span>' + t("tal_left", TAL_MAX - used) + "</span><span>" + t("tal_lvl", used ? used + 9 : 10) + "</span>" +
-      '<button type="button" class="lnk" data-clreset="1">' + t("tal_reset") + '</button><button type="button" class="lnk" data-copyany="' + esc(clHash()) + '" title="' + t("copy_link") + '">' + t("copy_link") + '</button></div><span class="talhint">' + t("tal_hint") + "</span></div>";
+      '<button type="button" class="lnk" data-clreset="1">' + t("tal_reset") + '</button><button type="button" class="lnk" data-copyany="' + esc(clHash()) + '" title="' + t("copy_link") + '">' + t("copy_link") + "</button>" + (kgC() ? kgLvHtml("kgLv") : "") + '</div><span class="talhint">' + t("tal_hint") + "</span></div>";
     return '<div class="talpanel cltal cls-' + clSel + '"><div class="talwrap">' + head + '<div class="ttrees">' + tc.c.trees.map(function (tr, ti) { return talTreeHtml(tr, ti, clRanks, true); }).join("") + "</div></div></div>";
   }
   function clTalClick(id, remove) {
@@ -8708,7 +8739,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     var r = clRanks, rk = r[id] || 0;
     if (remove) { if (talCanRemove(tc.c, id, r)) { r[id] = rk - 1; if (!r[id]) delete r[id]; } else return; }
     else { if (rk >= f.n.max || talTotal(tc.c, r) >= TAL_MAX || !talOpenFor(f.tr, f.n, r)) return; r[id] = rk + 1; }
-    clSave(); clRedraw(true);
+    clKgLv = 0; clSave(); clRedraw(true);
     var tip = clTalTip(id); if (tip && tipBox && !tipBox.hidden) { tipBox.innerHTML = tip; placeTip(); }
   }
   function clTalTip(id) {
