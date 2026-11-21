@@ -1138,6 +1138,9 @@ body[data-home] .cols, body[data-home] #sect, body[data-home] #q, body[data-home
 .qtop { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); gap: 18px; align-items: start; }
 .qtl { display: grid; gap: 12px; align-content: start; min-width: 0; } .qtl h3 { margin: 0; } .qtl .qmleg { margin-top: 0; }
 .qtr { min-width: 0; } .qtr .qmwrap > .huchips { margin-top: 0; }
+body[data-mode=qu] #detail .strip { padding: 7px 14px; } body[data-mode=qu] #detail .strip h2 { display: inline; font-size: 19px; }
+body[data-mode=qu] #detail .strip h2 + small { margin-left: 10px; white-space: nowrap; }
+.qtl > .qfacts { margin-top: 2px; } .qtl > .qrew { margin-top: 0; }
 .qchainw .qchain { columns: 2 260px; column-gap: 40px; } .qchainw .qchain li { break-inside: avoid; }
 @media (max-width: 1250px) { .qtop { grid-template-columns: minmax(0, 1fr); } .qtr { order: -1; } }
 /* Dungeons efter Joakims förslag (2026-11-20): välj dungeon → boss → loot */
@@ -3589,7 +3592,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
       var fmt = function (s) { return esc(s || "").replace(/\{name\}/g, "&lt;name&gt;").replace(/\r?\n/g, "<br>"); };
       el.innerHTML = tx ? (tx[1] ? '<p class="qobj"><b>' + t("qu_obj") + "</b> " + fmt(tx[1]) + "</p>" : "") + (tx[0] ? "<p>" + fmt(tx[0]) + "</p>" : "") : '<span class="dim">–</span>';
     });
-    qmLoad(id).then(function (r) { var el = $("qmap"); if (!el || selQuest !== id) return; el.innerHTML = qmHtml(id, r); });
+    qmLoad(id).then(function (r) { var el = $("qmap"); if (!el || selQuest !== id) return; el.innerHTML = qmHtml(id, r); qBalance(); });
     if (scroll && window.matchMedia("(max-width: 1100px)").matches) $("tabItem").scrollIntoView({ block: "start", behavior: "smooth" });
   }
 
@@ -3600,6 +3603,22 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
   var QM = {}, QMIX = null, qmIxP = null, qmCur = null, qmZone = "", qmOv = false, qmOvZone = "", qmHl = -1;   // qmHl: markerat steg i listan
   // Klick på ett steg i listan: dess punkter lyser på kartan, resten tonas ner; kartan byter zon om punkterna ligger i en
   // annan. Ett klick till släcker (Joakim 2026-11-21).
+  function qBalance() {
+    var d = $("detail"); if (!d || mode !== "qu") return;
+    var top = d.querySelector(".qtop"), L = top && top.querySelector(".qtl"), Rt = top && top.querySelector(".qtr"), map = $("qmap");
+    if (!L || !Rt || !map) return;
+    var mv = [].slice.call(top.querySelectorAll(".qfacts, .qrew"));
+    mv.forEach(function (el) { Rt.appendChild(el); });   // utgångsläget: under kartan
+    if (getComputedStyle(top).gridTemplateColumns.split(" ").length < 2) return;   // en spalt: kvar under kartan
+    var room = map.offsetHeight + 16 - L.offsetHeight;
+    for (var i = 0; i < mv.length; i++) {
+      var h = mv[i].offsetHeight + 12;
+      if (h > room) break;
+      L.appendChild(mv[i]); room -= h;
+    }
+  }
+  var qBalT = 0;
+  window.addEventListener("resize", function () { clearTimeout(qBalT); qBalT = setTimeout(qBalance, 150); });
   function qmPick(pi) {
     if (!qmCur) return;
     var p = qmParts(qmCur.r)[pi];
@@ -3611,6 +3630,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
       if (zl.length && zl.indexOf(qmCur.zs) < 0) qmZone = zl[0];
     }
     var el = $("qmap"); if (el) el.innerHTML = qmHtml(qmCur.id, qmCur.r);
+    qBalance();
   }
   var QM_COL = ["#ff6b5a", "#5aa0ff", "#7ad35a", "#d48cff", "#ffb347", "#4fd6cf", "#ff8ad8", "#e2e2e2"];
   function qmLoad(id) {
@@ -5475,7 +5495,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     var wy = e.target.closest("[data-way]");
     if (wy) { e.preventDefault(); qmCopy(wy.dataset.way); return; }
     var qmz = e.target.closest("[data-qmz]");
-    if (qmz && qmCur) { qmZone = qmz.dataset.qmz; var qme = $("qmap"); if (qme) qme.innerHTML = qmHtml(qmCur.id, qmCur.r); return; }
+    if (qmz && qmCur) { qmZone = qmz.dataset.qmz; var qme = $("qmap"); if (qme) qme.innerHTML = qmHtml(qmCur.id, qmCur.r); qBalance(); return; }
     var qpl = e.target.closest("[data-qpl]");
     if (qpl && qmCur && !e.target.closest("a, button")) { qmPick(+qpl.dataset.qpl); return; }
     // NPC-sidan (Joakim 2026-11-18): namnet i questkartans lista, zonflikarna på NPC:ns karta
