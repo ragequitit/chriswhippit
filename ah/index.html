@@ -4384,7 +4384,23 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     th.forEach(function (x) { if (x - a >= gap && x <= 285) { B.push(x); a = x; } });   // varje ny nod får sin gräns när den ligger minst gap från den förra (förr hoppades Thorium 245 över)
     return B;
   }
-  function sgGatherStep(things, a, b, skip) {   // zonerna med mest som ger skill mitt i steget (orange 1, gul 0,6, grön 0,05), utan fiendens hemzoner
+  // Zonernas läge och vem som håller dem, ur questkartans index (zb: [kontinent, topp, vänster, botten, höger] i världskoordinater,
+  // tn: flygmästare [id, kontinent, y, x, namn, fraktion A/H/B]). Fiendeland = zonen har flygmästare men ingen egen eller neutral.
+  var SG_ZF = {};
+  function sgZBox(z) { return QMIX && QMIX.zb ? QMIX.zb[z] || null : null; }
+  function sgFoe(z, fac) {
+    var k = fac + "|" + z; if (k in SG_ZF) return SG_ZF[k];
+    var b = sgZBox(z), any = false, ok = false;
+    if (b && QMIX.tn) QMIX.tn.forEach(function (t) { if (t[1] === b[0] && t[2] <= b[1] && t[2] >= b[3] && t[3] <= b[2] && t[3] >= b[4]) { any = true; if (t[5] === fac || t[5] === "B") ok = true; } });
+    return (SG_ZF[k] = any && !ok);
+  }
+  var SG_FOE = 6, SG_SEA = 6, SG_YD = 2500;   /* straff i snabbhetssteg: fiendeland och annan kontinent ≈ 3 gånger så många plock, 2 500 yards ≈ 1 steg */
+  function sgZPen(z, prev, fac) {
+    var p = sgFoe(z, fac) ? SG_FOE : 0, b = sgZBox(z), q = prev && prev !== z ? sgZBox(prev) : null;
+    if (b && q) p += b[0] !== q[0] ? SG_SEA : Math.sqrt(Math.pow((b[1] + b[3] - q[1] - q[3]) / 2, 2) + Math.pow((b[2] + b[4] - q[2] - q[4]) / 2, 2)) / SG_YD;
+    return Math.round(p);
+  }
+  function sgGatherStep(things, a, b, skip, prev) {   // prev: förra stegets zon (närmast vinner när flera är ungefär lika snabba)   // zonerna med mest som ger skill mitt i steget (orange 1, gul 0,6, grön 0,05), utan fiendens hemzoner
     var m = (a + b) / 2, Z = {}, N = {}, NG = {}, A = {}, el = [];   // A: zoner där något går att plocka redan vid stegets början
     things.forEach(function (x) {
       if (x.req >= b) return; var c = sgCol(Math.max(m, x.req) - x.req); if (!c) return;   // nytt inne i steget: orange från sin gräns
@@ -4404,7 +4420,8 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     if (green) { zones = Object.keys(Z).filter(function (z) { return A[z]; }); if (!zones.length) zones = Object.keys(Z); N = NG; }   // bara grönt kvar (Mithril 225–245): det ger fortfarande skill, bara långsammare
     zones.forEach(function (z) { CZ[z] = cnt(z); });
     var bucket = function (z) { return Math.round(Math.log(Math.max(1, CZ[z])) / Math.log(1.2)); };
-    zones.sort(function (x, y) { return bucket(x) - bucket(y) || Z[y] - Z[x] || (N[y] || 0) - (N[x] || 0) || (x < y ? -1 : 1); });   // ungefär lika snabbt: den med mest vinner
+    var fac = sgFac(), PEN = {}; zones.forEach(function (z) { PEN[z] = sgZPen(z, prev, fac); });
+    zones.sort(function (x, y) { return bucket(x) + PEN[x] - bucket(y) - PEN[y] || Z[y] - Z[x] || (N[y] || 0) - (N[x] || 0) || (x < y ? -1 : 1); });   // ungefär lika snabbt: den med mest vinner; egen fraktions land och nära förra steget först
     return { el: el, n: N, zones: zones.slice(0, 4), cnt: cnt, green: green };
   }
   // Spelarens läge (granskarna 2026-11-21): nuvarande skill per yrke och vald väg ("self" = mina/farma själv, "buy" = köp på AH), i webbläsaren.
@@ -4428,7 +4445,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
       .forEach(function (x) { var hard = HARD[x] === 1; if (!B2.length || x - B2[B2.length - 1] >= 8 || hard) { if (hard && B2.length > 1 && x - B2[B2.length - 1] < 8 && !HARD[B2[B2.length - 1]]) B2.pop(); B2.push(x); } });
     var steps = [];
     for (var i = 0; i + 1 < B2.length; i++) {
-      var st = { a: B2[i], b: B2[i + 1], i: steps.length, gath: things ? sgGatherStep(things, B2[i], B2[i + 1], skip) : null, names: [] };
+      var st = { a: B2[i], b: B2[i + 1], i: steps.length, gath: things ? sgGatherStep(things, B2[i], B2[i + 1], skip, steps.length && steps[steps.length - 1].gath ? steps[steps.length - 1].gath.zones[0] : "") : null, names: [] };
       if (P) sgAgg(P, st.a, st.b).forEach(function (c) { if (st.names.indexOf(c.r.name) < 0) st.names.push(c.r.name); });
       steps.push(st);
     }
