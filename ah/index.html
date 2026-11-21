@@ -362,6 +362,7 @@ details.sgstep > summary { list-style: none; cursor: pointer; } details.sgstep >
 @media (max-width: 520px) { .sgpaths { grid-template-columns: minmax(0, 1fr); } .sgsum { flex-basis: 100%; margin-left: 30px; } }
 .sgno { display: inline-grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; background: var(--gold); color: #1a1208; font-weight: 700; font-size: 13px; flex: none; } .sgline { font-size: 14px; line-height: 1.45; } .sgline a.wh { text-decoration: none; } .sgline a.wh:hover span { text-decoration: underline; } .sgline .ic { width: 18px; height: 18px; margin: 0 4px 0 2px; vertical-align: -4px; }
 .sgcraft { display: grid; grid-template-columns: minmax(0, 1fr); gap: 6px; } .sgmats { width: 100%; max-width: 560px; } .srct.sgmats td:nth-child(2) { white-space: normal; } .srct.sgmats td:first-child, .srct.sgmats th:first-child { text-align: left; } .sgmats td { padding: 2px 10px 2px 0; } .sgmats td:nth-child(n+2) { text-align: right; white-space: nowrap; } .sgmats th { font-size: 11px; color: var(--grey); font-weight: 500; text-align: right; padding: 0 10px 3px 0; } .sgmats th:first-child { text-align: left; } .sgmats .ic { width: 18px; height: 18px; margin: 0 5px 0 0; vertical-align: -4px; }
+.sgfold > summary { cursor: pointer; list-style: none; display: flex; align-items: center; gap: 8px; padding: 6px 8px; border: 1px solid var(--line); border-radius: 6px; } .sgfold > summary::-webkit-details-marker { display: none; } .sgfold > summary::before { content: "\25B8"; color: var(--gold); font-size: 12px; transition: transform .12s; } .sgfold[open] > summary::before { transform: rotate(90deg); } .sgfold > summary h3 { margin: 0; flex: 1 1 auto; } .sgfold > summary:hover { background: var(--hover); } .sgfold[open] > summary { margin-bottom: 6px; }
 .sgnpcs { display: grid; gap: 4px; } .sgnpc { all: unset; box-sizing: border-box; cursor: pointer; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0 10px; align-items: center; padding: 5px 8px; border: 1px solid var(--line); border-radius: 6px; font-size: 13px; } .sgnpc:hover { background: var(--hover); } .sgnpc b { font-weight: 600; } .sgnpc .dim { font-size: 12px; } .sgwhere { color: var(--grey); font-size: 12px; white-space: nowrap; } .sgwhere em { font-style: normal; color: var(--gold); margin-right: 4px; } .sgstep .sgnpcs { max-width: 560px; }
 .armory .huzm.qmap { max-width: 720px; background: #2b2418; } .armory .sgstep .huchips { margin-top: 2px; }
 .sghd { display: flex; align-items: center; gap: 4px 12px; flex-wrap: wrap; } .sgr { font-size: 20px; font-weight: 700; color: var(--gold); min-width: 84px; font-variant-numeric: tabular-nums; } .sgz { font-size: 15px; font-weight: 600; }
@@ -779,6 +780,7 @@ tbody tr.exp, tbody tr.exp:hover { background: var(--panel); cursor: default; }
 .empty { padding: 28px 16px; color: var(--grey); text-align: center; }
 
 .tabs { display: flex; gap: 4px; padding: 8px 8px 0; border-bottom: 1px solid var(--line); }
+.right:has(#detail:not([hidden]) #sgside) .tabs { display: none; }   /* skillguiden: My list passar inte här, rutan får hela höjden (Joakim 2026-11-21); öppnas My list uppe vid sökrutan kommer flikarna tillbaka */
 .tab { font: inherit; font-size: 14.5px; background: transparent; border: 1px solid transparent; border-bottom: 0; border-radius: 5px 5px 0 0;
   padding: 7px 16px; color: var(--grey); cursor: pointer; margin-bottom: -1px; }
 .tab[aria-pressed=true] { color: var(--edge); background: var(--panel); border-color: var(--line); box-shadow: inset 0 -2px 0 var(--edge); }
@@ -4691,6 +4693,8 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     return '<div class="sgnpcs">' + L.map(function (x) { var w = qmWay(x[3], x[4], x[5]); return '<button type="button" class="sgnpc" data-way="' + esc(w) + '" title="' + esc(w + " · " + t("sg_way_tip")) + '"><span><b>' + esc(x[1]) + "</b>" + (x[2] ? ' <span class="dim">' + esc(x[2]) + "</span>" : "") + '</span><span class="sgwhere">' + (caps && x[7] ? '<em title="' + esc(t("sg_cap_tip", x[7])) + '">' + t("sg_to", x[7]) + "</em> " : "") + esc(x[3]) + " " + x[4] + ", " + x[5] + "</span></button>"; }).join("") + "</div>";
   }
   function sgFact(label, val, cls) { return "<div><dt>" + label + '</dt><dd' + (cls ? ' class="' + cls + '"' : "") + ">" + val + "</dd></div>"; }
+  var SG_FOLD = {};
+  document.addEventListener("toggle", function (e) { var d = e.target; if (d && d.dataset && d.dataset.sgfold) SG_FOLD[d.dataset.sgfold] = d.open; }, true);
   function sgSideHtml(G) {   // högerrutan följer vald väg: summor från spelarens skill, inköpslista eller ruttplan, tränare, handlare
     var p = G.p, f = sgFac(), h = "", g = SG_GATHER[p.key], tool = g ? g.tool : SG_TOOL[p.pid], mode = sgGMode(G), same = function (x) { return !x[6] || x[6] === f; };
     var ids = Object.keys(G.mats).sort(function (a, b) { return recPrice(b) * G.mats[b] - recPrice(a) * G.mats[a]; }), net = G.buy - G.sell;
@@ -4708,8 +4712,10 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
       if (gi.length) h += "<div><h3>" + t("sg_gather_h") + '</h3><table class="srct sgmats">' + sgMatHead("self", " ") + "<tbody>" + sgMatRows(G.mats, gi, "self") + "</tbody></table></div>";
       if (vi.length) h += "<div><h3>" + t("sg_buy_vendor") + '</h3><table class="srct sgmats">' + sgMatHead("buy", " ") + "<tbody>" + sgMatRows(G.mats, vi, "buy") + "</tbody></table></div>";
     }
-    h += "<div><h3>" + t("sg_trainers") + "</h3>" + sgNpcList((SKU.trainers[p.sk] || []).filter(same)) + "</div>";
-    if (tool && SKU.vendors[tool]) h += "<div><h3>" + t("sg_vendors", esc(sgItemName(tool))) + "</h3>" + sgNpcList(SKU.vendors[tool].filter(same), 8) + "</div>";
+    /* Tränare och handlare är utfällbara (Joakim 2026-11-21: "så slipper det vara massor av text i onödan"); SG_FOLD minns valet över omritningar. */
+    var fold = function (k, title, L, max) { return '<details class="sgfold" data-sgfold="' + k + '"' + (SG_FOLD[k] ? " open" : "") + "><summary><h3>" + title + '</h3><span class="dim">' + num(Math.min(L.length, max || 99)) + "</span></summary>" + sgNpcList(L, max) + "</details>"; };
+    h += fold("tr", t("sg_trainers"), (SKU.trainers[p.sk] || []).filter(same));
+    if (tool && SKU.vendors[tool]) h += fold("vd", t("sg_vendors", esc(sgItemName(tool))), SKU.vendors[tool].filter(same), 8);
     return h + '<div class="note">' + t("sg_side_note") + "</div>";
   }
   function sgMain() {   // mittenrutan
