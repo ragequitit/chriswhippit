@@ -2276,6 +2276,36 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     if (mode === "cr" && selRec) selectRecipe(selRec, false);
     if (mode === "ar" && arRec && arData && arData.kind === "character") renderChar(arData);
   }
+  // Sökningen: namnet, men också hela ord utan plural-s och kategorin (Joakim 2026-11-22: "herbs", "ores" och
+  // "enchanting" ska ge allt sådant, "för att förenkla för alla som söker").
+  function qStem(q) {
+    if (q.length > 4 && /ies$/.test(q)) return q.slice(0, -3) + "y";
+    if (q.length > 4 && /(sh|ch|x)es$/.test(q)) return q.slice(0, -2);
+    if (q.length > 3 && /s$/.test(q) && !/ss$/.test(q)) return q.slice(0, -1);
+    return q;
+  }
+  function wordAt(s, w, whole) {   // w står först i ett ord i s (whole: och är hela ordet)
+    for (var i = s.indexOf(w); i >= 0; i = s.indexOf(w, i + 1)) {
+      if (i > 0 && /[a-z0-9']/.test(s.charAt(i - 1))) continue;
+      if (whole && /[a-z0-9]/.test(s.charAt(i + w.length))) continue;
+      return true;
+    }
+    return false;
+  }
+  function catLower(r) {
+    if (!r || r.ci < 0 || !D.cats || !D.cats[r.ci]) return "";
+    if (r.catl != null) return r.catl;
+    var c = D.cats[r.ci], sc = r.si >= 0 ? c[1][r.si] : null, un = sc && r.ui >= 0 ? sc[1][r.ui] : "";
+    return (r.catl = [c[0], sc ? sc[0] : "", un || ""].join(" | ").toLowerCase());
+  }
+  function qHit(lowerName, r, q) {
+    var st = qStem(q);
+    if (st === q ? lowerName.indexOf(q) >= 0 : wordAt(lowerName, q, false)) return true;   // plural: inte "ores" mitt i Forest
+    if (st !== q && st.length >= 3 && wordAt(lowerName, st, true)) return true;   // "ores" → Copper Ore
+    var cl = catLower(r);
+    if (!cl) return false;
+    return wordAt(cl, q, true) || (st.length >= 3 && wordAt(cl, st, true)) || (st.length >= 4 && wordAt(cl, st, false));   // "herbs" → Herb, "elixir" → Elixirs
+  }
   function starHtml(id, label) {
     var on = watched(id), tip = t(on ? "star_del" : "star_add");
     return '<button class="star" type="button" data-star="' + id + '" aria-pressed="' + on + '" title="' + tip +
@@ -5627,7 +5657,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
       if (subSel >= 0 && r.si !== subSel) return false;
       if (sub2Sel >= 0 && r.ui !== sub2Sel) return false;
       if (!q) return true;
-      return r.lower.indexOf(q) >= 0 || String(r.id) === q;
+      return qHit(r.lower, r, q) || String(r.id) === q;
     });
     var k = sortKey, dir = sortDir;
     view.sort(function (a, b) {
@@ -5868,7 +5898,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
          ["qty", "col_qty"], ["day", "col_day", "col_day_tip", "hide-s dcol"]]
       : [["name", "col_item"], ["cat", "col_cat", null, "kat hide-s"], ["lvl", "col_lvl", "col_lvl_tip", "hide-s"], ["min", "col_min", "col_min_tip"],
          ["qty", "col_qty"], ["day", "col_day", "col_day_tip", "hide-s dcol"]];
-    return '<tr><th class="fav">' + (mode === "hu" || mode === "fx" || mode === "cl" ? "" : mode === "de" ? '<span title="' + t("de_own_col") + '">#</span>' : mode === "co" ? (coOwner() ? "✓" : "") : mode === "qu" ? (quPlayer && quPlayer.set ? "✓" : "") : t("col_fav")) + "</th>" + cols.map(function (c) {
+    return '<tr><th class="fav">' + (mode === "hu" || mode === "cl" ? "" : mode === "de" ? '<span title="' + t("de_own_col") + '">#</span>' : mode === "co" ? (coOwner() ? "✓" : "") : mode === "qu" ? (quPlayer && quPlayer.set ? "✓" : "") : t("col_fav")) + "</th>" + cols.map(function (c) {
       if (mode === "dg") return "<th" + (c[3] ? ' class="' + c[3] + '"' : c[0] === "name" ? ' class="nm"' : "") + (c[2] ? ' title="' + esc(t(c[2])) + '"' : "") + ">" + (c[1] ? t(c[1]) : "") + "</th>";
       return "<th" + (c[3] ? ' class="' + c[3] + '"' : c[0] === "name" ? ' class="nm"' : "") + '><button type="button" data-k="' + c[0] + '"' + (c[2] ? ' title="' + esc(t(c[2])) + '"' : "") +
         (c[0] === sortKey ? ' aria-sort="' + (sortDir > 0 ? "ascending" : "descending") + '"' : "") + ">" + (c[1] ? t(c[1]) : "") + "</button></th>";
@@ -6504,7 +6534,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     var fxk = e.target.closest("[data-fxkind]");
     if (fxk && mode === "fx") { fxKind = fxk.dataset.fxkind; drawTrSub(); refresh(); toTop(); return; }
     var tfx = e.target.closest("tbody tr[data-fx]");
-    if (tfx) { showTab("item"); fxDetail(+tfx.dataset.fx, tfx.dataset.fxg || ""); return; }
+    if (tfx && !e.target.closest("[data-star]")) { showTab("item"); fxDetail(+tfx.dataset.fx, tfx.dataset.fxg || ""); return; }
     var deq = e.target.closest("[data-deq]");
     if (deq && mode === "de") { deQ = +deq.dataset.deq; drawTrSub(); refresh(); toTop(); return; }
     if (e.target.closest("[data-dewatch]") && mode === "de") { toggleWatchAll(view.filter(function (x) { return x.profit > 0; }).map(function (x) { return x.de; })); showTab("watch"); return; }
@@ -8185,7 +8215,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
       var h = M[0][id], a = M[1][id];
       if (!a || h.qty < FX_MIN || a.qty < FX_MIN) return;
       var me = mi ? a : h, ot = mi ? h : a, b = M[2] && M[2][id];
-      if (q && (me.name || ot.name).toLowerCase().indexOf(q) < 0) return;
+      if (q && !qHit((me.name || ot.name || "").toLowerCase(), byId[+id], q)) return;
       if (!fxCatOk(+id)) return;
       var p = [h.min, a.min, b ? b.min : 0], c = fxCalc(p, mi);
       if (!c) return;
@@ -8232,7 +8262,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
         if (!G[1][id][k]) return;
         var x = fxGearRow(id, k, mi, oi);
         if (!x) return;
-        if (q && x.it.name.toLowerCase().indexOf(q) < 0) return;
+        if (q && !qHit(x.it.name.toLowerCase(), byId[x.fx], q)) return;
         if (fxDir === "profit" && !(x.profit > 0)) return;
         out.push(x);
       });
@@ -8242,7 +8272,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
   function fxGapHtml(g) { var pc = Math.round(g * 100); return '<span class="' + (pc > 0 ? "pos" : pc < 0 ? "neg" : "") + '">' + (pc > 0 ? "▲ +" : pc < 0 ? "▼ " : "") + pc + " %</span>"; }
   function fxRow(x) {
     var it = x.it, cell = function (i, cls) { return '<td class="' + (i === x.mi ? "me" : "") + (i === x.rb ? " fxb" : i === x.rs ? " fxs" : "") + (cls ? " " + cls : "") + '">' + (x.p[i] ? money(x.p[i]) : "–") + "</td>"; };
-    return '<tr tabindex="0" data-fx="' + x.fx + '" data-fxg="' + esc(x.gk || "") + '"' + (x.fx === fxSel && (x.gk || "") === fxSelG ? ' aria-selected="true"' : "") + '><td class="fav"></td>' +
+    return '<tr tabindex="0" data-fx="' + x.fx + '" data-fxg="' + esc(x.gk || "") + '"' + (x.fx === fxSel && (x.gk || "") === fxSelG ? ' aria-selected="true"' : "") + '><td class="fav">' + (byId[x.fx] ? starHtml(x.fx) : "") + "</td>" +   // Fav även här (Joakim 2026-11-22)
       '<td class="nm">' + iconHtml(it) + '<span class="' + qcls(it.q) + '" data-tip="' + it.id + '">' + esc(it.name) + "</span>" + (x.gear ? ' <span class="tag" title="' + t("fx_gear_tip") + '">' + t("fx_gear") + "</span>" : "") + "</td>" +
       cell(0) + cell(1) + cell(2, "hide-s") + "<td>" + fxGapHtml(x.gap) + "</td>" +
       '<td class="hide-s ' + (x.profit > 0 ? "pos" : "neg") + '">' + (x.profit > 0 ? "" : "−") + money(Math.abs(x.profit)) + '</td><td class="hide-s">' + (x.d[x.rs] > 0 ? num(Math.round(x.d[x.rs])) : "–") + "</td></tr>";
