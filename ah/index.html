@@ -836,6 +836,9 @@ h3.row { display: flex; align-items: center; justify-content: space-between; gap
 .rdg b { text-align: right; }
 .rdg small { color: var(--grey); font-size: 12px; }
 .rdg .gain span { white-space: normal; }
+.fxleg { margin: 2px 0 4px; } .fxleg span { display: inline-flex; align-items: center; gap: 4px; } .fxleg i { width: 16px; height: 4px; margin-right: 2px; }
+.fxleg img { width: 18px; height: 18px; object-fit: contain; } .fxleg b { color: var(--fg); margin-left: 2px; } .fxleg .me b { color: var(--gold); }
+.fxdd { width: auto; margin-top: 2px; } .fxdd td:first-child { text-align: left; white-space: nowrap; } .fxdd .sw { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 7px; vertical-align: -1px; }
 .rdg .sw { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 7px; vertical-align: -1px; }
 .rdg .gain { grid-column: 1 / -1; display: flex; justify-content: space-between; gap: 12px; margin-top: 4px; padding-top: 4px; border-top: 1px solid var(--line); color: var(--fg); }
 .rdg .gain b { font-size: 14px; }
@@ -1944,16 +1947,18 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     }
     dataCache[h] = { t: Date.now(), d: d };
   }
-  function histFile(day, b) {
-    var k = house + "/" + day + "/" + b;
+  function histFile(day, b, h) {
+    var k = (h || house) + "/" + day + "/" + b;
     if (!histCache[k]) histCache[k] = fetch(DATA_BASE + "hist/" + k + ".json").then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; });
     return histCache[k];
   }
   function dayEnd(k) { return new Date(Math.floor(k / 10000), Math.floor(k / 100 % 100) - 1, k % 100 + 1).getTime() / 1000; }
   // Historiken för en vara från tidpunkten from (0 = allt): { T: [scantider], rh: [riktpris], qh: [antal] }.
-  function histFor(id, from) {
-    var days = (D.days || []).filter(function (k) { return !from || dayEnd(k) >= from; });
-    return Promise.all(days.map(function (k) { return histFile(k, id % 100); })).then(function (files) {
+  // h: ett annat hus än det valda (Horde ⇄ Alliance-grafen), med det husets dagar om dess data.json är laddad.
+  function histFor(id, from, h) {
+    var hd = !h || h === house ? D : dataCache[h] && dataCache[h].d;
+    var days = ((hd && hd.days) || D.days || []).filter(function (k) { return !from || dayEnd(k) >= from; });
+    return Promise.all(days.map(function (k) { return histFile(k, id % 100, h); })).then(function (files) {
       var T = [], rh = [], qh = [], any = false;
       files.forEach(function (f) {
         if (!f) return;
@@ -2026,6 +2031,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
       fx_profit: "Up to %1 per item after Blackwater's 15 % cut.", fx_route2: "Buy on %1 for %2 and sell on %3 for %4.",
       fx_profit2: "Profit %1 per item after the %2 % cut.", fx_loss2: "Loss %1 per item after the %2 % cut.", fx_min: "Stackable items need at least 2 listed on both sides. Gear is compared with exactly the same suffix, by the cheapest listing.",
       fx_how: "Market price on each side's auction house in %1, updated every hour. Blackwater is the neutral auction house both sides can use.",
+      fx_ch_h: "Price on each side", fx_ch_hover: "Hover the graph to see all three prices at that time.", fx_dd_hover: "Hover a day to see morning and evening on each side.", fx_n_listed: "%1 listed",
       fx_nobw: "Not on Blackwater right now", fx_fail: "Could not load the other side's prices.",
       mode_de: "Disenchant", mode_de_tip: "Gear on the AH that is worth more as dust, essences and shards than it costs.",
       de_col_ilvl: "iLvl", de_col_buy: "Buy", de_col_val: "DE value", de_col_val_tip: "What the dust, essences and shards are worth on the AH (after the 5 % cut)", de_col_profit: "Profit", de_col_pct: "%",
@@ -6450,9 +6456,12 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     if (rg) {
       rangeKey = rg.getAttribute("data-range");
       try { localStorage.setItem(RKEY, rangeKey); } catch (e2) {}
+      if (mode === "fx") { if (fxSel) fxDetail(fxSel, fxSelG, true); return; }
       if (selId) select(selId, false);
       return;
     }
+    var fxb = e.target.closest("[data-fxblk]");
+    if (fxb && mode === "fx") { fxBlk = fxb.dataset.fxblk; if (fxSel) fxDetail(fxSel, fxSelG, true); return; }
     var lbme = e.target.closest("[data-lbme]");
     if (lbme && mode === "ar") {
       e.preventDefault();
@@ -8277,7 +8286,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
       cell(0) + cell(1) + cell(2, "hide-s") + "<td>" + fxGapHtml(x.gap) + "</td>" +
       '<td class="hide-s ' + (x.profit > 0 ? "pos" : "neg") + '">' + (x.profit > 0 ? "" : "−") + money(Math.abs(x.profit)) + '</td><td class="hide-s">' + (x.d[x.rs] > 0 ? num(Math.round(x.d[x.rs])) : "–") + "</td></tr>";
   }
-  function fxDetail(id, gk) {
+  function fxDetail(id, gk, keep) {   // keep: bara graferna ritas om (spann, morgon/kväll), rullningen står kvar
     gk = gk || "";
     var x = null;
     view.forEach(function (v) { if (v.fx === id && (v.gk || "") === gk) x = v; });
@@ -8300,14 +8309,159 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
       route = (rc.s === x.oi ? t("fx_route", bn, money(rc.buy), money(rc.sell), there) : t("fx_route2", bn, money(rc.buy), sn, money(rc.sell))) + " " +
         t(rc.profit > 0 ? "fx_profit2" : "fx_loss2", money(Math.abs(rc.profit)), Math.round((1 - rc.cut) * 100));
     }
-    $("detail").scrollTop = 0;
+    if (!keep) $("detail").scrollTop = 0;
+    // Gear: tabellen (historiken blandar slumpade suffix). Annat: grafer per sida (Joakim 2026-11-22: tabellen visade bara
+    // det som redan står i listan, inte vad varan brukar ligga på).
+    var cmp = x.gear ? '<div class="fxcmp"><div></div>' + fas.map(function (i) { return '<div class="fxhd' + (i === x.mi ? " me" : "") + '">' + fxIcon(fxFa(i)) + fxName(fxFa(i)) + (i === x.mi ? '<small class="dim">' + t("fx_you") + "</small>" : "") + "</div>"; }).join("") +
+      row(t("fx_price_gear"), x.p, money, true) + row(t("fx_listed"), x.n, num, false) + "</div>" + '<div class="note">' + t("fx_gear_note") + "</div>"
+      : '<div><h3 class="row">' + t("fx_ch_h") + rangeHtml() + '</h3><div class="legend fxleg">' + fas.map(function (i) {
+          return '<span class="' + (i === x.mi ? "me" : "") + '"><i style="background:' + FX_COL[i] + '"></i>' + fxIcon(fxFa(i)) + fxName(fxFa(i)) + " <b>" + (x.p[i] ? money(x.p[i]) : "–") + "</b>" + (i === x.mi ? ' <small class="dim">' + t("fx_you") + "</small>" : "") + "</span>";
+        }).join("") + '</div><div id="fxChart"><div class="note">' + t("hist_loading") + '</div></div><div class="read" id="fxRead">' + t("fx_ch_hover") + "</div></div>" +
+        '<div><h3 class="row">' + t("dayday") + '<div class="range" role="group">' + ["m", "e"].map(function (b) { return '<button type="button" data-fxblk="' + b + '" aria-pressed="' + (fxBlk === b) + '">' + t(b === "m" ? "lg_morning" : "lg_evening") + "</button>"; }).join("") +
+        '</div></h3><div id="fxDays"></div><div class="read" id="fxDRead">' + t("fx_dd_hover") + "</div></div>";
     $("detail").innerHTML = '<div class="strip"><button class="lnk" type="button" data-copyany="#fx=' + id + (gk ? "&g=" + gk : "") + (house !== 113 ? "&m=" + house : "") + '" title="' + t("copy_link") + '">' + t("copy_link") + "</button>" +
       '<h2 class="' + qcls(it.q) + '">' + iconHtml(it, true) + " " + esc(it.name) + "</h2><small>" + t("fx_how", fxKeys().rg.toUpperCase() + " " + (MK_RSN[fxKeys().rs] || "")).split(".")[0] + "</small></div>" +
-      '<div class="fxcmp"><div></div>' + fas.map(function (i) { return '<div class="fxhd' + (i === x.mi ? " me" : "") + '">' + fxIcon(fxFa(i)) + fxName(fxFa(i)) + (i === x.mi ? '<small class="dim">' + t("fx_you") + "</small>" : "") + "</div>"; }).join("") +
-      row(t(x.gear ? "fx_price_gear" : "fx_price"), x.p, money, true) + row(t("fx_listed"), x.n, num, false) + (x.gear ? "" : row(t("fx_sold"), x.d, function (v) { return num(Math.round(v)); }, false)) + "</div>" +
-      (x.gear ? '<div class="note">' + t("fx_gear_note") + "</div>" : "") +
-      (route ? '<div class="fxroute">' + route + "</div>" : "") + (!x.p[2] ? '<div class="note">' + t("fx_nobw") + "</div>" : "") +
+      (route ? '<div class="fxroute">' + route + "</div>" : "") + cmp + (!x.p[2] ? '<div class="note">' + t("fx_nobw") + "</div>" : "") +
       (byId[id] ? '<div><button class="lnk" type="button" data-upgo="' + id + '">' + t("co_open_ah") + "</button></div>" : "");
+    if (!x.gear) fxFill(id, x.mi);
+  }
+  // ---- Graferna i Horde ⇄ Alliance: en linje per sida (Horde röd, Alliance blå, Blackwater guld) och morgon/kväll som
+  // tre staplar per dag. Historiken hämtas per hus ur hist/<hus>/ (samma dagsfiler som den vanliga grafen).
+  var FX_COL = ["#e0524a", "#5b9be6", "#d6a83b"], fxBlk = "m", fxTok = 0;
+  function rangeSecs() { var s = 0; RANGES.forEach(function (rg) { if (rg[0] === rangeKey) s = rg[1]; }); return s; }
+  function fxFill(id, mi) {
+    var secs = rangeSecs(), from = secs ? D.t - secs : 0, my = ++fxTok, keys = fxKeys().keys;
+    Promise.all(keys.map(function (h) { return histFor(id, from, h).catch(function () { return null; }); })).then(function (HS) {
+      if (my !== fxTok || !$("fxChart")) return;
+      var c = fxChartSvg(HS, mi, from);
+      $("fxChart").innerHTML = c.svg;
+      var days = fxDayData(HS);
+      $("fxDays").innerHTML = fxDaySvg(days);
+      var svg = $("fxChart").querySelector("svg");
+      var show = function (e) {
+        var k = e.target.dataset.k.split(",").map(Number), ts = +e.target.dataset.t, w = when(ts);
+        var h = '<div class="rdh">' + w.day + " " + w.hm + '</div><div class="rdg">';
+        [0, 1, 2].forEach(function (f) {
+          var Hh = HS[f], i = k[f];
+          if (!Hh || i < 0) return;
+          h += '<span><i class="sw" style="background:' + FX_COL[f] + '"></i>' + fxName(fxFa(f)) + "</span><b>" + money(Hh.rh[i]) + "</b><small>" + t("fx_n_listed", num(Hh.qh[i])) + "</small>";
+        });
+        $("fxRead").innerHTML = h + "</div>";
+        var cur = svg.querySelector(".cursor");
+        cur.setAttribute("x1", e.target.dataset.x); cur.setAttribute("x2", e.target.dataset.x); cur.setAttribute("visibility", "visible");
+        var ys = e.target.dataset.y.split(",");
+        svg.querySelectorAll(".fxdot").forEach(function (d, f) { if (ys[f] === "") d.setAttribute("visibility", "hidden"); else { d.setAttribute("cx", e.target.dataset.x); d.setAttribute("cy", ys[f]); d.setAttribute("visibility", "visible"); } });
+      };
+      svg.querySelectorAll(".hit").forEach(function (r) { r.addEventListener("pointerenter", show); r.addEventListener("click", show); });
+      var showDay = function (e) { var dd = days[+e.target.dataset.n]; if (dd) $("fxDRead").innerHTML = fxDayReadout(dd); };
+      $("fxDays").querySelectorAll(".dhit").forEach(function (r) { r.addEventListener("pointerenter", showDay); r.addEventListener("click", showDay); });
+    });
+  }
+  function fxChartSvg(HS, mi, from) {
+    var W = 600, H = 236, L = 82, R = 12, TOP = 14, PH = 190;
+    var maxP = 0, t0 = Infinity, t1 = 0, ser = [];
+    HS.forEach(function (Hh, f) {
+      var pts = [];
+      if (Hh) for (var i = 0; i < Hh.T.length; i++) if (Hh.rh[i] > 0 && Hh.T[i] >= from) { pts.push(i); maxP = Math.max(maxP, Hh.rh[i]); t0 = Math.min(t0, Hh.T[i]); t1 = Math.max(t1, Hh.T[i]); }
+      ser[f] = pts;
+    });
+    if (!(maxP > 0) || t1 <= t0) return { svg: '<div class="note">' + t("few_scans") + "</div>" };
+    // Enstaka toppar (en ensam dyr listning) trycker annars ihop allt annat: skalan slutar vid 2,5 × medianen, toppar
+    // ritas i taket och hovringen visar det riktiga priset.
+    var all = [];
+    HS.forEach(function (Hh, f) { ser[f].forEach(function (i) { all.push(Hh.rh[i]); }); });
+    all.sort(function (a, b) { return a - b; });
+    maxP = Math.min(maxP, Math.max(1, all[Math.floor(all.length / 2)] * 2.5));
+    var span = t1 - t0;
+    var x = function (ts) { return L + (ts - t0) / span * (W - L - R); }, y = function (p) { return TOP + PH - Math.min(p, maxP) / maxP * PH; };
+    var s = '<svg class="chart" viewBox="0 0 ' + W + " " + H + '" role="img" aria-label="' + t("fx_ch_h") + '">';
+    [0, maxP / 2, maxP].forEach(function (p) {
+      s += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + y(p) + '" y2="' + y(p) + '" stroke="#2a313b" stroke-width="1"/>' +
+        '<text x="' + (L - 6) + '" y="' + (y(p) + 4) + '" text-anchor="end" font-size="19" font-weight="600" fill="#b9aea1">' + moneyText(p) + "</text>";
+    });
+    var secs = rangeSecs(), hours = secs > 0 && secs <= 86400, d = new Date(t0 * 1000);   // tidsaxeln som i den vanliga grafen
+    if (hours) d.setHours(Math.ceil((d.getHours() + d.getMinutes() / 60) / 3) * 3, 0, 0, 0); else d.setHours(24, 0, 0, 0);
+    var lastX = -99, stepS = hours ? 3 * 3600 : 86400;
+    for (var m = d.getTime() / 1000; m < t1; m += stepS) {
+      var mx = x(m), dd = new Date(m * 1000), mid = !hours || dd.getHours() === 0;
+      s += '<line x1="' + mx + '" x2="' + mx + '" y1="' + TOP + '" y2="' + (TOP + PH) + '" stroke="#2a313b" stroke-width="1"' + (mid ? ' stroke-dasharray="2 3"' : ' stroke-opacity=".5"') + "/>";
+      if (mx - lastX > 40 && mx + 3 + 54 <= W) {
+        s += '<text x="' + (mx + 3) + '" y="' + (H - 4) + '" font-size="19" font-weight="600" fill="#b9aea1">' + (hours ? (dd.getHours() < 10 ? "0" : "") + dd.getHours() + ":00" : dd.getDate() + "/" + (dd.getMonth() + 1)) + "</text>";
+        lastX = mx;
+      }
+    }
+    [0, 1, 2].filter(function (f) { return f !== mi; }).concat([mi]).forEach(function (f) {   // din sida överst
+      var Hh = HS[f], pts = ser[f];
+      if (!Hh || pts.length < 2) return;
+      s += '<polyline fill="none" stroke="' + FX_COL[f] + '" stroke-width="' + (f === mi ? 2.6 : 2) + '" stroke-linejoin="round" points="' + pts.map(function (i) { return x(Hh.T[i]).toFixed(1) + "," + y(Hh.rh[i]).toFixed(1); }).join(" ") + '"/>';
+    });
+    s += '<line class="cursor" x1="0" x2="0" y1="' + TOP + '" y2="' + (TOP + PH) + '" stroke="#ffd100" stroke-opacity=".5" stroke-width="1" visibility="hidden"/>';
+    [0, 1, 2].forEach(function (f) { s += '<circle class="fxdot" r="4.5" fill="' + FX_COL[f] + '" stroke="#0e1114" stroke-width="1.5" visibility="hidden"/>'; });
+    // Träffytor längs den sida som har flest punkter; för varje punkt närmaste värde på de andra sidorna (högst 90 min bort).
+    var ref = 0;
+    [1, 2].forEach(function (f) { if (ser[f].length > ser[ref].length) ref = f; });
+    var near = function (f, ts) {
+      var Hh = HS[f], best = -1, bd = 5400;
+      ser[f].forEach(function (i) { var dlt = Math.abs(Hh.T[i] - ts); if (dlt <= bd) { bd = dlt; best = i; } });
+      return best;
+    };
+    var rp = ser[ref], RH = HS[ref];
+    rp.forEach(function (i, n) {
+      var ts = RH.T[i], cx = x(ts), a = n ? (x(RH.T[rp[n - 1]]) + cx) / 2 : L, b = n < rp.length - 1 ? (cx + x(RH.T[rp[n + 1]])) / 2 : W - R;
+      var k = [0, 1, 2].map(function (f) { return f === ref ? i : HS[f] ? near(f, ts) : -1; });
+      var ys = k.map(function (j, f) { return j >= 0 ? y(HS[f].rh[j]).toFixed(1) : ""; });
+      s += '<rect class="hit" data-t="' + ts + '" data-k="' + k.join(",") + '" data-y="' + ys.join(",") + '" data-x="' + cx.toFixed(1) + '" x="' + a + '" y="' + TOP + '" width="' + Math.max(1, b - a) + '" height="' + PH + '" fill="transparent"/>';
+    });
+    return { svg: s + "</svg>" };
+  }
+  function fxDayData(HS) {   // [{ key, v: [[morgon, kväll] per sida] }]
+    var map = {}, order = [];
+    HS.forEach(function (Hh, f) {
+      if (!Hh) return;
+      dayData(null, Hh).forEach(function (dd) {
+        if (!map[dd.key]) { map[dd.key] = { key: dd.key, v: [[0, 0], [0, 0], [0, 0]] }; order.push(dd.key); }
+        map[dd.key].v[f] = [dd.m, dd.e];
+      });
+    });
+    order.sort();
+    return order.map(function (k) { return map[k]; });
+  }
+  function fxDaySvg(days) {
+    var bi = fxBlk === "m" ? 0 : 1;
+    if (!days.some(function (dd) { return dd.v.some(function (v) { return v[bi] > 0; }); })) return '<div class="note">' + t("dd_none") + "</div>";
+    var W = 600, H = 150, L = 82, R = 12, TOP = 12, BH = 108, BASE = TOP + BH, maxP = 1;
+    var vals = [];
+    days.forEach(function (dd) { dd.v.forEach(function (v) { if (v[bi] > 0) { maxP = Math.max(maxP, v[bi]); vals.push(v[bi]); } }); });
+    vals.sort(function (a, b) { return a - b; });
+    maxP = Math.min(maxP, Math.max(1, vals[Math.floor(vals.length / 2)] * 2.5));   // som linjegrafen: toppar i taket
+    var gw = (W - L - R) / Math.max(days.length, 4), bw = Math.max(3, Math.min(14, Math.floor((gw - 8) / 3)));
+    var x0 = L + ((W - L - R) - days.length * gw) / 2;
+    var s = '<svg class="chart chart2" viewBox="0 0 ' + W + " " + H + '" role="img" aria-label="' + t("dayday") + '">';
+    [maxP / 2, maxP].forEach(function (p) {
+      var yy = BASE - p / maxP * BH;
+      s += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + yy + '" y2="' + yy + '" stroke="#2a313b"/>' +
+        '<text x="' + (L - 6) + '" y="' + (yy + 4) + '" text-anchor="end" font-size="19" font-weight="600" fill="#b9aea1">' + moneyText(p) + "</text>";
+    });
+    s += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + BASE + '" y2="' + BASE + '" stroke="#d6a83b" stroke-opacity=".5"/>';
+    var lastX = -99;
+    days.forEach(function (dd, n) {
+      var cx = x0 + n * gw + gw / 2;
+      dd.v.forEach(function (v, f) {
+        var hh = v[bi] ? Math.max(1, Math.min(v[bi], maxP) / maxP * BH) : 0;
+        if (hh) s += '<rect x="' + (cx - 1.5 * bw - 1 + f * (bw + 1)).toFixed(1) + '" y="' + (BASE - hh) + '" width="' + bw + '" height="' + hh + '" fill="' + FX_COL[f] + '" fill-opacity=".9"/>';
+      });
+      if (cx - lastX > 44) { s += '<text x="' + cx + '" y="' + (H - 4) + '" text-anchor="middle" font-size="19" font-weight="600" fill="#b9aea1">' + (dd.key % 100) + "/" + Math.floor(dd.key / 100 % 100) + "</text>"; lastX = cx; }
+      s += '<rect class="dhit" data-n="' + n + '" x="' + (x0 + n * gw) + '" y="' + TOP + '" width="' + gw + '" height="' + (BASE - TOP) + '" fill="transparent"/>';
+    });
+    return s + "</svg>";
+  }
+  function fxDayReadout(dd) {
+    var h = '<div class="rdh">' + (dd.key % 100) + "/" + Math.floor(dd.key / 100 % 100) + '</div><table class="steps fxdd"><thead><tr><th></th><th>' + t("lg_morning") + "</th><th>" + t("lg_evening") + "</th></tr></thead><tbody>";
+    dd.v.forEach(function (v, f) {
+      if (!v[0] && !v[1]) return;
+      h += '<tr><td><i class="sw" style="background:' + FX_COL[f] + '"></i>' + fxName(fxFa(f)) + "</td><td>" + (v[0] ? money(v[0]) : "–") + "</td><td>" + (v[1] ? money(v[1]) : "–") + "</td></tr>";
+    });
+    return h + "</tbody></table>";
   }
   function fxStart(want, keep) {
     if (!keep) $("detail").innerHTML = '<div class="note">' + t("ar_loading") + "</div>";
