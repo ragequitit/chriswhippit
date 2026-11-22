@@ -836,7 +836,8 @@ h3.row { display: flex; align-items: center; justify-content: space-between; gap
 .rdg b { text-align: right; }
 .rdg small { color: var(--grey); font-size: 12px; }
 .rdg .gain span { white-space: normal; }
-.fxleg { margin: 2px 0 4px; } .fxleg span { display: inline-flex; align-items: center; gap: 4px; } .fxleg i { width: 16px; height: 4px; margin-right: 2px; }
+.fxleg { display: flex; gap: 6px 16px; flex-wrap: wrap; margin: 2px 0 4px; font-size: 13px; font-weight: 600; color: var(--grey); }
+.fxleg span { display: inline-flex; align-items: center; gap: 4px; } .fxleg i.ln { display: inline-block; width: 16px; height: 4px; border-radius: 2px; margin-right: 2px; }   /* bara strecket: mynten (i.coin) får sin vanliga stil */
 .fxleg img { width: 18px; height: 18px; object-fit: contain; } .fxleg b { color: var(--fg); margin-left: 2px; } .fxleg .me b { color: var(--gold); }
 .fxdd { width: auto; margin-top: 2px; } .fxdd td:first-child { text-align: left; white-space: nowrap; } .fxdd .sw { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 7px; vertical-align: -1px; }
 .rdg .sw { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 7px; vertical-align: -1px; }
@@ -8314,13 +8315,13 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     // det som redan står i listan, inte vad varan brukar ligga på).
     var cmp = x.gear ? '<div class="fxcmp"><div></div>' + fas.map(function (i) { return '<div class="fxhd' + (i === x.mi ? " me" : "") + '">' + fxIcon(fxFa(i)) + fxName(fxFa(i)) + (i === x.mi ? '<small class="dim">' + t("fx_you") + "</small>" : "") + "</div>"; }).join("") +
       row(t("fx_price_gear"), x.p, money, true) + row(t("fx_listed"), x.n, num, false) + "</div>" + '<div class="note">' + t("fx_gear_note") + "</div>"
-      : '<div><h3 class="row">' + t("fx_ch_h") + rangeHtml() + '</h3><div class="legend fxleg">' + fas.map(function (i) {
-          return '<span class="' + (i === x.mi ? "me" : "") + '"><i style="background:' + FX_COL[i] + '"></i>' + fxIcon(fxFa(i)) + fxName(fxFa(i)) + " <b>" + (x.p[i] ? money(x.p[i]) : "–") + "</b>" + (i === x.mi ? ' <small class="dim">' + t("fx_you") + "</small>" : "") + "</span>";
+      : '<div><h3 class="row">' + t("fx_ch_h") + rangeHtml() + '</h3><div class="fxleg">' + fas.map(function (i) {
+          return '<span class="' + (i === x.mi ? "me" : "") + '"><i class="ln" style="background:' + FX_COL[i] + '"></i>' + fxIcon(fxFa(i)) + fxName(fxFa(i)) + " <b>" + (x.p[i] ? money(x.p[i]) : "–") + "</b>" + (i === x.mi ? ' <small class="dim">' + t("fx_you") + "</small>" : "") + "</span>";
         }).join("") + '</div><div id="fxChart"><div class="note">' + t("hist_loading") + '</div></div><div class="read" id="fxRead">' + t("fx_ch_hover") + "</div></div>" +
         '<div><h3 class="row">' + t("dayday") + '<div class="range" role="group">' + ["m", "e"].map(function (b) { return '<button type="button" data-fxblk="' + b + '" aria-pressed="' + (fxBlk === b) + '">' + t(b === "m" ? "lg_morning" : "lg_evening") + "</button>"; }).join("") +
         '</div></h3><div id="fxDays"></div><div class="read" id="fxDRead">' + t("fx_dd_hover") + "</div></div>";
     $("detail").innerHTML = '<div class="strip"><button class="lnk" type="button" data-copyany="#fx=' + id + (gk ? "&g=" + gk : "") + (house !== 113 ? "&m=" + house : "") + '" title="' + t("copy_link") + '">' + t("copy_link") + "</button>" +
-      '<h2 class="' + qcls(it.q) + '">' + iconHtml(it, true) + " " + esc(it.name) + "</h2><small>" + t("fx_how", fxKeys().rg.toUpperCase() + " " + (MK_RSN[fxKeys().rs] || "")).split(".")[0] + "</small></div>" +
+      '<h2 class="' + qcls(it.q) + '">' + iconHtml(it, true) + " " + esc(it.name) + "</h2></div>" +   // undertexten "Market price on each side…" bort (Joakim 2026-11-22: överflödig)
       (route ? '<div class="fxroute">' + route + "</div>" : "") + cmp + (!x.p[2] ? '<div class="note">' + t("fx_nobw") + "</div>" : "") +
       (byId[id] ? '<div><button class="lnk" type="button" data-upgo="' + id + '">' + t("co_open_ah") + "</button></div>" : "");
     if (!x.gear) fxFill(id, x.mi);
