@@ -1394,6 +1394,14 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
 .hxnw .nm small { color: var(--hx-fg2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .hxnw .ch { min-width: 0; font-size: 12.5px; color: var(--hx-fg2); }
 .hxnw .bl { color: #4fa3ff; }
+.hxblue .hxnw .nm b { color: #3fb4ff; }
+.hxblue h3 { flex-wrap: wrap; }
+.hxreg { display: inline-flex; margin-left: auto; border: 1px solid var(--hx-line); border-radius: 6px; overflow: hidden; }
+.hxreg button { all: unset; cursor: pointer; padding: 5px 10px; font: 600 12px/1 "Instrument Sans", system-ui, sans-serif; color: var(--hx-fg2); }
+.hxreg button + button { border-left: 1px solid var(--hx-line); }
+.hxreg button[aria-pressed=true] { background: #1d6fd1; color: #fff; }
+.hxreg button:hover { color: var(--hx-fg); } .hxreg button[aria-pressed=true]:hover { color: #fff; }
+.hxreg button:focus-visible { outline: 2px solid var(--hx-acc); outline-offset: -2px; }
 .hxnews h3 { flex-wrap: wrap; }
 .hxfixq { flex: 1 1 180px; max-width: 300px; min-width: 0; height: 28px; padding: 0 10px; border: 1px solid var(--hx-line); border-radius: 6px; background: transparent; color: var(--hx-fg);
   font: 400 13px/1 "Instrument Sans", system-ui, sans-serif; }
@@ -1412,7 +1420,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
 @media (max-width: 1250px) { .hxrow { grid-template-columns: repeat(2, minmax(0, 1fr)); } .hxcards { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 @media (max-width: 900px) { .hxtop { grid-template-columns: minmax(0, 1fr); } }
 @media (max-width: 1400px) { .hxspark { width: 110px; } }
-@media (max-width: 700px) { .hxspark { display: none; } .hxrow, .hxcards { grid-template-columns: minmax(0, 1fr); } .hxbox.wide { grid-column: auto; } .hxchips button { width: 40px; height: 40px; } .hxfixq { height: 36px; max-width: none; } .hxpr strong { font-size: 32px; } .hxit { max-width: 100%; } .hxit b { font-size: 20px; } .hxpic { width: 60%; opacity: .35; } }
+@media (max-width: 700px) { .hxspark { display: none; } .hxrow, .hxcards { grid-template-columns: minmax(0, 1fr); } .hxbox.wide { grid-column: auto; } .hxreg button { padding: 12px 16px; } .hxchips button { width: 40px; height: 40px; } .hxfixq { height: 36px; max-width: none; } .hxpr strong { font-size: 32px; } .hxit { max-width: 100%; } .hxit b { font-size: 20px; } .hxpic { width: 60%; opacity: .35; } }
 .hchips { display: flex; flex-wrap: wrap; gap: 6px; }
 .hchips a, .hchips button { all: unset; cursor: pointer; padding: 4px 11px; border: 1px solid var(--line); border-radius: 14px; color: var(--fg); font-size: 13px; }
 .hchips a:hover, .hchips button:hover { border-color: var(--gold); }
@@ -2233,7 +2241,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
       h_q_raid: "When do the raids open?", h_raid_in: "in %1 days", h_raid_1: "Tomorrow", h_raid_open: "Open now", h_raid_s: "9 December · new raids on Forever", h_raid_since: "Since 9 December",
       cl_land_h: "Choose a class", cl_roles_h: "Who does what", cl_role_tank: "Tank", cl_role_heal: "Healer", cl_role_dps: "Damage", cl_roles_note: "Roles as in Classic. Every class can deal damage; tanks and healers are what groups look for.", cl_land_tip: "A beginner guide from 1 to 60, talent calculator, spells with level and trainer cost, pet spells, class quests and trainers.", cl_land_n: "%1 spells", cl_land_pets: "%1 pets", cl_land_demons: "%1 demons",
       cl_land_right: "Pick a class to open its beginner guide: how to play it from level 1 to 60 and where every talent point goes. The talent calculator, spells, pet spells, class quests and trainers are under the class in the list.", h_show_n: "Show %1 of %2", h_rise_big: "Biggest rise right now", h_over: "over the usual price", h_none: "Nothing right now.", h_per_day: "%1/day", h_cheap_none: "Prices are loading…", h_watch: "My list", h_watch_none: "Star ☆ an item and its price shows up here.", h_players: "Players", h_guilds: "Guilds", h_news: "WoW Forever news", h_blue: "Blue posts", h_news_all: "Forum →", h_news_none: "No news yet.", h_d_ago: "%1 d ago", h_news_by: "%1 · %2", h_news_tip: "Opens Blizzard's forum in a new tab", h_fix_ph: "Search hotfixes: class, profession, item…", h_fix_n: "%1 hotfixes, newest first",
-      h_fix_none: "No hotfix mentions that yet.", h_fix_tip: "Opens Blizzard's hotfix post", h_fix_chip: "Hotfixes for %1", h_fix_gen: "General", h_lvl: "Lvl %1", h_members: "%1 members", h_players_none: "Look someone up in the Armory and they show up here.", ar_land_lb: "Leaderboards ›", ar_land_recent: "Recent", ar_land_friends: "Friends", on_ah: "%1 items on the auction house", market_label: "Market", search_btn: "Search", col_fav: "Fav",
+      h_fix_none: "No hotfix mentions that yet.", h_fix_tip: "Opens Blizzard's hotfix post", h_fix_chip: "Hotfixes for %1", h_fix_gen: "General", h_blue_reg: "Forum region", h_blue_eu: "Blue posts from the EU forums", h_blue_us: "Blue posts from the US forums", h_lvl: "Lvl %1", h_members: "%1 members", h_players_none: "Look someone up in the Armory and they show up here.", ar_land_lb: "Leaderboards ›", ar_land_recent: "Recent", ar_land_friends: "Friends", on_ah: "%1 items on the auction house", market_label: "Market", search_btn: "Search", col_fav: "Fav",
       hist_loading: "Loading history…", hist_fail: "The history could not be loaded.", today: "today", item_n: "Item %1",
       copy_link: "Copy link", copied: "Link copied", star_add: "Watch this item", star_del: "Remove from my list", star_all: "All reagents to my list", star_all_del: "Remove reagents from my list", star_lbl_add: "Watch", star_lbl_on: "In my list",
       not_listed: "not listed now", remove: "Remove", watch_sub: "Saved in your browser, only you can see it.",
@@ -7148,6 +7156,9 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
   // News och Blue posts ur Blizzards forum (hamta-nyheter.js → news.json, molnet två gånger i timmen). Länkar till forumet.
   // Hotfix-sök (Joakim 2026-11-23): sökfält + klass-/yrkesikoner i News-rutan, träffar ur Blizzards hotfix-trådar (news.json "fix").
   var homeFixQ = "";
+  // Blue posts: EU eller US (Joakim 2026-11-23: "en väljare där uppe på blue posts. EU. US."), sparas per besökare
+  var BLUE_KEY = "atlas-blue-region";
+  var homeBlueR = (function () { try { return localStorage.getItem(BLUE_KEY) === "us" ? "us" : "eu"; } catch (e) { return "eu"; } })();
   function newsAgo(at) { var m = Math.max(1, Math.round((Date.now() - at) / 6e4)); return m < 60 ? t("h_min_ago", m) : m < 1440 ? t("h_h_ago", Math.round(m / 60)) : t("h_d_ago", Math.round(m / 1440)); }
   var NEWS_IC = [[/hotfix/i, "inv_misc_wrench_01"], [/podcast/i, "inv_misc_horn_01"], [/short story|watch|video/i, "inv_misc_book_09"], [/pvp|faction|player versus/i, "inv_bannerpvp_01"],
     [/dungeon|raid/i, "inv_misc_key_10"], [/fishing/i, "trade_fishing"], [/camping/i, "spell_fire_fire"], [/profession|tailoring|blacksmith|engineer|alchemy|enchant|leather|herbalism|mining|skinning|cooking/i, "trade_engineering"],
@@ -7181,7 +7192,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
   function newsBody(kind) {
     var blue = kind === "blue";
     if (!blue) { var f = fixList(); if (f) return f; }
-    var L = homeNews ? (homeNews[kind] || []).slice(0, 8) : null;
+    var L = homeNews ? (homeNews[kind] || []).filter(function (x) { return !blue || x.r === homeBlueR; }).slice(0, 8) : null;
     return !L ? '<div class="hnone">' + t("ar_loading") + "</div>" : !L.length ? '<div class="hnone">' + t("h_news_none") + "</div>" : '<div class="hxlist">' + L.map(function (x) {
       var fresh = Date.now() - x.at < 864e5;
       var main = blue ? x.ex || x.title : x.title, sub = blue ? '<span class="bl">' + esc(x.by) + "</span> · " + esc(x.title) : esc(x.by);
@@ -7198,9 +7209,11 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
   }
   function newsBox(kind) {
     var blue = kind === "blue";
-    var forum = "https://eu.forums.blizzard.com/en/wow/" + (blue ? "groups/blizzard-tracker/activity/posts" : "c/wow-forever/359");
+    var forum = "https://" + (blue ? homeBlueR : "eu") + ".forums.blizzard.com/en/wow/" + (blue ? "groups/blizzard-tracker/activity/posts" : "c/wow-forever/359");
+    var reg = !blue ? "" : '<span class="hxreg" role="group" aria-label="' + esc(t("h_blue_reg")) + '">' + ["eu", "us"].map(function (r) {
+      return '<button type="button" data-bluer="' + r + '" aria-pressed="' + (homeBlueR === r) + '" title="' + esc(t("h_blue_" + r)) + '">' + r.toUpperCase() + "</button>"; }).join("") + "</span>";
     var search = blue ? "" : '<input id="hxfixq" class="hxfixq" type="search" autocomplete="off" spellcheck="false" placeholder="' + esc(t("h_fix_ph")) + '" aria-label="' + esc(t("h_fix_ph")) + '" value="' + esc(homeFixQ) + '">';
-    return '<section class="hxbox wide' + (blue ? "" : " hxnews") + '"><h3><span>' + t(blue ? "h_blue" : "h_news") + "</span>" + search + '<a href="' + forum + '" target="_blank" rel="noopener">' + t("h_news_all") + "</a></h3>" +
+    return '<section class="hxbox wide' + (blue ? " hxblue" : " hxnews") + '"><h3><span>' + t(blue ? "h_blue" : "h_news") + "</span>" + search + reg + '<a id="' + (blue ? "hxbluef" : "hxnewsf") + '" href="' + forum + '" target="_blank" rel="noopener">' + t("h_news_all") + "</a></h3>" +
       (blue ? "" : newsChips()) + '<div id="' + (blue ? "hxblueb" : "hxnewsb") + '">' + newsBody(kind) + "</div></section>";
   }
   function newsFixRedraw() {
@@ -7208,6 +7221,13 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     var q = homeFixQ.trim().toLowerCase();
     document.querySelectorAll(".hxchips button").forEach(function (x) { x.setAttribute("aria-pressed", String(q === x.dataset.fixq.toLowerCase())); });
   }
+  document.addEventListener("click", function (e) {
+    var b = e.target.closest && e.target.closest("[data-bluer]"); if (!b) return;
+    homeBlueR = b.dataset.bluer; try { localStorage.setItem(BLUE_KEY, homeBlueR); } catch (e2) { /* gäller tills sidan stängs */ }
+    document.querySelectorAll("[data-bluer]").forEach(function (x) { x.setAttribute("aria-pressed", String(x.dataset.bluer === homeBlueR)); });
+    var body = $("hxblueb"); if (body) body.innerHTML = newsBody("blue");
+    var f = $("hxbluef"); if (f) f.href = "https://" + homeBlueR + ".forums.blizzard.com/en/wow/groups/blizzard-tracker/activity/posts";
+  });
   document.addEventListener("input", function (e) { if (e.target && e.target.id === "hxfixq") { homeFixQ = e.target.value; newsFixRedraw(); } });
   document.addEventListener("click", function (e) {
     var b = e.target.closest && e.target.closest("[data-fixq]"); if (!b) return;
