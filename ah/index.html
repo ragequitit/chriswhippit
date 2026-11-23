@@ -1385,10 +1385,20 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
 .hxli .nm { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .hxli .pr { white-space: nowrap; text-align: right; font-size: 13.5px; } .hxli .pr.dim { max-width: 130px; overflow: hidden; text-overflow: ellipsis; }
 .hxli .ch { min-width: 52px; text-align: right; white-space: nowrap; font-size: 13.5px; }
+/* News och Blue posts (Joakim 2026-11-23): två breda rutor, rubrik + vem/när, blue posts med Blizzards första rad */
+.hxbox.wide { grid-column: span 2; }
+.hxnw { grid-template-columns: 26px minmax(0, 1fr) auto; min-height: 40px; padding-top: 4px; padding-bottom: 4px; }
+.hxnw .ic { border-radius: 3px; }
+.hxnw .nm { display: grid; gap: 1px; white-space: normal; }
+.hxnw .nm b { font-weight: 500; color: var(--hx-fg); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.hxnw .nm small { color: var(--hx-fg2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.hxnw .ch { min-width: 0; font-size: 12.5px; color: var(--hx-fg2); }
+.hxnw .bl { color: #4fa3ff; }
+.hxnw.new .ch::before { content: ""; display: inline-block; width: 7px; height: 7px; margin-right: 6px; border-radius: 50%; background: var(--hx-acc); vertical-align: 1px; }
 @media (max-width: 1250px) { .hxrow { grid-template-columns: repeat(2, minmax(0, 1fr)); } .hxcards { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 @media (max-width: 900px) { .hxtop { grid-template-columns: minmax(0, 1fr); } }
 @media (max-width: 1400px) { .hxspark { width: 110px; } }
-@media (max-width: 700px) { .hxspark { display: none; } .hxrow, .hxcards { grid-template-columns: minmax(0, 1fr); } .hxpr strong { font-size: 32px; } .hxit { max-width: 100%; } .hxit b { font-size: 20px; } .hxpic { width: 60%; opacity: .35; } }
+@media (max-width: 700px) { .hxspark { display: none; } .hxrow, .hxcards { grid-template-columns: minmax(0, 1fr); } .hxbox.wide { grid-column: auto; } .hxpr strong { font-size: 32px; } .hxit { max-width: 100%; } .hxit b { font-size: 20px; } .hxpic { width: 60%; opacity: .35; } }
 .hchips { display: flex; flex-wrap: wrap; gap: 6px; }
 .hchips a, .hchips button { all: unset; cursor: pointer; padding: 4px 11px; border: 1px solid var(--line); border-radius: 14px; color: var(--fg); font-size: 13px; }
 .hchips a:hover, .hchips button:hover { border-color: var(--gold); }
@@ -2208,7 +2218,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
       rd_src: "Facts from Blizzard's announcement as reported by", h_craft_big: "Best craft right now", h_cost: "Cost", h_sells: "Sells for", h_open_rec: "Open recipe", h_skill: "skill %1", h_cd: "%1 h cooldown",
       h_q_raid: "When do the raids open?", h_raid_in: "in %1 days", h_raid_1: "Tomorrow", h_raid_open: "Open now", h_raid_s: "9 December · new raids on Forever", h_raid_since: "Since 9 December",
       cl_land_h: "Choose a class", cl_roles_h: "Who does what", cl_role_tank: "Tank", cl_role_heal: "Healer", cl_role_dps: "Damage", cl_roles_note: "Roles as in Classic. Every class can deal damage; tanks and healers are what groups look for.", cl_land_tip: "A beginner guide from 1 to 60, talent calculator, spells with level and trainer cost, pet spells, class quests and trainers.", cl_land_n: "%1 spells", cl_land_pets: "%1 pets", cl_land_demons: "%1 demons",
-      cl_land_right: "Pick a class to open its beginner guide: how to play it from level 1 to 60 and where every talent point goes. The talent calculator, spells, pet spells, class quests and trainers are under the class in the list.", h_show_n: "Show %1 of %2", h_rise_big: "Biggest rise right now", h_over: "over the usual price", h_none: "Nothing right now.", h_per_day: "%1/day", h_cheap_none: "Prices are loading…", h_watch: "My list", h_watch_none: "Star ☆ an item and its price shows up here.", h_players: "Players", h_guilds: "Guilds", h_lvl: "Lvl %1", h_members: "%1 members", h_players_none: "Look someone up in the Armory and they show up here.", ar_land_lb: "Leaderboards ›", ar_land_recent: "Recent", ar_land_friends: "Friends", on_ah: "%1 items on the auction house", market_label: "Market", search_btn: "Search", col_fav: "Fav",
+      cl_land_right: "Pick a class to open its beginner guide: how to play it from level 1 to 60 and where every talent point goes. The talent calculator, spells, pet spells, class quests and trainers are under the class in the list.", h_show_n: "Show %1 of %2", h_rise_big: "Biggest rise right now", h_over: "over the usual price", h_none: "Nothing right now.", h_per_day: "%1/day", h_cheap_none: "Prices are loading…", h_watch: "My list", h_watch_none: "Star ☆ an item and its price shows up here.", h_players: "Players", h_guilds: "Guilds", h_news: "WoW Forever news", h_blue: "Blue posts", h_news_all: "Forum →", h_news_none: "No news yet.", h_d_ago: "%1 d ago", h_news_by: "%1 · %2", h_news_tip: "Opens Blizzard's forum in a new tab", h_lvl: "Lvl %1", h_members: "%1 members", h_players_none: "Look someone up in the Armory and they show up here.", ar_land_lb: "Leaderboards ›", ar_land_recent: "Recent", ar_land_friends: "Friends", on_ah: "%1 items on the auction house", market_label: "Market", search_btn: "Search", col_fav: "Fav",
       hist_loading: "Loading history…", hist_fail: "The history could not be loaded.", today: "today", item_n: "Item %1",
       copy_link: "Copy link", copied: "Link copied", star_add: "Watch this item", star_del: "Remove from my list", star_all: "All reagents to my list", star_all_del: "Remove reagents from my list", star_lbl_add: "Watch", star_lbl_on: "In my list",
       not_listed: "not listed now", remove: "Remove", watch_sub: "Saved in your browser, only you can see it.",
@@ -7046,7 +7056,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
   $("sect").addEventListener("click", function () { tabHome(); });   // flikens rubrik: flikens start
   // Startsidan (Joakim 2026-11-20): flikarna som rutor, billigt just nu, din lista och dina spelare. Länkarna är vanliga
   // #-adresser, så bakåt, mittenklick och kopiera fungerar som överallt; popstate ritar sidan från adressen.
-  var homeRaf = 0, homeRecTry = false, homeKatIdx = null, homeCoTry = false, homeAlTry = false, homeAL = null;
+  var homeRaf = 0, homeRecTry = false, homeKatIdx = null, homeCoTry = false, homeAlTry = false, homeAL = null, homeNews = null, homeNewsTry = false;
   // Stora korten: vilken av topp 3 som visas, prickarna byter utan att rita om sidan, och var 8:e s byts den av sig själv
   // (inte medan musen eller fokus är på kortet, inte i en dold flik).
   var homeSlide = { craft: 0, rise: 0 };
@@ -7162,9 +7172,26 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     };
     var pplHtml = chars.length || guilds.length ? (chars.length ? '<div class="hxlist">' + chars.map(pRow).join("") + "</div>" : "") + (guilds.length ? '<h4>' + t("h_guilds") + '</h4><div class="hxlist">' + guilds.map(gRow).join("") + "</div>" : "")
       : '<div class="hnone">' + t("h_players_none") + "</div>";
+    // News och Blue posts ur Blizzards forum (hamta-nyheter.js → news.json, molnet två gånger i timmen). Länkar till forumet.
+    var ago = function (at) { var m = Math.max(1, Math.round((Date.now() - at) / 6e4)); return m < 60 ? t("h_min_ago", m) : m < 1440 ? t("h_h_ago", Math.round(m / 60)) : t("h_d_ago", Math.round(m / 1440)); };
+    var NEWS_IC = [[/hotfix/i, "inv_misc_wrench_01"], [/podcast/i, "inv_misc_horn_01"], [/short story|watch|video/i, "inv_misc_book_09"], [/pvp|faction/i, "inv_bannerpvp_01"],
+      [/dungeon|raid/i, "inv_misc_key_10"], [/known issues|bug|fix|abuse|refund/i, "inv_misc_gear_01"], [/weekly|news|live|launch/i, "inv_letter_15"]];
+    var newsIc = function (title, blue) { var n = blue ? "inv_misc_note_01" : "inv_scroll_03"; for (var i = 0; i < NEWS_IC.length; i++) if (NEWS_IC[i][0].test(title)) { n = NEWS_IC[i][1]; break; } return '<img class="ic" src="' + RICON + n + '.jpg" width="24" height="24" alt="" loading="lazy">'; };
+    var newsBox = function (kind) {
+      var L = homeNews ? (homeNews[kind] || []).slice(0, 8) : null, blue = kind === "blue";
+      var forum = "https://eu.forums.blizzard.com/en/wow/" + (blue ? "groups/blizzard-tracker/activity/posts" : "c/wow-forever/359");
+      var body = !L ? '<div class="hnone">' + t("ar_loading") + "</div>" : !L.length ? '<div class="hnone">' + t("h_news_none") + "</div>" : '<div class="hxlist">' + L.map(function (x) {
+        var fresh = Date.now() - x.at < 864e5;
+        var main = blue ? x.ex || x.title : x.title, sub = blue ? '<span class="bl">' + esc(x.by) + "</span> · " + esc(x.title) : esc(x.by);
+        return '<a class="hxli hxnw' + (fresh ? " new" : "") + '" href="' + esc(x.url) + '" target="_blank" rel="noopener" title="' + esc(t("h_news_tip")) + '">' + newsIc(x.title, blue) +
+          '<span class="nm"><b>' + esc(main) + "</b><small>" + sub + '</small></span><span class="ch">' + ago(x.at) + "</span></a>";
+      }).join("") + "</div>";
+      return '<section class="hxbox wide"><h3><span>' + t(blue ? "h_blue" : "h_news") + '</span><a href="' + forum + '" target="_blank" rel="noopener">' + t("h_news_all") + "</a></h3>" + body + "</section>";
+    };
     var box = function (h, all, body) { return '<section class="hxbox"><h3><span>' + h + "</span>" + (all ? '<a href="' + all + '">' + t("h_all") + "</a>" : "") + "</h3>" + body + "</section>"; };
     var list = function (L, f2, none) { return L.length ? '<div class="hxlist">' + L.map(f2).join("") + "</div>" : '<div class="hnone">' + t(D ? none || "h_none" : "h_cheap_none") + "</div>"; };
     if (!CO && !homeCoTry) { homeCoTry = true; loadCo().then(function () { homeLater(); }).catch(function () {}); }
+    if (!homeNews && !homeNewsTry) { homeNewsTry = true; fetch(DATA_BASE + "news.json").then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }).then(function (j) { homeNews = j; homeLater(); }).catch(function () {}); }
     if (!homeAL && !homeAlTry) { homeAlTry = true; fetch(DATA_BASE + "atlasloot-forever.json").then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }).then(function (j) { homeAL = j; homeLater(); }).catch(function () {}); }
     var B = ASSET_BASE ? ASSET_BASE + "backgrounds/" : "";
     // Två stora kort: köp (största rabatten) och sälj (största uppgången), bild till höger som tonas in. Topp 3 per kort
@@ -7248,6 +7275,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
         box(t("h_dayt"), "#tab=tr&v=bs" + mk, list(dayt, function (r) { return row("#tab=tr&v=bs&item=" + r.id + mk, iconHtml(r), r.name, r.q, moneyText(r.min), tradeHtml(r)); })) +
         box(t("h_watch"), "", wl.length ? '<div class="hxlist">' + wl.map(function (r) { return li(r, "#item=" + r.id + mk); }).join("") + "</div>" : '<div class="hnone">' + t("h_watch_none") + "</div>") +
         box(t("h_players"), "#tab=ar", pplHtml) +
+        newsBox("news") + newsBox("blue") +
       "</div>";
   }
   // ---- Raid-sidan (#raids, Joakim 2026-11-20): bara bekräftat (Maxroll om Blizzards besked 2026-10-29); Classic-tips märkta.
