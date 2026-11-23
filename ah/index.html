@@ -1931,16 +1931,16 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     var el = $("trsub"); if (!el) return;
     var on = mode === "tr" || mode === "de" || mode === "fx"; el.hidden = !on; if (!on) return;
     if (mode === "de" && document.activeElement && document.activeElement.id === "deskill") { trCounts(); return; }   // rutan behåller fokus
-    var cur = mode === "de" ? "de" : mode === "fx" ? "fx" : trView;
+    var cur = mode === "de" ? "de" : mode === "fx" ? (fxRise ? "rise" : "fx") : trView;
     var b = function (k, html, tip) { return '<button type="button" data-trv="' + k + '" aria-pressed="' + (cur === k) + '" title="' + esc(tip || "") + '">' + html + '<small class="n"></small></button>'; };
     var sg = function (attr, cur2, items) { return '<span class="seg">' + items.map(function (it) { return '<button type="button" ' + attr + '="' + it[0] + '" aria-pressed="' + (cur2 === it[0]) + '">' + it[1] + "</button>"; }).join("") + "</span>"; };
-    el.innerHTML = b("cheap", t("trv_cheap"), t("col_usual_p_tip")) + b("bs", t("col_bs"), t("col_bs_tip")) + b("vend", t("trv_vend"), t("col_vp_tip")) +
+    el.innerHTML = b("cheap", t("trv_cheap"), t("col_usual_p_tip")) + b("bs", t("col_bs"), t("col_bs_tip")) + b("vend", t("trv_vend"), t("col_vp_tip")) + b("rise", '<span class="pos">▲</span> ' + t("trv_rise"), t("trv_rise_tip")) +
       b("de", '<img class="ci" src="' + RICON + 'inv_enchant_disenchant.jpg" alt="">' + t("mode_de"), t("de_how") + " " + t("de_logs", num(DEL && DEL.n || 0)) + " " + t("de_ingame")) + b("fx", '<img class="ci" src="' + RICON + 'inv_misc_coin_02.jpg" alt="">' + t("fx_btn"), t("fx_how", (fxKeys().rg || "eu").toUpperCase() + " " + (MK_RSN[fxKeys().rs] || "")) + " " + t("fx_min"));
     if (mode === "fx") {   // filtren som segment till höger (Joakim 2026-11-19: inte chips i spalten)
       var fxMe = fxName(fxKeys().mine), fxOt = fxName(fxKeys().mine === "alliance" ? "horde" : "alliance");
       el.innerHTML += '<span class="segs"><span class="lbl">' + t("fx_buy") + "</span>" + sg("data-fxbuy", fxBuy, [["me", fxMe], ["bw", "Blackwater"]]) +
         '<span class="lbl">' + t("fx_sell") + "</span>" + sg("data-fxsell", fxSell, [["other", fxOt], ["me", fxMe], ["bw", "Blackwater"]].filter(function (o) { return !(o[0] === "me" && fxBuy === "me") && !(o[0] === "bw" && fxBuy === "bw"); })) +
-        sg("data-fxdir", fxDir, [["profit", t("fx_only_profit")], ["all", t("fx_all")]]) + sg("data-fxkind", fxKind, [["all", t("fx_k_all")], ["stack", t("fx_k_stack")], ["gear", t("fx_k_gear")]]) + "</span>";
+        (fxRise ? "" : sg("data-fxdir", fxDir, [["profit", t("fx_only_profit")], ["all", t("fx_all")]]) + sg("data-fxkind", fxKind, [["all", t("fx_k_all")], ["stack", t("fx_k_stack")], ["gear", t("fx_k_gear")]])) + "</span>";
     }
     if (mode === "de") {   // Disenchant: skill, kvalitet, bara vinst, ★ allt till Min lista
       el.innerHTML += '<span class="segs"><span class="seg"><label class="lbl" title="' + esc(t("de_skill_tip")) + '">' + t("de_skill") + ' <input id="deskill" type="number" min="1" max="300" inputmode="numeric" value="' + (deSkill || "") + '" placeholder="1–300"></label></span>' +
@@ -1959,7 +1959,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     if (trCnt.t !== D.t || trCnt.h !== house || trCnt.fk !== FX.key || trCnt.skill !== deSkill) { trCnt = { t: D.t, h: house, fk: FX.key, skill: deSkill, de: null, fx: null }; }
     if (DEX && trCnt.de == null) trCnt.de = Object.keys(DEX.items).filter(function (id) { var r = byId[id]; if (!r || !(r.qty > 0) || !(r.min > 0)) return false; var it = DEX.items[id]; if (deSkill && deSkillFor(it[2], it[1]) > deSkill) return false; var o = deOutcome(id); return !!(o && o.value > r.min); }).length;
     if (fxReady() && FX.maps && trCnt.fx == null) trCnt.fx = Object.keys(FX.maps[0]).filter(function (id) { var a = FX.maps[1][id]; return a && FX.maps[0][id].qty >= FX_MIN && a.qty >= FX_MIN; }).length;
-    n.de = trCnt.de; n.fx = trCnt.fx;
+    n.de = trCnt.de; n.fx = trCnt.fx; n.rise = rows.filter(riseOk).length;
     Array.prototype.forEach.call(el.querySelectorAll("button[data-trv] .n"), function (sm) { var v = n[sm.parentNode.dataset.trv]; sm.textContent = v == null ? "" : num(v); });
   }
   function trSort(v) { if (v === "bs") { sortKey = "bs"; sortDir = -1; } else if (v === "vend") { sortKey = "vp"; sortDir = -1; } else { sortKey = "dip"; sortDir = -1; } }
@@ -2218,7 +2218,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
       col_usual_p: "Sell at usual", col_usual_p_tip: "Buy at today's price, sell at the usual price these days: profit after the auction house's 5% cut. Grey minus = dearer than usual right now.",
       usual_pos: "Buy now at %1, sell at the usual price %2: +%3% after the auction house's 5% cut", usual_neg: "%1% above the usual price (%2): a time to sell, not to buy",
       col_bs: "Buy / sell", col_bs_tip: "From this week's morning and evening scans: when the item is cheapest and dearest. Profit after the auction house's 5% cut, on at least 6 of the last 10 days. Empty = no clear pattern.",
-      trv_cheap: "Cheap now", trv_vend: "Vendor pays more", col_vp: "Vendor pays", col_vp_tip: "What the vendor pays minus the cheapest listing on the AH: buy it up and sell to any vendor. No auction house cut.",
+      trv_cheap: "Cheap now", trv_vend: "Vendor pays more", trv_rise: "Rising right now", trv_rise_tip: "What is rising on your faction's AH, with the price on Horde, Alliance and Blackwater side by side: buy where it is cheap, sell where it is rising", col_rise: "Rise", col_rise_tip: "Price now compared with the usual price on your AH", col_vp: "Vendor pays", col_vp_tip: "What the vendor pays minus the cheapest listing on the AH: buy it up and sell to any vendor. No auction house cut.",
       vp_tip: "Buy at %1, the vendor pays %2: +%3 each (%4%)",
       bs_txt: "Buy %1, sell %2", bl_0: "night", bl_1: "morning", bl_2: "afternoon", bl_3: "evening",
       tr_intro: "Trading shows where the price moves: buy cheap at one time or place, sell at another. Every + is profit after the auction house's 5% cut.",
@@ -5631,7 +5631,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     if (hm && !keep && mode !== hm && !(hm === "ah" && mode === "tr" && (!wantI || (!wantI.gear && wantI.qty >= TR_MIN)))) { if (fromNav) resetModeState(hm); mode = hm; drawCats(); refresh(); }   // trädet ritades för den sparade fliken
     // keep (ny scan eller annan marknad): lägesvyerna visar inte "Loading" och rullar inte upp, de ritar om listan (granskning 2026-11-18)
     if (mode === "qu" || (!keep && (hp0.quest || hp0.npc))) { mode = "qu"; if (!keep) { sortKey = "lvl"; sortDir = 1; } $("q").placeholder = t("search_qu"); quStart(+hp0.quest || (keep ? selQuest : 0), false, keep, +hp0.npc || 0); return; }   // #npc: Quests-läget, NPC:n i högerrutan (Joakim 2026-11-18)
-    if (mode === "fx" || (!keep && hp0.fx)) { mode = "fx"; if (!keep) { sortKey = "profit"; sortDir = -1; } $("q").placeholder = t("search_ph"); fxStart(+hp0.fx || (keep ? fxSel : 0), keep); return; }
+    if (mode === "fx" || (!keep && hp0.fx)) { mode = "fx"; if (!keep && hp0.fx) { fxRiseSet(hp0.rise === "1"); if (fxRise && !+hp0.fx) { fxSel = 0; fxSelG = ""; } } if (!keep) { sortKey = fxRise ? "rise" : "profit"; sortDir = -1; } $("q").placeholder = t("search_ph"); fxStart(+hp0.fx || (keep ? fxSel : 0), keep); return; }
     if (mode === "de" || (!keep && hp0.de)) { mode = "de"; if (!keep) { sortKey = "profit"; sortDir = -1; } $("q").placeholder = t("search_ph"); deStart(+hp0.de || (keep ? deSel : 0), keep); return; }
     if (mode === "cl" || (!keep && hp0.cls)) { mode = "cl"; if (!keep) { sortKey = "lvl"; sortDir = 1; } $("q").placeholder = t("search_cl"); clStart(keep ? {} : hp0, keep); return; }
     if (mode === "co" || (!keep && hp0.col)) { mode = "co"; if (!keep) { sortKey = "name"; sortDir = 1; } $("q").placeholder = t("search_co"); coStart(hp0.col || (keep ? coSel : ""), keep); return; }
@@ -6576,14 +6576,14 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     }
     if (e.target.closest("[data-gode]") && mode === "tr") { setMode("de"); return; }
     if (e.target.closest("[data-gotr]") && (mode === "de" || mode === "fx")) { setMode("tr"); return; }
-    if (e.target.closest("[data-gofx]") && mode === "tr") { setMode("fx"); return; }
+    if (e.target.closest("[data-gofx]") && mode === "tr") { fxRiseSet(false); setMode("fx"); return; }
     var fxd = e.target.closest("[data-fxdir]");
     if (fxd && mode === "fx") { fxDir = fxd.dataset.fxdir; drawTrSub(); refresh(); toTop(); return; }
     var fxbu = e.target.closest("[data-fxbuy]"), fxse = e.target.closest("[data-fxsell]");
     if ((fxbu || fxse) && mode === "fx") {
       if (fxbu) fxBuy = fxbu.dataset.fxbuy; if (fxse) fxSell = fxse.dataset.fxsell; fxRouteFix();
-      try { localStorage.setItem(FX_RKEY, JSON.stringify({ b: fxBuy, s: fxSell })); } catch (e2) { /* bara den här gången */ }
-      if (sortKey !== "profit") { sortKey = "profit"; sortDir = -1; }   // rutten byts för att se vinsten: störst först
+      if (!fxRise) { try { localStorage.setItem(FX_RKEY, JSON.stringify({ b: fxBuy, s: fxSell })); } catch (e2) { /* bara den här gången */ } }
+      if (sortKey !== "profit" && !fxRise) { sortKey = "profit"; sortDir = -1; }   // rutten byts för att se vinsten: störst först
       drawTrSub(); refresh(); toTop(); if (fxSel) fxDetail(fxSel, fxSelG); return;
     }
     var fxk = e.target.closest("[data-fxkind]");
@@ -7044,7 +7044,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
       if (!MOB.matches) return;
       var hide = MOB_HIDE[mode === "cr" && gaSel >= 0 ? "ga" : mode] || [], ths = $("head").querySelectorAll("tr:first-child > th");
       if (mode === "tr") hide = hide.concat(trView === "bs" ? ["dip", "vp"] : ["bs"]);   // Trading: bara vyns egen kolumn
-      if (mode === "fx") { var fme = fxKeys().mine; hide = fme === "horde" ? ["h"] : fme === "alliance" ? ["a"] : []; }   // Horde ⇄ Alliance: andra sidans pris och skillnaden
+      if (mode === "fx") { var fme = fxKeys().mine; hide = fxRise ? ["h", "a", "rise"] : fme === "horde" ? ["h"] : fme === "alliance" ? ["a"] : []; }   // Rising på telefon: namnet, Blackwater och vinsten (listan är sorterad på stigningen, allt annat i rutan)   // Horde ⇄ Alliance: andra sidans pris och skillnaden
       for (var i = 0; i < ths.length; i++) { var k = ths[i].querySelector("button[data-k]"); if (k && hide.indexOf(k.getAttribute("data-k")) >= 0) l.classList.add("mh" + (i + 1)); }
     }
     new MutationObserver(mobCols).observe($("head"), { childList: true });
@@ -7438,7 +7438,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
       '<div class="hxtop">' + top + '</div><div class="hxcards">' + cards + "</div>" +
       '<div class="hxrow">' +
         box(t("h_cheap"), "#tab=tr&v=cheap" + mk, list(cheap, function (r) { return li(r, "#tab=tr&v=cheap&item=" + r.id + mk); })) +
-        box(t("h_rise"), "#tab=ah" + mk, list(rising, function (r) { return li(r, "#item=" + r.id + mk); })) +
+        box(t("h_rise"), "#fx=0&rise=1" + mk, list(rising, function (r) { return li(r, "#item=" + r.id + mk); })) +
         box(t("h_hot"), "#tab=ah" + mk, list(hot, function (r) { return row("#item=" + r.id + mk, iconHtml(r), r.name, r.q, moneyText(r.min), '<span class="dim">' + t("h_per_day", num(r.day)) + "</span>", r.id); })) +
         box(t("h_gph"), "#tab=cr" + mk, list(gp, function (x) {
           return row("#gather=" + x.g.key + "&band=" + (x.k + 1) + mk, ASSET_BASE ? '<img class="ic" src="' + ASSET_BASE + "icons/" + x.g.icon + '.jpg" width="18" height="18" alt="">' : "", x.g.name + (x.g.de ? " · " + t("ga_de") : ""), -1,
@@ -8352,6 +8352,19 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
   // 5 % på din egen sidas AH och 15 % på Blackwater. Andra sidan når du bara via Blackwater: deras pris, eller
   // Blackwaters om det redan är lägre. Sparas i webbläsaren.
   var fxBuy = "me", fxSell = "other", FX_RKEY = "whippit-ah-fxroute";
+  // Rising right now (Joakim 2026-11-23: "Rising Right Now ifrån Horde ... priset på Blackwater ... de direkta klippen
+  // direkt"): samma vy som Horde ⇄ Alliance men bara det som stiger på din sidas AH (samma urval som startsidans ruta),
+  // med alla tre husens pris. Rutten börjar som köp på Blackwater → sälj på din sida och sparas inte (din vanliga rutt
+  // i Horde ⇄ Alliance står kvar).
+  var fxRise = false, fxRoutePrev = null;
+  function riseOk(r) { return !!(r && !r.gear && r.qty >= TR_MIN && r.day >= 10 && r.min > 0 && r.dip < 0 && r.dip >= -300 && r.us >= 100); }
+  function fxRiseSet(on) {
+    if (on === fxRise) return;
+    fxRise = on;
+    if (on) { fxRoutePrev = [fxBuy, fxSell]; fxBuy = "bw"; fxSell = "me"; }
+    else if (fxRoutePrev) { fxBuy = fxRoutePrev[0]; fxSell = fxRoutePrev[1]; fxRoutePrev = null; }
+    fxRouteFix();
+  }
   try { var fxr0 = JSON.parse(localStorage.getItem(FX_RKEY) || "null"); if (fxr0 && /^(me|bw)$/.test(fxr0.b) && /^(me|other|bw)$/.test(fxr0.s)) { fxBuy = fxr0.b; fxSell = fxr0.s; } } catch (e) { /* standardrutten */ }
   function fxRouteFix() { if (fxBuy === "bw" && fxSell === "bw") fxSell = "me"; if (fxBuy === "me" && fxSell === "me") fxSell = "other"; }
   fxRouteFix();
@@ -8407,6 +8420,8 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
   function fxName(fa) { return fa === "alliance" ? "Alliance" : fa === "blackwater" ? "Blackwater" : "Horde"; }
   function fxCols() {
     var me = fxKeys().mine;
+    if (fxRise) return [["name", "col_item"], ["rise", "col_rise", "col_rise_tip"], ["h", "fx_h", null, me === "horde" ? "me" : ""], ["a", "fx_a", null, me === "alliance" ? "me" : ""], ["b", "fx_b"],
+      ["profit", "fx_col_profit", "fx_col_profit_tip"], ["day", "fx_col_day", null, "hide-s"]];
     return [["name", "col_item"], ["h", "fx_h", null, me === "horde" ? "me" : ""], ["a", "fx_a", null, me === "alliance" ? "me" : ""], ["b", "fx_b", null, "hide-s"], ["gap", "fx_col_gap", "fx_col_gap_tip"], ["profit", "fx_col_profit", "fx_col_profit_tip", "hide-s"], ["day", "fx_col_day", null, "hide-s"]];
   }
   function fxCats() {
@@ -8425,6 +8440,18 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
   function fxRefresh(q) {
     view = [];
     var M = FX.maps, mi = fxKeys().mine === "alliance" ? 1 : 0, oi = 1 - mi;
+    if (fxRise) {   // det som stiger på din sida; de andra husens pris när de finns ("–" annars)
+      Object.keys(M[mi]).forEach(function (id) {
+        var r0 = byId[+id];
+        if (!riseOk(r0)) return;
+        if (q && !qHit((r0.name || "").toLowerCase(), r0, q)) return;
+        if (!fxCatOk(+id)) return;
+        var h = M[0][id], a = M[1][id], b = M[2] && M[2][id];
+        var p = [h ? h.min : 0, a ? a.min : 0, b ? b.min : 0], c = fxCalc(p, mi);
+        view.push({ fx: +id, gk: "", it: M[mi][id], p: p, n: [h ? h.qty : 0, a ? a.qty : 0, b ? b.qty : 0], d: [h ? h.day : 0, a ? a.day : 0, b ? b.day : 0],
+          rise: -r0.dip, gap: c ? c.gap : null, profit: c ? c.profit : null, rb: c ? c.b : -1, rs: c ? c.s : -1, mi: mi, oi: oi });
+      });
+    } else
     Object.keys(M[0]).forEach(function (id) {
       var h = M[0][id], a = M[1][id];
       if (!a || h.qty < FX_MIN || a.qty < FX_MIN) return;
@@ -8437,12 +8464,12 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
       if (fxKind === "gear") return;
       view.push({ fx: +id, gk: "", it: me.name ? me : ot, p: p, n: [h.qty, a.qty, b ? b.qty : 0], d: [h.day, a.day, b ? b.day : 0], gap: c.gap, profit: c.profit, rb: c.b, rs: c.s, mi: mi, oi: oi });
     });
-    if (fxKind !== "stack") fxGearRows(q, mi, oi).forEach(function (x) { if (fxCatOk(x.fx)) view.push(x); });
-    var k = sortKey, dir = sortDir;
+    if (fxKind !== "stack" && !fxRise) fxGearRows(q, mi, oi).forEach(function (x) { if (fxCatOk(x.fx)) view.push(x); });
+    var k = sortKey, dir = sortDir, nz = function (v) { return v == null ? -1e12 : v; };   // Rising: rader utan rutt sist
     view.sort(function (x, y) {
       var d = k === "name" ? x.it.name.localeCompare(y.it.name) : k === "h" ? x.p[0] - y.p[0] : k === "a" ? x.p[1] - y.p[1] : k === "b" ? x.p[2] - y.p[2]
-        : k === "profit" ? x.profit - y.profit : k === "day" ? x.d[x.rs] - y.d[y.rs] : x.gap - y.gap;
-      return d * dir || y.profit - x.profit;
+        : k === "profit" ? nz(x.profit) - nz(y.profit) : k === "day" ? (x.d[x.rs] || 0) - (y.d[y.rs] || 0) : k === "rise" ? x.rise - y.rise : nz(x.gap) - nz(y.gap);
+      return d * dir || nz(y.profit) - nz(x.profit);
     });
     shown = Math.min(PAGE, view.length);
   }
@@ -8488,8 +8515,9 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     var it = x.it, cell = function (i, cls) { return '<td class="' + (i === x.mi ? "me" : "") + (i === x.rb ? " fxb" : i === x.rs ? " fxs" : "") + (cls ? " " + cls : "") + '">' + (x.p[i] ? money(x.p[i]) : "–") + "</td>"; };
     return '<tr tabindex="0" data-fx="' + x.fx + '" data-fxg="' + esc(x.gk || "") + '"' + (x.fx === fxSel && (x.gk || "") === fxSelG ? ' aria-selected="true"' : "") + '><td class="fav">' + (byId[x.fx] ? starHtml(x.fx) : "") + "</td>" +   // Fav även här (Joakim 2026-11-22)
       '<td class="nm">' + iconHtml(it) + '<span class="' + qcls(it.q) + '" data-tip="' + it.id + '">' + esc(it.name) + "</span>" + (x.gear ? ' <span class="tag" title="' + t("fx_gear_tip") + '">' + t("fx_gear") + "</span>" : "") + "</td>" +
-      cell(0) + cell(1) + cell(2, "hide-s") + "<td>" + fxGapHtml(x.gap) + "</td>" +
-      '<td class="hide-s ' + (x.profit > 0 ? "pos" : "neg") + '">' + (x.profit > 0 ? "" : "−") + money(Math.abs(x.profit)) + '</td><td class="hide-s">' + (x.d[x.rs] > 0 ? num(Math.round(x.d[x.rs])) : "–") + "</td></tr>";
+      (fxRise ? '<td class="pct">' + pctHtml(byId[x.fx]) + "</td>" + cell(0) + cell(1) + cell(2) : cell(0) + cell(1) + cell(2, "hide-s") + "<td>" + fxGapHtml(x.gap) + "</td>") +
+      (x.profit == null ? '<td class="dim">–</td>' : '<td class="' + (fxRise ? "" : "hide-s ") + (x.profit > 0 ? "pos" : "neg") + '">' + (x.profit > 0 ? "" : "−") + money(Math.abs(x.profit)) + "</td>") +
+      '<td class="hide-s">' + (x.d[x.rs] > 0 ? num(Math.round(x.d[x.rs])) : "–") + "</td></tr>";
   }
   function fxDetail(id, gk, keep) {   // keep: bara graferna ritas om (spann, morgon/kväll), rullningen står kvar
     gk = gk || "";
@@ -8504,7 +8532,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     fxSel = id; fxSelG = gk;
     var trs = $("rows").children;
     for (var j = 0; j < trs.length; j++) { if (+trs[j].dataset.fx === id && (trs[j].dataset.fxg || "") === gk) trs[j].setAttribute("aria-selected", "true"); else trs[j].removeAttribute("aria-selected"); }
-    setHash("#fx=" + id + (gk ? "&g=" + gk : "") + (house !== 113 ? "&m=" + house : ""));
+    setHash("#fx=" + id + (gk ? "&g=" + gk : "") + (fxRise ? "&rise=1" : "") + (house !== 113 ? "&m=" + house : ""));
     var it = x.it, fas = [0, 1, 2];
     var vs = function (i, vals) { if (i === x.mi || !vals[i] || !vals[x.mi]) return ""; return "<small>" + fxGapHtml((vals[i] - vals[x.mi]) / vals[x.mi]) + "</small>"; };
     var row = function (lbl, vals, fmt, diff) { return "<div>" + lbl + "</div>" + fas.map(function (i) { return '<div class="' + (i === x.mi ? "me" : "") + '">' + (vals[i] ? fmt(vals[i]) : "–") + (diff ? vs(i, vals) : "") + "</div>"; }).join(""); };
@@ -8524,7 +8552,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
         }).join("") + '</div><div id="fxChart"><div class="note">' + t("hist_loading") + '</div></div><div class="read" id="fxRead">' + t("fx_ch_hover") + "</div></div>" +
         '<div><h3 class="row">' + t("dayday") + '<div class="range" role="group">' + ["m", "e"].map(function (b) { return '<button type="button" data-fxblk="' + b + '" aria-pressed="' + (fxBlk === b) + '">' + t(b === "m" ? "lg_morning" : "lg_evening") + "</button>"; }).join("") +
         '</div></h3><div id="fxDays"></div><div class="read" id="fxDRead">' + t("fx_dd_hover") + "</div></div>";
-    $("detail").innerHTML = '<div class="strip"><button class="lnk" type="button" data-copyany="#fx=' + id + (gk ? "&g=" + gk : "") + (house !== 113 ? "&m=" + house : "") + '" title="' + t("copy_link") + '">' + t("copy_link") + "</button>" +
+    $("detail").innerHTML = '<div class="strip"><button class="lnk" type="button" data-copyany="#fx=' + id + (gk ? "&g=" + gk : "") + (fxRise ? "&rise=1" : "") + (house !== 113 ? "&m=" + house : "") + '" title="' + t("copy_link") + '">' + t("copy_link") + "</button>" +
       '<h2 class="' + qcls(it.q) + '">' + iconHtml(it, true) + " " + esc(it.name) + "</h2></div>" +   // undertexten "Market price on each side…" bort (Joakim 2026-11-22: överflödig)
       (route ? '<div class="fxroute">' + route + "</div>" : "") + cmp + (!x.p[2] ? '<div class="note">' + t("fx_nobw") + "</div>" : "") +
       (byId[id] ? '<div><button class="lnk" type="button" data-upgo="' + id + '">' + t("co_open_ah") + "</button></div>" : "");
@@ -9469,7 +9497,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     if (m === "co") { sortKey = "name"; sortDir = 1; coStart(0); return; }
     if (m === "cl") { sortKey = "lvl"; sortDir = 1; clStart({}, false); return; }
     if (m === "de") { sortKey = "profit"; sortDir = -1; deStart(0); return; }
-    if (m === "fx") { sortKey = "profit"; sortDir = -1; fxStart(0); return; }   // vinst i guld först: procent överdriver billiga varor
+    if (m === "fx") { sortKey = fxRise ? "rise" : "profit"; sortDir = -1; fxStart(0); return; }   // vinst i guld först: procent överdriver billiga varor
     if (m === "ar") {
       arCmp = null; arCmpPick = false;   // en gammal jämförelse ska inte dyka upp igen (granskning 2026-11-18)
       drawCats(); refresh();
@@ -9609,7 +9637,14 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
   $("trsub").addEventListener("click", function (e) {
     var b = e.target.closest("button[data-trv]"); if (!b) return;
     var k = b.dataset.trv;
-    if (k === "de" || k === "fx") { setMode(k); return; }
+    if (k === "rise" || k === "fx") {   // Rising right now är Horde ⇄ Alliance-vyn med eget urval
+      fxRiseSet(k === "rise"); fxSel = 0; fxSelG = "";   // högerrutan visar första raden i den nya listan
+      sortKey = k === "rise" ? "rise" : "profit"; sortDir = -1;
+      if (mode !== "fx") setMode("fx"); else { drawTrSub(); refresh(); toTop(); if (view[0]) fxDetail(view[0].fx, view[0].gk); }
+      if (k === "rise" && house !== houseFor(side)) switchHouse(houseFor(side));   // det som stiger på ditt eget AH
+      return;
+    }
+    if (k === "de") { setMode(k); return; }
     trView = k; trSort(k);
     if (mode !== "tr") { setMode("tr"); return; }   // setMode ritar om; resetModeState sätter sorteringen efter trView
     drawCats(); drawTrSub(); refresh(); toTop();
