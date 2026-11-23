@@ -917,6 +917,17 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
   background: rgba(10, 12, 28, .96); border: 1px solid #8a8a8a; border-radius: 5px; box-shadow: 0 4px 14px rgba(0, 0, 0, .6);
   color: #fff; font: 13px/1.35 system-ui, -apple-system, "Segoe UI", sans-serif; }
 .wtip { width: max-content; min-width: 180px; }
+/* Pris-tooltip på startsidan */
+.hxptip { min-width: 270px; padding: 10px 12px; background: rgba(12, 16, 26, .97); border-color: #5b6470; }
+.hxph { display: flex; align-items: center; gap: 8px; font-size: 14px; } .hxph img, .hxph .ic { width: 22px; height: 22px; }
+.hxpnow { display: flex; align-items: baseline; gap: 8px; margin-top: 6px; } .hxpnow > b { font-size: 17px; }
+.hxpsub { color: #a8b0ba; font-size: 12px; margin: 1px 0 6px; }
+.hxpsvg { display: block; margin: 2px 0 6px; overflow: visible; }
+.hxpsvg polyline { fill: none; stroke: #e8b64c; stroke-width: 2; stroke-linejoin: round; } .hxpsvg circle { fill: #fff; }
+.hxpsvg .mid { stroke: #3a4350; stroke-dasharray: 2 3; } .hxpsvg text { fill: #8f98a3; font-size: 10px; }
+.hxptab { width: 100%; font-size: 12.5px; } .hxptab th, .hxptab td { padding: 2px 0 !important; text-align: right !important; }
+.hxptab th:first-child { text-align: left !important; color: #a8b0ba; } .hxptab tr:first-child th { color: #8f98a3; font-size: 11px; }
+.hxpnone { color: #a8b0ba; font-size: 12px; margin: 6px 0; }
 .wtip table { border-collapse: collapse; width: 100%; table-layout: auto; margin: 0; }
 .wtip tr, .wtip tr:hover { background: none; }
 .wtip td, .wtip th { padding: 0; vertical-align: top; text-align: left; font-weight: normal; border: 0; width: auto; height: auto;
@@ -2241,7 +2252,8 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
       h_q_raid: "When do the raids open?", h_raid_in: "in %1 days", h_raid_1: "Tomorrow", h_raid_open: "Open now", h_raid_s: "9 December · new raids on Forever", h_raid_since: "Since 9 December",
       cl_land_h: "Choose a class", cl_roles_h: "Who does what", cl_role_tank: "Tank", cl_role_heal: "Healer", cl_role_dps: "Damage", cl_roles_note: "Roles as in Classic. Every class can deal damage; tanks and healers are what groups look for.", cl_land_tip: "A beginner guide from 1 to 60, talent calculator, spells with level and trainer cost, pet spells, class quests and trainers.", cl_land_n: "%1 spells", cl_land_pets: "%1 pets", cl_land_demons: "%1 demons",
       cl_land_right: "Pick a class to open its beginner guide: how to play it from level 1 to 60 and where every talent point goes. The talent calculator, spells, pet spells, class quests and trainers are under the class in the list.", h_show_n: "Show %1 of %2", h_rise_big: "Biggest rise right now", h_over: "over the usual price", h_none: "Nothing right now.", h_per_day: "%1/day", h_cheap_none: "Prices are loading…", h_watch: "My list", h_watch_none: "Star ☆ an item and its price shows up here.", h_players: "Players", h_guilds: "Guilds", h_news: "WoW Forever news", h_blue: "Blue posts", h_news_all: "Forum →", h_news_none: "No news yet.", h_d_ago: "%1 d ago", h_news_by: "%1 · %2", h_news_tip: "Opens Blizzard's forum in a new tab", h_fix_ph: "Search hotfixes: class, profession, item…", h_fix_n: "%1 hotfixes, newest first",
-      h_fix_none: "No hotfix mentions that yet.", h_fix_tip: "Opens Blizzard's hotfix post", h_fix_chip: "Hotfixes for %1", h_fix_gen: "General", h_blue_reg: "Forum region", h_blue_eu: "Blue posts from the EU forums", h_blue_us: "Blue posts from the US forums", h_lvl: "Lvl %1", h_members: "%1 members", h_players_none: "Look someone up in the Armory and they show up here.", ar_land_lb: "Leaderboards ›", ar_land_recent: "Recent", ar_land_friends: "Friends", on_ah: "%1 items on the auction house", market_label: "Market", search_btn: "Search", col_fav: "Fav",
+      h_fix_none: "No hotfix mentions that yet.", h_fix_tip: "Opens Blizzard's hotfix post", h_fix_chip: "Hotfixes for %1", h_fix_gen: "General", hxp_sub: "%1 on the AH · %2 sold a day", hxp_morn: "Morning", hxp_eve: "Evening", hxp_yest: "Yesterday", hxp_today: "Today",
+      hxp_few: "Too few scans for a graph yet.", h_blue_reg: "Forum region", h_blue_eu: "Blue posts from the EU forums", h_blue_us: "Blue posts from the US forums", h_lvl: "Lvl %1", h_members: "%1 members", h_players_none: "Look someone up in the Armory and they show up here.", ar_land_lb: "Leaderboards ›", ar_land_recent: "Recent", ar_land_friends: "Friends", on_ah: "%1 items on the auction house", market_label: "Market", search_btn: "Search", col_fav: "Fav",
       hist_loading: "Loading history…", hist_fail: "The history could not be loaded.", today: "today", item_n: "Item %1",
       copy_link: "Copy link", copied: "Link copied", star_add: "Watch this item", star_del: "Remove from my list", star_all: "All reagents to my list", star_all_del: "Remove reagents from my list", star_lbl_add: "Watch", star_lbl_on: "In my list",
       not_listed: "not listed now", remove: "Remove", watch_sub: "Saved in your browser, only you can see it.",
@@ -7235,6 +7247,81 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     var i = $("hxfixq"); if (i) i.value = homeFixQ;
     newsFixRedraw();
   });
+  // Pris-tooltip på startsidans varurader (Joakim 2026-11-23: "en liten graf med en liten tooltip och kanske de senaste
+  // morgon- och kvällspriserna"): graf över tre dygn (timdata ur hist/), nu-pris, ute och sålda/dag, samt morgon (05–12)
+  // och kväll (17–24) i går och i dag, samma block som Bästa tid. Bara med mus; på touch öppnar raden varan som förut.
+  var hxpEl = null, hxpId = 0, hxpX = 0, hxpY = 0, hxpCache = {};
+  function hxpPlace() {
+    if (!hxpEl || hxpEl.hidden) return;
+    var w = hxpEl.offsetWidth, h = hxpEl.offsetHeight, x = hxpX + 18, y = hxpY + 16;
+    if (x + w > window.innerWidth - 8) x = Math.max(8, hxpX - w - 14);
+    if (y + h > window.innerHeight - 8) y = Math.max(8, hxpY - h - 12);
+    hxpEl.style.left = x + "px"; hxpEl.style.top = y + "px";
+  }
+  function hxpHide() { hxpId = 0; if (hxpEl) hxpEl.hidden = true; }
+  function hxpBlock(H, day, a, b) {   // snittet av riktpriset en viss dag mellan klockan a och b (lokal tid)
+    var sum = 0, n = 0;
+    for (var i = 0; i < H.T.length; i++) {
+      if (!(H.rh[i] > 0)) continue;
+      var d = new Date(H.T[i] * 1000);
+      if (d.toDateString() !== day.toDateString() || d.getHours() < a || d.getHours() >= b) continue;
+      sum += H.rh[i]; n++;
+    }
+    return n ? Math.round(sum / n) : 0;
+  }
+  function hxpChart(H, from, to) {
+    var W = 260, Hh = 70, P = 4, pts = [], mn = Infinity, mx = 0;
+    for (var i = 0; i < H.T.length; i++) if (H.rh[i] > 0 && H.T[i] >= from) { pts.push(i); mn = Math.min(mn, H.rh[i]); mx = Math.max(mx, H.rh[i]); }
+    if (pts.length < 2) return '<div class="hxpnone">' + t("hxp_few") + "</div>";
+    var rg = Math.max(1, mx - mn), span = Math.max(1, to - from);
+    var x = function (tt) { return (P + (tt - from) / span * (W - 2 * P)).toFixed(1); };
+    var y = function (v) { return (Hh - 14 - (v - mn) / rg * (Hh - 26)).toFixed(1); };
+    var g = "";
+    for (var d = new Date(from * 1000); d.getTime() / 1000 <= to; d.setDate(d.getDate() + 1)) {   // midnatt: streck + dagens namn
+      var m0 = new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime() / 1000;
+      if (m0 > from) g += '<line x1="' + x(m0) + '" x2="' + x(m0) + '" y1="4" y2="' + (Hh - 12) + '" class="mid"/>';
+      var lx = Math.max(m0, from) + 3 * 3600;
+      if (lx < to - 2 * 3600) g += '<text x="' + x(lx) + '" y="' + (Hh - 2) + '">' + esc(new Date(lx * 1000).toLocaleDateString(locale(), { weekday: "short" })) + "</text>";
+    }
+    var line = pts.map(function (i) { return x(H.T[i]) + "," + y(H.rh[i]); }).join(" "), last = pts[pts.length - 1];
+    return '<svg class="hxpsvg" viewBox="0 0 ' + W + " " + Hh + '" width="' + W + '" height="' + Hh + '" aria-hidden="true">' + g +
+      '<text x="' + (W - P) + '" y="10" text-anchor="end">' + esc(moneyText(mx)) + '</text><text x="' + (W - P) + '" y="' + (Hh - 16) + '" text-anchor="end">' + esc(moneyText(mn)) + "</text>" +
+      '<polyline points="' + line + '"/><circle cx="' + x(H.T[last]) + '" cy="' + y(H.rh[last]) + '" r="3"/></svg>';
+  }
+  function hxpHtml(r, H) {
+    var now = D && D.t ? D.t : Math.floor(Date.now() / 1000), from = now - 3 * 86400;
+    var head = '<div class="hxph">' + iconHtml(r) + '<b class="' + qcls(r.q) + '">' + esc(r.name) + "</b></div>" +
+      '<div class="hxpnow"><b>' + moneyText(r.min) + "</b>" + pctHtml(r) + "</div>" +
+      '<div class="hxpsub">' + t("hxp_sub", num(r.qty), num(r.day || 0)) + "</div>";
+    if (!H) return head + '<div class="hxpnone">' + t("ar_loading") + "</div>";
+    var today = new Date(now * 1000), yest = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 1);
+    var cell = function (v) { return v ? moneyText(v) : '<span class="dim">–</span>'; };
+    var tr = function (lbl, day) { return "<tr><th>" + lbl + "</th><td>" + cell(hxpBlock(H, day, 5, 12)) + "</td><td>" + cell(hxpBlock(H, day, 17, 24)) + "</td></tr>"; };
+    return head + hxpChart(H, from, now) +
+      '<table class="hxptab"><tr><th></th><th>' + t("hxp_morn") + "</th><th>" + t("hxp_eve") + "</th></tr>" + tr(t("hxp_yest"), yest) + tr(t("hxp_today"), today) + "</table>";
+  }
+  function hxpShow(id) {
+    var r = byId[id]; if (!r) { hxpHide(); return; }
+    hxpId = id;
+    if (!hxpEl) { hxpEl = document.createElement("div"); hxpEl.className = "wtip hxptip"; document.body.appendChild(hxpEl); }
+    var key = house + "/" + id + "/" + (D && D.t);
+    hxpEl.innerHTML = hxpHtml(r, hxpCache[key]); hxpEl.hidden = false; hxpPlace();
+    if (hxpCache[key]) return;
+    histFor(id, (D && D.t ? D.t : Date.now() / 1000) - 3 * 86400 - 3600).then(function (H) {
+      hxpCache[key] = H || { T: [], rh: [], qh: [] };
+      if (hxpId === id && hxpEl) { hxpEl.innerHTML = hxpHtml(r, hxpCache[key]); hxpPlace(); }
+    });
+  }
+  document.addEventListener("mouseover", function (e) {
+    if (NOHOVER.matches || !homeOn) return;
+    var el = e.target.closest && e.target.closest("[data-hxp]");
+    if (!el) { if (hxpId) hxpHide(); return; }
+    hxpX = e.clientX; hxpY = e.clientY;
+    if (+el.dataset.hxp !== hxpId) hxpShow(+el.dataset.hxp);
+  });
+  document.addEventListener("mousemove", function (e) { if (hxpId) { hxpX = e.clientX; hxpY = e.clientY; hxpPlace(); } });
+  document.addEventListener("click", function () { if (hxpId) hxpHide(); }, true);
+  window.addEventListener("scroll", function () { if (hxpId) hxpHide(); }, true);
   function homeDraw() {
     var el = $("homev"); if (!el || !homeOn) return;
     if (homePage === "raids") { el.innerHTML = raidsHtml(); return; }
@@ -7243,8 +7330,8 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     var down = base.filter(function (r) { return r.dip > 0 && r.min > 0; });
     // Listorna (Joakim 2026-11-20, mockupen): ikon, namn, pris som text och förändringen; bara varor som faktiskt säljs
     // (sålda/dag), så en ensam listning inte toppar (Joakims regel om blixtlistningar).
-    var row = function (href, ic, nm, q, a, b) { return '<a class="hxli" href="' + href + '">' + (ic || "<span></span>") + '<span class="nm ' + qcls(q) + '">' + esc(nm) + '</span><span class="pr">' + a + '</span><span class="ch">' + b + "</span></a>"; };
-    var li = function (r, href) { return row(href, iconHtml(r), r.name, r.q, moneyText(r.min), pctHtml(r)); };
+    var row = function (href, ic, nm, q, a, b, pid) { return '<a class="hxli" href="' + href + '"' + (pid ? ' data-hxp="' + pid + '"' : "") + ">" + (ic || "<span></span>") + '<span class="nm ' + qcls(q) + '">' + esc(nm) + '</span><span class="pr">' + a + '</span><span class="ch">' + b + "</span></a>"; };
+    var li = function (r, href) { return row(href, iconHtml(r), r.name, r.q, moneyText(r.min), pctHtml(r), r.id); };
     var N = 8;
     var traded = base.filter(function (r) { return r.day >= 10 && r.min > 0; });
     var cheap = traded.filter(function (r) { return r.dip > 0; }).sort(function (a, b) { return b.dip - a.dip; }).slice(0, N);
@@ -7352,16 +7439,16 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
       '<div class="hxrow">' +
         box(t("h_cheap"), "#tab=tr&v=cheap" + mk, list(cheap, function (r) { return li(r, "#tab=tr&v=cheap&item=" + r.id + mk); })) +
         box(t("h_rise"), "#tab=ah" + mk, list(rising, function (r) { return li(r, "#item=" + r.id + mk); })) +
-        box(t("h_hot"), "#tab=ah" + mk, list(hot, function (r) { return row("#item=" + r.id + mk, iconHtml(r), r.name, r.q, moneyText(r.min), '<span class="dim">' + t("h_per_day", num(r.day)) + "</span>"); })) +
+        box(t("h_hot"), "#tab=ah" + mk, list(hot, function (r) { return row("#item=" + r.id + mk, iconHtml(r), r.name, r.q, moneyText(r.min), '<span class="dim">' + t("h_per_day", num(r.day)) + "</span>", r.id); })) +
         box(t("h_gph"), "#tab=cr" + mk, list(gp, function (x) {
           return row("#gather=" + x.g.key + "&band=" + (x.k + 1) + mk, ASSET_BASE ? '<img class="ic" src="' + ASSET_BASE + "icons/" + x.g.icon + '.jpg" width="18" height="18" alt="">' : "", x.g.name + (x.g.de ? " · " + t("ga_de") : ""), -1,
             '<span class="dim">' + t("ga_band", GA_BANDS[x.k][0], GA_BANDS[x.k][1]) + "</span>", '<span class="down2">' + gaMoney(x.v) + "/h</span>");
         })) +
         box(t("h_craft"), "#tab=cr" + mk, D && !RECEPT ? '<div class="hnone">' + t("h_cheap_none") + "</div>" : list(craft, function (x) {
           var o = byId[x.rc.item];
-          return row("#recipe=" + x.rid + mk, iconHtml(o), x.name, o.q, moneyText(x.sell), '<span class="down2">+' + moneyText(x.profit) + "</span>");
+          return row("#recipe=" + x.rid + mk, iconHtml(o), x.name, o.q, moneyText(x.sell), '<span class="down2">+' + moneyText(x.profit) + "</span>", o.id);
         })) +
-        box(t("h_dayt"), "#tab=tr&v=bs" + mk, list(dayt, function (r) { return row("#tab=tr&v=bs&item=" + r.id + mk, iconHtml(r), r.name, r.q, moneyText(r.min), tradeHtml(r)); })) +
+        box(t("h_dayt"), "#tab=tr&v=bs" + mk, list(dayt, function (r) { return row("#tab=tr&v=bs&item=" + r.id + mk, iconHtml(r), r.name, r.q, moneyText(r.min), tradeHtml(r), r.id); })) +
         box(t("h_watch"), "", wl.length ? '<div class="hxlist">' + wl.map(function (r) { return li(r, "#item=" + r.id + mk); }).join("") + "</div>" : '<div class="hnone">' + t("h_watch_none") + "</div>") +
         box(t("h_players"), "#tab=ar", pplHtml) +
         newsBox("news") + newsBox("blue") +
