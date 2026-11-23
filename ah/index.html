@@ -928,6 +928,8 @@ body[data-mode=qu] .cols { grid-template-columns: 224px minmax(0, 360px) minmax(
 .hxptab { width: 100%; font-size: 12.5px; } .hxptab th, .hxptab td { padding: 2px 0 !important; text-align: right !important; }
 .hxptab th:first-child { text-align: left !important; color: #a8b0ba; } .hxptab tr:first-child th { color: #8f98a3; font-size: 11px; }
 .hxpnone { color: #a8b0ba; font-size: 12px; margin: 6px 0; }
+.hxpwhere { display: flex; align-items: center; gap: 5px; margin-top: 4px; color: #a8b0ba; font-size: 12px; } .hxpwhere img { width: 14px; height: 14px; border-radius: 2px; }
+#list.fx .fxn { display: block; font-size: 11px; line-height: 1; color: var(--grey); text-align: right; }
 .wtip table { border-collapse: collapse; width: 100%; table-layout: auto; margin: 0; }
 .wtip tr, .wtip tr:hover { background: none; }
 .wtip td, .wtip th { padding: 0; vertical-align: top; text-align: left; font-weight: normal; border: 0; width: auto; height: auto;
@@ -2218,7 +2220,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
       col_usual_p: "Sell at usual", col_usual_p_tip: "Buy at today's price, sell at the usual price these days: profit after the auction house's 5% cut. Grey minus = dearer than usual right now.",
       usual_pos: "Buy now at %1, sell at the usual price %2: +%3% after the auction house's 5% cut", usual_neg: "%1% above the usual price (%2): a time to sell, not to buy",
       col_bs: "Buy / sell", col_bs_tip: "From this week's morning and evening scans: when the item is cheapest and dearest. Profit after the auction house's 5% cut, on at least 6 of the last 10 days. Empty = no clear pattern.",
-      trv_cheap: "Cheap now", trv_vend: "Vendor pays more", trv_rise: "Rising right now", trv_rise_tip: "What is rising on your faction's AH, with the price on Horde, Alliance and Blackwater side by side: buy where it is cheap, sell where it is rising", col_rise: "Rise", col_rise_tip: "Price now compared with the usual price on your AH", col_vp: "Vendor pays", col_vp_tip: "What the vendor pays minus the cheapest listing on the AH: buy it up and sell to any vendor. No auction house cut.",
+      trv_cheap: "Cheap now", trv_vend: "Vendor pays more", trv_rise: "Rising right now", trv_rise_tip: "What is rising on your faction's AH, with the price on Horde, Alliance and Blackwater side by side: buy where it is cheap, sell where it is rising", col_rise: "Rise", fx_n_tip: "Listed on Blackwater right now", col_rise_tip: "Price now compared with the usual price on your AH", col_vp: "Vendor pays", col_vp_tip: "What the vendor pays minus the cheapest listing on the AH: buy it up and sell to any vendor. No auction house cut.",
       vp_tip: "Buy at %1, the vendor pays %2: +%3 each (%4%)",
       bs_txt: "Buy %1, sell %2", bl_0: "night", bl_1: "morning", bl_2: "afternoon", bl_3: "evening",
       tr_intro: "Trading shows where the price moves: buy cheap at one time or place, sell at another. Every + is profit after the auction house's 5% cut.",
@@ -5766,6 +5768,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
   document.addEventListener("mouseover", function (e) {
     if (NOHOVER.matches) return;   // touch: tryck ger ett låtsas-mouseover som skulle lämna tooltipen hängande
     var el = e.target && e.target.closest ? e.target.closest("[data-tip]") : null;
+    if (el && el.closest("[data-hxp]")) { hideTip(); return; }   // pris-tooltipen (startsidan, Rising) visas i stället
     if (el) showTip(+el.getAttribute("data-tip"));
     else {
       // Mount i Armory: stor bild i tooltip-rutan (Joakim 2026-11-17: "så man ser den bättre").
@@ -7288,10 +7291,11 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
       '<text x="' + (W - P) + '" y="10" text-anchor="end">' + esc(moneyText(mx)) + '</text><text x="' + (W - P) + '" y="' + (Hh - 16) + '" text-anchor="end">' + esc(moneyText(mn)) + "</text>" +
       '<polyline points="' + line + '"/><circle cx="' + x(H.T[last]) + '" cy="' + y(H.rh[last]) + '" r="3"/></svg>';
   }
-  function hxpHtml(r, H) {
+  function hxpHtml(r, H, where) {
     var now = D && D.t ? D.t : Math.floor(Date.now() / 1000), from = now - 3 * 86400;
-    var head = '<div class="hxph">' + iconHtml(r) + '<b class="' + qcls(r.q) + '">' + esc(r.name) + "</b></div>" +
-      '<div class="hxpnow"><b>' + moneyText(r.min) + "</b>" + pctHtml(r) + "</div>" +
+    var head = '<div class="hxph">' + iconHtml(r).replace(/ data-tip="\d+"/, "") + '<b class="' + qcls(r.q) + '">' + esc(r.name) + "</b></div>" +
+      (where ? '<div class="hxpwhere">' + where + "</div>" : "") +
+      '<div class="hxpnow"><b>' + moneyText(r.min) + "</b>" + (r.dip != null ? pctHtml(r) : "") + "</div>" +
       '<div class="hxpsub">' + t("hxp_sub", num(r.qty), num(r.day || 0)) + "</div>";
     if (!H) return head + '<div class="hxpnone">' + t("ar_loading") + "</div>";
     var today = new Date(now * 1000), yest = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 1);
@@ -7300,24 +7304,34 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     return head + hxpChart(H, from, now) +
       '<table class="hxptab"><tr><th></th><th>' + t("hxp_morn") + "</th><th>" + t("hxp_eve") + "</th></tr>" + tr(t("hxp_yest"), yest) + tr(t("hxp_today"), today) + "</table>";
   }
-  function hxpShow(id) {
-    var r = byId[id]; if (!r) { hxpHide(); return; }
-    hxpId = id;
+  // h = ett annat hus än det valda (Rising right now: huset du säljer i). Varan ur Horde ⇄ Alliance-datan för det huset.
+  function hxpShow(id, h) {
+    var other = h && h !== house, r = byId[id], where = "";
+    if (other) {
+      var ix = FX.maps ? fxKeys().keys.indexOf(h) : -1, m = ix >= 0 && FX.maps[ix] && FX.maps[ix][id];
+      if (!m) { hxpHide(); return; }
+      r = { id: m.id, name: m.name || (byId[id] && byId[id].name) || "", q: m.q, ic: m.ic || (byId[id] && byId[id].ic) || "", min: m.min, qty: m.qty, day: m.day };
+      where = fxIcon(fxFa(ix)) + fxName(fxFa(ix));
+    } else if (r && h) where = fxIcon(mySide()) + fxName(mySide());
+    if (!r) { hxpHide(); return; }
+    var hk = h || house, key = hk + "/" + id + "/" + (D && D.t);
+    hxpId = hk + ":" + id;
     if (!hxpEl) { hxpEl = document.createElement("div"); hxpEl.className = "wtip hxptip"; document.body.appendChild(hxpEl); }
-    var key = house + "/" + id + "/" + (D && D.t);
-    hxpEl.innerHTML = hxpHtml(r, hxpCache[key]); hxpEl.hidden = false; hxpPlace();
+    hxpEl.innerHTML = hxpHtml(r, hxpCache[key], where); hxpEl.hidden = false; hxpPlace();
     if (hxpCache[key]) return;
-    histFor(id, (D && D.t ? D.t : Date.now() / 1000) - 3 * 86400 - 3600).then(function (H) {
+    var my = hxpId;
+    histFor(id, (D && D.t ? D.t : Date.now() / 1000) - 3 * 86400 - 3600, other ? hk : undefined).then(function (H) {
       hxpCache[key] = H || { T: [], rh: [], qh: [] };
-      if (hxpId === id && hxpEl) { hxpEl.innerHTML = hxpHtml(r, hxpCache[key]); hxpPlace(); }
-    });
+      if (hxpId === my && hxpEl) { hxpEl.innerHTML = hxpHtml(r, hxpCache[key], where); hxpPlace(); }
+    }).catch(function () {});
   }
   document.addEventListener("mouseover", function (e) {
-    if (NOHOVER.matches || !homeOn) return;
+    if (NOHOVER.matches || !(homeOn || (mode === "fx" && fxRise))) { if (hxpId) hxpHide(); return; }
     var el = e.target.closest && e.target.closest("[data-hxp]");
     if (!el) { if (hxpId) hxpHide(); return; }
     hxpX = e.clientX; hxpY = e.clientY;
-    if (+el.dataset.hxp !== hxpId) hxpShow(+el.dataset.hxp);
+    var h = +el.dataset.hxh || 0;
+    if ((h || house) + ":" + el.dataset.hxp !== hxpId) hxpShow(+el.dataset.hxp, h);
   });
   document.addEventListener("mousemove", function (e) { if (hxpId) { hxpX = e.clientX; hxpY = e.clientY; hxpPlace(); } });
   document.addEventListener("click", function () { if (hxpId) hxpHide(); }, true);
@@ -8512,10 +8526,13 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
   }
   function fxGapHtml(g) { var pc = Math.round(g * 100); return '<span class="' + (pc > 0 ? "pos" : pc < 0 ? "neg" : "") + '">' + (pc > 0 ? "▲ +" : pc < 0 ? "▼ " : "") + pc + " %</span>"; }
   function fxRow(x) {
+    // Rising: hur många som ligger ute på Blackwater, så man ser om klippet räcker till en stack (Joakim 2026-11-23)
+    var cellN = function (i) { return '<td class="' + (i === x.rb ? "fxb" : i === x.rs ? "fxs" : "") + '">' + (x.p[i] ? money(x.p[i]) + '<small class="fxn" title="' + esc(t("fx_n_tip")) + '">' + num(x.n[i]) + "</small>" : "–") + "</td>"; };
     var it = x.it, cell = function (i, cls) { return '<td class="' + (i === x.mi ? "me" : "") + (i === x.rb ? " fxb" : i === x.rs ? " fxs" : "") + (cls ? " " + cls : "") + '">' + (x.p[i] ? money(x.p[i]) : "–") + "</td>"; };
-    return '<tr tabindex="0" data-fx="' + x.fx + '" data-fxg="' + esc(x.gk || "") + '"' + (x.fx === fxSel && (x.gk || "") === fxSelG ? ' aria-selected="true"' : "") + '><td class="fav">' + (byId[x.fx] ? starHtml(x.fx) : "") + "</td>" +   // Fav även här (Joakim 2026-11-22)
-      '<td class="nm">' + iconHtml(it) + '<span class="' + qcls(it.q) + '" data-tip="' + it.id + '">' + esc(it.name) + "</span>" + (x.gear ? ' <span class="tag" title="' + t("fx_gear_tip") + '">' + t("fx_gear") + "</span>" : "") + "</td>" +
-      (fxRise ? '<td class="pct">' + pctHtml(byId[x.fx]) + "</td>" + cell(0) + cell(1) + cell(2) : cell(0) + cell(1) + cell(2, "hide-s") + "<td>" + fxGapHtml(x.gap) + "</td>") +
+    var hx = fxRise ? ' data-hxp="' + x.fx + '" data-hxh="' + fxKeys().keys[x.rs >= 0 ? x.rs : x.mi] + '"' : "";   // Rising: tooltipen visar huset du säljer i
+    return '<tr tabindex="0" data-fx="' + x.fx + '" data-fxg="' + esc(x.gk || "") + '"' + hx + (x.fx === fxSel && (x.gk || "") === fxSelG ? ' aria-selected="true"' : "") + '><td class="fav">' + (byId[x.fx] ? starHtml(x.fx) : "") + "</td>" +   // Fav även här (Joakim 2026-11-22)
+      '<td class="nm">' + iconHtml(it) + '<span class="' + qcls(it.q) + '"' + (fxRise ? "" : ' data-tip="' + it.id + '"') + ">" + esc(it.name) + "</span>" + (x.gear ? ' <span class="tag" title="' + t("fx_gear_tip") + '">' + t("fx_gear") + "</span>" : "") + "</td>" +
+      (fxRise ? '<td class="pct">' + pctHtml(byId[x.fx]) + "</td>" + cell(0) + cell(1) + cellN(2) : cell(0) + cell(1) + cell(2, "hide-s") + "<td>" + fxGapHtml(x.gap) + "</td>") +
       (x.profit == null ? '<td class="dim">–</td>' : '<td class="' + (fxRise ? "" : "hide-s ") + (x.profit > 0 ? "pos" : "neg") + '">' + (x.profit > 0 ? "" : "−") + money(Math.abs(x.profit)) + "</td>") +
       '<td class="hide-s">' + (x.d[x.rs] > 0 ? num(Math.round(x.d[x.rs])) : "–") + "</td></tr>";
   }
