@@ -1,12 +1,12 @@
 {
- "t": "2026-11-23T03:03:58.809Z",
+ "t": "2026-11-23T12:20:52.423Z",
  "videos": [
   {
-   "id": "pK3_kPNOdv4",
-   "title": "GTA 6 #4: Dyker efter GULDSKATTER i havet",
-   "channel": "ChrisWhippit",
-   "handle": "@chriswhippit",
-   "at": "2026-11-22T05:30:17Z"
+   "id": "mWPElAk6lAg",
+   "title": "Vi BOTAR en zombie i Minecraft med Mammaspelar",
+   "channel": "Whippit",
+   "handle": "@whippitextra",
+   "at": "2026-11-23T05:30:03Z"
   },
   {
    "id": "fO5emM9oBYw",
@@ -16,11 +16,11 @@
    "at": "2026-11-21T05:30:19Z"
   },
   {
-   "id": "MA4MiFDWyBM",
-   "title": "GTA 6 #3: JAG HAR 600 SPÄNN i Grand Theft Auto VI",
+   "id": "pK3_kPNOdv4",
+   "title": "GTA 6 #4: Dyker efter GULDSKATTER i havet",
    "channel": "ChrisWhippit",
    "handle": "@chriswhippit",
-   "at": "2026-11-21T05:30:18Z"
+   "at": "2026-11-22T05:30:17Z"
   },
   {
    "id": "9XSzCQFFMyc",
@@ -38,7 +38,7 @@
   }
  ],
  "counts": {
-  "chriswhippit": 4615,
+  "chriswhippit": 4616,
   "whippitsson": 534,
   "figgwhipp": 2848,
   "whippitextra": 131
@@ -87,6 +87,12 @@
  },
  "seriesVids": {
   "minecraft": [
+   {
+    "id": "mWPElAk6lAg",
+    "title": "Vi BOTAR en zombie i Minecraft med Mammaspelar",
+    "at": "2026-11-23T05:30:03Z",
+    "list": ""
+   },
    {
     "id": "Eu_S_4c5zAk",
     "title": "HOTBAREN ÄR FULL i Minecraft med Mammaspelar och Pappaspelar",
@@ -151,12 +157,6 @@
     "id": "0qJizFjc-LU",
     "title": "4 SAKER – VEM VINNER? i Minecraft med Mammaspelar och Pappaspelar",
     "at": "2026-11-05T05:30:15Z",
-    "list": ""
-   },
-   {
-    "id": "FMeRJ7eihrw",
-    "title": "TÄVLAR genom GODISLANDET i Minecraft med Jnx",
-    "at": "2026-11-04T05:30:33Z",
     "list": ""
    }
   ],
@@ -544,9 +544,9 @@
  },
  "media": {
   "chriswhippit": {
-   "views": 244464000,
-   "avgViews": 5300,
-   "avgSample": 8,
+   "views": 244475000,
+   "avgViews": 5400,
+   "avgSample": 9,
    "uploads30": 50
   },
   "whippitsson": {
@@ -556,7 +556,7 @@
    "uploads30": 0
   },
   "figgwhipp": {
-   "views": 97267000,
+   "views": 97268000,
    "avgViews": 0,
    "avgSample": 0,
    "uploads30": 0
