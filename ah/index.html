@@ -1394,11 +1394,25 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
 .hxnw .nm small { color: var(--hx-fg2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .hxnw .ch { min-width: 0; font-size: 12.5px; color: var(--hx-fg2); }
 .hxnw .bl { color: #4fa3ff; }
+.hxnews h3 { flex-wrap: wrap; }
+.hxfixq { flex: 1 1 180px; max-width: 300px; min-width: 0; height: 28px; padding: 0 10px; border: 1px solid var(--hx-line); border-radius: 6px; background: transparent; color: var(--hx-fg);
+  font: 400 13px/1 "Instrument Sans", system-ui, sans-serif; }
+.hxfixq:focus { outline: 2px solid var(--hx-acc); outline-offset: -1px; }
+.hxchips { display: flex; flex-wrap: wrap; gap: 4px; margin: -2px 0 8px; }
+.hxchips button { all: unset; cursor: pointer; display: grid; place-content: center; width: 30px; height: 30px; border-radius: 5px; }
+.hxchips img { width: 22px; height: 22px; border-radius: 3px; opacity: .7; transition: opacity .15s, transform .15s; }
+.hxchips button:hover img { opacity: 1; transform: scale(1.08); }
+.hxchips button[aria-pressed=true] { box-shadow: inset 0 0 0 2px var(--hx-acc); } .hxchips button[aria-pressed=true] img { opacity: 1; }
+.hxchips button:focus-visible { outline: 2px solid var(--hx-acc); }
+.hxfixn { margin: 0 0 4px; font-size: 12.5px; color: var(--hx-fg2); }
+.hxfixl { max-height: 336px; overflow: auto; scrollbar-width: thin; }
+.hxfx .nm b { white-space: normal; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+.hxfx mark { background: none; color: var(--hx-acc); font-weight: 700; }
 .hxnw.new .ch::before { content: ""; display: inline-block; width: 7px; height: 7px; margin-right: 6px; border-radius: 50%; background: var(--hx-acc); vertical-align: 1px; }
 @media (max-width: 1250px) { .hxrow { grid-template-columns: repeat(2, minmax(0, 1fr)); } .hxcards { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 @media (max-width: 900px) { .hxtop { grid-template-columns: minmax(0, 1fr); } }
 @media (max-width: 1400px) { .hxspark { width: 110px; } }
-@media (max-width: 700px) { .hxspark { display: none; } .hxrow, .hxcards { grid-template-columns: minmax(0, 1fr); } .hxbox.wide { grid-column: auto; } .hxpr strong { font-size: 32px; } .hxit { max-width: 100%; } .hxit b { font-size: 20px; } .hxpic { width: 60%; opacity: .35; } }
+@media (max-width: 700px) { .hxspark { display: none; } .hxrow, .hxcards { grid-template-columns: minmax(0, 1fr); } .hxbox.wide { grid-column: auto; } .hxchips button { width: 40px; height: 40px; } .hxfixq { height: 36px; max-width: none; } .hxpr strong { font-size: 32px; } .hxit { max-width: 100%; } .hxit b { font-size: 20px; } .hxpic { width: 60%; opacity: .35; } }
 .hchips { display: flex; flex-wrap: wrap; gap: 6px; }
 .hchips a, .hchips button { all: unset; cursor: pointer; padding: 4px 11px; border: 1px solid var(--line); border-radius: 14px; color: var(--fg); font-size: 13px; }
 .hchips a:hover, .hchips button:hover { border-color: var(--gold); }
@@ -2218,7 +2232,8 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
       rd_src: "Facts from Blizzard's announcement as reported by", h_craft_big: "Best craft right now", h_cost: "Cost", h_sells: "Sells for", h_open_rec: "Open recipe", h_skill: "skill %1", h_cd: "%1 h cooldown",
       h_q_raid: "When do the raids open?", h_raid_in: "in %1 days", h_raid_1: "Tomorrow", h_raid_open: "Open now", h_raid_s: "9 December · new raids on Forever", h_raid_since: "Since 9 December",
       cl_land_h: "Choose a class", cl_roles_h: "Who does what", cl_role_tank: "Tank", cl_role_heal: "Healer", cl_role_dps: "Damage", cl_roles_note: "Roles as in Classic. Every class can deal damage; tanks and healers are what groups look for.", cl_land_tip: "A beginner guide from 1 to 60, talent calculator, spells with level and trainer cost, pet spells, class quests and trainers.", cl_land_n: "%1 spells", cl_land_pets: "%1 pets", cl_land_demons: "%1 demons",
-      cl_land_right: "Pick a class to open its beginner guide: how to play it from level 1 to 60 and where every talent point goes. The talent calculator, spells, pet spells, class quests and trainers are under the class in the list.", h_show_n: "Show %1 of %2", h_rise_big: "Biggest rise right now", h_over: "over the usual price", h_none: "Nothing right now.", h_per_day: "%1/day", h_cheap_none: "Prices are loading…", h_watch: "My list", h_watch_none: "Star ☆ an item and its price shows up here.", h_players: "Players", h_guilds: "Guilds", h_news: "WoW Forever news", h_blue: "Blue posts", h_news_all: "Forum →", h_news_none: "No news yet.", h_d_ago: "%1 d ago", h_news_by: "%1 · %2", h_news_tip: "Opens Blizzard's forum in a new tab", h_lvl: "Lvl %1", h_members: "%1 members", h_players_none: "Look someone up in the Armory and they show up here.", ar_land_lb: "Leaderboards ›", ar_land_recent: "Recent", ar_land_friends: "Friends", on_ah: "%1 items on the auction house", market_label: "Market", search_btn: "Search", col_fav: "Fav",
+      cl_land_right: "Pick a class to open its beginner guide: how to play it from level 1 to 60 and where every talent point goes. The talent calculator, spells, pet spells, class quests and trainers are under the class in the list.", h_show_n: "Show %1 of %2", h_rise_big: "Biggest rise right now", h_over: "over the usual price", h_none: "Nothing right now.", h_per_day: "%1/day", h_cheap_none: "Prices are loading…", h_watch: "My list", h_watch_none: "Star ☆ an item and its price shows up here.", h_players: "Players", h_guilds: "Guilds", h_news: "WoW Forever news", h_blue: "Blue posts", h_news_all: "Forum →", h_news_none: "No news yet.", h_d_ago: "%1 d ago", h_news_by: "%1 · %2", h_news_tip: "Opens Blizzard's forum in a new tab", h_fix_ph: "Search hotfixes: class, profession, item…", h_fix_n: "%1 hotfixes, newest first",
+      h_fix_none: "No hotfix mentions that yet.", h_fix_tip: "Opens Blizzard's hotfix post", h_fix_chip: "Hotfixes for %1", h_fix_gen: "General", h_lvl: "Lvl %1", h_members: "%1 members", h_players_none: "Look someone up in the Armory and they show up here.", ar_land_lb: "Leaderboards ›", ar_land_recent: "Recent", ar_land_friends: "Friends", on_ah: "%1 items on the auction house", market_label: "Market", search_btn: "Search", col_fav: "Fav",
       hist_loading: "Loading history…", hist_fail: "The history could not be loaded.", today: "today", item_n: "Item %1",
       copy_link: "Copy link", copied: "Link copied", star_add: "Watch this item", star_del: "Remove from my list", star_all: "All reagents to my list", star_all_del: "Remove reagents from my list", star_lbl_add: "Watch", star_lbl_on: "In my list",
       not_listed: "not listed now", remove: "Remove", watch_sub: "Saved in your browser, only you can see it.",
@@ -7130,6 +7145,76 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
   }
   function homeClose() { if (!homeOn) return; homeOn = false; document.body.removeAttribute("data-home"); $("homev").hidden = true; if (D) drawMode(); }
   function homeLater() { if (homeRaf) return; homeRaf = setTimeout(function () { homeRaf = 0; homeDraw(); }, 0); }   // timer, inte rAF: rAF väntar i en dold flik
+  // News och Blue posts ur Blizzards forum (hamta-nyheter.js → news.json, molnet två gånger i timmen). Länkar till forumet.
+  // Hotfix-sök (Joakim 2026-11-23): sökfält + klass-/yrkesikoner i News-rutan, träffar ur Blizzards hotfix-trådar (news.json "fix").
+  var homeFixQ = "";
+  function newsAgo(at) { var m = Math.max(1, Math.round((Date.now() - at) / 6e4)); return m < 60 ? t("h_min_ago", m) : m < 1440 ? t("h_h_ago", Math.round(m / 60)) : t("h_d_ago", Math.round(m / 1440)); }
+  var NEWS_IC = [[/hotfix/i, "inv_misc_wrench_01"], [/podcast/i, "inv_misc_horn_01"], [/short story|watch|video/i, "inv_misc_book_09"], [/pvp|faction|player versus/i, "inv_bannerpvp_01"],
+    [/dungeon|raid/i, "inv_misc_key_10"], [/fishing/i, "trade_fishing"], [/camping/i, "spell_fire_fire"], [/profession|tailoring|blacksmith|engineer|alchemy|enchant|leather|herbalism|mining|skinning|cooking/i, "trade_engineering"],
+    [/quest/i, "inv_misc_note_01"], [/item/i, "inv_chest_chain"], [/enem|npc/i, "inv_misc_head_orc_01"], [/known issues|bug|fix|abuse|refund/i, "inv_misc_gear_01"], [/weekly|news|live|launch/i, "inv_letter_15"]];
+  function newsIcImg(n) { return '<img class="ic" src="' + RICON + n + '.jpg" width="24" height="24" alt="" loading="lazy">'; }
+  function newsIc(title, blue) { var n = blue ? "inv_misc_note_01" : "inv_scroll_03"; for (var i = 0; i < NEWS_IC.length; i++) if (NEWS_IC[i][0].test(title)) { n = NEWS_IC[i][1]; break; } return newsIcImg(n); }
+  // Snabbval under rubriken: klasserna och några vanliga ämnen
+  var FIX_CHIPS = [["Warrior"], ["Paladin"], ["Hunter"], ["Rogue"], ["Priest"], ["Shaman"], ["Mage"], ["Warlock"], ["Druid"],
+    ["Fishing", "trade_fishing"], ["Camping", "spell_fire_fire"], ["Dungeons", "inv_misc_key_10"], ["Quests", "inv_misc_note_01"], ["Professions", "trade_engineering"]];
+  function fixWords() { return homeFixQ.toLowerCase().split(/\s+/).filter(function (w) { return w.length > 1; }); }
+  function fixMark(html, words) {
+    if (!words.length) return html;
+    var re = new RegExp("(" + words.map(function (w) { return esc(w).replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); }).join("|") + ")", "gi");
+    return html.replace(/(<[^>]*>)|([^<]+)/g, function (m, tag, text) { return tag || text.replace(re, "<mark>$1</mark>"); });
+  }
+  function fixList() {
+    var all = homeNews && homeNews.fix || [], words = fixWords();
+    if (!words.length) return null;
+    var L = all.filter(function (x) { var h = (x.s + " " + x.x).toLowerCase(); return words.every(function (w) { return h.indexOf(w) >= 0; }); });
+    if (!L.length) return '<div class="hnone hxfixn">' + t("h_fix_none") + "</div>";
+    var cls = Object.keys(CLASS_COL);
+    return '<div class="hxfixn">' + t("h_fix_n", L.length) + '</div><div class="hxlist hxfixl">' + L.slice(0, 60).map(function (x) {
+      var c = cls.filter(function (k) { return x.s.indexOf(k) >= 0; })[0];
+      var ic = c ? newsIcImg("classicon_" + c.toLowerCase()) : newsIc(x.s || "hotfix", false);
+      var path = x.s.replace(/^Classes › /, "") || t("h_fix_gen");
+      return '<a class="hxli hxnw hxfx' + (Date.now() - x.d < 2 * 864e5 ? " new" : "") + '" href="' + esc(x.u) + '" target="_blank" rel="noopener" title="' + esc(t("h_fix_tip")) + '">' + ic +
+        '<span class="nm"><b>' + fixMark(esc(x.x), words) + "</b><small" + (c ? ' style="color:' + CLASS_COL[c] + '"' : "") + ">" + fixMark(esc(path), words) + '</small></span><span class="ch">' +
+        new Date(x.d).toLocaleDateString("en-GB", { day: "numeric", month: "short", timeZone: "UTC" }) + "</span></a>";
+    }).join("") + "</div>";
+  }
+  function newsBody(kind) {
+    var blue = kind === "blue";
+    if (!blue) { var f = fixList(); if (f) return f; }
+    var L = homeNews ? (homeNews[kind] || []).slice(0, 8) : null;
+    return !L ? '<div class="hnone">' + t("ar_loading") + "</div>" : !L.length ? '<div class="hnone">' + t("h_news_none") + "</div>" : '<div class="hxlist">' + L.map(function (x) {
+      var fresh = Date.now() - x.at < 864e5;
+      var main = blue ? x.ex || x.title : x.title, sub = blue ? '<span class="bl">' + esc(x.by) + "</span> · " + esc(x.title) : esc(x.by);
+      return '<a class="hxli hxnw' + (fresh ? " new" : "") + '" href="' + esc(x.url) + '" target="_blank" rel="noopener" title="' + esc(t("h_news_tip")) + '">' + newsIc(x.title, blue) +
+        '<span class="nm"><b>' + esc(main) + "</b><small>" + sub + '</small></span><span class="ch">' + newsAgo(x.at) + "</span></a>";
+    }).join("") + "</div>";
+  }
+  function newsChips() {
+    var q = homeFixQ.trim().toLowerCase();
+    return '<div class="hxchips">' + FIX_CHIPS.map(function (c) {
+      var ic = c[1] ? RICON + c[1] + ".jpg" : RICON + "classicon_" + c[0].toLowerCase() + ".jpg";
+      return '<button type="button" data-fixq="' + c[0] + '" aria-pressed="' + (q === c[0].toLowerCase()) + '" title="' + esc(t("h_fix_chip", c[0])) + '"><img src="' + ic + '" width="22" height="22" alt="' + c[0] + '" loading="lazy"></button>';
+    }).join("") + "</div>";
+  }
+  function newsBox(kind) {
+    var blue = kind === "blue";
+    var forum = "https://eu.forums.blizzard.com/en/wow/" + (blue ? "groups/blizzard-tracker/activity/posts" : "c/wow-forever/359");
+    var search = blue ? "" : '<input id="hxfixq" class="hxfixq" type="search" autocomplete="off" spellcheck="false" placeholder="' + esc(t("h_fix_ph")) + '" aria-label="' + esc(t("h_fix_ph")) + '" value="' + esc(homeFixQ) + '">';
+    return '<section class="hxbox wide' + (blue ? "" : " hxnews") + '"><h3><span>' + t(blue ? "h_blue" : "h_news") + "</span>" + search + '<a href="' + forum + '" target="_blank" rel="noopener">' + t("h_news_all") + "</a></h3>" +
+      (blue ? "" : newsChips()) + '<div id="' + (blue ? "hxblueb" : "hxnewsb") + '">' + newsBody(kind) + "</div></section>";
+  }
+  function newsFixRedraw() {
+    var b = $("hxnewsb"); if (b) b.innerHTML = newsBody("news");
+    var q = homeFixQ.trim().toLowerCase();
+    document.querySelectorAll(".hxchips button").forEach(function (x) { x.setAttribute("aria-pressed", String(q === x.dataset.fixq.toLowerCase())); });
+  }
+  document.addEventListener("input", function (e) { if (e.target && e.target.id === "hxfixq") { homeFixQ = e.target.value; newsFixRedraw(); } });
+  document.addEventListener("click", function (e) {
+    var b = e.target.closest && e.target.closest("[data-fixq]"); if (!b) return;
+    var v = b.dataset.fixq; homeFixQ = homeFixQ.trim().toLowerCase() === v.toLowerCase() ? "" : v;
+    var i = $("hxfixq"); if (i) i.value = homeFixQ;
+    newsFixRedraw();
+  });
   function homeDraw() {
     var el = $("homev"); if (!el || !homeOn) return;
     if (homePage === "raids") { el.innerHTML = raidsHtml(); return; }
@@ -7172,22 +7257,6 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     };
     var pplHtml = chars.length || guilds.length ? (chars.length ? '<div class="hxlist">' + chars.map(pRow).join("") + "</div>" : "") + (guilds.length ? '<h4>' + t("h_guilds") + '</h4><div class="hxlist">' + guilds.map(gRow).join("") + "</div>" : "")
       : '<div class="hnone">' + t("h_players_none") + "</div>";
-    // News och Blue posts ur Blizzards forum (hamta-nyheter.js → news.json, molnet två gånger i timmen). Länkar till forumet.
-    var ago = function (at) { var m = Math.max(1, Math.round((Date.now() - at) / 6e4)); return m < 60 ? t("h_min_ago", m) : m < 1440 ? t("h_h_ago", Math.round(m / 60)) : t("h_d_ago", Math.round(m / 1440)); };
-    var NEWS_IC = [[/hotfix/i, "inv_misc_wrench_01"], [/podcast/i, "inv_misc_horn_01"], [/short story|watch|video/i, "inv_misc_book_09"], [/pvp|faction/i, "inv_bannerpvp_01"],
-      [/dungeon|raid/i, "inv_misc_key_10"], [/known issues|bug|fix|abuse|refund/i, "inv_misc_gear_01"], [/weekly|news|live|launch/i, "inv_letter_15"]];
-    var newsIc = function (title, blue) { var n = blue ? "inv_misc_note_01" : "inv_scroll_03"; for (var i = 0; i < NEWS_IC.length; i++) if (NEWS_IC[i][0].test(title)) { n = NEWS_IC[i][1]; break; } return '<img class="ic" src="' + RICON + n + '.jpg" width="24" height="24" alt="" loading="lazy">'; };
-    var newsBox = function (kind) {
-      var L = homeNews ? (homeNews[kind] || []).slice(0, 8) : null, blue = kind === "blue";
-      var forum = "https://eu.forums.blizzard.com/en/wow/" + (blue ? "groups/blizzard-tracker/activity/posts" : "c/wow-forever/359");
-      var body = !L ? '<div class="hnone">' + t("ar_loading") + "</div>" : !L.length ? '<div class="hnone">' + t("h_news_none") + "</div>" : '<div class="hxlist">' + L.map(function (x) {
-        var fresh = Date.now() - x.at < 864e5;
-        var main = blue ? x.ex || x.title : x.title, sub = blue ? '<span class="bl">' + esc(x.by) + "</span> · " + esc(x.title) : esc(x.by);
-        return '<a class="hxli hxnw' + (fresh ? " new" : "") + '" href="' + esc(x.url) + '" target="_blank" rel="noopener" title="' + esc(t("h_news_tip")) + '">' + newsIc(x.title, blue) +
-          '<span class="nm"><b>' + esc(main) + "</b><small>" + sub + '</small></span><span class="ch">' + ago(x.at) + "</span></a>";
-      }).join("") + "</div>";
-      return '<section class="hxbox wide"><h3><span>' + t(blue ? "h_blue" : "h_news") + '</span><a href="' + forum + '" target="_blank" rel="noopener">' + t("h_news_all") + "</a></h3>" + body + "</section>";
-    };
     var box = function (h, all, body) { return '<section class="hxbox"><h3><span>' + h + "</span>" + (all ? '<a href="' + all + '">' + t("h_all") + "</a>" : "") + "</h3>" + body + "</section>"; };
     var list = function (L, f2, none) { return L.length ? '<div class="hxlist">' + L.map(f2).join("") + "</div>" : '<div class="hnone">' + t(D ? none || "h_none" : "h_cheap_none") + "</div>"; };
     if (!CO && !homeCoTry) { homeCoTry = true; loadCo().then(function () { homeLater(); }).catch(function () {}); }
