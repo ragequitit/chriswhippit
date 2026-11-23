@@ -156,6 +156,14 @@ h1 { font-family: var(--display); font-weight: 500; font-size: 36px; margin: 0; 
 .scan { flex: 0 1 auto; text-align: right; }
 .scan b { display: block; color: var(--gold); font-weight: 600; font-size: 16px; }
 .scan span { color: var(--grey); font-size: 13px; }
+/* Nästa Blizzard-uppdatering (Joakim 2026-11-23): tid + nedräkning, blir en knapp när den är här */
+#scanNext { display: block; font-size: 12.5px; margin-top: 2px; }
+#scanNext .nxdot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: #6f8a4e; margin-right: 6px; vertical-align: 1px; }
+#scanNext button { background: none; border: 0; padding: 0; font: inherit; color: var(--gold); cursor: pointer; text-decoration: underline dotted; text-underline-offset: 3px; }
+#scanNext button:hover, #scanNext button:focus-visible { color: #F6C448; }
+#scanNext.due .nxdot { background: #F6C448; animation: nxpulse 1.4s ease-in-out infinite; }
+@keyframes nxpulse { 50% { opacity: .35; } }
+@media (prefers-reduced-motion: reduce) { #scanNext.due .nxdot { animation: none; } }
 
 .bar { display: flex; gap: 12px; align-items: center; padding: 12px 18px; flex-wrap: wrap; }
 .bar input[type=search] { flex: 0 1 360px; min-width: 0; height: 36px; padding: 0 12px 0 40px; border-radius: 5px; border: 1px solid var(--line);
@@ -1522,7 +1530,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
   .sub { font-size: 12.5px; margin-top: 1px; }
   .scan { flex: 0 1 118px; min-width: 0; }
   .scan b { font-size: 12.5px; line-height: 1.25; }
-  #scanInfo, .applbl { display: none; }
+  #scanInfo, #scanNext, .applbl { display: none; }
   .appseg button { padding: 0 10px; font-size: 13.5px; }
   .appsel + .mkt { margin-left: 0; flex: 1 1 auto; min-width: 0; display: flex; justify-content: flex-end; }
   .mbtn { height: 44px; padding: 0 10px; gap: 6px; }
@@ -1651,7 +1659,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
         </fieldset>
       </div>
     </div>
-    <div class="scan"><b id="scanTime" data-t="loading">Läser in scannen…</b><span id="scanInfo"></span></div>
+    <div class="scan"><b id="scanTime" data-t="loading">Läser in scannen…</b><span id="scanInfo"></span><span id="scanNext" hidden></span></div>
   </header>
 
   <div class="bar">
@@ -2243,7 +2251,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
       about_data: "Blizzard data older than 30 days is not kept.",
       npc_gives: "Gives", npc_ends: "Ends", npc_none: "No data for this NPC.", npc_fail: "The NPC could not be loaded.",
       npc_f_quest: "Quest giver", npc_f_vendor: "Vendor", npc_f_trainer: "Trainer", npc_f_flight: "Flight master", npc_f_inn: "Innkeeper", npc_f_bank: "Banker", npc_f_ah: "Auctioneer", npc_f_stable: "Stable master", npc_f_repair: "Repair",
-      scan_at: "Updated %1 at %2", m_faction: "Faction", m_ah: "Auction house", m_ah_own: "Faction AH", m_ah_bw: "Blackwater", m_realm: "Realm type", m_region: "Region", home_tip: "Start page", sect_tip: "Back to the start of this tab", h_title: "Welcome to Azeroth Atlas", h_sub: "Auction prices, players, quests and loot for WoW Forever. Pick a place to start.", h_search: "Search everything", h_n_items: "%1 items on the AH", h_n_cheap: "%1 cheaper than usual", h_n_friends: "%1 friends", h_cheap: "Cheap right now", h_save: "Biggest saving right now", h_usual: "Usual price", h_listed: "Listed at", h_under: "under the usual price", h_n_sold: "%1 sold a day", h_open: "Open item",
+      scan_at: "Updated %1 at %2", next_upd: "Next update ≈ %1 · in %2 min", next_due: "New prices any minute – check now", next_tip: "Blizzard updates auction prices about once an hour. The page picks them up a few minutes later.", m_faction: "Faction", m_ah: "Auction house", m_ah_own: "Faction AH", m_ah_bw: "Blackwater", m_realm: "Realm type", m_region: "Region", home_tip: "Start page", sect_tip: "Back to the start of this tab", h_title: "Welcome to Azeroth Atlas", h_sub: "Auction prices, players, quests and loot for WoW Forever. Pick a place to start.", h_search: "Search everything", h_n_items: "%1 items on the AH", h_n_cheap: "%1 cheaper than usual", h_n_friends: "%1 friends", h_cheap: "Cheap right now", h_save: "Biggest saving right now", h_usual: "Usual price", h_listed: "Listed at", h_under: "under the usual price", h_n_sold: "%1 sold a day", h_open: "Open item",
       h_st_items: "On the auction house", h_st_items_s: "items with a price", h_st_cheap: "Cheaper than usual", h_st_cheap_s: "items that sell well", h_st_gold: "Traded per day", h_st_gold_s: "market price × sold a day", h_st_upd: "Prices updated", h_min_ago: "%1 min ago", h_h_ago: "%1 h ago",
       h_q_mount: "Which mount is next?", h_q_mount_s: "%1 mounts on Forever", h_q_tal: "Plan your talent build", h_points: "points", h_q_tal_s: "Build and share for every class",
       h_q_farm: "What is worth farming?", h_q_craft: "Which craft pays most?", h_per_craft: "per craft", h_q_new: "What is new in Forever?", h_n_dungeons: "%1 new dungeons", h_q_new_s: "%1 new items with loot tables", h_rise: "Rising right now", h_hot: "Most traded", h_gph: "Gold per hour", h_craft: "Pays to craft", h_dayt: "Best day trades", h_all: "View all →", h_overview: "Market overview", rd_title: "Raids on Forever", rd_opens: "Opens 9 December", rd_players: "players", rd_bosses: "Bosses", rd_level: "Level", rd_att: "Attunement", rd_reset: "Reset", rd_weekly: "Weekly",
@@ -5574,7 +5582,35 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     drawMarket();
     $("scanTime").textContent = t("scan_at", w.day, w.hm);
     $("scanInfo").textContent = t("on_ah", num(rows.length));
+    nextUpd();
   }
+  // Nästa Blizzard-uppdatering: Blizzard byter siffror ungefär en gång i timmen (Last-Modified ~:22) och molnet hämtar
+  // :24/:44, så sidan har dem ~4 min efter. Missad timme → nästa timslag. När tiden är här blir raden en knapp som hämtar.
+  var nxBusy = false;
+  function nextUpd() {
+    var el = $("scanNext");
+    if (!el) return;
+    if (!D || D.src !== "api" || !D.t) { el.hidden = true; return; }
+    var now = Date.now(), at = D.t + 3600 + 240;
+    while (at * 1000 < now - 10 * 60000) at += 3600;
+    var mins = Math.ceil((at * 1000 - now) / 60000);
+    el.hidden = false;
+    el.title = t("next_tip");
+    el.classList.toggle("due", mins <= 0);
+    if (mins > 0) {
+      el.innerHTML = '<i class="nxdot" aria-hidden="true"></i>' + esc(t("next_upd", when(at).hm, mins));
+    } else if (!el.querySelector("button")) {
+      el.innerHTML = '<i class="nxdot" aria-hidden="true"></i><button type="button" id="nxBtn">' + esc(t("next_due")) + "</button>";
+      $("nxBtn").addEventListener("click", function () {
+        if (nxBusy) return;
+        nxBusy = true; this.disabled = true; this.textContent = t("fetching");
+        update();
+        setTimeout(function () { nxBusy = false; var b = $("nxBtn"); if (b) { b.disabled = false; b.textContent = t("next_due"); } }, 4000);
+      });
+    }
+  }
+  setInterval(function () { if (!document.hidden) nextUpd(); }, 30000);
+  document.addEventListener("visibilitychange", function () { if (!document.hidden) nextUpd(); });
   // Samma urval som listan (refresh): namnlösa varor bara med "visa alla", Trading utan gear och små lager.
   function countCats() {
     var cats = (D && D.cats) || [];
