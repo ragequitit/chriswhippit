@@ -2291,9 +2291,9 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
       fm_h: "Gold per hour", fm_kill: "Killing", fm_kill_tip: "Where to kill mobs for gold at your level", fm_sub_h: "Killing spots for the Horde", fm_sub_a: "Killing spots for the Alliance", fm_gather: "Gathering instead:",
       fm_lvl: "Level %1", fm_mobs: "mobs %1–%2", fm_col_mob: "Mob", fm_col_loot: "Best loot", fm_col_kh: "Kills/h", fm_col_gph: "Gold/h", fm_more: "Show %1 more", fm_less: "Show fewer", fm_skin_short: "+%1 skinning",
       fm_none: "No spot matches the search.", fm_fail: "Could not load the farming spots.", fm_pick: "Pick a spot in the list.",
-      fm_note: "Each level lists mobs a few levels below you, picked from the open Classic database (cmangos 1.12), with their drops and spawn points. Gold per hour uses auction house prices after the 5 % cut, never above the usual price this week, or the vendor price when that pays more or the item hardly sells. Forever may have changed some drops, and kills per hour is an estimate, so read the numbers as a guide.",
-      fm_kh_tip: "An estimate: fight time measured in the game, the walk to the next mob from how close the spawns are, and a few seconds to loot.", fm_gph_tip: "Kills per hour × what one kill is worth right now", fm_kill_val: "Per kill",
-      fm_skin: "Skinning", fm_skin_tip: "Extra gold per hour if you skin every kill. Not part of the main figure.", fm_skin_plus: "+%1/h", fm_loot_h: "Loot", fm_skin_h: "Skinning gives", fm_col_per: "Per kill", fm_per_tip: "Chance to drop, or how many drop on average",
+      fm_note: "Each level lists mobs a few levels below you, picked from the open Classic database (cmangos 1.12), with their drops and spawn points. Gold per hour uses auction house prices after the 5 % cut, never above the usual price this week, or the vendor price when that pays more or the item hardly sells. Forever may have changed some drops, and kills per hour is an estimate, capped at half of what the spawns can give back with their respawn time, so read the numbers as a guide.",
+      fm_kh_tip: "An estimate: fight time measured in the game, the walk to the next mob from how close the spawns are, and a few seconds to loot. Never more than half of what the spawns can give back: their number × 3600 ÷ the respawn time in seconds × 0.5.", fm_here: "%1 here", fm_here_rs: "%1 here · respawn %2 min", fm_here_tip: "How many of this mob spawn in the zone, and how long one takes to come back on average", fm_gph_tip: "Kills per hour × what one kill is worth right now", fm_kill_val: "Per kill",
+      fm_skin: "Skinning", fm_skin_tip: "Extra gold per hour if you skin every kill. Not part of the main figure.", fm_skin_plus: "+%1/h", fm_loot_h: "Loot", fm_skin_h: "Skinning gives", fm_col_per: "Per kill", fm_per_tip: "Chance to drop, or how many drop on average. The figures come from the Classic database and have not been measured on Forever.", fm_src: "Drop chances from the Classic database, not measured on Forever.",
       fm_col_val: "Value", fm_vendor: "vendor", fm_vendor_tip: "Vendor price: it pays more than the auction house, or the item sells too rarely there", fm_coin: "Coins", fm_also: "Also here",
       fm_map_tip: "%1 spawns in %2. Click a point to copy its /way, click the map to open it large.", fm_map_some: "%1 spawns in %2, %3 of them on the map. Click a point to copy its /way, click the map to open it large.", fm_nomap: "No map of %1 yet.",
       fm_home_row: "Killing · Level %1 · %2", fm_home_sub: "Killing · level %1 · %2",
@@ -3805,7 +3805,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
   // (som Skill-up), stället i högerrutan med karta och farmrunda. Adresser: #farm, #farm=30, #farm=30&spot=<mob>&z=<zon>,
   // #fish, #fish=4, #fish=4&spot=<zon>(&pool=<pool>).
   var FM = null, fmP = null, fmOn = false, fmKind = "kill", fmLvl = 0, fmMob = 0, fmZone = "", fmMoreOn = {}, fmJump = false;
-  var fiBand = 0, fiZone = "", fiPool = "";
+  var fiBand = 0, fiZone = "", fiPool = "", FM_NPC = {};   // FM_NPC[mob] = NPC-raden (namn … [11] visnings-id, [12] 3D) eller 0
   var FM_ICON = "inv_sword_04", FI_ICON = "trade_fishing", FM_DAY = 30, FM_SHOW = 4;
   var FI_BANDS = [[1, 75], [75, 150], [150, 225], [225, 300]], FI_CASTS = 200, FI_POOL = 110, FI_PERPOOL = 4, FI_MINPOOLS = 8;   // pooler: ~4 fångster per pool och timme (de tar slut och kommer tillbaka), högst FI_POOL
   // Den andra fraktionens hemland (samma listor som farm-guider.js) och städerna: där fiskar man inte
@@ -4021,6 +4021,12 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
           "</td><td>" + (x.val >= 1 ? money(x.val) : DASH) + '</td><td class="hide-s dcol">' + (r && r.day ? '<span class="est">' + num(r.day) + "</span>" : DASH) + "</td></tr>";
       }).join("") + "</tbody></table>";
   }
+  function fmNpc(id) {   // bara NPC-filen (inte quests.json som npcLoad också hämtar)
+    if (id in FM_NPC) return Promise.resolve(FM_NPC[id]);
+    var k = id % 50;
+    if (!NPCF[k]) NPCF[k] = fetch(DATA_BASE + "npc/" + k + ".json").then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }).catch(function (e) { NPCF[k] = null; throw e; });
+    return NPCF[k].then(function (o) { return (FM_NPC[id] = o[id] || 0); }, function () { return 0; });
+  }
   function fmTopFact(top) {   // huvudvaran och hur mycket marknaden tar emot per dygn
     if (!top) return "";
     var r = byId[top.id];
@@ -4030,12 +4036,16 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     var c = f.c, s = c.s;
     var facts = '<dl class="facts"><div><dt title="' + esc(t("fm_gph_tip")) + '">' + t("fm_col_gph") + '</dt><dd><span class="down2">' + gaMoney(c.gph) + "/h</span></dd></div>" +
       '<div><dt title="' + esc(t("fm_kh_tip")) + '">' + t("fm_col_kh") + "</dt><dd>≈ " + num(s.kh) + "</dd></div>" +
+      (s.n > 0 ? '<div class="wide"><dt title="' + esc(t("fm_here_tip")) + '">' + t("fm_col_mob") + "</dt><dd>" + (s.rs > 0 ? t("fm_here_rs", num(s.n), Math.max(1, Math.round(s.rs / 60))) : t("fm_here", num(s.n))) + "</dd></div>" : "") +
       "<div><dt>" + t("fm_kill_val") + "</dt><dd>" + money(c.kill) + "</dd></div>" +
       (c.skph >= 1 ? '<div><dt title="' + esc(t("fm_skin_tip")) + '">' + t("fm_skin") + "</dt><dd>" + t("fm_skin_plus", gaMoney(c.skph)) + "</dd></div>" : "") + fmTopFact(c.top) + "</dl>";
+    var n = FM_NPC[s.mob], disp = s.disp || (n && n[11]) || 0, m3 = n && n[11] === disp ? n[12] || 0 : 0;
+    var nm = n ? '<a class="wh" href="#npc=' + s.mob + '" data-npc="' + s.mob + '">' + esc(s.name) + "</a>" : esc(s.name);
     return '<div class="strip"><button class="lnk" type="button" data-copyany="' + esc(fmLink(f.b.lvl, s) + fmMk()) + '" title="' + t("copy_link") + '">' + t("copy_link") + "</button>" +
-      "<h2>" + fmIcon("ic big") + " " + esc(s.name) + "</h2><small>" + t("fm_lvl", esc(s.lvl.replace("-", "–"))) + " · " + esc(s.zone) + "</small></div>" +
+      "<h2>" + fmIcon("ic big") + " " + nm + "</h2><small>" + t("fm_lvl", esc(s.lvl.replace("-", "–"))) + " · " + esc(s.zone) + "</small></div>" +
+      portraitHtml(disp, false, m3, "", huBg({ zones: [{ zone: s.zone }] })) +   // bild, eller 3D när modellen finns (valet sparas som på beast-sidan)
       facts + fmMapHtml(s) +
-      "<div><h3>" + t("fm_loot_h") + "</h3>" + fmLootTable(c.loot, s.coin) + "</div>" +
+      "<div><h3>" + t("fm_loot_h") + '</h3><div class="dim">' + t("fm_src") + "</div>" + fmLootTable(c.loot, s.coin) + "</div>" +
       (c.skin.length ? "<div><h3>" + t("fm_skin_h") + ' <span class="dim">' + t("fm_skin_plus", gaMoney(c.skph)) + "</span></h3>" + fmLootTable(c.skin, 0) + "</div>" : "") +
       (s.also && s.also.length ? '<div class="ndfound"><b>' + t("fm_also") + "</b>" + s.also.map(esc).join(", ") + ".</div>" : "") +
       '<div class="note">' + t("fm_note_d") + "</div>";
@@ -4056,12 +4066,16 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     var el = $("fmbox"); if (!el || !fmOn || mode !== "cr" || !fmHave()) return;
     var f = fmKind === "fish" ? fiFind() : fmFind();
     el.innerHTML = f ? (fmKind === "fish" ? fiDetailHtml(f) : fmDetailHtml(f)) : '<div class="note">' + t("fm_pick") + "</div>"; fmNames(el);
+    m3Auto();   // 3D om valet är 3D och mobben har modell, annars stängs en gammal visare
   }
   function fmDetail() {   // högerrutan: stället med karta
     var kind = fmKind;
+    m3Stop();
     $("detail").scrollTop = 0;
     $("detail").innerHTML = '<div id="fmbox" style="display:contents"><div class="note">' + t("ar_loading") + "</div></div>";
-    Promise.all([fmNeed(), loadZmap(), qmIndex().catch(function () { return null; }), loadXIcons()]).then(fmDetailDraw, function () { var el = $("fmbox"); if (el && fmKind === kind) el.innerHTML = '<div class="note">' + t(kind === "fish" ? "fi_fail" : "fm_fail") + "</div>"; });
+    Promise.all([fmNeed(), loadZmap(), qmIndex().catch(function () { return null; }), loadXIcons()]).then(function () {
+      var f = kind === "kill" && fmFind(); return f ? fmNpc(f.c.s.mob) : null;
+    }).then(fmDetailDraw, function () { var el = $("fmbox"); if (el && fmKind === kind) el.innerHTML = '<div class="note">' + t(kind === "fish" ? "fi_fail" : "fm_fail") + "</div>"; });
   }
   function fmPick(kind) {   // Killing/Fishing i spalten; klick på den valda igen: tillbaka till recepten
     if (fmOn && fmKind === kind) {
