@@ -5415,6 +5415,22 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     }
     if (cut) { mt.alphaTest = 0.5; mt.transparent = false; mt.needsUpdate = true; }
   }
+  // Spelets blandningsläge per del (Joakim 2026-11-24: modellerna skilde sig från spelet; modeller/geosets.js skriver
+  // assets/models/blend.json ur M2-filerna): 0 ogenomskinlig, 1 urklipp (standard, utelämnas), 2 genomskinlig,
+  // 3/4 additiv glöd. [läge, opacitet] när delen är svagare i Stand. Modeller som saknas i filen får gissningen ovan.
+  function m3Blend() {
+    if (!M3.blend) M3.blend = fetch(DATA_BASE + "assets/models/blend.json").then(function (r) { return r.ok ? r.json() : {}; }).catch(function () { return {}; });
+    return M3.blend;
+  }
+  function m3Mat(T, mt, v) {
+    var mode = typeof v === "number" ? v : v ? v[0] : 1, op = v && v.length ? v[1] : 1;
+    mt = mt.clone();
+    if (mode === 0) { mt.transparent = false; mt.alphaTest = 0; }
+    else if (mode === 1) { mt.transparent = false; mt.alphaTest = 0.502; }
+    else { mt.transparent = true; mt.depthWrite = false; mt.alphaTest = 0.004; mt.opacity = op; if (mode >= 3) mt.blending = T.AdditiveBlending; }
+    mt.needsUpdate = true;
+    return mt;
+  }
   function m3Start(box) {
     var disp = +box.dataset.m3;
     if (!(disp > 0)) return;
@@ -5422,7 +5438,8 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     box.classList.add("on3d", "ld");
     var btn = box.querySelector(".p3d"); if (btn) btn.textContent = t("m3_pic");
     var run = M3.run = {};
-    m3Lib().then(function (L) {
+    Promise.all([m3Lib(), m3Blend()]).then(function (LB) {
+      var L = LB[0], BL = LB[1][disp];
       return new Promise(function (res, rej) { new L.GL().setMeshoptDecoder(L.MD).load(DATA_BASE + "assets/models/" + disp + ".glb", res, undefined, rej); }).then(function (g) {
         if (M3.run !== run || !box.isConnected || !box.classList.contains("on3d")) return;
         var T = L.T, W = box.clientWidth || 300, H = box.clientHeight || 180;
@@ -5434,7 +5451,15 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
         scene.add(new T.HemisphereLight(0xfff1dc, 0x2a2018, 1.5));
         var sun = new T.DirectionalLight(0xfff4e6, 1.7); sun.position.set(2, 4, 3); scene.add(sun);
         var o = g.scene;
-        o.traverse(function (x) { if (x.isMesh) { x.frustumCulled = false; [].concat(x.material || []).forEach(function (mt) { mt.side = T.DoubleSide; m3Cutout(mt); }); } });
+        o.traverse(function (x) {
+          if (!x.isMesh) return;
+          x.frustumCulled = false;
+          if (BL) {   // delnamnet efter "<displayId>_"; three.js lägger till _1 på dubbletter
+            var nm = x.name.slice(String(disp).length + 1), v = nm in BL ? BL[nm] : BL[nm.replace(/_\d+$/, "")];
+            x.material = Array.isArray(x.material) ? x.material.map(function (mt) { return m3Mat(T, mt, v); }) : m3Mat(T, x.material, v);
+          }
+          [].concat(x.material || []).forEach(function (mt) { mt.side = T.DoubleSide; if (!BL) m3Cutout(mt); });
+        });
         scene.add(o);
         var mix = g.animations.length ? new T.AnimationMixer(o) : null;
         if (mix) { mix.clipAction(g.animations[0]).play(); mix.update(0); }
