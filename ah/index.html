@@ -349,7 +349,9 @@ body[data-mode=hu] .facts dd { font-size: 15px; }
 .ndpin { display: inline-block; padding: 3px 4px; margin: -3px 0 -3px 3px; vertical-align: middle; line-height: 0; opacity: .7; } .ndpin:hover, .ndpin:focus-visible { opacity: 1; } .ndpin img { width: 15px; height: 15px; border-radius: 3px; }
 .farmctl { align-items: center; } .fachk { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; font-size: 13px; }
 .srct.fat th { font-size: 11px; color: var(--grey); text-align: right; font-weight: 500; padding: 0 0 4px; } .srct.fat th:first-child, .srct.fat td:first-child { text-align: left; }
-.srct.fat tr[data-farmz] { cursor: pointer; } .srct.fat tr[data-farmz]:hover td { background: var(--hover); } .srct.fat tr[aria-selected="true"] td:first-child { color: var(--gold); font-weight: 600; }
+.srct.fat tr[data-farmz], .srct.fat tr[data-fmspot], .srct.fat tr[data-fispot] { cursor: pointer; } .srct.fat tr[data-farmz]:hover td, .srct.fat tr[data-fmspot]:hover td, .srct.fat tr[data-fispot]:hover td { background: var(--hover); }
+/* Gold per hour: Killing (2026-11-24) */
+.fmt td { text-align: right; white-space: nowrap; } .fmt td:first-child, .fmt td:nth-child(2):not(:last-child) { white-space: normal; } .fmt td:nth-child(2).hide-s, .fmt th:nth-child(2).hide-s { text-align: left; } .fmt .ic { vertical-align: -4px; } .fmwrap .sgstep h3 { margin: 0; } .fmwrap .huchips { align-items: center; } .srct.fat tr[aria-selected="true"] td:first-child { color: var(--gold); font-weight: 600; }
 .falg { display: inline-flex; align-items: center; gap: 4px; margin-right: 8px; } .falg i { display: inline-block; width: 8px; height: 8px; border-radius: 50%; border: 1px solid #000; }
 .ndfarm { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; } .ndfz { display: block; color: inherit; text-decoration: none; font-size: 13px; line-height: 1.4; } .ndfz:hover b, .ndfz:focus-visible b { color: var(--gold); }
 .ndmini { position: relative; display: block; margin-bottom: 4px; border-radius: 6px; overflow: hidden; border: 1px solid var(--line, #333); } .ndmini img { display: block; width: 100%; height: auto; } .ndmini .qmk { width: 5px; height: 5px; margin: -3.5px 0 0 -3.5px; cursor: pointer; } .ndmini .qmk:hover { transform: none; }
@@ -1867,7 +1869,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     huZBigClose();   // stora zonkartan hör till steget man lämnar (granskning 2026-11-18)
     arCmp = null; arCmpPick = false;
     // Marknaden följer med bakåt/framåt (buggjakt 2026-11-20): adresser för varor, recept och handel bär &m= (saknas = EU PvP Horde).
-    var mkN = /^#(item|recipe|fx|de|gather|skillup)=|^#tab=(ah|tr|cr|fx|de)\b/.test(location.hash) ? (+hashParams().m || 113) : 0;
+    var mkN = /^#(item|recipe|fx|de|gather|skillup)=|^#(farm|fish)(?:[=&]|$)|^#tab=(ah|tr|cr|fx|de)\b/.test(location.hash) ? (+hashParams().m || 113) : 0;
     if (mkN && mkN !== house && mkHas(mkN)) { switchHouse(mkN, true); return; }
     load(D, false, true);
   });
@@ -2285,7 +2287,25 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
       rd_flat: "Same price morning and evening: nothing to gain.",
       dayt: "Day trade", day_tip: "Items with at least 10% profit between morning and evening on at least 3 days this week (at most one day without). The profit shown is the worst day's.",
       col_trade: "Day", trade_tip: "Buy %1, sell %2: %3 each (worst day this week)", tip_ah: "AH: market price %1 · %2 listed",
-      err1: "The scan could not be loaded", err2: "Reload the page. If that does not help, the data has not been uploaded."
+      err1: "The scan could not be loaded", err2: "Reload the page. If that does not help, the data has not been uploaded.",
+      fm_h: "Gold per hour", fm_kill: "Killing", fm_kill_tip: "Where to kill mobs for gold at your level", fm_sub_h: "Killing spots for the Horde", fm_sub_a: "Killing spots for the Alliance", fm_gather: "Gathering instead:",
+      fm_lvl: "Level %1", fm_mobs: "mobs %1–%2", fm_col_mob: "Mob", fm_col_loot: "Best loot", fm_col_kh: "Kills/h", fm_col_gph: "Gold/h", fm_more: "Show %1 more", fm_less: "Show fewer", fm_skin_short: "+%1 skinning",
+      fm_none: "No spot matches the search.", fm_fail: "Could not load the farming spots.", fm_pick: "Pick a spot in the list.",
+      fm_note: "Each level lists mobs a few levels below you, picked from the open Classic database (cmangos 1.12), with their drops and spawn points. Gold per hour uses auction house prices after the 5 % cut, never above the usual price this week, or the vendor price when that pays more or the item hardly sells. Forever may have changed some drops, and kills per hour is an estimate, so read the numbers as a guide.",
+      fm_kh_tip: "An estimate: fight time measured in the game, the walk to the next mob from how close the spawns are, and a few seconds to loot.", fm_gph_tip: "Kills per hour × what one kill is worth right now", fm_kill_val: "Per kill",
+      fm_skin: "Skinning", fm_skin_tip: "Extra gold per hour if you skin every kill. Not part of the main figure.", fm_skin_plus: "+%1/h", fm_loot_h: "Loot", fm_skin_h: "Skinning gives", fm_col_per: "Per kill", fm_per_tip: "Chance to drop, or how many drop on average",
+      fm_col_val: "Value", fm_vendor: "vendor", fm_vendor_tip: "Vendor price: it pays more than the auction house, or the item sells too rarely there", fm_coin: "Coins", fm_also: "Also here",
+      fm_map_tip: "%1 spawns in %2. Click a point to copy its /way, click the map to open it large.", fm_map_some: "%1 spawns in %2, %3 of them on the map. Click a point to copy its /way, click the map to open it large.", fm_nomap: "No map of %1 yet.",
+      fm_home_row: "Killing · Level %1 · %2", fm_home_sub: "Killing · level %1 · %2",
+      fm_note_d: "Drops and spawn points from the open Classic database (cmangos 1.12), prices from today's auction house. Forever may drop other things and kills per hour is an estimate.",
+      fm_main: "Main loot", fm_sells: "sells %1/day",
+      fi_fish: "Fishing", fi_tip: "Where fishing pays at your skill", fi_sub_h: "Fishing spots for the Horde", fi_sub_a: "Fishing spots for the Alliance", fi_band: "Skill %1–%2", fi_band_sub: "counted at skill %1",
+      fi_open: "Open water", fi_pools: "%1 pools", fi_col_spot: "Spot", fi_col_catch: "Best catch", fi_col_pc: "Catch", fi_pc_tip: "How many casts land something at the top skill of the band", fi_pc: "Catch at %1",
+      fi_col_ch: "Catches/h", fi_ch_tip: "An estimate: about 200 casts an hour in open water, about 4 an hour per pool in the zone (at most 110), since pools run dry and come back later, both times the catch chance.",
+      fi_gph_tip: "Catches per hour × what one catch is worth right now", fi_per: "Per catch", fi_need: "needs skill %1", fi_catch_h: "Catch", fi_fail: "Could not load the fishing data.",
+      fi_note: "Catches and pool spots come from the open Classic database (cmangos 1.12). A cast lands something with a chance of your skill minus the zone's requirement plus 5 %, counted at the top of each band. Open water is counted as about 200 casts an hour, pools as about 4 catches an hour for every pool in the zone, at most 110 (they run dry and come back later), both times that chance; pools only count in zones with at least 8 of them. Prices work as for killing. Forever may have changed some catches, so read the numbers as a guide.",
+      fi_note_d: "Catches and pool spots from the open Classic database (cmangos 1.12), prices from today's auction house. Catches per hour is an estimate.",
+      fi_home_row: "Fishing · Skill %1–%2 · %3", fi_home_sub: "Fishing · skill %1–%2 · %3"
     }
   };
   var lang = "en";
@@ -3645,7 +3665,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     return { rows: rows, gph: sum, units: per, miss: miss };
   }
   function gaSet(key, band) {   // ur länken #gather=herb&band=2
-    gaSel = -1; sgSel = "";
+    gaSel = -1; sgSel = ""; fmOn = false;
     GATHER.forEach(function (g, i) { if (g.key === key) gaSel = i; });
     var b = parseInt(band, 10) - 1;
     if (b >= 0 && b < GA_BANDS.length) gaBand = b;
@@ -3660,14 +3680,14 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
       setHash("#tab=cr" + (house !== 113 ? "&m=" + house : ""));
       return;
     }
-    gaSel = i; sgSel = ""; if (band >= 0) gaBand = band;
+    gaSel = i; sgSel = ""; fmOn = false; if (band >= 0) gaBand = band;
     catSel = -1; subSel = -1; sub2Sel = -1; sortKey = "gph"; sortDir = -1;
     try { localStorage.setItem(GA_KEY, JSON.stringify({ g: GATHER[i].key, b: gaBand })); } catch (e) { /* gäller tills sidan stängs */ }
     drawCats(); refresh(); toTop(); gaDetail(); showTab("item");
     setHash(gaHash());
   }
   // Skill-up 1–300 (Joakim 2026-11-21): guiden i mittenrutan, sidoinfon i högerrutan. Länk #skillup=<nyckel>.
-  function sgSet(key) { sgSel = sgProf(key) ? key : ""; if (sgSel) { gaSel = -1; catSel = -1; subSel = -1; sub2Sel = -1; } }
+  function sgSet(key) { sgSel = sgProf(key) ? key : ""; if (sgSel) { fmOn = false; gaSel = -1; catSel = -1; subSel = -1; sub2Sel = -1; } }
   function sgHash() { return "#skillup=" + sgSel + (house !== 113 ? "&m=" + house : ""); }
   function sgPick(key) {
     if (sgSel === key) {   // klick på det valda igen: hopfällt, tillbaka till recepten
@@ -3677,7 +3697,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
       setHash("#tab=cr" + (house !== 113 ? "&m=" + house : ""));
       return;
     }
-    sgSel = key; gaSel = -1; catSel = -1; subSel = -1; sub2Sel = -1;
+    sgSel = key; gaSel = -1; fmOn = false; catSel = -1; subSel = -1; sub2Sel = -1;
     drawCats(); refresh(); toTop(); sgDetail(); showTab("item");
     setHash(sgHash());
   }
@@ -3688,6 +3708,9 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
       h += '<button class="cat" type="button" data-sg="' + p.key + '" aria-pressed="' + (sgSel === p.key) + '" title="' + esc(p.name + " " + t("sg_h")) + '">' + ic + '<em class="nm">' + esc(p.name) + "</em></button>";
     });
     h += '<div class="cat hd gahd">' + t("ga_h") + "</div>";
+    var fmB = FM ? fmBest() : 0, fiB = FISH ? fiBest() : 0;   // Killing och Fishing (farm.json/fishing.json laddas av sidan eller startsidan)
+    h += '<button class="cat" type="button" data-fm="1" aria-pressed="' + (fmOn && fmKind === "kill") + '" title="' + esc(t("fm_kill_tip")) + '">' + fmIcon() + '<em class="nm">' + t("fm_kill") + "</em>" + (fmB > 0 ? "<span>" + gaMoney(fmB) + "/h</span>" : "") + "</button>";
+    h += '<button class="cat" type="button" data-fi="1" aria-pressed="' + (fmOn && fmKind === "fish") + '" title="' + esc(t("fi_tip")) + '">' + fmIcon("ci", true) + '<em class="nm">' + t("fi_fish") + "</em>" + (fiB > 0 ? "<span>" + gaMoney(fiB) + "/h</span>" : "") + "</button>";
     GATHER.forEach(function (g, i) {
       var best = 0, per = GA_BANDS.map(function (b, k) { var v = gaCalc(g, k).gph; if (v > best) best = v; return v; });
       var ic = ASSET_BASE ? '<img class="ci" src="' + ASSET_BASE + "icons/" + g.icon + '.jpg" alt="">' : "";
@@ -3769,10 +3792,307 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
   }
   function gaGoRecipe(rid) {   // recept i rutan: öppna det i yrkets vanliga lista
     var r = null; crRows.forEach(function (x) { if (x.rid === rid) r = x; }); if (!r) return;
-    gaSel = -1; sgSel = ""; catSel = -1; profList.forEach(function (p, i) { if (p.id === r.prof) catSel = i; });
+    gaSel = -1; sgSel = ""; fmOn = false; catSel = -1; profList.forEach(function (p, i) { if (p.id === r.prof) catSel = i; });
     subSel = r.skill >= 1 ? tierOf(r.skill) + 1 : 0; sub2Sel = -1; sortKey = "profit"; sortDir = -1;
     drawCats(); refresh(); selectRecipe(rid, true); showTab("item");
   }
+  // ---- Gold per hour: Killing och Fishing (Joakim 2026-11-24: "vart man ska vara och farma ... vem man ska döda ... en liten
+  // karta, en liten route"; "ingen fishing ... ett par olika förslag"). Killing: farm.json (farm-guider.js), per spelarlevel
+  // 10, 15 … 60 upp till åtta ställen per fraktion (h/a) med mobsen 2–4 levlar under, names = namn på lootet. Fishing:
+  // fishing.json (hamta-fiske.js), per skillband öppet vatten i en zon eller en fiskepool (zoner med minst FI_MINPOOLS).
+  // Priset är försiktigt (fmPrice): det lägsta av dagens riktpris och veckans vanliga (p25 av veckografen), AH efter 5 % om
+  // varan säljer minst FM_DAY/dygn, annars handlarpriset; det högsta av de två. Flåning räknas för sig. Listan i mittenrutan
+  // (som Skill-up), stället i högerrutan med karta och farmrunda. Adresser: #farm, #farm=30, #farm=30&spot=<mob>&z=<zon>,
+  // #fish, #fish=4, #fish=4&spot=<zon>(&pool=<pool>).
+  var FM = null, fmP = null, fmOn = false, fmKind = "kill", fmLvl = 0, fmMob = 0, fmZone = "", fmMoreOn = {}, fmJump = false;
+  var fiBand = 0, fiZone = "", fiPool = "";
+  var FM_ICON = "inv_sword_04", FI_ICON = "trade_fishing", FM_DAY = 30, FM_SHOW = 4;
+  var FI_BANDS = [[1, 75], [75, 150], [150, 225], [225, 300]], FI_CASTS = 200, FI_POOL = 110, FI_PERPOOL = 4, FI_MINPOOLS = 8;   // pooler: ~4 fångster per pool och timme (de tar slut och kommer tillbaka), högst FI_POOL
+  // Den andra fraktionens hemland (samma listor som farm-guider.js) och städerna: där fiskar man inte
+  var FI_NO = { horde: ["Elwynn Forest", "Dun Morogh", "Teldrassil", "Westfall", "Loch Modan", "Darkshore", "Redridge Mountains"],
+    alliance: ["Durotar", "Mulgore", "Tirisfal Glades", "The Barrens", "Silverpine Forest"] };
+  function fmLoad() {
+    if (!fmP) fmP = fetch(DATA_BASE + "farm.json").then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+      .then(function (j) { FM = j; return j; }).catch(function (e) { fmP = null; throw e; });
+    return fmP;
+  }
+  function fmIsHash() { return /^#(farm|fish)(?:[=&]|$)/.test(location.hash); }
+  function fmMk() { return house !== 113 ? "&m=" + house : ""; }
+  function fmLink(lvl, s) { return "#farm=" + lvl + "&spot=" + s.mob + "&z=" + encodeURIComponent(s.zone); }
+  function fiLink(k, zone, pool) { return "#fish=" + (k + 1) + "&spot=" + encodeURIComponent(zone) + (pool ? "&pool=" + encodeURIComponent(pool) : ""); }
+  function fmHash() {
+    if (fmKind === "fish") return (fiZone ? fiLink(fiBand, fiZone, fiPool) : "#fish" + (fiBand ? "=" + (fiBand + 1) : "")) + fmMk();
+    return (fmLvl && fmMob ? fmLink(fmLvl, { mob: fmMob, zone: fmZone }) : "#farm" + (fmLvl ? "=" + fmLvl : "")) + fmMk();
+  }
+  function fmSet(hp) {
+    fmOn = true; fmJump = true; gaSel = -1; sgSel = ""; catSel = -1; subSel = -1; sub2Sel = -1;
+    if (/^#fish/.test(location.hash)) { fmKind = "fish"; fiBand = Math.max(0, Math.min(FI_BANDS.length - 1, (parseInt(hp.fish, 10) || 1) - 1)); fiZone = hp.spot || ""; fiPool = hp.pool || ""; }
+    else { fmKind = "kill"; fmLvl = parseInt(hp.farm, 10) || 0; fmMob = +hp.spot || 0; fmZone = hp.z || ""; }
+  }
+  function fmIcon(cls, fish) { return '<img class="' + (cls || "ci") + '" src="' + RICON + (fish ? FI_ICON : FM_ICON) + '.jpg" alt=""' + (cls === "ic" ? ' width="18" height="18"' : "") + ">"; }
+  // Försiktigt marknadspris: det lägsta av riktpriset nu och p25 av veckans priser (minst 4 punkter), som farm-guider.js
+  // och klipp.js, så att en tillfällig topp inte slår igenom.
+  function fmPrice(r) {
+    if (!r) return 0;
+    var w = (r.spk || []).filter(function (x) { return x > 0; }).sort(function (a, b) { return a - b; });
+    var p25 = w.length >= 4 ? w[Math.floor(w.length * 0.25)] : 0, now = r.min > 0 ? r.min : 0;
+    return now && p25 ? Math.min(now, p25) : (p25 || now);
+  }
+  function fmUnit(x) {   // pris per styck: AH-netto om varan säljs på AH, annars handlaren, det som ger mest
+    var r = byId[x[0]], p = r && !r.gear && x[3] && r.day >= FM_DAY ? fmPrice(r) : 0, ah = p * 0.95;
+    return ah > x[2] ? { v: ah, ah: true } : { v: x[2] || 0, ah: false };
+  }
+  function fmRow(x) { var u = fmUnit(x); return { id: x[0], per: x[1], unit: u.v, ah: u.ah, val: x[1] * u.v }; }
+  function fmByVal(a, b) { return b.val - a.val; }
+  function fmCalc(s) {
+    var loot = s.items.map(fmRow).sort(fmByVal), skin = (s.skin || []).map(fmRow).sort(fmByVal);
+    var kill = s.coin || 0, sk = 0;
+    loot.forEach(function (x) { kill += x.val; });
+    skin.forEach(function (x) { sk += x.val; });
+    return { s: s, loot: loot, skin: skin, kill: kill, gph: s.kh * kill, skph: s.kh * sk, top: loot[0] && loot[0].val > 0 ? loot[0] : null };
+  }
+  function fmBands() {   // varje level med ställena för din sida, sorterade på guld/h med dagens priser
+    if (!FM) return [];
+    var k = mySide() === "alliance" ? "a" : "h";
+    return FM.bands.map(function (b) {
+      return { lvl: b.lvl, lo: b.lo, hi: b.hi, spots: (b[k] || []).map(fmCalc).sort(function (x, y) { return y.gph - x.gph; }) };
+    }).filter(function (b) { return b.spots.length; });
+  }
+  function fmFind(B) {   // det valda stället, annars levelns (eller första levelns) bästa
+    B = B || fmBands(); if (!B.length) return null;
+    var b = B.filter(function (x) { return x.lvl === fmLvl; })[0] || B[0], c = null;
+    b.spots.forEach(function (x) { if (!c && x.s.mob === fmMob && (!fmZone || x.s.zone === fmZone)) c = x; });
+    return { b: b, c: c || b.spots[0] };
+  }
+  function fmBest() { var v = 0; fmBands().forEach(function (b) { if (b.spots[0] && b.spots[0].gph > v) v = b.spots[0].gph; }); return v; }
+  // Fishing: ett ställe = öppet vatten i en zon (zonens fångst) eller en pool i zonen. Fångstchans vid bandets övre skill
+  // (sgFishP, cmangos: skill − krav + 5 %). Fångster/h: öppet vatten FI_CASTS kast × chansen, pooler FI_POOL × chansen.
+  function fiSpots(k) {
+    if (!FISH) return [];
+    var sk = FI_BANDS[k][1], no = FI_NO[mySide() === "alliance" ? "alliance" : "horde"], out = [];
+    Object.keys(FISH.zones).forEach(function (zn) {
+      var Z = FISH.zones[zn], pc = sgFishP(sk, Z.skill);
+      if (pc <= 0 || no.indexOf(zn) >= 0 || SG_CITY.indexOf(zn) >= 0) return;
+      var mk = function (pool, L, ch, n, pts) {
+        var loot = L.map(function (l) { var r = byId[l[0]]; return fmRow([l[0], l[1] / 100, r && r.sp > 0 ? r.sp : 0, 1]); }).sort(fmByVal), per = 0;
+        loot.forEach(function (x) { per += x.val; });
+        if (per > 0) out.push({ zone: zn, pool: pool, req: Z.skill, pc: pc, ch: ch, n: n, pts: pts, loot: loot, per: per, gph: ch * per, top: loot[0] && loot[0].val > 0 ? loot[0] : null });
+      };
+      if (Z.loot.length) mk("", Z.loot, FI_CASTS * pc, 0, []);
+      Z.pools.forEach(function (p) { var L = FISH.pools[p[0]]; if (p[1] >= FI_MINPOOLS && L && L.length) mk(p[0], L, Math.min(FI_POOL, FI_PERPOOL * p[1]) * pc, p[1], p[2] || []); });
+    });
+    return out.sort(function (a, b) { return b.gph - a.gph; });
+  }
+  function fiFind() {
+    var L = fiSpots(fiBand), c = null; if (!L.length) return null;
+    L.forEach(function (x) { if (!c && x.zone === fiZone && x.pool === fiPool) c = x; });
+    return { k: fiBand, c: c || L[0] };
+  }
+  function fiBest() { var v = 0; FI_BANDS.forEach(function (b, k) { var L = fiSpots(k); if (L[0] && L[0].gph > v) v = L[0].gph; }); return v; }
+  function fiName(c) { return c.pool || t("fi_open"); }
+  function fmItem(id) {   // namn och kvalitet: AH-datan, farm.json/fishing.json, recepten, annars "Item 123" (fmNames fyller i ur tooltipen)
+    var r = byId[id], it = (FM && FM.names && FM.names[id]) || (FISH && FISH.items && FISH.items[id]) || (RECEPT && RECEPT.items && RECEPT.items[id]);
+    return { r: r, name: r && r.name ? r.name : it && it[0] && it[0].charAt(0) !== "#" ? it[0] : "", q: r ? r.q : it ? it[1] : -1 };
+  }
+  function fmItemHtml(id, link) {
+    var o = fmItem(id), ic = o.r ? iconHtml(o.r) : xIcon(id, o.q);
+    var nm = '<span class="' + qcls(o.q) + '" data-tip="' + id + '"' + (o.name ? "" : ' data-fmnm="' + id + '"') + ">" + esc(o.name || t("item_n", id)) + "</span>";
+    return ic + (link && o.r ? '<a class="wh" href="#item=' + id + '" data-upgo="' + id + '">' + nm + "</a>" : nm);
+  }
+  function fmNames(el) {   // varor utan namn i datan: namnet ur spelets tooltip (tips/<id % 100>.json) när den finns
+    if (!TIP_BASE || !el) return;
+    Array.prototype.forEach.call(el.querySelectorAll("[data-fmnm]"), function (sp) {
+      var id = +sp.getAttribute("data-fmnm");
+      tipFile(id % 100).then(function (m) {
+        var h = m && m[id]; if (!h) return;
+        var b = new DOMParser().parseFromString(h, "text/html").querySelector("b"), nm = b ? b.textContent.trim() : "";
+        if (nm) { sp.textContent = nm; sp.removeAttribute("data-fmnm"); }
+      });
+    });
+  }
+  function fmPer(p) { return p >= 1 ? "×" + gaNum(p) : (p * 100 >= 10 ? Math.round(p * 100) : (p * 100).toFixed(1).replace(/\.0$/, "")) + " %"; }
+  function fmHeadHtml(fish) {   // rubriken och växeln Killing / Fishing / samlaryrkena överst i mittenrutan
+    var ga = GATHER.map(function (g, i) {
+      var best = 0; GA_BANDS.forEach(function (b, k) { var v = gaCalc(g, k).gph; if (v > best) best = v; });
+      return '<button type="button" class="huchip" data-ga="' + i + '" title="' + esc(g.name) + '">' + (ASSET_BASE ? '<img class="ic" src="' + ASSET_BASE + "icons/" + g.icon + '.jpg" width="18" height="18" alt="">' : "") + esc(g.name) + (best > 0 ? ' <span class="dim">' + gaMoney(best) + "/h</span>" : "") + "</button>";
+    }).join("");
+    var other = fish ? '<button type="button" class="huchip" data-fm="1">' + fmIcon("ic") + t("fm_kill") + "</button>" : '<button type="button" class="huchip" data-fi="1">' + fmIcon("ic", true) + t("fi_fish") + "</button>";
+    var al = mySide() === "alliance";
+    return '<div class="strip">' + fmIcon("ic big", fish) + "<h2>" + t("fm_h") + " · " + t(fish ? "fi_fish" : "fm_kill") + "</h2><small>" + t(fish ? (al ? "fi_sub_a" : "fi_sub_h") : (al ? "fm_sub_a" : "fm_sub_h")) + "</small></div>" +
+      '<div class="huchips">' + other + '<span class="dim">' + t("fm_gather") + "</span>" + ga + "</div>";
+  }
+  function fmMainHtml() {
+    var B = fmBands(), f = fmFind(B), q = query;
+    var h = '<div class="sgwrap fmwrap">' + fmHeadHtml(false);
+    var any = false;
+    B.forEach(function (b) {
+      var L = q ? b.spots.filter(function (c) { return (c.s.name + " " + c.s.zone + " " + (c.s.also || []).join(" ")).toLowerCase().indexOf(q) >= 0; }) : b.spots;
+      if (!L.length) return;
+      any = true;
+      var open = q || fmMoreOn[b.lvl], rows = open ? L : L.slice(0, FM_SHOW);
+      h += '<div class="sgstep" id="fmb' + b.lvl + '"><h3>' + t("fm_lvl", b.lvl) + ' <span class="dim">' + t("fm_mobs", b.lo, b.hi) + "</span></h3>" +
+        '<table class="srct fat fmt"><thead><tr><th>' + t("fm_col_mob") + '</th><th class="hide-s dcol">' + t("fm_col_loot") + "</th><th>" + t("col_lvl") + '</th><th title="' + esc(t("fm_kh_tip")) + '">' + t("fm_col_kh") + '</th><th title="' + esc(t("fm_gph_tip")) + '">' + t("fm_col_gph") + "</th></tr></thead><tbody>" +
+        rows.map(function (c) {
+          var s = c.s, sel = f && f.b.lvl === b.lvl && f.c.s === s;
+          return '<tr tabindex="0" data-fmspot="' + s.mob + '" data-fml="' + b.lvl + '" data-fmz="' + esc(s.zone) + '"' + (sel ? ' aria-selected="true"' : "") + "><td>" + esc(s.name) + '<br><small class="dim">' + esc(s.zone) + "</small></td>" +
+            '<td class="hide-s dcol">' + (c.top ? fmItemHtml(c.top.id, false) : DASH) + "</td><td>" + esc(s.lvl.replace("-", "–")) + "</td><td>" + num(s.kh) + "</td>" +
+            '<td><span class="down2">' + gaMoney(c.gph) + "/h</span>" + (c.skph >= 50 ? '<br><small class="dim" title="' + esc(t("fm_skin_tip")) + '">' + t("fm_skin_short", gaMoney(c.skph)) + "</small>" : "") + "</td></tr>";
+        }).join("") + "</tbody></table>" +
+        (!q && L.length > FM_SHOW ? '<div><button type="button" class="lnk" data-fmmore="' + b.lvl + '">' + (open ? t("fm_less") : t("fm_more", L.length - FM_SHOW)) + "</button></div>" : "") + "</div>";
+    });
+    if (!any) h += '<div class="note">' + t(q ? "fm_none" : "fm_fail") + "</div>";
+    return h + '<div class="note">' + t("fm_note") + "</div></div>";
+  }
+  function fiMainHtml() {
+    var f = fiFind(), q = query, any = false;
+    var h = '<div class="sgwrap fmwrap">' + fmHeadHtml(true);
+    FI_BANDS.forEach(function (bd, k) {
+      var all = fiSpots(k), L = q ? all.filter(function (c) { return (c.zone + " " + c.pool).toLowerCase().indexOf(q) >= 0; }) : all;
+      if (!L.length) return;
+      any = true;
+      var open = q || fmMoreOn["f" + k], rows = open ? L : L.slice(0, FM_SHOW);
+      h += '<div class="sgstep" id="fib' + k + '"><h3>' + t("fi_band", bd[0], bd[1]) + ' <span class="dim">' + t("fi_band_sub", bd[1]) + "</span></h3>" +
+        '<table class="srct fat fmt"><thead><tr><th>' + t("fi_col_spot") + '</th><th class="hide-s dcol">' + t("fi_col_catch") + '</th><th title="' + esc(t("fi_pc_tip")) + '">' + t("fi_col_pc") + '</th><th title="' + esc(t("fi_ch_tip")) + '">' + t("fi_col_ch") + '</th><th title="' + esc(t("fi_gph_tip")) + '">' + t("fm_col_gph") + "</th></tr></thead><tbody>" +
+        rows.map(function (c) {
+          var sel = f && f.k === k && f.c === c;
+          return '<tr tabindex="0" data-fispot="' + esc(c.zone) + '" data-fik="' + k + '" data-fipool="' + esc(c.pool) + '"' + (sel ? ' aria-selected="true"' : "") + "><td>" + esc(fiName(c)) + '<br><small class="dim">' + esc(c.zone) + (c.pool ? " · " + t("fi_pools", c.n) : "") + "</small></td>" +
+            '<td class="hide-s dcol">' + (c.top ? fmItemHtml(c.top.id, false) : DASH) + "</td><td>" + Math.round(c.pc * 100) + " %</td><td>" + num(c.ch) + "</td>" +
+            '<td><span class="down2">' + gaMoney(c.gph) + "/h</span></td></tr>";
+        }).join("") + "</tbody></table>" +
+        (!q && L.length > FM_SHOW ? '<div><button type="button" class="lnk" data-fmmore="f' + k + '">' + (open ? t("fm_less") : t("fm_more", L.length - FM_SHOW)) + "</button></div>" : "") + "</div>";
+    });
+    if (!any) h += '<div class="note">' + t(q ? "fm_none" : "fi_fail") + "</div>";
+    return h + '<div class="note">' + t("fi_note") + "</div></div>";
+  }
+  function fmNeed() { return fmKind === "fish" ? loadFish() : fmLoad(); }
+  function fmHave() { return fmKind === "fish" ? !!FISH : !!FM; }
+  function fmMain() {   // mittenrutan: alla levlar (Killing) eller alla skillband (Fishing)
+    var el = $("armory"), kind = fmKind;
+    if (!fmHave()) {
+      el.innerHTML = '<div class="note">' + t("ar_loading") + "</div>";
+      fmNeed().then(function () { if (fmOn && fmKind === kind && mode === "cr") { fmMain(); drawCats(); } }, function () { if (fmOn && fmKind === kind && mode === "cr") el.innerHTML = '<div class="note">' + t(kind === "fish" ? "fi_fail" : "fm_fail") + "</div>"; });
+      return;
+    }
+    var same = el.querySelector(".fmwrap") && el.dataset.fmk === kind, top = el.scrollTop;
+    el.dataset.fmk = kind;
+    el.innerHTML = kind === "fish" ? fiMainHtml() : fmMainHtml(); fmNames(el);
+    if (fmJump) {   // från en adress: rulla till levelns/bandets sektion
+      fmJump = false;
+      var sec = null;
+      if (kind === "fish") { if (fiBand > 0) sec = $("fib" + fiBand); }
+      else { var f = fmFind(); if (f && f.b.lvl !== fmBands()[0].lvl) sec = $("fmb" + f.b.lvl); }
+      el.scrollTop = 0;
+      if (sec) el.scrollTop = Math.max(0, sec.getBoundingClientRect().top - el.getBoundingClientRect().top - 6);
+    } else if (same) el.scrollTop = top;
+  }
+  function fmMarkSel() {   // markeringen i listan utan att rita om den
+    if (fmKind === "fish") {
+      var g = fiFind();
+      Array.prototype.forEach.call($("armory").querySelectorAll("tr[data-fispot]"), function (tr) {
+        var on = !!g && +tr.dataset.fik === g.k && tr.dataset.fispot === g.c.zone && tr.dataset.fipool === g.c.pool;
+        if (on) tr.setAttribute("aria-selected", "true"); else tr.removeAttribute("aria-selected");
+      });
+      return;
+    }
+    var f = fmFind();
+    Array.prototype.forEach.call($("armory").querySelectorAll("tr[data-fmspot]"), function (tr) {
+      var on = !!f && +tr.dataset.fml === f.b.lvl && +tr.dataset.fmspot === f.c.s.mob && tr.dataset.fmz === f.c.s.zone;
+      if (on) tr.setAttribute("aria-selected", "true"); else tr.removeAttribute("aria-selected");
+    });
+  }
+  function fmMapHtml(s) {   // s = { name, zone, n, pts }: zonkartan med punkterna och farmrundan
+    var z = s.zone, P = s.pts || [], pts = [], dots = "";
+    if (!huHasZ(z)) return '<div class="note">' + t("fm_nomap", esc(z)) + "</div>";
+    for (var i = 0; i + 1 < P.length; i += 2) {
+      pts.push([P[i], P[i + 1]]);
+      dots += '<i class="qmk nd" style="left:' + P[i] + "%;top:" + P[i + 1] + '%" data-way="' + esc(qmWay(z, P[i], P[i + 1])) + '" title="' + esc(s.name + " · " + P[i] + ", " + P[i + 1] + " · " + t("qm_click_copy")) + '"></i>';
+    }
+    var tip = pts.length < s.n ? t("fm_map_some", num(s.n), esc(z), num(pts.length)) : t("fm_map_tip", num(s.n), esc(z));
+    return "<div>" + (pts.length > 2 ? '<div class="ndpick">' + faRouteBtn() + "</div>" : "") +
+      '<div class="huzm qmap"><img src="' + huZUrl(z) + '" alt="' + esc(z) + '" width="1002" height="668" decoding="async">' + qmTaxi(z) + (FA.route && pts.length > 2 ? faRoute(pts) : "") + dots + "</div>" +
+      '<div class="dim">' + (FA.route && pts.length > 2 ? t("fa_route_tip") + " " : "") + tip + "</div></div>";
+  }
+  function fmLootTable(L, coin) {
+    return '<table class="srct fat fmt"><thead><tr><th></th><th title="' + esc(t("fm_per_tip")) + '">' + t("fm_col_per") + "</th><th>" + t("price") + "</th><th>" + t("fm_col_val") + '</th><th class="hide-s dcol">' + t("col_day") + "</th></tr></thead><tbody>" +
+      (coin > 0 ? "<tr><td>" + t("fm_coin") + "</td><td></td><td></td><td>" + money(coin) + '</td><td class="hide-s dcol"></td></tr>' : "") +
+      L.map(function (x) {
+        var r = byId[x.id];
+        return "<tr><td>" + fmItemHtml(x.id, true) + "</td><td>" + fmPer(x.per) + "</td><td>" + (x.unit > 0 ? money(x.unit) + (x.ah ? "" : ' <small class="dim" title="' + esc(t("fm_vendor_tip")) + '">' + t("fm_vendor") + "</small>") : DASH) +
+          "</td><td>" + (x.val >= 1 ? money(x.val) : DASH) + '</td><td class="hide-s dcol">' + (r && r.day ? '<span class="est">' + num(r.day) + "</span>" : DASH) + "</td></tr>";
+      }).join("") + "</tbody></table>";
+  }
+  function fmTopFact(top) {   // huvudvaran och hur mycket marknaden tar emot per dygn
+    if (!top) return "";
+    var r = byId[top.id];
+    return '<div class="wide"><dt>' + t("fm_main") + "</dt><dd>" + fmItemHtml(top.id, true) + (r && r.day ? ' <span class="dim">' + t("fm_sells", num(r.day)) + "</span>" : "") + "</dd></div>";
+  }
+  function fmDetailHtml(f) {
+    var c = f.c, s = c.s;
+    var facts = '<dl class="facts"><div><dt title="' + esc(t("fm_gph_tip")) + '">' + t("fm_col_gph") + '</dt><dd><span class="down2">' + gaMoney(c.gph) + "/h</span></dd></div>" +
+      '<div><dt title="' + esc(t("fm_kh_tip")) + '">' + t("fm_col_kh") + "</dt><dd>≈ " + num(s.kh) + "</dd></div>" +
+      "<div><dt>" + t("fm_kill_val") + "</dt><dd>" + money(c.kill) + "</dd></div>" +
+      (c.skph >= 1 ? '<div><dt title="' + esc(t("fm_skin_tip")) + '">' + t("fm_skin") + "</dt><dd>" + t("fm_skin_plus", gaMoney(c.skph)) + "</dd></div>" : "") + fmTopFact(c.top) + "</dl>";
+    return '<div class="strip"><button class="lnk" type="button" data-copyany="' + esc(fmLink(f.b.lvl, s) + fmMk()) + '" title="' + t("copy_link") + '">' + t("copy_link") + "</button>" +
+      "<h2>" + fmIcon("ic big") + " " + esc(s.name) + "</h2><small>" + t("fm_lvl", esc(s.lvl.replace("-", "–"))) + " · " + esc(s.zone) + "</small></div>" +
+      facts + fmMapHtml(s) +
+      "<div><h3>" + t("fm_loot_h") + "</h3>" + fmLootTable(c.loot, s.coin) + "</div>" +
+      (c.skin.length ? "<div><h3>" + t("fm_skin_h") + ' <span class="dim">' + t("fm_skin_plus", gaMoney(c.skph)) + "</span></h3>" + fmLootTable(c.skin, 0) + "</div>" : "") +
+      (s.also && s.also.length ? '<div class="ndfound"><b>' + t("fm_also") + "</b>" + s.also.map(esc).join(", ") + ".</div>" : "") +
+      '<div class="note">' + t("fm_note_d") + "</div>";
+  }
+  function fiDetailHtml(f) {
+    var c = f.c, bd = FI_BANDS[f.k];
+    var facts = '<dl class="facts"><div><dt title="' + esc(t("fi_gph_tip")) + '">' + t("fm_col_gph") + '</dt><dd><span class="down2">' + gaMoney(c.gph) + "/h</span></dd></div>" +
+      '<div><dt title="' + esc(t("fi_ch_tip")) + '">' + t("fi_col_ch") + "</dt><dd>≈ " + num(c.ch) + "</dd></div>" +
+      "<div><dt>" + t("fi_per") + "</dt><dd>" + money(c.per) + "</dd></div>" +
+      '<div><dt title="' + esc(t("fi_pc_tip")) + '">' + t("fi_pc", bd[1]) + "</dt><dd>" + Math.round(c.pc * 100) + " %</dd></div>" + fmTopFact(c.top) + "</dl>";
+    return '<div class="strip"><button class="lnk" type="button" data-copyany="' + esc(fiLink(f.k, c.zone, c.pool) + fmMk()) + '" title="' + t("copy_link") + '">' + t("copy_link") + "</button>" +
+      "<h2>" + fmIcon("ic big", true) + " " + esc(fiName(c)) + "</h2><small>" + esc(c.zone) + " · " + t("fi_need", c.req < 1 ? 1 : c.req) + " · " + t("fi_band", bd[0], bd[1]) + "</small></div>" +
+      facts + (c.pool ? fmMapHtml({ name: c.pool, zone: c.zone, n: c.n, pts: c.pts }) : '<div class="note">' + t("sg_fish_any") + "</div>") +
+      "<div><h3>" + t("fi_catch_h") + "</h3>" + fmLootTable(c.loot, 0) + "</div>" +
+      '<div class="note">' + t("fi_note_d") + "</div>";
+  }
+  function fmDetailDraw() {   // på plats (priser, farmrundan): bara när datan redan finns
+    var el = $("fmbox"); if (!el || !fmOn || mode !== "cr" || !fmHave()) return;
+    var f = fmKind === "fish" ? fiFind() : fmFind();
+    el.innerHTML = f ? (fmKind === "fish" ? fiDetailHtml(f) : fmDetailHtml(f)) : '<div class="note">' + t("fm_pick") + "</div>"; fmNames(el);
+  }
+  function fmDetail() {   // högerrutan: stället med karta
+    var kind = fmKind;
+    $("detail").scrollTop = 0;
+    $("detail").innerHTML = '<div id="fmbox" style="display:contents"><div class="note">' + t("ar_loading") + "</div></div>";
+    Promise.all([fmNeed(), loadZmap(), qmIndex().catch(function () { return null; }), loadXIcons()]).then(fmDetailDraw, function () { var el = $("fmbox"); if (el && fmKind === kind) el.innerHTML = '<div class="note">' + t(kind === "fish" ? "fi_fail" : "fm_fail") + "</div>"; });
+  }
+  function fmPick(kind) {   // Killing/Fishing i spalten; klick på den valda igen: tillbaka till recepten
+    if (fmOn && fmKind === kind) {
+      fmOn = false; sortKey = "profit"; sortDir = -1;
+      drawCats(); refresh(); toTop();
+      if (view[0]) selectRecipe(view[0].rid, false);
+      setHash("#tab=cr" + fmMk());
+      return;
+    }
+    fmOn = true; fmKind = kind; gaSel = -1; sgSel = ""; catSel = -1; subSel = -1; sub2Sel = -1;
+    drawCats(); refresh(); toTop(); fmDetail(); showTab("item");
+    setHash(fmHash());
+  }
+  function fmSpot() {   // en rad i listan: stället i högerrutan
+    fmMarkSel(); fmDetail(); showTab("item");
+    setHash(fmHash());
+    if (MOB.matches) mobTop();   // mobilen: rutan ligger under listan
+  }
+  document.addEventListener("click", function (e) {
+    if (!e.target.closest || mode !== "cr") return;
+    if (e.target.closest("[data-fm]")) { fmPick("kill"); return; }
+    if (e.target.closest("[data-fi]")) { fmPick("fish"); return; }
+    var mo = e.target.closest("[data-fmmore]");
+    if (mo && fmOn) { var ml = mo.dataset.fmmore; fmMoreOn[ml] = !fmMoreOn[ml]; fmMain(); return; }
+    if (!fmOn || e.target.closest("a[href]") || e.ctrlKey || e.metaKey || e.button !== 0) return;
+    var tr = e.target.closest("tr[data-fmspot]");
+    if (tr) { fmLvl = +tr.dataset.fml; fmMob = +tr.dataset.fmspot; fmZone = tr.dataset.fmz; fmSpot(); return; }
+    var tf = e.target.closest("tr[data-fispot]");
+    if (tf) { fiBand = +tf.dataset.fik; fiZone = tf.dataset.fispot; fiPool = tf.dataset.fipool; fmSpot(); }
+  });
+  document.addEventListener("keydown", function (e) { if (e.key === "Enter" && e.target && e.target.matches && e.target.matches("tr[data-fmspot], tr[data-fispot]") && fmOn) { e.preventDefault(); e.target.click(); } });
   // ---- Quests (Joakim 2026-11-16): alla Forever-quests från Blizzards API (quests.json, hamta-forever-quests.js), nivå
   // först (1–10 … 51–60, okänd nivå), sedan zon. Nivåerna kommer ur Classic-databasen; Forever-nya quests får zonens median
   // (visas med ~) eller hamnar under "Level unknown". Bara den valda marknadens fraktion och neutrala visas. En spelare
@@ -4327,7 +4647,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     if (e.target.closest("[data-farmroute]")) {   // samma val på farmkartan och på nodens sida
       FA.route = !FA.route; faSave(); faDraw(false);
       var rn = ndFind(ndSel), rb = $("ndbox"); if (rn && rb) rb.innerHTML = ndHtml(rn);
-      sgDraw();
+      sgDraw(); fmDetailDraw();
       return;
     }
     var sgz = e.target.closest("[data-sgz]");
@@ -5663,7 +5983,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     var hp0 = hashParams();
     // En länk bestämmer fliken (annars den som sparats): #quest, #dungeon, #player/#guild, #recipe, #item.
     if (hp0.tab === "lb") { hp0.top = lbGroup(arLb) ? arLb : "ilvl"; delete hp0.tab; }
-    var hm = /^(ah|tr|cr|ar|qu|dg|hu|co|cl)$/.test(hp0.tab || "") ? hp0.tab : hp0.cls ? "cl" : hp0.fx ? "fx" : hp0.de ? "de" : hp0.col ? "co" : hp0.beast ? "hu" : hp0.quest || hp0.npc ? "qu" : hp0.dungeon ? "dg" : hp0.player || hp0.guild || hp0.top ? "ar" : hp0.recipe || hp0.gather || hp0.node || hp0.skillup ? "cr" : hp0.item ? "ah" : "";
+    var hm = /^(ah|tr|cr|ar|qu|dg|hu|co|cl)$/.test(hp0.tab || "") ? hp0.tab : hp0.cls ? "cl" : hp0.fx ? "fx" : hp0.de ? "de" : hp0.col ? "co" : hp0.beast ? "hu" : hp0.quest || hp0.npc ? "qu" : hp0.dungeon ? "dg" : hp0.player || hp0.guild || hp0.top ? "ar" : hp0.recipe || hp0.gather || hp0.node || hp0.skillup || fmIsHash() ? "cr" : hp0.item ? "ah" : "";
     if (hm === "tr" && !keep && /^(cheap|bs|vend)$/.test(hp0.v || "")) { trView = hp0.v; trSort(trView); }   // Trading-adress: vald undervy (buggjakt 2026-11-20)
     var wantI = byId[+hp0.item];
     if (hm && !keep && mode !== hm && !(hm === "ah" && mode === "tr" && (!wantI || (!wantI.gear && wantI.qty >= TR_MIN)))) { if (fromNav) resetModeState(hm); mode = hm; drawCats(); refresh(); }   // trädet ritades för den sparade fliken
@@ -5686,12 +6006,12 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
       else arLanding();
       return;
     }
-    if (mode === "cr" || (!keep && (hashParams().recipe || hashParams().gather || hashParams().node || hashParams().skillup))) {   // Crafting: recepten laddas först, sedan listan och rutan
+    if (mode === "cr" || (!keep && (hashParams().recipe || hashParams().gather || hashParams().node || hashParams().skillup || fmIsHash()))) {   // Crafting: recepten laddas först, sedan listan och rutan
       mode = "cr"; if (!keep) { sortKey = "profit"; sortDir = -1; } $("q").placeholder = t("search_rc");
       var wantR = +hashParams().recipe;
       var wantN = +hashParams().node || 0;   // åder/ört (#node=): yrket i spalten, objektet i rutan
       var wantG = hashParams().gather || "";
-      (wantN ? Promise.all([loadRecept(), loadNodes().catch(function () { return null; })]) : loadRecept()).then(function () { if (wantN && !wantG && !sgSel) { var wn = ndFind(wantN); wantG = wn && wn.prof === "Herbalism" ? "herb" : "mine"; } buildCr(); if (mode !== "cr") return; var wantS = hashParams().skillup || (hashParams().guide === "1" ? wantG : ""); if (wantS) sgSet(wantS); else if (wantG) gaSet(wantG, hashParams().band); else if (!keep && !(wantN && sgSel)) { gaSel = -1; sgSel = ""; } if (!keep && !wantG && !wantS && !wantN && (fromNav || hp0.c != null)) catFromHash(hp0, profList.length); drawCats(); refresh(); if (sgSel) { if (wantN) nodeDetail(wantN); else { sgDetail(); if (keep) setHash(sgHash()); } if (!keep) showTab("item"); } else if (gaSel >= 0) { if (wantN) nodeDetail(wantN); else gaDetail(); if (wantG && !keep) showTab("item"); } else if (wantR) { selectRecipe(wantR, true); showTab("item"); } else if (keep && selRec) selectRecipe(selRec, false); else if (view[0]) selectRecipe(view[0].rid, false); })
+      (wantN ? Promise.all([loadRecept(), loadNodes().catch(function () { return null; })]) : loadRecept()).then(function () { if (wantN && !wantG && !sgSel) { var wn = ndFind(wantN); wantG = wn && wn.prof === "Herbalism" ? "herb" : "mine"; } buildCr(); if (mode !== "cr") return; if (!keep && fmIsHash()) fmSet(hashParams()); else if (!keep) fmOn = false; if (fmOn) { drawCats(); refresh(); if (keep && $("fmbox") && FM) fmDetailDraw(); else fmDetail(); if (keep) setHash(fmHash()); else showTab("item"); return; } var wantS = hashParams().skillup || (hashParams().guide === "1" ? wantG : ""); if (wantS) sgSet(wantS); else if (wantG) gaSet(wantG, hashParams().band); else if (!keep && !(wantN && sgSel)) { gaSel = -1; sgSel = ""; } if (!keep && !wantG && !wantS && !wantN && (fromNav || hp0.c != null)) catFromHash(hp0, profList.length); drawCats(); refresh(); if (sgSel) { if (wantN) nodeDetail(wantN); else { sgDetail(); if (keep) setHash(sgHash()); } if (!keep) showTab("item"); } else if (gaSel >= 0) { if (wantN) nodeDetail(wantN); else gaDetail(); if (wantG && !keep) showTab("item"); } else if (wantR) { selectRecipe(wantR, true); showTab("item"); } else if (keep && selRec) selectRecipe(selRec, false); else if (view[0]) selectRecipe(view[0].rid, false); })
         .catch(function () { if (mode === "cr") $("detail").innerHTML = '<div class="note">' + t("cr_fail") + "</div>"; });   // bytt flik under laddningen: rita inget (granskning 2026-11-18)
       return;
     }
@@ -5720,6 +6040,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     if (mode === "de") { if (DEX) deRefresh(q); else { view = []; shown = 0; } draw(); trCounts(); return; }
     if (mode === "fx") { if (fxReady()) fxRefresh(q); else { view = []; shown = 0; } draw(); trCounts(); return; }
     if (mode === "cr") {
+      if (fmOn) { view = []; shown = 0; draw(); fmMain(); return; }   // Gold per hour: Killing i mittenrutan
       if (sgSel) { view = []; shown = 0; draw(); sgMain(); return; }   // Skill-up 1–300: guiden i mittenrutan
       if (gaSel >= 0) { gaRefresh(q); draw(); return; }
       var pid = catSel >= 0 && profList[catSel] ? profList[catSel].id : 0;
@@ -6027,7 +6348,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     $("modeCl").setAttribute("aria-pressed", mode === "cl" ? "true" : "false");
     drawTrSub(); drawLbSub(); drawClSub();
     $("sect").textContent = mode === "ah" ? ahName((houseParts(house) || [0, "horde"])[1]) : t(mode === "de" || mode === "fx" ? "mode_tr" : mode === "ar" && arLb ? "mode_lb" : "mode_" + mode);
-    document.title = $("sect").textContent + " · Azeroth Atlas";   // fliken i webbläsaren heter som vyn (buggjakt 2026-11-20)
+    document.title = (mode === "cr" && fmOn ? t("fm_h") : $("sect").textContent) + " · Azeroth Atlas";   // fliken i webbläsaren heter som vyn (buggjakt 2026-11-20)
     $("sect").title = t("sect_tip");
     if (homeOn) { document.title = homePage === "raids" ? "Raids on Forever · Azeroth Atlas" : "Azeroth Atlas · WoW Forever"; Array.prototype.forEach.call(document.querySelectorAll(".mode > button"), function (b) { b.setAttribute("aria-pressed", "false"); }); homeLater(); }
     drawSub();
@@ -6072,10 +6393,10 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     $("empty").textContent = t(mode === "fx" ? "fx_empty" : mode === "de" ? "de_empty" : mode === "co" ? "co_empty" : mode === "cl" ? "cl_empty" : mode === "hu" ? "hu_empty" : mode === "cr" ? (gaSel >= 0 ? "ga_empty" : "cr_empty") : mode === "qu" ? "qu_empty" : mode === "dg" ? (query || dgSel >= 0 ? "dg_empty" : "dg_pick") : "empty");
     drawMoreBtn();
     $("count").textContent = t(mode === "fx" ? "fx_count" : mode === "de" ? "de_count" : mode === "co" ? "co_count" : mode === "cl" ? "cl_count" : mode === "hu" ? "hu_count" : mode === "cr" ? (gaSel >= 0 ? "ga_count" : "cr_count") : mode === "qu" ? "qu_count" : mode === "dg" ? "dg_count" : "count", num(mode === "dg" ? view.filter(function (x) { return !x.hd && !x.sub; }).length : view.length));
-    $("head").innerHTML = mode === "ar" || (mode === "cl" && (clView === "tal" || clView === "guide")) || (mode === "cr" && sgSel) ? "" : headHtml();
+    $("head").innerHTML = mode === "ar" || (mode === "cl" && (clView === "tal" || clView === "guide")) || (mode === "cr" && (sgSel || fmOn)) ? "" : headHtml();
     $("dghead").hidden = mode !== "dg"; if (mode === "dg") $("dghead").innerHTML = DG ? dgHeadHtml() : "";
     $("list").className = mode === "tr" || mode === "cr" || mode === "qu" || mode === "dg" || mode === "hu" || mode === "co" || mode === "cl" || mode === "de" || mode === "fx" ? mode + (mode === "cr" && gaSel >= 0 ? " ga" : "") : "";
-    var ar = mode === "ar" || (mode === "cl" && (clView === "tal" || clView === "guide")) || (mode === "cr" && !!sgSel);   // Classes: talangräknaren och skillguiden ritas i samma ruta som Armory
+    var ar = mode === "ar" || (mode === "cl" && (clView === "tal" || clView === "guide")) || (mode === "cr" && (!!sgSel || fmOn));   // Classes: talangräknaren och skillguiden ritas i samma ruta som Armory
     $("armory").hidden = !ar;
     document.querySelector(".left .scroll").hidden = ar;
     if (ar) { $("empty").hidden = true; $("more").hidden = true; $("count").textContent = ""; }
@@ -6702,8 +7023,8 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
       if (same && cb.classList.contains("cat")) {   // klick på den valda igen: ett steg upp (toppen: allt)
         if (nu >= 0) { sub2Sel = -1; } else if (ns >= 0) { subSel = -1; sub2Sel = -1; } else { catSel = -1; subSel = -1; sub2Sel = -1; }
       } else { catSel = nc; subSel = ns; sub2Sel = nu; }
-      var wasGa = mode === "cr" && (gaSel >= 0 || !!sgSel);
-      if (wasGa) { gaSel = -1; sgSel = ""; sortKey = "profit"; sortDir = -1; }   // ett vanligt yrke valt: räknaren stängs
+      var wasGa = mode === "cr" && (gaSel >= 0 || !!sgSel || fmOn);
+      if (wasGa) { gaSel = -1; sgSel = ""; fmOn = false; sortKey = "profit"; sortDir = -1; }   // ett vanligt yrke valt: räknaren stängs
       drawCats(); refresh();
       if (mode === "cr" && (wasGa || !selRec) && view[0]) selectRecipe(view[0].rid, false);
       var top = document.querySelector('#cats .cat[data-cat="' + catSel + '"]:not(.sub):not(.sub2)');
@@ -6914,7 +7235,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
   var MOB = window.matchMedia("(max-width: 1100px)"), MOB7 = window.matchMedia("(max-width: 760px)"), mobY = 0, mobN = 0, mobArm = null;
   var MOB_ROW = "tr[data-id], tr[data-rid], tr[data-qid], tr[data-hu], tr[data-co], tr[data-de], tr[data-fx], tr[data-dgitem], tr[data-clsp], tr[data-clq], tr[data-cltr], tr[data-arrec]";
   var MOB_OPEN = ".cat[data-ga], [data-qmov], [data-dewatch], tr[data-dgboss], [data-dgpick], [data-upgo], [data-gobeast], [data-gorec], [data-recgo], #mWatch";
-  var MOB_DEEP = /^#(item|recipe|quest|beast|col|fx|de|npc|node|gather)=|&(item|sp|cq|tr|boss)=/;
+  var MOB_DEEP = /^#(item|recipe|quest|beast|col|fx|de|npc|node|gather)=|&(item|sp|cq|tr|boss|spot)=/;
   function mobState(md, d) { try { history.replaceState(Object.assign({}, history.state, { i: navPos, md: md, d: d || 0 }), ""); } catch (e) {} }
   function mobTop() {   // detaljrutan överst på skärmen
     setTimeout(function () { var r = document.querySelector(".cols > .right"); if (r && MOB.matches) window.scrollTo(0, Math.max(0, r.getBoundingClientRect().top + window.scrollY - 4)); }, 0);
@@ -7130,7 +7451,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
   $("sect").addEventListener("click", function () { tabHome(); });   // flikens rubrik: flikens start
   // Startsidan (Joakim 2026-11-20): flikarna som rutor, billigt just nu, din lista och dina spelare. Länkarna är vanliga
   // #-adresser, så bakåt, mittenklick och kopiera fungerar som överallt; popstate ritar sidan från adressen.
-  var homeRaf = 0, homeRecTry = false, homeKatIdx = null, homeCoTry = false, homeAlTry = false, homeAL = null, homeNews = null, homeNewsTry = false;
+  var homeRaf = 0, homeRecTry = false, homeKatIdx = null, homeCoTry = false, homeAlTry = false, homeAL = null, homeNews = null, homeNewsTry = false, homeFmTry = false, homeFiTry = false;
   // Stora korten: vilken av topp 3 som visas, prickarna byter utan att rita om sidan, och var 8:e s byts den av sig själv
   // (inte medan musen eller fokus är på kortet, inte i en dold flik).
   var homeSlide = { craft: 0, rise: 0 };
@@ -7390,7 +7711,13 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     var dayt = traded.filter(function (r) { return r.tg > 0 && btClear(r); }).sort(function (a, b) { return b.tg * Math.min(b.day, 100) - a.tg * Math.min(a.day, 100); }).slice(0, N);
     var gp = [];
     if (D) GATHER.forEach(function (g) { GA_BANDS.forEach(function (b, k) { var v = gaCalc(g, k).gph; if (v > 0) gp.push({ g: g, k: k, v: v }); }); });
-    gp.sort(function (a, b) { return b.v - a.v; }); gp = gp.slice(0, N);
+    gp.sort(function (a, b) { return b.v - a.v; });
+    if (D && !FM && !homeFmTry) { homeFmTry = true; fmLoad().then(function () { homeLater(); }).catch(function () {}); }   // Killing: ritas om när farm.json kommit
+    if (D && !FISH && !homeFiTry) { homeFiTry = true; loadFish().then(function () { homeLater(); }).catch(function () {}); }   // Fishing likaså
+    var fmTop = D && FM ? fmBands().map(function (b) { return { fm: 1, lvl: b.lvl, c: b.spots[0], v: b.spots[0].gph }; }).filter(function (x) { return x.v > 0; }).sort(function (a, b) { return b.v - a.v; }).slice(0, 3) : [];
+    var fiTop = D && FISH ? FI_BANDS.map(function (bd, k) { var c = fiSpots(k)[0]; return c ? { fi: 1, k: k, c: c, v: c.gph } : null; }).filter(function (x) { return x && x.v > 0; }).sort(function (a, b) { return b.v - a.v; }).slice(0, 2) : [];
+    gp = gp.slice(0, N - fmTop.length - fiTop.length).concat(fmTop, fiTop).sort(function (a, b) { return b.v - a.v; });
+    var gpHref = function (x) { return x.fm ? fmLink(x.lvl, x.c.s) + mk : x.fi ? fiLink(x.k, x.c.zone, x.c.pool) + mk : "#gather=" + x.g.key + "&band=" + (x.k + 1) + mk; };
     if (D && !RECEPT && !homeRecTry) { homeRecTry = true; loadRecept().then(function () { homeLater(); }).catch(function () {}); }   // receptdatan bara för Pays to craft
     if (D && RECEPT) buildCr();
     var craft = D && RECEPT ? crRows.filter(function (x) { var o = byId[x.rc.item]; return x.hasProfit && x.profit > 0 && x.day >= 5 && o && o.qty >= 3; }).sort(function (a, b) { return b.profit - a.profit; }).slice(0, N) : [];
@@ -7475,8 +7802,8 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     var cards = card(mt ? "#col=" + CO_LETTER.mounts + mt.id : "#tab=co", t("h_q_mount"), mt ? esc(mt.name) : CO ? num(CO.mounts.length) : "…",
         CO ? t("h_q_mount_s", num(CO.mounts.length)) : t("ar_loading"), mt ? '<img class="hxico mt" src="' + esc(mt.img) + '" alt="" loading="lazy">' : "", "sm") +
       card("#tab=cl", t("h_q_tal"), "51 " + t("h_points"), t("h_q_tal_s"), ico("home-talent")) +
-      card(gp[0] ? "#gather=" + gp[0].g.key + "&band=" + (gp[0].k + 1) + mk : "#tab=cr" + mk, t("h_q_farm"), gp[0] ? gaMoney(gp[0].v) + "/h" : "…",
-        gp[0] ? esc(gp[0].g.name) + " · " + t("ga_band", GA_BANDS[gp[0].k][0], GA_BANDS[gp[0].k][1]).toLowerCase() : t("ar_loading"), ico("home-farm"), "up") +
+      card(gp[0] ? gpHref(gp[0]) : "#farm" + mk, t("h_q_farm"), gp[0] ? gaMoney(gp[0].v) + "/h" : "…",
+        gp[0] ? (gp[0].fm ? esc(t("fm_home_sub", gp[0].lvl, gp[0].c.s.name)) : gp[0].fi ? esc(t("fi_home_sub", FI_BANDS[gp[0].k][0], FI_BANDS[gp[0].k][1], fiName(gp[0].c))) : esc(gp[0].g.name) + " · " + t("ga_band", GA_BANDS[gp[0].k][0], GA_BANDS[gp[0].k][1]).toLowerCase()) : t("ar_loading"), ico("home-farm"), "up") +
       (function () {   // raiderna öppnar 9 december (lokal tid); efter det: "Open now"
         var at = new Date(2026, 11, 9).getTime(), dd = Math.ceil((at - Date.now()) / 864e5);
         return card("#raids", t("h_q_raid"), dd > 1 ? t("h_raid_in", dd) : dd === 1 ? t("h_raid_1") : t("h_raid_open"), t(dd > 0 ? "h_raid_s" : "h_raid_since"),
@@ -7490,8 +7817,10 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
         box(t("h_cheap"), "#tab=tr&v=cheap" + mk, list(cheap, function (r) { return li(r, "#tab=tr&v=cheap&item=" + r.id + mk); })) +
         box(t("h_rise"), "#fx=0&rise=1" + mk, list(rising, function (r) { return li(r, "#item=" + r.id + mk); })) +
         box(t("h_hot"), "#tab=ah" + mk, list(hot, function (r) { return row("#item=" + r.id + mk, iconHtml(r), r.name, r.q, moneyText(r.min), '<span class="dim">' + t("h_per_day", num(r.day)) + "</span>", r.id); })) +
-        box(t("h_gph"), "#tab=cr" + mk, list(gp, function (x) {
-          return row("#gather=" + x.g.key + "&band=" + (x.k + 1) + mk, ASSET_BASE ? '<img class="ic" src="' + ASSET_BASE + "icons/" + x.g.icon + '.jpg" width="18" height="18" alt="">' : "", x.g.name + (x.g.de ? " · " + t("ga_de") : ""), -1,
+        box(t("h_gph"), "#farm" + mk, list(gp, function (x) {
+          if (x.fm) return row(gpHref(x), fmIcon("ic"), t("fm_home_row", x.lvl, x.c.s.name), -1, '<span class="dim">' + esc(x.c.s.zone) + "</span>", '<span class="down2">' + gaMoney(x.v) + "/h</span>");
+          if (x.fi) return row(gpHref(x), fmIcon("ic", true), t("fi_home_row", FI_BANDS[x.k][0], FI_BANDS[x.k][1], fiName(x.c)), -1, '<span class="dim">' + esc(x.c.zone) + "</span>", '<span class="down2">' + gaMoney(x.v) + "/h</span>");
+          return row(gpHref(x), ASSET_BASE ? '<img class="ic" src="' + ASSET_BASE + "icons/" + x.g.icon + '.jpg" width="18" height="18" alt="">' : "", x.g.name + (x.g.de ? " · " + t("ga_de") : ""), -1,
             '<span class="dim">' + t("ga_band", GA_BANDS[x.k][0], GA_BANDS[x.k][1]) + "</span>", '<span class="down2">' + gaMoney(x.v) + "/h</span>");
         })) +
         box(t("h_craft"), "#tab=cr" + mk, D && !RECEPT ? '<div class="hnone">' + t("h_cheap_none") + "</div>" : list(craft, function (x) {
@@ -7567,7 +7896,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
       else arLanding();
       return;
     }
-    selQuest = 0; npcSel = 0; dgSel = -1; huSel = 0; clSp = 0; clQ = 0; clTr = 0; selRec = 0; gaSel = -1; sgSel = ""; fxSel = 0; deSel = 0; selId = null;
+    selQuest = 0; npcSel = 0; dgSel = -1; huSel = 0; clSp = 0; clQ = 0; clTr = 0; selRec = 0; gaSel = -1; sgSel = ""; fmOn = false; fxSel = 0; deSel = 0; selId = null;
     mode = ""; setMode(m); window.scrollTo(0, 0);
   }
   // Armorys start (Joakim 2026-11-20: efter F5 öppnade Armory den senaste spelaren): sökrutan, vänner och senaste som knappar.
@@ -9532,7 +9861,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     }).catch(function () { if (mode === "dg") $("detail").innerHTML = '<div class="note">' + t("qu_fail") + "</div>"; });
   }
   function resetModeState(m) {   // ny flik: egen sortering, inga kvarglömda filter från förra fliken
-    if (m === "tr") { trSort(trView); } else if (m === "cr") { sortKey = "profit"; sortDir = -1; gaSel = -1; sgSel = ""; } else if (m === "qu" || m === "cl") { sortKey = "lvl"; sortDir = 1; } else { sortKey = "day"; sortDir = -1; }
+    if (m === "tr") { trSort(trView); } else if (m === "cr") { sortKey = "profit"; sortDir = -1; gaSel = -1; sgSel = ""; fmOn = false; } else if (m === "qu" || m === "cl") { sortKey = "lvl"; sortDir = 1; } else { sortKey = "day"; sortDir = -1; }
     openId = null;
     catSel = -1; subSel = -1; sub2Sel = -1;   // kategorierna och yrkena är olika listor
     qFlush(); query = ""; $("q").value = "";   // väntande sökning från förra fliken stryks (granskning 2026-11-18)
@@ -9583,6 +9912,10 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     if ((x = el.closest("tr[data-fx]"))) return "#fx=" + x.dataset.fx + (x.dataset.fxg ? "&g=" + x.dataset.fxg : "") + mk;
     if ((x = el.closest("tr[data-de]"))) return "#de=" + x.dataset.de + mk;
     if ((x = el.closest("tr[data-qid]"))) return "#quest=" + x.dataset.qid;
+    if ((x = el.closest("[data-fm]"))) return "#farm" + mk;
+    if ((x = el.closest("[data-fi]"))) return "#fish" + mk;
+    if ((x = el.closest("tr[data-fispot]"))) return fiLink(+x.dataset.fik, x.dataset.fispot, x.dataset.fipool) + mk;
+    if ((x = el.closest("tr[data-fmspot]"))) return fmLink(+x.dataset.fml, { mob: +x.dataset.fmspot, zone: x.dataset.fmz }) + mk;
     if ((x = el.closest("[data-sg]"))) return "#skillup=" + x.dataset.sg + mk;
     if ((x = el.closest("[data-ga]")) && GATHER[+x.dataset.ga]) return "#gather=" + GATHER[+x.dataset.ga].key + "&band=" + ((x.hasAttribute("data-gab") ? +x.dataset.gab : gaBand) + 1) + mk;
     if ((x = el.closest("tr[data-rid]"))) return "#recipe=" + x.dataset.rid + mk;
