@@ -1,26 +1,26 @@
 {
- "t": "2026-11-24T00:18:17.868Z",
+ "t": "2026-11-24T10:23:04.142Z",
  "videos": [
+  {
+   "id": "TFosZi03cZQ",
+   "title": "1300 AV 3576 klossar i Brick by Brick med UfoSXM",
+   "channel": "ChrisWhippit",
+   "handle": "@chriswhippit",
+   "at": "2026-11-24T05:30:37Z"
+  },
+  {
+   "id": "mWPElAk6lAg",
+   "title": "Vi BOTAR en zombie i Minecraft med Mammaspelar",
+   "channel": "Whippit",
+   "handle": "@whippitextra",
+   "at": "2026-11-23T05:30:03Z"
+  },
   {
    "id": "iQAZzt295nM",
    "title": "GTA 6 #5: Vi PIMPAR vår bil för FÖRSTA gången!",
    "channel": "ChrisWhippit",
    "handle": "@chriswhippit",
    "at": "2026-11-23T16:00:17Z"
-  },
-  {
-   "id": "Eu_S_4c5zAk",
-   "title": "HOTBAREN ÄR FULL i Minecraft med Mammaspelar och Pappaspelar",
-   "channel": "Whippit",
-   "handle": "@whippitextra",
-   "at": "2026-11-22T05:30:07Z"
-  },
-  {
-   "id": "pK3_kPNOdv4",
-   "title": "GTA 6 #4: Dyker efter GULDSKATTER i havet",
-   "channel": "ChrisWhippit",
-   "handle": "@chriswhippit",
-   "at": "2026-11-22T05:30:17Z"
   },
   {
    "id": "9XSzCQFFMyc",
@@ -30,11 +30,11 @@
    "at": "2026-10-10T04:30:24Z"
   },
   {
-   "id": "mWPElAk6lAg",
-   "title": "Vi BOTAR en zombie i Minecraft med Mammaspelar",
+   "id": "hFEn2PaiK8I",
+   "title": "SHULKER FARM i THE END i Minecraft med Pappaspelar",
    "channel": "Whippit",
    "handle": "@whippitextra",
-   "at": "2026-11-23T05:30:03Z"
+   "at": "2026-11-24T05:30:18Z"
   }
  ],
  "counts": {
@@ -87,6 +87,12 @@
  },
  "seriesVids": {
   "minecraft": [
+   {
+    "id": "hFEn2PaiK8I",
+    "title": "SHULKER FARM i THE END i Minecraft med Pappaspelar",
+    "at": "2026-11-24T05:30:18Z",
+    "list": ""
+   },
    {
     "id": "mWPElAk6lAg",
     "title": "Vi BOTAR en zombie i Minecraft med Mammaspelar",
@@ -151,12 +157,6 @@
     "id": "VtLOlI1m2-c",
     "title": "MAMMASPELAR RAMLAR NER OCH DÖÖÖÖÖR - MINECRAFT SKYBLOCK #9",
     "at": "2026-11-07T05:30:29Z",
-    "list": ""
-   },
-   {
-    "id": "0qJizFjc-LU",
-    "title": "4 SAKER – VEM VINNER? i Minecraft med Mammaspelar och Pappaspelar",
-    "at": "2026-11-05T05:30:15Z",
     "list": ""
    }
   ],
@@ -544,25 +544,25 @@
  },
  "media": {
   "chriswhippit": {
-   "views": 244493000,
-   "avgViews": 5600,
-   "avgSample": 8,
+   "views": 244527000,
+   "avgViews": 5400,
+   "avgSample": 9,
    "uploads30": 50
   },
   "whippitsson": {
-   "views": 50376000,
+   "views": 50377000,
    "avgViews": 20000,
    "avgSample": 5,
    "uploads30": 0
   },
   "figgwhipp": {
-   "views": 97269000,
+   "views": 97270000,
    "avgViews": 0,
    "avgSample": 0,
    "uploads30": 0
   },
   "whippitextra": {
-   "views": 315000,
+   "views": 316000,
    "avgViews": 2000,
    "avgSample": 13,
    "uploads30": 50
