@@ -1,19 +1,12 @@
 {
- "t": "2026-11-25T04:06:33.471Z",
+ "t": "2026-11-25T14:15:17.927Z",
  "videos": [
   {
-   "id": "mTfyhUvi5Vs",
-   "title": "GTA 6 #6: PLANET KRASCHAR i Grand Theft Auto VI",
+   "id": "MzEioHgEmsA",
+   "title": "GTA 6 #7: Vi skaffar vårt första vapen",
    "channel": "ChrisWhippit",
    "handle": "@chriswhippit",
-   "at": "2026-11-24T16:00:00Z"
-  },
-  {
-   "id": "iQAZzt295nM",
-   "title": "GTA 6 #5: Vi PIMPAR vår bil för FÖRSTA gången!",
-   "channel": "ChrisWhippit",
-   "handle": "@chriswhippit",
-   "at": "2026-11-23T16:00:17Z"
+   "at": "2026-11-25T05:30:32Z"
   },
   {
    "id": "TFosZi03cZQ",
@@ -23,6 +16,13 @@
    "at": "2026-11-24T05:30:37Z"
   },
   {
+   "id": "mTfyhUvi5Vs",
+   "title": "GTA 6 #6: PLANET KRASCHAR i Grand Theft Auto VI",
+   "channel": "ChrisWhippit",
+   "handle": "@chriswhippit",
+   "at": "2026-11-24T16:00:00Z"
+  },
+  {
    "id": "9XSzCQFFMyc",
    "title": "RAIDAR SPACE-PIKACHU MED MIN SON | POKÉMON GO",
    "channel": "Chris Whippit Vloggar",
@@ -30,15 +30,15 @@
    "at": "2026-10-10T04:30:24Z"
   },
   {
-   "id": "hFEn2PaiK8I",
-   "title": "SHULKER FARM i THE END i Minecraft med Pappaspelar",
+   "id": "m8svh01CPsY",
+   "title": "PAPPA DÖR 8 GÅNGER i Minecraft med Pappaspelar",
    "channel": "Whippit",
    "handle": "@whippitextra",
-   "at": "2026-11-24T05:30:18Z"
+   "at": "2026-11-25T05:30:10Z"
   }
  ],
  "counts": {
-  "chriswhippit": 4624,
+  "chriswhippit": 4628,
   "whippitsson": 534,
   "figgwhipp": 2848,
   "whippitextra": 135
@@ -87,6 +87,12 @@
  },
  "seriesVids": {
   "minecraft": [
+   {
+    "id": "m8svh01CPsY",
+    "title": "PAPPA DÖR 8 GÅNGER i Minecraft med Pappaspelar",
+    "at": "2026-11-25T05:30:10Z",
+    "list": ""
+   },
    {
     "id": "hFEn2PaiK8I",
     "title": "SHULKER FARM i THE END i Minecraft med Pappaspelar",
@@ -152,15 +158,15 @@
     "title": "Blocked in combat i MINECRAFT men jnx FLYR",
     "at": "2026-11-08T05:30:37Z",
     "list": ""
-   },
-   {
-    "id": "VtLOlI1m2-c",
-    "title": "MAMMASPELAR RAMLAR NER OCH DÖÖÖÖÖR - MINECRAFT SKYBLOCK #9",
-    "at": "2026-11-07T05:30:29Z",
-    "list": ""
    }
   ],
   "gta-5": [
+   {
+    "id": "MzEioHgEmsA",
+    "title": "GTA 6 #7: Vi skaffar vårt första vapen",
+    "at": "2026-11-25T05:30:32Z",
+    "list": ""
+   },
    {
     "id": "mTfyhUvi5Vs",
     "title": "GTA 6 #6: PLANET KRASCHAR i Grand Theft Auto VI",
@@ -225,12 +231,6 @@
     "id": "W-8nQvhgVWQ",
     "title": "GTA 5 UPDATE & CHOP SHOP DLC - 7 MILJONER FÖR NY BIL OCH SALVAGE-YARD",
     "at": "2023-12-20T05:00:18Z",
-    "list": "PLpinm9x4zUokXmRLV02nlqJUlFDnRn9vB"
-   },
-   {
-    "id": "OimqLOrRMkU",
-    "title": "REAGERAR PÅ GTA 6 - VICE CITY TRAILERN!",
-    "at": "2023-12-05T14:00:17Z",
     "list": "PLpinm9x4zUokXmRLV02nlqJUlFDnRn9vB"
    }
   ],
@@ -544,19 +544,19 @@
  },
  "media": {
   "chriswhippit": {
-   "views": 244542000,
-   "avgViews": 4800,
-   "avgSample": 8,
+   "views": 244561000,
+   "avgViews": 4700,
+   "avgSample": 9,
    "uploads30": 50
   },
   "whippitsson": {
-   "views": 50377000,
+   "views": 50378000,
    "avgViews": 20000,
    "avgSample": 5,
    "uploads30": 0
   },
   "figgwhipp": {
-   "views": 97271000,
+   "views": 97272000,
    "avgViews": 0,
    "avgSample": 0,
    "uploads30": 0
