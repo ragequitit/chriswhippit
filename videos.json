@@ -1,19 +1,12 @@
 {
- "t": "2026-11-25T14:15:17.927Z",
+ "t": "2026-11-25T23:16:43.109Z",
  "videos": [
   {
-   "id": "MzEioHgEmsA",
-   "title": "GTA 6 #7: Vi skaffar vårt första vapen",
+   "id": "iL2mVn-GI20",
+   "title": "MÄNNISKA I VÄGGEN i Shift at Midnight med UfoSXM",
    "channel": "ChrisWhippit",
    "handle": "@chriswhippit",
-   "at": "2026-11-25T05:30:32Z"
-  },
-  {
-   "id": "TFosZi03cZQ",
-   "title": "1300 AV 3576 klossar i Brick by Brick med UfoSXM",
-   "channel": "ChrisWhippit",
-   "handle": "@chriswhippit",
-   "at": "2026-11-24T05:30:37Z"
+   "at": "2026-11-25T14:30:15Z"
   },
   {
    "id": "mTfyhUvi5Vs",
@@ -21,6 +14,13 @@
    "channel": "ChrisWhippit",
    "handle": "@chriswhippit",
    "at": "2026-11-24T16:00:00Z"
+  },
+  {
+   "id": "MzEioHgEmsA",
+   "title": "GTA 6 #7: Vi skaffar vårt första vapen",
+   "channel": "ChrisWhippit",
+   "handle": "@chriswhippit",
+   "at": "2026-11-25T05:30:32Z"
   },
   {
    "id": "9XSzCQFFMyc",
@@ -38,10 +38,10 @@
   }
  ],
  "counts": {
-  "chriswhippit": 4628,
+  "chriswhippit": 4630,
   "whippitsson": 534,
   "figgwhipp": 2848,
-  "whippitextra": 135
+  "whippitextra": 137
  },
  "subs": {
   "chriswhippit": 299000,
@@ -544,9 +544,9 @@
  },
  "media": {
   "chriswhippit": {
-   "views": 244561000,
+   "views": 244570000,
    "avgViews": 4700,
-   "avgSample": 9,
+   "avgSample": 8,
    "uploads30": 50
   },
   "whippitsson": {
@@ -556,7 +556,7 @@
    "uploads30": 0
   },
   "figgwhipp": {
-   "views": 97272000,
+   "views": 97273000,
    "avgViews": 0,
    "avgSample": 0,
    "uploads30": 0
@@ -564,7 +564,7 @@
   "whippitextra": {
    "views": 320000,
    "avgViews": 2000,
-   "avgSample": 13,
+   "avgSample": 11,
    "uploads30": 50
   }
  }
