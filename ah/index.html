@@ -818,6 +818,7 @@ td.cic .ci { width: 22px; height: 22px; border-radius: 3px; vertical-align: midd
 .strip { margin: -14px -14px 0; padding: 10px 14px; border-top: 1px solid var(--line);
   background: linear-gradient(90deg, rgba(246, 196, 72, .16), rgba(246, 196, 72, .02)); border-radius: 5px 5px 0 0; }
 .strip h2 { font-family: var(--display); font-weight: 500; font-size: 20px; margin: 0; text-wrap: balance; }
+a.wh.rgo { color: inherit; text-decoration: none; } a.wh.rgo:hover { text-decoration: underline; text-decoration-color: var(--gold); text-underline-offset: 3px; }   /* receptet → varans graf */
 .bigstar { display: block; text-align: center; font-size: 44px; line-height: 1; color: var(--edge); margin: 18px 0 8px; }
 .strip small { color: var(--grey); }
 .facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(118px, 1fr)); gap: 8px 14px; margin: 0; }
@@ -2108,7 +2109,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
       co_from: "Where from", co_s_all: "All", co_s_vendor: "Vendor", co_s_drop: "Drop", co_s_quest: "Quest", co_s_class: "Class", co_s_pvp: "PvP rank", co_s_other: "Other", co_s_forever: "New on Forever",
       co_missing: "%1 is missing", co_side: "Only %1 and both", co_owner: "%1 has %2 of %3 mounts (from the Armory).", co_have: "Owned", co_have_by: "%1 has it",
       co_col_name: "Name", co_col_src: "Source", co_col_where: "Where", co_col_req: "Requires", co_col_price: "Price", co_col_price_tip: "Lowest price on the AH, otherwise the vendor price", co_ah: "AH", co_vendor: "vendor",
-      co_count: "%1 shown", co_empty: "Nothing matches.", co_item: "Item", co_open_ah: "Open on the AH", co_where: "Where to get it", co_price_ah: "On the AH", co_price_vendor: "Vendor price", co_pvprank: "PvP rank %1",
+      co_count: "%1 shown", co_empty: "Nothing matches.", co_item: "Item", co_open_ah: "Open on the AH", rec_graph: "Price graph", rec_graph_tip: "Price, sales and history for the item this recipe makes", co_where: "Where to get it", co_price_ah: "On the AH", co_price_vendor: "Vendor price", co_pvprank: "PvP rank %1",
       co_forever: "New on Forever: not in the Classic database, so the source is unknown here.", co_nosrc: "No known source in the Classic database.",
       co_place: "Place = nearest graveyard or the dungeon.",
       mode_cl: "Classes", mode_cl_tip: "Every class: beginner guide 1–60, talent calculator, spells with level and trainer cost, pet spells, class quests and trainers.", search_cl: "Search spell, quest or trainer",
@@ -6592,7 +6593,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     var rc = r.rc, cdh = cdRecipe(rc.name), out = byId[rc.item], it = RECEPT.items[rc.item] || ["", -1, 0], q = out ? out.q : it[1];
     var learn = rc.cost ? t("src_trainer") : rc.recipeItem ? (RECEPT.items[rc.recipeItem] ? RECEPT.items[rc.recipeItem][0] : t("src_drop")) : "";
     var facts = '<div><dt title="' + esc(t("col_cost_tip")) + '">' + t("f_cost") + "</dt><dd>" + (r.cost ? money(r.cost) : DASH) + "</dd></div>" +
-      "<div><dt>" + t("f_sellf") + "</dt><dd>" + (r.sell ? money(r.sell) : DASH) + "</dd></div>" +
+      "<div><dt>" + t("f_sellf") + "</dt><dd>" + (r.sell ? (out ? '<a class="wh rgo" href="#item=' + rc.item + '" data-upgo="' + rc.item + '" title="' + esc(t("rec_graph_tip")) + '">' + money(r.sell) + "</a>" : money(r.sell)) : DASH) + "</dd></div>" +
       '<div><dt title="' + esc(t("col_profit_tip")) + '">' + t("f_profit") + "</dt><dd>" + profitHtml(r) + "</dd></div>" +
       (r.day ? "<div><dt>" + t("f_day") + '</dt><dd><span class="est">' + num(r.day) + "</span></dd></div>" : "") +
       (rc.cost ? "<div><dt>" + t("f_trainer") + "</dt><dd>" + money(rc.cost) + "</dd></div>" : "") +
@@ -6617,7 +6618,8 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     if (sr.quest.length) srcs += "<dt>" + t("src_quest") + "</dt><dd>" + sr.quest.map(function (x) { return wh("quest", x[1], x[0]); }).join(", ") + "</dd>";
     var onlyDrop = sr.drop.length && !sr.trainer.length && !sr.vendor.length && !sr.quest.length;
     return       '<div class="strip"><button class="lnk" type="button" data-copyr="' + r.rid + '" title="' + t("copy_link") + '"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M6.5 9.5l3-3M5 11l-1 1a2.5 2.5 0 01-3.5-3.5l2-2A2.5 2.5 0 016 6M11 5l1-1a2.5 2.5 0 013.5 3.5l-2 2A2.5 2.5 0 0110 10"/></svg>' + t("copy_link") + "</button>" +
-      (out ? iconHtml(out, true) : "") + '<h2 data-tip="' + rc.item + '" class="' + qcls(q) + '">' + esc(rc.name) + "</h2><small>" + esc(RECEPT.profs[rc.prof]) + " · " + (rc.skill ? t("requires", rc.skill + " (" + tierName(rc.skill) + ")") : esc(rc.cat || "") + " · " + t("skill_unknown")) + (learn ? " · " + esc(learn) : "") + "</small></div>" +
+      (out ? '<button class="lnk" type="button" data-upgo="' + rc.item + '" title="' + esc(t("rec_graph_tip")) + '"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M1.5 14.5h13M3 11l3.5-4 3 2.5L14 4"/></svg>' + t("rec_graph") + "</button>" : "") +
+      (out ? iconHtml(out, true) : "") + '<h2 data-tip="' + rc.item + '" class="' + qcls(q) + '">' + (out ? '<a class="wh rgo" href="#item=' + rc.item + '" data-upgo="' + rc.item + '">' + esc(rc.name) + "</a>" : esc(rc.name)) + "</h2><small>" + esc(RECEPT.profs[rc.prof]) + " · " + (rc.skill ? t("requires", rc.skill + " (" + tierName(rc.skill) + ")") : esc(rc.cat || "") + " · " + t("skill_unknown")) + (learn ? " · " + esc(learn) : "") + "</small></div>" +
       '<dl class="facts">' + facts + "</dl>" +
       (r.miss ? '<div class="note">' + t("missing_n", r.miss) + "</div>" : "") + (!r.sell ? '<div class="note">' + t("not_on_ah") + "</div>" : "") +
       '<div><div class="h3row"><h3>' + t("reagents") + "</h3>" + starAll + '</div><div class="scroll"><table class="steps reag"><thead><tr><th></th><th style="text-align:left">' + t("reagents") + "</th><th>" + t("col_qty_s") + "</th><th>" + t("col_each") + "</th><th>" + t("col_total") + "</th></tr></thead><tbody>" + reag + "</tbody></table></div></div>" +
