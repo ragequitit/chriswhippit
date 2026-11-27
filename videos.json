@@ -1,12 +1,12 @@
 {
- "t": "2026-11-27T09:00:49.320Z",
+ "t": "2026-11-27T18:53:23.913Z",
  "videos": [
   {
-   "id": "fKfgFP9lMEE",
-   "title": "SÅ MYCKET KATTER i Megastore Tidy Up Together med UfoSXM",
+   "id": "WRTBcQNjn-c",
+   "title": "GTA 6 #8: Vi spelar ETT SPEL I SPELET i Grand Theft Auto VI",
    "channel": "ChrisWhippit",
    "handle": "@chriswhippit",
-   "at": "2026-11-27T05:30:17Z"
+   "at": "2026-11-27T16:00:21Z"
   },
   {
    "id": "KT5FopSICPk",
@@ -16,11 +16,11 @@
    "at": "2026-11-26T05:30:33Z"
   },
   {
-   "id": "VD4T-LuE-t0",
-   "title": "20 JONASAR på månen i Moon Sweepers med UfoSXM",
+   "id": "fKfgFP9lMEE",
+   "title": "SÅ MYCKET KATTER i Megastore Tidy Up Together med UfoSXM",
    "channel": "ChrisWhippit",
    "handle": "@chriswhippit",
-   "at": "2026-11-26T05:30:04Z"
+   "at": "2026-11-27T05:30:17Z"
   },
   {
    "id": "9XSzCQFFMyc",
@@ -38,10 +38,10 @@
   }
  ],
  "counts": {
-  "chriswhippit": 4633,
+  "chriswhippit": 4637,
   "whippitsson": 534,
   "figgwhipp": 2848,
-  "whippitextra": 145
+  "whippitextra": 147
  },
  "subs": {
   "chriswhippit": 299000,
@@ -162,6 +162,12 @@
   ],
   "gta-5": [
    {
+    "id": "WRTBcQNjn-c",
+    "title": "GTA 6 #8: Vi spelar ETT SPEL I SPELET i Grand Theft Auto VI",
+    "at": "2026-11-27T16:00:21Z",
+    "list": ""
+   },
+   {
     "id": "MzEioHgEmsA",
     "title": "GTA 6 #7: Vi skaffar vårt första vapen",
     "at": "2026-11-25T05:30:32Z",
@@ -225,12 +231,6 @@
     "id": "pJp3hJT1Y3k",
     "title": "PIMPAR NYA SUPERBILEN TURISMO OMAGGIO FÖR 4 MILJONER I GTA 5",
     "at": "2023-12-23T08:00:24Z",
-    "list": "PLpinm9x4zUokXmRLV02nlqJUlFDnRn9vB"
-   },
-   {
-    "id": "W-8nQvhgVWQ",
-    "title": "GTA 5 UPDATE & CHOP SHOP DLC - 7 MILJONER FÖR NY BIL OCH SALVAGE-YARD",
-    "at": "2023-12-20T05:00:18Z",
     "list": "PLpinm9x4zUokXmRLV02nlqJUlFDnRn9vB"
    }
   ],
@@ -544,8 +544,8 @@
  },
  "media": {
   "chriswhippit": {
-   "views": 244616000,
-   "avgViews": 8700,
+   "views": 244622000,
+   "avgViews": 8900,
    "avgSample": 10,
    "uploads30": 50
   },
