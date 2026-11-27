@@ -1,5 +1,5 @@
 {
- "t": "2026-11-26T15:43:27.180Z",
+ "t": "2026-11-27T00:31:57.813Z",
  "videos": [
   {
    "id": "KT5FopSICPk",
@@ -38,10 +38,10 @@
   }
  ],
  "counts": {
-  "chriswhippit": 4632,
+  "chriswhippit": 4633,
   "whippitsson": 534,
   "figgwhipp": 2848,
-  "whippitextra": 143
+  "whippitextra": 145
  },
  "subs": {
   "chriswhippit": 299000,
@@ -544,7 +544,7 @@
  },
  "media": {
   "chriswhippit": {
-   "views": 244589000,
+   "views": 244597000,
    "avgViews": 7800,
    "avgSample": 9,
    "uploads30": 50
