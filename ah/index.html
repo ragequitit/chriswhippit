@@ -321,7 +321,34 @@ body[data-mode=hu] .facts dd { font-size: 15px; }
 .huchips { display: flex; flex-wrap: wrap; gap: 4px; }
 .huzwrap { display: grid; gap: 6px; margin-top: 6px; }
 .huzm { position: relative; margin: 6px 0 4px; line-height: 0; border-radius: 6px; overflow: hidden; border: 1px solid var(--edge); box-shadow: 0 2px 10px rgba(0, 0, 0, .5); }
-.huzm img { display: block; width: 100%; height: auto; } .right .huzm { cursor: zoom-in; }
+.huzm img { display: block; width: 100%; height: auto; }
+/* Zonsidan (Joakim 2026-11-27): stor karta i mitten, kategorierna som av/på till vänster, prickar per lager */
+.zohead { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; margin: 0 2px 8px; }
+.zohead h2 { font-family: var(--display); font-weight: 500; font-size: 24px; color: var(--gold); margin: 0; }
+.zosel { margin-left: auto; background: var(--sel); color: var(--fg); border: 1px solid var(--line); border-radius: 4px; padding: 4px 6px; font: inherit; font-size: 13px; }
+.armory .zomap { margin: 0; background: #2b2418; }
+.zod { position: absolute; width: 7px; height: 7px; margin: -4.5px 0 0 -4.5px; border-radius: 50%; border: 1px solid #000; background: var(--c, #f0c040); cursor: pointer; box-shadow: 0 0 3px rgba(0, 0, 0, .7); }
+.zod.zom { border-radius: 1px; transform: rotate(45deg); } .zod.zok { width: 9px; height: 9px; margin: -5.5px 0 0 -5.5px; border-radius: 2px; background: #d9a441; border-color: #3a2508; }
+.zod.zob { background: #ff9f43; } .zod.zoo { width: 9px; height: 9px; margin: -5.5px 0 0 -5.5px; background: #ffd84a; box-shadow: 0 0 0 2px rgba(255, 216, 74, .3), 0 0 4px rgba(0, 0, 0, .8); }
+.zod.zos { width: 10px; height: 10px; margin: -6px 0 0 -6px; border: 2px solid #120c06; z-index: 2; }
+.zod.zor { width: 10px; height: 10px; margin: -6px 0 0 -6px; border-radius: 1px; transform: rotate(45deg); background: #e3e9ef; box-shadow: 0 0 6px rgba(227, 233, 239, .9); z-index: 2; }
+.zod:hover { transform: scale(1.7); z-index: 5; } .zod.zom:hover, .zod.zor:hover { transform: rotate(45deg) scale(1.7); }
+.zod.hl { transform: scale(1.9); z-index: 6; box-shadow: 0 0 0 2px #fff, 0 0 8px rgba(0, 0, 0, .9); } .zod.zom.hl, .zod.zor.hl { transform: rotate(45deg) scale(1.9); }
+.zoq { position: absolute; z-index: 4; transform: translate(-50%, -60%); font: 900 18px/1 Georgia, serif; color: #ffd100; cursor: pointer; text-shadow: 0 0 2px #000, 1px 1px 0 #000, -1px -1px 0 #000, 0 0 6px rgba(0, 0, 0, .8); }
+.zoq:hover, .zoq.hl { transform: translate(-50%, -60%) scale(1.35); z-index: 7; } .zoq.hl { color: #fff3a0; }
+.cat .zosw { width: 9px; height: 9px; flex: none; border-radius: 50%; background: var(--c); border: 1px solid #000; margin-right: -3px; }
+.cat.zoc[aria-pressed=false] { color: var(--grey); opacity: .55; } .cat.zoc[aria-pressed=false] .ci { filter: grayscale(1); }
+.cat.sub.zoc { gap: 7px; } .cat.sub.zoc .ic, .cat.sub.zoc .ci { width: 20px; height: 20px; }
+.zosec { margin: 10px 0 4px; } .zosec h3 { display: flex; align-items: center; gap: 7px; } .zosec h3 .ci { width: 20px; height: 20px; border-radius: 3px; }
+.zorow { all: unset; box-sizing: border-box; cursor: pointer; display: flex; align-items: center; gap: 8px; width: 100%; padding: 4px 6px; border-radius: 4px; font-size: 13.5px; }
+.zorow:hover { background: var(--hover); } .zorow.on { background: var(--sel); box-shadow: inset 0 0 0 1px var(--edge); }
+.zorow b { font-weight: 500; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; } .zorow small { margin-left: auto; color: var(--grey); white-space: nowrap; padding-left: 8px; }
+.zorow .ci, .zorow .ic { width: 20px; height: 20px; flex: none; border-radius: 3px; } .zolv { display: inline-block; min-width: 20px; text-align: right; color: var(--grey); font-variant-numeric: tabular-nums; flex: none; }
+.zoql { display: flex; flex-direction: column; gap: 2px; margin: 8px 0; } .zoqr { display: flex; gap: 8px; padding: 5px 6px; border-radius: 4px; color: var(--fg); text-decoration: none; } .zoqr:hover { background: var(--hover); color: var(--gold); }
+@media (max-width: 760px) { .zod { width: 5px; height: 5px; margin: -3.5px 0 0 -3.5px; } .zod.zok, .zod.zoo, .zod.zos, .zod.zor { width: 7px; height: 7px; margin: -4.5px 0 0 -4.5px; } .zoq { font-size: 14px; } .zohead h2 { font-size: 20px; } }   /* mobilen: kartan är smal */
+.zoqi { font: 900 20px/1 Georgia, serif; color: #ffd100; text-shadow: 0 0 2px #000, 1px 1px 0 #000; }
+.zogo { display: inline-block; margin: 10px 0 4px; font-weight: 600; } .zoback { display: block; margin: 14px 0 0; }
+.gsr .zoth { width: 38px; height: 26px; flex: none; border-radius: 3px; overflow: hidden; border: 1px solid var(--edge); } .gsr .zoth img { width: 100%; height: 100%; object-fit: cover; display: block; } .right .huzm { cursor: zoom-in; }
 .huzbig { position: fixed; inset: 0; z-index: 50; display: grid; place-content: center; gap: 8px; padding: 16px; background: rgba(4, 3, 2, .82); cursor: zoom-out; }
 .huzbig .huzm { width: min(1002px, calc(100vw - 32px), calc((100vh - 70px) * 1.5)); margin: 0; }
 .huzbig .huz { transform: scale(1.4); } .huzbig .huz.r { transform: rotate(45deg) scale(1.4); } .huzbig .huz:hover { transform: scale(2); } .huzbig .huz.r:hover { transform: rotate(45deg) scale(2); }
@@ -2218,6 +2245,13 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
       hu_skin: "Skinning", hu_skin_note: "What skinning the beast gives, from the Classic database. Price is the auction house market price.", hu_skin_chance: "Chance", hu_skin_price: "Market price",
       dg_boss_loot: "Loot", dg_back: "‹ Back to the dungeon", dg_boss_noloot: "No loot of its own in the Classic database.",
       gs_ph: "Search everything: items, recipes, quests, NPCs, beasts, players…", gs_all: "All", gs_k_item: "Items", gs_k_rec: "Recipes", gs_k_quest: "Quests",
+      gs_k_zone: "Zones", mode_zo: "Zones", search_zo: "Filter this zone, e.g. Thorium",
+      zo_l_q: "Quests", zo_l_m: "Mining", zo_l_h: "Herbs", zo_l_b: "Hunter pets", zo_l_k: "Chests", zo_l_r: "Rares", zo_l_f: "Flight paths", zo_l_s: "NPCs",
+      zo_q_g: "Quest givers", zo_q_o: "Objectives", zo_s_v: "Vendors", zo_s_t: "Trainers", zo_s_i: "Innkeepers", zo_s_st: "Stable masters", zo_s_b: "Bank & auction house",
+      zo_on_map: "On the map", zo_lvl: "Level %1–%2", zo_cont0: "Eastern Kingdoms", zo_cont1: "Kalimdor", zo_loading: "Loading the zone…", zo_fail: "Could not load this zone.", zo_none: "Turn on a category on the left, or nothing matches the filter.",
+      zo_giver: "Quest giver", zo_obj: "Objective", zo_n_q: "%1 quests here", zo_open_q: "Open the quest", zo_spawns: "%1 spawn points", zo_here: "In this zone", zo_ah: "On the AH", zo_skill: "Skill %1",
+      zo_open_node: "Where to farm", zo_open_beast: "Open in Hunter pets", zo_open_npc: "Open the NPC",
+      zo_src: "Points from the open Classic database (cmangos 1.12) and the game client, the same as on the quest, ore and pet maps. Quests and NPCs follow your faction (top right). Click a point for details, a coordinate copies its /way.",
       gs_k_npc: "NPCs", gs_k_beast: "Beasts", gs_k_col: "Collections", gs_k_dg: "Dungeons", gs_k_node: "Ore veins", gs_k_herb: "Herbs", nd_skill: "%1 %2", nd_where_h: "Where to pick", nd_pin: "Where to farm: %1", fa_h: "Best zones for your skill", fa_skill: "%1 skill", fa_both: "Herbs + ores on one map", fa_col_n: "Spawns", fa_col_val: "Per node", fa_col_val_tip: "Average auction house value of one node you can gather in the zone", fa_col_gph: "Gold/h", fa_sort_n: "Most spawns", fa_sort_g: "Most gold", fa_ores: "Ores", fa_herbs: "Herbs", fa_map_tip: "Click a point to copy its /way.", fa_none: "Nothing to gather at this skill yet.", fa_note: "Spawns you can gather at your skill, from the open Classic database. Gold/h = your nodes per hour above × the average auction house value of a node in the zone, after the 5 % AH cut.", fa_note_both: "Spawns you can gather at your skills, from the open Classic database. Gold/h = the nodes per hour of both professions added together × the average auction house value of a node in the zone, after the 5 % AH cut.", nd_spawns: "%1 spawns", nd_found: "Found in", nd_also: "Also in", nd_zone: "Zone", nd_map_tip: "%1 spawn points in %2. Click a point to copy its /way, click the map to open it large.", nd_loot: "Contains", nd_none: "The open Classic database has no spawn points for this one. It may still exist in Forever.", nd_inst_only: "Only inside dungeons, so there is no world map.", nd_src: "Spawn points from the open Classic database (cmangos 1.12). A spot that can spawn several ores or herbs counts for each of them, like on Wowhead.", nd_fail: "Could not load the ore veins and herbs.", nd_missing: "Nothing with that id.", nd_where: "Where to mine", fa_or: "Orange", fa_ye: "Yellow", fa_gr: "Green", sg_h: "Skill-up 1–300", sg_sub: "Step by step from 1 to 300: what to make or gather, what it costs on the AH and where to go", sg_n: "%1 that give skill", sg_learn: "Learn %1", sg_learn_txt: "Find %3 %2 trainer and learn %1 %2.", sg_vend_txt: "Recipe: %1", sg_drop_rec: "Drop recipe", sg_drop_tip: "No trainer or vendor recipe is reasonable here. This recipe drops in the world: buy it on the AH or farm it.", sg_pat: "recipe on the AH: %1", sg_ench_tip: "Enchants can be cast on your own gear again and again: every cast can give a point.", sg_then_mine: "From skill %1 no smelting gives a point. Mine ≈ %2 veins in %3 for the rest:", sg_learn_tool: "Buy a %1 from a trade supplies vendor.", sg_right: "See the trainers and vendors for your faction.", sg_rank: "Before you pass %4: learn %1 from a trainer who teaches it (needs skill %2 and level %3).", sg_rank_g: "Before you pass %4: learn %1 from the trainer (needs skill %2).", sg_rank_none: "No trainer for your faction in the open world teaches it.", sg_rank_ench: "Annora inside Uldaman teaches it.", sg_rank_book: "Before you pass %3: %1 comes from a book, not a trainer. Buy and read %2.", sg_rank_q_cook: "Before you pass %1: Artisan Cooking is a quest, Clamlette Surprise from Dirge Quikcleave in Gadgetzan, Tanaris (needs skill 225 and level 35).", sg_rank_q_aid_h: "Before you pass %1: Artisan First Aid is a quest, Triage, from Doctor Gregory Victor in Hammerfall, Arathi Highlands. Needs skill 225 and level 35.", sg_rank_q_aid_a: "Before you pass %1: Artisan First Aid is a quest, Triage, from Doctor Gustaf VanHowzen in Theramore, Dustwallow Marsh. Needs skill 225 and level 35.", sg_cap_tip: "Teaches up to skill %1", sg_make: "Make about %1 × %2", sg_or_smelt: "Or buy on the AH and smelt:",sg_sell: "Sell %1 × %2: about %3", sg_keep: "Keep %1 × %2 for later steps.", sg_own: "%1 of your own", sg_more: "+%1", sg_mine: "Mine about %1 nodes along the route in %2.", sg_pick: "Pick about %1 herbs along the route in %2.", sg_skin: "Skin about %1 beasts along the route in %2.", sg_nocraft: "No trainer or vendor recipe gives skill here. Look for a drop recipe in the recipe list.", sg_vend_rec: "Vendor recipe", sg_vend_tip: "The trainer does not teach this one: buy the recipe from a vendor first.", sg_nogather: "Nothing to gather at this skill on the maps.", sg_vendor: "vendor", sg_tot_buy: "Buy on the AH", sg_tot_sell: "Sell back", sg_tot_net: "Net cost", sg_tot_gain: "Net profit", sg_shop: "Shopping list", sg_trainers: "Trainers", sg_vendors: "%1 vendors", sg_none: "None found for your faction.", sg_col_n: "Count", sg_your_skill: "Your skill", sg_next: "%1 at %2", sg_maxed: "Maxed", sg_lvl35: "300 needs level 35", sg_p_mine: "Mine and smelt it yourself", sg_smelt_too: "Smelt what you mine: %1 gives skill too, until %2.", sg_p_mine_small: "Costs time, not gold", sg_veins: "≈ %1 veins", sg_p_smelt: "Buy ore & smelt", sg_p_smelt_end: "Smelting gives skill to %1, then you mine", sg_p_buy: "Buy the mats", sg_p_small: "Buy %1 · sell back up to %2", sg_p_farm: "Farm the mats", sg_p_farm_big: "%1 vendor", sg_p_farm_small: "Gather %1 mats, worth %2 on the AH", sg_net: "%1 net", sg_gain: "%1 profit", sg_done_all: "Done", sg_fact_herb: "About %1 herbs to pick from here to 300.", sg_fact_skin: "About %1 beasts to skin from here to 300.",sg_legend: "a point every time", sg_legend_y: "most times", sg_legend_g: "now and then", sg_legend_tip: "≈ includes a margin for bad luck. Click a dot on a map to copy its /way.", sg_t_mine: "Mine ≈ %1 veins · %2", sg_t_pick: "Pick ≈ %1 · %2", sg_t_skin: "Skin ≈ %1 · %2", sg_t_fish: "Fish ≈ %1 casts · %2", sg_fact_fish: "About %1 casts from here to 300 (estimate: Forever has no own fishing sources, the numbers follow Classic).", sg_fish_here: "%1 % of casts catch something here at your skill (zone needs %2). Only catches count toward skill (estimate).", sg_fish_pools: "Fishing pools", sg_fish_any: "Any water in the zone works; pools give better catches.", sg_rank_q_fish: "Before you pass %1: Artisan Fishing is a quest, Nat Pagle, Angler Extreme, from Nat Pagle in Dustwallow Marsh (59, 60). Needs skill 225 and level 35. Catch four fish: Misty Reed Mahi Mahi (Swamp of Sorrows), Sar'theris Striker (Desolace), Feralas Ahi (Feralas) and Savage Coast Blue Sailfin (Stranglethorn Vale).", sg_t_make: "%1 × %2", sg_t_gap: "No recipe here", sg_done_btn: "Done, I'm at %1", sg_alt_buy: "Rather buy? %1 × %2 · %3", sg_alt_mine: "Rather mine? ≈ %1 veins in %2", sg_nosmelt: "No smelting gives skill here. Mine this step.", sg_col_mat: "Materials", sg_col_need: "Need", sg_col_get: "Get it", sg_gather: "gather", sg_worth: "worth %1", sg_from_step: "from step %1", sg_keep2: "Keep %1 for step %2.", sg_sell2: "Sell %1: up to %2", sg_low: "only %1 listed", sg_train: "Train %1", sg_rank2: "From skill %1 and level %2. Your skill stops at %3 until you do.", sg_rank2_g: "From skill %1. Your skill stops at %2 until you do.", sg_how: "How is this calculated?", sg_route_plan: "Route plan", sg_buy_vendor: "Buy from vendors", sg_gather_h: "Gather yourself", sg_fees: "Trainer fees (Classic prices)", sg_tot_rec: "Recipes to buy", sg_even: "about even", sg_keep_next: "Keep %1 for the next recipe.", sg_from_here: "from this step", sg_mine_first: "Smelting starts at skill %1. Mine up to there first.", sg_to: "to %1", sg_vend_at: "Recipe: %1, %2", sg_tot_time: "Costs", sg_time: "Time", sg_tot_gather: "To gather", sg_tot_worth: "Worth on the AH", sg_tot_vend: "From vendors", sg_tot_left: "Left to 300", sg_tot_sell2: "Sell back up to", sg_from: "from skill %1", sg_beasts_lv1: "Beasts level %1",sg_beasts_lv: "Beasts level %1–%2",sg_col_each: "Each", sg_col_sum: "Total", sg_way_tip: "Click to copy the /way", sg_note_c: "Computed from current prices: each step is the trainer recipe that gives skill cheapest right now. Yellow and green often miss, so every count is the average plus a margin for bad luck: enough about nineteen times out of twenty. Nobody outside Blizzard knows the exact chances: yellow is counted as falling from 100 % to 50 %, green as at most 25 %. What you made in an earlier step is used before buying. Sell-back counts what the AH moves in a week after the 5 % cut; the rest goes to a vendor. Trainer recipes come first; a vendor recipe is used where it is clearly cheaper or nothing else gives skill, tagged, and its price is listed under Recipes to buy. Sell-back uses the AH price only when at least three are listed. Recipes that need a reputation, a specialization or a quest are left out, and dropped recipes are only used where nothing else is reasonable (sources: Warcraft Wiki and kami-labs).", sg_note_g: "Each map is the zone where you level on the fewest nodes or beasts, without the other faction's home lands. Orange gives a point every time, yellow about 3 times in 4, green about 1 in 4. Rare veins (silver, gold, truesilver) are a bonus and not counted. Mining counts one chance per vein (only the first strike can give a point) plus the bars you smelt from its ore, about 3 per vein. Spawn points from the open Classic database.", sg_side_note: "Trainers and vendors from the open Classic database; click one to copy its /way.", fa_route: "Farm route", fa_route_tip: "The dashed line is a short loop through every node on the map. Run it round and round.", nd_farm_h: "Where to farm", nd_farm_tip: "Open the %1 map", nd_farm_note: "Top zones by spawn points. Click a map for all of them.", gs_k_pl: "Players", gs_k_gl: "Guilds", gs_none: "Nothing found",
       gs_ar: "Look up “%1” in the Armory", gs_ar_g: "Look up the guild “%1”", gs_more: "Show all %1", gs_loading: "Loading…",
       src_h: "Where to learn it", src_h_drop: "Where it drops", src_trainer: "Trainer", src_vendor: "Vendor", src_drop: "Drops from", src_quest: "Quest reward", src_none: "No known source in the Classic database.",
@@ -5881,6 +5915,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
   function drawCats() {
     stripLater();
     drawLbSub();
+    if (mode === "zo") { $("cats").innerHTML = zoCats(); $("cats").hidden = false; return; }
     if (mode === "qu") { $("cats").innerHTML = QU ? quCats() : ""; $("cats").hidden = false; return; }
     if (mode === "dg") { $("cats").innerHTML = DG ? dgCats() : ""; $("cats").hidden = false; return; }
     if (mode === "hu") { $("cats").innerHTML = HU ? huCats() : ""; $("cats").hidden = false; return; }
@@ -6023,11 +6058,12 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     var hp0 = hashParams();
     // En länk bestämmer fliken (annars den som sparats): #quest, #dungeon, #player/#guild, #recipe, #item.
     if (hp0.tab === "lb") { hp0.top = lbGroup(arLb) ? arLb : "ilvl"; delete hp0.tab; }
-    var hm = /^(ah|tr|cr|ar|qu|dg|hu|co|cl)$/.test(hp0.tab || "") ? hp0.tab : hp0.cls ? "cl" : hp0.fx ? "fx" : hp0.de ? "de" : hp0.col ? "co" : hp0.beast ? "hu" : hp0.quest || hp0.npc ? "qu" : hp0.dungeon ? "dg" : hp0.player || hp0.guild || hp0.top ? "ar" : hp0.recipe || hp0.gather || hp0.node || hp0.skillup || fmIsHash() ? "cr" : hp0.item ? "ah" : "";
+    var hm = /^(ah|tr|cr|ar|qu|dg|hu|co|cl)$/.test(hp0.tab || "") ? hp0.tab : hp0.zone ? "zo" : hp0.cls ? "cl" : hp0.fx ? "fx" : hp0.de ? "de" : hp0.col ? "co" : hp0.beast ? "hu" : hp0.quest || hp0.npc ? "qu" : hp0.dungeon ? "dg" : hp0.player || hp0.guild || hp0.top ? "ar" : hp0.recipe || hp0.gather || hp0.node || hp0.skillup || fmIsHash() ? "cr" : hp0.item ? "ah" : "";
     if (hm === "tr" && !keep && /^(cheap|bs|vend)$/.test(hp0.v || "")) { trView = hp0.v; trSort(trView); }   // Trading-adress: vald undervy (buggjakt 2026-11-20)
     var wantI = byId[+hp0.item];
     if (hm && !keep && mode !== hm && !(hm === "ah" && mode === "tr" && (!wantI || (!wantI.gear && wantI.qty >= TR_MIN)))) { if (fromNav) resetModeState(hm); mode = hm; drawCats(); refresh(); }   // trädet ritades för den sparade fliken
     // keep (ny scan eller annan marknad): lägesvyerna visar inte "Loading" och rullar inte upp, de ritar om listan (granskning 2026-11-18)
+    if (mode === "zo" || (!keep && hp0.zone)) { mode = "zo"; $("q").placeholder = t("search_zo"); zoStart(keep ? ZO.zone : hp0.zone || ZO.zone, keep ? ZO.sel : hp0.zs || "", keep); return; }   // zonsidan (Joakim 2026-11-27)
     if (mode === "qu" || (!keep && (hp0.quest || hp0.npc))) { mode = "qu"; if (!keep) { sortKey = "lvl"; sortDir = 1; } $("q").placeholder = t("search_qu"); quStart(+hp0.quest || (keep ? selQuest : 0), false, keep, +hp0.npc || 0); return; }   // #npc: Quests-läget, NPC:n i högerrutan (Joakim 2026-11-18)
     if (mode === "fx" || (!keep && hp0.fx)) { mode = "fx"; if (!keep && hp0.fx) { fxRiseSet(hp0.rise === "1"); if (fxRise && !+hp0.fx) { fxSel = 0; fxSelG = ""; } } if (!keep) { sortKey = fxRise ? "rise" : "profit"; sortDir = -1; } $("q").placeholder = t("search_ph"); fxStart(+hp0.fx || (keep ? fxSel : 0), keep); return; }
     if (mode === "de" || (!keep && hp0.de)) { mode = "de"; if (!keep) { sortKey = "profit"; sortDir = -1; } $("q").placeholder = t("search_ph"); deStart(+hp0.de || (keep ? deSel : 0), keep); return; }
@@ -6072,6 +6108,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
   function refresh() {
     var q = query;
     if (mode === "ar") { view = []; shown = 0; draw(); return; }
+    if (mode === "zo") { view = []; shown = 0; draw(); if (ZO.d) zoSide(); return; }   // sökraden filtrerar högerrutans listor
     if (mode === "qu") { if (QU) quRefresh(q); else { view = []; shown = 0; } draw(); if (QU && qmOv) qmOvView(); return; }
     if (mode === "dg") { if (DG) dgRefresh(q); else { view = []; shown = 0; } draw(); return; }
     if (mode === "hu") { if (HU) huRefresh(q); else { view = []; shown = 0; } draw(); if (HU && huMapOn) huMapView(); return; }
@@ -6387,12 +6424,12 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     $("modeCo").setAttribute("aria-pressed", mode === "co" ? "true" : "false");
     $("modeCl").setAttribute("aria-pressed", mode === "cl" ? "true" : "false");
     drawTrSub(); drawLbSub(); drawClSub();
-    $("sect").textContent = mode === "ah" ? ahName((houseParts(house) || [0, "horde"])[1]) : t(mode === "de" || mode === "fx" ? "mode_tr" : mode === "ar" && arLb ? "mode_lb" : "mode_" + mode);
+    $("sect").textContent = mode === "zo" ? ZO.zone || t("mode_zo") : mode === "ah" ? ahName((houseParts(house) || [0, "horde"])[1]) : t(mode === "de" || mode === "fx" ? "mode_tr" : mode === "ar" && arLb ? "mode_lb" : "mode_" + mode);
     document.title = (mode === "cr" && fmOn ? t("fm_h") : $("sect").textContent) + " · Azeroth Atlas";   // fliken i webbläsaren heter som vyn (buggjakt 2026-11-20)
     $("sect").title = t("sect_tip");
     if (homeOn) { document.title = homePage === "raids" ? "Raids on Forever · Azeroth Atlas" : "Azeroth Atlas · WoW Forever"; Array.prototype.forEach.call(document.querySelectorAll(".mode > button"), function (b) { b.setAttribute("aria-pressed", "false"); }); homeLater(); }
     drawSub();
-    $("q").setAttribute("aria-label", t(mode === "cr" ? "search_rc" : mode === "ar" ? "search_ar" : mode === "qu" ? "search_qu" : mode === "dg" ? "search_dg" : mode === "hu" ? "search_hu" : mode === "co" ? "search_co" : mode === "cl" ? "search_cl" : "search_ph"));
+    $("q").setAttribute("aria-label", t(mode === "zo" ? "search_zo" : mode === "cr" ? "search_rc" : mode === "ar" ? "search_ar" : mode === "qu" ? "search_qu" : mode === "dg" ? "search_dg" : mode === "hu" ? "search_hu" : mode === "co" ? "search_co" : mode === "cl" ? "search_cl" : "search_ph"));
   }
   // Raden i: själva raden och, i AH/Trading, de utfällda prisstegen under den.
   function rowFull(i) { return rowHtml(view[i]) + ((mode === "ah" || mode === "tr") && view[i].id === openId ? expHtml(view[i]) : ""); }
@@ -6436,7 +6473,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     $("head").innerHTML = mode === "ar" || (mode === "cl" && (clView === "tal" || clView === "guide")) || (mode === "cr" && (sgSel || fmOn)) ? "" : headHtml();
     $("dghead").hidden = mode !== "dg"; if (mode === "dg") $("dghead").innerHTML = DG ? dgHeadHtml() : "";
     $("list").className = mode === "tr" || mode === "cr" || mode === "qu" || mode === "dg" || mode === "hu" || mode === "co" || mode === "cl" || mode === "de" || mode === "fx" ? mode + (mode === "cr" && gaSel >= 0 ? " ga" : "") : "";
-    var ar = mode === "ar" || (mode === "cl" && (clView === "tal" || clView === "guide")) || (mode === "cr" && (!!sgSel || fmOn));   // Classes: talangräknaren och skillguiden ritas i samma ruta som Armory
+    var ar = mode === "ar" || mode === "zo" || (mode === "cl" && (clView === "tal" || clView === "guide")) || (mode === "cr" && (!!sgSel || fmOn));   // Classes: talangräknaren och skillguiden ritas i samma ruta som Armory
     $("armory").hidden = !ar;
     document.querySelector(".left .scroll").hidden = ar;
     if (ar) { $("empty").hidden = true; $("more").hidden = true; $("count").textContent = ""; }
@@ -6713,13 +6750,15 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
   // vara laddad (topplistorna), spelare och guilder. Annars slås spelarnamn upp i Armory. Ett val går via adressen
   // (#item=, #quest= …), samma väg som bakåt/framåt, så det hamnar rätt i vilken flik som helst.
   var GS = { ix: null, p: null, q: "", kind: "", rows: [], timer: 0 };
-  var GS_KINDS = ["item", "rec", "quest", "beast", "node", "herb", "npc", "col", "dg", "pl", "gl"];
+  var GS_KINDS = ["zone", "item", "rec", "quest", "beast", "node", "herb", "npc", "col", "dg", "pl", "gl"];
   function gsIndex() {
     if (GS.p) return GS.p;
     var npcs = fetch(DATA_BASE + "sok-npc.json").then(function (r) { return r.ok ? r.json() : []; }).catch(function () { return []; });
     var soft = function (p) { return p.catch(function () { return null; }); };
-    GS.p = Promise.all([npcs, soft(loadRecept()), soft(loadQuests()), soft(loadHunter()), soft(loadCo()), soft(loadDungeons()), soft(loadNodes())]).then(function (a) {
+    GS.p = Promise.all([npcs, soft(loadRecept()), soft(loadQuests()), soft(loadHunter()), soft(loadCo()), soft(loadDungeons()), soft(loadNodes()), soft(zoIndex())]).then(function (a) {
       var ix = [], lc = function (x) { return String(x || "").toLowerCase(); };
+      // Zonerna (Joakim 2026-11-27): kartan som ikon, level och kontinent; förkortningarna man säger i spelet går också.
+      (a[7] || []).forEach(function (z) { ix.push({ k: "zone", n: z[0], l: lc(z[0] + (ZO_ALIAS[z[0]] ? " " + ZO_ALIAS[z[0]] : "")), h: "#zone=" + encodeURIComponent(z[0]), i: '<span class="zoth"><img src="' + huZUrl(z[0]) + '" alt="" loading="lazy"></span>', s: [zoLvl(z[2]), zoCont(z[1])].filter(Boolean).join(" · "), top: 1 }); });
       Object.keys(byId).forEach(function (id) { var r = byId[id]; if (r.name) ix.push({ k: "item", n: r.name, l: lc(r.name), h: "#item=" + r.id, i: iconHtml(r), sh: r.min > 0 ? money(r.min) : "", c: qcls(r.q) }); });
       if (RECEPT) RECEPT.recipes.forEach(function (rc) { var it = byId[rc.item]; ix.push({ k: "rec", n: rc.name, l: lc(rc.name), h: "#recipe=" + rc.spell, i: it ? iconHtml(it) : xIcon(rc.item, 1), s: ((RECEPT.profs && RECEPT.profs[rc.prof]) || "") + (rc.skill ? " " + rc.skill : "") }); });
       if (QU) Object.keys(QU.quests).forEach(function (id) { var q = QU.quests[id]; ix.push({ k: "quest", n: q[0], l: lc(q[0]), h: "#quest=" + id, s: (q[2] ? t("col_lvl") + " " + q[2] + " · " : "") + (QU.areas[q[1]] || "") }); });
@@ -6741,7 +6780,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
   }
   function gsFind(q) {
     var ix = (GS.ix || []).concat(gsKat()), hits = [];
-    ix.forEach(function (x) { var i = x.l.indexOf(q); if (i >= 0) hits.push({ x: x, w: (i === 0 ? 0 : x.l.charAt(i - 1) === " " ? 1 : 2) * 1000 + x.l.length }); });
+    ix.forEach(function (x) { var i = x.l.indexOf(q); if (i >= 0) hits.push({ x: x, w: (x.top ? -9000 : 0) + (i === 0 ? 0 : x.l.charAt(i - 1) === " " ? 1 : 2) * 1000 + x.l.length }); });   // zonerna överst (Joakim 2026-11-27)
     hits.sort(function (a, b) { return a.w - b.w; });
     return hits.map(function (h) { return h.x; });
   }
@@ -6805,6 +6844,223 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     if (go && !(e.ctrlKey || e.metaKey) && e.button === 0) { e.preventDefault(); gsGo(go.dataset.gsgo); }
   });
   document.addEventListener("click", function (e) { if (!e.target.closest(".gs")) $("gsp").hidden = true; });
+  // ---- Zonsidorna (Joakim 2026-11-27: "söker man hinterlands ska området komma först", klick ger en stor karta över
+  // zonen med kategorier till vänster att slå på och av). zoner/<zon>.json (hamta-zoner.js): q quests, m malm, h örter,
+  // b djur, k kistor, r rares, s NPC:er med roller; flygmästarna är questkartans (qmTaxi). Adress #zone=<namn>&zs=<val>.
+  // Vad som är påslaget sparas i webbläsaren (zoPref.on = lager, zoPref.off = avslagna underkategorier, t.ex. "m:Gold Vein").
+  var ZO_ALIAS = { "Stranglethorn Vale": "stv", "Eastern Plaguelands": "epl", "Western Plaguelands": "wpl", "Hillsbrad Foothills": "hillsbrad", "Un'Goro Crater": "ungoro", "Thousand Needles": "tn", "Dustwallow Marsh": "dustwallow", "Undercity": "uc", "Orgrimmar": "org", "Thunder Bluff": "tb", "Stormwind City": "sw", "Ironforge": "if", "Arathi Highlands": "arathi", "Alterac Mountains": "alterac", "Searing Gorge": "sg", "Burning Steppes": "bs" };
+  var ZO = { zone: "", d: null, sel: "" }, ZOF = {}, zoIxP = null, ZO_IX = null, ZO_KEY = "whippit-ah-zo";
+  var zoPref = (function () { try { var o = JSON.parse(localStorage.getItem(ZO_KEY) || "null"); if (o && o.on && o.off) return o; } catch (e) {} return { on: { q: 1, m: 1, h: 1, r: 1, f: 1 }, off: {} }; })();
+  function zoSave() { try { localStorage.setItem(ZO_KEY, JSON.stringify(zoPref)); } catch (e) { /* gäller tills sidan stängs */ } }
+  var ZO_L = [["q", "inv_misc_note_01"], ["m", "trade_mining"], ["h", "trade_herbalism"], ["b", "ability_hunter_beasttaming"], ["k", "inv_box_02"], ["r", "inv_misc_head_dragon_01"], ["f", "ability_mount_wyvern_01"], ["s", "inv_misc_coin_01"]];
+  // NPC:ernas roll (en per NPC, viktigast först): npcflags-bitar ur databasen.
+  var ZO_ROLE = [[128, "i", "inv_misc_rune_01", "#ffb347"], [8192, "st", "ability_hunter_beastcall", "#c58cff"], [4352, "b", "inv_misc_bag_07", "#5aa0ff"], [16, "t", "inv_misc_book_11", "#4fd6cf"], [4, "v", "inv_misc_coin_01", "#e8e8e8"]];
+  var ZO_ORE = [[/dark iron/i, "#a35ad6"], [/incendicite/i, "#ff5a36"], [/bloodstone/i, "#d0303f"], [/indurium/i, "#7fb0c0"], [/copper/i, "#e0823d"], [/tin\b/i, "#b9c49e"], [/truesilver/i, "#f2a8ff"], [/silver/i, "#eef3fa"], [/iron/i, "#a8876a"], [/gold/i, "#ffd100"], [/mithril/i, "#5fd0ff"], [/thorium/i, "#4fe08a"]];
+  var ZO_PAL = ["#7ad35a", "#ff6b5a", "#5aa0ff", "#d48cff", "#ffb347", "#4fd6cf", "#ff8ad8", "#ffe066", "#e2e2e2", "#c08040", "#9fe8a0", "#80a0ff", "#ff9f43", "#b0b0ff"];
+  function zoIndex() {
+    if (!zoIxP) zoIxP = fetch(DATA_BASE + "zoner/index.json").then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+      .then(function (j) { ZO_IX = j; return j; }).catch(function () { zoIxP = null; return []; });
+    return zoIxP;
+  }
+  function zoSlug(z) { return String(z).toLowerCase().replace(/[^a-z0-9]/g, ""); }
+  function zoName(z) {   // adressen kan vara skriven för hand: "hinterlands", "the-hinterlands" …
+    var s = zoSlug(z), hit = "";
+    Object.keys(ZMAP).forEach(function (k) { if (!hit && (zoSlug(k) === s || zoSlug(k) === "the" + s)) hit = k; });
+    return hit;
+  }
+  function zoLoad(z) {
+    var k = zoSlug(z);
+    if (!ZOF[k]) ZOF[k] = fetch(DATA_BASE + "zoner/" + k + ".json").then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }).catch(function (e) { ZOF[k] = null; throw e; });
+    return ZOF[k];
+  }
+  function zoHash() { return "#zone=" + encodeURIComponent(ZO.zone) + (ZO.sel ? "&zs=" + encodeURIComponent(ZO.sel) : ""); }
+  function zoLvl(lv) { return lv && lv[0] ? t("zo_lvl", lv[0], lv[1]) : ""; }
+  function zoCont(c) { return c === 0 || c === 1 ? t("zo_cont" + c) : ""; }
+  function zoIc(n) { return '<img class="ci" src="' + RICON + n + '.jpg" alt="" loading="lazy">'; }
+  function zoItemIc(id) { var r = byId[id]; return r ? iconHtml(r) : xIcon(id, 1); }
+  function zoOn(k) { return !!zoPref.on[k]; }
+  function zoSubOn(k, s) { return !zoPref.off[k + ":" + s]; }
+  function zoRole(fl) { for (var i = 0; i < ZO_ROLE.length; i++) if (fl & ZO_ROLE[i][0]) return ZO_ROLE[i]; return ZO_ROLE[ZO_ROLE.length - 1]; }
+  function zoOreCol(n) { for (var i = 0; i < ZO_ORE.length; i++) if (ZO_ORE[i][0].test(n)) return ZO_ORE[i][1]; return "#ccc"; }
+  // Det som syns för din fraktion (marknaden uppe till höger): quests och NPC:er för den andra fraktionen tas bort.
+  function zoQuests() { var f = myFaction(); return ZO.d.q.filter(function (q) { return !q[3] || q[3] === f; }); }
+  function zoNpcs() { var f = myFaction(); return ZO.d.s.filter(function (s) { return s[4] === f || s[4] === "B" || s[4] === "N"; }); }
+  function zoGivers() {   // en "!" per givare: quests som ges på samma punkt hör ihop
+    var g = {}, out = [];
+    zoQuests().forEach(function (q) { if (q[4] < 0) return; var k = q[4] + "," + q[5]; if (!g[k]) { g[k] = { k: k, x: q[4], y: q[5], nm: q[8] || "", npc: q[9] || 0, q: [] }; out.push(g[k]); } g[k].q.push(q); });
+    return out;
+  }
+  // Underkategorierna per lager: [nyckel (sparas), namn, ikon, färg, antal, skill/level]
+  function zoSubs(k) {
+    var d = ZO.d, out = [];
+    if (k === "q") { var qs = zoQuests(); out.push(["g", t("zo_q_g"), "", "#ffd100", zoGivers().length, ""], ["o", t("zo_q_o"), "", "#ffd84a", qs.filter(function (q) { return q[6] >= 0; }).length, ""]); }
+    if (k === "m") d.m.forEach(function (n) { out.push([n[1], n[1], zoItemIc(n[3]), zoOreCol(n[1]), n[4].length / 2, n[2]]); });
+    if (k === "h") d.h.forEach(function (n, i) { out.push([n[1], n[1], zoItemIc(n[3]), ZO_PAL[i % ZO_PAL.length], n[4].length / 2, n[2]]); });
+    if (k === "b") { var fam = {}; d.b.forEach(function (b) { var f = fam[b[2]] = fam[b[2]] || [String(b[2]), (HU && HU.families[b[2]] ? HU.families[b[2]].name : "Family " + b[2]), '<img class="ci" src="' + huFamIcon(b[2]) + '" alt="">', "#ff9f43", 0, ""]; f[4]++; }); Object.keys(fam).forEach(function (x) { out.push(fam[x]); }); out.sort(function (a, b) { return b[4] - a[4]; }); }
+    if (k === "k") d.k.forEach(function (c) { out.push([c[0], c[0], "", "#d9a441", c[1].length / 2, ""]); });
+    if (k === "s") { var cnt = {}; zoNpcs().forEach(function (s) { var r = zoRole(s[3]); cnt[r[1]] = (cnt[r[1]] || 0) + 1; }); ZO_ROLE.forEach(function (r) { if (cnt[r[1]]) out.push([r[1], t("zo_s_" + r[1]), zoIc(r[2]), r[3], cnt[r[1]], ""]); }); }
+    return out;
+  }
+  function zoCount(k) {
+    var d = ZO.d; if (!d) return 0;
+    if (k === "q") return zoQuests().length;
+    if (k === "m" || k === "h") return d[k].reduce(function (a, n) { return a + n[4].length / 2; }, 0);
+    if (k === "k") return d.k.reduce(function (a, c) { return a + c[1].length / 2; }, 0);
+    if (k === "s") return zoNpcs().length;
+    if (k === "f") return (qmTaxi(ZO.zone).match(/class="qmtx/g) || []).length;
+    return d[k].length;
+  }
+  function zoCats() {
+    if (!ZO.d) return "";
+    var h = "<h2>" + t("zo_on_map") + "</h2>";
+    ZO_L.forEach(function (L) {
+      var k = L[0], n = zoCount(k);
+      if (!n) return;
+      var on = zoOn(k);
+      h += '<button class="cat zoc" type="button" data-zol="' + k + '" aria-pressed="' + on + '" title="' + t("zo_l_" + k) + '">' + zoIc(L[1]) + '<em class="nm">' + t("zo_l_" + k) + "</em><span>" + num(n) + "</span></button>";
+      if (!on) return;
+      zoSubs(k).forEach(function (s) {
+        var so = zoSubOn(k, s[0]);
+        h += '<button class="cat sub zoc" type="button" data-zos="' + esc(k + ":" + s[0]) + '" aria-pressed="' + so + '" title="' + esc(s[1] + (s[5] ? " · " + t("zo_skill", s[5]) : "")) + '">' +
+          '<i class="zosw" style="--c:' + s[3] + '"></i>' + (s[2] || "") + '<em class="nm">' + esc(k === "m" ? s[1].replace(/ (Vein|Deposit)$/, "") : s[1]) + "</em><span>" + num(s[4]) + "</span></button>";   // skillen i tooltipen: spalten är smal
+      });
+    });
+    return h;
+  }
+  // Prickarna. Varje prick bär sitt val (data-zo): qg:<x,y> givare, q:<id> mål, m:/h:<id> åder/ört, b:/r:/s:<id>, k:<namn>.
+  function zoDots() {
+    var d = ZO.d, h = "", dot = function (x, y, cls, sel, tip, col) {
+      return '<i class="zod ' + cls + (ZO.sel === sel ? " hl" : "") + '" style="left:' + x + "%;top:" + y + "%" + (col ? ";--c:" + col : "") + '" data-zo="' + esc(sel) + '" title="' + esc(tip + " · " + x + ", " + y) + '"></i>';
+    };
+    var each = function (P, f) { for (var i = 0; i + 1 < P.length; i += 2) f(P[i], P[i + 1]); };
+    if (zoOn("k")) d.k.forEach(function (c) { if (zoSubOn("k", c[0])) each(c[1], function (x, y) { h += dot(x, y, "zok", "k:" + c[0], c[0]); }); });
+    if (zoOn("h")) zoSubs("h").forEach(function (s, i) { var n = d.h[i]; if (zoSubOn("h", n[1])) each(n[4], function (x, y) { h += dot(x, y, "zon", "h:" + n[0], n[1], s[3]); }); });
+    if (zoOn("m")) d.m.forEach(function (n) { if (zoSubOn("m", n[1])) each(n[4], function (x, y) { h += dot(x, y, "zon zom", "m:" + n[0], n[1], zoOreCol(n[1])); }); });
+    if (zoOn("b")) d.b.forEach(function (b) { if (zoSubOn("b", String(b[2]))) each(b[6], function (x, y) { h += dot(x, y, "zob" + (b[5] === 2 || b[5] === 4 ? " zor" : ""), "b:" + b[0], b[1] + " " + b[3] + (b[4] > b[3] ? "–" + b[4] : "")); }); });
+    if (zoOn("s")) zoNpcs().forEach(function (s) { var r = zoRole(s[3]); if (zoSubOn("s", r[1])) each(s[6], function (x, y) { h += dot(x, y, "zos", "s:" + s[0], s[1] + (s[2] ? " <" + s[2] + ">" : ""), r[3]); }); });
+    if (zoOn("r")) d.r.forEach(function (r) { each(r[7], function (x, y) { h += dot(x, y, "zor", "r:" + r[0], r[1] + " " + r[2] + (r[3] > r[2] ? "–" + r[3] : "")); }); });
+    if (zoOn("q")) {
+      if (zoSubOn("q", "o")) zoQuests().forEach(function (q) { if (q[6] >= 0) h += dot(q[6], q[7], "zoo", "q:" + q[0], q[1] + " (" + q[2] + ")"); });
+      if (zoSubOn("q", "g")) zoGivers().forEach(function (g) {
+        h += '<b class="zoq' + (ZO.sel === "qg:" + g.k ? " hl" : "") + '" style="left:' + g.x + "%;top:" + g.y + '%" data-zo="qg:' + g.k + '" title="' + esc((g.nm ? g.nm + "\n" : "") + g.q.map(function (q) { return "· " + q[1] + " (" + q[2] + ")"; }).join("\n") + "\n" + g.x + ", " + g.y) + '">!</b>';
+      });
+    }
+    return (zoOn("f") ? qmTaxi(ZO.zone) : "") + h;
+  }
+  function zoSelect() {   // zonväljaren ovanför kartan: alla zoner med något i, per kontinent
+    if (!ZO_IX) return "";
+    var g = [[], []];
+    ZO_IX.forEach(function (z) { if (z[1] === 0 || z[1] === 1) g[z[1]].push(z); });
+    return '<select class="zosel" data-zosel="1" aria-label="' + t("gs_k_zone") + '">' + [1, 0].map(function (c) {
+      return '<optgroup label="' + zoCont(c) + '">' + g[c].slice().sort(function (a, b) { return a[0].localeCompare(b[0]); }).map(function (z) { return '<option value="' + esc(z[0]) + '"' + (z[0] === ZO.zone ? " selected" : "") + ">" + esc(z[0]) + "</option>"; }).join("") + "</optgroup>";
+    }).join("") + "</select>";
+  }
+  function zoMain() {
+    if (!ZO.d) return;
+    $("armory").innerHTML = '<div class="zohead"><h2>' + esc(ZO.zone) + '</h2><span class="dim">' + [zoLvl(ZO.d.lv), zoCont(ZO.d.c)].filter(Boolean).join(" · ") + "</span>" + zoSelect() + "</div>" +
+      '<div class="huzm zomap"><img src="' + huZUrl(ZO.zone) + '" alt="' + esc(ZO.zone) + '" width="1002" height="668" decoding="async">' + zoDots() + "</div>";
+  }
+  function zoHl() {   // bara markeringen byts, kartan ritas inte om
+    var m = $("armory").querySelector(".zomap"); if (!m) return;
+    Array.prototype.forEach.call(m.querySelectorAll(".hl"), function (el) { el.classList.remove("hl"); });
+    if (ZO.sel) Array.prototype.forEach.call(m.querySelectorAll('[data-zo="' + ZO.sel.replace(/"/g, '\\"') + '"]'), function (el) { el.classList.add("hl"); });
+  }
+  function zoWay(P, max) {   // /way-knappar (klick kopierar), högst max
+    var h = "";
+    for (var i = 0; i + 1 < P.length && i < max * 2; i += 2) h += qmChip([ZO.zone, P[i], P[i + 1]], ZO.zone);
+    return h ? '<div class="qmcs">' + h + (P.length > max * 2 ? ' <span class="dim">+' + (P.length / 2 - max) + "</span>" : "") + "</div>" : "";
+  }
+  function zoGo(h, txt) { return '<a class="wh zogo" href="' + h + '" data-zogo="' + h + '">' + txt + " ›</a>"; }
+  function zoRow(sel, ic, name, sub, cls) {
+    return '<button type="button" class="zorow' + (ZO.sel === sel ? " on" : "") + '" data-zo="' + esc(sel) + '">' + (ic || '<span class="upnoi"></span>') + '<b class="' + (cls || "") + '">' + esc(name) + "</b>" + (sub ? '<small>' + sub + "</small>" : "") + "</button>";
+  }
+  // Högerrutan: zonens innehåll (det som är påslaget, filtrerat på sökraden) eller det valda.
+  function zoSide() {
+    var d = ZO.d; if (!d) return;
+    var top = '<div class="strip"><button class="lnk" type="button" data-copyany="#zone=' + esc(encodeURIComponent(ZO.zone)) + '" title="' + t("copy_link") + '">' + t("copy_link") + "</button>";
+    if (ZO.sel) { $("detail").innerHTML = zoCard(top); $("detail").scrollTop = 0; return; }
+    var h = zoLists(function (k) { return zoOn(k); });
+    $("detail").innerHTML = top + "<h2>" + esc(ZO.zone) + "</h2><small>" + [zoLvl(d.lv), zoCont(d.c)].filter(Boolean).join(" · ") + "</small></div>" +
+      (h || '<div class="note">' + t("zo_none") + "</div>") + '<div class="note">' + t("zo_src") + "</div>";
+  }
+  function zoLists(want) {   // want(lager) → true: listan för lagret (filtrerad på sökraden)
+    var d = ZO.d, q = query, hit = function (s) { return !q || String(s).toLowerCase().indexOf(q) >= 0; }, h = "", sec = function (k, rows) { if (rows) h += '<div class="zosec"><h3>' + zoIc(ZO_L.filter(function (L) { return L[0] === k; })[0][1]) + t("zo_l_" + k) + "</h3>" + rows + "</div>"; };
+    var zoOn = want;
+    if (zoOn("q")) sec("q", zoQuests().filter(function (x) { return hit(x[1]); }).map(function (x) { return zoRow(x[4] >= 0 ? "qg:" + x[4] + "," + x[5] : "q:" + x[0], '<span class="zolv">' + x[2] + "</span>", x[1], x[4] >= 0 ? "!" : t("zo_q_o").toLowerCase()); }).join(""));
+    ["m", "h"].forEach(function (k) { if (zoOn(k)) sec(k, d[k].filter(function (n) { return hit(n[1]); }).map(function (n) { var r = byId[n[3]]; return zoRow(k + ":" + n[0], zoItemIc(n[3]), n[1], t("zo_skill", n[2]) + " · " + t("zo_spawns", num(n[4].length / 2)) + (r && r.min > 0 ? " · " + money(r.min) : "")); }).join("")); });
+    if (zoOn("r")) sec("r", d.r.filter(function (r) { return hit(r[1]); }).map(function (r) { return zoRow("r:" + r[0], "", r[1], t("col_lvl") + " " + r[2] + (r[3] > r[2] ? "–" + r[3] : "") + " · " + HU_RANK[r[4]], "hurn"); }).join(""));
+    if (zoOn("b")) sec("b", d.b.filter(function (b) { return hit(b[1]) || hit(HU && HU.families[b[2]] ? HU.families[b[2]].name : ""); }).map(function (b) { var rare = b[5] === 2 || b[5] === 4; return zoRow("b:" + b[0], '<img class="ci" src="' + huFamIcon(b[2]) + '" alt="">', b[1], (HU && HU.families[b[2]] ? HU.families[b[2]].name + " · " : "") + t("col_lvl") + " " + b[3] + (b[4] > b[3] ? "–" + b[4] : ""), rare ? "hurn" : ""); }).join(""));
+    if (zoOn("k")) sec("k", d.k.filter(function (c) { return hit(c[0]); }).map(function (c) { return zoRow("k:" + c[0], "", c[0], t("zo_spawns", num(c[1].length / 2))); }).join(""));
+    if (zoOn("s")) sec("s", zoNpcs().filter(function (s) { return hit(s[1]) || hit(s[2]); }).map(function (s) { var r = zoRole(s[3]); return zoRow("s:" + s[0], zoIc(r[2]), s[1], esc(s[2] || t("zo_s_" + r[1]))); }).join(""));
+    return h;
+  }
+  function zoCard(top) {
+    var d = ZO.d, p = ZO.sel.split(":"), k = p[0], v = p.slice(1).join(":"), id = +v, h = "", back = '<button class="lnk zoback" type="button" data-zo="">‹ ' + esc(ZO.zone) + "</button>";
+    var qrow = function (q) { return '<a class="zoqr" href="#quest=' + q[0] + '" data-zogo="#quest=' + q[0] + '"><span class="zolv">' + q[2] + "</span>" + esc(q[1]) + "</a>"; };
+    if (k === "qg") {
+      var g = zoGivers().filter(function (x) { return x.k === v; })[0];
+      if (g) h = '<h2><span class="zoqi">!</span> ' + esc(g.nm || t("zo_giver")) + "</h2><small>" + t("zo_giver") + " · " + t("zo_n_q", g.q.length) + "</small></div>" + zoWay([g.x, g.y], 1) + '<div class="zoql">' + g.q.map(qrow).join("") + "</div>" + (g.npc ? zoGo("#npc=" + g.npc, t("zo_open_npc")) : "");
+    } else if (k === "q") {
+      var q = d.q.filter(function (x) { return x[0] === id; })[0];
+      if (q) h = "<h2>" + esc(q[1]) + "</h2><small>" + t("col_lvl") + " " + q[2] + "</small></div>" + (q[4] >= 0 ? "<h3>" + t("zo_giver") + (q[8] ? ": " + esc(q[8]) : "") + "</h3>" + zoWay([q[4], q[5]], 1) : "") + (q[6] >= 0 ? "<h3>" + t("zo_obj") + "</h3>" + zoWay([q[6], q[7]], 1) : "") + zoGo("#quest=" + q[0], t("zo_open_q"));
+    } else if (k === "m" || k === "h") {
+      var n = d[k].filter(function (x) { return x[0] === id; })[0], r = n && byId[n[3]];
+      if (n) h = "<h2>" + zoItemIc(n[3]) + " " + esc(n[1]) + "</h2><small>" + t("zo_skill", n[2]) + "</small></div>" +
+        '<dl class="facts"><div><dt>' + t("zo_here") + "</dt><dd>" + t("zo_spawns", num(n[4].length / 2)) + "</dd></div>" + (r && r.min > 0 ? "<div><dt>" + t("zo_ah") + "</dt><dd>" + money(r.min) + "</dd></div>" : "") + "</dl>" +
+        zoGo("#node=" + n[0], t("zo_open_node"));
+    } else if (k === "b") {
+      var b = d.b.filter(function (x) { return x[0] === id; })[0];
+      if (b) h = '<h2 class="' + (b[5] === 2 || b[5] === 4 ? "hurn" : "") + '"><img class="ci" src="' + huFamIcon(b[2]) + '" alt=""> ' + esc(b[1]) + "</h2><small>" + (HU && HU.families[b[2]] ? esc(HU.families[b[2]].name) + " · " : "") + t("col_lvl") + " " + b[3] + (b[4] > b[3] ? "–" + b[4] : "") + (b[5] ? " · " + HU_RANK[b[5]] : "") + "</small></div>" + zoWay(b[6], 8) + zoGo("#beast=" + b[0], t("zo_open_beast"));
+    } else if (k === "r") {
+      var rr = d.r.filter(function (x) { return x[0] === id; })[0];
+      if (rr) h = '<h2 class="hurn">' + esc(rr[1]) + "</h2><small>" + t("col_lvl") + " " + rr[2] + (rr[3] > rr[2] ? "–" + rr[3] : "") + " · " + HU_RANK[rr[4]] + "</small></div>" + zoWay(rr[7], 8) +
+        (rr[6] === 2 ? zoGo("#beast=" + rr[0], t("zo_open_beast")) : rr[6] === 1 ? zoGo("#npc=" + rr[0], t("zo_open_npc")) : "");
+    } else if (k === "s") {
+      var s = d.s.filter(function (x) { return x[0] === id; })[0];
+      if (s) { var ro = zoRole(s[3]); h = "<h2>" + zoIc(ro[2]) + " " + esc(s[1]) + "</h2><small>" + esc(s[2] || t("zo_s_" + ro[1])) + "</small></div>" + zoWay(s[6], 4) + (s[5] ? zoGo("#npc=" + s[0], t("zo_open_npc")) : ""); }
+    } else if (k === "k") {
+      var c = d.k.filter(function (x) { return x[0] === v; })[0];
+      if (c) h = "<h2>" + zoIc("inv_box_02") + " " + esc(c[0]) + "</h2><small>" + t("zo_spawns", num(c[1].length / 2)) + "</small></div>" + zoWay(c[1], 12);
+    }
+    var lay = k === "qg" ? "q" : k;   // under kortet: resten av samma lager i zonen
+    return top + (h || "<h2>" + esc(ZO.zone) + "</h2></div>") + back + zoLists(function (x) { return x === lay; });
+  }
+  function zoPick(sel) {
+    ZO.sel = sel || "";
+    zoHl(); zoSide(); setHash(zoHash());
+    if (MOB.matches && ZO.sel) mobDet(true);
+  }
+  function zoStart(zone, sel, keep) {
+    if (!keep) $("detail").innerHTML = '<div class="note">' + t("zo_loading") + "</div>";
+    Promise.all([loadZmap(), zoIndex(), loadXIcons(), qmIndex().catch(function () { return null; }), loadHunter().catch(function () { return null; })]).then(function () {
+      var name = zoName(zone || ZO.zone) || ZO.zone;
+      if (!name) throw new Error("zone");
+      return zoLoad(name).then(function (d) {
+        if (mode !== "zo") return;
+        var same = ZO.zone === name;
+        ZO.zone = name; ZO.d = d; ZO.sel = keep && same ? ZO.sel : sel || "";
+        if (!keep && !same) { query = ""; $("q").value = ""; }
+        drawMode(); drawCats(); view = []; shown = 0; draw(); zoMain(); zoSide();
+        if (!keep) toTop();
+        setHash(zoHash());
+      });
+    }).catch(function () { if (mode === "zo") { $("armory").innerHTML = ""; $("detail").innerHTML = '<div class="note">' + t("zo_fail") + "</div>"; } });
+  }
+  document.addEventListener("click", function (e) {
+    if (mode !== "zo" || !e.target.closest) return;
+    var go = e.target.closest("[data-zogo]");
+    if (go) { if (!(e.ctrlKey || e.metaKey || e.shiftKey) && e.button === 0) { e.preventDefault(); gsGo(go.dataset.zogo); } return; }
+    var l = e.target.closest("[data-zol]");
+    if (l) { var k = l.dataset.zol; if (zoPref.on[k]) delete zoPref.on[k]; else zoPref.on[k] = 1; zoSave(); drawCats(); zoMain(); zoSide(); return; }
+    var s = e.target.closest("[data-zos]");
+    if (s) { var sk = s.dataset.zos; if (zoPref.off[sk]) delete zoPref.off[sk]; else zoPref.off[sk] = 1; zoSave(); drawCats(); zoMain(); return; }
+    var z = e.target.closest("[data-zo]");
+    if (z) { e.preventDefault(); zoPick(z.dataset.zo === ZO.sel && z.closest(".zomap") ? "" : z.dataset.zo); }
+  });
+  document.addEventListener("change", function (e) {
+    var s = e.target.closest && e.target.closest("[data-zosel]");
+    if (s && mode === "zo" && s.value !== ZO.zone) gsGo("#zone=" + encodeURIComponent(s.value));
+  });
   // ---- Var föremålet finns (Joakim 2026-11-18: "clickar jag på en ore så borde en karta komma upp"). kallor/<id % 100>.json
   // (hamta-varukallor.js): g noder/kistor med zoner och prickar, d/s/p mobs, v försäljare, c behållare, n/q namn.
   var KALL = {}, SRC = { id: 0, n: 0, z: 0, d: null };
@@ -7932,6 +8188,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
   // Flikens start (Joakim 2026-11-20: klick på rubriken "Armory", "Quests" … ska till flikens början): inga val, ingen sökning.
   function tabHome() {
     var m = mode;
+    if (m === "zo") { ZO.sel = ""; query = ""; $("q").value = ""; zoMain(); zoSide(); setHash(zoHash()); toTop(); return; }   // zonens start: inget valt
     if (m === "ar") {
       if (arLb) { lbFold = false; arLb = "ilvl"; drawMode(); drawCats(); lbShow(); toTop(); }
       else arLanding();
@@ -9914,6 +10171,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     try { localStorage.setItem(MKEY, m); } catch (e) { /* gäller tills sidan stängs */ }
     resetModeState(m);
     $("q").placeholder = t(m === "cr" ? "search_rc" : m === "ar" ? "search_ar" : m === "qu" ? "search_qu" : m === "dg" ? "search_dg" : m === "hu" ? "search_hu" : m === "co" ? "search_co" : m === "cl" ? "search_cl" : "search_ph");
+    if (m === "zo") { $("q").placeholder = t("search_zo"); zoStart(ZO.zone, "", false); return; }
     if (m === "qu") { quStart(selQuest || 0, true); return; }
     if (m === "dg") { dgStart(0); return; }
     if (m === "hu") { sortKey = "lvl"; sortDir = huLvl ? -1 : 1; huStart(huSel); return; }
