@@ -1,19 +1,19 @@
 {
- "t": "2026-11-27T00:31:57.813Z",
+ "t": "2026-11-27T09:00:49.320Z",
  "videos": [
+  {
+   "id": "fKfgFP9lMEE",
+   "title": "SÅ MYCKET KATTER i Megastore Tidy Up Together med UfoSXM",
+   "channel": "ChrisWhippit",
+   "handle": "@chriswhippit",
+   "at": "2026-11-27T05:30:17Z"
+  },
   {
    "id": "KT5FopSICPk",
    "title": "DET ÄR EN GROP i Minecraft med Mammaspelar och Pappaspelar",
    "channel": "Whippit",
    "handle": "@whippitextra",
    "at": "2026-11-26T05:30:33Z"
-  },
-  {
-   "id": "iL2mVn-GI20",
-   "title": "MÄNNISKA I VÄGGEN i Shift at Midnight med UfoSXM",
-   "channel": "ChrisWhippit",
-   "handle": "@chriswhippit",
-   "at": "2026-11-25T14:30:15Z"
   },
   {
    "id": "VD4T-LuE-t0",
@@ -30,11 +30,11 @@
    "at": "2026-10-10T04:30:24Z"
   },
   {
-   "id": "m8svh01CPsY",
-   "title": "PAPPA DÖR 8 GÅNGER i Minecraft med Pappaspelar",
+   "id": "k1zmwc9fJf0",
+   "title": "SVÄRDET ÄR SÅ STORT i Minecraft med Jnx",
    "channel": "Whippit",
    "handle": "@whippitextra",
-   "at": "2026-11-25T05:30:10Z"
+   "at": "2026-11-27T05:30:02Z"
   }
  ],
  "counts": {
@@ -87,6 +87,12 @@
  },
  "seriesVids": {
   "minecraft": [
+   {
+    "id": "k1zmwc9fJf0",
+    "title": "SVÄRDET ÄR SÅ STORT i Minecraft med Jnx",
+    "at": "2026-11-27T05:30:02Z",
+    "list": ""
+   },
    {
     "id": "KT5FopSICPk",
     "title": "DET ÄR EN GROP i Minecraft med Mammaspelar och Pappaspelar",
@@ -151,12 +157,6 @@
     "id": "xXZ2NkUB5-A",
     "title": "0 GRISAR, 0 BRO i Minecraft med Mammaspelar och Pappaspelar",
     "at": "2026-11-12T05:30:20Z",
-    "list": ""
-   },
-   {
-    "id": "2dQNQgg7eq4",
-    "title": "ENCHANTINGBORD men ingen LAPIS i Minecraft SKYBLOCK #10",
-    "at": "2026-11-09T05:30:13Z",
     "list": ""
    }
   ],
@@ -544,25 +544,25 @@
  },
  "media": {
   "chriswhippit": {
-   "views": 244597000,
-   "avgViews": 7800,
-   "avgSample": 9,
+   "views": 244616000,
+   "avgViews": 8700,
+   "avgSample": 10,
    "uploads30": 50
   },
   "whippitsson": {
-   "views": 50378000,
+   "views": 50379000,
    "avgViews": 20000,
    "avgSample": 5,
    "uploads30": 0
   },
   "figgwhipp": {
-   "views": 97274000,
+   "views": 97276000,
    "avgViews": 0,
    "avgSample": 0,
    "uploads30": 0
   },
   "whippitextra": {
-   "views": 324000,
+   "views": 328000,
    "avgViews": 1800,
    "avgSample": 10,
    "uploads30": 50
