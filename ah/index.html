@@ -2101,7 +2101,8 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
       eko_note: "Listed = market price × quantity on the auction house right now. Sold per day = estimated sales × market price. Real gold on the server cannot be measured; the auction house is the best proxy.",
       lb_gath: "Professions", lb_pve: "PvE", lb_pve_kills: "Most kills", lb_pve_creat: "Creatures killed", lb_pve_dg: "Dungeons entered", lb_pve_raid: "Raids entered", lb_pve_q: "Quests completed", lb_pve_deaths: "Most deaths", lb_pve_crit: "Critters killed",
       lb_pve_note: "From Blizzard's character statistics, fetched for level 60s once a week.",
-      lb_pvp: "PvP", lb_pvp_bg: "Battlegrounds played", lb_pvp_bgw: "Battlegrounds won", lb_pvp_kb: "Killing blows", lb_pvp_wkb: "World killing blows", lb_pvp_whk: "World honorable kills", lb_pvp_duel: "Duels won",
+      lb_pvp: "PvP", lb_pvp_bg: "Battlegrounds played", lb_pvp_bgw: "Battlegrounds won", lb_pvp_bgs: "Battlegrounds", lb_bg_all: "All battlegrounds", lb_bg_w: "Wins", lb_bg_p: "Played", lb_bg_r: "Win rate", lb_bg_wins: "Wins: %1",
+      lb_bg_note: "Wins and games per battleground from Blizzard's PvP summary, for every player in the catalog. Ties: higher win rate first. Players are being filled in over the next few nights, most honorable kills first.", lb_pvp_kb: "Killing blows", lb_pvp_wkb: "World killing blows", lb_pvp_whk: "World honorable kills", lb_pvp_duel: "Duels won",
       lb_pvp_note: "Honorable kills and rank from the PvP summary of every player in the catalog; the rest from Blizzard's character statistics, fetched for level 60s once a week.",
       lb_achc: "Achievement categories", lb_titles: "Titles", lb_titles_most: "Most titles", lb_titles_active: "Wearing", lb_titles_holders: "%1 holders",
       lb_quests: "Quests", lb_quests_done: "Most completed", lb_quests_aband: "Most abandoned", lb_travel: "Travel", lb_travel_fl: "Flight paths taken", lb_travel_po: "Mage portals taken", lb_travel_su: "Summons accepted", lb_travel_hs: "Times hearthed",
@@ -2856,7 +2857,8 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
   function lbMeDefs() {
     var pve = ["lb_pve_kills", "lb_pve_creat", "lb_pve_dg", "lb_pve_raid", "lb_pve_q", "lb_pve_deaths", "lb_pve_crit", "lb_pve_kpd"];
     var d = [["ilvl", "", "lb_ilvl", function (p) { return p.il || 0; }], ["ach", "", "lb_ach", function (p) { return p.ap || 0; }]];
-    LB_PVP.forEach(function (c) { d.push(["pvp", c[0], c[1], c[2]]); });
+    LB_PVP.forEach(function (c) { d.push(["pvp", c[0], c[0] === "bgs" ? function () { return t("lb_bg_wins", t("lb_bg_all")); } : c[1], c[2]]); });
+    bgMaps().forEach(function (m) { d.push(["pvp", "bgs:" + m[0], function () { return t("lb_bg_wins", m[1]); }, function (p) { return bgWins(p, String(m[0])); }]); });
     pve.forEach(function (k, i) { d.push(["pve", i, k, function (p) { if (!p.pve) return 0; return i === 7 ? (p.pve[0] >= 1000 ? Math.round(p.pve[0] / Math.max(1, p.pve[5])) : 0) : p.pve[i] || 0; }]); });
     d.push(["quests", 1, "lb_quests_aband", function (p) { return p.pve ? p.pve[7] || 0 : 0; }]);
     [["lb_travel_fl", 0], ["lb_travel_po", 1], ["lb_travel_su", 2], ["lb_travel_hs", 3]].forEach(function (x) { d.push(["travel", x[1], x[0], function (p) { return p.tr ? p.tr[x[1]] || 0 : 0; }]); });
@@ -2869,7 +2871,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
   // (om spelaren är 60 och hämtad) fyller det live-profilen saknar: titlar hämtas inte av workern.
   function lbMeLive(d, kat) {
     var me = { s: d.slug, lv: d.level || 0, il: d.ilvl || 0, ap: d.achievements || 0, hk: d.pvp ? d.pvp.hk || 0 : 0, rk: d.pvp ? d.pvp.rank || 0 : 0,
-      pve: kat ? kat.pve : 0, pv2: kat ? kat.pv2 : 0, fish: kat ? kat.fish : 0, tr: kat ? kat.tr : 0, ti: kat ? kat.ti : 0, rep: kat ? kat.rep : 0 };
+      pve: kat ? kat.pve : 0, pv2: kat ? kat.pv2 : 0, bgm: kat ? kat.bgm : 0, fish: kat ? kat.fish : 0, tr: kat ? kat.tr : 0, ti: kat ? kat.ti : 0, rep: kat ? kat.rep : 0 };
     var L = d.statList || [];
     if (L.length) {
       var pe = [0, 0, 0, 0, 0, 0, 0, 0], pv = [0, 0, 0, 0, 0, 0, 0, 0], tr = [0, 0, 0, 0], fish = [0, 0, 0];
@@ -2903,7 +2905,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
       var fn = df[3], v = fn(me); if (!(v > 0)) return;
       var ahead = 0, n = 1;   // n: spelaren själv plus alla andra med värde (katalogens egen post för spelaren räknas inte, live-siffran gäller)
       for (var i = 0; i < P.length; i++) { var p = P[i]; if (p.s === me.s) continue; var w = fn(p); if (!(w > 0)) continue; n++; if (w > v || (w === v && lbTie(df[0], p, me) > 0)) ahead++; }
-      out.push({ b: df[0], sub: df[1], lbl: Array.isArray(df[2]) ? t(df[2][0]) + ": " + t(df[2][1]).toLowerCase() : t(df[2]), rank: ahead + 1, n: n, v: v });
+      out.push({ b: df[0], sub: df[1], lbl: typeof df[2] === "function" ? df[2]() : Array.isArray(df[2]) ? t(df[2][0]) + ": " + t(df[2][1]).toLowerCase() : t(df[2]), rank: ahead + 1, n: n, v: v });
     });
     out.sort(function (a, b) { return a.rank - b.rank || b.n - a.n; });
     return out;
@@ -8755,9 +8757,18 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
   var LB = [["ilvl", "il", "lb_ilvl", "b"], ["pvp", "", "lb_pvp", "b"], ["pve", "", "lb_pve", "b"], ["gath", "", "lb_gath", "b"], ["ach", "ap", "lb_ach", "b"], ["achc", "", "lb_achc", "b"], ["titles", "", "lb_titles", "b"], ["quests", "", "lb_quests", "b"], ["travel", "", "lb_travel", "b"], ["guilds", "", "lb_guilds", "b"], ["prog", "", "lb_prog", "b"], ["fk", "", "lb_fk", "b"], ["att", "", "lb_att", "b"], ["rep", "", "lb_rep", "b"], ["fish", "", "lb_fish", "b"], ["cls", "", "lb_cls", "s"]];
   var lbProg = "raids", lbFish = "n", lbPvp = "hk", lbPve = 0, lbGath = "";   // Progression: raids/dungeons; Fishing: n fångade, k olika, s skill; PvP: undermeny
   // PvP-undermenyerna: [nyckel, text, värde(p)]; pv2 = [bg spelade, bg vunna, killing blows, world kb, dueller vunna, förlorade, world HK, bg HK]
-  var LB_PVP = [["hk", "lb_hk", function (p) { return p.hk || 0; }], ["rank", "lb_rank", function (p) { return p.rk || 0; }], ["bg", "lb_pvp_bg", function (p) { return p.pv2 ? p.pv2[0] : 0; }], ["bgw", "lb_pvp_bgw", function (p) { return p.pv2 ? p.pv2[1] : 0; }],
+  var LB_PVP = [["hk", "lb_hk", function (p) { return p.hk || 0; }], ["rank", "lb_rank", function (p) { return p.rk || 0; }], ["bgs", "lb_pvp_bgs", function (p) { return bgWins(p, ""); }],
     ["kb", "lb_pvp_kb", function (p) { return p.pv2 ? p.pv2[2] : 0; }], ["wkb", "lb_pvp_wkb", function (p) { return p.pv2 ? p.pv2[3] : 0; }], ["whk", "lb_pvp_whk", function (p) { return p.pv2 ? p.pv2[6] : 0; }], ["duel", "lb_pvp_duel", function (p) { return p.pv2 ? p.pv2[4] : 0; }],
     ["duelr", "lb_pvp_duelr", function (p) { return p.pv2 && p.pv2[4] + p.pv2[5] >= 10 ? Math.round(p.pv2[4] / (p.pv2[4] + p.pv2[5]) * 1000) / 10 : 0; }]];
+  // Slagfält per spelare (katalogens bgm = [[kart-id, spelade, vunna]]). id "" = alla slagfält.
+  function bgRow(p, id) { var w = 0, n = 0; (p.bgm || []).forEach(function (m) { if (!id || String(m[0]) === id) { n += m[1]; w += m[2]; } }); return [w, n]; }
+  function bgWins(p, id) { return p.bgm ? bgRow(p, id)[0] : 0; }
+  var BG_ICON = { 30: "inv_jewelry_necklace_21", 489: "inv_misc_rune_07", 529: "inv_jewelry_amulet_07", 2997: "inv_misc_head_troll_01" };
+  function bgMaps() {   // [id, namn, spelare] sorterat på flest spelare
+    if (!KAT) return [];
+    var c = {}; KAT.players.forEach(function (p) { (p.bgm || []).forEach(function (m) { c[m[0]] = (c[m[0]] || 0) + 1; }); });
+    return Object.keys(c).map(function (id) { return [id, (KAT.bgn && KAT.bgn[id]) || "#" + id, c[id]]; }).sort(function (a, b) { return b[2] - a[2]; });
+  }
   var LB_RAIDS = [["Molten Core", "MC", 10], ["Onyxia\'s Lair", "Ony", 1], ["Blackwing Lair", "BWL", 8], ["Zul\'Gurub", "ZG", 10], ["Ruins of Ahn\'Qiraj", "AQ20", 6], ["Temple of Ahn\'Qiraj", "AQ40", 9], ["Naxxramas", "Naxx", 15]];
   // Raidernas bossar i ordning (Blizzards namn kan avvika: bossar katalogen sett läggs till under sin instans)
   var LB_BOSSES = [["Molten Core", ["Lucifron", "Magmadar", "Gehennas", "Garr", "Baron Geddon", "Shazzrah", "Sulfuron Harbinger", "Golemagg the Incinerator", "Majordomo Executus", "Ragnaros"]],
@@ -8810,7 +8821,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
   function lbHash(b, sv) { var x = String(sv == null ? lbSubOf(b) : sv); return "#top=" + b + (x !== "" ? "&s=" + encodeURIComponent(x) : ""); }
   function lbSetSub(b, sv) {
     sv = String(sv);
-    if (b === "pvp") { if (LB_PVP.some(function (c) { return c[0] === sv; })) lbPvp = sv; }
+    if (b === "pvp") { if (sv === "bg" || sv === "bgw") sv = "bgs"; if (LB_PVP.some(function (c) { return c[0] === sv; }) || /^bgs:\d+$/.test(sv)) lbPvp = sv; }
     else if (b === "pve") { if (+sv >= 0 && +sv <= 7) lbPve = +sv; }
     else if (b === "quests") lbQuest = +sv || 0; else if (b === "travel") lbTravel = +sv || 0;
     else if (b === "fish") { if (/^[nks]$/.test(sv)) lbFish = sv; }
@@ -8927,6 +8938,21 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
           return '<tr><td class="lbn' + (i < 3 ? " top" + (i + 1) : "") + '">' + (i + 1) + '</td><td class="nm">' + lbIc(p, i < 3 ? i : -1) + '<a href="#player=' + esc(p.s) + '" data-ar="char" data-slug="' + esc(p.s) + '" style="color:' + (CLASS_COL[p.c] || "inherit") + '">' + esc(full) + "</a></td>" + lbRace(p) + "<td>" + p.lv + "</td>" +
             '<td class="hide-s gl">' + (p.g ? '<a class="dim" href="#guild=' + esc(p.g) + '" data-ar="guild" data-slug="' + esc(p.g) + '">&lt;' + esc(p.gn) + "&gt;</a>" : "") + "</td><td><b>" + num(pveV(p)) + "</b>" + (lbPve === 7 ? ' <small class="dim">' + num(p.pve[0]) + " / " + num(p.pve[5]) + "</small>" : "") + "</td></tr>";
         }).join("") + "</tbody></table>" + (ep.length ? "" : '<div class="note">' + t("lb_prog_none") + "</div>") + '<div class="note">' + (lbPve === 7 ? t("lb_min_kills") + ". " : "") + t("lb_pve_note") + "</div>";
+    } else if (def[0] === "pvp" && /^bgs/.test(lbPvp)) {
+      var bgId = lbPvp.indexOf(":") > 0 ? lbPvp.split(":")[1] : "", maps = bgMaps();
+      var bchip = function (k, lbl, ic, n) { return '<button class="cat sub2" type="button" data-lbpvp="' + esc(k) + '" aria-pressed="' + (lbPvp === k) + '">' + (ic ? '<img class="ci" src="' + RICON + ic + '.jpg" alt="" onerror="this.style.visibility=\'hidden\'">' : "") + '<em class="nm">' + lbl + "</em>" + (n != null ? "<span>" + num(n) + "</span>" : "") + "</button>"; };
+      lbSubHtml = LB_PVP.map(function (c) { return lbSub("data-lbpvp", c[0], c[0] === "bgs" ? /^bgs/.test(lbPvp) : lbPvp === c[0], t(c[1])) + (c[0] === "bgs" ? bchip("bgs", t("lb_bg_all"), "inv_bannerpvp_02", null) + maps.map(function (m) { return bchip("bgs:" + m[0], esc(m[1]), BG_ICON[m[0]], m[2]); }).join("") : ""); }).join("");
+      var bv = function (p) { return p.bgm ? bgRow(p, bgId) : [0, 0]; };
+      var bp = KAT.players.filter(function (p) { return faOk(p) && bgWins(p, bgId) > 0; }).map(function (p) { var r = bv(p); return [p, r[0], r[1]]; })
+        .sort(function (a, b) { return b[1] - a[1] || b[1] / b[2] - a[1] / a[2] || a[2] - b[2] || (b[0].hk || 0) - (a[0].hk || 0); }).slice(0, 100);
+      var bname = bgId ? ((KAT.bgn && KAT.bgn[bgId]) || "#" + bgId) : t("lb_bg_all");
+      h = h.replace("<h2>" + t(def[2]) + "</h2>", "<h2>" + t(def[2]) + " · " + esc(bname) + "</h2>");
+      h +='<table class="lbt"><thead><tr><th>#</th><th class="nm">' + t("lb_player") + "</th>" + lbRaceTh() + "<th>" + t("col_lvl") + '</th><th class="hide-s">' + t("lb_guild") + "</th><th>" + t("lb_bg_w") + '</th><th class="hide-s">' + t("lb_bg_p") + "</th><th>" + t("lb_bg_r") + "</th></tr></thead><tbody>" +
+        bp.map(function (x, i) {
+          var p = x[0], full = p.n + (p.sn ? " " + p.sn : "");
+          return '<tr><td class="lbn' + (i < 3 ? " top" + (i + 1) : "") + '">' + (i + 1) + '</td><td class="nm">' + lbIc(p, i < 3 ? i : -1) + '<a href="#player=' + esc(p.s) + '" data-ar="char" data-slug="' + esc(p.s) + '" style="color:' + (CLASS_COL[p.c] || "inherit") + '">' + esc(full) + "</a></td>" + lbRace(p) + "<td>" + p.lv + "</td>" +
+            '<td class="hide-s gl">' + (p.g ? '<a class="dim" href="#guild=' + esc(p.g) + '" data-ar="guild" data-slug="' + esc(p.g) + '">&lt;' + esc(p.gn) + "&gt;</a>" : "") + "</td><td><b>" + num(x[1]) + '</b></td><td class="hide-s">' + num(x[2]) + "</td><td>" + Math.round(x[1] / x[2] * 100) + " %</td></tr>";
+        }).join("") + "</tbody></table>" + (bp.length ? "" : '<div class="note">' + t("lb_prog_none") + "</div>") + '<div class="note">' + t("lb_bg_note") + "</div>";
     } else if (def[0] === "pvp") {
       var vchip = function (c) { return lbSub("data-lbpvp", c[0], lbPvp === c[0], t(c[1])); };
       var pdef = LB_PVP.filter(function (c) { return c[0] === lbPvp; })[0] || LB_PVP[0], pval = pdef[2];
