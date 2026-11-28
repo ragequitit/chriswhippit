@@ -672,6 +672,22 @@ td.nm, .watch td:first-child { text-align: left; white-space: nowrap; max-width:
 .doll .pic { position: absolute; left: 50%; top: 50%; width: 340%; max-width: none; transform: translate(-47.4%, -54.3%); filter: drop-shadow(0 10px 18px rgba(0, 0, 0, .6)); }   /* figurens mitt (uppmätt) ligger på 47 % / 58 % av bilden */
 .doll .picbox.none { display: grid; place-items: center; }
 .doll .bot { display: flex; gap: 4px; justify-content: center; }
+/* Gear sets (2026-11-28): provrummet i mitten, bonusar och delar under */
+.setframe { margin: 6px 0 12px; flex: none; }
+.setwrap { display: flex; gap: 18px; align-items: flex-start; flex-wrap: wrap; }
+.setinfo { flex: 1 1 260px; min-width: 0; margin-top: 6px; }
+.setinfo .facts { margin-top: 0; }
+.setfig { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; background: radial-gradient(circle at 50% 45%, #2a2219, #0e0b09 75%) center / cover; border: 1px solid var(--line); }
+.setfig .setcls .ri { width: 64px; height: 64px; border-radius: 50%; border: 2px solid var(--edge); box-shadow: 0 6px 18px rgba(0, 0, 0, .6); }
+.setfig .setn { font-family: var(--display, inherit); font-size: 17px; text-align: center; padding: 0 10px; text-shadow: 0 2px 4px #000; }
+.slot.empty { opacity: .35; }
+.setbon, .setparts { list-style: none; margin: 4px 0 10px; padding: 0; display: grid; gap: 4px; }
+.setbon li { display: flex; gap: 8px; align-items: baseline; }
+.setbn { flex: none; min-width: 22px; text-align: center; font-weight: 700; color: var(--gold); border: 1px solid var(--line); border-radius: 4px; padding: 0 4px; }
+.setparts li { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; padding: 3px 0; border-bottom: 1px solid var(--line); cursor: default; }
+.setparts .coic { width: 26px; height: 26px; }
+.setah { margin-left: auto; }
+.wtip .setgap { margin-top: 8px; }
 .slot { width: 40px; height: 40px; border-radius: 4px; border: 1px solid var(--line); background: #0b0908; box-shadow: inset 0 1px 3px rgba(0, 0, 0, .6); position: relative; cursor: default; }
 .slot img { width: 100%; height: 100%; border-radius: 3px; display: block; }
 .slot.q2 { border-color: var(--q2); } .slot.q3 { border-color: var(--q3); } .slot.q4 { border-color: var(--q4); } .slot.q5 { border-color: var(--q5); }
@@ -2153,7 +2169,9 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
       act_note: "Average number of different players WhippitPanel saw per clock hour, only hours when Whippit was online. Busy zones and cities give more.",
       ar_qunknown: "This quest is not in the Classic quest database (new on Forever?).",
       mode_co: "Collections", mode_co_tip: "Mounts, companions, toys and titles on Forever: where they come from and what they cost.", search_co: "Search mount, pet, toy, title, NPC or zone",
-      co_kinds: "Collections", co_k_mounts: "Mounts", co_k_pets: "Companions", co_k_toys: "Toys", co_k_titles: "Titles", co_k1_mounts: "Mount", co_k1_pets: "Companion", co_k1_toys: "Toy", co_k1_titles: "Title",
+      co_kinds: "Collections", co_k_sets: "Gear sets", co_k1_sets: "Gear set", co_col_cls: "Class", co_col_pieces: "Pieces", co_set_any: "Any class", co_set_pieces: "%1 pieces",
+      co_set_bonus: "Set bonuses", co_set_parts: "Pieces", co_set_on_ah: "%1 of %2 on the AH", co_set_ah_sum: "On the AH now", co_set_note: "Pieces, stats and set bonuses from Blizzard's API for Forever. Hover a piece for its tooltip; prices from the latest AH scan.",
+      co_set_ilvl: "Item level %1", co_k_mounts: "Mounts", co_k_pets: "Companions", co_k_toys: "Toys", co_k_titles: "Titles", co_k1_mounts: "Mount", co_k1_pets: "Companion", co_k1_toys: "Toy", co_k1_titles: "Title",
       co_from: "Where from", co_s_all: "All", co_s_vendor: "Vendor", co_s_drop: "Drop", co_s_quest: "Quest", co_s_class: "Class", co_s_pvp: "PvP rank", co_s_other: "Other", co_s_forever: "New on Forever",
       co_missing: "%1 is missing", co_side: "Only %1 and both", co_owner: "%1 has %2 of %3 mounts (from the Armory).", co_have: "Owned", co_have_by: "%1 has it",
       co_col_name: "Name", co_col_src: "Source", co_col_where: "Where", co_col_req: "Requires", co_col_price: "Price", co_col_price_tip: "Lowest price on the AH, otherwise the vendor price", co_ah: "AH", co_vendor: "vendor",
@@ -6281,6 +6299,9 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
         tipBox.innerHTML = '<div class="ln"><b class="' + qcls(di[1]) + '">' + esc(di[0]) + "</b></div>" + (di[2] ? '<div class="ln c"><span>Item Level ' + di[2] + "</span></div>" : "") +
           (di[4] || []).map(function (l) { return '<div class="ln"><span' + (l[2] === "g" ? ' class="q2"' : l[2] === "y" ? ' class="tipy"' : "") + ">" + esc(l[0]) + "</span>" + (l[1] ? '<span class="r">' + esc(l[1]) + "</span>" : "") + "</div>"; }).join("");
         tipBox.hidden = false; placeTip();
+      } else if (e.target && e.target.closest && e.target.closest("[data-settip]") && SET_SHOW && mode === "co") {
+        var sp = SET_SHOW.items[+e.target.closest("[data-settip]").getAttribute("data-settip")];
+        if (sp) { tipId = -1; if (!tipBox) { tipBox = document.createElement("div"); tipBox.className = "wtip"; document.body.appendChild(tipBox); } tipBox.innerHTML = setTipHtml(SET_SHOW, sp); tipBox.hidden = false; placeTip(); }
       } else if (ea && arData && arData.items) {
         var it = (ea.closest("[data-cmpb]") && arCmp ? arCmp.b : arData).items[+ea.getAttribute("data-artip")];
         if (it) {
@@ -6421,6 +6442,8 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
       ? [["name", "col_item"], ["lvl", "de_col_ilvl"], ["min", "de_col_buy"], ["val", "de_col_val", "de_col_val_tip", "hide-s"], ["profit", "de_col_profit"], ["pct", "de_col_pct", null, "hide-s"]]
       : mode === "cl"
       ? clCols()
+      : mode === "co" && coKind === "sets"
+      ? [["name", "co_col_name"], ["src", "co_col_cls"], ["where", "co_col_pieces", null, "kat hide-s"], ["req", "co_col_req", null, "hide-s"], ["price", "co_col_price", "co_set_ah_sum"]]
       : mode === "co"
       ? [["name", "co_col_name"], ["src", "co_col_src"], ["where", "co_col_where", null, "kat hide-s"], ["req", "co_col_req", null, "hide-s"], ["price", "co_col_price", "co_col_price_tip"]]
       : mode === "hu"
@@ -6819,7 +6842,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
         ix.push({ k: "mount", n: x.name, l: lc(x.name), h: "#col=m" + x.id, i: x.img ? '<img src="' + esc(x.img) + '" alt="" loading="lazy">' : "",
           s: [t("co_s_" + sk), it && it.req ? t("col_lvl") + " " + it.req : "", sp ? "+" + sp + " %" : "", x.faction ? (x.faction === "ALLIANCE" ? "Alliance" : "Horde") : ""].filter(Boolean).join(" · ") });
       });
-      if (CO) Object.keys(CO_LETTER).forEach(function (kind) { if (kind === "mounts") return; (CO[kind] || []).forEach(function (x) { ix.push({ k: "col", n: x.name, l: lc(x.name), h: "#col=" + CO_LETTER[kind] + x.id, i: x.img ? '<img src="' + esc(x.img) + '" alt="" loading="lazy">' : "", s: t("co_k_" + kind) }); }); });
+      if (CO) Object.keys(CO_LETTER).forEach(function (kind) { if (kind === "mounts") return; (CO[kind] || []).forEach(function (x) { ix.push({ k: "col", n: x.name, l: lc(x.name), h: "#col=" + CO_LETTER[kind] + x.id, i: x.img ? '<img src="' + esc(x.img) + '" alt="" loading="lazy">' : x.items ? coIcon(x) : "", s: t("co_k_" + kind) + (x.cls ? " · " + x.cls : "") }); }); });
       if (DG) DG.dungeons.forEach(function (d) { ix.push({ k: "dg", n: d.name, l: lc(d.name + " " + (d.short || "")), h: "#dungeon=" + d.map, s: (d.short ? d.short + " · " : "") + t("col_lvl") + " " + d.min + "–" + d.max }); if (d.bosses) d.bosses.forEach(function (b) { ix.push({ k: "npc", n: b.name, l: lc(b.name), h: "#dungeon=" + d.map, s: d.name }); }); });
       if (NODES) NODES.nodes.forEach(function (nd) { ix.push({ k: nd.prof === "Herbalism" ? "herb" : "node", n: nd.name, l: lc(nd.name), h: "#node=" + nd.id, i: ndIcon(nd), s: t("nd_skill", nd.prof, nd.skill) + " · " + t("nd_spawns", num(nd.n)) }); });   // malmådrorna (Joakim 2026-11-20) och örterna (2026-11-21)
       GS.ix = ix; return ix;
@@ -9612,12 +9635,21 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
   // Blizzards listor och bilder, var de fås ur Classic-databasen (säljare och plats, drop med chans, quest). Pris från AH
   // när föremålet säljs där, annars säljarens pris. ✓ = spelaren som är öppen i Armory har mounten. Länk #col=m<id>. ----
   var CO = null, coPromise = null, coKind = "mounts", coSrc = "", coSide = false, coSel = "", coFold = false;   // coFold: vald samlings undermeny ihopfälld (klick på den igen)
-  var CO_LETTER = { mounts: "m", pets: "p", toys: "t", titles: "x" }, CO_KIND = { m: "mounts", p: "pets", t: "toys", x: "titles" };
+  var CO_LETTER = { mounts: "m", sets: "s", pets: "p", toys: "t", titles: "x" }, CO_KIND = { m: "mounts", s: "sets", p: "pets", t: "toys", x: "titles" };
+  var SET_HORDE = /^(Warlord's|General's|Champion's|Legionnaire's|Blood Guard's|Stone Guard's)/, SET_ALLY = /^(Field Marshal's|Marshal's|Lieutenant Commander's|Knight-Lieutenant's|Knight-Captain's)/;
   var CO_PVP = /^(Private|Corporal|Sergeant|Master Sergeant|Sergeant Major|Knight|Knight-Lieutenant|Knight-Captain|Knight-Champion|Lieutenant Commander|Commander|Marshal|Field Marshal|Grand Marshal|Scout|Grunt|Senior Sergeant|First Sergeant|Stone Guard|Blood Guard|Legionnaire|Centurion|Champion|Lieutenant General|General|Warlord|High Warlord)$/;
   function loadCo() {
+    var sets = coPromise ? null : fetch(DATA_BASE + "sets.json").then(function (r) { return r.ok ? r.json() : { sets: [] }; }).catch(function () { return { sets: [] }; });
     if (!coPromise) coPromise = fetch(DATA_BASE + "collections.json").then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }).then(function (j) {
       j.titles = j.titles.filter(function (x) { return !/\[DNT\]|Test/.test(x.name); });
-      CO = j; return j;
+      return sets.then(function (sj) {
+        // Gear sets (Joakim 2026-11-28): PvP-rankseten hör till en sida (Warlord's = Horde, Field Marshal's = Alliance …)
+        j.sets = (sj.sets || []).filter(function (x) { return x.items && x.items.length; }).map(function (x) {
+          if (SET_HORDE.test(x.name)) x.faction = "HORDE"; else if (SET_ALLY.test(x.name)) x.faction = "ALLIANCE";
+          return x;
+        });
+        CO = j; return j;
+      });
     }).catch(function (e) { coPromise = null; throw e; });
     return coPromise;
   }
@@ -9632,6 +9664,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
   function coOwned(x) { var o = coOwner(); return !!(o && coKind === "mounts" && o.mountList.some(function (m) { return m.id === x.id; })); }
   // Var den fås: vendor / drop / quest / class / pvp / forever (finns inte i Classic-databasen) / other.
   function coSrcKind(x) {
+    if (x.items) return x.cls || "none";   // gear set: undermenyn är klasserna
     if (coKind === "titles") return x.src === "Quest" ? "quest" : CO_PVP.test(x.name) ? "pvp" : x.src ? "other" : "forever";
     if (x.cls) return "class";
     var s = x.item && x.item.src || [];
@@ -9640,6 +9673,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     return coKind === "toys" || x.item ? "other" : "forever";   // finns föremålet i Classic-databasen men ingen källa: Other
   }
   function coWhere(x) {
+    if (x.items) return (x.cls || "") + " " + x.items.map(function (p) { return p.name; }).join(" ");
     if (coKind === "titles") return (x.srcItems || []).join(", ");
     if (x.cls) return x.cls;
     var s = x.item && x.item.src && x.item.src[0];
@@ -9647,6 +9681,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     return s.k === "vendor" ? s.npc + (s.where ? " · " + s.where : "") : s.k === "drop" ? s.npc + (s.where ? " · " + s.where : "") : s.title;
   }
   function coPrice(x) {   // [koppar, "ah" | "vendor"]
+    if (x.items) { var sum = 0, k = 0; x.items.forEach(function (p) { var r = byId[p.id]; if (r && r.qty > 0 && r.min > 0) { sum += r.min; k++; } }); return [sum, "ah", k]; }   // gear set: delarna som ligger ute
     var it = x.item;
     if (!it) return [0, ""];
     var r = byId[it.id];
@@ -9654,7 +9689,9 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     if (it.price && it.src && it.src.some(function (s) { return s.k === "vendor"; })) return [it.price, "vendor"];
     return [0, ""];
   }
+  function setPiece(x) { var p = null; ["CHEST", "HEAD", "LEGS", "SHOULDER"].forEach(function (sl) { if (!p) x.items.forEach(function (y) { if (!p && y.slot === sl) p = y; }); }); return p || x.items[0]; }
   function coIcon(x) {
+    if (x.items) { var sp = setPiece(x), ss = sp ? arIcon(sp) : ""; return ss ? '<img class="coic" src="' + esc(ss) + '" alt="" loading="lazy">' : '<span class="coic none"></span>'; }
     if (coKind === "mounts") return x.img ? '<img class="coic m" src="' + esc(x.img) + '" alt="" loading="lazy">' : '<span class="coic none"></span>';
     if (coKind === "titles") return '<span class="coic ttl">✦</span>';
     var r = x.item && byId[x.item.id];
@@ -9672,10 +9709,17 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     // "Where from" som undermeny under vald samling (Joakim 2026-11-19: inte piller)
     var sub = function (k, lbl, n) { return '<button class="cat sub" type="button" data-cosrc="' + k + '" aria-pressed="' + (coSrc === k) + '"><em class="nm">' + lbl + "</em>" + (n != null ? "<span>" + num(n) + "</span>" : "") + "</button>"; };
     var h = '<div class="cath">' + t("co_kinds") + "</div>";
-    ["mounts", "pets", "toys", "titles"].forEach(function (k) {
+    ["mounts", "sets", "pets", "toys", "titles"].forEach(function (k) {
+      if (!CO[k] || !CO[k].length) return;
       h += '<button class="cat" type="button" data-cokind="' + k + '" aria-pressed="' + (coKind === k && !coSrc) + '"><em class="nm">' + t("co_k_" + k) + "</em><span>" + CO[k].length + "</span></button>";
       if (coKind !== k || coFold) return;
       h += sub("", t("co_s_all"), all);
+      if (k === "sets") {
+        Object.keys(cnt).filter(function (c) { return c !== "none"; }).sort().forEach(function (c) { h += '<button class="cat sub" type="button" data-cosrc="' + esc(c) + '" aria-pressed="' + (coSrc === c) + '">' + classIcon(c) + '<em class="nm" style="color:' + (CLASS_COL[c] || "inherit") + '">' + esc(c) + "</em><span>" + num(cnt[c]) + "</span></button>"; });
+        if (cnt.none) h += sub("none", t("co_set_any"), cnt.none);
+        h += '<button class="cat sub tgl" type="button" data-coside="1" aria-pressed="' + coSide + '"><em class="nm">' + t("co_side", houseParts(house)[1] === "alliance" ? "Alliance" : "Horde") + "</em><span>" + (coSide ? "✓" : "") + "</span></button>";
+        return;
+      }
       ["vendor", "drop", "quest", "class", "pvp", "other", "forever"].forEach(function (k2) { if (cnt[k2]) h += sub(k2, t("co_s_" + k2), cnt[k2]); });
       if (coOwner() && k === "mounts") h += sub("missing", t("co_missing", esc(coOwner().name)));
       if (k !== "titles") h += '<button class="cat sub tgl" type="button" data-coside="1" aria-pressed="' + coSide + '"><em class="nm">' + t("co_side", houseParts(house)[1] === "alliance" ? "Alliance" : "Horde") + "</em><span>" + (coSide ? "✓" : "") + "</span></button>";
@@ -9707,7 +9751,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
       var x = a.co, y = b.co, d = 0;
       if (k === "src") d = t("co_s_" + coSrcKind(x)).localeCompare(t("co_s_" + coSrcKind(y)));
       else if (k === "where") d = coWhere(x).localeCompare(coWhere(y));
-      else if (k === "req") d = ((x.item && x.item.req) || 0) - ((y.item && y.item.req) || 0);
+      else if (k === "req") d = ((x.item && x.item.req) || x.req || 0) - ((y.item && y.item.req) || y.req || 0);
       else if (k === "price") { var pa = coPrice(x)[0], pb = coPrice(y)[0]; if (!pa !== !pb) return pa ? -1 : 1; d = pa - pb; }   // utan pris alltid sist
       else d = x.name.localeCompare(y.name);
       return d * dir || x.name.localeCompare(y.name);
@@ -9715,11 +9759,81 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
     shown = Math.min(PAGE, view.length);
   }
   function coRow(r) {
+    if (r.co.items) return setRow(r.co);
     var x = r.co, sk = coSrcKind(x), p = coPrice(x), key = CO_LETTER[coKind] + x.id;
     return '<tr tabindex="0" data-co="' + key + '"' + (key === coSel ? ' aria-selected="true"' : "") + '><td class="fav">' + (coOwned(x) ? '<span class="pos" title="' + t("co_have") + '">✓</span>' : "") + "</td>" +
       '<td class="nm">' + coIcon(x) + '<span class="' + (x.item ? qcls(x.item.q) : "q1") + '">' + esc(x.name) + "</span></td>" +
       '<td><span class="cosrc s-' + sk + '">' + t("co_s_" + sk) + '</span></td><td class="kat hide-s">' + esc(coWhere(x)) + '</td><td class="hide-s">' + (x.item && x.item.req ? x.item.req : "") + "</td>" +
       "<td>" + (p[0] ? money(p[0]) + ' <small class="dim">' + t(p[1] === "ah" ? "co_ah" : "co_vendor") + "</small>" : "") + "</td></tr>";
+  }
+  function setRow(x) {
+    var p = coPrice(x), key = "s" + x.id;
+    return '<tr tabindex="0" data-co="' + key + '"' + (key === coSel ? ' aria-selected="true"' : "") + '><td class="fav"></td>' +
+      '<td class="nm">' + coIcon(x) + '<span class="' + qcls(x.q == null ? 1 : x.q) + '">' + esc(x.name) + "</span></td>" +
+      "<td>" + (x.cls ? classIcon(x.cls) + '<span style="color:' + (CLASS_COL[x.cls] || "inherit") + '">' + esc(x.cls) + "</span>" : '<span class="dim">' + t("co_set_any") + "</span>") + "</td>" +
+      '<td class="kat hide-s">' + t("co_set_pieces", x.items.length) + (x.ilvl ? ' <span class="dim">· ' + t("co_set_ilvl", x.ilvl) + "</span>" : "") + '</td><td class="hide-s">' + (x.req || "") + "</td>" +
+      "<td>" + (p[0] ? money(p[0]) + ' <small class="dim">' + p[2] + "/" + x.items.length + "</small>" : "") + "</td></tr>";
+  }
+  // Setets docka: delarna på sina platser (två av samma sort: andra ringen/trinketen/vapnet), mitten = provrummet med klassen.
+  var SET_SHOW = null;   // setet som visas: hover-rutan (data-settip) läser delarna härifrån
+  function setDoll(x) {
+    var d = { items: [] }, used = {};
+    x.items.forEach(function (p) {
+      var sl = p.slot || "";
+      if (used[sl]) sl = sl === "MAIN_HAND" ? "OFF_HAND" : sl === "FINGER_1" ? "FINGER_2" : sl === "TRINKET_1" ? "TRINKET_2" : sl;
+      used[sl] = 1; d.items.push({ p: p, slot: sl });
+    });
+    var cell = function (sl) {
+      var e = null; d.items.forEach(function (y) { if (y.slot === sl) e = y; });
+      if (!e) return '<div class="slot empty" title="' + esc(t("slot_" + sl)) + '"></div>';
+      var src = arIcon(e.p);
+      return '<div class="slot ' + qcls(e.p.q == null ? 1 : e.p.q) + '" data-settip="' + x.items.indexOf(e.p) + '">' + (src ? '<img src="' + src + '" alt="">' : "") + (e.p.ilvl > 1 ? '<span class="lv">' + e.p.ilvl + "</span>" : "") + "</div>";
+    };
+    var bg = x.faction === "HORDE" ? "orc" : x.faction === "ALLIANCE" ? "human" : "";
+    var mid = '<div class="picbox setfig"' + (bg && ASSET_BASE ? ' style="background-image:url(' + ASSET_BASE + "backgrounds/dress-" + bg + '.webp)"' : "") + ">" +
+      (x.cls ? '<span class="setcls">' + classIcon(x.cls) + "</span>" : "") + '<b class="setn ' + qcls(x.q == null ? 1 : x.q) + '">' + esc(x.name) + "</b>" +
+      '<div class="ilvl"><small>' + t("co_set_parts") + "</small><b>" + x.items.length + "</b></div></div>";
+    return '<div class="charframe setframe"><div class="dollcol"><div class="doll"><div class="col">' + SLOT_L.map(cell).join("") + '</div><div class="mid">' + mid +
+      '<div class="bot">' + SLOT_B.map(cell).join("") + '</div></div><div class="col">' + SLOT_R.map(cell).join("") + "</div></div></div></div>";
+  }
+  function setTipHtml(x, p) {
+    var ln = ['<div class="ln"><b class="' + qcls(p.q == null ? 1 : p.q) + '">' + esc(p.name) + "</b></div>"];
+    if (p.ilvl) ln.push('<div class="ln c"><span>Item Level ' + p.ilvl + "</span></div>");
+    ln.push('<div class="ln"><span>' + esc(t("slot_" + (p.slot || ""))) + "</span>" + (p.sub && p.sub !== "Miscellaneous" ? '<span class="r">' + esc(p.sub) + "</span>" : "") + "</div>");
+    if (p.armor) ln.push('<div class="ln"><span>' + esc(p.armor) + "</span></div>");
+    if (p.weapon && p.weapon.damage) ln.push('<div class="ln"><span>' + esc(p.weapon.damage) + '</span><span class="r">' + esc(p.weapon.speed || "") + "</span></div>" + (p.weapon.dps ? '<div class="ln"><span>' + esc(p.weapon.dps) + "</span></div>" : ""));
+    (p.stats || []).forEach(function (st) { ln.push('<div class="ln"><span class="q2">' + esc(st) + "</span></div>"); });
+    if (p.cls) ln.push('<div class="ln"><span>Classes: ' + esc(p.cls.join(", ")) + "</span></div>");
+    if (p.req) ln.push('<div class="ln"><span>Requires Level ' + p.req + "</span></div>");
+    (p.equip || []).forEach(function (eq) { ln.push('<div class="ln"><span class="q2">' + esc(eq) + "</span></div>"); });
+    ln.push('<div class="ln setgap"><span class="tipy">' + esc(x.name) + " (0/" + x.items.length + ")</span></div>");
+    x.items.forEach(function (y) { ln.push('<div class="ln"><span class="dim">  ' + esc(y.name) + "</span></div>"); });
+    x.bonus.forEach(function (b) { ln.push('<div class="ln"><span class="dim">(' + b[0] + ") " + esc(b[1]) + "</span></div>"); });
+    var ahr = byId[p.id];
+    return ln.join("") + (ahr ? '<div class="ah">' + t("tip_ah", moneyText(ahr.min), num(ahr.qty)) + "</div>" : "");
+  }
+  function setDetail(key, x) {
+    coSel = key; SET_SHOW = x;
+    var trs = $("rows").children;
+    for (var j = 0; j < trs.length; j++) { if (trs[j].dataset.co === key) trs[j].setAttribute("aria-selected", "true"); else trs[j].removeAttribute("aria-selected"); }
+    setHash("#col=" + key);
+    var p = coPrice(x);
+    var bonus = x.bonus.map(function (b) { return '<li><span class="setbn">' + b[0] + '</span><span class="q2">' + esc(b[1].replace(/^Set: /, "")) + "</span></li>"; }).join("");
+    var parts = x.items.map(function (y, i) {
+      var r = byId[y.id], src = arIcon(y);
+      return '<li data-settip="' + i + '">' + (src ? '<img class="coic" src="' + src + '" alt="" loading="lazy">' : '<span class="coic none"></span>') + '<span class="' + qcls(y.q == null ? 1 : y.q) + '">' + esc(y.name) + "</span>" +
+        ' <span class="dim">' + esc(t("slot_" + (y.slot || ""))) + "</span>" + (r && r.qty > 0 ? ' <span class="setah">' + money(r.min) + ' <button class="lnk" type="button" data-upgo="' + y.id + '">' + t("co_open_ah") + "</button></span>" : "") + "</li>";
+    }).join("");
+    $("detail").scrollTop = 0;
+    $("detail").innerHTML = '<div class="strip"><button class="lnk" type="button" data-copyany="#col=' + key + '" title="' + t("copy_link") + '">' + t("copy_link") + "</button>" +
+      "<h2>" + coIcon(x) + ' <span class="' + qcls(x.q == null ? 1 : x.q) + '">' + esc(x.name) + "</span></h2><small>" + t("co_k1_sets") + (x.cls ? " · " + esc(x.cls) : "") +
+      (x.faction ? " · " + (x.faction === "ALLIANCE" ? "Alliance" : "Horde") : "") + (x.ilvl ? " · " + t("co_set_ilvl", x.ilvl) : "") + (x.req ? " · " + t("col_lvl") + " " + x.req : "") + "</small></div>" +
+      '<div class="setwrap">' + setDoll(x) + '<div class="setinfo">' +
+      '<dl class="facts"><div><dt>' + t("co_col_pieces") + "</dt><dd>" + x.items.length + "</dd></div>" + (x.req ? "<div><dt>" + t("co_col_req") + "</dt><dd>" + t("col_lvl") + " " + x.req + "</dd></div>" : "") +
+      (p[0] ? "<div><dt>" + t("co_set_ah_sum") + "</dt><dd>" + money(p[0]) + ' <small class="dim">' + t("co_set_on_ah", p[2], x.items.length) + "</small></dd></div>" : "") + "</dl>" +
+      (bonus ? "<div><h3>" + t("co_set_bonus") + '</h3><ul class="setbon">' + bonus + "</ul></div>" : "") +
+      "<div><h3>" + t("co_set_parts") + '</h3><ul class="setparts">' + parts + "</ul></div></div></div>" +
+      '<div class="note">' + t("co_set_note") + "</div>";
   }
   function coFind(key) {
     var k = CO_KIND[(key || "").charAt(0)], id = +(key || "").slice(1), hit = null;
@@ -9730,6 +9844,7 @@ body[data-mode=dg] .left .scroll { padding: 12px 14px 0 16px; box-sizing: border
   function coDetail(key) {
     var f = coFind(key);
     if (!f) { $("detail").innerHTML = '<div class="note">' + t("co_empty") + "</div>"; return; }
+    if (f.kind === "sets") { setDetail(key, f.x); return; }
     coSel = key;
     var x = f.x, it = x.item, sk = coSrcKind(x), p = coPrice(x);
     var trs = $("rows").children;
